@@ -12,9 +12,11 @@ InferenceClientBinding chatGptHarnessBinding({
   required ChatGptGateway gateway,
   required String clientId,
   required String model,
+  String reasoningEffort = 'low',
 }) => InferenceClientBinding(
   modelName: ChatGptModelName.subscription,
   defaultModel: model,
+  generationOptions: GenerationOptions(reasoningEffort: reasoningEffort),
   createClient: (selected) {
     if (selected != model) {
       throw StateError('subscription_model_binding_mismatch');

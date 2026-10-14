@@ -255,7 +255,51 @@ final class WorkbenchOwner {
     String origin = 'surfaceInput',
     String? expectedRevision,
     bool Function()? authorizationStillValid,
-  }) => _serial(() async {
+  }) => _serial(
+    () => _stageProposal(
+      project: project,
+      actor: actor,
+      intent: intent,
+      operation: operation,
+      arguments: arguments,
+      origin: origin,
+      expectedRevision: expectedRevision,
+      authorizationStillValid: authorizationStillValid,
+    ),
+  );
+
+  /// Reapply stages a new candidate against current state; adoption remains a
+  /// separate decision. The prior candidate and its history remain unchanged.
+  Future<String> reapply(String project, String id, {required String actor}) =>
+      _serial(() async {
+        final metadata = await _metadata(project);
+        await _reconcile(project, metadata);
+        final prior = _proposal(metadata, id);
+        if (prior['status'] != 'undone') {
+          throw const WorkbenchRefusal('proposal_not_undone');
+        }
+        return _stageProposal(
+          project: project,
+          actor: actor,
+          intent: prior['intent'] as String,
+          operation: prior['operation'] as String,
+          arguments: Map<String, dynamic>.from(prior['arguments'] as Map),
+          origin: 'reapply',
+          priorProposal: id,
+        );
+      });
+
+  Future<String> _stageProposal({
+    required String project,
+    required String actor,
+    required String intent,
+    required String operation,
+    required Map<String, dynamic> arguments,
+    required String origin,
+    String? expectedRevision,
+    bool Function()? authorizationStillValid,
+    String? priorProposal,
+  }) async {
     if (actor.isEmpty || intent.isEmpty) {
       throw const WorkbenchRefusal('attribution_required');
     }
@@ -317,6 +361,7 @@ final class WorkbenchOwner {
       'project': project,
       'actor': actor,
       'origin': origin,
+      'priorProposal': ?priorProposal,
       'intent': intent,
       'operation': operation,
       'arguments': arguments,
@@ -333,7 +378,7 @@ final class WorkbenchOwner {
     }
     await _saveMetadata(project, metadata);
     return id;
-  });
+  }
 
   Future<void> adopt(String project, String id) => _serial(() async {
     final data = await _metadata(project);
@@ -514,10 +559,20 @@ final class WorkbenchOwner {
     await _saveMetadata(project, data);
   });
 
-  Future<void> saveView(String project, Map<String, dynamic> view) =>
-      _serial(() async {
-        final data = await _metadata(project);
-        data['view'] = view;
-        await _saveMetadata(project, data);
-      });
+  Future<void> saveView(
+    String project,
+    Map<String, dynamic> view, {
+    String? viewerId,
+  }) => _serial(() async {
+    final data = await _metadata(project);
+    if (viewerId == null) {
+      data['view'] = view;
+    } else {
+      if (viewerId.trim().isEmpty) throw ArgumentError('invalid_viewer_id');
+      final views = Map<String, dynamic>.from(data['views'] as Map? ?? {});
+      views[viewerId] = view;
+      data['views'] = views;
+    }
+    await _saveMetadata(project, data);
+  });
 }

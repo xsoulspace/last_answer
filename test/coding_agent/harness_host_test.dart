@@ -18,7 +18,12 @@ import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show jevDecisionBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show CodingHostUpdate;
+    show
+        CodingHostUpdate,
+        CodingObservationKind,
+        CodingObservationUpdate,
+        CodingTaskOutcomeUpdate,
+        CodingVerificationStatus;
 
 import 'scripted_write_mover.dart';
 
@@ -74,7 +79,23 @@ void main() {
     );
 
     expect(stop, AcpStopReason.endTurn, reason: chunks.toString());
-    expect(chunks.toString(), contains('verdict: PASS'));
+    expect(
+      updates.whereType<CodingTaskOutcomeUpdate>().single.acceptance.status,
+      CodingVerificationStatus.passed,
+    );
+    expect(
+      updates.whereType<CodingObservationUpdate>().any(
+        (update) =>
+            update.kind == CodingObservationKind.terminalSummary &&
+            update.detail.contains('verdict: PASS'),
+      ),
+      isTrue,
+    );
+    expect(
+      chunks.toString(),
+      isNot(contains('verdict: PASS')),
+      reason: 'host summaries remain separate from model discussion',
+    );
     expect(updates, isNotEmpty, reason: 'typed host updates reach the host');
     expect(
       File('${workspace.path}/main.dart').readAsStringSync(),

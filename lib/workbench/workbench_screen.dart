@@ -23,10 +23,23 @@ hc.WorkbenchOwner workbenchOwner(hc.DocumentRepository repository) =>
 
 /// A projection endpoint, not a second content store or scheduler.
 class WorkbenchScreen extends StatefulWidget {
-  const WorkbenchScreen({this.project, this.collaboration = false, super.key});
+  const WorkbenchScreen({
+    this.project,
+    this.viewerId,
+    this.collaboration = false,
+    super.key,
+  });
   final bool collaboration;
   final String? project;
-  static WorkbenchEndpoint? endpoint;
+
+  /// Host-supplied stable projection address; absent gets a mount-local ID.
+  final String? viewerId;
+  static final _endpoints = <String, WorkbenchEndpoint>{};
+  static Map<String, WorkbenchEndpoint> get endpoints =>
+      Map.unmodifiable(_endpoints);
+
+  /// Legacy implicit addressing remains valid for exactly one mounted view.
+  static WorkbenchEndpoint? get endpoint => _endpoints.values.singleOrNull;
   @override
   State<WorkbenchScreen> createState() => _WorkbenchScreenState();
 }
@@ -69,6 +82,8 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   SharedWorkbenchScope? sharedScope;
   String? harnessSession;
   String? harnessReceipt;
+  late final String _viewerId;
+  WorkbenchEndpoint? _endpoint;
 
   hc.ReturnBehaviour get behaviour => hc.ReturnBehaviour.fromJson(
     Map<String, dynamic>.from(metadata['behaviour'] as Map? ?? {}),
@@ -78,10 +93,17 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   @override
   void initState() {
     super.initState();
+    _viewerId = widget.viewerId ?? const Uuid().v4();
+    if (_viewerId.trim().isEmpty) throw ArgumentError('invalid_viewer_id');
     SemanticsBinding.instance.addSemanticsActionListener(_onSemanticAction);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       owner = workbenchOwner(context.read<hc.DocumentRepository>());
-      WorkbenchScreen.endpoint = WorkbenchEndpoint(state: _state, act: _act);
+      if (WorkbenchScreen._endpoints.containsKey(_viewerId)) {
+        throw StateError('workbench_view_id_in_use');
+      }
+      _endpoint = WorkbenchEndpoint(state: _state, act: _act);
+      WorkbenchScreen._endpoints[_viewerId] = _endpoint!;
       unawaited(
         _run(() async {
           if (widget.project != null) {
@@ -94,7 +116,9 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
 
   @override
   void dispose() {
-    WorkbenchScreen.endpoint = null;
+    if (identical(WorkbenchScreen._endpoints[_viewerId], _endpoint)) {
+      WorkbenchScreen._endpoints.remove(_viewerId);
+    }
     SemanticsBinding.instance.removeSemanticsActionListener(_onSemanticAction);
     for (final c in controllers.values) {
       c.dispose();
@@ -126,6 +150,7 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   }
 
   Map<String, Object?> _state() => {
+    'viewerId': _viewerId,
     'project': node?.id.value,
     'selected': selected,
     'projection': projection.name,
@@ -224,11 +249,46 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
       if (c.text != b.content) c.text = b.content;
       focusNodes.putIfAbsent(b.id.value, FocusNode.new);
     }
-    bookmark = metadata['view'] == null
-        ? null
-        : Map<String, dynamic>.from(metadata['view'] as Map);
+    final savedView = widget.viewerId == null
+        ? metadata['view']
+        : (metadata['views'] as Map?)?[_viewerId];
+    bookmark = _validatedBookmark(savedView);
+    if (mounted && savedView != null && bookmark == null) {
+      error = workbenchText(
+        context,
+        'Saved position could not be restored. Opened at the beginning.',
+      );
+    }
     if (mounted) setState(() {});
-    if (restorePosition && bookmark != null) await _restorePosition(behaviour);
+    if (restorePosition && savedView != null) await _restorePosition(behaviour);
+  }
+
+  Map<String, dynamic>? _validatedBookmark(Object? raw) {
+    if (raw is! Map || raw.keys.any((key) => key is! String)) return null;
+    final version = raw['version'] ?? 0; // Existing unversioned checkpoints.
+    final offset = raw['offset'];
+    final cursor = raw['cursor'];
+    final extent = raw['extent'];
+    if ((version != 0 && version != 1) ||
+        offset is! num ||
+        !offset.isFinite ||
+        cursor is! int ||
+        (version == 1 && cursor < 0) ||
+        extent is! int ||
+        (version == 1 && extent < 0) ||
+        raw['revision'] is! String ||
+        raw['inspect'] is! bool ||
+        !hc.WorkProjection.values.any(
+          (value) => value.name == raw['projection'],
+        ) ||
+        [
+          'editor',
+          'selected',
+          'content',
+        ].any((key) => raw[key] != null && raw[key] is! String)) {
+      return null;
+    }
+    return Map<String, dynamic>.from(raw);
   }
 
   Future<void> _createSample() async {
@@ -312,6 +372,7 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
               'adopt',
               'reject',
               'undo',
+              'reapply',
               'leave',
               'reopen',
               'interaction',
@@ -350,6 +411,14 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
           case 'undo':
             candidate = null;
             await owner.undo(node!.id.value, args['proposal'] as String);
+            await _refresh();
+          case 'reapply':
+            candidate = null;
+            proposal = await owner.reapply(
+              node!.id.value,
+              args['proposal'] as String,
+              actor: origin.name,
+            );
             await _refresh();
           case 'leave':
             await _leave();
@@ -434,19 +503,20 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
         : (selected ?? focusedBlock);
     final c = controllers[active];
     bookmark = {
+      'version': 1,
       'selected': selected,
       'editor': active,
       'inspect': inspect,
       'offset': scroll.hasClients ? scroll.offset : 0.0,
-      'cursor': c?.selection.baseOffset ?? 0,
-      'extent': c?.selection.extentOffset ?? 0,
+      'cursor': (c?.selection.baseOffset ?? 0).clamp(0, c?.text.length ?? 0),
+      'extent': (c?.selection.extentOffset ?? 0).clamp(0, c?.text.length ?? 0),
       'projection': projection.name,
       'revision': hc.workRevision(n),
       'content': active == null
           ? null
           : n.blockById(hc.NodeId(active))?.content,
     };
-    await owner.saveView(n.id.value, bookmark!);
+    await owner.saveView(n.id.value, bookmark!, viewerId: widget.viewerId);
     replay.add({
       'event': 'leave',
       'kind': 'fresh_execution',
@@ -1044,6 +1114,16 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                     ),
                     key: 'undo-${value['id']}',
                   ),
+                if (value['status'] == 'undone')
+                  _action(
+                    'Reapply',
+                    () => unawaited(
+                      _act('reapply', {
+                        'proposal': value['id'],
+                      }, InteractionOrigin.surfaceInput),
+                    ),
+                    key: 'reapply-${value['id']}',
+                  ),
               ],
             ),
           ],
@@ -1149,11 +1229,10 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
     child: Focus(
       autofocus: true,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(workbenchText(context, 'Workbench')),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: Wrap(
+        appBar: AppBar(title: Text(workbenchText(context, 'Workbench'))),
+        body: Column(
+          children: [
+            Wrap(
               children: [
                 _action(
                   'Open sample article',
@@ -1170,10 +1249,6 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                 ),
               ],
             ),
-          ),
-        ),
-        body: Column(
-          children: [
             if (busy) const LinearProgressIndicator(),
             if (error != null)
               Padding(

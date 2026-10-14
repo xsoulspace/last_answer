@@ -14,6 +14,11 @@ String workbenchText(BuildContext context, String value) {
 }
 
 const _words = <String, List<String>>{
+  'Saved position could not be restored. Opened at the beginning.': [
+    'La posizione salvata non può essere ripristinata. Aperto dall’inizio.',
+    'Не удалось восстановить позицию. Документ открыт с начала.',
+    'Saved position could not be restored. Opened at the beginning.',
+  ],
   'Inspect object': [
     'Oggetto da esaminare',
     'Объект для исследования',
@@ -88,6 +93,7 @@ const _words = <String, List<String>>{
   'Adopt': ['Applica', 'Применить', 'Adopt'],
   'Reject': ['Rifiuta', 'Отклонить', 'Reject'],
   'Undo': ['Annulla', 'Отменить', 'Undo'],
+  'Reapply': ['Ripropone', 'Предложить снова', 'Reapply'],
   'Previous': ['Precedente', 'Назад', 'Previous'],
   'Next': ['Successivo', 'Вперёд', 'Next'],
   'document': ['documento', 'документ', 'document'],

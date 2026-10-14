@@ -119,6 +119,7 @@ class _WorkbenchInvestigationState extends State<WorkbenchInvestigation> {
           child: AgentDocSurface(
             doc: doc,
             config: HarnessHostConfig(
+              actorToolNames: sharedWorkbenchToolNames,
               extraToolsWithContext: (context) =>
                   workbenchHarnessTools(widget.owner, widget.scope, context),
             ),

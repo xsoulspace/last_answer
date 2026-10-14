@@ -11,7 +11,15 @@ import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show CodingHostUpdate;
+    show
+        CodingHostUpdate,
+        CodingObservationKind,
+        CodingObservationUpdate,
+        CodingTaskOutcomeUpdate,
+        CodingTaskTerminalState,
+        CodingTextPhase,
+        CodingTextUpdate,
+        CodingVerificationStatus;
 
 /// One structured beat inside a turn: a tool call the agent made.
 final class TurnToolCall {
@@ -67,12 +75,34 @@ final class HarnessTurn {
   /// `agent_task_guide`). First-class grid data, not a transcript line.
   String? guidance;
   final StringBuffer text = StringBuffer();
+  final _provisionalText = <String, StringBuffer>{};
+  final _settledText = <String>{};
+  String get displayedText => '$text${_provisionalText.values.join()}';
+
+  void observeText(CodingTextUpdate update) {
+    if (_settledText.contains(update.requestId)) return;
+    if (update.phase == CodingTextPhase.delta) {
+      _provisionalText
+          .putIfAbsent(update.requestId, StringBuffer.new)
+          .write(update.text);
+    } else {
+      _provisionalText.remove(update.requestId);
+      _settledText.add(update.requestId);
+      if (update.text.isNotEmpty) text.write('${update.text} ');
+    }
+  }
+
   final List<TurnToolCall> toolCalls = [];
   final List<CodingHostUpdate> hostUpdates = [];
   final List<TurnPermission> permissions = [];
   String? verdictLine;
   DateTime? completedAt;
 
+  CodingTaskOutcomeUpdate? get outcome =>
+      hostUpdates.whereType<CodingTaskOutcomeUpdate>().lastOrNull;
+  bool get completedUnverified =>
+      outcome?.terminalState == CodingTaskTerminalState.completed &&
+      outcome?.acceptance.status == CodingVerificationStatus.notRun;
   bool get hasVerdict => verdictLine != null;
   bool get verdictPassed => verdictLine?.contains('PASS') ?? false;
   bool get isDone => completedAt != null;
@@ -83,6 +113,32 @@ final class HarnessTurn {
   /// backend emits none on cancel) — returning null there keeps zeros
   /// from ever being fabricated into a spend (DESIGN §6).
   ({int decisions, int rounds, int tokens, int wallMs})? get spend {
+    if (interrupted) return null;
+    final typed = outcome;
+    if (typed != null) {
+      final values = {
+        for (final measure in typed.usage)
+          measure.metric: measure.value?.toInt(),
+      };
+      final decisions = values['decisions'];
+      final rounds = values['tool_rounds'];
+      final tokens = values['projection_tokens'];
+      final wall = values['wall_ms'];
+      if (decisions == null ||
+          rounds == null ||
+          tokens == null ||
+          wall == null) {
+        return null;
+      }
+      return (
+        decisions: decisions,
+        rounds: rounds,
+        tokens: tokens,
+        wallMs: wall,
+      );
+    }
+    // Previously saved projection strings remain readable; live model text
+    // never sets verdictLine. New host results use the typed path above.
     final v = verdictLine;
     if (v == null || !v.contains('decisions')) return null;
     int? figure(final String label) {
@@ -177,6 +233,11 @@ final class HarnessSessionController extends ChangeNotifier {
   /// PLAN 9 — the user-message queue (ADR 0011): steps on the frontier,
   /// carried in the doc payload by the surface; the pump is [_flushQueue].
   final TurnQueue queue = TurnQueue();
+
+  // Queue and edited-turn checkpoints change only at durable transitions.
+  // Text deltas notify rendering without serializing accumulated history.
+  int _checkpointRevision = 0;
+  int get checkpointRevision => _checkpointRevision;
 
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
@@ -346,6 +407,7 @@ final class HarnessSessionController extends ChangeNotifier {
           config.extraToolsWithContext,
           _config.extraToolsWithContext,
         ) &&
+        setEquals(config.actorToolNames, _config.actorToolNames) &&
         config.backend == _config.backend &&
         config.model == _config.model &&
         config.meaningProfile == _config.meaningProfile &&
@@ -521,7 +583,6 @@ final class HarnessSessionController extends ChangeNotifier {
         onText: (final delta) {
           target.transcript.write(delta);
           turn.text.write(delta);
-          _extractVerdict(target, delta, turn);
           notifyListeners();
         },
         onToolCall: (final title) {
@@ -530,12 +591,43 @@ final class HarnessSessionController extends ChangeNotifier {
           notifyListeners();
         },
         onHostUpdate: (final update) {
-          turn.hostUpdates.add(update);
+          if (update is CodingTextUpdate) {
+            turn.observeText(update);
+            if (update.phase != CodingTextPhase.delta &&
+                update.text.isNotEmpty) {
+              target.transcript.write('${update.text} ');
+            }
+          } else {
+            turn.hostUpdates.add(update);
+          }
+          if (update is CodingObservationUpdate) {
+            target.transcript.write(
+              update.kind == CodingObservationKind.toolResult
+                  ? '\n[${update.label}] ${update.detail}\n'
+                  : update.detail,
+            );
+          }
+          if (update is CodingTaskOutcomeUpdate) {
+            final label = switch (update.terminalState) {
+              CodingTaskTerminalState.cancelled => 'INTERRUPTED',
+              CodingTaskTerminalState.failed => 'FAIL',
+              CodingTaskTerminalState.unsupported => 'UNSUPPORTED',
+              CodingTaskTerminalState.awaitingGuidance => 'WAITING',
+              CodingTaskTerminalState.completed =>
+                switch (update.acceptance.status) {
+                  CodingVerificationStatus.passed => 'PASS',
+                  CodingVerificationStatus.failed => 'FAIL',
+                  CodingVerificationStatus.notRun => 'COMPLETE',
+                  CodingVerificationStatus.unknown => 'COMPLETE',
+                },
+            };
+            turn.verdictLine = 'verdict: $label';
+            target.verdictLine = turn.verdictLine;
+          }
           notifyListeners();
         },
       );
       target.transcript.write('\n— turn ended ($stop) —\n');
-      turn.text.write('\n— turn ended ($stop) —\n');
       if (stop == AcpStopReason.cancelled) {
         // Send-now / stop: the verdict LANDS with whatever partial spend
         // exists — never fabricated (DESIGN §4/§6). The backend emits no
@@ -550,7 +642,7 @@ final class HarnessSessionController extends ChangeNotifier {
     } on Object catch (e) {
       error = '$e';
       target.transcript.write('\n— turn failed: $e —\n');
-      turn.text.write('\n— turn failed: $e —\n');
+      turn.verdictLine = 'turn failed: $e';
       return null;
     } finally {
       target
@@ -582,6 +674,7 @@ final class HarnessSessionController extends ChangeNotifier {
           ..status = QueueStepStatus.delivered
           ..deliveredAt = DateTime.now()
           ..immediate = false;
+        _checkpointRevision++;
         notifyListeners();
         await delegate(next.text, session: session);
       }
@@ -595,6 +688,7 @@ final class HarnessSessionController extends ChangeNotifier {
   /// human→agent lane (ADR 0011 D5 first implementation).
   QueueStep enqueueSteer(final String text, {final bool immediate = false}) {
     final step = queue.enqueue(text, immediate: immediate);
+    _checkpointRevision++;
     notifyListeners();
     return step;
   }
@@ -605,6 +699,7 @@ final class HarnessSessionController extends ChangeNotifier {
     final step = queue.byId(stepId);
     if (step == null || step.status != QueueStepStatus.open) return;
     step.text = text;
+    _checkpointRevision++;
     notifyListeners();
   }
 
@@ -614,6 +709,7 @@ final class HarnessSessionController extends ChangeNotifier {
     final step = queue.byId(stepId);
     if (step == null || step.status != QueueStepStatus.open) return;
     step.status = QueueStepStatus.superseded;
+    _checkpointRevision++;
     notifyListeners();
   }
 
@@ -626,6 +722,7 @@ final class HarnessSessionController extends ChangeNotifier {
     final step = queue.byId(stepId);
     if (step == null || step.status != QueueStepStatus.open) return;
     step.immediate = true;
+    _checkpointRevision++;
     cancelCurrent();
     notifyListeners();
   }
@@ -639,6 +736,7 @@ final class HarnessSessionController extends ChangeNotifier {
     turn
       ..editHistory.add(turn.taskSentence)
       ..taskSentence = newText;
+    _checkpointRevision++;
     notifyListeners();
   }
 
@@ -656,13 +754,16 @@ final class HarnessSessionController extends ChangeNotifier {
   /// process; a turn that re-opens after navigation keeps its history).
   void restoreTurnHistory(final Map<int, List<String>> history) {
     if (history.isEmpty) return;
+    var changed = false;
     for (final session in sessions) {
       for (final turn in session.turns) {
         final restored = history[turn.startedAt.microsecondsSinceEpoch];
         if (restored == null || turn.edited) continue;
         turn.editHistory.addAll(restored);
+        changed = true;
       }
     }
+    if (changed) _checkpointRevision++;
   }
 
   /// Answers the pending permission round-trip (allow = the write/edit
@@ -937,19 +1038,6 @@ final class HarnessSessionController extends ChangeNotifier {
   }
 
   final Map<PendingPermission, TurnPermission> _permissionTurns = {};
-
-  void _extractVerdict(
-    final HarnessSessionView session,
-    final String delta,
-    final HarnessTurn? turn,
-  ) {
-    final match = RegExp('verdict: (PASS|FAIL)').firstMatch(delta);
-    if (match != null) {
-      final line = match.group(0);
-      session.verdictLine = line;
-      if (turn != null) turn.verdictLine = line;
-    }
-  }
 
   @override
   void dispose() {

@@ -1,9 +1,9 @@
 # DESIGN — principles for last_answer surfaces
 
 > Binding design law for product UI. The **agent-doc surface**
-> (`lib/coding_agent/agent_doc_surface.dart`) is the reference
-> implementation — when a new surface is built, copy its discipline, not
-> its pixels. Principles: Edward Tufte (ink, data, annotation) × Josef
+> (`lib/coding_agent/agent_doc_surface.dart`) supplies the conversation
+> vocabulary. Copy its discipline; the editable artifact owns the main view.
+> Harness events and discussions are attached projections, not the artifact. Principles: Edward Tufte (ink, data, annotation) × Josef
 > Müller-Brockmann (grid, typography, whitespace). Companion docs:
 > [North Star](NORTH_STAR.mdx), [Agents in Docs](product/agents-in-docs.md),
 > [ADR 0003](decisions/0003-agents-live-in-docs.md), and
@@ -99,6 +99,29 @@ owns execution, the customer is at most a user):
   exist).
 - Debug/profile builds only (the toolkit is a VM-service debug
   channel): intent authority never ships to a store build.
+
+## 5b. Addressed views and recoverable candidates
+
+Each mounted workbench has a viewer address. Tool actions specify `viewerId`
+when several views are mounted; ambiguity refuses before any action. Stable
+caller-supplied addresses restore their versioned view checkpoint independently.
+Legacy single-view checkpoints remain readable. Invalid/unsupported checkpoints
+leave the document available, with a visible recovery message. Project changes
+still enter the existing owner; personal selection is view state.
+
+Shared-document investigations expose the existing shared-block read and proposal
+tools through the harness's admitted task menu. Private project bodies and
+workspace tooling are not implicitly shared by opening a discussion. Debug MCP
+inspection remains separate from the production document capability adapter.
+
+Reapply stages a fresh proposal against current content and retains the previous
+proposal's provenance. It requires a new adoption decision. Undo checks the exact
+applied state and refuses conflicting later edits. These document operations do
+not replace native coding consent or its transaction journal.
+
+Rendering follows provisional text deltas. Queue/history checkpoints follow their
+durable revision, so streaming does not repeatedly serialize accumulated edited
+history. Long conversations build visible turns lazily with stable keys.
 
 ## 6. Honest surfaces
 

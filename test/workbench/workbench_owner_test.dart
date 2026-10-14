@@ -47,6 +47,53 @@ class InterruptedRepository implements DocumentRepository {
 }
 
 void main() {
+  test(
+    'reapply preserves prior provenance and requires a new adoption',
+    () async {
+      final repo = InMemoryDocumentRepository();
+      await repo.save(article());
+      final owner = WorkbenchOwner(repo);
+      final id = await owner.propose(
+        project: 'article',
+        actor: 'human',
+        intent: 'Refine paragraph',
+        operation: 'rewrite_block',
+        arguments: {'block': 'b', 'text': 'Refined'},
+      );
+      await expectLater(
+        owner.reapply('article', id, actor: 'human'),
+        throwsA(isA<WorkbenchRefusal>()),
+      );
+      await owner.adopt('article', id);
+      await owner.undo('article', id);
+      final external = article().withBlocks(
+        ArticleOperations.rewrite(article(), 'd', 'Later external edit'),
+      );
+      await repo.save(external);
+      final fresh = await owner.reapply(
+        'article',
+        id,
+        actor: 'returning-human',
+      );
+      expect(fresh, isNot(id));
+      expect(workRevision(await owner.read('article')), workRevision(external));
+      final proposals = (await owner.state('article'))['proposals'] as Map;
+      expect((proposals[id] as Map)['status'], 'undone');
+      expect((proposals[fresh] as Map)['status'], 'staged');
+      expect((proposals[fresh] as Map)['priorProposal'], id);
+      expect((proposals[fresh] as Map)['baseRevision'], workRevision(external));
+      await owner.adopt('article', fresh);
+      expect(
+        (await owner.read('article')).blockById(const NodeId('d'))!.content,
+        'Later external edit',
+      );
+      expect(
+        (await owner.read('article')).blockById(const NodeId('b'))!.content,
+        'Refined',
+      );
+    },
+  );
+
   test('queued proposals require current revision and authorization', () async {
     final repo = InMemoryDocumentRepository();
     await repo.save(article());

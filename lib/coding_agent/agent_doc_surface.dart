@@ -231,7 +231,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   String? _editingStepId;
   int? _editingTurnKey;
   final _expandedTurnHistory = <int>{};
-  String _queueSignature = '';
+  int _queueCheckpointRevision = 0;
 
   /// Task H — the deterministic replica id of THIS doc in the mesh sync
   /// cycle: flat (`agent-<projectDocId>`) so the per-doc replica file sits
@@ -279,7 +279,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     });
     // PLAN 9 — the queue must survive into the doc payload on EVERY
     // transition, including the flush pump's deliveries (controller-internal).
-    _queueSignature = _controller.queue.signature;
+    _queueCheckpointRevision = _controller.checkpointRevision;
     _controller.addListener(_onControllerChanged);
     // Task H — presence follows the doc session (ADR 0031 §1): while the
     // doc is open, this device is on the doc's presence channel; the
@@ -500,17 +500,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     final current = _controller.current;
     final lastTurn = current?.turns.lastOrNull;
     final spend = lastTurn?.spend;
-    // The beats the pane renders: the turn text's dim `[tool] …` rows
-    // (the same parse `_TurnBody` performs for the grid rows).
+    // Tool activity is typed host data. Bracket-prefixed Markdown is prose.
     final beats = [
-      for (final raw in (lastTurn?.text.toString() ?? '').split('\n'))
-        if (raw.startsWith('['))
-          SessionBeat(
-            name:
-                RegExp(r'^\[([a-z0-9_\-]+)\]').firstMatch(raw)?.group(1) ??
-                'tool',
-            detail: raw.replaceFirst(RegExp(r'^\[[^\]]+\]\s?'), ''),
-          ),
+      for (final call in lastTurn?.toolCalls ?? const <TurnToolCall>[])
+        SessionBeat(name: 'tool', detail: call.title),
     ];
     // The PROFILE pane's CONTEXT LOAD row, as data — figures the host
     // truly observes (no session → honest absence, never a zero cut).
@@ -1510,10 +1503,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// Controller listener: persist whenever the queue or the per-turn edit
   /// history changed — covers the flush pump's internal deliveries too.
   void _onControllerChanged() {
-    final signature =
-        '${_controller.queue.signature}|${_historyJson(_controller)}';
-    if (signature == _queueSignature) return;
-    _queueSignature = signature;
+    final revision = _controller.checkpointRevision;
+    if (revision == _queueCheckpointRevision) return;
+    _queueCheckpointRevision = revision;
     _persistQueueState();
   }
 
@@ -2257,69 +2249,94 @@ class _Conversation extends StatelessWidget {
     final theme = Theme.of(context);
     final turns = current?.turns ?? const <HarnessTurn>[];
     final queued = controller.queue.openInLane().toList();
+    final header = <Widget>[
+      // PLAN 9 — the queue rides the frontier (ADR 0011): queued rows
+      // render as YOU rows with a dim STEER/NOW gutter annotation +
+      // position + age — visible, editable, cancellable (DESIGN §10:
+      // never "trusted to send"). Bottom-most, nearest the composer.
+      for (final step in queued.reversed)
+        _QueuedRow(
+          step: step,
+          position: controller.queue.positionOf(step),
+          editing: editingStepId == step.id,
+          editField: queueEditField,
+          onBeginEdit: () => onBeginQueuedEdit(step.id),
+          onCommitEdit: onCommitQueuedEdit,
+          onCancel: () => onCancelQueued(step.id),
+          onSendNow: () => onSendNowQueued(step.id),
+        ),
+      if (workspaceToolBinding case final binding?)
+        ProductCodingChangeView(
+          binding: binding,
+          controller: controller,
+          onAction: onProductCodingAction,
+          busy: meaningAdmissionBusy,
+        ),
+      if (controller.config.extraToolsWithContext != null &&
+          (workspaceToolBinding == null ||
+              MeaningExperimentPreparation.instance.receiptFor(docWorkspace) !=
+                  null))
+        MeaningExperimentView(
+          controller: controller.meaning,
+          onAction: onMeaningAction,
+          admissionBusy: meaningAdmissionBusy,
+        ),
+      // PLAN 5c — remote permission rows (DESIGN §9): announced by the
+      // owning device, visible AND answerable from this peer's flow —
+      // same PERM row, same reject-first ordering, origin label in the
+      // gutter. Never a modal, never a separate pane.
+      for (final record in controller.remotePermissions)
+        _RemotePermRow(
+          record: record,
+          originLabel: controller.originLabelOf(record),
+          onAnswer: (final allow) => unawaited(
+            controller.answerRemotePermission(record.requestId, allow: allow),
+          ),
+        ),
+      if (controller.pendingPermission == null && (current?.running ?? false))
+        const _LiveRow(),
+      if (current?.hasVerdict ?? false)
+        _VerdictRow(turn: current!.turns.last, showCard: true),
+    ];
+    final footer = <Widget>[
+      if (docWorkspace.trim().isEmpty && turns.isEmpty)
+        const _EmptyStateGuide(key: Key('coding_agent.empty_state')),
+      if (turns.isEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            'conversations start here — the surface is text; every line '
+            'is a node you and the agent share.',
+            style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+          ),
+        ),
+    ];
     return Semantics(
       identifier: 'coding_agent.transcript',
       container: true,
       explicitChildNodes: true,
-      child: ListView(
+      child: ListView.builder(
         reverse: true,
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-        children: [
-          // PLAN 9 — the queue rides the frontier (ADR 0011): queued rows
-          // render as YOU rows with a dim STEER/NOW gutter annotation +
-          // position + age — visible, editable, cancellable (DESIGN §10:
-          // never "trusted to send"). Bottom-most, nearest the composer.
-          for (final step in queued.reversed)
-            _QueuedRow(
-              step: step,
-              position: controller.queue.positionOf(step),
-              editing: editingStepId == step.id,
-              editField: queueEditField,
-              onBeginEdit: () => onBeginQueuedEdit(step.id),
-              onCommitEdit: onCommitQueuedEdit,
-              onCancel: () => onCancelQueued(step.id),
-              onSendNow: () => onSendNowQueued(step.id),
-            ),
-          if (workspaceToolBinding case final binding?)
-            ProductCodingChangeView(
-              binding: binding,
-              controller: controller,
-              onAction: onProductCodingAction,
-              busy: meaningAdmissionBusy,
-            ),
-          if (controller.config.extraToolsWithContext != null &&
-              (workspaceToolBinding == null ||
-                  MeaningExperimentPreparation.instance.receiptFor(
-                        docWorkspace,
-                      ) !=
-                      null))
-            MeaningExperimentView(
-              controller: controller.meaning,
-              onAction: onMeaningAction,
-              admissionBusy: meaningAdmissionBusy,
-            ),
-          // PLAN 5c — remote permission rows (DESIGN §9): announced by the
-          // owning device, visible AND answerable from this peer's flow —
-          // same PERM row, same reject-first ordering, origin label in the
-          // gutter. Never a modal, never a separate pane.
-          for (final record in controller.remotePermissions)
-            _RemotePermRow(
-              record: record,
-              originLabel: controller.originLabelOf(record),
-              onAnswer: (final allow) => unawaited(
-                controller.answerRemotePermission(
-                  record.requestId,
-                  allow: allow,
-                ),
-              ),
-            ),
-          if (controller.pendingPermission == null &&
-              (current?.running ?? false))
-            const _LiveRow(),
-          if (current?.hasVerdict ?? false)
-            _VerdictRow(turn: current!.turns.last, showCard: true),
-          for (final turn in turns.reversed) ...[
-            _TurnView(
+        itemCount: header.length + turns.length + footer.length,
+        findChildIndexCallback: (key) {
+          if (key is ObjectKey && key.value is HarnessTurn) {
+            final index = turns.indexOf(key.value! as HarnessTurn);
+            if (index >= 0) return header.length + turns.length - 1 - index;
+          }
+          return null;
+        },
+        itemBuilder: (context, index) {
+          if (index < header.length) return header[index];
+          final turnIndex = index - header.length;
+          if (turnIndex >= turns.length) {
+            return footer[turnIndex - turns.length];
+          }
+          final turn = turns[turns.length - 1 - turnIndex];
+          return Padding(
+            key: ObjectKey(turn),
+            padding: const EdgeInsets.only(bottom: 14),
+            child: _TurnView(
               turn: turn,
               backend: backend,
               expandedBeats: expandedBeats,
@@ -2334,20 +2351,8 @@ class _Conversation extends StatelessWidget {
               onToggleHistory: () =>
                   onToggleTurnHistory(turn.startedAt.microsecondsSinceEpoch),
             ),
-            const SizedBox(height: 14),
-          ],
-          if (docWorkspace.trim().isEmpty && turns.isEmpty)
-            const _EmptyStateGuide(key: Key('coding_agent.empty_state')),
-          if (turns.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                'conversations start here — the surface is text; every line '
-                'is a node you and the agent share.',
-                style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
-              ),
-            ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -2518,6 +2523,15 @@ class _TurnView extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final turnKey = turn.startedAt.microsecondsSinceEpoch;
+    void commitAndKeepVisible() {
+      onCommitEdit();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          unawaited(Scrollable.ensureVisible(context));
+        }
+      });
+    }
+
     final cooled = turn.isDone && !editing;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2528,7 +2542,7 @@ class _TurnView extends StatelessWidget {
               ? CallbackShortcuts(
                   bindings: {
                     const SingleActivator(LogicalKeyboardKey.enter):
-                        onCommitEdit,
+                        commitAndKeepVisible,
                   },
                   child: TextField(
                     key: Key('coding_agent.turn.edit.field.$turnKey'),
@@ -2539,7 +2553,7 @@ class _TurnView extends StatelessWidget {
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
-                    onSubmitted: (_) => onCommitEdit(),
+                    onSubmitted: (_) => commitAndKeepVisible(),
                   ),
                 )
               : SelectableText(
@@ -2649,27 +2663,37 @@ class _TurnBody extends StatelessWidget {
       prose.clear();
     }
 
-    for (final raw in turn.text.toString().split('\n')) {
+    for (final raw in turn.displayedText.split('\n')) {
       final line = raw.trimRight();
       if (line.isEmpty) continue;
-      if (line.startsWith('delegated:')) continue; // the YOU row carries it
-      if (line.startsWith('verdict:')) continue; // the verdict row carries it
-      if (line.startsWith('— turn')) continue;
-      if (line.startsWith('[')) {
-        flushProse();
-        final id = Object.hash(turn.startedAt, beatIndex++);
-        children.add(
-          _BeatLine(
-            line: line,
-            expanded: expandedBeats.contains(id),
-            onTap: () => onToggleBeat(id),
-          ),
-        );
-        continue;
-      }
       prose.writeln(line);
     }
     flushProse();
+
+    for (final call in turn.toolCalls) {
+      final id = Object.hash(turn.startedAt, beatIndex++);
+      children.add(
+        _BeatLine(
+          line: '[tool] ${call.title}',
+          expanded: expandedBeats.contains(id),
+          onTap: () => onToggleBeat(id),
+        ),
+      );
+    }
+
+    for (final observation
+        in turn.hostUpdates.whereType<CodingObservationUpdate>().where(
+          (update) => update.kind == CodingObservationKind.toolResult,
+        )) {
+      final id = Object.hash(turn.startedAt, observation.eventId);
+      children.add(
+        _BeatLine(
+          line: '[${observation.label}] ${observation.detail}',
+          expanded: expandedBeats.contains(id),
+          onTap: () => onToggleBeat(id),
+        ),
+      );
+    }
 
     // Permission round-trips recorded on this turn. A remote answer is
     // recorded exactly like a local one — indistinguishable except by
@@ -2780,7 +2804,7 @@ class _VerdictRow extends StatelessWidget {
     // row renders only what the client TRULY observed (beats + wall
     // time) — zeros and guesses are never fabricated (DESIGN §6).
     final interrupted = turn.interrupted;
-    final color = interrupted
+    final color = interrupted || turn.completedUnverified
         ? theme.colorScheme.onSurfaceVariant
         : passed
         ? Colors.green.shade600

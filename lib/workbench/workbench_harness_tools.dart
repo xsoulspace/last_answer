@@ -18,6 +18,12 @@ final class SharedWorkbenchScope {
   final String content;
 }
 
+/// The complete admitted menu for a shared document investigation.
+final sharedWorkbenchToolNames = Set<ToolName>.unmodifiable(const [
+  ToolName('workbench_shared_scope'),
+  ToolName('workbench_propose_rewrite'),
+]);
+
 /// Installed on an existing harness host through extraToolsWithContext. The
 /// bound actor can inspect the shared block and propose a rewrite; adoption
 /// stays with the human. No model calls, scheduling or acceptance happen here.

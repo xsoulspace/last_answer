@@ -189,7 +189,7 @@ final class NativeChatGptGateway
     _accountOperations.add(client);
     try {
       final result = await client.infer(
-        InferenceRequest(prompt: 'Say exactly: Ready.'),
+        InferenceRequest(prompt: 'Say exactly: Ready.', reasoningEffort: 'low'),
       );
       if (!result.success || result.data == null) {
         throw ChatGptAuthException(result.error?.code ?? 'response_failed');

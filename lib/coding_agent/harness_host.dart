@@ -402,6 +402,7 @@ final class HarnessHostConfig {
     this.externalAcpSessionPersistence,
     this.externalAcpProviderIdentity,
     this.extraToolsWithContext,
+    this.actorToolNames,
   });
 
   /// `apple_foundation_afm`, `open_router`, opt-in `jev`, opt-in local
@@ -445,6 +446,9 @@ final class HarnessHostConfig {
   final Map<String, String>? externalAcpEnvironment;
   final List<ToolDef> Function(HostToolExtensionContext context)?
   extraToolsWithContext;
+
+  /// Host-selected subset; the harness refuses names outside admitted tools.
+  final Set<ToolName>? actorToolNames;
   final String? externalAcpWorkingDirectory;
   final AcpClientServices? externalAcpClientServices;
 
@@ -572,6 +576,7 @@ final class HarnessHostConfig {
       );
     }
     return HarnessAcpBackend(
+      typedTextUpdates: true,
       // The trusted product composition injects this provider; document
       // backend labels carry no credential or execution authority.
       backend: backend,
@@ -586,6 +591,7 @@ final class HarnessHostConfig {
       apiKey: apiKey,
       checkCommand: checkCommand,
       extraToolsWithContext: extraToolsWithContext,
+      actorToolNames: actorToolNames,
     );
   }
 
@@ -593,6 +599,8 @@ final class HarnessHostConfig {
   HarnessHostConfig copyWith({
     List<ToolDef> Function(HostToolExtensionContext)? extraToolsWithContext,
     bool clearExtraToolsWithContext = false,
+    Set<ToolName>? actorToolNames,
+    bool clearActorToolNames = false,
     String? backend,
     String? model,
     String? apiKey,
@@ -651,6 +659,9 @@ final class HarnessHostConfig {
         externalAcpSessionPersistence ?? this.externalAcpSessionPersistence,
     externalAcpProviderIdentity:
         externalAcpProviderIdentity ?? this.externalAcpProviderIdentity,
+    actorToolNames: clearActorToolNames
+        ? null
+        : actorToolNames ?? this.actorToolNames,
     extraToolsWithContext: clearExtraToolsWithContext
         ? null
         : extraToolsWithContext ?? this.extraToolsWithContext,

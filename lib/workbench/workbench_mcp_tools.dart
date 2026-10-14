@@ -4,33 +4,55 @@ import 'package:lastanswer/workbench/workbench_screen.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:universal_automation_interface/universal_automation_interface.dart';
 
+WorkbenchEndpoint? _resolve(String? viewerId) => viewerId == null
+    ? WorkbenchScreen.endpoint
+    : WorkbenchScreen.endpoints[viewerId];
+
+MCPCallResult _unavailable(String? viewerId) => MCPCallResult(
+  message: 'Select a mounted workbench viewerId.',
+  parameters: {
+    'ok': false,
+    'error': viewerId != null
+        ? 'workbench_view_unknown'
+        : WorkbenchScreen.endpoints.isEmpty
+        ? 'workbench_not_open'
+        : 'workbench_view_ambiguous',
+    'views': [
+      for (final entry in WorkbenchScreen.endpoints.entries)
+        {'viewerId': entry.key, 'project': entry.value.state()['project']},
+    ],
+  },
+);
+
 Set<AgentCallEntry> workbenchMcpEntries() => {
   mcpToolkitTool(
-    handler: (_) {
-      final endpoint = WorkbenchScreen.endpoint;
+    handler: (args) {
+      final viewerId = args['viewerId'];
+      final endpoint = _resolve(viewerId);
+      if (endpoint == null) return _unavailable(viewerId);
       return MCPCallResult(
-        message: endpoint == null ? 'Open Workbench first.' : 'Workbench state',
-        parameters: endpoint == null
-            ? {'ok': false, 'error': 'workbench_not_open'}
-            : {'ok': true, ...endpoint.state()},
+        message: 'Workbench state',
+        parameters: {'ok': true, ...endpoint.state()},
       );
     },
     definition: MCPToolDefinition(
       name: 'workbench_state',
       description:
           'Read the selected project, proposals, behaviour and recorded observations.',
-      inputSchema: ObjectSchema.fromMap({'type': 'object', 'properties': {}}),
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'viewerId': {'type': 'string'},
+        },
+        'additionalProperties': false,
+      }),
     ),
   ),
   mcpToolkitTool(
     handler: (args) async {
-      final endpoint = WorkbenchScreen.endpoint;
-      if (endpoint == null) {
-        return MCPCallResult(
-          message: 'Open Workbench first.',
-          parameters: {'ok': false, 'error': 'workbench_not_open'},
-        );
-      }
+      final viewerId = args['viewerId'];
+      final endpoint = _resolve(viewerId);
+      if (endpoint == null) return _unavailable(viewerId);
       try {
         final payload = args['arguments'] == null
             ? <String, dynamic>{}
@@ -43,7 +65,7 @@ Set<AgentCallEntry> workbenchMcpEntries() => {
         );
         return MCPCallResult(
           message: '${result['error'] ?? 'Workbench operation'}',
-          parameters: result,
+          parameters: {'viewerId': endpoint.state()['viewerId'], ...result},
         );
       } on Object catch (e) {
         return MCPCallResult(
@@ -59,6 +81,7 @@ Set<AgentCallEntry> workbenchMcpEntries() => {
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',
         'properties': {
+          'viewerId': {'type': 'string'},
           'project': {'type': 'string'},
           'action': {
             'type': 'string',
@@ -70,6 +93,7 @@ Set<AgentCallEntry> workbenchMcpEntries() => {
               'adopt',
               'reject',
               'undo',
+              'reapply',
               'leave',
               'reopen',
               'cancel',

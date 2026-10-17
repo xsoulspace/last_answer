@@ -34,7 +34,7 @@ dependencies:
   xsoulspace_tooling_runtime:
     path: ../dart_flutter_packages/pkgs/xsoulspace_tooling_runtime
   universal_storage_live_apply:
-    path: ../dart_flutter_packages/pkgs/universal_storage_live_apply
+    path: ../../universal_storage/pkgs/universal_storage_live_apply
   animations: ^2.2.0
   blur: ^4.0.2
   collection: ^1.19.1
@@ -80,31 +80,31 @@ dependencies:
   ui_kit:
   mcp_toolkit: ^5.0.4
   universal_storage_github_api:
-    path: ../dart_flutter_packages/pkgs/universal_storage_github_api
+    path: ../../universal_storage/pkgs/universal_storage_github_api
   universal_storage_github_oauth:
-    path: ../dart_flutter_packages/pkgs/universal_storage_github_oauth
+    path: ../../universal_storage/pkgs/universal_storage_github_oauth
   universal_storage_filesystem:
-    path: ../dart_flutter_packages/pkgs/universal_storage_filesystem
+    path: ../../universal_storage/pkgs/universal_storage_filesystem
   universal_storage_git_offline:
-    path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
+    path: ../../universal_storage/pkgs/universal_storage_git_offline
   universal_storage_interface:
-    path: ../dart_flutter_packages/pkgs/universal_storage_interface
+    path: ../../universal_storage/pkgs/universal_storage_interface
   # ADR 0007 — the actor roster syncs as a durable LWW kernel doc
   # (ConvergenceDoc); the mesh layer attaches to its seams later.
   universal_storage_convergence:
-    path: ../dart_flutter_packages/pkgs/universal_storage_convergence
+    path: ../../universal_storage/pkgs/universal_storage_convergence
   universal_storage_mesh:
-    path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+    path: ../../universal_storage/pkgs/universal_storage_mesh
   # ADR 0047 — the world layer: interest policies, zone catalogs, the
   # host-driven pulse contract; the mesh session consumes it.
   universal_storage_world:
-    path: ../dart_flutter_packages/pkgs/universal_storage_world
+    path: ../../universal_storage/pkgs/universal_storage_world
   universal_storage_mesh_transport:
-    path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
+    path: ../../universal_storage/pkgs/universal_storage_mesh_transport
   # ADR 0050 — the realtime event plane (live presence/activity for the
   # multiplayer feel): committed locally, not yet published.
   universal_storage_realtime:
-    path: ../dart_flutter_packages/pkgs/universal_storage_realtime
+    path: ../../universal_storage/pkgs/universal_storage_realtime
   xsoulspace_inference_acp:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
@@ -226,11 +226,11 @@ dependency_overrides:
   # locally but not yet published — pin the local checkout so the graph
   # sees ONE source. Drop when pub.dev has it.
   universal_storage_world:
-    path: ../dart_flutter_packages/pkgs/universal_storage_world
+    path: ../../universal_storage/pkgs/universal_storage_world
   # Same one-source law: the mesh lane's chunk store (ADR 0049) is committed
   # locally, not yet published. Drop when pub.dev has it.
   universal_storage_chunks:
-    path: ../dart_flutter_packages/pkgs/universal_storage_chunks
+    path: ../../universal_storage/pkgs/universal_storage_chunks
   # oka_harness (the device gate's AndroidAppTarget) must see the SAME
   # flutter_mcp_harness this repo pins (the mcp_flutter checkout).
   flutter_mcp_harness:
@@ -239,9 +239,9 @@ dependency_overrides:
   # transport): 0.2.0 (ag-c, auto-wait + NavigateWait + semantic clicks)
   # is committed locally but not yet published — drop when pub.dev has it.
   universal_browser_cdp:
-    path: ../dart_flutter_packages/pkgs/universal_browser_cdp
+    path: ../../ai_computer_use_universal_automation/pkgs/universal_browser_cdp
   universal_automation_interface:
-    path: ../dart_flutter_packages/pkgs/universal_automation_interface
+    path: ../../ai_computer_use_universal_automation/pkgs/universal_automation_interface
   # The local acp_toolkit checkout moved to the intentcall 0.7.0 release
   # train (additive schema/core changes) while the harness repo still pins
   # ^0.6.0 against its git-sourced acp_toolkit. Pin the train + the local
@@ -327,11 +327,11 @@ dependency_overrides:
   async_parallel:
     path: ../../ecsly/plugins/async_parallel
   universal_storage_oauth:
-    path: ../dart_flutter_packages/pkgs/universal_storage_oauth
+    path: ../../universal_storage/pkgs/universal_storage_oauth
   universal_storage_filesystem:
-    path: ../dart_flutter_packages/pkgs/universal_storage_filesystem
+    path: ../../universal_storage/pkgs/universal_storage_filesystem
   universal_storage_git_offline:
-    path: ../dart_flutter_packages/pkgs/universal_storage_git_offline
+    path: ../../universal_storage/pkgs/universal_storage_git_offline
   analyzer: ^14.1.0
   meta: ^1.19.0
   intl: ^0.20.3
@@ -358,15 +358,15 @@ dependency_overrides:
   xsoulspace_monetization_rustore:
     path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_rustore
   universal_storage_interface:
-    path: ../dart_flutter_packages/pkgs/universal_storage_interface
+    path: ../../universal_storage/pkgs/universal_storage_interface
   universal_storage_local_db:
-    path: ../dart_flutter_packages/pkgs/universal_storage_local_db
+    path: ../../universal_storage/pkgs/universal_storage_local_db
   universal_storage_convergence:
-    path: ../dart_flutter_packages/pkgs/universal_storage_convergence
+    path: ../../universal_storage/pkgs/universal_storage_convergence
   # dfp ADR 0063 — the anti-entropy session core; mesh + ecsly_world_sync
   # consume it, not yet published, so the path source must win the solve.
   universal_storage_convergence_session:
-    path: ../dart_flutter_packages/pkgs/universal_storage_convergence_session
+    path: ../../universal_storage/pkgs/universal_storage_convergence_session
   # Parallel migration (2026-10-11): xsoulspace_agentic_harness gained a
   # meaning-core dependency that is not published yet; same path-source
   # override pattern.
@@ -375,11 +375,11 @@ dependency_overrides:
   # Same cascade: xsoulspace_agentic_host depends on the (unpublished)
   # live-apply journal; path source until it publishes.
   universal_storage_live_apply:
-    path: ../dart_flutter_packages/pkgs/universal_storage_live_apply
+    path: ../../universal_storage/pkgs/universal_storage_live_apply
   universal_storage_mesh:
-    path: ../dart_flutter_packages/pkgs/universal_storage_mesh
+    path: ../../universal_storage/pkgs/universal_storage_mesh
   universal_storage_mesh_transport:
-    path: ../dart_flutter_packages/pkgs/universal_storage_mesh_transport
+    path: ../../universal_storage/pkgs/universal_storage_mesh_transport
   shelf: ^1.4.2
   shelf_web_socket: ^3.0.0
 

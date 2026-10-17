@@ -4,7 +4,7 @@
 # events never move the user's focus. Pointed to by
 # configs/automation.json (plans.desktopSmoke).
 #
-#   dart run ~/xs/storage_problem/dart_flutter_packages/pkgs/universal_automation_toolkit/bin/universal_automation.dart \
+#   dart run ~/xs/ai_computer_use_universal_automation/pkgs/universal_automation_toolkit/bin/universal_automation.dart \
 #     run --plan e2e/automation/last-answer-desktop.yaml
 sessions:
   app:

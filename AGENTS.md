@@ -79,9 +79,9 @@ Pass `"root": "/Users/antonio/xs/storage_problem/last_answer"` when the client c
 5. **Before commit** — `operation=changes`.
 6. **On every answer** — read `freshness` and `meta.transport`. Ordinary reads refresh a stale index. `freshness_policy=refuse` starts no repair. Navigation facts are review leads; they do not authorize adoption.
 
-CLI, from the codemap checkout:
+CLI, from the codemap checkout — same names as the MCP tools:
 
-`~/xs/codemap/.venv/bin/python ~/xs/codemap/engines/versions/py_engine/codemap_cli.py --json exec <index_command> --args '{"root":"/Users/antonio/xs/storage_problem/last_answer",...}'`
+`~/xs/codemap/dist/codemap-cli exec map_index --args '{"operation":"search","root":"/Users/antonio/xs/storage_problem/last_answer","query":"<substr>"}'`
 
 Parser edges only. Unresolved calls stay in the payload.
 <!-- codemap-index:end -->

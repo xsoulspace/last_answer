@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:lastanswer/coding_agent/product_dart_runtime.dart';
+import 'package:lastanswer/coding_agent/product_package_candidate_verification.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';
 import 'package:xsoulspace_tooling_runtime/xsoulspace_tooling_runtime.dart';
 
@@ -10,11 +11,25 @@ final class ProductDartCandidateVerifier {
   ProductDartCandidateVerifier({
     Future<ProductDartRuntime> Function()? runtime,
     this.verifier = const MacOsCandidateVerifier(),
+    this.web = false,
   }) : runtime = runtime ?? ProductDartRuntime.forApplication;
 
   static final instance = ProductDartCandidateVerifier();
   final Future<ProductDartRuntime> Function() runtime;
   final MacOsCandidateVerifier verifier;
+  final bool web;
+
+  Future<ConventionalCheck> Function(Directory) forWorkspace(String workspace) {
+    if (File('$workspace/.dart_tool/package_config.json').existsSync() &&
+        File('$workspace/lib/main.dart').existsSync()) {
+      return ProductPackageCandidateVerifier(
+        workspace: Directory(workspace),
+        runtime: runtime,
+        verifier: verifier,
+      ).verifyCandidate;
+    }
+    return verifyCandidate;
+  }
 
   Future<ConventionalCheck> verifyCandidate(Directory candidate) async {
     if (!Platform.isMacOS) {
@@ -28,7 +43,9 @@ final class ProductDartCandidateVerifier {
     final Map<String, Object?> identity;
     try {
       toolchain = await runtime();
-      identity = await toolchain.inspect();
+      identity = web
+          ? await toolchain.inspectCompiler()
+          : await toolchain.inspect();
     } on Object catch (error) {
       return ConventionalCheck(
         ok: false,
@@ -74,12 +91,21 @@ final class ProductDartCandidateVerifier {
       final check = await verifier.verifyCandidate(
         executable: '$sdk/bin/dartaotruntime',
         arguments: [
-          '$sdk/bin/snapshots/gen_kernel_aot.dart.snapshot',
-          '--platform',
-          '$sdk/lib/_internal/vm_platform_strong.dill',
+          if (web) ...[
+            '$sdk/bin/snapshots/dart2js_aot.dart.snapshot',
+            '--invoker=dart_cli',
+            '--libraries-spec=$sdk/lib/libraries.json',
+            '--platform-binaries=$sdk/lib/_internal',
+            '--no-source-maps',
+            '--csp',
+          ] else ...[
+            '$sdk/bin/snapshots/gen_kernel_aot.dart.snapshot',
+            '--platform',
+            '$sdk/lib/_internal/vm_platform_strong.dill',
+          ],
           entrypoints[i],
           '-o',
-          '${output.path}/entry_$i.dill',
+          '${output.path}/${web ? 'main.js' : 'entry_$i.dill'}',
         ],
         candidateRoot: candidate.path,
         readOnlyRoots: [sdk],

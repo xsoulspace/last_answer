@@ -1039,4 +1039,48 @@ class SIt extends S {
   @override
   String get chatGptDocumentConsentRequired =>
       'Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.';
+
+  @override
+  String get worldConversationChoose => 'Scegli una conversazione';
+
+  @override
+  String get worldConversationHint => 'Parla in questa conversazione del mondo';
+
+  @override
+  String get worldConversationSend => 'Invia al mondo';
+
+  @override
+  String get worldConversationReconnect => 'Riconnetti';
+
+  @override
+  String get worldConversationPublic =>
+      'I messaggi sono visibili ai partecipanti di questo mondo.';
+
+  @override
+  String get worldTaskPermission => 'Permesso per attività';
+
+  @override
+  String get worldTaskPermissionHint =>
+      'Scegli un\'attività, un attore e i file esatti. Il mondo verifica e registra questo permesso; le modifiche richiedono comunque verifica e supportano Annulla.';
+
+  @override
+  String get worldTaskTarget => 'Attività';
+
+  @override
+  String get worldTaskActor => 'ID attore';
+
+  @override
+  String get worldTaskPaths => 'Percorsi relativi esatti, uno per riga';
+
+  @override
+  String get worldTaskMinutes => 'Validità (minuti)';
+
+  @override
+  String get worldTaskRequired => 'Obbligatorio';
+
+  @override
+  String get worldTaskRevoke => 'Revoca';
+
+  @override
+  String get worldTaskAuthorize => 'Autorizza attività';
 }

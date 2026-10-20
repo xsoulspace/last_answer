@@ -1031,4 +1031,48 @@ class SEn extends S {
   @override
   String get chatGptDocumentConsentRequired =>
       'Confirm cloud use for this document, account, model and workspace before sending.';
+
+  @override
+  String get worldConversationChoose => 'Choose a conversation';
+
+  @override
+  String get worldConversationHint => 'Talk in this world conversation';
+
+  @override
+  String get worldConversationSend => 'Send to world';
+
+  @override
+  String get worldConversationReconnect => 'Reconnect';
+
+  @override
+  String get worldConversationPublic =>
+      'Messages are visible to participants in this world.';
+
+  @override
+  String get worldTaskPermission => 'Task permission';
+
+  @override
+  String get worldTaskPermissionHint =>
+      'Choose one task, actor and exact files. The world checks and records this permission; changes still require verification and support Undo.';
+
+  @override
+  String get worldTaskTarget => 'Task';
+
+  @override
+  String get worldTaskActor => 'Actor ID';
+
+  @override
+  String get worldTaskPaths => 'Exact relative file paths, one per line';
+
+  @override
+  String get worldTaskMinutes => 'Valid for (minutes)';
+
+  @override
+  String get worldTaskRequired => 'Required';
+
+  @override
+  String get worldTaskRevoke => 'Revoke';
+
+  @override
+  String get worldTaskAuthorize => 'Authorize task';
 }

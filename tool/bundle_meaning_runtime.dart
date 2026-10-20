@@ -122,6 +122,49 @@ Future<void> main(List<String> args) async {
   for (final file in files) {
     seedFiles[file.path.substring(seed.path.length + 1)] = await digest(file);
   }
+  // Package compilation uses matching Flutter platform artifacts independently
+  // of the legacy experiment's dependency seed or lock.
+  final platform = Directory(
+    '${sdk.parent.path}/artifacts/engine/common/flutter_patched_sdk',
+  );
+  if (!File('${platform.path}/platform_strong.dill').existsSync()) {
+    throw StateError('matching Flutter compiler platform is missing');
+  }
+  final platformCopy = await Process.run('/usr/bin/ditto', [
+    platform.path,
+    '${destination.path}/flutter_patched_sdk',
+  ]);
+  if (platformCopy.exitCode != 0) {
+    throw StateError('Flutter compiler platform copy failed');
+  }
+  final compilerFiles = <String, String>{};
+  for (final directory in [
+    Directory('${destination.path}/dart-sdk/lib'),
+    Directory('${destination.path}/flutter_patched_sdk'),
+  ]) {
+    for (final file in directory.listSync(recursive: true).whereType<File>()) {
+      compilerFiles[file.path.substring(destination.path.length + 1)] =
+          await digest(file);
+    }
+  }
+  for (final relative in [
+    'dart-sdk/bin/dartaotruntime',
+    'dart-sdk/bin/snapshots/frontend_server_aot.dart.snapshot',
+    'dart-sdk/bin/snapshots/dart2js_aot.dart.snapshot',
+    'dart-sdk/version',
+  ]) {
+    compilerFiles[relative] = await digest(
+      File('${destination.path}/$relative'),
+    );
+  }
+  await File('${destination.path}/compiler_manifest.json').writeAsString(
+    jsonEncode({
+      'format': 1,
+      'platform': 'macos',
+      'sdkVersion': (await File('${sdk.path}/version').readAsString()).trim(),
+      'files': compilerFiles,
+    }),
+  );
   final arch = await Process.run('/usr/bin/uname', ['-m']);
   await File('${destination.path}/manifest.json').writeAsString(
     jsonEncode({

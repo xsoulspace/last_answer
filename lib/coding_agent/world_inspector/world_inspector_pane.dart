@@ -74,6 +74,9 @@ class WorldInspectorPane extends StatefulWidget {
   final HarnessSessionRegistry? registry;
 
   final Duration pollInterval;
+
+  /// Finite heights retain the embedded pane size. Infinity fills the bounded
+  /// space supplied by the fullscreen caller, below this pane's status rule.
   final double expandedHeight;
 
   /// False replaces the 3D band with the honest off placeholder — data-flow
@@ -91,8 +94,7 @@ class WorldInspectorPane extends StatefulWidget {
   /// http facade route ([sourceForBinding]) — the same seam shape the
   /// host config's handlerFactory uses (scripted fixture, never a
   /// second protocol).
-  final TraceSource Function(WorldBindingModel binding)?
-  bindingSourceBuilder;
+  final TraceSource Function(WorldBindingModel binding)? bindingSourceBuilder;
 
   /// The binding changed through the pane's connect affordance — the
   /// caller (the doc surface's composition point) persists it into the
@@ -211,10 +213,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     if (binding != null) {
       final builder = widget.bindingSourceBuilder;
       if (builder != null) return builder(binding);
-      return sourceForBinding(
-        binding,
-        token: _discovered?.token ?? '',
-      );
+      return sourceForBinding(binding, token: _discovered?.token ?? '');
     }
     return WorldInspectorPane.externalOverride.value ?? _source!;
   }
@@ -240,6 +239,16 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
     if (!choice.picked) return;
     widget.onBindingChanged?.call(choice.binding);
     if (mounted) setState(() {});
+  }
+
+  Future<Map<String, Object?>> attachWorld(String worldId) async {
+    final roster = await external_worlds.discoverWorlds();
+    final world = roster.where((world) => world.worldId == worldId).firstOrNull;
+    if (world == null || widget.onBindingChanged == null) {
+      return {'ok': false, 'bounce': 'world_binding_unavailable'};
+    }
+    widget.onBindingChanged!(world.toBinding());
+    return {'ok': true, 'worldId': worldId, 'participating': true};
   }
 
   /// Intent surface (`app_inspector`): expand/collapse the pane. Pass
@@ -360,9 +369,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
         SnackBar(
           content: Text(
             'seat · ${bound.worldId}: '
-            '${ok
-            ? 'task accepted'
-            : 'refused — ${result['bounce'] ?? result}'}',
+            '${ok ? 'task accepted' : 'refused'} '
+            '${ok ? '' : result['bounce'] ?? result}',
           ),
         ),
       );
@@ -372,9 +380,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
       _seatLease = null;
       messenger?.showSnackBar(
         SnackBar(
-          content: Text(
-            'seat failed: ${e.toString().split('\n').first}',
-          ),
+          content: Text('seat failed: ${e.toString().split('\n').first}'),
         ),
       );
     }
@@ -501,10 +507,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
               children: [
                 Text(
                   bound != null
-                      ? 'WORLD · ${(bound.displayName.isNotEmpty
-                            ? bound.displayName
-                            : bound.worldId)
-                        .toUpperCase()}'
+                      ? 'WORLD · '
+                            '${(bound.displayName.isNotEmpty ? bound.displayName : bound.worldId).toUpperCase()}'
                       : WorldInspectorPane.externalOverride.value == null
                       ? 'WORLD'
                       : 'WORLD · EXTERNAL (read-only)',
@@ -651,9 +655,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
         ),
         if (_expanded) ...[
           Container(height: 0.6, color: theme.dividerColor),
-          SizedBox(
-            key: const Key('world_inspector.pane'),
-            height: widget.expandedHeight,
+          _expandedCanvas(
             child: LayoutBuilder(
               builder: (final context, final canvas) {
                 // The canvas width decides the palette's bound (a
@@ -693,13 +695,14 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                                 // The bench remembers per world: a bound
                                 // doc keys by its world, the embedded
                                 // registry by 'doc'.
-                                final worldKey = bound?.worldId ??
+                                final worldKey =
+                                    bound?.worldId ??
                                     (WorldInspectorPane
-                                            .externalOverride
-                                            .value ==
-                                        null
-                                    ? 'doc'
-                                    : 'external');
+                                                .externalOverride
+                                                .value ==
+                                            null
+                                        ? 'doc'
+                                        : 'external');
                                 return InspectorApp(
                                   trace: _visibleTrace,
                                   theme: night
@@ -791,6 +794,15 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
       ],
     );
   }
+
+  Widget _expandedCanvas({required Widget child}) =>
+      widget.expandedHeight.isInfinite
+      ? Expanded(key: const Key('world_inspector.pane'), child: child)
+      : SizedBox(
+          key: const Key('world_inspector.pane'),
+          height: widget.expandedHeight,
+          child: child,
+        );
 
   String? _keyOf(final SessionHandle handle) {
     for (final entry in _registry.sessions.entries) {

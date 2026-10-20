@@ -215,6 +215,9 @@ dev_dependencies:
 
   web: any
 dependency_overrides:
+  # Shared DOM/event API used by Oka's manifest merger and Flutter's SVG
+  # compiler; the latter currently admits XML only through 7.0.1.
+  xml: 7.0.1
   # Atomic protected-record replacement: no deletion after failed Keychain update.
   flutter_secure_storage_darwin:
     path: third_party/flutter_secure_storage_darwin

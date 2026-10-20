@@ -74,6 +74,37 @@ final class ProductDartRuntime {
   ) async =>
       (await forApplication()).execute(executable, arguments, workingDirectory);
 
+  /// Package compilation has its own toolchain receipt; it never checks or
+  /// prepares the legacy experiment's dependency lock/cache.
+  Future<Map<String, Object?>> inspectCompiler() async {
+    final manifest = File('${bundleRoot.path}/compiler_manifest.json');
+    final Object? decoded = jsonDecode(await manifest.readAsString());
+    if (decoded is! Map ||
+        decoded['format'] != 1 ||
+        decoded['platform'] != Platform.operatingSystem ||
+        decoded['files'] is! Map) {
+      throw const FormatException('coding_compiler_manifest_invalid');
+    }
+    final files = Map<String, Object?>.from(decoded['files'] as Map);
+    for (final required in [
+      'dart-sdk/bin/dartaotruntime',
+      'dart-sdk/bin/snapshots/frontend_server_aot.dart.snapshot',
+      'flutter_patched_sdk/platform_strong.dill',
+    ]) {
+      if (!files.containsKey(required)) {
+        throw const FormatException('coding_compiler_manifest_incomplete');
+      }
+    }
+    final root = bundleRoot.path;
+    await Isolate.run(() => _verifyFilesSync(Directory(root), files));
+    return {
+      'source': 'app_bundle',
+      'compilerManifestSha256': await _digest(manifest),
+      'sdkVersion': decoded['sdkVersion'],
+      'profile': 'macos_no_fork_candidate_v1',
+    };
+  }
+
   Future<Map<String, Object?>> inspect() async {
     final totalWatch = Stopwatch()..start();
     final manifestFile = File('${bundleRoot.path}/manifest.json');

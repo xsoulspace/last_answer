@@ -25,7 +25,6 @@ import 'package:xsoulspace_agentic_host/src/world_manifest.dart'
 import 'package:xsoulspace_agentic_host/src/world_manifest_io.dart'
     show WorldManifestIO;
 
-
 /// Resolves the attachable world for [worldId] (null = first):
 /// manifests first (same-device, the ZCode/Codex route), then the
 /// PAIRED-WORLD registry (ADR 0072 — off-device, discovery rode the
@@ -81,6 +80,12 @@ Future<List<DiscoveredWorld>> discoverWorlds() async {
     final endpoint = serveEndpoint is String ? serveEndpoint : base;
     if (endpoint == null || endpoint.isEmpty) continue;
     final seatWs = serve?['seatWs'];
+    var localSeatSocket = '';
+    for (final transport in m.transports) {
+      if (transport.kind == 'mcp-unix') {
+        localSeatSocket = transport.options['path'] as String? ?? '';
+      }
+    }
     worlds.add(
       DiscoveredWorld(
         worldId: m.worldId,
@@ -90,6 +95,7 @@ Future<List<DiscoveredWorld>> discoverWorlds() async {
         workspace: m.workspace ?? '',
         token: _serveTokenFor(m),
         seatWs: seatWs is String ? seatWs : '',
+        localSeatSocket: localSeatSocket,
       ),
     );
   }
@@ -194,7 +200,8 @@ Future<String> pairedWorldsDebugLine() async {
   return [
     for (final w in worlds)
       '${w.worldId} @ ${w.endpoint}'
-          '${w.workspace == null ? '' : ' (${w.workspace})'} '.trim(),
+              '${w.workspace == null ? '' : ' (${w.workspace})'} '
+          .trim(),
   ].join(', ');
 }
 

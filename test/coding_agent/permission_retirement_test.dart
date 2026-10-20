@@ -40,9 +40,12 @@ void main() {
       await pumpUntil(tester, () => controller.pendingPermission != null);
       final pending = controller.pendingPermission!;
       expect(pending.isAnswered, isFalse);
+      expect(pending.request.expiresAt, isNotNull);
       // Advance the test clock over the real backend deadline. No second
       // timer, timeout setting, approval or cancellation is introduced.
-      await tester.pump(const Duration(minutes: 6));
+      await tester.pump(const Duration(seconds: 46));
+      expect(pending.isAnswered, isTrue);
+      expect(pending.allow(), isFalse);
       await pumpUntil(tester, () => done);
       expect(done, isTrue);
       expect(controller.pendingPermission, isNull);

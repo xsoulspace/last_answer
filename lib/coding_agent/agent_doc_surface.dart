@@ -21,17 +21,23 @@ import 'package:lastanswer/coding_agent/meaning_experiment_preparation.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/coding_agent/product_autonomy.dart';
 import 'package:lastanswer/coding_agent/product_coding_change_view.dart';
+import 'package:lastanswer/coding_agent/product_local_pair.dart';
 import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show
         InferenceClientBinding,
         jevDecisionBinding,
         lfmTextBinding,
         qwenTextBinding;
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart'
+    show ToolName;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
     show LayaRuntimeState, LayaServeRuntime;
@@ -153,17 +159,259 @@ abstract interface class AgentDocHandle implements SessionHandle {
   Future<Map<String, Object?>> meaningAction(String action);
 }
 
+/// Product actions on an addressed document, using the same owners as its UI.
+abstract interface class AgentDocProductHandle implements AgentDocHandle {
+  Future<Map<String, Object?>> configureNative({
+    required String workspace,
+    required String model,
+    required bool grantConsent,
+    String? check,
+  });
+  Future<Map<String, Object?>> codingAction(
+    String action,
+    Map<String, Object?> arguments,
+  );
+}
+
+abstract interface class AgentDocAutonomyHandle {
+  Future<Map<String, Object?>> autonomyAction(String action);
+  Future<Map<String, Object?>> converseProduct(String text);
+  Future<Map<String, Object?>> localPairAction(Map<String, Object?> arguments);
+}
+
 class _AgentDocSurfaceState extends State<AgentDocSurface>
-    implements AgentDocHandle {
+    implements AgentDocProductHandle, AgentDocAutonomyHandle {
   late ProjectModelDoc _doc = widget.doc;
   late final HarnessSessionController _controller =
-      widget.controller ?? HarnessSessionController(config: _configFor(_doc));
+      widget.controller ??
+      ProductAutonomy.controllers[_doc.id.value] ??
+      HarnessSessionController(config: _configFor(_doc));
   late final bool _ownsController = widget.controller == null;
   late final ProviderConfigurationStore _providerConfiguration =
       widget.providerConfiguration ?? ProviderConfigurationStore();
   final _workspaceField = TextEditingController();
   ProductWorkspaceToolBinding? _workspaceToolBinding;
+  ProductAutonomy? get _autonomy =>
+      ProductAutonomy.forWorkspace(_workspaceField.text.trim());
+
+  @override
+  Future<Map<String, Object?>> converseProduct(String text) =>
+      _controller.converse(text);
+
+  @override
+  Future<Map<String, Object?>> localPairAction(
+    Map<String, Object?> arguments,
+  ) async {
+    if (arguments['action'] == 'status') {
+      return {
+        'ok': true,
+        'routing': ProductAutonomy.localPairs[_doc.id.value]?.toJson(),
+        'turns': [
+          for (final turn in _controller.current?.turns ?? <HarnessTurn>[])
+            {
+              'task': turn.taskSentence,
+              'startedAt': turn.startedAt.toUtc().toIso8601String(),
+              'completedAt': turn.completedAt?.toUtc().toIso8601String(),
+              'verdict': turn.verdictLine,
+              'toolCalls': turn.toolCalls.length,
+              'permissions': turn.permissions.length,
+              if (turn.spend case final spend?)
+                'spend': {
+                  'decisions': spend.decisions,
+                  'rounds': spend.rounds,
+                  'tokens': spend.tokens,
+                  'wallMs': spend.wallMs,
+                },
+            },
+        ],
+      };
+    }
+    if (arguments['action'] != 'configure' ||
+        !Platform.isMacOS ||
+        _autonomy == null ||
+        arguments['allowEscalation'] != true) {
+      return {
+        'ok': false,
+        'error': 'explicit_local_pair_configuration_required',
+      };
+    }
+    final resource = arguments['resource'] as String? ?? 'qwen';
+    final snapshot = arguments['snapshotDir'] as String? ?? '';
+    if (!['qwen', 'deepseek', 'luna'].contains(resource)) {
+      return {'ok': false, 'error': 'unknown_generation_resource'};
+    }
+    if (resource == 'qwen' && !File('$snapshot/config.json').existsSync()) {
+      return {'ok': false, 'error': 'cached_qwen_snapshot_required'};
+    }
+    if (resource == 'deepseek') {
+      final preflight = await ProductLocalPair.preflightCloud();
+      if (preflight['ok'] != true) return preflight;
+    }
+    if (_controller.isRunning) {
+      return {
+        'ok': false,
+        'error': 'resource_reconfiguration_requires_settled_turn',
+      };
+    }
+    final priorResource = ProductAutonomy.localPairs[_doc.id.value];
+    try {
+      await priorResource?.qwen.settleActive().timeout(
+        const Duration(seconds: 5),
+      );
+    } on Object {
+      return {'ok': false, 'error': 'resource_handoff_cancellation_unsettled'};
+    }
+
+    final configured = await configureNative(
+      workspace: _workspaceField.text.trim(),
+      model: 'gpt-6-luna',
+      grantConsent: arguments['grantConsent'] == true,
+    );
+    if (configured['ready'] != true) return configured;
+    ProductAutonomy.localPairs[_doc.id.value] = ProductLocalPair(
+      snapshotDir: snapshot,
+      resource: resource,
+      routeWithLaya: arguments['routeWithLaya'] != false,
+    );
+    final ready = await _syncConfigBeforeTurn();
+    return {
+      'ok': ready,
+      'routing': ProductAutonomy.localPairs[_doc.id.value]!.toJson(),
+    };
+  }
+
+  @override
+  Future<Map<String, Object?>> autonomyAction(String action) async {
+    if (action == 'status') {
+      return {'ok': true, 'autonomy': _autonomy?.toJson()};
+    }
+    if (action == 'revoke') {
+      _autonomy?.revoke();
+      if (mounted) setState(() {});
+      return {'ok': true, 'autonomy': _autonomy?.toJson()};
+    }
+    if (action != 'start') {
+      return {'ok': false, 'error': 'unknown_autonomy_action'};
+    }
+    if (_controller.isRunning || _meaningAdmissionBusy) {
+      return {'ok': false, 'error': 'coding_operation_busy'};
+    }
+    _setMeaningAdmissionBusy(true);
+    try {
+      var workspace = _autonomy?.authority.canonicalWorkspace ?? '';
+      if (workspace.isEmpty) {
+        final support = await getApplicationSupportDirectory();
+        workspace = '${support.path}/product_board/${_doc.id.value}';
+      }
+      final autonomy = await ProductAutonomy.start(Directory(workspace));
+      final checkCommand = await autonomy.goalCheckCommand();
+      if (!mounted) return {'ok': false, 'error': 'document_unmounted'};
+      final agent = _doc.agent ?? const AgentDocModel();
+      _workspaceField.text = workspace;
+      _persist(
+        agent.copyWith(
+          checkCommand: checkCommand,
+          workspaces: [
+            ...agent.workspaces.where((p) => p != workspace),
+            workspace,
+          ],
+        ),
+      );
+      ProductAutonomy.controllers[_doc.id.value] = _controller;
+      await _syncConfigBeforeTurn();
+      if (mounted) setState(() {});
+      return {'ok': true, ...autonomy.toJson()};
+    } finally {
+      _setMeaningAdmissionBusy(false);
+    }
+  }
+
   final _taskField = TextEditingController();
+  Widget _autonomyBar() {
+    final locale = Localizations.localeOf(context).languageCode;
+    String label(String en, String it, String ru) => switch (locale) {
+      'it' => it,
+      'ru' => ru,
+      _ => en,
+    };
+    final autonomy = _autonomy;
+    if (autonomy == null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton(
+          key: const Key('coding_agent.autonomy.start'),
+          onPressed: _controller.isRunning || _meaningAdmissionBusy
+              ? null
+              : () async {
+                  try {
+                    await autonomyAction('start');
+                  } on Object catch (error) {
+                    if (mounted) setState(() => _routingError = '$error');
+                  }
+                },
+          child: Text(
+            label(
+              'Start autonomous task board',
+              'Avvia bacheca autonoma',
+              'Создать автономную доску задач',
+            ),
+          ),
+        ),
+      );
+    }
+    return ListenableBuilder(
+      listenable: Listenable.merge([autonomy.preview, ProductAutonomy.changes]),
+      builder: (context, _) {
+        final current = _autonomy ?? autonomy;
+        final paused =
+            current.authority.revoked ||
+            !DateTime.now().isBefore(current.authority.expiresAt);
+        final modeText = paused
+            ? label('paused', 'in pausa', 'приостановлено')
+            : label('autonomous', 'autonomo', 'автономно');
+        return Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(label('PRODUCT', 'PRODOTTO', 'ПРОДУКТ')),
+            TextButton(
+              key: const Key('coding_agent.autonomy.open'),
+              onPressed: autonomy.preview.url == null
+                  ? null
+                  : () => launchUrl(autonomy.preview.url!),
+              child: Text(
+                label('Open live board', 'Apri bacheca', 'Открыть доску'),
+              ),
+            ),
+            Text('${autonomy.preview.activations} · $modeText'),
+            TextButton(
+              key: const Key('coding_agent.autonomy.revoke'),
+              onPressed: paused
+                  ? (_controller.isRunning || _meaningAdmissionBusy
+                        ? null
+                        : () => autonomyAction('start'))
+                  : () => autonomyAction('revoke'),
+              child: Text(
+                label(
+                  paused ? 'Resume changes' : 'Pause changes',
+                  paused ? 'Riprendi modifiche' : 'Sospendi modifiche',
+                  paused ? 'Продолжить изменения' : 'Приостановить изменения',
+                ),
+              ),
+            ),
+            if (autonomy.preview.lastCheck?['ok'] == false)
+              Text(
+                label(
+                  'Build failed · working version retained',
+                  'Build non riuscita · versione precedente conservata',
+                  'Ошибка сборки · рабочая версия сохранена',
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
   final _keyField = TextEditingController();
   final _checkField = TextEditingController();
   final _composerFocus = FocusNode();
@@ -252,6 +500,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   @override
   void initState() {
     super.initState();
+    final retainedSubscription = ProductAutonomy.subscriptions[_doc.id.value];
+    _subscriptionClientId = retainedSubscription?.clientId;
+    _subscriptionModel = retainedSubscription?.model;
     AgentDocSurface.debugSurface = this;
     // ADR 0009 (D1) — presence in the host registry under the
     // deterministic mesh replica id (the addressable session id). The
@@ -270,7 +521,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     _checkField.addListener(_onCheckChanged);
     // PLAN 9 — return-after-interruption reconstructs the queue (DESIGN
     // §10): the durable copy lives in the doc payload's reserved blocks.
-    _restoreQueueFromDoc();
+    if (!identical(ProductAutonomy.controllers[_doc.id.value], _controller)) {
+      _restoreQueueFromDoc();
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(() async {
@@ -443,6 +696,88 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         return {'ok': false, 'error': 'meaning_configuration_unavailable'};
       }
       return await _controller.meaning.action(action);
+    } finally {
+      _setMeaningAdmissionBusy(false);
+    }
+  }
+
+  @override
+  Future<Map<String, Object?>> codingAction(
+    String action,
+    Map<String, Object?> arguments,
+  ) => _productCodingAction(action, arguments);
+
+  @override
+  Future<Map<String, Object?>> configureNative({
+    required String workspace,
+    required String model,
+    required bool grantConsent,
+    String? check,
+  }) async {
+    if (_meaningAdmissionBusy || _controller.isRunning) {
+      return {'ok': false, 'error': 'coding_operation_busy'};
+    }
+    if (!workspace.startsWith('/') ||
+        workspace.trim().isEmpty ||
+        model.isEmpty) {
+      return {'ok': false, 'error': 'native_configuration_invalid'};
+    }
+    _setMeaningAdmissionBusy(true);
+    try {
+      final subscription = _subscription;
+      if (subscription == null) {
+        return {'ok': false, 'error': 'account_owner_unavailable'};
+      }
+      await subscription.load();
+      if (!mounted) return {'ok': false, 'error': 'document_unmounted'};
+      if (!subscription.models.any((entry) => entry.slug == model)) {
+        await subscription.refreshModels();
+      }
+      await subscription.selectModel(model);
+      if (!mounted) return {'ok': false, 'error': 'document_unmounted'};
+      if (subscription.errorCode != null ||
+          subscription.selectedModel != model) {
+        return {
+          'ok': false,
+          'error': subscription.errorCode ?? 'model_not_available',
+        };
+      }
+      final agent = _doc.agent ?? const AgentDocModel();
+      final root = workspace.trim();
+      final words = check == null
+          ? agent.checkCommand
+          : check
+                .trim()
+                .split(RegExp(r'\s+'))
+                .where((word) => word.isNotEmpty)
+                .toList();
+      _persist(
+        agent.copyWith(
+          backend: chatGptBackend,
+          workspaces: agent.workspaces.contains(root)
+              ? agent.workspaces
+              : [...agent.workspaces, root],
+          checkCommand: words,
+        ),
+      );
+      _workspaceField.text = root;
+      if (check != null) _checkField.text = check;
+      _hostedConsentGranted = false;
+      // This explicit request invokes the exact document/account/model/workspace
+      // consent owner. Invocation alone does not grant transmission consent.
+      if (grantConsent) await _grantHostedConsent();
+      final ready = await _syncConfigBeforeTurn();
+      return {
+        'ok': true,
+        'docId': _doc.id.value,
+        'backend': chatGptBackend,
+        'model': model,
+        'reasoningEffort': 'low',
+        'workspace': root,
+        'ready': ready,
+        'consentGranted': _hostedConsentGranted,
+        if (!ready) 'error': _controller.error ?? _routingError,
+      };
     } finally {
       _setMeaningAdmissionBusy(false);
     }
@@ -957,7 +1292,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
     _controller.removeListener(_onControllerChanged);
-    if (_ownsController) {
+    if (_ownsController &&
+        !identical(ProductAutonomy.controllers[_doc.id.value], _controller)) {
       _controller.dispose();
       (widget.workspaceTooling ?? ProductWorkspaceTooling.instance).forgetOwner(
         _controller,
@@ -1117,7 +1453,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         subscriptionChoice = (clientId: profile.clientId, model: selectedModel);
         apiKey = null;
       }
-      await MeaningExperimentPreparation.instance.restoreFor(workspaceBinding);
+      final autonomy = ProductAutonomy.forWorkspace(workspaceBinding);
+      final localPair = ProductAutonomy.localPairs[_doc.id.value];
+      if (autonomy == null) {
+        await MeaningExperimentPreparation.instance.restoreFor(
+          workspaceBinding,
+        );
+      }
       if (!mounted) {
         if (!identical(inferenceBinding, _controller.config.inferenceBinding)) {
           await inferenceBinding?.dispose();
@@ -1129,11 +1471,14 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           widget.controller?.config.extraToolsWithContext;
       var experimentTools =
           injectedTools ??
-          MeaningExperimentPreparation.instance.toolsFor(workspaceBinding);
+          (autonomy == null
+              ? MeaningExperimentPreparation.instance.toolsFor(workspaceBinding)
+              : null);
       if (injectedTools == null && workspaceBinding.isNotEmpty) {
         try {
           final prepared =
-              await (widget.workspaceTooling ??
+              await (autonomy?.tooling ??
+                      widget.workspaceTooling ??
                       ProductWorkspaceTooling.instance)
                   .prepare(
                     workspaceBinding,
@@ -1209,8 +1554,16 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           backend: backend,
           model: inferenceModel,
           inferenceBinding: inferenceBinding,
+          routedBinding: localPair == null || inferenceBinding == null
+              ? null
+              : localPair.forEscalation(inferenceBinding.binding),
+          clearRoutedBinding: localPair == null,
           clearInferenceBinding: backend != chatGptBackend,
           extraToolsWithContext: experimentTools,
+          actorToolNames: autonomy == null
+              ? null
+              : {const ToolName('conventional_change')},
+          clearActorToolNames: autonomy == null,
           clearExtraToolsWithContext: experimentTools == null,
           apiKey: apiKey,
           clearApiKey: apiKey == null,
@@ -1222,17 +1575,19 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     : jevDecisionBinding(apiKey: apiKey)
               : null,
           clearJevBinding: backend != 'jev',
-          layaBinding: backend == 'laya'
-              ? _controller.config.backend == 'laya' &&
-                        _controller.config.layaBinding != null
-                    ? _controller.config.layaBinding
-                    : layaBindingForDevice(
-                        platform: Platform.operatingSystem,
-                        runtime: _layaRuntimeForBinding,
-                        endpoint: _layaEndpoint(),
-                      )
-              : null,
-          clearLayaBinding: backend != 'laya',
+          layaBinding:
+              localPair?.laya ??
+              (backend == 'laya'
+                  ? _controller.config.backend == 'laya' &&
+                            _controller.config.layaBinding != null
+                        ? _controller.config.layaBinding
+                        : layaBindingForDevice(
+                            platform: Platform.operatingSystem,
+                            runtime: _layaRuntimeForBinding,
+                            endpoint: _layaEndpoint(),
+                          )
+                  : null),
+          clearLayaBinding: backend != 'laya' && localPair == null,
           // ADR 0059 — the local text casts: one binding per switch, kept
           // while the backend stays (the engine must not reload per turn);
           // macOS only.
@@ -1243,13 +1598,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     : (Platform.isMacOS ? lfmTextBinding() : null)
               : null,
           clearLfmBinding: backend != 'lfm',
-          qwenBinding: backend == 'qwen'
-              ? _controller.config.backend == 'qwen' &&
-                        _controller.config.qwenBinding != null
-                    ? _controller.config.qwenBinding
-                    : (Platform.isMacOS ? qwenTextBinding() : null)
-              : null,
-          clearQwenBinding: backend != 'qwen',
+          qwenBinding:
+              localPair?.qwen ??
+              (backend == 'qwen'
+                  ? _controller.config.backend == 'qwen' &&
+                            _controller.config.qwenBinding != null
+                        ? _controller.config.qwenBinding
+                        : (Platform.isMacOS ? qwenTextBinding() : null)
+                  : null),
+          clearQwenBinding: backend != 'qwen' && localPair == null,
           checkCommand: agent == null || agent.checkCommand.isEmpty
               ? const <String>[]
               : agent.checkCommand,
@@ -1270,6 +1627,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         // Identity describes the adopted binding, never a failed candidate.
         _subscriptionClientId = subscriptionChoice.clientId;
         _subscriptionModel = subscriptionChoice.model;
+        if (_autonomy != null) {
+          ProductAutonomy.subscriptions[_doc.id.value] = subscriptionChoice;
+        }
       }
       return _controller.error == null;
     } finally {
@@ -1372,6 +1732,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       final task = _taskField.text.trim();
       if (task.isEmpty) return;
       _taskField.clear();
+      if (_autonomy != null && !immediate) {
+        await converseProduct(task);
+        return;
+      }
       _controller.enqueueSteer(task, immediate: immediate);
       setState(() {});
       return;
@@ -1640,6 +2004,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                         },
                       ),
                     ),
+                  _autonomyBar(),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2338,6 +2703,7 @@ class _Conversation extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 14),
             child: _TurnView(
               turn: turn,
+              foldTools: ProductAutonomy.forWorkspace(docWorkspace) != null,
               backend: backend,
               expandedBeats: expandedBeats,
               onToggleBeat: onToggleBeat,
@@ -2489,6 +2855,7 @@ class _QueuedRow extends StatelessWidget {
 class _TurnView extends StatelessWidget {
   const _TurnView({
     required this.turn,
+    required this.foldTools,
     required this.backend,
     required this.expandedBeats,
     required this.onToggleBeat,
@@ -2501,6 +2868,7 @@ class _TurnView extends StatelessWidget {
   });
 
   final HarnessTurn turn;
+  final bool foldTools;
   final String backend;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
@@ -2608,6 +2976,7 @@ class _TurnView extends StatelessWidget {
           role: _agentRole,
           child: _TurnBody(
             turn: turn,
+            foldTools: foldTools,
             expandedBeats: expandedBeats,
             onToggleBeat: onToggleBeat,
           ),
@@ -2632,11 +3001,13 @@ class _TurnView extends StatelessWidget {
 class _TurnBody extends StatelessWidget {
   const _TurnBody({
     required this.turn,
+    required this.foldTools,
     required this.expandedBeats,
     required this.onToggleBeat,
   });
 
   final HarnessTurn turn;
+  final bool foldTools;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
 
@@ -2670,9 +3041,10 @@ class _TurnBody extends StatelessWidget {
     }
     flushProse();
 
+    final toolDetails = <Widget>[];
     for (final call in turn.toolCalls) {
       final id = Object.hash(turn.startedAt, beatIndex++);
-      children.add(
+      toolDetails.add(
         _BeatLine(
           line: '[tool] ${call.title}',
           expanded: expandedBeats.contains(id),
@@ -2686,13 +3058,28 @@ class _TurnBody extends StatelessWidget {
           (update) => update.kind == CodingObservationKind.toolResult,
         )) {
       final id = Object.hash(turn.startedAt, observation.eventId);
-      children.add(
+      toolDetails.add(
         _BeatLine(
           line: '[${observation.label}] ${observation.detail}',
           expanded: expandedBeats.contains(id),
           onTap: () => onToggleBeat(id),
         ),
       );
+    }
+
+    if (foldTools && toolDetails.isNotEmpty) {
+      children.add(
+        Material(
+          color: Colors.transparent,
+          child: ExpansionTile(
+            title: Text('Work details', style: theme.textTheme.bodySmall),
+            tilePadding: EdgeInsets.zero,
+            children: toolDetails,
+          ),
+        ),
+      );
+    } else {
+      children.addAll(toolDetails);
     }
 
     // Permission round-trips recorded on this turn. A remote answer is

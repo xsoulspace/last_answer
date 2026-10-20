@@ -1958,6 +1958,90 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
   String get chatGptDocumentConsentRequired;
+
+  /// No description provided for @worldConversationChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a conversation'**
+  String get worldConversationChoose;
+
+  /// No description provided for @worldConversationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk in this world conversation'**
+  String get worldConversationHint;
+
+  /// No description provided for @worldConversationSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to world'**
+  String get worldConversationSend;
+
+  /// No description provided for @worldConversationReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get worldConversationReconnect;
+
+  /// No description provided for @worldConversationPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages are visible to participants in this world.'**
+  String get worldConversationPublic;
+
+  /// No description provided for @worldTaskPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Task permission'**
+  String get worldTaskPermission;
+
+  /// No description provided for @worldTaskPermissionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose one task, actor and exact files. The world checks and records this permission; changes still require verification and support Undo.'**
+  String get worldTaskPermissionHint;
+
+  /// No description provided for @worldTaskTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get worldTaskTarget;
+
+  /// No description provided for @worldTaskActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor ID'**
+  String get worldTaskActor;
+
+  /// No description provided for @worldTaskPaths.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact relative file paths, one per line'**
+  String get worldTaskPaths;
+
+  /// No description provided for @worldTaskMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid for (minutes)'**
+  String get worldTaskMinutes;
+
+  /// No description provided for @worldTaskRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get worldTaskRequired;
+
+  /// No description provided for @worldTaskRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get worldTaskRevoke;
+
+  /// No description provided for @worldTaskAuthorize.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorize task'**
+  String get worldTaskAuthorize;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

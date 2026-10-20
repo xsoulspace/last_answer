@@ -50,6 +50,8 @@ final class HarnessHost {
   HarnessEmbed? _embed;
   HarnessAcpBackend? _backend;
   final _meaningTasks = <String, Map<String, Object?>>{};
+  // Receipt IDs survive process restarts in the native world journal.
+  final _actionEpoch = '${DateTime.now().microsecondsSinceEpoch}-$pid';
   int _meaningRequest = 0;
   final _permissionController = StreamController<PendingPermission>.broadcast();
   Completer<PendingPermission>? _permissionSeen;
@@ -107,6 +109,11 @@ final class HarnessHost {
 
   /// Cancels in-flight work for a session (real: aborts generation).
   void cancel(final String sessionId) => _embed?.cancel(sessionId);
+
+  /// Existing world conversation ingress admits a sibling actor while coding
+  /// continues. It does not create another provider loop or editing authority.
+  Future<SessionPromptResult> converse(String sessionId, String text) =>
+      _backend!.converseSession(sessionId, text);
 
   Map<String, Object?>? meaningReviewProposal(String sessionId) =>
       _backend?.registry.sessions[sessionId]?.state.reviewProposal;
@@ -192,10 +199,13 @@ final class HarnessHost {
       });
       if (oriented['ok'] != true) return oriented;
       task = conventional
+          ? await backend.activeExternalActorTask(sessionId, actorId: actor)
+          : null;
+      task ??= conventional
           ? await backend.admitExternalTaskFromSentence(
               sessionId,
               actorId: actor,
-              requestId: 'meaning-enroll-${++_meaningRequest}',
+              requestId: 'meaning-enroll-$_actionEpoch-${++_meaningRequest}',
               task:
                   'Review the admitted code candidate, verify it, '
                   'request exact consent and preserve native Undo. '
@@ -204,7 +214,7 @@ final class HarnessHost {
             )
           : await tools.taskAdmitExternal({
               ...identity,
-              'requestId': 'meaning-enroll-${++_meaningRequest}',
+              'requestId': 'meaning-enroll-$_actionEpoch-${++_meaningRequest}',
               'task':
                   'Append the selected greeting suffix using an executed '
                   'preview; preserve exact native rollback.',
@@ -234,39 +244,17 @@ final class HarnessHost {
         'op': 'tool_action',
         'taskId': task!['taskId'],
         'thread': task['admissionBeatId'],
-        'requestId': 'meaning-action-${++_meaningRequest}',
+        'requestId': 'meaning-action-$_actionEpoch-${++_meaningRequest}',
         'toolName': name,
         'toolRevision': menu['revision'],
         'arguments': args,
       });
       if (receipt['ok'] != true) return receipt;
-      Object? output = receipt['output'];
-      if (receipt['outputOmitted'] == true) {
-        final read = await tools.context({
-          ...identity,
-          'op': 'read',
-          'beat': receipt['resultBeat'],
-          'limit': 32768,
-        });
-        if (read['ok'] != true) return read;
-        output = (read['toolResult'] as Map?)?['output'];
-      }
-      if (output is! String) {
-        return {
-          'ok': false,
-          'error': 'meaning_receipt_payload_unavailable',
-          'receipt': receipt,
-        };
-      }
-      final decoded = jsonDecode(output);
-      if (decoded is! Map) {
-        return {
-          'ok': false,
-          'error': 'meaning_receipt_invalid',
-          'receipt': receipt,
-        };
-      }
-      return {...Map<String, Object?>.from(decoded), 'receipt': receipt};
+      return readHarnessToolReceipt(
+        receipt: receipt,
+        toolName: name,
+        readContext: (page) => tools.context({...identity, ...page}),
+      );
     }
 
     if (!conventional && action == 'ground') {
@@ -291,7 +279,7 @@ final class HarnessHost {
   }
 
   /// Stops the daemon (closes both channel ends) and the client.
-  Future<void> stop() async {
+  Future<void> stop({HarnessHostConfig? retaining}) async {
     for (final pending in [..._pendingPermissions]) {
       pending.reject();
     }
@@ -300,10 +288,18 @@ final class HarnessHost {
     _backend = null;
     _meaningTasks.clear();
     await embed?.stop();
-    await config.jevBinding?.dispose();
-    await config.layaBinding?.dispose();
-    config.lfmBinding?.dispose();
-    config.qwenBinding?.dispose();
+    if (!identical(config.jevBinding, retaining?.jevBinding)) {
+      await config.jevBinding?.dispose();
+    }
+    if (!identical(config.layaBinding, retaining?.layaBinding)) {
+      await config.layaBinding?.dispose();
+    }
+    if (!identical(config.lfmBinding, retaining?.lfmBinding)) {
+      await config.lfmBinding?.settleAndDispose();
+    }
+    if (!identical(config.qwenBinding, retaining?.qwenBinding)) {
+      await config.qwenBinding?.settleAndDispose();
+    }
     if (!_permissionController.isClosed) await _permissionController.close();
   }
 
@@ -331,6 +327,7 @@ final class HarnessHost {
     final AcpPermissionRequest request,
   ) {
     final pending = PendingPermission._(request);
+    if (pending.isAnswered) return pending.future;
     _pendingPermissions.add(pending);
     unawaited(pending.future.then((_) => _pendingPermissions.remove(pending)));
     _permissionSeen?.complete(pending);
@@ -352,23 +349,163 @@ final class HarnessHost {
   }
 }
 
+/// Decode a native receipt without replaying its action. The caller binds
+/// [readContext] to the same authenticated document/actor as the original call.
+/// Pages select the original stored output, never its indexed display text.
+Future<Map<String, Object?>> readHarnessToolReceipt({
+  required Map<String, Object?> receipt,
+  required String toolName,
+  required Future<Map<String, Object?>> Function(Map<String, Object?>)
+  readContext,
+}) async {
+  if (receipt['ok'] != true) return receipt;
+  Map<String, Object?> invalid(String detail) => {
+    'ok': false,
+    'error': 'meaning_receipt_page_invalid',
+    'detail': detail,
+    'receipt': receipt,
+  };
+  Object? output = receipt['output'];
+  final omitted = receipt['outputOmitted'] == true;
+  if (omitted) {
+    final beat = receipt['resultBeat'];
+    final bytes = receipt['outputBytes'];
+    if (beat is! String || beat.isEmpty) return invalid('result_beat_missing');
+    if (bytes is! int || bytes < 0) return invalid('output_bytes_invalid');
+    final joined = StringBuffer();
+    var offset = 0;
+    int? total;
+    while (true) {
+      final page = await readContext({
+        'op': 'read',
+        'beat': beat,
+        'field': 'tool_output',
+        'offset': offset,
+        'limit': 32768,
+      });
+      // Preserve the native denial; it grants no retry/replay of the action.
+      if (page['ok'] == false) return page;
+      if (page['ok'] != true) return invalid('page_status_missing');
+      if (page['beatId'] != beat) return invalid('result_beat_mismatch');
+      if (page['field'] != 'tool_output') return invalid('field_mismatch');
+      if (page['toolName'] != toolName) return invalid('tool_name_mismatch');
+      if (page['offsetUnit'] != 'utf16_code_units') {
+        return invalid('offset_unit_mismatch');
+      }
+      if (page['offset'] is! int || page['offset'] != offset) {
+        return invalid('offset_mismatch');
+      }
+      final length = page['totalLength'];
+      if (length is! int || length < offset) {
+        return invalid('total_length_invalid');
+      }
+      if (total != null && total != length) {
+        return invalid('total_length_changed');
+      }
+      total = length;
+      final text = page['text'];
+      if (text is! String || text.length > 32768) {
+        return invalid('page_text_invalid');
+      }
+      final end = offset + text.length;
+      if (end > length) return invalid('page_exceeds_total');
+      final truncated = page['truncated'];
+      if (truncated is! bool) return invalid('truncated_flag_invalid');
+      if (truncated) {
+        if (end <= offset ||
+            end >= length ||
+            page['nextOffset'] is! int ||
+            page['nextOffset'] != end) {
+          return invalid('next_offset_invalid');
+        }
+      } else if (end != length || page.containsKey('nextOffset')) {
+        return invalid('terminal_incomplete');
+      }
+      joined.write(text);
+      if (!truncated) break;
+      offset = end;
+    }
+    // A page may end between UTF-16 surrogates. Encode only after joining.
+    output = joined.toString();
+    if (utf8.encode(output as String).length != bytes) {
+      return invalid('output_bytes_mismatch');
+    }
+  }
+  if (output is! String) {
+    return {
+      'ok': false,
+      'error': 'meaning_receipt_payload_unavailable',
+      'receipt': receipt,
+    };
+  }
+  Object? decoded;
+  if (omitted) {
+    try {
+      decoded = jsonDecode(output);
+    } on FormatException {
+      return invalid('json_invalid');
+    }
+  } else {
+    decoded = jsonDecode(output);
+  }
+  if (decoded is! Map) {
+    return {
+      'ok': false,
+      'error': 'meaning_receipt_invalid',
+      'receipt': receipt,
+    };
+  }
+  return {...Map<String, Object?>.from(decoded), 'receipt': receipt};
+}
+
 /// A permission request awaiting the user's (or test's) decision. Exactly
 /// one answer is honored; a second call is a no-op.
 final class PendingPermission {
-  PendingPermission._(this.request);
+  PendingPermission._(this.request) {
+    final expiresAt = request.expiresAt;
+    if (expiresAt != null) {
+      final remaining = expiresAt.difference(DateTime.now().toUtc());
+      if (remaining <= Duration.zero) {
+        _finish(AcpPermissionOutcome.cancelled);
+      } else {
+        // Mirror the native owner's absolute expiry. No new timeout policy.
+        _expiry = Timer(
+          remaining,
+          () => _finish(AcpPermissionOutcome.cancelled),
+        );
+      }
+    }
+  }
 
   final AcpPermissionRequest request;
   final Completer<AcpPermissionOutcome> _completer =
       Completer<AcpPermissionOutcome>();
+  Timer? _expiry;
 
   Future<AcpPermissionOutcome> get future => _completer.future;
-  bool get isAnswered => _completer.isCompleted;
+  bool get isAnswered {
+    if (request.expiresAt case final expiry?) {
+      if (!DateTime.now().toUtc().isBefore(expiry)) {
+        _finish(AcpPermissionOutcome.cancelled);
+      }
+    }
+    return _completer.isCompleted;
+  }
 
-  void allow() => _answer(AcpPermissionOutcome.allow);
-  void reject() => _answer(AcpPermissionOutcome.reject);
+  /// False means the wait already settled or its native deadline expired.
+  bool allow() => _answer(AcpPermissionOutcome.allow);
+  bool reject() => _answer(AcpPermissionOutcome.reject);
 
-  void _answer(final AcpPermissionOutcome outcome) {
-    if (!_completer.isCompleted) _completer.complete(outcome);
+  bool _answer(final AcpPermissionOutcome outcome) {
+    if (isAnswered) return false;
+    _finish(outcome);
+    return true;
+  }
+
+  void _finish(AcpPermissionOutcome outcome) {
+    if (_completer.isCompleted) return;
+    _expiry?.cancel();
+    _completer.complete(outcome);
   }
 }
 
@@ -381,14 +518,17 @@ final class HarnessHostConfig {
   const HarnessHostConfig({
     this.backend = 'apple_foundation_afm',
     this.model = 'deepseek/deepseek-v4-flash-0731',
+    this.actorContextOrder = ActorContextOrder.legacy,
     this.meaningProfile = false,
     this.scripted = false,
     this.handlerFactory,
+    this.causalTrace,
     this.jevBinding,
     this.layaBinding,
     this.lfmBinding,
     this.qwenBinding,
     this.inferenceBinding,
+    this.routedBinding,
     this.apiKey,
     this.checkCommand,
     this.externalAcpCommand,
@@ -413,8 +553,15 @@ final class HarnessHostConfig {
   /// generator).
   final String backend;
   final String model;
+
+  /// Opt-in serialization order over the same authorized actor cut.
+  final ActorContextOrder actorContextOrder;
   final bool scripted;
   final GenerationHandler Function(ModelRouter router)? handlerFactory;
+
+  /// Optional existing body-free stage observer. It grants no execution or
+  /// acceptance authority and is retained when a document changes backend.
+  final CausalTraceSink? causalTrace;
 
   final JevClientBinding? jevBinding;
 
@@ -433,6 +580,10 @@ final class HarnessHostConfig {
 
   /// Device-owned request provider, scoped to this host/session lifetime.
   final InferenceClientBinding? inferenceBinding;
+
+  /// Optional host-composed generator resource; its dispatch receipts identify
+  /// the actual local/escalated provider. This does not change actor authority.
+  final HarnessBackendBinding? routedBinding;
 
   /// Explicit OpenRouter API key; null → `OPENROUTER_API_KEY` in the
   /// process environment (never present for a GUI-launched macOS app).
@@ -577,12 +728,17 @@ final class HarnessHostConfig {
     }
     return HarnessAcpBackend(
       typedTextUpdates: true,
+      causalTrace: causalTrace,
+      actorContextOrder: actorContextOrder,
       // The trusted product composition injects this provider; document
       // backend labels carry no credential or execution authority.
       backend: backend,
       bindings: {
         ...bindings,
-        if (inferenceBinding != null) backend: inferenceBinding!.binding,
+        if (routedBinding != null)
+          backend: routedBinding!
+        else if (inferenceBinding != null)
+          backend: inferenceBinding!.binding,
       },
       model: model,
       meaningProfile: meaningProfile,
@@ -603,6 +759,7 @@ final class HarnessHostConfig {
     bool clearActorToolNames = false,
     String? backend,
     String? model,
+    ActorContextOrder? actorContextOrder,
     String? apiKey,
     bool clearApiKey = false,
     bool clearJevBinding = false,
@@ -617,6 +774,8 @@ final class HarnessHostConfig {
     NativeTextClientBinding? lfmBinding,
     NativeTextClientBinding? qwenBinding,
     InferenceClientBinding? inferenceBinding,
+    HarnessBackendBinding? routedBinding,
+    bool clearRoutedBinding = false,
     String? externalAcpCommand,
     List<String>? externalAcpArguments,
     Map<String, String>? externalAcpEnvironment,
@@ -630,9 +789,11 @@ final class HarnessHostConfig {
   }) => HarnessHostConfig(
     backend: backend ?? this.backend,
     model: model ?? this.model,
+    actorContextOrder: actorContextOrder ?? this.actorContextOrder,
     meaningProfile: meaningProfile ?? this.meaningProfile,
     scripted: scripted,
     handlerFactory: handlerFactory,
+    causalTrace: causalTrace,
     jevBinding: clearJevBinding ? null : jevBinding ?? this.jevBinding,
     layaBinding: clearLayaBinding ? null : layaBinding ?? this.layaBinding,
     lfmBinding: clearLfmBinding ? null : lfmBinding ?? this.lfmBinding,
@@ -640,6 +801,9 @@ final class HarnessHostConfig {
     inferenceBinding: clearInferenceBinding
         ? null
         : inferenceBinding ?? this.inferenceBinding,
+    routedBinding: clearRoutedBinding
+        ? null
+        : routedBinding ?? this.routedBinding,
     apiKey: clearApiKey ? null : apiKey ?? this.apiKey,
     checkCommand: checkCommand ?? this.checkCommand,
     externalAcpCommand: externalAcpCommand ?? this.externalAcpCommand,

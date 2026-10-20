@@ -59,6 +59,36 @@ final class AppIntentSpec {
 /// below (plus the long-standing families) may appear — a controller
 /// builds on this list, so renames are contract changes.
 const List<AppIntentSpec> appIntentCatalog = [
+  AppIntentSpec(
+    name: 'agent_product_local_pair',
+    group: 'doc',
+    summary: 'Configure or inspect local Qwen/Laya with authorized escalation.',
+  ),
+  AppIntentSpec(
+    name: 'agent_product_converse',
+    group: 'doc',
+    summary:
+        'Converse with the addressed product world while coding continues.',
+  ),
+  AppIntentSpec(
+    name: 'agent_product_autonomy',
+    group: 'doc',
+    summary:
+        'Start, inspect or pause the addressed autonomous task-board product.',
+  ),
+  AppIntentSpec(
+    name: 'agent_doc_configure_native',
+    group: 'doc',
+    summary:
+        'Configure an exact document native model, workspace and explicit '
+        'transmission consent.',
+  ),
+  AppIntentSpec(
+    name: 'agent_coding_change',
+    group: 'doc',
+    summary:
+        'Read, author, apply or undo an addressed conventional coding candidate.',
+  ),
   AppIntentSpec(name: 'chatgpt_account_state', group: 'account',
     summary: 'Read safe device-local ChatGPT account and model state.'),
   AppIntentSpec(name: 'chatgpt_account_action', group: 'account',
@@ -271,6 +301,13 @@ const List<AppIntentSpec> appIntentCatalog = [
     summary: 'Accept a mesh pairing code.',
   ),
   // World inspector — the read-only workbench.
+  AppIntentSpec(
+    name: 'world_conversation',
+    group: 'conversation',
+    summary:
+        'Read or send world messages and authorize or revoke '
+        'bounded task work.',
+  ),
   AppIntentSpec(
     name: 'world_inspector_state',
     group: 'inspector',

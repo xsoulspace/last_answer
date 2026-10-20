@@ -18,6 +18,16 @@
 
 ## Desktop
 
+For the development autonomous task-board journey and local Qwen/Laya routing
+with explicitly authorized Luna escalation, see
+[product runtime notes](docs/product/headless-cli.md). Use
+`flutter run -d macos --no-pub` and hot reload/restart for Dart iteration.
+These measured development journeys do not establish published-release readiness.
+
+The [shared-world connection status](docs/product/shared-world-status.md)
+tracks Last Answer and coding agents joining the same existing world and
+selected conversation. Live shared coding and Undo qualification remain open.
+
 <p align="center">
   <a href="https://snapcraft.io/last-answer">
     <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />

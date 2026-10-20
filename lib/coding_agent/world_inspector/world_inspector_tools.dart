@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
-    if (dart.library.io)
-        'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
+    if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as external_worlds;
 import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
@@ -22,15 +24,100 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 ///   never reads a seeded session as a live run (DESIGN §6).
 Set<AgentCallEntry> worldInspectorMcpEntries() => {
   mcpToolkitTool(
+    handler: (final parameters) async {
+      final view = WorldConversationView.active;
+      if (view == null) {
+        final ambiguous = WorldConversationView.currentViewCount > 1;
+        return MCPCallResult(
+          message: ambiguous
+              ? 'More than one current world conversation'
+              : 'No current world conversation is open',
+          parameters: {
+            'ok': false,
+            'bounce': ambiguous
+                ? 'world_conversation_ambiguous'
+                : 'world_conversation_not_open',
+            'mountedViews': WorldConversationView.mountedViewCount,
+            'currentViews': WorldConversationView.currentViewCount,
+          },
+        );
+      }
+      final operation = parameters['op'] ?? 'state';
+      try {
+        Map<String, Object?>? receipt;
+        if (operation == 'send') {
+          receipt = await view.send(
+            parameters['text']!,
+            conversation: parameters['conversation'],
+          );
+        } else if (operation == 'reconnect') {
+          await view.connect();
+        } else if (operation == 'authorize' || operation == 'revoke') {
+          final paths = jsonDecode(parameters['paths'] ?? 'null');
+          final duration = int.tryParse(parameters['durationSeconds'] ?? '');
+          if (paths is! List ||
+              paths.any((path) => path is! String) ||
+              duration == null ||
+              parameters['taskId'] == null ||
+              parameters['recipientActor'] == null) {
+            throw StateError(
+              'taskId, recipientActor, paths and durationSeconds are required',
+            );
+          }
+          receipt = await view.taskConsent(
+            taskId: parameters['taskId']!,
+            recipientActor: parameters['recipientActor']!,
+            paths: paths.cast<String>(),
+            durationSeconds: duration,
+            revoke: operation == 'revoke',
+          );
+        } else if (operation != 'state') {
+          throw StateError('unknown_world_conversation_operation');
+        }
+        return MCPCallResult(
+          message: 'Human world conversation',
+          parameters: {'ok': true, ...view.projection, 'receipt': ?receipt},
+        );
+      } on Object catch (error) {
+        return MCPCallResult(
+          message: '$error',
+          parameters: {...view.projection, 'ok': false, 'error': '$error'},
+        );
+      }
+    },
+    definition: MCPToolDefinition(
+      name: 'world_conversation',
+      description:
+          'Read, send, reconnect, authorize or revoke a bounded task on the '
+          'selected existing harness world. Same visible human actions; '
+          'authorization takes effect only through the owner receipt.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': {
+          'op': {
+            'type': 'string',
+            'enum': ['state', 'send', 'reconnect', 'authorize', 'revoke'],
+          },
+          'text': {'type': 'string'},
+          'conversation': {'type': 'string'},
+          'taskId': {'type': 'string'},
+          'recipientActor': {'type': 'string'},
+          'paths': {
+            'type': 'array',
+            'items': {'type': 'string'},
+            'minItems': 1,
+          },
+          'durationSeconds': {'type': 'integer', 'minimum': 1, 'maximum': 3600},
+        },
+      }),
+    ),
+  ),
+  mcpToolkitTool(
     handler: (final parameters) {
       final projection = WorldInspectorPane.lastProjection;
       final sessions = [
-        for (final entry
-            in HarnessSessionRegistry.instance.sessions.entries)
-          {
-            'id': entry.key,
-            ...entry.value.state.toJson(),
-          },
+        for (final entry in HarnessSessionRegistry.instance.sessions.entries)
+          {'id': entry.key, ...entry.value.state.toJson()},
       ];
       if (projection == null) {
         return MCPCallResult(
@@ -48,7 +135,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
         message:
             'World inspector: ${projection.summary}'
             '${pending > 0 ? ' — answer via the doc surface verb '
-                  'agent_permission_answer' : ''}'
+                      'agent_permission_answer' : ''}'
             '${external ? ' (EXTERNAL world attached — read-only)' : ''}.',
         parameters: {
           'ok': true,
@@ -78,9 +165,17 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
       // operation rides the client's own harnessd MCP seat (ADR 0040).
       final rawWorldId = parameters['worldId'];
       final worldId = rawWorldId is String ? rawWorldId : null;
-      final source = await WorldInspectorPane.resolveExternal(
-        worldId: worldId,
-      );
+      if (parameters['participate'] == 'true') {
+        final pane = WorldInspectorPane.debugSurface;
+        final result = pane == null || worldId == null
+            ? {'ok': false, 'bounce': 'choose_world_in_open_document'}
+            : await pane.attachWorld(worldId);
+        return MCPCallResult(
+          message: 'Connect the human document to a world',
+          parameters: result,
+        );
+      }
+      final source = await WorldInspectorPane.resolveExternal(worldId: worldId);
       if (source == null) {
         WorldInspectorPane.externalOverride.value = null;
         final live = [
@@ -124,6 +219,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
         'type': 'object',
         'properties': {
           'worldId': {'type': 'string'},
+          'participate': {'type': 'boolean'},
         },
       }),
     ),
@@ -132,7 +228,8 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
     handler: (final parameters) {
       WorldInspectorPane.externalOverride.value = null;
       return MCPCallResult(
-        message: 'Detached — the pane samples the in-process registry '
+        message:
+            'Detached — the pane samples the in-process registry '
             'again within ~$_pollMs ms.',
         parameters: {'ok': true, 'external': false},
       );
@@ -175,10 +272,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
         // The announcement shape: {worldId, endpoint, token, seatWs?}.
         final seatWs = world['seatWs'];
         final t = world['token'];
-        if (seatWs is! String ||
-            seatWs.isEmpty ||
-            t is! String ||
-            t.isEmpty) {
+        if (seatWs is! String || seatWs.isEmpty || t is! String || t.isEmpty) {
           return MCPCallResult(
             message:
                 'The paired world announces no usable seat channel — arm '
@@ -215,8 +309,8 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
       );
       try {
         final seat = await client
-          .requestSeat(actor: actor)
-          .timeout(const Duration(seconds: 15));
+            .requestSeat(actor: actor)
+            .timeout(const Duration(seconds: 15));
         final state = await client
             .callTool('agent_doc_state', <String, Object?>{})
             .timeout(const Duration(seconds: 30));
@@ -283,8 +377,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
                 'id': entry.key,
                 'running': entry.value.state.running,
                 'beats': entry.value.state.beats.length,
-                'pendingPermission':
-                    entry.value.state.pendingPermissionTitle,
+                'pendingPermission': entry.value.state.pendingPermissionTitle,
               },
           ],
         },

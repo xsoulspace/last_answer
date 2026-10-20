@@ -3,7 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 // ignore: implementation_imports
-import 'package:xsoulspace_agentic_harness_inspector/src/app.dart' show WorkbenchMemory;
+import 'package:xsoulspace_agentic_harness_inspector/src/answer_rail.dart';
+// ignore: implementation_imports
+import 'package:xsoulspace_agentic_harness_inspector/src/app.dart'
+    show WorkbenchMemory;
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/trace.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
@@ -83,8 +86,10 @@ void main() {
       final rows = trace!.rows;
       // One row per beat + one stop row for the verdict.
       expect(rows, hasLength(handle.state.beats.length + 1));
-      expect(rows.any((final r) => (r.detail ?? '').contains('dstep_1')),
-          isTrue);
+      expect(
+        rows.any((final r) => (r.detail ?? '').contains('dstep_1')),
+        isTrue,
+      );
       expect(rows.last.kind.name, contains('stop'));
       expect(trace.metrics['sessionId'], 'seed-planner');
       expect(trace.metrics['spend'], contains('12300tok'));
@@ -99,6 +104,55 @@ void main() {
   });
 
   group('WorldInspectorPane widget', () {
+    testWidgets(
+      'fullscreen expansion uses finite remaining space '
+      'and reveals Answer Rail',
+      (tester) async {
+        final registry = HarnessSessionRegistry()
+          ..register('seed-planner', seedScriptedSessions()['seed-planner']!)
+          ..focused = 'seed-planner';
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 48, child: Text('WORLD INSPECTOR')),
+                    Expanded(
+                      child: WorldInspectorPane(
+                        registry: registry,
+                        expandedHeight: double.infinity,
+                        showScene: false,
+                        pollInterval: const Duration(milliseconds: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.tap(find.byKey(const Key('world_inspector.toggle')));
+        await tester.pump(const Duration(milliseconds: 50));
+        expect(tester.takeException(), isNull);
+        final pane = tester.getRect(
+          find.byKey(const Key('world_inspector.pane')),
+        );
+        expect(pane.height, greaterThan(0));
+        expect(pane.height.isFinite, isTrue);
+        final fullscreen = tester.getRect(find.byType(Scaffold));
+        expect(pane.bottom, lessThanOrEqualTo(fullscreen.bottom));
+        expect(find.byType(AnswerRail), findsOneWidget);
+        expect(
+          find.bySemanticsLabel(RegExp('answer rail.*top: perm:')),
+          findsOneWidget,
+        );
+        await tester.pumpWidget(const SizedBox());
+        await tester.pump(const Duration(milliseconds: 10));
+      },
+    );
+
     testWidgets('rule lists sessions; expanding renders the bands', (
       final tester,
     ) async {
@@ -125,9 +179,15 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
       // The rule is the L0 layer: one line, the TOP NEED (S2) — the
       // planner's pending permission outranks the ambient running count.
-      expect(find.textContaining('needs you', findRichText: true), findsOneWidget);
       expect(
-        find.textContaining('perm: Write lib/src/registry.dart', findRichText: true),
+        find.textContaining('needs you', findRichText: true),
+        findsOneWidget,
+      );
+      expect(
+        find.textContaining(
+          'perm: Write lib/src/registry.dart',
+          findRichText: true,
+        ),
         findsOneWidget,
       );
       // The headless projection carries the same needs (equal readers);
@@ -165,10 +225,7 @@ void main() {
       );
       // The registry law: bands sample the FOCUSED session only — the
       // planner's beats show in the rule, never in the worker's trace.
-      expect(
-        find.textContaining('dstep_1', findRichText: true),
-        findsNothing,
-      );
+      expect(find.textContaining('dstep_1', findRichText: true), findsNothing);
       // Summon the view slate; the beats appear; the planner's stay absent.
       await tester.tap(find.bySemanticsLabel('view dock'));
       await tester.pump(const Duration(milliseconds: 50));
@@ -176,10 +233,7 @@ void main() {
         find.textContaining('34 passed', findRichText: true),
         findsWidgets,
       );
-      expect(
-        find.textContaining('dstep_1', findRichText: true),
-        findsNothing,
-      );
+      expect(find.textContaining('dstep_1', findRichText: true), findsNothing);
       // showScene: false → the honest off placeholder fills the canvas.
       expect(find.bySemanticsLabel('world scene off'), findsOneWidget);
 
@@ -215,9 +269,7 @@ void main() {
       await tester.tap(find.byKey(const Key('world_inspector.toggle')));
       await tester.pump(const Duration(milliseconds: 50));
       // Open the palette (the one verb grammar, S4).
-      await tester.tap(
-        find.byKey(const Key('world_inspector.palette-toggle')),
-      );
+      await tester.tap(find.byKey(const Key('world_inspector.palette-toggle')));
       await tester.pump(const Duration(milliseconds: 50));
       // The roster: allow/reject for the planner's pending permission,
       // delegate for the running worker.
@@ -232,16 +284,18 @@ void main() {
       // Run ALLOW: the product answers through the registry — the planner
       // resolves, the palette closes, the rule returns to counts form.
       await tester.tap(
-        find.bySemanticsLabel('command: allow — Write lib/src/registry.dart').first,
+        find
+            .bySemanticsLabel('command: allow — Write lib/src/registry.dart')
+            .first,
       );
       await tester.pump(const Duration(milliseconds: 50));
       expect(planner.state.pendingPermissionTitle, isNull);
       expect(planner.state.beats.last.name, 'perm');
+      expect(find.bySemanticsLabel(RegExp('command palette.*')), findsNothing);
       expect(
-        find.bySemanticsLabel(RegExp('command palette.*')),
+        find.textContaining('needs you', findRichText: true),
         findsNothing,
       );
-      expect(find.textContaining('needs you', findRichText: true), findsNothing);
       expect(find.textContaining('2 session(s)'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(milliseconds: 10));
@@ -297,10 +351,7 @@ void main() {
     testWidgets('external attach: the pane observes a foreign world, '
         'read-only', (final tester) async {
       final registry = HarnessSessionRegistry()
-        ..register(
-          'seed-worker',
-          seedScriptedSessions()['seed-worker']!,
-        )
+        ..register('seed-worker', seedScriptedSessions()['seed-worker']!)
         ..focused = 'seed-worker';
       await tester.pumpWidget(
         MaterialApp(
@@ -319,10 +370,7 @@ void main() {
       WorldInspectorPane.externalOverride.value = ScriptedTraceSource();
       await tester.pump(const Duration(milliseconds: 50));
       // The rule names the mode; the sampled session is the external one.
-      expect(
-        find.textContaining('EXTERNAL (read-only)'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('EXTERNAL (read-only)'), findsOneWidget);
       expect(
         WorldInspectorPane.lastProjection?.sampledSession,
         'foreign-daemon',
@@ -360,10 +408,7 @@ void main() {
       final tester,
     ) async {
       final registry = HarnessSessionRegistry()
-        ..register(
-          'seed-worker',
-          seedScriptedSessions()['seed-worker']!,
-        )
+        ..register('seed-worker', seedScriptedSessions()['seed-worker']!)
         ..focused = 'seed-worker';
       WorldInspectorPane.lastProjection = null;
       await tester.pumpWidget(

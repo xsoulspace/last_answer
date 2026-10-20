@@ -336,5 +336,19 @@
   "chatGptDesktopOnly": "L’accesso a ChatGPT è disponibile nell’app desktop.",
   "chatGptSignInRequired": "Collega un account ChatGPT e abilita l’accesso al piano prima di inviare.",
   "chatGptModelRequired": "Scegli un modello ChatGPT prima di inviare.",
-  "chatGptDocumentConsentRequired": "Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare."
+  "chatGptDocumentConsentRequired": "Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.",
+  "worldConversationChoose": "Scegli una conversazione",
+  "worldConversationHint": "Parla in questa conversazione del mondo",
+  "worldConversationSend": "Invia al mondo",
+  "worldConversationReconnect": "Riconnetti",
+  "worldConversationPublic": "I messaggi sono visibili ai partecipanti di questo mondo.",
+  "worldTaskPermission": "Permesso per attività",
+  "worldTaskPermissionHint": "Scegli un'attività, un attore e i file esatti. Il mondo verifica e registra questo permesso; le modifiche richiedono comunque verifica e supportano Annulla.",
+  "worldTaskTarget": "Attività",
+  "worldTaskActor": "ID attore",
+  "worldTaskPaths": "Percorsi relativi esatti, uno per riga",
+  "worldTaskMinutes": "Validità (minuti)",
+  "worldTaskRequired": "Obbligatorio",
+  "worldTaskRevoke": "Revoca",
+  "worldTaskAuthorize": "Autorizza attività"
 }

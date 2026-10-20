@@ -15,6 +15,8 @@ abstract final class WorldSeatChannel {
     required final String seatWs,
     required final String token,
     final String actor = 'device-1',
+    final String localSocket = '',
+    final String docId = '',
   }) async => null;
 
   /// One allowlisted tool call over the seat. Never reachable on web —
@@ -25,5 +27,6 @@ abstract final class WorldSeatChannel {
     required final String token,
     required final String name,
     final Map<String, Object?> args = const {},
-  }) async => throw UnsupportedError('the seat channel needs a native platform');
+  }) async =>
+      throw UnsupportedError('the seat channel needs a native platform');
 }

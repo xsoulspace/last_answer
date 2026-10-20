@@ -95,7 +95,10 @@ final class ProductCodingChangeView extends StatelessWidget {
                         '${result['error'] ?? result['check'] ?? ''}',
                         key: const Key('coding_agent.change.refusal'),
                       ),
-                    if (candidate != null) ...[
+                    // Autonomous work presents the running product. Exact code
+                    // Receipts remain under the existing details fold.
+                    if (candidate != null &&
+                        binding.standingAuthority == null) ...[
                       Text(text.scope, style: theme.textTheme.labelSmall),
                       for (final entry in footprint.entries)
                         Text(

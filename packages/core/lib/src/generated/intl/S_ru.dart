@@ -1040,4 +1040,48 @@ class SRu extends S {
   @override
   String get chatGptDocumentConsentRequired =>
       'Подтвердите использование облака для документа, аккаунта, модели и рабочего пространства перед отправкой.';
+
+  @override
+  String get worldConversationChoose => 'Выберите разговор';
+
+  @override
+  String get worldConversationHint => 'Напишите в этот разговор мира';
+
+  @override
+  String get worldConversationSend => 'Отправить в мир';
+
+  @override
+  String get worldConversationReconnect => 'Переподключиться';
+
+  @override
+  String get worldConversationPublic =>
+      'Сообщения видны участникам этого мира.';
+
+  @override
+  String get worldTaskPermission => 'Разрешение на задачу';
+
+  @override
+  String get worldTaskPermissionHint =>
+      'Выберите задачу, участника и точные файлы. Мир проверяет и сохраняет разрешение; изменения по-прежнему требуют проверки и поддерживают отмену.';
+
+  @override
+  String get worldTaskTarget => 'Задача';
+
+  @override
+  String get worldTaskActor => 'ID участника';
+
+  @override
+  String get worldTaskPaths => 'Точные относительные пути, по одному в строке';
+
+  @override
+  String get worldTaskMinutes => 'Срок действия (минуты)';
+
+  @override
+  String get worldTaskRequired => 'Обязательное поле';
+
+  @override
+  String get worldTaskRevoke => 'Отозвать';
+
+  @override
+  String get worldTaskAuthorize => 'Разрешить задачу';
 }

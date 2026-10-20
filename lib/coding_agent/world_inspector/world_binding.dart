@@ -26,6 +26,7 @@ final class DiscoveredWorld {
     this.workspace = '',
     this.token = '',
     this.seatWs = '',
+    this.localSeatSocket = '',
   });
 
   /// Builds the binding a doc persists for [world]. The token never
@@ -51,8 +52,10 @@ final class DiscoveredWorld {
 
   /// The advertised seat channel (empty = read-only world).
   final String seatWs;
+  final String localSeatSocket;
 
-  bool get hasSeat => seatWs.isNotEmpty && token.isNotEmpty;
+  bool get hasSeat =>
+      localSeatSocket.isNotEmpty || (seatWs.isNotEmpty && token.isNotEmpty);
 }
 
 /// The read source for a bound world: the http facade only — an embed

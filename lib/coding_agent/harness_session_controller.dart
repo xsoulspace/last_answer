@@ -234,6 +234,34 @@ final class HarnessSessionController extends ChangeNotifier {
   /// carried in the doc payload by the surface; the pump is [_flushQueue].
   final TurnQueue queue = TurnQueue();
 
+  bool _conversing = false;
+  Future<Map<String, Object?>> converse(String text) async {
+    final target = current;
+    if (target == null || _conversing) {
+      return {'ok': false, 'error': 'conversation_busy_or_no_session'};
+    }
+    _conversing = true;
+    final turn = HarnessTurn(text, DateTime.now());
+    target.turns.add(turn);
+    notifyListeners();
+    try {
+      final result = await host.converse(target.id, text);
+      turn.text.write(result.text ?? result.message);
+      target.transcript.write('\n${result.text ?? result.message}\n');
+      if (!result.timedOut) turn.completedAt = DateTime.now();
+      return {
+        'ok': result.ok,
+        'text': result.text,
+        'message': result.message,
+        'turn': result.turn,
+        'timedOut': result.timedOut,
+      };
+    } finally {
+      _conversing = false;
+      notifyListeners();
+    }
+  }
+
   // Queue and edited-turn checkpoints change only at durable transitions.
   // Text deltas notify rendering without serializing accumulated history.
   int _checkpointRevision = 0;
@@ -418,6 +446,7 @@ final class HarnessSessionController extends ChangeNotifier {
         identical(config.lfmBinding, _config.lfmBinding) &&
         identical(config.qwenBinding, _config.qwenBinding) &&
         identical(config.inferenceBinding, _config.inferenceBinding) &&
+        identical(config.routedBinding, _config.routedBinding) &&
         config.apiKey == _config.apiKey &&
         config.externalAcpCommand == _config.externalAcpCommand &&
         _sameList(config.externalAcpArguments, _config.externalAcpArguments) &&
@@ -452,7 +481,7 @@ final class HarnessSessionController extends ChangeNotifier {
     }
     final oldBinding = _config.inferenceBinding;
     final oldHost = host;
-    await oldHost.stop();
+    await oldHost.stop(retaining: config);
     if (_disposed) {
       if (!identical(config.inferenceBinding, oldBinding)) {
         await config.inferenceBinding?.dispose();

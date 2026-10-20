@@ -17,23 +17,50 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 final class ProductWorkspaceTooling {
   ProductWorkspaceTooling({
     this.verifyCandidate,
+    this.useProductCompiler = false,
     this.verificationDescription = 'Contained candidate verification',
     this.supportDirectory = getApplicationSupportDirectory,
     List<String> verificationScratchPaths = const [],
+    this.standingAuthority,
   }) : verificationScratchPaths = List.unmodifiable(verificationScratchPaths);
 
-  static final instance = ProductWorkspaceTooling(
-    verifyCandidate: ProductDartCandidateVerifier.instance.verifyCandidate,
-    verificationDescription:
-        'Contained dependency-free Dart compiler check; '
-        'functional and task acceptance remain separate',
-    verificationScratchPaths: const ['.dart_tool'],
+  /// Shared explicit composition for the ordinary GUI and headless seat.
+  /// A compiler profile never grants task, source or consent authority.
+  factory ProductWorkspaceTooling.forProfile(String profile) =>
+      switch (profile) {
+        'existing' => ProductWorkspaceTooling(
+          verifyCandidate:
+              ProductDartCandidateVerifier.instance.verifyCandidate,
+          verificationDescription:
+              'Contained dependency-free Dart compiler check; '
+              'functional and task acceptance remain separate',
+          verificationScratchPaths: const ['.dart_tool'],
+        ),
+        'package_snapshot' => ProductWorkspaceTooling(
+          useProductCompiler: true,
+          verificationDescription:
+              'Opt-in captured package compiler check only; '
+              'functional and task acceptance remain separate',
+          verificationScratchPaths: const ['.dart_tool'],
+        ),
+        _ => throw const FormatException('unknown_verification_profile'),
+      };
+
+  static final instance = ProductWorkspaceTooling.forProfile(
+    // Explicit nonsecret build opt-in; default promotion remains deferred.
+    // ignore: do_not_use_environment
+    const String.fromEnvironment(
+      'LAST_ANSWER_CODING_VERIFICATION_PROFILE',
+      defaultValue: 'existing',
+    ),
   );
   final Future<ConventionalCheck> Function(Directory candidate)?
   verifyCandidate;
   final String verificationDescription;
+  final bool useProductCompiler;
   final Future<Directory> Function() supportDirectory;
   final List<String> verificationScratchPaths;
+  final ConventionalChangeAuthority? standingAuthority;
   final _prepared = <String, Map<Object?, ProductWorkspaceToolBinding>>{};
 
   /// Drop this UI owner's cache references; issued effects and journals remain
@@ -130,17 +157,21 @@ final class ProductWorkspaceTooling {
       List.unmodifiable(paths),
       LiveApplyJournalStore(storePath: '${support.path}/coding_recovery/$key'),
       verifyCandidate ??
-          (_) async => const ConventionalCheck(
-            ok: false,
-            evidence: {
-              'error': 'coding_contained_verifier_unavailable',
-              'candidateExecuted': false,
-              'liveSourceMutated': false,
-            },
-          ),
+          (useProductCompiler
+              ? ProductDartCandidateVerifier.instance.forWorkspace(canonical)
+              : (_) async => const ConventionalCheck(
+                  ok: false,
+                  evidence: {
+                    'error': 'coding_contained_verifier_unavailable',
+                    'candidateExecuted': false,
+                    'liveSourceMutated': false,
+                  },
+                )),
       verificationDescription,
       verificationScratchPaths,
       canReviewSaved,
+      standingAuthority,
+      useProductCompiler && verifyCandidate == null,
     );
     (_prepared[canonical] ??= {})[ownerKey] = binding;
     return binding;
@@ -205,6 +236,8 @@ final class ProductWorkspaceToolBinding {
     this.verificationDescription,
     this.verificationScratchPaths,
     this.canReviewSaved,
+    this.standingAuthority,
+    this.includeCandidateInputManifest,
   );
 
   final String workspace;
@@ -212,8 +245,10 @@ final class ProductWorkspaceToolBinding {
   final LiveApplyJournalStore store;
   final Future<ConventionalCheck> Function(Directory) verifyCandidate;
   final String verificationDescription;
+  final bool includeCandidateInputManifest;
   final List<String> verificationScratchPaths;
   final bool Function(HostToolExtensionContext)? canReviewSaved;
+  final ConventionalChangeAuthority? standingAuthority;
   final _instances = <World, Map<String, ConventionalChangeToolExtension>>{};
   final observation = ValueNotifier<Map<String, Object?>?>(null);
   Map<String, Object?>? _previewObservation;
@@ -232,6 +267,7 @@ final class ProductWorkspaceToolBinding {
     'preview': previewObservation,
     'lastOutcome': observation.value,
     'authority': 'native_owner_only',
+    if (standingAuthority != null) 'autonomy': standingAuthority!.toSummary(),
   };
 
   Map<String, Object?>? reviewFor(Map exact) {
@@ -324,6 +360,7 @@ final class ProductWorkspaceToolBinding {
         if (extension == null || !extension.context.isCurrent) {
           extension = tasks[context.taskId] = ConventionalChangeToolExtension(
             context: context,
+            standingAuthority: standingAuthority,
             store: store,
             dependencyPaths: dependencyPaths,
             allowWrite: (path) =>
@@ -332,6 +369,7 @@ final class ProductWorkspaceToolBinding {
             verifyCandidate: verifyCandidate,
             verificationDescription: verificationDescription,
             verificationScratchPaths: verificationScratchPaths,
+            includeCandidateInputManifest: includeCandidateInputManifest,
             onOutcome: _observe,
             canAdoptCandidate: (_) async =>
                 canReviewSaved?.call(context) ?? false,

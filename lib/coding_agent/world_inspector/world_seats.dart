@@ -6,8 +6,7 @@ library;
 
 import 'package:lastanswer/coding_agent/world_inspector/world_seat_lease.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_seat_stub.dart'
-    if (dart.library.io)
-        'package:lastanswer/coding_agent/world_inspector/world_seat_io.dart'
+    if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/world_seat_io.dart'
     as impl;
 
 export 'package:lastanswer/coding_agent/world_inspector/world_seat_lease.dart';
@@ -20,10 +19,14 @@ abstract final class WorldSeatChannel {
     required final String seatWs,
     required final String token,
     final String actor = 'device-1',
+    final String localSocket = '',
+    final String docId = '',
   }) => impl.WorldSeatChannel.request(
     seatWs: seatWs,
     token: token,
     actor: actor,
+    localSocket: localSocket,
+    docId: docId,
   );
 
   /// One allowlisted tool call over the seat.

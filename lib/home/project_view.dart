@@ -2,6 +2,7 @@ import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/mesh_task_console_view.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/chat_document_view.dart';
@@ -27,7 +28,9 @@ class ProjectView extends StatelessWidget {
       return const UiCircularProgress();
     }
 
-    final selected = project ?? projectContainer.value;
+    final selected = project == null || projectContainer.value.id == project!.id
+        ? projectContainer.value
+        : project!;
     final id = selected.id;
     return selected.map(
       idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
@@ -46,18 +49,24 @@ class ProjectView extends StatelessWidget {
           DocFormatIds.agent => Column(
             children: [
               Expanded(
-                child: AgentDocSurface(
-                  doc: doc,
-                  key: ValueKey(id),
-                  // Persist the doc payload (workspace bind, check override,
-                  // backend) through the composition point — the same cascade
-                  // DocView uses for its listing stub. Without this wiring the
-                  // binding lives only in the surface state and is lost on app
-                  // restart.
-                  onDocChanged: (final updated) => context
-                      .read<OpenedProjectNotifier>()
-                      .updateProject(updated),
-                ),
+                child: doc.agent?.worldBinding != null
+                    ? WorldConversationView(
+                        binding: doc.agent!.worldBinding!,
+                        key: ValueKey(
+                          '${id}_${doc.agent!.worldBinding!.worldId}',
+                        ),
+                      )
+                    : AgentDocSurface(
+                        doc: doc,
+                        key: ValueKey(id),
+                        // Persist workspace, check and backend through the
+                        // same composition point as the document listing.
+                        // Without this wiring the binding is lost on app
+                        // restart.
+                        onDocChanged: (final updated) => context
+                            .read<OpenedProjectNotifier>()
+                            .updateProject(updated),
+                      ),
               ),
               // PLAN 6.C — the mesh task console under the doc surface
               // (hidden whenever no mesh replica is live on this device).

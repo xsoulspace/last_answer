@@ -3,8 +3,10 @@ import 'package:lastanswer/coding_agent/chatgpt_gateway_contract.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_openai/chatgpt_auth.dart';
 
-ChatGptGateway createChatGptGateway(ChatGptCredentials credentials) =>
-    UnsupportedChatGptGateway();
+ChatGptGateway createChatGptGateway(
+  ChatGptCredentials credentials, {
+  ContextTransportDiagnosticCapture? Function()? diagnosticCaptureForClient,
+}) => UnsupportedChatGptGateway();
 
 final class UnsupportedChatGptGateway implements ChatGptGateway {
   @override

@@ -1,6 +1,7 @@
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/coding_agent/product_agent_mcp_tools.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
@@ -25,6 +26,7 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 /// Registered in debug/profile builds (see `main.dart`), next to the doc
 /// and storage entries.
 Set<AgentCallEntry> agentMcpEntries() => {
+  ...productAgentMcpEntries(),
   mcpToolkitTool(
     handler: (parameters) async {
       try {
@@ -298,8 +300,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
       name: 'agent_doc_bind',
       description:
           'Bind a workspace (absolute path) and an optional check override '
-          '(literal argv, whitespace-split — e.g. "dart '
-          'tool/agent_fixture/main.dart") onto the open agent doc. '
+          '(literal argv, whitespace-split — e.g. "dart analyze") '
+          'onto the open agent doc. '
           'Persists into the syncable doc payload; NEVER a form fill.',
       inputSchema: ObjectSchema.fromMap({
         'type': 'object',

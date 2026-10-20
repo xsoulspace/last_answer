@@ -7,9 +7,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart';
 
-ChatGptGateway createChatGptGateway(ChatGptCredentials credentials) =>
-    Platform.isMacOS || Platform.isWindows || Platform.isLinux
-    ? NativeChatGptGateway(credentials: credentials)
+ChatGptGateway createChatGptGateway(
+  ChatGptCredentials credentials, {
+  ContextTransportDiagnosticCapture? Function()? diagnosticCaptureForClient,
+}) => Platform.isMacOS || Platform.isWindows || Platform.isLinux
+    ? NativeChatGptGateway(
+        credentials: credentials,
+        diagnosticCaptureForClient: diagnosticCaptureForClient,
+      )
     : UnsupportedChatGptGateway();
 
 final class NativeChatGptGateway
@@ -18,13 +23,19 @@ final class NativeChatGptGateway
     required this.credentials,
     ChatGptAuth? auth,
     SubscriptionBrowserLauncher? openBrowser,
+    this.diagnosticCaptureForClient,
   }) : auth = auth ?? ChatGptAuth(store: credentials),
        _openBrowser = openBrowser ?? _launchBrowser;
 
   final ChatGptCredentials credentials;
+
+  /// Optional per-client diagnostics; absent for ordinary actor/account casts.
+  final ContextTransportDiagnosticCapture? Function()?
+  diagnosticCaptureForClient;
   final ChatGptAuth auth;
   final SubscriptionBrowserLauncher _openBrowser;
   final _clients = <OpenAiResponsesClient, String>{};
+  final _inferenceSessionState = OpenAiSessionState();
   final _accountOperations = <OpenAiResponsesClient>{};
   final _signingOut = <String>{};
   final _transportDecisions =
@@ -110,6 +121,7 @@ final class NativeChatGptGateway
 
   @override
   Future<bool> signOut(String clientId) async {
+    _inferenceSessionState.clear();
     _signingOut.add(clientId);
     final clients = _clients.entries
         .where((entry) => entry.value == clientId)
@@ -135,6 +147,8 @@ final class NativeChatGptGateway
       auth: auth,
       clientId: clientId,
       model: model,
+      diagnosticCapture: diagnosticCaptureForClient?.call(),
+      sessionState: _inferenceSessionState,
       observeDecision: (receipt) {
         _transportDecisions.add((
           operation: _accountOperations.contains(client) ? 'account' : 'actor',
@@ -209,6 +223,7 @@ final class NativeChatGptGateway
   @override
   Future<void> dispose() async {
     _disposed = true;
+    _inferenceSessionState.clear();
     await cancelSignIn();
     for (final client in _clients.keys.toList()) {
       client.cancelActive();

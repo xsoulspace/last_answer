@@ -72,6 +72,23 @@ class WorldConversationViewState extends State<WorldConversationView> {
   /// message is broadcast on the selected conversation.
   String? _recipient;
 
+  /// The selected task's WORK — the world's BEATS (tool results, effects,
+  /// reports, verification), not the participation receipts. The world is
+  /// the only source: this list is exactly what the world's cut served.
+  List<Map<String, Object?>> _work = [];
+
+  /// Why the world did NOT serve a beat list. Non-null means "I could not
+  /// look" — never an empty-but-confident list that reads as "no work
+  /// happened" (the honest absence law).
+  String? _workAbsence;
+
+  /// The beats the world's own view omitted (budget/rank). Non-zero means
+  /// the list is a window, not the whole task.
+  int _workOmitted = 0;
+
+  /// Guards a stale work read from overwriting a newer one.
+  int _workEpoch = 0;
+
   Map<String, Object?> get projection => {
     'worldId': widget.binding.worldId,
     'connected': _lease != null,
@@ -87,6 +104,9 @@ class WorldConversationViewState extends State<WorldConversationView> {
     'frontier': _frontier,
     'claims': _claims,
     'recipient': _recipient,
+    'work': _work,
+    'workAbsence': _workAbsence,
+    'workOmitted': _workOmitted,
   };
 
   @override
@@ -120,17 +140,24 @@ class WorldConversationViewState extends State<WorldConversationView> {
   /// The participant context surface (the seat-scoped world read). Separate
   /// from [ _call ] because the remote lane serves the participation verbs
   /// only — a missing surface is an honest absence, not a crash.
-  Future<Map<String, Object?>> _callContext(
-    Map<String, Object?> arguments,
-  ) async {
+  /// The seat's context surface, RAW: a refusal is DATA (a named bounce), not
+  /// an exception, so the work list can say honestly WHY the world did not
+  /// serve beats instead of pretending there were none.
+  Future<Map<String, Object?>> _contextRaw(Map<String, Object?> arguments) {
     final world = _world;
-    final result = await WorldSeatChannel.call(
+    return WorldSeatChannel.call(
       _lease!,
       seatWs: world.seatWs,
       token: world.token,
       name: 'agent_context',
       args: arguments,
     );
+  }
+
+  Future<Map<String, Object?>> _callContext(
+    Map<String, Object?> arguments,
+  ) async {
+    final result = await _contextRaw(arguments);
     if (result['ok'] != true) throw StateError('${result['bounce'] ?? result}');
     return result;
   }
@@ -224,6 +251,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
       }
       _cursor = result['cursor']! as int;
       await _refreshWorldState();
+      await _refreshWork();
       _error = null;
     } on Object catch (error) {
       if (mounted && epoch == _connectionEpoch) _error = '$error';
@@ -231,6 +259,65 @@ class WorldConversationViewState extends State<WorldConversationView> {
       _refreshing = false;
       if (mounted) setState(() {});
     }
+  }
+
+  /// The selected task's WORK — the world's BEATS (tool results, effects,
+  /// reports, verification), not the participation receipts.
+  ///
+  /// The world is the only source: this is the world's own cut for the
+  /// task's thread, read through the seat-scoped `agent_context {op:'cut'}`
+  /// surface the harness already owns. A lane that does not serve it (the
+  /// remote WebSocket cockpit may) is an HONEST ABSENCE — the list says
+  /// "I could not look", never an empty list that reads as "no work
+  /// happened".
+  Future<void> _refreshWork() async {
+    final thread = _selected;
+    if (thread == null) {
+      if (_work.isNotEmpty || _workAbsence != null) {
+        _work = const [];
+        _workAbsence = null;
+        _workOmitted = 0;
+      }
+      return;
+    }
+    final epoch = _workEpoch + 1;
+    _workEpoch = epoch;
+    final result = await _contextRaw({
+      'op': 'cut',
+      'threads': [thread],
+      'budgetTokens': 2048,
+    });
+    if (!mounted || epoch != _workEpoch) return;
+    if (result['ok'] != true) {
+      // A refusal is DATA: name it, do not pretend the task was idle.
+      _work = const [];
+      _workOmitted = 0;
+      _workAbsence =
+          '${result['bounce'] ?? result['message'] ?? 'context_unavailable'}';
+      return;
+    }
+    final beats = result['beats'];
+    final rows = <Map<String, Object?>>[];
+    if (beats is List) {
+      for (final beat in beats) {
+        if (beat is! Map) continue;
+        final text = '${beat['text'] ?? beat['preview'] ?? ''}'.trim();
+        if (text.isEmpty) continue;
+        rows.add({
+          'beatId': beat['beatId'],
+          'kind': '${beat['kind'] ?? 'observation'}',
+          'speakerId': beat['speakerId'],
+          'text': text,
+        });
+      }
+    }
+    _work = rows;
+    // The world's own view may have omitted rows (budget/rank): the list
+    // is then a WINDOW, and the pane says so rather than implying
+    // completeness.
+    final omitted = result['omitted'];
+    _workOmitted = omitted is List ? omitted.length : 0;
+    _workAbsence = null;
   }
 
   /// The participant delta: WHO is here, WHAT is open, WHO holds it.
@@ -643,6 +730,34 @@ class WorldConversationViewState extends State<WorldConversationView> {
                     '${event['speaker']}  ${event['text']}',
                   ),
                 ),
+            // The task's WORK: the world's beats, not the receipts above.
+            // An honest absence when the world did not serve them.
+            if (_selected != null && _workAbsence != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: SelectableText(
+                  'WORK  not available  ·  $_workAbsence',
+                  key: const Key('world_conversation.work.absence'),
+                ),
+              ),
+            for (final work in _work)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SelectableText(
+                  'WORK  ${work['kind']}'
+                  '${work['speakerId'] == null ? '' : '  ${work['speakerId']}'}'
+                  '  ${work['text']}',
+                  key: Key('world_conversation.work.${work['beatId']}'),
+                ),
+              ),
+            if (_workOmitted > 0)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SelectableText(
+                  'WORK  +$_workOmitted more row(s) the world did not serve.',
+                  key: const Key('world_conversation.work.omitted'),
+                ),
+              ),
           ],
         ),
       ),

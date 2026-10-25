@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/bootstrap.dart';
+import 'package:lastanswer/browser/browser_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
@@ -21,6 +22,7 @@ void main() {
         binding.addEntries(
           entries: {
             ...appMcpEntries(),
+            ...browserMcpEntries(),
             ...storageMcpEntries(),
             ...docMcpEntries(),
             ...agentMcpEntries(),

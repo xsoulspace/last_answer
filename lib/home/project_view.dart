@@ -5,7 +5,6 @@ import 'package:lastanswer/coding_agent/mesh_task_console_view.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/doc/chat_document_view.dart';
 import 'package:lastanswer/doc/doc_view.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
@@ -44,9 +43,11 @@ class ProjectView extends StatelessWidget {
       ),
       doc: (final doc) => _AdaptiveView(
         appBar: const _ProjectViewAppBar(),
+        // ADR 0010 D2 / ADR 0019 — chat is opaque legacy metadata. It
+        // reads fine and opens the same harness-backed grid an agent doc
+        // opens. It no longer mints a distinct (bubble) surface.
         child: switch (doc.formatId) {
-          DocFormatIds.chat => ChatDocumentView(doc: doc, key: ValueKey(id)),
-          DocFormatIds.agent => Column(
+          DocFormatIds.agent || DocFormatIds.chat => Column(
             children: [
               Expanded(
                 child: doc.agent?.worldBinding != null

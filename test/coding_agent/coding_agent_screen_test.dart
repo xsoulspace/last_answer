@@ -58,6 +58,9 @@ void main() {
         config: HarnessHostConfig(
           handlerFactory: (_) =>
               ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+          // Scripted lane: names its tools so the surface does not also
+          // run product workspace prep (path_provider, no test plugin).
+          extraToolsWithContext: (_) => const [],
         ),
       );
       addTearDown(controller.dispose);
@@ -77,7 +80,10 @@ void main() {
         ),
       );
 
-      // The user types the workspace and the task sentence, then delegates.
+      // DESIGN §4 — setup is collapsed until the human opens it. The
+      // workspace field lives there, not on the first screen.
+      await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+      await tester.pump();
       await tester.enterText(
         find.byKey(const Key('coding_agent.workspace')),
         workspace.path,
@@ -91,8 +97,16 @@ void main() {
 
       // The write-gate round-trip crosses the fake/real zone boundary —
       // alternate pump and runAsync until the prompt surfaces.
-      await pumpUntil(tester, () => controller.pendingPermission != null);
+      await pumpUntil(
+        tester,
+        () => controller.pendingPermission != null || controller.error != null,
+      );
       await tester.pump();
+      expect(
+        controller.error,
+        isNull,
+        reason: 'delegate must reach the write gate, got ${controller.error}',
+      );
 
       expect(
         find.byKey(const Key('coding_agent.permission')),
@@ -108,15 +122,25 @@ void main() {
       await pumpUntil(tester, () => !controller.isRunning);
       await tester.pump();
 
+      // DESIGN §10 — an ordinary landing is L0/L1. The verdict is one tap
+      // away, never mandatory reading. Open the ladder, then assert it.
+      expect(
+        find.textContaining('verdict: PASS'),
+        findsNothing,
+        reason: 'the verdict must not be mandatory reading at L0/L1',
+      );
+      await tester.tap(find.byKey(const Key('coding_agent.ladder.open')).first);
+      await tester.pump();
+
       expect(
         find.textContaining('verdict: PASS'),
         findsWidgets,
-        reason: 'the verdict must surface (banner + transcript)',
+        reason: 'opening the ladder surfaces the verdict',
       );
       expect(
         find.byKey(const Key('coding_agent.verdict.card')),
         findsOneWidget,
-        reason: 'the verdict banner must surface',
+        reason: 'the verdict banner must surface once the ladder is open',
       );
       expect(
         File('${workspace.path}/main.dart').readAsStringSync(),
@@ -140,6 +164,50 @@ void main() {
     timeout: const Timeout(Duration(minutes: 3)),
   );
 
+  testWidgets('an unbound doc lands on the conversation, not setup', (
+    final tester,
+  ) async {
+    final controller = HarnessSessionController(
+      config: HarnessHostConfig(
+        handlerFactory: (_) =>
+            ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+        extraToolsWithContext: (_) => const [],
+      ),
+    );
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AgentDocSurface(doc: _agentDoc(), controller: controller),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('coding_agent.workspace')),
+      findsNothing,
+      reason: 'workspace must not be on the first screen (ADR 0019)',
+    );
+    expect(
+      find.byKey(const Key('coding_agent.api_key')),
+      findsNothing,
+      reason: 'API-key entry must not be on the first screen',
+    );
+    expect(
+      find.byKey(const Key('coding_agent.task')),
+      findsOneWidget,
+      reason: 'the composer is the first action',
+    );
+    expect(
+      find.byKey(const Key('coding_agent.binding')),
+      findsOneWidget,
+      reason: 'binding state stays on the status rule',
+    );
+    expect(find.textContaining('not bound'), findsWidgets);
+  });
+
   testWidgets(
     'empty state: an agent doc with no workspace instructs the human',
     (final tester) async {
@@ -147,6 +215,7 @@ void main() {
         config: HarnessHostConfig(
           handlerFactory: (_) =>
               ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+          extraToolsWithContext: (_) => const [],
         ),
       );
       addTearDown(controller.dispose);
@@ -168,16 +237,16 @@ void main() {
         findsOneWidget,
         reason: 'a doc with no workspace must show the honest guide',
       );
-      expect(find.textContaining('Bind a workspace'), findsWidgets);
+      expect(find.textContaining('Write a message'), findsWidgets);
       expect(
-        find.textContaining('asks you first'),
-        findsOneWidget,
-        reason: 'the guide must say that writes ask permission',
+        find.textContaining('not bound'),
+        findsWidgets,
+        reason: 'binding state stays on the status rule',
       );
       expect(
         find.textContaining('verdict'),
-        findsWidgets,
-        reason: 'the guide must say where the verdict lands',
+        findsNothing,
+        reason: 'the empty guide must not make a verdict mandatory reading',
       );
 
       // A doc WITH a bound workspace shows no guide (the binding is the
@@ -217,6 +286,7 @@ void main() {
         config: HarnessHostConfig(
           handlerFactory: (_) =>
               ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+          extraToolsWithContext: (_) => const [],
         ),
       );
       addTearDown(controller.dispose);
@@ -235,6 +305,8 @@ void main() {
       );
       await tester.pump();
 
+      await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+      await tester.pump();
       await tester.tap(find.byKey(const Key('coding_agent.workspace.pick')));
       await tester.pump();
 
@@ -274,6 +346,7 @@ void main() {
       config: HarnessHostConfig(
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+        extraToolsWithContext: (_) => const [],
       ),
     );
     addTearDown(controller.dispose);
@@ -292,6 +365,8 @@ void main() {
     );
     await tester.pump();
 
+    await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+    await tester.pump();
     await tester.enterText(
       find.byKey(const Key('coding_agent.check')),
       'dart run tool/agent_fixture/main.dart',
@@ -328,6 +403,7 @@ void main() {
         config: HarnessHostConfig(
           handlerFactory: (_) =>
               ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+          extraToolsWithContext: (_) => const [],
         ),
       );
       addTearDown(controller.dispose);
@@ -341,8 +417,11 @@ void main() {
       );
       await tester.pump();
 
-      // Switch the backend to OpenRouter through the REAL setup toggle
-      // (labeled as the backup runtime — AFM is the real-work default).
+      // DESIGN §4 — the backend picker lives in SETUP, collapsed until
+      // the human opens it (labeled as the backup runtime — AFM is the
+      // real-work default).
+      await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+      await tester.pump();
       await tester.tap(find.textContaining('OpenRouter'));
       await tester.pump();
       await pumpUntil(tester, () => controller.config.backend == 'open_router');
@@ -384,6 +463,7 @@ void main() {
       config: HarnessHostConfig(
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+        extraToolsWithContext: (_) => const [],
       ),
     );
     addTearDown(controller.dispose);
@@ -411,6 +491,8 @@ void main() {
 
     // Delegate one turn; the profile then shows the spend from the
     // verdict line (the honest tokens source).
+    await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+    await tester.pump();
     await tester.enterText(
       find.byKey(const Key('coding_agent.workspace')),
       workspace.path,
@@ -450,6 +532,7 @@ void main() {
       config: HarnessHostConfig(
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
+        extraToolsWithContext: (_) => const [],
       ),
     );
     addTearDown(controller.dispose);
@@ -463,6 +546,8 @@ void main() {
     );
     await tester.pump();
 
+    await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+    await tester.pump();
     await tester.enterText(
       find.byKey(const Key('coding_agent.workspace')),
       workspace.path,
@@ -482,6 +567,9 @@ void main() {
     // Finish the turn (allow → verdict) so no timer is left pending.
     await tester.tap(find.byKey(const Key('coding_agent.permission.allow')));
     await pumpUntil(tester, () => !controller.isRunning);
+    await tester.pump();
+    // DESIGN §10 — open the ladder before reading the verdict.
+    await tester.tap(find.byKey(const Key('coding_agent.ladder.open')).first);
     await tester.pump();
     expect(
       find.textContaining('verdict: PASS'),

@@ -2042,6 +2042,42 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Authorize task'**
   String get worldTaskAuthorize;
+
+  /// No description provided for @supervisorExecutionRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Run declared automations'**
+  String get supervisorExecutionRun;
+
+  /// No description provided for @supervisorExecutionEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable schedules'**
+  String get supervisorExecutionEnable;
+
+  /// No description provided for @supervisorExecutionPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause schedules'**
+  String get supervisorExecutionPause;
+
+  /// No description provided for @supervisorExecutionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel running pass'**
+  String get supervisorExecutionCancel;
+
+  /// No description provided for @supervisorExecutionAppOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution runs only while Last Answer is open.'**
+  String get supervisorExecutionAppOpen;
+
+  /// No description provided for @supervisorExecutionStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop owned work'**
+  String get supervisorExecutionStop;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

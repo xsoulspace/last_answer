@@ -7,7 +7,9 @@ import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dar
     if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as worlds;
 import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_model_picker.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_seats.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_work_verbs.dart';
 
 /// A human seat on the selected existing world. Displayed messages are owner
 /// receipts, never a second locally authored transcript or an embedded task.
@@ -89,6 +91,22 @@ class WorldConversationViewState extends State<WorldConversationView> {
   /// Guards a stale work read from overwriting a newer one.
   int _workEpoch = 0;
 
+  /// The seat's WORK surface: the palette cache plus `resource_bind`,
+  /// `task_delegate` and `tool_action`. Null until a seat is granted.
+  WorldWorkSeat? _workSeat;
+
+  /// The delegate purpose the human chose (`coding` | `decision`) and the
+  /// palette ENTRY id they picked — never a provider model string.
+  String _purpose = 'coding';
+  String? _modelId;
+
+  /// A work verb is in flight (the picker and the composer stay honest).
+  bool _workBusy = false;
+
+  /// Every verb outcome, verbatim: the world's own bounce vocabulary is the
+  /// error surface (DESIGN §6), never a generic "something went wrong".
+  List<WorldWorkReceipt> _receipts = const [];
+
   Map<String, Object?> get projection => {
     'worldId': widget.binding.worldId,
     'connected': _lease != null,
@@ -107,6 +125,24 @@ class WorldConversationViewState extends State<WorldConversationView> {
     'work': _work,
     'workAbsence': _workAbsence,
     'workOmitted': _workOmitted,
+    'purpose': _purpose,
+    'modelId': _modelId,
+    'palette': [
+      for (final entry
+          in _workSeat?.palette.entries ?? const <WorldPaletteEntry>[])
+        {
+          'id': entry.id,
+          'kind': entry.kind,
+          'model': entry.model,
+          'bound': entry.bound,
+        },
+    ],
+    'paletteAbsence': _workSeat?.paletteAbsence,
+    'toolRevision': _workSeat?.toolMenuRevision,
+    'receipts': [
+      for (final receipt in _receipts)
+        {'verb': receipt.verb, 'ok': receipt.ok, 'bounce': receipt.bounce},
+    ],
   };
 
   @override
@@ -170,6 +206,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
     try {
       await _lease?.disconnect?.call();
       _lease = null;
+      _workSeat = null;
       final world = await (widget.worldResolver ?? worlds.rediscover)(
         widget.binding,
       );
@@ -192,9 +229,28 @@ class WorldConversationViewState extends State<WorldConversationView> {
       }
       _lease = lease;
       if (_lease == null) throw StateError('World refused the human seat');
+      // The seat's work surface. `load` reads `actions` once per seat
+      // session and never throws: a lane that does not serve it is an
+      // honest absence, not a broken conversation.
+      final workSeat = WorldWorkSeat(
+        actor: lease!.actor,
+        invoke: (name, args) => WorldSeatChannel.call(
+          _lease!,
+          seatWs: _world.seatWs,
+          token: _world.token,
+          name: name,
+          args: args,
+        ),
+      );
+      await workSeat.load();
+      if (!mounted) return;
+      _workSeat = workSeat;
+      // A pick from the previous seat session survives only if the world
+      // still declares that entry.
+      if (workSeat.palette.entryById(_modelId) == null) _modelId = null;
       final subjects = await _call({'op': 'subjects', 'limit': 100});
       if (!mounted) return;
-      final ownConversation = 'assignment:${lease!.actor}';
+      final ownConversation = 'assignment:${lease.actor}';
       _subjects = [
         for (final row in (subjects['subjects']! as List).cast<Map>())
           if ((row['anchor'] as Map?)?['kind'] == 'task')
@@ -405,6 +461,75 @@ class WorldConversationViewState extends State<WorldConversationView> {
     if (mounted) _input.clear();
     await refresh();
     return result;
+  }
+
+  /// DELEGATE — the human's sentence becomes world work (`task_delegate`).
+  ///
+  /// The composer is the affordance: the same text a message would carry.
+  /// A `coding` purpose never carries a model (the world bounces
+  /// `decision_purpose_required`); a `decision` purpose carries the picked
+  /// palette entry.
+  Future<void> delegate(final String text) async {
+    final seat = _workSeat;
+    if (seat == null || _lease == null) throw StateError('Seat is not ready');
+    final task = text.trim();
+    if (task.isEmpty) throw StateError('Task is empty');
+    _workBusy = true;
+    if (mounted) setState(() {});
+    try {
+      final receipt = await seat.delegate(
+        task: task,
+        purpose: _purpose,
+        modelId: _purpose == 'decision' ? _modelId : null,
+      );
+      _record(receipt);
+      if (receipt.ok) {
+        if (mounted) _input.clear();
+        await refresh();
+      }
+    } finally {
+      _workBusy = false;
+      if (mounted) setState(() {});
+    }
+  }
+
+  /// BIND — `resource_bind` for THIS seat's actor on its own assignment
+  /// thread. Binding another actor bounces `binding_actor_not_authorized`,
+  /// so the actor is never a parameter here.
+  Future<void> bindModel() async {
+    final seat = _workSeat;
+    final modelId = _modelId;
+    if (seat == null || _lease == null) throw StateError('Seat is not ready');
+    if (modelId == null) throw StateError('Choose a palette entry');
+    _workBusy = true;
+    if (mounted) setState(() {});
+    try {
+      _record(await seat.bind(purpose: _purpose, modelId: modelId));
+    } finally {
+      _workBusy = false;
+      if (mounted) setState(() {});
+    }
+  }
+
+  /// RUN — `tool_action` with the menu revision the world currently serves.
+  Future<void> runTool(final String name) async {
+    final seat = _workSeat;
+    if (seat == null || _lease == null) throw StateError('Seat is not ready');
+    _workBusy = true;
+    if (mounted) setState(() {});
+    try {
+      _record(await seat.toolAction(toolName: name));
+      await refresh();
+    } finally {
+      _workBusy = false;
+      if (mounted) setState(() {});
+    }
+  }
+
+  /// A verb outcome is DATA on the grid — the world's own words, verbatim.
+  void _record(final WorldWorkReceipt receipt) {
+    final next = [..._receipts, receipt];
+    _receipts = next.length > 12 ? next.sublist(next.length - 12) : next;
   }
 
   /// This is a bounded human statement on the world conversation. Only the
@@ -684,6 +809,28 @@ class WorldConversationViewState extends State<WorldConversationView> {
         child: ListView(
           children: [
             if (_error != null) SelectableText(_error!),
+            // The seat's WORK affordances, on the same grid as the
+            // conversation: what the world declares, never a default.
+            if (_workSeat case final seat?) ...[
+              WorldModelPicker(
+                palette: seat.palette,
+                absence: seat.paletteAbsence,
+                purpose: _purpose,
+                selectedId: _modelId,
+                busy: _workBusy,
+                onPurpose: (value) => setState(() => _purpose = value),
+                onSelect: (id) => setState(() => _modelId = id),
+                onBind: () => unawaited(bindModel()),
+              ),
+              WorldToolMenuList(
+                tools: seat.tools,
+                revision: seat.toolMenuRevision,
+                absence: seat.toolMenuAbsence,
+                busy: _workBusy,
+                onRun: (name) => unawaited(runTool(name)),
+              ),
+              Container(height: 0.6, color: Theme.of(context).dividerColor),
+            ],
             if (_presence.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
@@ -758,6 +905,17 @@ class WorldConversationViewState extends State<WorldConversationView> {
                   key: const Key('world_conversation.work.omitted'),
                 ),
               ),
+            // What the world said to the work verbs — the harness bounce
+            // codes VERBATIM (`model_not_in_palette`, `thread_not_visible`,
+            // …). The contract's own vocabulary is the error surface.
+            for (var index = 0; index < _receipts.length; index++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: SelectableText(
+                  'WORK  ${_receipts[index].label}',
+                  key: Key('coding_agent.world.receipt.$index'),
+                ),
+              ),
           ],
         ),
       ),
@@ -791,6 +949,21 @@ class WorldConversationViewState extends State<WorldConversationView> {
                     }
                   },
             child: Text(context.l10n.worldConversationSend),
+          ),
+          // DELEGATE rides the SAME composer: the sentence a human already
+          // typed becomes world work instead of a message.
+          TextButton(
+            key: const Key('coding_agent.world.delegate'),
+            onPressed: _lease == null || _busy || _workBusy
+                ? null
+                : () async {
+                    try {
+                      await delegate(_input.text);
+                    } on Object catch (error) {
+                      if (mounted) setState(() => _error = '$error');
+                    }
+                  },
+            child: const Text('DELEGATE'),
           ),
         ],
       ),

@@ -350,5 +350,11 @@
   "worldTaskMinutes": "Validità (minuti)",
   "worldTaskRequired": "Obbligatorio",
   "worldTaskRevoke": "Revoca",
-  "worldTaskAuthorize": "Autorizza attività"
+  "worldTaskAuthorize": "Autorizza attività",
+  "supervisorExecutionRun": "Esegui automazioni dichiarate",
+  "supervisorExecutionEnable": "Attiva pianificazioni",
+  "supervisorExecutionPause": "Sospendi pianificazioni",
+  "supervisorExecutionCancel": "Annulla esecuzione in corso",
+  "supervisorExecutionAppOpen": "Le automazioni vengono eseguite solo mentre Last Answer è aperto.",
+  "supervisorExecutionStop": "Ferma attività avviate"
 }

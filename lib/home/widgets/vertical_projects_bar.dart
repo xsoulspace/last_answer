@@ -11,8 +11,8 @@ class VerticalProjectsBar extends StatelessWidget {
   final VoidCallback onIdeaTap;
   final VoidCallback onNoteTap;
 
-  /// Null on hosts without the chat surface yet; the item hides instead of
-  /// dead-ending.
+  /// "Ask an agent". Opens the harness-backed grid (ADR 0019). Null hides
+  /// the item instead of dead-ending.
   final VoidCallback? onChatTap;
   @override
   Widget build(final BuildContext context) => Container(

@@ -60,6 +60,11 @@ final class AppIntentSpec {
 /// builds on this list, so renames are contract changes.
 const List<AppIntentSpec> appIntentCatalog = [
   AppIntentSpec(
+    name: 'browser_window',
+    group: 'app',
+    summary: 'Inspect open browser windows and use their navigation controls.',
+  ),
+  AppIntentSpec(
     name: 'agent_product_local_pair',
     group: 'doc',
     summary: 'Configure or inspect local Qwen/Laya with authorized escalation.',

@@ -61,8 +61,8 @@ void main() {
   ) async {
     final controller = HarnessSessionController(
       config: HarnessHostConfig(
-        // This queue fixture owns its scripted tool lane. Product workspace
-        // installation requires a platform application-support directory.
+        // Scripted lane: names its tools so the surface does not also run
+        // product workspace prep (path_provider has no test plugin).
         extraToolsWithContext: (_) => const [],
         handlerFactory: (_) =>
             ScriptedWriteMover('main.dart', "void main() { print('ok'); }\n"),
@@ -89,6 +89,8 @@ void main() {
     final HarnessSessionController controller,
     final String task,
   ) async {
+    await tester.tap(find.byKey(const Key('coding_agent.setup.toggle')));
+    await tester.pump();
     await tester.enterText(
       find.byKey(const Key('coding_agent.workspace')),
       workspace.path,
@@ -351,10 +353,24 @@ void main() {
             'no spend figures exist for a cancelled turn — the '
             'surface must not fabricate them',
       );
+      // DESIGN §10 — the verdict is folded at L0/L1. Open the ladder.
+      // Two folds can exist (the card fold and a per-turn fold); either opens.
+      final ladder = find.byKey(const Key('coding_agent.ladder.open'));
+      expect(ladder, findsWidgets);
+      await tester.ensureVisible(ladder.first);
+      await tester.tap(ladder.first, warnIfMissed: false);
+      await tester.pump();
+      if (find.textContaining('INTERRUPTED').evaluate().isEmpty &&
+          ladder.evaluate().length > 1) {
+        await tester.ensureVisible(ladder.at(1));
+        await tester.tap(ladder.at(1), warnIfMissed: false);
+        await tester.pump();
+      }
+      await tester.pump();
       expect(
         find.textContaining('INTERRUPTED'),
         findsWidgets,
-        reason: 'the interrupted verdict lands as data',
+        reason: 'the interrupted verdict lands as data once the ladder opens',
       );
       expect(
         find.textContaining(' tok'),
@@ -362,9 +378,13 @@ void main() {
         reason: 'an interrupted verdict must never render token figures',
       );
       expect(
-        find.textContaining('decisions'),
+        find.descendant(
+          of: find.byKey(const Key('coding_agent.verdict.card')),
+          matching: find.textContaining('decisions'),
+        ),
         findsNothing,
-        reason: 'nor decision counts — only truly observed numbers',
+        reason:
+            'nor decision counts on the verdict — only truly observed numbers',
       );
       expect(
         File('${workspace.path}/main.dart').readAsStringSync(),

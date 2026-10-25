@@ -89,14 +89,14 @@ void main() {
   /// Opens TWO agent-doc surfaces at once (the desktop split-view shape)
   /// and asserts both are PRESENT in the registry.
   Future<_Gate> pumpTwoSurfaces(final WidgetTester tester) async {
-    HarnessSessionController controller(
-          final Directory workspace,
-        ) => HarnessSessionController(
+    HarnessSessionController controller(final Directory workspace) =>
+        HarnessSessionController(
           config: HarnessHostConfig(
             handlerFactory: (_) => ScriptedWriteMover(
               'main.dart',
               "void main() { print('ok'); }\n",
             ),
+            extraToolsWithContext: (_) => const [],
           ),
         );
     final controllerA = controller(workspaceA);
@@ -136,56 +136,54 @@ void main() {
     expect(
       registry.sessions.keys,
       containsAll([gate.keyA, gate.keyB]),
-      reason: 'both surfaces register presence under their mesh replica '
+      reason:
+          'both surfaces register presence under their mesh replica '
           'ids (ADR 0009 D1)',
     );
     return gate;
   }
 
-  testWidgets(
-    "explicit docId returns THAT doc's state (the raw doc id and the "
-    'exact registry key both resolve), and the registry truth rides the '
-    'output honestly',
-    (final tester) async {
-      final gate = await pumpTwoSurfaces(tester);
+  testWidgets("explicit docId returns THAT doc's state (the raw doc id and the "
+      'exact registry key both resolve), and the registry truth rides the '
+      'output honestly', (final tester) async {
+    final gate = await pumpTwoSurfaces(tester);
 
-      // The exact registry key resolves A.
-      final stateA = await _entry(
-        'agent_doc_state',
-      ).invokeDirect({'docId': gate.keyA});
-      expect(okOf(stateA), isTrue, reason: stateA.message);
-      expect(stateA.data['docId'], gate.docA.id.value);
-      expect(stateA.data['registryKey'], gate.keyA);
-      // Today's JSON shape is kept (the queue rides along, ADR 0011).
-      expect(stateA.data.keys, containsAll(['workspaces', 'backend', 'queue']));
+    // The exact registry key resolves A.
+    final stateA = await _entry(
+      'agent_doc_state',
+    ).invokeDirect({'docId': gate.keyA});
+    expect(okOf(stateA), isTrue, reason: stateA.message);
+    expect(stateA.data['docId'], gate.docA.id.value);
+    expect(stateA.data['registryKey'], gate.keyA);
+    // Today's JSON shape is kept (the queue rides along, ADR 0011).
+    expect(stateA.data.keys, containsAll(['workspaces', 'backend', 'queue']));
 
-      // The exact registry key resolves B — not A's projection.
-      final stateB = await _entry(
-        'agent_doc_state',
-      ).invokeDirect({'docId': gate.keyB});
-      expect(okOf(stateB), isTrue, reason: stateB.message);
-      expect(stateB.data['docId'], gate.docB.id.value);
-      expect(stateB.data['registryKey'], gate.keyB);
+    // The exact registry key resolves B — not A's projection.
+    final stateB = await _entry(
+      'agent_doc_state',
+    ).invokeDirect({'docId': gate.keyB});
+    expect(okOf(stateB), isTrue, reason: stateB.message);
+    expect(stateB.data['docId'], gate.docB.id.value);
+    expect(stateB.data['registryKey'], gate.keyB);
 
-      // The raw doc id is the alias the other mesh verbs carry.
-      final raw = await _entry(
-        'agent_doc_state',
-      ).invokeDirect({'docId': gate.docA.id.value});
-      expect(okOf(raw), isTrue, reason: raw.message);
-      expect(raw.data['registryKey'], gate.keyA);
+    // The raw doc id is the alias the other mesh verbs carry.
+    final raw = await _entry(
+      'agent_doc_state',
+    ).invokeDirect({'docId': gate.docA.id.value});
+    expect(okOf(raw), isTrue, reason: raw.message);
+    expect(raw.data['registryKey'], gate.keyA);
 
-      // The registry snapshot is HONEST (DESIGN §6): a surface with no
-      // daemon session yet carries an empty session id, zero turns, and
-      // NEVER a fabricated spend or context cut.
-      final session = stateA.data['session']! as Map<Object?, Object?>;
-      expect(session['kind'], 'surface');
-      expect(session['running'], isFalse);
-      expect(session['sessionId'], '');
-      expect(session['turnCount'], 0);
-      expect(session['spend'], isNull);
-      expect(session['contextSummary'], '');
-    },
-  );
+    // The registry snapshot is HONEST (DESIGN §6): a surface with no
+    // daemon session yet carries an empty session id, zero turns, and
+    // NEVER a fabricated spend or context cut.
+    final session = stateA.data['session']! as Map<Object?, Object?>;
+    expect(session['kind'], 'surface');
+    expect(session['running'], isFalse);
+    expect(session['sessionId'], '');
+    expect(session['turnCount'], 0);
+    expect(session['spend'], isNull);
+    expect(session['contextSummary'], '');
+  });
 
   testWidgets(
     'no docId resolves the FOCUSED doc (device-local last interaction); '
@@ -218,9 +216,7 @@ void main() {
       ).invokeDirect({'docId': gate.keyA, 'task': fixTask});
       expect(okOf(warmA), isFalse, reason: warmA.message);
       expect(registry.focused, gate.keyA);
-      final nowAState = await _entry(
-        'agent_doc_state',
-      ).invokeDirect(const {});
+      final nowAState = await _entry('agent_doc_state').invokeDirect(const {});
       expect(nowAState.data['docId'], gate.docA.id.value);
 
       // The undecided state — two live docs, no focus — is refused with
@@ -234,9 +230,7 @@ void main() {
       registry.register(gate.keyA, handleA);
       expect(registry.focused, isNull);
 
-      final ambiguous = await _entry(
-        'agent_doc_state',
-      ).invokeDirect(const {});
+      final ambiguous = await _entry('agent_doc_state').invokeDirect(const {});
       expect(okOf(ambiguous), isFalse, reason: ambiguous.message);
       expect(ambiguous.message, contains(gate.keyA));
       expect(ambiguous.message, contains(gate.keyB));
@@ -254,106 +248,110 @@ void main() {
     },
   );
 
-  testWidgets(
-    'delegate with docId routes to the RIGHT surface; the no-docId '
-    'delegate resolves the FOCUSED one; the registry snapshot names the '
-    'live daemon session',
-    (final tester) async {
-      final gate = await pumpTwoSurfaces(tester);
-      final registry = HarnessSessionRegistry.instance;
+  testWidgets('delegate with docId routes to the RIGHT surface; the no-docId '
+      'delegate resolves the FOCUSED one; the registry snapshot names the '
+      'live daemon session', (final tester) async {
+    final gate = await pumpTwoSurfaces(tester);
+    final registry = HarnessSessionRegistry.instance;
 
-      // Delegates via the verb and waits for the turn's write gate to
-      // surface (the scripted mover writes once per turn — every turn
-      // asks).
-      Future<void> delegateAndGate(
-        final Map<String, String> parameters,
-        final HarnessSessionController controller,
-      ) async {
-        final result = await _entry(
-          'agent_task_delegate',
-        ).invokeDirect(parameters);
-        expect(okOf(result), isTrue, reason: result.message);
-        await pumpUntil(tester, () => controller.isRunning);
-        await pumpUntil(tester, () => controller.pendingPermission != null);
-      }
+    // Delegates via the verb and waits for the turn's write gate to
+    // surface (the scripted mover writes once per turn — every turn
+    // asks).
+    Future<void> delegateAndGate(
+      final Map<String, String> parameters,
+      final HarnessSessionController controller,
+    ) async {
+      final result = await _entry(
+        'agent_task_delegate',
+      ).invokeDirect(parameters);
+      expect(okOf(result), isTrue, reason: result.message);
+      await pumpUntil(tester, () => controller.isRunning);
+      await pumpUntil(tester, () => controller.pendingPermission != null);
+    }
 
-      // Stops the running turn deny-first and drains the round-trip (the
-      // request's 5-minute deadline timer must never outlive the test).
-      Future<void> stopTurn(final HarnessSessionController controller) async {
-        controller.cancelCurrent();
-        await pumpUntil(tester, () => !controller.isRunning);
-        await pumpUntil(tester, () => controller.pendingPermission == null);
-      }
+    // Stops the running turn deny-first and drains the round-trip (the
+    // request's 5-minute deadline timer must never outlive the test).
+    Future<void> stopTurn(final HarnessSessionController controller) async {
+      controller.cancelCurrent();
+      await pumpUntil(tester, () => !controller.isRunning);
+      await pumpUntil(tester, () => controller.pendingPermission == null);
+    }
 
-      // Bind both docs through the REAL setup keys (A renders first).
-      await tester.enterText(
-        find.byKey(const Key('coding_agent.workspace')).first,
-        workspaceA.path,
-      );
-      await tester.enterText(
-        find.byKey(const Key('coding_agent.workspace')).last,
-        workspaceB.path,
-      );
-      await tester.pump();
+    // DESIGN §4 — setup is collapsed until opened. Bind both docs
+    // through the REAL setup keys (A renders first).
+    final setup = find.byKey(const Key('coding_agent.setup.toggle'));
+    await tester.tap(setup.first);
+    await tester.tap(setup.last);
+    await tester.pump();
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.workspace')).first,
+      workspaceA.path,
+    );
+    await tester.enterText(
+      find.byKey(const Key('coding_agent.workspace')).last,
+      workspaceB.path,
+    );
+    await tester.pump();
 
-      // Explicit docId → THAT surface's controller runs the turn; the
-      // other doc stays untouched.
-      await delegateAndGate(
-        {'docId': gate.keyA, 'task': fixTask},
-        gate.controllerA,
-      );
-      expect(
-        gate.controllerB.isRunning,
-        isFalse,
-        reason: 'the explicit docId must not delegate the other doc',
-      );
-      expect(gate.controllerB.current, isNull);
-      expect(gate.controllerA.current?.turns.last.taskSentence, fixTask);
-      await stopTurn(gate.controllerA);
+    // Explicit docId → THAT surface's controller runs the turn; the
+    // other doc stays untouched.
+    await delegateAndGate({
+      'docId': gate.keyA,
+      'task': fixTask,
+    }, gate.controllerA);
+    expect(
+      gate.controllerB.isRunning,
+      isFalse,
+      reason: 'the explicit docId must not delegate the other doc',
+    );
+    expect(gate.controllerB.current, isNull);
+    expect(gate.controllerA.current?.turns.last.taskSentence, fixTask);
+    await stopTurn(gate.controllerA);
 
-      // Pin the deterministic focus on B (an explicit interaction), then
-      // the no-docId delegate resolves the FOCUSED doc — B, not A.
-      await delegateAndGate(
-        {'docId': gate.keyB, 'task': fixTask},
-        gate.controllerB,
-      );
-      expect(
-        registry.focused,
-        gate.keyB,
-        reason: 'the host-injected decision interacted with B — the '
-            'device-local focus follows the last interaction',
-      );
-      await stopTurn(gate.controllerB);
+    // Pin the deterministic focus on B (an explicit interaction), then
+    // the no-docId delegate resolves the FOCUSED doc — B, not A.
+    await delegateAndGate({
+      'docId': gate.keyB,
+      'task': fixTask,
+    }, gate.controllerB);
+    expect(
+      registry.focused,
+      gate.keyB,
+      reason:
+          'the host-injected decision interacted with B — the '
+          'device-local focus follows the last interaction',
+    );
+    await stopTurn(gate.controllerB);
 
-      // The no-docId delegate resolves the FOCUSED doc — B (never a
-      // silent wrong-target answer, DESIGN §6).
-      await delegateAndGate({'task': fixTask}, gate.controllerB);
-      expect(gate.controllerB.current?.turns.last.taskSentence, fixTask);
-      expect(
-        gate.controllerA.isRunning,
-        isFalse,
-        reason: 'the no-docId delegate resolved the focused doc, not the '
-            'other one',
-      );
-      expect(
-        gate.controllerA.current?.turns,
-        hasLength(1),
-        reason: 'A ran exactly the explicit-docId turn',
-      );
+    // The no-docId delegate resolves the FOCUSED doc — B (never a
+    // silent wrong-target answer, DESIGN §6).
+    await delegateAndGate({'task': fixTask}, gate.controllerB);
+    expect(gate.controllerB.current?.turns.last.taskSentence, fixTask);
+    expect(
+      gate.controllerA.isRunning,
+      isFalse,
+      reason:
+          'the no-docId delegate resolved the focused doc, not the '
+          'other one',
+    );
+    expect(
+      gate.controllerA.current?.turns,
+      hasLength(1),
+      reason: 'A ran exactly the explicit-docId turn',
+    );
 
-      // The registry truth MID-TURN: the snapshot names B's LIVE daemon
-      // session and the running flag — read through the REGISTRY, never
-      // a static.
-      final duringB = await _entry(
-        'agent_doc_state',
-      ).invokeDirect({'docId': gate.keyB});
-      expect(okOf(duringB), isTrue, reason: duringB.message);
-      final session = duringB.data['session']! as Map<Object?, Object?>;
-      expect(session['running'], isTrue);
-      expect(session['sessionId'], gate.controllerB.current?.id);
-      await stopTurn(gate.controllerB);
-    },
-  );
+    // The registry truth MID-TURN: the snapshot names B's LIVE daemon
+    // session and the running flag — read through the REGISTRY, never
+    // a static.
+    final duringB = await _entry(
+      'agent_doc_state',
+    ).invokeDirect({'docId': gate.keyB});
+    expect(okOf(duringB), isTrue, reason: duringB.message);
+    final session = duringB.data['session']! as Map<Object?, Object?>;
+    expect(session['running'], isTrue);
+    expect(session['sessionId'], gate.controllerB.current?.id);
+    await stopTurn(gate.controllerB);
+  });
 
   testWidgets(
     'agent_permission_answer with docId resolves THAT doc; an unknown '
@@ -435,7 +433,8 @@ void main() {
       expect(
         liveAfter,
         isNotNull,
-        reason: 'the stale teardown must NOT clobber the live '
+        reason:
+            'the stale teardown must NOT clobber the live '
             'registration',
       );
       expect(

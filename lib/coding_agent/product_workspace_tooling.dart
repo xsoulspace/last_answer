@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/coding_agent/product_candidate_verification.dart';
+import 'package:lastanswer/coding_agent/project_operations/project_operations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 import 'package:xsoulspace_agentic_harness/workspace_api.dart'
@@ -22,6 +23,7 @@ final class ProductWorkspaceTooling {
     this.supportDirectory = getApplicationSupportDirectory,
     List<String> verificationScratchPaths = const [],
     this.standingAuthority,
+    this.projectOperations,
   }) : verificationScratchPaths = List.unmodifiable(verificationScratchPaths);
 
   /// Shared explicit composition for the ordinary GUI and headless seat.
@@ -61,6 +63,15 @@ final class ProductWorkspaceTooling {
   final Future<Directory> Function() supportDirectory;
   final List<String> verificationScratchPaths;
   final ConventionalChangeAuthority? standingAuthority;
+
+  /// The opt-in declared project operations of this workspace (ADR 0020).
+  ///
+  /// The profile never replaces the candidate verifier: the host's
+  /// candidate is a partial tree, and a project-scoped command would report
+  /// a check that never saw the change under review. The profile is exposed
+  /// next to the binding so a surface can run the project's own commands
+  /// honestly.
+  final ProjectOperationProfile? projectOperations;
   final _prepared = <String, Map<Object?, ProductWorkspaceToolBinding>>{};
 
   /// Drop this UI owner's cache references; issued effects and journals remain
@@ -172,6 +183,7 @@ final class ProductWorkspaceTooling {
       canReviewSaved,
       standingAuthority,
       useProductCompiler && verifyCandidate == null,
+      projectOperations,
     );
     (_prepared[canonical] ??= {})[ownerKey] = binding;
     return binding;
@@ -238,6 +250,7 @@ final class ProductWorkspaceToolBinding {
     this.canReviewSaved,
     this.standingAuthority,
     this.includeCandidateInputManifest,
+    this.projectOperations,
   );
 
   final String workspace;
@@ -249,6 +262,9 @@ final class ProductWorkspaceToolBinding {
   final List<String> verificationScratchPaths;
   final bool Function(HostToolExtensionContext)? canReviewSaved;
   final ConventionalChangeAuthority? standingAuthority;
+
+  /// The opt-in declared project operations of this binding (ADR 0020).
+  final ProjectOperationProfile? projectOperations;
   final _instances = <World, Map<String, ConventionalChangeToolExtension>>{};
   final observation = ValueNotifier<Map<String, Object?>?>(null);
   Map<String, Object?>? _previewObservation;
@@ -267,8 +283,40 @@ final class ProductWorkspaceToolBinding {
     'preview': previewObservation,
     'lastOutcome': observation.value,
     'authority': 'native_owner_only',
+    if (projectOperations != null) 'projectOperations': projectOperations!.id,
     if (standingAuthority != null) 'autonomy': standingAuthority!.toSummary(),
   };
+
+  /// Runs a declared project operation of the opt-in profile.
+  ///
+  /// The operation runs against the owner workspace, or against [candidate]
+  /// when the profile declares a candidate-scoped working directory. This
+  /// never stands in for the candidate verification: a project-scoped
+  /// command does not see the change under review, and the host contract
+  /// keeps that distinction.
+  Future<ProjectOperationOutcome> runProjectOperation(
+    ProjectOperationKind kind, {
+    Directory? candidate,
+  }) {
+    final profile = projectOperations;
+    if (profile == null) {
+      return Future.value(
+        ProjectOperationOutcome(
+          ok: false,
+          kind: kind,
+          operationId: kind.name,
+          argv: const <String>[],
+          workingDirectory: workspace,
+          duration: Duration.zero,
+          error: 'project_operations_profile_absent',
+        ),
+      );
+    }
+    return ProjectOperationController(
+      profile: profile,
+      workspace: Directory(workspace),
+    ).run(kind, candidate: candidate);
+  }
 
   Map<String, Object?>? reviewFor(Map exact) {
     final key =

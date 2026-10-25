@@ -107,8 +107,12 @@ class OpenedProjectNotifier
     );
   }
 
+  /// ADR 0010 D2 / ADR 0019 — "ask an agent" is a projection of the
+  /// harness-backed grid, not a second product. Creates the same unbound
+  /// agent doc [createAgentProject] does. Kept so existing call sites and
+  /// tests keep a name; the bubble surface it used to mint is gone.
   void createChatProject(final BuildContext context) {
-    loadProject(context: context, project: ProjectModel.emptyChat());
+    createAgentProject(context);
   }
 
   void deleteProject({final ProjectModel? project}) {

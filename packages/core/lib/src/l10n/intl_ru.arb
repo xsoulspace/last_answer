@@ -353,5 +353,11 @@
   "worldTaskMinutes": "Срок действия (минуты)",
   "worldTaskRequired": "Обязательное поле",
   "worldTaskRevoke": "Отозвать",
-  "worldTaskAuthorize": "Разрешить задачу"
+  "worldTaskAuthorize": "Разрешить задачу",
+  "supervisorExecutionRun": "Запустить автоматизации",
+  "supervisorExecutionEnable": "Включить расписания",
+  "supervisorExecutionPause": "Приостановить расписания",
+  "supervisorExecutionCancel": "Отменить текущий запуск",
+  "supervisorExecutionAppOpen": "Выполнение доступно, пока Last Answer открыт.",
+  "supervisorExecutionStop": "Остановить запущенные задачи"
 }

@@ -265,6 +265,103 @@ failures and limitations in the evidence ledger and central run artifacts.
 A conventional-profile historical PASS cannot close this meaning-runtime
 gate. A consumer preview is not a claim that every future domain works.
 
+## Two densities, one surface — phase gates (ADR 0019)
+
+[ADR 0019](decisions/0019-two-products-one-surface.md) decides the product
+shape: ONE product at two densities over ONE harness world. The Simple
+product is notes and ideas plus a normal-looking agent conversation on the
+grid; the Workshop is the same world read spatially and temporally. The
+L0–L3 ladder ([DESIGN.md](DESIGN.md) §10) is the density dial between them.
+The phase numbers below are scoped to ADR 0019; they are distinct from the
+Phase 1–6 labels in [Agents in Docs](product/agents-in-docs.md) and from the
+legacy Phase 3/4/5 rows in the staged list below.
+
+These phases do not replace C0–C6; they consume them. Phases 1 and 2 are
+the current phase, in progress in parallel with C1–C5. Phases 3 and 4 are
+planned and NOT shipped — nothing in this section may be cited as evidence
+that either exists.
+
+### Phase 1 — surface routing
+
+Status: landed in the tree; NOT live-proven against a running world.
+
+Retire the bubble chat as a second product and route every agent entry to
+the harness-backed grid. Remove `lib/doc/chat_document_view.dart` and its
+dispatch from `lib/home/project_view.dart`; "ask an agent" lands on
+`lib/coding_agent/agent_doc_surface.dart`. Absorb the tree mechanic the
+chat surface proved — child-thread navigation on a selected span — into the
+grid, as ADR 0010 D2 already requires. On the grid, ship the Simple
+profile: setup (workspace, backend, API key) is never the first screen, it
+is a toggle on the status rule, it collapses again when the document
+becomes bound, and binding state stays visible on the status rule
+(DESIGN §4, as amended by ADR 0019 §5).
+
+Gate: no doc surface renders a bubble / left-right chat layout; an agent
+entry from any creation or document path lands on the grid; a bound document
+opens on the document with setup collapsed and its binding state readable on
+the status rule; a selected span on the grid still opens a child thread with
+an explicit conclusion. Extend
+`test/coding_agent/coding_agent_screen_test.dart`; retire
+`test/doc/chat_document_view_test.dart` with the surface it covers.
+
+### Phase 2 — seat work verbs
+
+Status: landed in the tree; NOT live-proven against a running world.
+
+Harness side: add `resource_bind` to the coding seat grant — the op exists
+in the participation vocabulary but the coding seat grant does not carry it,
+so a coding seat cannot bind a model today — and serve a seat-visible model
+palette on the `actions` op, so the seat reads the world's declared palette
+entries rather than guessing a provider model string (harness ADR 0104).
+Last Answer side: wire `task_delegate`, `resource_bind` and `tool_action`
+into the world conversation seat, and back the model picker with that
+declared palette. No hardcoded model id in the picker: the picker shows the
+entries the world declared, and an entry the world has not bound shows as
+unbound rather than hidden.
+
+Gate: a seat on a bound world reads the palette, binds an entry by its
+palette entry id, delegates a task, and runs an allowlisted tool; every
+refusal surfaces as the world's own bounce code, verbatim, and never as a
+rewritten generic failure. No model id is hardcoded in the surface. Extend
+`test/coding_agent/world_work_verbs_test.dart`.
+
+### Phase 3 — workshop foundation
+
+Status: planned, NOT shipped.
+
+The Workshop is a projection of the same beats the grid renders, not a
+second implementation. Foundation, in order: a trace DTO v2 carrying an
+occurrence id and thread / reply / provenance / tool-result / summary
+relations; checkpoint and replay of `world-at-T`; bounded rendering — keyed
+deltas, virtualized tracks, memoized ordinals — over a real scale fixture
+(512 actors, 2.6M beats) that is built and measured, not simulated; then
+exploded layers, which need a plane/box scene primitive. The current scene
+shape vocabulary (sphere, cuboid, disc, billboard, polyline) has no plane.
+`ecsly_flutter_scene` is a path dependency here
+(`path: ../../ecsly/plugins/ecsly_flutter_scene`) and the plugin tree is not
+on the ecsly `main` branch nor published on pub.dev, so the dependency must
+be resolved before the layer ships.
+
+Gate: the fixture at the stated size renders within a bounded frame budget
+and replays `world-at-T` deterministically; every workshop row traces to an
+occurrence in the same world state the grid reads. Until the phase ships,
+the Workshop is not a surface.
+
+### Phase 4 — concurrent candidates
+
+Status: planned, NOT shipped.
+
+N live candidates from one request, on one world, with no second
+materializer. Reuse the harness's two-instance multiplayer gate pattern
+(M0: one world / daemon / writer, two distinct model-backed actor
+identities over one declared model resource, two session projections)
+instead of building a new gate harness here.
+
+Gate: N candidates stay distinguishable in the world, one declared model
+resource is shared without double-spend, and cancelling one candidate leaves
+the others running. A candidate is never a second materializer and never a
+second world.
+
 ## Staged work after the local shared-document proof
 
 These retain their existing ADRs and acceptance criteria. The local
@@ -321,9 +418,11 @@ execution order; follow C0–C6 and the staged sequence below.
   and asynchronous git op-log fallback. Gate: cellular permission response
   before the host's deny deadline.
 - **Item 8 / ADR 0010 — surface consolidation:** remove unused creation
-  species without migrations, merge chat/tree mechanics into the grid only
-  when the runtime union supports them. Gate: plain doc→delegated turn→cooled
-  span→child thread→explicit conclusion apply; analyze/tests and rail review.
+  species without migrations, merge chat/tree mechanics into the grid. ADR
+  0019 now decides the merge (the grid is the single agent surface); the
+  work and its gate are executed by ADR 0019 Phase 1 above. Gate: plain
+  doc→delegated turn→cooled span→child thread→explicit conclusion apply;
+  analyze/tests and rail review.
 - **Item 9 — queue/cooled-turn completion:** C2/C5 own durability and lifecycle;
   remaining recursive span discussion and the full queue-as-graph view stay
   deferred under ADR 0011, with scripted steer/send-now and child-thread gates.

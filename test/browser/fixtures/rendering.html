@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Last Answer browser · HTML and JavaScript</title>
+<style>
+  body { margin: 0; padding: 40px; color: #eff6ff; background: #102b35;
+    font: 18px system-ui; }
+  h1 { max-width: 640px; font-size: 44px; letter-spacing: -2px; }
+  button, a { display: inline-block; padding: 12px 20px; border-radius: 12px;
+    background: #c5ff91; color: #102b35; font: inherit; border: 0; }
+  canvas { display: block; margin: 24px 0; max-width: 100%; }
+</style>
+<p>LAST ANSWER / GENERAL BROWSER</p>
+<h1>One window. The web's full canvas.</h1>
+<p>Plain HTML, CSS, JavaScript and canvas, rendered by the native browser.</p>
+<canvas width="600" height="160" aria-label="Three painted waves"></canvas>
+<button onclick="document.title='JavaScript interaction confirmed'; this.textContent='Interaction confirmed'">Try an interaction</button>
+<a href="/second">Navigate to another page</a>
+<script>
+  const ctx = document.querySelector('canvas').getContext('2d');
+  for (let row = 0; row < 3; row++) {
+    ctx.beginPath();
+    ctx.strokeStyle = ['#c5ff91', '#85d9ff', '#f9c6ff'][row];
+    ctx.lineWidth = 4;
+    for (let x = 0; x < 600; x++) {
+      const y = 80 + Math.sin(x / 65 + row) * (24 + row * 14);
+      x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    }
+    ctx.stroke();
+  }
+</script>

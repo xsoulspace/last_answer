@@ -39,10 +39,12 @@ const AndroidBuild _androidBuild = AndroidBuild(
 );
 
 /// Packaging fast-settings shared by the Play pipeline and the Huawei
-/// GMS-free variant. No GMS Maven coordinates are declared here — the oka
-/// build is GMS-free by construction (the legacy `android/` Gradle project
-/// references Firebase plugins, but oka does not consume it).
+/// variant. Plugins may contribute Google dependencies, so the Huawei
+/// composition must qualify its GMS-free boundary separately.
 const PipelineOverrides _androidOverrides = PipelineOverrides(
+  // file_picker's Android MIME detection calls Tika. Its StAX API is not
+  // supplied by Android; provide it rather than suppress missing classes.
+  extraDeps: ['stax:stax-api:1.0.1'],
   // Real launcher icons + launch/splash themes from the Gradle
   // project. User res wins over generated res; because mipmaps are
   // present and no icon fast-settings are set, oka skips its
@@ -126,7 +128,11 @@ Future<void> main(final List<String> args) => okaRun(
     // dispatched with `oka run <target>`. Both targets below default to
     // dry-run — the plan prints exactly what a real upload would do and
     // requires no credentials (the ADR-0014 conformance law).
-    targets: [playPublishTarget, huaweiPublishTarget],
+    targets: [
+      EmulatorTarget(avdName: 'last-answer-api36', apiLevel: 36),
+      playPublishTarget,
+      huaweiPublishTarget,
+    ],
   ),
 );
 

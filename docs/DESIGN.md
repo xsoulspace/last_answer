@@ -21,6 +21,17 @@ beats, diffs, verdicts, permissions, threads) renders on the same grid, never
 as a parallel form-driven app. If a feature needs a form, it is a pane the
 user opens, not a page they land on.
 
+The same document has two densities and one world behind them. **Simple** is
+the grid read as a normal messenger and notes app: notes and ideas plus a
+normal-looking agent conversation, backed by the harness world.
+**Workshop** is that same world read spatially and temporally — time
+scrubbing over a world of objects and beats. A density is a reading of one
+document, never a second document and never a second world; the two
+observe the same beats, claims, permissions, and verdicts
+([ADR 0019](decisions/0019-two-products-one-surface.md)). The grid is the
+single agent surface: "ask an agent" lands on it, and a second conversation
+product is retired, not shipped alongside.
+
 ## 2. Ink is data (Tufte)
 
 - No decorative chrome: no Cards, Chips, SegmentedButtons, filled icon
@@ -50,11 +61,14 @@ user opens, not a page they land on.
 
 - The user decides what is visible: PROFILE and SETUP are toggles on the
   status rule — one simple place, always reachable, never forced.
-- Deny-by-default is *shown*, not assumed: pending permissions render
+- Deny-by-default is _shown_, not assumed: pending permissions render
   in-flow with reject-first ordering; rejections are recorded as data on
   the turn (`PERM → reject`), never dropped.
-- Setup auto-opens only until the doc is bound (onboarding), then it
-  collapses. Binding state is visible at all times on the status rule.
+- Setup never owns the first screen, bound or not: the workspace, the
+  backend and the key are reached from the status rule, which shows the
+  binding state at all times. Setup collapses again when the document
+  becomes bound, and the human reopens it whenever they want it
+  ([ADR 0019](decisions/0019-two-products-one-surface.md) §5).
 - A stuck turn must be stoppable from the same place (stop / cancel
   rejects a pending permission first).
 
@@ -191,9 +205,14 @@ rules below are therapeutic before they are aesthetic.
   - **L2 — beats**: dim mono rows per tool/decision/thought.
   - **L3 — full**: payloads, context assembly, the meaning cut, loop
     warnings — expanded on tap only.
-  Capability flags gate which layers **exist** (per doc/user:
-  `inspector: none | summary | full`); view toggles gate which are
-  **open**. Transparency is always available, never mandatory.
+    Capability flags gate which layers **exist** (per doc/user:
+    `inspector: none | summary | full`); view toggles gate which are
+    **open**. Transparency is always available, never mandatory.
+  - **The ladder is the density dial.** L0–L3 is how the same world is
+    read at two densities (§1): the Simple product is the grid collapsed
+    toward L0/L1, the Workshop opens the same content spatially. Density
+    is a dial, not a mode — there is no "simple mode" toggle, and a
+    density change never changes what the world contains.
   - The **world inspector pane** (under the agent doc) obeys the same
     ladder: collapsed it is one L0 rule that leads with the top NEED
     (`1 needs you · perm: …`) instead of raw counts; expanded it becomes

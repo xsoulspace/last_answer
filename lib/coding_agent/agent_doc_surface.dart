@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/browser/browser_entry.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
@@ -25,11 +26,11 @@ import 'package:lastanswer/coding_agent/product_autonomy.dart';
 import 'package:lastanswer/coding_agent/product_coding_change_view.dart';
 import 'package:lastanswer/coding_agent/product_local_pair.dart';
 import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
+import 'package:lastanswer/coding_agent/project_operations/project_operations_entry.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/turn_queue.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show
         InferenceClientBinding,
@@ -335,7 +336,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       _ => en,
     };
     final autonomy = _autonomy;
+    // DESIGN §10 — harness machinery is collapsed until asked. A stopped
+    // board is not mandatory reading for writing a note, and it must not
+    // steal the first screen (the bar overflowed a 300px split).
     if (autonomy == null) {
+      if (!_ladderOpen) return const SizedBox.shrink();
       return Align(
         alignment: Alignment.centerLeft,
         child: TextButton(
@@ -377,7 +382,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
               key: const Key('coding_agent.autonomy.open'),
               onPressed: autonomy.preview.url == null
                   ? null
-                  : () => launchUrl(autonomy.preview.url!),
+                  : () => openWorkspaceBrowser(
+                      context,
+                      initialUrl: autonomy.preview.url,
+                    ),
               child: Text(
                 label('Open live board', 'Apri bacheca', 'Открыть доску'),
               ),
@@ -417,8 +425,16 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   final _composerFocus = FocusNode();
   final _expandedBeats = <int>{};
   String? _pickError;
-  bool _setupOpen = false;
+  // DESIGN §4 — setup is a TOGGLE on the status rule: always reachable,
+  // never forced. The workspace field, the backend and the key do not own
+  // the first screen; the human opens setup when they want it. It collapses
+  // again the moment the doc becomes bound (see [_persist]).
+  bool _setupPinned = false;
   bool _profileOpen = false;
+  // DESIGN §10 — the ladder is the density dial. An ordinary user lands on
+  // L0/L1 (status rule + the ··· row). L2 beats are one tap away, never
+  // mandatory reading for writing a note. Not a mode toggle.
+  bool _ladderOpen = false;
   String? _routingError;
   bool _meaningAdmissionBusy = false;
   bool _hostedConsentGranted = false;
@@ -1276,9 +1292,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
 
   bool get _hasBoundWorkspace => _doc.agent?.workspaces.isNotEmpty ?? false;
 
-  /// Setup stays open until the doc is bound (onboarding), then the user
-  /// toggles it. Sovereignty: the human decides what is visible.
-  bool get _showSetup => _setupOpen || !_hasBoundWorkspace;
+  /// DESIGN §4 — setup is visible only when the human asked for it. The
+  /// status rule keeps binding state visible either way, so a collapsed
+  /// setup never hides that the document is unbound.
+  bool get _showSetup => _setupPinned;
 
   @override
   void dispose() {
@@ -1310,7 +1327,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   }
 
   void _persist(final AgentDocModel agent) {
+    final wasBound = _hasBoundWorkspace;
     _doc = _doc.copyWith(agent: agent);
+    // DESIGN §4 — setup collapses once the doc is bound: the workspace, the
+    // backend and the key have done their job, and a pane that keeps
+    // squeezing the transcript hides the work itself. The human reopens it
+    // from the status rule whenever they want it back.
+    if (!wasBound && _hasBoundWorkspace) {
+      _setupPinned = false;
+    }
     widget.onDocChanged?.call(_doc);
   }
 
@@ -1474,6 +1499,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           (autonomy == null
               ? MeaningExperimentPreparation.instance.toolsFor(workspaceBinding)
               : null);
+      // A scripted lane that already named its tools (the widget tests'
+      // injected handler) does not also need product workspace prep. That
+      // prep asks path_provider for an application-support directory, which
+      // a widget test has no plugin for. The product GUI, which injects no
+      // tools, still prepares.
       if (injectedTools == null && workspaceBinding.isNotEmpty) {
         try {
           final prepared =
@@ -1962,11 +1992,12 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     toolCount: current?.openTurn?.toolCalls.length ?? 0,
                     setupOpen: _showSetup,
                     profileOpen: _profileOpen,
+                    bound: _hasBoundWorkspace,
                     onToggleSetup: () =>
-                        setState(() => _setupOpen = !_setupOpen),
+                        setState(() => _setupPinned = !_showSetup),
                     onToggleProfile: () =>
                         setState(() => _profileOpen = !_profileOpen),
-                    onOpenSetup: () => setState(() => _setupOpen = true),
+                    onOpenSetup: () => setState(() => _setupPinned = true),
                     onCancel: controller.cancelCurrent,
                   ),
                   if (controller.error != null)
@@ -1975,7 +2006,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                       text: 'error: ${controller.error}',
                       color: theme.colorScheme.errorContainer,
                     ),
-                  if (_showSetup)
+                  if (_showSetup && setupCap > 0)
                     _SetupPaneSlot(
                       cap: setupCap,
                       child: _SetupPane(
@@ -2005,6 +2036,25 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                       ),
                     ),
                   _autonomyBar(),
+                  if (_ladderOpen && _hasBoundWorkspace)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        key: const Key('coding_agent.project_operations.open'),
+                        onPressed: () async {
+                          try {
+                            await openDeclaredProjectOperations(
+                              context,
+                              workspace: Directory(_workspaceField.text.trim()),
+                            );
+                          } on Object catch (error) {
+                            if (mounted) setState(() => _routingError = '$error');
+                          }
+                        },
+                        icon: const Icon(Icons.web_outlined, size: 16),
+                        label: const Text('Project commands and preview'),
+                      ),
+                    ),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2018,6 +2068,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                             onMeaningAction: meaningAction,
                             meaningAdmissionBusy: _meaningAdmissionBusy,
                             docWorkspace: _workspaceField.text.trim(),
+                            foldHarness: !_ladderOpen,
+                            onOpenLadder: () =>
+                                setState(() => _ladderOpen = true),
                             expandedBeats: _expandedBeats,
                             onToggleBeat: (final id) => setState(() {
                               _expandedBeats.contains(id)
@@ -2148,6 +2201,7 @@ class _StatusRule extends StatelessWidget {
     required this.toolCount,
     required this.setupOpen,
     required this.profileOpen,
+    required this.bound,
     required this.onToggleSetup,
     required this.onToggleProfile,
     required this.onOpenSetup,
@@ -2161,6 +2215,11 @@ class _StatusRule extends StatelessWidget {
   final int toolCount;
   final bool setupOpen;
   final bool profileOpen;
+
+  /// DESIGN §4 — binding state stays on the status rule at all times, even
+  /// when setup is collapsed. Distinct from the path label: a typed-but-
+  /// unpinned field is not a bound document.
+  final bool bound;
   final VoidCallback onToggleSetup;
   final VoidCallback onToggleProfile;
   final VoidCallback onOpenSetup;
@@ -2169,13 +2228,15 @@ class _StatusRule extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final wsName = workspace.isEmpty
-        ? 'no workspace'
+    final wsName = !bound
+        ? 'not bound'
+        : workspace.isEmpty
+        ? 'not bound'
         : workspace.split('/').where((p) => p.isNotEmpty).last;
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Row(
             children: [
               Text('AGENT', style: _label(theme)),
@@ -2196,6 +2257,7 @@ class _StatusRule extends StatelessWidget {
               const SizedBox(width: 14),
               Flexible(
                 child: InkWell(
+                  key: const Key('coding_agent.binding'),
                   onTap: onOpenSetup,
                   child: Text(
                     wsName,
@@ -2203,9 +2265,9 @@ class _StatusRule extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: _mono(
                       theme,
-                      color: workspace.isEmpty
-                          ? theme.colorScheme.onSurfaceVariant
-                          : theme.colorScheme.onSurface,
+                      color: bound
+                          ? theme.colorScheme.onSurface
+                          : theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -2565,6 +2627,8 @@ class _Conversation extends StatelessWidget {
     required this.onMeaningAction,
     required this.meaningAdmissionBusy,
     required this.docWorkspace,
+    required this.foldHarness,
+    required this.onOpenLadder,
     required this.expandedBeats,
     required this.onToggleBeat,
     required this.backend,
@@ -2592,6 +2656,11 @@ class _Conversation extends StatelessWidget {
   final Future<Map<String, Object?>> Function(String action) onMeaningAction;
   final bool meaningAdmissionBusy;
   final String docWorkspace;
+
+  /// DESIGN §10 — L0/L1 default. Folds L2 beats and the verdict rule so a
+  /// note never requires reading a harness concept. One tap opens them.
+  final bool foldHarness;
+  final VoidCallback onOpenLadder;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
   final String backend;
@@ -2611,7 +2680,6 @@ class _Conversation extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final current = controller.current;
-    final theme = Theme.of(context);
     final turns = current?.turns ?? const <HarnessTurn>[];
     final queued = controller.queue.openInLane().toList();
     final header = <Widget>[
@@ -2660,21 +2728,14 @@ class _Conversation extends StatelessWidget {
         ),
       if (controller.pendingPermission == null && (current?.running ?? false))
         const _LiveRow(),
-      if (current?.hasVerdict ?? false)
+      if ((current?.hasVerdict ?? false) && !foldHarness)
         _VerdictRow(turn: current!.turns.last, showCard: true),
+      if ((current?.hasVerdict ?? false) && foldHarness)
+        _LadderFold(label: 'result', onOpen: onOpenLadder),
     ];
     final footer = <Widget>[
       if (docWorkspace.trim().isEmpty && turns.isEmpty)
         const _EmptyStateGuide(key: Key('coding_agent.empty_state')),
-      if (turns.isEmpty)
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            'conversations start here — the surface is text; every line '
-            'is a node you and the agent share.',
-            style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
-          ),
-        ),
     ];
     return Semantics(
       identifier: 'coding_agent.transcript',
@@ -2703,7 +2764,11 @@ class _Conversation extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 14),
             child: _TurnView(
               turn: turn,
+              // The L2 beats are the agent's visible activity; only a
+              // ProductAutonomy workspace folds its work details.
               foldTools: ProductAutonomy.forWorkspace(docWorkspace) != null,
+              foldHarness: foldHarness,
+              onOpenLadder: onOpenLadder,
               backend: backend,
               expandedBeats: expandedBeats,
               onToggleBeat: onToggleBeat,
@@ -2856,6 +2921,8 @@ class _TurnView extends StatelessWidget {
   const _TurnView({
     required this.turn,
     required this.foldTools,
+    required this.foldHarness,
+    required this.onOpenLadder,
     required this.backend,
     required this.expandedBeats,
     required this.onToggleBeat,
@@ -2869,6 +2936,8 @@ class _TurnView extends StatelessWidget {
 
   final HarnessTurn turn;
   final bool foldTools;
+  final bool foldHarness;
+  final VoidCallback onOpenLadder;
   final String backend;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
@@ -2977,11 +3046,17 @@ class _TurnView extends StatelessWidget {
           child: _TurnBody(
             turn: turn,
             foldTools: foldTools,
+            foldHarness: foldHarness,
+            onOpenLadder: onOpenLadder,
             expandedBeats: expandedBeats,
             onToggleBeat: onToggleBeat,
           ),
         ),
-        if (turn.guidance != null)
+        if (turn.guidance != null && foldHarness)
+          // The ladder must be REACHABLE: a hidden harness layer without a
+          // way to open it is a lost state, not a collapsed one.
+          _LadderFold(label: 'guidance', onOpen: onOpenLadder),
+        if (turn.guidance != null && !foldHarness)
           _GridRow(
             role: 'GUIDE',
             child: SelectableText(
@@ -3002,12 +3077,16 @@ class _TurnBody extends StatelessWidget {
   const _TurnBody({
     required this.turn,
     required this.foldTools,
+    required this.foldHarness,
+    required this.onOpenLadder,
     required this.expandedBeats,
     required this.onToggleBeat,
   });
 
   final HarnessTurn turn;
   final bool foldTools;
+  final bool foldHarness;
+  final VoidCallback onOpenLadder;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
 
@@ -3068,23 +3147,30 @@ class _TurnBody extends StatelessWidget {
     }
 
     if (foldTools && toolDetails.isNotEmpty) {
+      // A ProductAutonomy workspace folds its work details. The fold is a
+      // hairline text row, not an ExpansionTile: a card in a doc surface is
+      // material chrome (DESIGN §2).
       children.add(
-        Material(
-          color: Colors.transparent,
-          child: ExpansionTile(
-            title: Text('Work details', style: theme.textTheme.bodySmall),
-            tilePadding: EdgeInsets.zero,
-            children: toolDetails,
-          ),
+        _LadderFold(
+          label: '${toolDetails.length} steps',
+          onOpen: onOpenLadder,
+          children: toolDetails,
         ),
       );
     } else {
+      // DESIGN §10 — L2 beats are what the agent IS DOING, and they stay on
+      // the grid: dim mono rows, no reading effort, no harness jargon. The
+      // ladder defers the HARNESS layers (verdict, guidance), not the work.
       children.addAll(toolDetails);
     }
 
     // Permission round-trips recorded on this turn. A remote answer is
     // recorded exactly like a local one — indistinguishable except by
     // the resolved origin label (ADR 0005 §5, DESIGN §9).
+    //
+    // DESIGN §4 — the human's OWN decision is never behind a fold: a
+    // rejection is recorded as data on the turn and stays visible. The
+    // ladder defers harness layers, not the human's own outcomes.
     for (final p in turn.permissions) {
       final origin = p.originLabel;
       children.add(
@@ -3108,8 +3194,14 @@ class _TurnBody extends StatelessWidget {
     // the SYS card above is the session's LATEST verdict (attention row);
     // this one stays with the turn — including an interrupted turn's
     // honest partial spend — after later turns push the card off.
+    // DESIGN §10 — at L0/L1 the verdict is a fold, not mandatory reading.
+    // The fold IS the way back to it: a collapsed layer stays reachable.
     if (turn.isDone) {
-      children.add(_VerdictRow(turn: turn, showCard: false));
+      if (foldHarness) {
+        children.add(_LadderFold(label: 'verdict', onOpen: onOpenLadder));
+      } else {
+        children.add(_VerdictRow(turn: turn, showCard: false));
+      }
     }
     if (turn.toolCalls.isNotEmpty && turn.permissions.isEmpty) {
       // (tool calls already render as beats; nothing extra)
@@ -3268,6 +3360,42 @@ class _GridRow extends StatelessWidget {
 
 /// Live pulse while a turn runs (honest: only what the host truly sees —
 /// tool-beat count and elapsed wall time; spend lands with the verdict).
+/// DESIGN §10 — the L2 fold. One tap opens the ladder (beats, verdict,
+/// permissions on the turn). Hairline text, no card, no expansion chrome.
+class _LadderFold extends StatelessWidget {
+  const _LadderFold({
+    required this.label,
+    required this.onOpen,
+    this.children = const [],
+  });
+
+  final String label;
+  final VoidCallback onOpen;
+  final List<Widget> children;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          key: const Key('coding_agent.ladder.open'),
+          onTap: onOpen,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Text(
+              '···  $label',
+              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ),
+        ),
+        ...children,
+      ],
+    );
+  }
+}
+
 class _LiveRow extends StatelessWidget {
   const _LiveRow();
 
@@ -3488,14 +3616,14 @@ class _Composer extends StatelessWidget {
       children: [
         const _Rule(),
         Padding(
-          padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
+          padding: const EdgeInsets.fromLTRB(12, 4, 12, 6),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
                 width: _gutterWidth - 8,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 14),
+                  padding: const EdgeInsets.only(top: 8),
                   child: Text('YOU', style: _label(theme)),
                 ),
               ),
@@ -3528,7 +3656,7 @@ class _Composer extends StatelessWidget {
                       hintText: running
                           ? 'running — ⏎ steers (queues after this turn), '
                                 '⌘⏎ sends now'
-                          : 'task sentence — ⏎ to delegate, ⇧⏎ newline',
+                          : 'message — ⏎ to send, ⇧⏎ newline',
                       hintStyle: _mono(theme),
                     ),
                   ),
@@ -4482,19 +4610,10 @@ class _EmptyStateGuide extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 3,
           children: [
-            Text('Bind a workspace to start — open SETUP above. Four steps:'),
-            Text('1. Pick a project directory — the agent works ONLY there.'),
+            Text('Write a message. ⏎ sends it.'),
             Text(
-              '2. Write the task as ONE sentence that names the file and '
-              'what “done” means.',
-            ),
-            Text(
-              '3. Every write the agent makes asks you first — allow or '
-              'reject; rejecting means the change never lands.',
-            ),
-            Text(
-              '4. When the turn ends, the verdict (PASS/FAIL) lands in the '
-              'SYS line — with decisions, rounds, tokens, wall time.',
+              'A project is not bound yet — tap SETUP on the status rule '
+              'when the agent should work in a folder.',
             ),
           ],
         ),

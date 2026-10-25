@@ -1,15 +1,21 @@
 import 'dart:io';
 
+import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/settings/features/supervisor_service_io.dart';
 import 'package:lastanswer/settings/features/supervisor_view.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The on-device supervisor read surface (oka ADR-0041 §6): plans in a
 /// [SpecStore] plus this device's records project into one status view.
 /// Every test writes only into its temp dirs.
 void main() {
+  // The world's paired registry reads device-local preferences.
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
+
   late Directory temp;
   late Directory plans;
   late Directory appSupport;
@@ -268,5 +274,31 @@ void main() {
       ),
       throwsFormatException,
     );
+  });
+
+  test('the authorized world is the one the open project binds', () {
+    final bound = ProjectModel.emptyAgent(
+      worldBinding: const WorldBindingModel(
+        worldId: 'w1',
+        endpoint: 'http://127.0.0.1:1234/',
+      ),
+    );
+    expect(SupervisorService.authorizedWorldId(bound), 'w1');
+    // A project that binds no world authorizes none — the refusal stays
+    // visible instead of guessing a world.
+    expect(SupervisorService.authorizedWorldId(ProjectModel.emptyAgent()), isNull);
+    expect(
+      SupervisorService.authorizedWorldId(ProjectModel.emptyNote),
+      isNull,
+    );
+    expect(SupervisorService.authorizedWorldId(null), isNull);
+  });
+
+  test('a world this device cannot reach refuses in words', () async {
+    final resolution = await SupervisorService.resolveAgentClient(
+      worldId: 'la-no-such-world',
+    );
+    expect(resolution.client, isNull);
+    expect(resolution.refusal, contains('not reachable from this device'));
   });
 }

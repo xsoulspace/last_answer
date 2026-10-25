@@ -382,5 +382,11 @@
   "worldTaskMinutes": "Valid for (minutes)",
   "worldTaskRequired": "Required",
   "worldTaskRevoke": "Revoke",
-  "worldTaskAuthorize": "Authorize task"
+  "worldTaskAuthorize": "Authorize task",
+  "supervisorExecutionRun": "Run declared automations",
+  "supervisorExecutionEnable": "Enable schedules",
+  "supervisorExecutionPause": "Pause schedules",
+  "supervisorExecutionCancel": "Cancel running pass",
+  "supervisorExecutionAppOpen": "Execution runs only while Last Answer is open.",
+  "supervisorExecutionStop": "Stop owned work"
 }

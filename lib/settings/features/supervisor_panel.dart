@@ -1,4 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/settings/features/supervisor_agent_client.dart';
 import 'package:lastanswer/settings/features/supervisor_service.dart';
 import 'package:lastanswer/settings/features/supervisor_view.dart';
 
@@ -19,20 +20,92 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
   SupervisorService? _service;
   Future<SupervisorView>? _view;
 
+  /// The opened project — the app's own source for WHICH world this
+  /// device is authorized to use. Captured, not read from a dead
+  /// context: the pane may be rebuilt while the execution lives on.
+  OpenedProjectNotifier? _projects;
+
+  /// The seat-backed client for that world, and the exact reason there
+  /// is none. The seat is the app's existing one — this pane only holds
+  /// it and releases it.
+  SupervisorAgentClientResolution? _client;
+  Future<SupervisorAgentClientResolution>? _resolving;
+
   @override
   void initState() {
     super.initState();
     unawaited(_prepare());
   }
 
+  @override
+  void dispose() {
+    // The client lifecycle ends with the pane that earned the seat.
+    unawaited(_client?.release?.call());
+    super.dispose();
+  }
+
   Future<void> _prepare() async {
+    // Read the app's own source of the authorized world BEFORE the first
+    // await: a context read across an async gap is a dead context.
+    _projects = context.read<OpenedProjectNotifier>();
     final service = await SupervisorService.forDevice();
+    if (service.executionSupported) {
+      service.prepareExecution(agentClientResolver: _resolveAgentClient);
+    }
     if (!mounted) return;
     setState(() {
       _service = service;
       _view = service.load();
     });
+    // Ask the world what it serves NOW, so the pane states the exact
+    // capability (or the exact refusal) before anyone runs anything.
+    unawaited(_resolveAgentClient());
   }
+
+  /// The app's EXISTING harness client for the world this device is
+  /// authorized to use: the world the open project is bound to (the user
+  /// chose it; nothing is hardcoded). No new world, no new identity, no
+  /// credentials here — the seat comes from the app's own bridge.
+  ///
+  /// The answer is either the client or the EXACT reason there is none.
+  /// It never claims the delegation is qualified.
+  Future<SupervisorAgentClientResolution> _resolveAgentClient() {
+    final pending = _resolving;
+    if (pending != null) return pending;
+    final resolution = _resolve();
+    _resolving = resolution;
+    return resolution.whenComplete(() => _resolving = null);
+  }
+
+  Future<SupervisorAgentClientResolution> _resolve() async {
+    final service = _service;
+    if (service == null) {
+      return const SupervisorAgentClientResolution.refused(
+        'the supervisor service is not ready',
+      );
+    }
+    final cached = _client;
+    if (cached != null && cached.available) return cached;
+    final worldId = _authorizedWorldId();
+    if (worldId == null || worldId.isEmpty) {
+      const refusal = SupervisorAgentClientResolution.refused(
+        'no world is bound to the open project — an agent automation needs a '
+        'world that serves a seat',
+      );
+      if (mounted) setState(() => _client = refusal);
+      return refusal;
+    }
+    final resolution = await SupervisorService.resolveAgentClient(
+      worldId: worldId,
+    );
+    if (mounted) setState(() => _client = resolution);
+    return resolution;
+  }
+
+  /// The world the open project is bound to — the app's own notion of
+  /// the authorized world. Null when the open project binds none.
+  String? _authorizedWorldId() =>
+      SupervisorService.authorizedWorldId(_projects?.value.value);
 
   Future<void> _refresh() {
     final service = _service;
@@ -121,6 +194,70 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
             ),
           ],
         ),
+        if (_service?.execution case final execution?)
+          ListenableBuilder(
+            listenable: execution,
+            builder: (final context, final child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.supervisorExecutionAppOpen),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    TextButton.icon(
+                      onPressed: execution.running
+                          ? null
+                          : () => unawaited(execution.run()),
+                      icon: const Icon(Icons.play_arrow),
+                      label: Text(l10n.supervisorExecutionRun),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        if (execution.enabled) {
+                          execution.pause();
+                        } else {
+                          execution.enable();
+                        }
+                      },
+                      icon: Icon(
+                        execution.enabled ? Icons.pause : Icons.schedule,
+                      ),
+                      label: Text(
+                        execution.enabled
+                            ? l10n.supervisorExecutionPause
+                            : l10n.supervisorExecutionEnable,
+                      ),
+                    ),
+                    if (execution.running)
+                      TextButton(
+                        onPressed: execution.cancel,
+                        child: Text(l10n.supervisorExecutionCancel),
+                      ),
+                    TextButton.icon(
+                      onPressed: () => unawaited(execution.stop()),
+                      icon: const Icon(Icons.stop),
+                      label: Text(l10n.supervisorExecutionStop),
+                    ),
+                  ],
+                ),
+                if (execution.lastError case final error?)
+                  SelectableText(
+                    error,
+                    style: TextStyle(color: context.theme.colorScheme.error),
+                  ),
+                if (_client?.refusal case final refusal?)
+                  SelectableText(
+                    refusal,
+                    style: TextStyle(color: context.theme.colorScheme.error),
+                  ),
+                if (execution.lastReport case final report?)
+                  SelectableText(report),
+                for (final entry in execution.logLines.entries)
+                  if (entry.value.isNotEmpty)
+                    SelectableText('${entry.key}\n${entry.value.join('\n')}'),
+              ],
+            ),
+          ),
         FutureBuilder<SupervisorView>(
           future: _view,
           builder: (final context, final snapshot) {
@@ -182,10 +319,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
     );
   }
 
-  Widget _group(
-    final String title,
-    final List<SupervisorAutomationView> rows,
-  ) {
+  Widget _group(final String title, final List<SupervisorAutomationView> rows) {
     if (rows.isEmpty) return const SizedBox.shrink();
     final outline = context.theme.colorScheme.outline;
     return Column(
@@ -430,9 +564,7 @@ class _DayCell extends StatelessWidget {
   Widget build(final BuildContext context) {
     final now = DateTime.now();
     final isToday =
-        date.day == now.day &&
-        date.month == now.month &&
-        date.year == now.year;
+        date.day == now.day && date.month == now.month && date.year == now.year;
     final style = context.textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 3),
@@ -504,8 +636,13 @@ final class _PlannedSchedule {
   DateTime? _todayAtAnchor() {
     final anchor = atMinutes;
     if (anchor == null) return null;
-    return DateTime(today.year, today.month, today.day, anchor ~/ 60,
-        anchor % 60);
+    return DateTime(
+      today.year,
+      today.month,
+      today.day,
+      anchor ~/ 60,
+      anchor % 60,
+    );
   }
 
   /// The next planned run after "now" (null only for non-positive
@@ -522,8 +659,7 @@ final class _PlannedSchedule {
   List<DateTime> upcoming(final int count) {
     final first = firstRun;
     if (first == null) return const <DateTime>[];
-    final step =
-        _anchored ? Duration(days: _cadenceDays) : period;
+    final step = _anchored ? Duration(days: _cadenceDays) : period;
     final runs = <DateTime>[first];
     for (var i = 1; i < count; i++) {
       runs.add(runs.last.add(step));
@@ -559,9 +695,7 @@ enum _EditorAction { save, delete }
 
 final class _EditorOutcome {
   const _EditorOutcome.save(this.draft) : action = _EditorAction.save;
-  const _EditorOutcome.delete()
-    : action = _EditorAction.delete,
-      draft = null;
+  const _EditorOutcome.delete() : action = _EditorAction.delete, draft = null;
 
   final _EditorAction action;
   final SupervisorAutomationDraft? draft;
@@ -845,8 +979,8 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                         decoration: InputDecoration(
                           hintText: '03:00',
                           isDense: true,
-                          errorText: _at.text.trim().isNotEmpty &&
-                                  _atMinutes == null
+                          errorText:
+                              _at.text.trim().isNotEmpty && _atMinutes == null
                               ? l10n.supervisorSectionTimeHint
                               : null,
                         ),

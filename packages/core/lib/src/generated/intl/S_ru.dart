@@ -1084,4 +1084,23 @@ class SRu extends S {
 
   @override
   String get worldTaskAuthorize => 'Разрешить задачу';
+
+  @override
+  String get supervisorExecutionRun => 'Запустить автоматизации';
+
+  @override
+  String get supervisorExecutionEnable => 'Включить расписания';
+
+  @override
+  String get supervisorExecutionPause => 'Приостановить расписания';
+
+  @override
+  String get supervisorExecutionCancel => 'Отменить текущий запуск';
+
+  @override
+  String get supervisorExecutionAppOpen =>
+      'Выполнение доступно, пока Last Answer открыт.';
+
+  @override
+  String get supervisorExecutionStop => 'Остановить запущенные задачи';
 }

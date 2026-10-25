@@ -7,7 +7,6 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/doc/chat_document_view.dart';
 import 'package:lastanswer/home/tags/tags.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/idea/create_idea_screen.dart';
@@ -94,7 +93,6 @@ class HomeScreen extends StatelessWidget {
           StorageBackendsNotifier.instance.docReplicaStore;
       StorageBackendsNotifier.onSyncCycle = () {
         AgentDocSurface.debugSurface?.refreshAfterMeshSync();
-        ChatDocumentView.debugSurface?.refresh();
       };
       return true;
     }());
@@ -158,7 +156,9 @@ class _VerticalBar extends StatelessWidget {
             context.read<OpenedProjectNotifier>().createNoteProject(context);
           },
           onChatTap: () {
-            context.read<OpenedProjectNotifier>().createChatProject(context);
+            // ADR 0019 — the chat affordance opens the harness-backed grid
+            // (an unbound agent doc), never the retired bubble surface.
+            context.read<OpenedProjectNotifier>().createAgentProject(context);
           },
         ),
       ],

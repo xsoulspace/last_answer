@@ -126,6 +126,10 @@ dependencies:
   # is already overridden below to the same local checkout.
   oka_supervisor:
     path: ../../oka/packages/oka_supervisor
+  oka_core:
+    path: ../../oka/packages/oka_core
+  resource_composition: ^0.8.1
+  flutter_inappwebview: ^6.1.5
   # The engine and host live in ecsai_harness.
   # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
   xsoulspace_agentic_harness:
@@ -200,8 +204,6 @@ dev_dependencies:
   # okaRun; oka_android the Android pipeline/steps. No `oka` CLI dep needed.
   oka_android:
     path: ../../oka/packages/oka_android
-  oka_core:
-    path: ../../oka/packages/oka_core
   # Store publish targets (ADR-0014): declared in tool/oka_pipeline.dart,
   # run via `oka run publish-play` / `oka run publish-huawei`.
   oka_huawei:

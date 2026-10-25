@@ -1083,4 +1083,23 @@ class SIt extends S {
 
   @override
   String get worldTaskAuthorize => 'Autorizza attività';
+
+  @override
+  String get supervisorExecutionRun => 'Esegui automazioni dichiarate';
+
+  @override
+  String get supervisorExecutionEnable => 'Attiva pianificazioni';
+
+  @override
+  String get supervisorExecutionPause => 'Sospendi pianificazioni';
+
+  @override
+  String get supervisorExecutionCancel => 'Annulla esecuzione in corso';
+
+  @override
+  String get supervisorExecutionAppOpen =>
+      'Le automazioni vengono eseguite solo mentre Last Answer è aperto.';
+
+  @override
+  String get supervisorExecutionStop => 'Ferma attività avviate';
 }

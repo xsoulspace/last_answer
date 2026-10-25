@@ -1075,4 +1075,23 @@ class SEn extends S {
 
   @override
   String get worldTaskAuthorize => 'Authorize task';
+
+  @override
+  String get supervisorExecutionRun => 'Run declared automations';
+
+  @override
+  String get supervisorExecutionEnable => 'Enable schedules';
+
+  @override
+  String get supervisorExecutionPause => 'Pause schedules';
+
+  @override
+  String get supervisorExecutionCancel => 'Cancel running pass';
+
+  @override
+  String get supervisorExecutionAppOpen =>
+      'Execution runs only while Last Answer is open.';
+
+  @override
+  String get supervisorExecutionStop => 'Stop owned work';
 }

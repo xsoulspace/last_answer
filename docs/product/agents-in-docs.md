@@ -56,6 +56,11 @@ Internet/VPS transport extend the same world later.
 
 > Forward tracking lives in [docs/PLAN.md](../PLAN.md) (production path,
 > gates, ledger); the landed record in [docs/history.md](../history.md).
+> The Phase 1–6 labels below are the Agents-in-Docs phase vocabulary; the
+> ADR 0019 density phases (surface routing, seat work verbs, workshop
+> foundation, concurrent candidates) are scoped separately in
+> [PLAN.md](../PLAN.md) and in
+> [ADR 0019](../decisions/0019-two-products-one-surface.md).
 > The agent handoff brief is
 > [docs/HANDOFF-agents-in-docs.md](../HANDOFF-agents-in-docs.md). Existing
 > AFM/provider and harness gates remain evidence requirements; they do not

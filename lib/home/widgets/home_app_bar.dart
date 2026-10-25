@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lastanswer/browser/browser_entry.dart';
+import 'package:lastanswer/browser/browser_strings.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_binding_sheet.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -68,16 +70,17 @@ class HomeAppBar extends StatelessWidget {
             actions:
                 [
                       IconButton(
-                        onPressed: () => context
-                            .read<OpenedProjectNotifier>()
-                            .createChatProject(context),
-                        tooltip: context.l10n.chat,
-                        icon: const Icon(Icons.forum_outlined),
+                        key: const Key('home.browser'),
+                        onPressed: () =>
+                            unawaited(openWorkspaceBrowser(context)),
+                        tooltip: BrowserStrings.of(context).windowTitle,
+                        icon: const Icon(Icons.web),
                       ),
                       IconButton(
+                        key: const Key('home.ask_agent'),
                         onPressed: () => unawaited(_newAgentDoc(context)),
-                        tooltip: 'New agent doc',
-                        icon: const Icon(Icons.smart_toy_outlined),
+                        tooltip: context.l10n.chat,
+                        icon: const Icon(Icons.forum_outlined),
                       ),
                       IconButton(
                         onPressed: onInfoTap,

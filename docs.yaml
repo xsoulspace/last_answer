@@ -12,6 +12,8 @@ sidebar:
         - "/decisions/0012-writable-agent-doc-and-acp-client-first"
     - - - Decision & refinement tools
         - "/product/refinement-tools"
+    - - - Project operations — the declaration file
+        - "/product/project-operations-declaration"
   - - Legal
     - - - Privacy Policy
         - "/legal/privacy-policy"

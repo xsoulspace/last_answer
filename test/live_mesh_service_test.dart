@@ -2,7 +2,6 @@
 // always flows, human activity is opt-in at the source, stopping sharing
 // RETRACTS what already left, and the owner's adoption gate keeps
 // unpaired peers out.
-import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';

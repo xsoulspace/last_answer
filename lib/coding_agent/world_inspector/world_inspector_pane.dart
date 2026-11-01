@@ -122,7 +122,7 @@ class WorldInspectorPane extends StatefulWidget {
   /// The attachable EXTERNAL world for [worldId] (null = first live
   /// world): manifest scan → the PAIRED-WORLD registry (ADR 0072,
   /// off-device) → the http facade route ONLY — an embed never spawns a
-  /// daemon; no facade means the honest refusal "arm `harnessd
+  /// daemon; no facade means the honest refusal "arm `ecsaid
   /// --serve`". Discovery never grants authority.
   static Future<TraceSource?> resolveExternal({final String? worldId}) =>
       external_worlds.resolveExternalAsync(worldId: worldId);
@@ -552,7 +552,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                         // or WHY nothing did (names the arm command).
                         if (_bindingUnreachable) {
                           return Text(
-                            'unreachable — arm `harnessd --serve` at '
+                            'unreachable — arm `ecsaid --serve` at '
                             '${bound.endpoint}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

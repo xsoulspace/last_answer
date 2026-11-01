@@ -124,7 +124,7 @@ final class LiveMeshService {
         if (!known) log?.call('live plane rejected $peer (not paired)');
         return known;
       },
-      onEvent: (final event, {required final bool authoritative}) =>
+      onEvent: (final event, {required final authoritative}) =>
           _onEvent(event),
       log: log,
     );
@@ -294,9 +294,8 @@ final class LiveActor {
     required this.displayName,
     required this.isAgent,
     required this.verb,
-    this.docId,
+    required this.since, this.docId,
     this.detail,
-    required this.since,
   });
 
   factory LiveActor.fromJson(final Map<String, Object?> json) => LiveActor(
@@ -403,12 +402,12 @@ abstract final class LiveVerbs {
 /// false, nothing leaves the device (the hooks can fire unconditionally).
 final class HumanLivePresence {
   HumanLivePresence({
-    required final LiveMeshService service,
+    required this._service,
     required this.actorId,
     this.displayName = 'Human',
     this.activityHold = const Duration(milliseconds: 1500),
     this.cursorInterval = const Duration(milliseconds: 300),
-  }) : _service = service;
+  });
 
   /// This device's human actor id (the mesh peer id — stable, distinct
   /// from agent actors).

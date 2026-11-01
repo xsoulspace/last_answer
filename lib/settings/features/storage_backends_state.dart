@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
-import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';
+import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_platform_stub.dart'
     if (dart.library.io) 'storage_backends_platform_io.dart'
     as platform;
@@ -609,6 +609,13 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// The live actor roster (null before the mesh replica ever opened).
   ActorRoster? get actorRoster => _actorRoster;
 
+  /// The app-wide actor roster, created on demand so the roster exists
+  /// before the mesh ever opens (ADR 0023: actor identities are minted
+  /// from Settings and chat, mesh or not). The same instance is attached
+  /// to the sync cycle when a mesh replica lands.
+  ActorRoster ensureActorRoster() =>
+      _actorRoster ??= ActorRoster(replicaId: meshPeerId);
+
   /// The live task board (null before the mesh replica ever opened).
   MeshTaskBoard? get taskBoard => _taskBoard;
 
@@ -783,7 +790,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
       notifyListeners();
       return report;
     }
-    var report = await replicate(
+    final report = await replicate(
       backend: StorageBackendId.mesh,
       jsonPayload: await buildPayload(),
     );

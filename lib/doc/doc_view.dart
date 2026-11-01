@@ -389,8 +389,9 @@ class _DocViewState extends State<DocView> {
   @override
   Widget build(final BuildContext context) {
     if (_loadingRoot) return const Center(child: CircularProgressIndicator());
-    if (_rootReadError != null)
+    if (_rootReadError != null) {
       return Center(child: Text('Document read failed: $_rootReadError'));
+    }
     final isRoot = _path.length == 1;
     assert(() {
       DocView.debugDocState = DocDebugState(

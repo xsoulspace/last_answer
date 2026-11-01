@@ -78,3 +78,14 @@ tool/*.dill
 
 # Frozen product experiment dependency lock.
 !assets/meaning_greeting/pubspec.lock
+
+# Client-local tool state (per-developer, never repo content)
+.codex/
+
+# Skill mirrors: clients reinstall their own path-drifted copies locally.
+# Canonical install lives in ~/.agents/skills (global); the repo copy of
+# impeccable is a third-party artifact with 19M self-contained binaries —
+# reinstallable, not source. The stewardship skill stays committed.
+.cursor/skills/
+.github/skills/
+.agents/skills/impeccable/

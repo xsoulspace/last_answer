@@ -45,7 +45,7 @@ final class MeshStorageService {
 
   /// Production code goes through [open]; tests inject a
   /// provider-agnostic [StorageService] to exercise the doc-sync seam
-  /// without networking. [identityKeyPair] pins THIS device's pairing
+  /// without networking. [_identityKeyPair] pins THIS device's pairing
   /// identity keypair so presence frames are signed deterministically in
   /// tests; when omitted, one is generated on first use.
   @visibleForTesting
@@ -54,12 +54,8 @@ final class MeshStorageService {
     required this.selfId,
     // Private field, named parameter: an initializing formal is impossible
     // here (private named params do not exist).
-    final SimpleKeyPair? identityKeyPair,
-  }) : _identityKeyPair = identityKeyPair,
-       // Private field, named parameter: an initializing formal is
-       // impossible here (private named params do not exist).
-       // ignore: prefer_initializing_formals
-       _session = MeshWorldSession(storage: storage, selfId: selfId) {
+    this._identityKeyPair,
+  }) : _session = MeshWorldSession(storage: storage, selfId: selfId) {
     _session.identityKeyPairProvider = _ensureIdentity;
   }
 

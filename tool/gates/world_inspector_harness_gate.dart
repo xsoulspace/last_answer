@@ -26,7 +26,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_mcp_harness/flutter_mcp_harness.dart';
-import 'package:universal_automation_interface/universal_automation_interface.dart';
 
 const _projectDir = '.';
 const _dartDefines = ['--dart-define-from-file=configs/envs/prod.json'];

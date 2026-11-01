@@ -4,9 +4,8 @@ import 'dart:isolate';
 
 import 'package:lastanswer/coding_agent/runtime_sha256.dart';
 import 'package:path_provider/path_provider.dart';
-// Reuse the native owner's bounded process and settlement lane.
-// ignore: implementation_imports
-import 'package:xsoulspace_agentic_harness/src/lifecycle/bounded_process.dart';
+// The bounded process and settlement lane moved to the published runtime.
+import 'package:universal_tooling_runtime/universal_tooling_runtime.dart';
 import 'package:xsoulspace_agentic_host/meaning_span_preview.dart';
 
 /// Product-owned native toolchain. No PATH or user SDK/cache discovery.

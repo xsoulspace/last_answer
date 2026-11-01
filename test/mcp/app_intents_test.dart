@@ -13,7 +13,9 @@
 //      action) with the next move named in the message.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/browser/browser_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
@@ -42,6 +44,8 @@ void main() {
     final published = {for (final s in appIntentCatalog) s.name};
     final families = <Set<AgentCallEntry>>[
       appMcpEntries(),
+      browserMcpEntries(),
+      realmChatMcpEntries(),
       agentMcpEntries(),
       docMcpEntries(),
       storageMcpEntries(),

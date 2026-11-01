@@ -19,11 +19,11 @@ void main() {
       expect(backend.bindings['external_acp'], isNotNull);
       // The router is built lazily per model request — resolve it.
       final router = backend.bindings['external_acp']!.buildRouter(
-        model: 'harnessd',
+        model: 'ecsaid',
       );
       expect(router, isNotNull);
       expect(
-        router!.models.containsKey(const ModelId('harnessd')),
+        router!.models.containsKey(const ModelId('ecsaid')),
         isTrue,
       );
     });

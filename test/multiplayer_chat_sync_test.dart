@@ -149,7 +149,6 @@ void main() {
       const Block(
         id: NodeId('m1'),
         type: BlockType.message,
-        content: '',
         role: ChatRole.user,
       ),
       const Block(

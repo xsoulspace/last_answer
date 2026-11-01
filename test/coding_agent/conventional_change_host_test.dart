@@ -54,7 +54,7 @@ void main() {
                   if (observation['action'] == 'apply') {
                     // A broken view cannot turn a acknowledged native effect
                     // into a failure or mutate the actual execution result.
-                    (observation['result'] as Map)['ok'] = false;
+                    (observation['result']! as Map)['ok'] = false;
                     throw StateError('simulated observer failure');
                   }
                 },

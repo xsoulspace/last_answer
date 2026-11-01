@@ -6,7 +6,6 @@
 // registry (what the mesh accept flow does with a signed envelope) and
 // attaches through it — bearer token included — reading the live
 // state. Everything after "the phone scanned the QR" is real code.
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';

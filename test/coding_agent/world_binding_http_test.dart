@@ -43,7 +43,7 @@ void main() {
   });
 
   test('a dead facade stays honest — null sample, never a throw', () async {
-    final binding = WorldBindingModel(
+    const binding = WorldBindingModel(
       worldId: 'harnessd-gone',
       endpoint: 'http://127.0.0.1:1',
     );

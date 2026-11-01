@@ -107,12 +107,11 @@ class OpenedProjectNotifier
     );
   }
 
-  /// ADR 0010 D2 / ADR 0019 — "ask an agent" is a projection of the
-  /// harness-backed grid, not a second product. Creates the same unbound
-  /// agent doc [createAgentProject] does. Kept so existing call sites and
-  /// tests keep a name; the bubble surface it used to mint is gone.
+  /// ADR 0023 — "chat" is the world conversation: a chat-format doc that
+  /// opens the durable realm threads (external human ↔ internal bots).
+  /// The coding lane stays a separate agent doc ([createAgentProject]).
   void createChatProject(final BuildContext context) {
-    createAgentProject(context);
+    loadProject(context: context, project: ProjectModel.emptyChat());
   }
 
   void deleteProject({final ProjectModel? project}) {

@@ -62,6 +62,7 @@ final class ActorProfile {
     this.kind = ActorKind.model,
     this.brainRef = '',
     this.role = '',
+    this.systemPrompt = '',
   }) : assert(actorId.length > 0, 'actorId is required'),
        assert(displayName.length > 0, 'displayName is required');
 
@@ -72,6 +73,7 @@ final class ActorProfile {
         kind: _actorKindFromJson(json['kind'] as String? ?? 'model'),
         brainRef: json['brainRef'] as String? ?? '',
         role: json['role'] as String? ?? '',
+        systemPrompt: json['systemPrompt'] as String? ?? '',
       );
 
   /// Stable across devices and sessions (ADR 0007 §1) — the roster key
@@ -90,12 +92,20 @@ final class ActorProfile {
   /// What the actor is for, in the user's words ('coder', 'reviewer'…).
   final String role;
 
+  /// The persona prompt: when non-empty it IS the actor's system prompt
+  /// (verbatim — the bot host only appends its one-line reply
+  /// discipline); when empty the runtime synthesizes one from the name
+  /// and role. Owner-approved edit surface: the context column's actor
+  /// panel and the Settings actors pane.
+  final String systemPrompt;
+
   Map<String, Object?> toJson() => {
     'actorId': actorId,
     'displayName': displayName,
     'kind': _actorKindToJson(kind),
     'brainRef': brainRef,
     'role': role,
+    'systemPrompt': systemPrompt,
   };
 
   /// DESIGN §9 — this actor's role-gutter label: the small-caps
@@ -112,16 +122,51 @@ final class ActorProfile {
       other.displayName == displayName &&
       other.kind == kind &&
       other.brainRef == brainRef &&
-      other.role == role;
+      other.role == role &&
+      other.systemPrompt == systemPrompt;
 
   @override
-  int get hashCode => Object.hash(actorId, displayName, kind, brainRef, role);
+  int get hashCode =>
+      Object.hash(actorId, displayName, kind, brainRef, role, systemPrompt);
 
   @override
   String toString() =>
       'ActorProfile($actorId, $displayName, ${_actorKindToJson(kind)}, '
-      'brain: $brainRef, role: $role)';
+      'brain: $brainRef, role: $role, persona: '
+      '${systemPrompt.isEmpty ? '-' : '${systemPrompt.length} chars'})';
 }
+
+/// The base of a brain binding: everything before the query string
+/// (`local:qwen?temperature=0.9` → `local:qwen`) — the shape the brain
+/// pickers match against [availableBrainOptions] refs.
+String brainRefBase(final String brainRef) {
+  final query = brainRef.indexOf('?');
+  return query < 0 ? brainRef : brainRef.substring(0, query);
+}
+
+/// Builds a `local:` brain binding from a cast and sampling overrides —
+/// the grammar [parseLocalBrainRef] reads (`actor_brain.dart`, read-only
+/// there): `local:<cast>[?temperature=<t>&repetitionPenalty=<r>]`. Unset
+/// overrides are omitted, so the chat defaults apply; values render with
+/// Dart's double toString, which `double.tryParse` round-trips.
+String buildLocalBrainRef(
+  final String cast, {
+  final double? temperature,
+  final double? repetitionPenalty,
+}) {
+  final params = <String>[
+    if (temperature != null) 'temperature=$temperature',
+    if (repetitionPenalty != null) 'repetitionPenalty=$repetitionPenalty',
+  ];
+  return params.isEmpty ? 'local:$cast' : 'local:$cast?${params.join('&')}';
+}
+
+/// Display name for an id with no roster profile: legacy human ids minted
+/// as `human-<replica digits>` read as 'Human' (the mint shape is
+/// unambiguous); anything else falls back to the bare id. Honest
+/// absence — never an invented identity, never a blank cell.
+String actorDisplayFallback(final String actorId) =>
+    RegExp(r'^human-\d+$').hasMatch(actorId) ? 'Human' : actorId;
 
 /// Resolves an actor's display name into a gutter label (DESIGN §9):
 /// alphanumeric words, dash-joined, small-caps by the label style,
@@ -156,9 +201,7 @@ final class ActorRoster {
   factory ActorRoster.fromJson(final Map<String, dynamic> json) =>
       ActorRoster._(ConvergenceDoc.fromJson(json));
 
-  ActorRoster._(final ConvergenceDoc doc)
-    : docId = doc.docId,
-      _doc = doc;
+  ActorRoster._(final ConvergenceDoc doc) : docId = doc.docId, _doc = doc;
 
   /// The kernel document id. One roster per user scope; entries are the
   /// `actor/` namespace inside it.
@@ -184,8 +227,7 @@ final class ActorRoster {
   void forceReplicaId(final String replicaId) {
     if (_doc.actorId == replicaId) return;
     final ops = _doc.pendingOps;
-    _doc = ConvergenceDoc(docId: docId, actorId: replicaId)
-      ..applyRemote(ops);
+    _doc = ConvergenceDoc(docId: docId, actorId: replicaId)..applyRemote(ops);
   }
 
   static String _key(final String actorId) => '$keyPrefix$actorId';
@@ -213,20 +255,23 @@ final class ActorRoster {
       kind: kind ?? ActorKind.model,
       brainRef: value['brainRef'] is String ? value['brainRef'] as String : '',
       role: value['role'] is String ? value['role'] as String : '',
+      systemPrompt: value['systemPrompt'] is String
+          ? value['systemPrompt'] as String
+          : '',
     );
   }
 
   /// All live profiles, deterministic order (name, then id) — small
   /// multiples render identically on every replica.
   List<ActorProfile> get all {
-    final profiles = <ActorProfile>[
-      for (final actorId in _liveIds()) ?get(actorId),
-    ]..sort((final a, final b) {
-      final byName = a.displayName.toLowerCase().compareTo(
-        b.displayName.toLowerCase(),
-      );
-      return byName != 0 ? byName : a.actorId.compareTo(b.actorId);
-    });
+    final profiles =
+        <ActorProfile>[for (final actorId in _liveIds()) ?get(actorId)]
+          ..sort((final a, final b) {
+            final byName = a.displayName.toLowerCase().compareTo(
+              b.displayName.toLowerCase(),
+            );
+            return byName != 0 ? byName : a.actorId.compareTo(b.actorId);
+          });
     return profiles;
   }
 
@@ -248,10 +293,7 @@ final class ActorRoster {
 
   /// Inserts or updates [profile] (ordinary local-first edit — an LWW
   /// op). Validated: ids and names are non-empty.
-  ActorProfile upsert(
-    final ActorProfile profile, {
-    final DateTime? now,
-  }) {
+  ActorProfile upsert(final ActorProfile profile, {final DateTime? now}) {
     final actorId = profile.actorId.trim();
     final displayName = profile.displayName.trim();
     if (actorId.isEmpty) {
@@ -260,19 +302,19 @@ final class ActorRoster {
     if (displayName.isEmpty) {
       throw ArgumentError.value(profile, 'profile', 'displayName is required');
     }
-    _doc.applyLocal(
-      {
-        'k': _key(actorId),
-        'v': ActorProfile(
-          actorId: actorId,
-          displayName: displayName,
-          kind: profile.kind,
-          brainRef: profile.brainRef.trim(),
-          role: profile.role.trim(),
-        ).toJson(),
-      },
-      now ?? DateTime.now(),
-    );
+    _doc.applyLocal({
+      'k': _key(actorId),
+      'v': ActorProfile(
+        actorId: actorId,
+        displayName: displayName,
+        kind: profile.kind,
+        brainRef: profile.brainRef.trim(),
+        role: profile.role.trim(),
+        // The persona is kept VERBATIM — leading/trailing layout may be
+        // deliberate prompt engineering.
+        systemPrompt: profile.systemPrompt,
+      ).toJson(),
+    }, now ?? DateTime.now());
     return profile;
   }
 

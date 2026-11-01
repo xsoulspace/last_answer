@@ -1103,4 +1103,331 @@ class SRu extends S {
 
   @override
   String get supervisorExecutionStop => 'Остановить запущенные задачи';
+
+  @override
+  String get worldChatUnsupported =>
+      'Чату мира нужна локальная файловая система (десктоп).';
+
+  @override
+  String get worldChatNewConversation => 'Новый разговор';
+
+  @override
+  String get worldChatTopicLabel => 'Тема';
+
+  @override
+  String get worldChatTopicHint => 'О чём этот разговор?';
+
+  @override
+  String get worldChatNoActorsYet =>
+      'Актёров пока нет — создайте в Настройки → Агенты и модели.';
+
+  @override
+  String get worldChatOpen => 'Открыть';
+
+  @override
+  String get worldChatCancel => 'Отмена';
+
+  @override
+  String get worldChatConversations => 'РАЗГОВОРЫ';
+
+  @override
+  String get worldChatNoConversations => 'Разговоров пока нет.';
+
+  @override
+  String get worldChatCloseTooltip => 'Закрыть разговор';
+
+  @override
+  String get worldChatPickHint => 'Выберите разговор или начните новый.';
+
+  @override
+  String get worldChatFirstWord =>
+      'Скажите первое слово — актёры этого разговора его услышат.';
+
+  @override
+  String get worldChatComposerHint => 'Напишите в разговор…';
+
+  @override
+  String get worldChatSend => 'Отправить';
+
+  @override
+  String worldChatParticipants(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count участников',
+      many: '$count участников',
+      few: '$count участника',
+      one: '$count участник',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String worldChatBeats(int count) {
+    return '$count сообщений';
+  }
+
+  @override
+  String get worldChatMenuMessageActor => 'Написать актёру…';
+
+  @override
+  String get worldChatMenuNewChannel => 'Новый канал…';
+
+  @override
+  String get worldChatMenuNewWorkspace => 'Новая рабочая область…';
+
+  @override
+  String get worldChatPickActorTitle => 'Написать актёру';
+
+  @override
+  String get worldChatSearchActors => 'Поиск актёров…';
+
+  @override
+  String get worldChatNoMatchingActors => 'Нет подходящих актёров.';
+
+  @override
+  String get worldChatNewChannelTitle => 'Новый канал';
+
+  @override
+  String get worldChatChannelNameLabel => 'Название канала';
+
+  @override
+  String get worldChatChannelNameHint => 'напр. design-crit';
+
+  @override
+  String get worldChatChannelCreate => 'Создать';
+
+  @override
+  String get worldChatChannelNameTaken =>
+      'Канал с таким названием уже существует.';
+
+  @override
+  String get worldChatNewWorkspaceTitle => 'Новая рабочая область';
+
+  @override
+  String get worldChatWorkspaceNameLabel => 'Название';
+
+  @override
+  String get worldChatWorkspaceNameHint => 'напр. запуск Orbit';
+
+  @override
+  String get worldChatWorkspaceAddFolder => 'Добавить папку…';
+
+  @override
+  String get worldChatWorkspaceCreate => 'Создать';
+
+  @override
+  String worldChatMessageHint(String name) {
+    return 'Написать $name…';
+  }
+
+  @override
+  String worldChatMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count участников',
+      many: '$count участников',
+      few: '$count участника',
+      one: '$count участник',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actorsSectionTitle => 'АКТЁРЫ';
+
+  @override
+  String get actorsSectionHint =>
+      'Создавайте личности актёров — ботов, с которыми можно говорить и работать. Личности живут в синхронизируемом ростере и мире ecsai; тот же механизм, которым актёры пользуются при порождении актёров.';
+
+  @override
+  String get actorsUnsupported =>
+      'Миру актёров нужна локальная файловая система (десктоп).';
+
+  @override
+  String get actorsNoneYet => 'Актёров пока нет — создайте первого ниже.';
+
+  @override
+  String get actorsCreateActor => 'Создать актёра';
+
+  @override
+  String get actorsNameLabel => 'Имя актёра';
+
+  @override
+  String get actorsNameHint => 'напр. Toby Researcher';
+
+  @override
+  String get actorsBrainLabel => 'Мозг (модель)';
+
+  @override
+  String get actorsRoleLabel => 'Роль (необязательно)';
+
+  @override
+  String get actorsRoleHint => 'напр. научный ассистент';
+
+  @override
+  String get actorsRemoveTooltip => 'Удалить актёра';
+
+  @override
+  String get actorsLocalNeedsMacos =>
+      'Локальные мозги требуют macOS (MLX); хостинг-мозги работают везде, где настроен ключ провайдера.';
+
+  @override
+  String get settingsWorldInspector => 'Инспектор мира';
+
+  @override
+  String get newTabPageTitle => 'Новая вкладка';
+
+  @override
+  String get newTabHintConversations =>
+      'Поверхность мира — каналы и личные переписки.';
+
+  @override
+  String get newTabHintBrowser => 'Файлы рабочего пространства и веб.';
+
+  @override
+  String get newTabHintInspector =>
+      'Наблюдение за мирами, сессиями и привязками.';
+
+  @override
+  String get settingsMeshTasks => 'Задачи mesh';
+
+  @override
+  String get meshTasksNoReplica =>
+      'На этом устройстве нет живой mesh-реплики. Сопряжение: Настройки → Общие → Хранилище.';
+
+  @override
+  String get meshTasksEmpty => 'На доске нет задач.';
+
+  @override
+  String get railActors => 'Актёры';
+
+  @override
+  String get railChannels => 'Каналы';
+
+  @override
+  String get railRowMiniwindow => 'Открыть в мини-окне';
+
+  @override
+  String get railDirect => 'ЛИЧНЫЕ';
+
+  @override
+  String get railProjects => 'ПРОЕКТЫ';
+
+  @override
+  String get railWorkspaces => 'Рабочие области';
+
+  @override
+  String get railWorkspaceEmptyTree => 'Здесь появится дерево файлов.';
+
+  @override
+  String get railSearchHint => 'Поиск актёров, каналов, рабочих областей…';
+
+  @override
+  String get railAddTooltip => 'Новое';
+
+  @override
+  String get railNoMatches => 'Ничего не найдено.';
+
+  @override
+  String get worldChatSelectFromRail => 'Выберите разговор на панели слева.';
+
+  @override
+  String get contextTopic => 'ТЕМА';
+
+  @override
+  String get contextParticipants => 'УЧАСТНИКИ';
+
+  @override
+  String get contextMembers => 'Участники';
+
+  @override
+  String get contextShowTooltip => 'Показать контекст';
+
+  @override
+  String get contextHideTooltip => 'Скрыть контекст';
+
+  @override
+  String get contextTabPeople => 'Люди';
+
+  @override
+  String get contextTabBrowser => 'Браузер';
+
+  @override
+  String get contextTabFiles => 'Файлы';
+
+  @override
+  String get contextTabTerminal => 'Терминал';
+
+  @override
+  String get contextTabThreads => 'Треды';
+
+  @override
+  String get contextTabDocs => 'Документы';
+
+  @override
+  String get contextFilesEmpty => 'Здесь появятся файлы рабочей области.';
+
+  @override
+  String get contextTerminalEmpty => 'Здесь появится терминал.';
+
+  @override
+  String get contextThreadsEmpty => 'Здесь появятся ветки харнесса.';
+
+  @override
+  String get contextDocsEmpty => 'Здесь появятся документы.';
+
+  @override
+  String get contextBackToConversation => 'Вернуться к беседе';
+
+  @override
+  String get contextBrain => 'МОЗГ';
+
+  @override
+  String get contextSampling => 'СЭМПЛИНГ';
+
+  @override
+  String get contextPersona => 'ПЕРСОНА';
+
+  @override
+  String get contextNoBrain => 'Мозг не привязан.';
+
+  @override
+  String get contextPersonaEmpty =>
+      'Персоны нет — синтезируется из имени и роли.';
+
+  @override
+  String get actorsEditTooltip => 'Изменить актёра';
+
+  @override
+  String get actorsSaveChanges => 'Сохранить изменения';
+
+  @override
+  String get actorsDiscardChanges => 'Отменить изменения';
+
+  @override
+  String get actorsPersonaLabel => 'Промпт персоны';
+
+  @override
+  String get actorsPersonaHint =>
+      'Отправляется дословно как системный промпт, когда актёр говорит; пусто — синтезируется из имени и роли.';
+
+  @override
+  String get actorsTemperatureLabel => 'Температура';
+
+  @override
+  String get actorsRepetitionLabel => 'Штраф за повторение';
+
+  @override
+  String get actorsSamplingHint =>
+      'Параметры сэмплинга для локальных мозгов; пусто — значения по умолчанию.';
+
+  @override
+  String get workspacesFilesEmpty =>
+      'Рабочих областей пока нет — добавьте из панели.';
+
+  @override
+  String get workspacesFilesNoFolders =>
+      'Папок пока нет — добавьте папки в эту рабочую область.';
 }

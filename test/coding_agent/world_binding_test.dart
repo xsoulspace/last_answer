@@ -122,7 +122,7 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 120));
       expect(find.textContaining('unreachable'), findsOneWidget);
-      expect(find.textContaining('harnessd --serve'), findsOneWidget);
+      expect(find.textContaining('ecsaid --serve'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(milliseconds: 10));
     });

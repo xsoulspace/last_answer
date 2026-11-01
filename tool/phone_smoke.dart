@@ -5,6 +5,8 @@
 /// refusal (no manifests / no paired worlds on a phone), and a
 /// screenshot for evidence. Usage:
 ///   fvm dart run tool/phone_smoke.dart <device-id>
+library;
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';

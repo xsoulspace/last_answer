@@ -8,7 +8,6 @@ import 'package:lastanswer/workbench/workbench_harness_tools.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
-import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 Future<void> main(List<String> args) async {
   if (args.length != 1) throw ArgumentError('OUTPUT_DIRECTORY (new trial)');

@@ -162,7 +162,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
       // seat spawned): manifest scan → PAIRED registry (ADR 0072) →
       // http facade only. Read-only by
       // construction — the pane lists no verbs for an external source;
-      // operation rides the client's own harnessd MCP seat (ADR 0040).
+      // operation rides the client's own ecsaid MCP seat (ADR 0040).
       final rawWorldId = parameters['worldId'];
       final worldId = rawWorldId is String ? rawWorldId : null;
       if (parameters['participate'] == 'true') {
@@ -189,7 +189,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
               'Paired worlds (ADR 0072): $paired. An attach needs the '
               "daemon's http facade — arm it with "
               'HARNESS_SERVE_PORT=<port> on the seat wrapper '
-              '(harnessd --serve; HARNESS_SERVE_BIND=lan for a paired '
+              '(ecsaid --serve; HARNESS_SERVE_BIND=lan for a paired '
               'device). Spawning a new daemon is never an attach. '
               'Read-only either way.',
           parameters: {'ok': false, 'live': live, 'paired': paired},
@@ -210,7 +210,7 @@ Set<AgentCallEntry> worldInspectorMcpEntries() => {
       name: 'world_inspector_attach',
       description:
           'DEBUG ONLY — point the world inspector pane at an EXTERNAL '
-          'harness world (the harnessd a ZCode/Codex seat spawned): '
+          'harness world (the ecsaid daemon a ZCode/Codex seat spawned): '
           'scans ~/.xsoulspace/worlds manifests and attaches through the '
           'http serve facade (arg: worldId, optional). Read-only — no '
           'daemon is spawned and no verb executes externally. Needs the '

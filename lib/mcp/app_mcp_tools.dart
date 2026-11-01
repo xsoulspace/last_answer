@@ -20,15 +20,14 @@
 /// channel, so intent authority never ships to a store build).
 library;
 
-import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
-
 import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/device_capabilities.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
-import 'package:lastanswer/router.dart';
 import 'package:lastanswer/mcp/chatgpt_mcp_tools.dart';
+import 'package:lastanswer/router.dart';
+import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// One published intent, as data — the vocabulary a controller reads.
@@ -64,6 +63,16 @@ const List<AppIntentSpec> appIntentCatalog = [
     group: 'app',
     summary: 'Inspect open browser windows and use their navigation controls.',
   ),
+  AppIntentSpec(name: 'realm_chat_state', group: 'world',
+    summary: 'World-chat projection: actors, channels, threads, beats, bots.'),
+  AppIntentSpec(name: 'realm_chat_create_actor', group: 'world',
+    summary: 'Mint an actor identity (name + brain binding) in the roster.'),
+  AppIntentSpec(name: 'realm_chat_open_dm', group: 'world',
+    summary: 'Open or reuse the DM thread with an actor and select it.'),
+  AppIntentSpec(name: 'realm_chat_create_channel', group: 'world',
+    summary: 'Create a named channel with member actors and select it.'),
+  AppIntentSpec(name: 'realm_chat_say', group: 'world',
+    summary: 'Say one beat as the human in the active thread.'),
   AppIntentSpec(
     name: 'agent_product_local_pair',
     group: 'doc',
@@ -252,7 +261,7 @@ const List<AppIntentSpec> appIntentCatalog = [
     group: 'mesh',
     summary:
         'Read the live multiplayer picture (who is here, what each '
-        'actor is doing) or publish this agent\'s activity.',
+        "actor is doing) or publish this agent's activity.",
   ),
   // Storage — backends and sync.
   AppIntentSpec(
@@ -344,7 +353,7 @@ const List<AppIntentSpec> appIntentCatalog = [
     name: 'world_inspector_seat_probe',
     group: 'inspector',
     summary:
-        'DEBUG ONLY — request this device\'s seat from the host '
+        "DEBUG ONLY — request this device's seat from the host "
         'seat channel and drive agent_doc_state over it (ADR 0072 §5).',
   ),
 ];
@@ -596,7 +605,7 @@ Set<AgentCallEntry> appMcpEntries() => {
       );
       return MCPCallResult(
         message:
-            'This device\'s hosting capabilities, probed live '
+            "This device's hosting capabilities, probed live "
             '(route by these facts, never by advertising).',
         parameters: {'ok': true, ...snapshot.toJson()},
       );

@@ -14,11 +14,9 @@ final class SupervisorExecution extends ChangeNotifier {
     required final Directory appRoot,
     final MachineRegistry? registry,
     final ProviderFactory? agentFactory,
-    SupervisorAgentClient? agentClient,
-    SupervisorAgentClientResolver? agentClientResolver,
+    this.agentClient,
+    this.agentClientResolver,
   }) {
-    this.agentClient = agentClient;
-    this.agentClientResolver = agentClientResolver;
     _session = AppSupervisorSession(
       supervisor: Supervisor(projectRoot: appRoot.path, registry: registry),
       loadDesired: () async {
@@ -38,8 +36,8 @@ final class SupervisorExecution extends ChangeNotifier {
         // app's existing harness client. With no such client the run is
         // REFUSED, visibly — never substituted by another provider.
         if (agentFactory == null &&
-            this.agentClient == null &&
-            this.agentClientResolver == null &&
+            agentClient == null &&
+            agentClientResolver == null &&
             agentSpecs.isNotEmpty) {
           throw StateError('Agent automation execution is not connected');
         }
@@ -55,8 +53,8 @@ final class SupervisorExecution extends ChangeNotifier {
         final agents = agentSpecs.isEmpty
             ? null
             : SupervisorAgentProvider(
-                client: this.agentClient,
-                resolver: this.agentClientResolver,
+                client: agentClient,
+                resolver: agentClientResolver,
                 specs: {for (final spec in agentSpecs) spec.id: spec},
               );        return (final name) {
           if (name == 'process') return processes.factory(name);

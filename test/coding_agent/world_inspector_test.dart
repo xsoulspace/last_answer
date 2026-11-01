@@ -22,10 +22,7 @@ class ScriptedTraceSource extends TraceSource {
 }
 
 void main() {
-  setUp(() {
-    // The bench memory is static per world key — a clean bench per test.
-    WorkbenchMemory.clearAll();
-  });
+  setUp(WorkbenchMemory.clearAll);
 
   group('ScriptedSessionHandle', () {
     test('delegateTask appends the sentence and an honest ack beat', () {

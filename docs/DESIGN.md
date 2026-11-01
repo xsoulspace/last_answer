@@ -1,265 +1,143 @@
-# DESIGN — principles for last_answer surfaces
+# DESIGN — the Last Answer workspace
 
-> Binding design law for product UI. The **agent-doc surface**
-> (`lib/coding_agent/agent_doc_surface.dart`) supplies the conversation
-> vocabulary. Copy its discipline; the editable artifact owns the main view.
-> Harness events and discussions are attached projections, not the artifact. Principles: Edward Tufte (ink, data, annotation) × Josef
-> Müller-Brockmann (grid, typography, whitespace). Companion docs:
-> [North Star](NORTH_STAR.mdx), [Agents in Docs](product/agents-in-docs.md),
-> [ADR 0003](decisions/0003-agents-live-in-docs.md), and
-> [ADR 0012](decisions/0012-writable-agent-doc-and-acp-client-first.md).
+This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 
-## 1. The document is the interface
+## Direction
 
-The working surface is a writable document. Humans and agents work on the
-same evolving content and workspace; discussion, ACP sessions, and harness
-activity are projections attached to that work, not substitutes for it.
-Text and conversation remain native ways to edit and inspect the document:
-new activity may render at the bottom of the grid, but authored document
-content is not required to look like a message stream. Structured data (tool
-beats, diffs, verdicts, permissions, threads) renders on the same grid, never
-as a parallel form-driven app. If a feature needs a form, it is a pane the
-user opens, not a page they land on.
+Last Answer is a calm, precise workroom for people and the actors they invite into their work. Its main surface makes the workspace feel continuous: actors, conversations, browser tabs, files, settings, and the world inspector are panes onto one shared workspace. The shell is present but quiet; the work in each pane carries the attention.
 
-The same document has two densities and one world behind them. **Simple** is
-the grid read as a normal messenger and notes app: notes and ideas plus a
-normal-looking agent conversation, backed by the harness world.
-**Workshop** is that same world read spatially and temporally — time
-scrubbing over a world of objects and beats. A density is a reading of one
-document, never a second document and never a second world; the two
-observe the same beats, claims, permissions, and verdicts
-([ADR 0019](decisions/0019-two-products-one-surface.md)). The grid is the
-single agent surface: "ask an agent" lands on it, and a second conversation
-product is retired, not shipped alongside.
+The visual references contribute two useful ideas. The conversation reference has a legible participant list and familiar writing surface. The inspector references make a large shared world explorable through spatial layout, selection, and time. Keep the everyday shell readable and ordinary; let spatial visualization appear where it carries meaning, inside the inspector pane.
 
-## 2. Ink is data (Tufte)
+The mode is **Operate**. The user is here to work, switch context, inspect, and make decisions. Optimize for orientation, direct manipulation, keyboard access, recovery, and long sessions. This is an application surface, not a promotional dashboard.
 
-- No decorative chrome: no Cards, Chips, SegmentedButtons, filled icon
-  buttons, or bubbles in doc surfaces. Boxes only where a rule carries
-  meaning (e.g. the 2px verdict rule).
-- Every pixel must carry state. Color is annotation, not decoration:
-  error red, verdict green, everything else foreground/variant.
-- Chartjunk is a bug: an icon that repeats its label's meaning gets
-  deleted. Labels are small caps with letter-spacing, not icons.
-- Numbers are tabular monospace and always state their source
-  (`tokens` come from the backend verdict chunk, never a guess).
+## One workspace, many panes
 
-## 3. One grid (Müller-Brockmann)
+- Workspaces are the primary scope. The current workspace is always identifiable and can be changed without losing open work.
+- Actors and channels are destinations and participants. Search and navigation find identities, threads, files, and panes from the same workspace.
+- The center is a serializable pane tree. A pane may show a conversation, document, browser session, world inspector, terminal, or settings. Tabs and splits organize these surfaces; no surface owns a permanent privileged center.
+- A surface has one identity and behavior across a context-panel tab, a workspace pane, and an in-app miniwindow. These presentations do not create separate data or controls.
+- Settings open as a workspace surface. Context panels are optional companions to the selected pane, not required steps in a separate mode.
+- Selection, layout, and zoom are view state. They must not silently mutate shared project meaning.
 
-- A fixed role gutter (reference: 52px) aligns every line: `YOU`,
-  `AFM`/`OR`, `SYS`, `PERM`, `···` (live). The grid is the hierarchy;
-  size/weight/case differentiate, color rarely does.
-- Turns are **small multiples**: identical layout per turn, scannable as
-  a column. Tool beats are single dim mono rows; long payloads expand on
-  tap, never auto-wrap the grid.
-- Hairlines (0.6px, divider color) separate regions; whitespace separates
-  items. Whitespace is cheaper than a rule; a rule is cheaper than a box.
-- Reference constants: gutter 52, label 9.5pt / +1.2 tracking, mono 11pt,
-  body 14pt, hairline 0.6.
+## Main shell composition
 
-## 4. The human is sovereign
+At desktop width, use a narrow global rail, a workspace navigator, a flexible pane canvas, and an optional context panel. Keep the hierarchy stable while letting the user resize or collapse supporting columns.
 
-- The user decides what is visible: PROFILE and SETUP are toggles on the
-  status rule — one simple place, always reachable, never forced.
-- Deny-by-default is _shown_, not assumed: pending permissions render
-  in-flow with reject-first ordering; rejections are recorded as data on
-  the turn (`PERM → reject`), never dropped.
-- Setup never owns the first screen, bound or not: the workspace, the
-  backend and the key are reached from the status rule, which shows the
-  binding state at all times. Setup collapses again when the document
-  becomes bound, and the human reopens it whenever they want it
-  ([ADR 0019](decisions/0019-two-products-one-surface.md) §5).
-- A stuck turn must be stoppable from the same place (stop / cancel
-  rejects a pending permission first).
+1. **Global rail** — workspace access, universal search, recent activity, and stable destinations. Icons use one consistent stroke library and have accessible names. The rail does not reorder itself.
+2. **Workspace navigator** — the selected workspace, its roots, actor roster, channels, and open/recent destinations. Use concise headings and rows. Search is always reachable; avoid turning the navigator into a collection of boxed widgets.
+3. **Pane canvas** — a quiet tab strip and the active surface. Tab groups can split in either axis. Each tab shows a short title, an optional state marker, and a close affordance. New-pane discovery is searchable and lists concrete destinations.
+4. **Context panel** — details for the selected pane or object: members and presence for a channel, page information for a browser, selected-object details for the inspector. It can be hidden without hiding essential state.
+5. **Status edge** — a compact, source-honest line for sync, connection, permission, or task state when relevant. Do not place aggregate world counts here by default.
 
-## 5. One state, many projections
+The default conversation pane is text-native. Authors and timestamps align consistently; messages are not left/right bubbles. The composer stays in a stable location, supports a quiet expanded state, and keeps send and attachment actions visible without a heavy container. Permissions, failures, and task outcomes appear in the conversation's flow with clear attribution and an explicit next action.
 
-The UI, the agent intents (`agent_doc_state`,
-`agent_task_delegate`, `agent_permission_answer`), ACP sessions, and
-other authorized peers read and update the **same typed document/world
-state**. Conversation and harness timelines are projections of document
-operations and execution events, not the canonical work content. A new UI
-capability must be projected to agent/peer surfaces (and vice versa) in the
-same change — humans and agents are participants in one writable document.
-For code workspaces, shared meaning/edit operations are materialized by the
-single workspace owner and verified there. The owner's filesystem and host
-snapshots remain device-local; authorized file projections can be addressed
-by other sessions without creating a second filesystem authority.
+## World inspector as a shell surface
 
-## 5a. The app publishes its actions (the inversion contract)
+The inspector uses the same workspace chrome and pane rules as every other destination. It has a large canvas for the one-world view, a selection-driven detail region, and an optional timeline when time is part of the question. Canvas actions and keyboard/accessibility alternatives operate on the same supported state.
 
-LA exposes its user-level actions as NAMED DATA over the flutter mcp
-toolkit — `app_intents` (the catalog: every intent's name, group and
-one-line summary) plus executable entries for each (`app_navigate`,
-`app_composer`, `app_inspector`, and the doc/mesh/storage/inspector
-families). The law is dependency inversion at the app level, the same
-one the world inspector already obeys (verbs render as data, the host
-owns execution, the customer is at most a user):
+Use semantic zoom: at overview, show project scopes and meaningful relationships; on approach, reveal actors and events; on selection, show their details and available actions. Keep labels readable, preserve user placement when possible, and distinguish authoritative relationships from personal arrangement. Filters must respect visibility before layout or decoration. The timeline controls the view's historical cut; it must not imply live authority when showing a synthetic or historical fixture.
 
-- **The catalog is the contract.** A driver reads `app_intents` — never
-  the code — and every registered tool name must appear in it and vice
-  versa (enforced by test). A rename is a contract change, not a
-  refactor.
-- **LA knows no controller.** LA imports no driver/gesture package and
-  never will; a controller adapts to LA. Semantic grounding rides the
-  toolkit's own labeled a11y tree; the tools add the ACTION layer —
-  stable names that do not move when visible labels are re-worded.
-- **The same paths the hands take.** Intent handlers route through the
-  product's real seams (the composer's delegate path, the pane's
-  surface state, the router's published routes — allowlisted). No
-  second execution path is created for machines.
-- **Honest refusals.** No surface, unknown route, unknown action —
-  each refusal names the next move (which route to open, which actions
-  exist).
-- Debug/profile builds only (the toolkit is a VM-service debug
-  channel): intent authority never ships to a store build.
+The graph, timeline, filters, event list, and selected-object details are inspector content. Do not promote inspector counters or a glowing network visualization into permanent shell chrome. Label synthetic or historical data visibly.
 
-## 5b. Addressed views and recoverable candidates
+## Visual system
 
-Each mounted workbench has a viewer address. Tool actions specify `viewerId`
-when several views are mounted; ambiguity refuses before any action. Stable
-caller-supplied addresses restore their versioned view checkpoint independently.
-Legacy single-view checkpoints remain readable. Invalid/unsupported checkpoints
-leave the document available, with a visible recovery message. Project changes
-still enter the existing owner; personal selection is view state.
+### Palette
 
-Shared-document investigations expose the existing shared-block read and proposal
-tools through the harness's admitted task menu. Private project bodies and
-workspace tooling are not implicitly shared by opening a discussion. Debug MCP
-inspection remains separate from the production document capability adapter.
+Use a restrained, blue-green neutral palette suited to long desktop sessions. Dark is the initial reference theme because it supports a spacious inspector canvas, but light is a first-class theme with equal hierarchy and contrast. Derive all widget colors from the semantic theme tokens below; do not create a competing palette per surface.
 
-Reapply stages a fresh proposal against current content and retains the previous
-proposal's provenance. It requires a new adoption decision. Undo checks the exact
-applied state and refuses conflicting later edits. These document operations do
-not replace native coding consent or its transaction journal.
+| Token | Dark reference | Light reference | Use |
+|---|---|---|---|
+| `canvas` | `#0B1114` | `#F6F8F7` | App and canvas background |
+| `surface` | `#111A1E` | `#FFFFFF` | Pane and navigator surfaces |
+| `surfaceRaised` | `#172328` | `#EEF2F0` | Selected rows and quiet raised regions |
+| `surfaceOverlay` | `#1D2B30` | `#E7EDEA` | Menus, popovers, floating windows |
+| `ink` | `#E5ECE9` | `#192522` | Primary text and icons |
+| `inkMuted` | `#B0BFBA` | `#53635E` | Secondary labels and descriptions |
+| `inkQuiet` | `#879A94` | `#687872` | Timestamps and tertiary metadata |
+| `rule` | `#2B3A3F` | `#D9E1DD` | Region boundaries and separators |
+| `accent` | `#8DDCC2` | `#176D58` | Keyboard focus, active marker, primary action |
+| `danger` | `#F18A83` | `#B33935` | Destructive or failed state |
+| `caution` | `#E8BD71` | `#875A12` | Pending or attention-needed state |
+| `success` | `#8DDCC2` | `#176D58` | Confirmed success |
 
-Rendering follows provisional text deltas. Queue/history checkpoints follow their
-durable revision, so streaming does not repeatedly serialize accumulated edited
-history. Long conversations build visible turns lazily with stable keys.
+Treat these as starting theme values, not hard-coded widget colors. Validate normal text to at least 4.5:1, large text to 3:1, and focus/selected indicators to at least 3:1 against adjacent surfaces. If a theme cannot meet that, adjust the theme token rather than making individual labels brighter by hand.
 
-## 6. Honest surfaces
+Actor identity is stable and derived from the actor record. Use the deterministic identicon and kind label; avoid random saturated avatar colors. Presence is explicit text where it matters and a small, accessible state mark in dense lists. Never rely on color alone.
 
-Render only what the host truly observes. Live state shows beats and
-elapsed wall; spend appears only when the verdict lands. Anything not
-observable from the product side is labeled as such ("what the host
-sees") — no fabricated meaning-node counts, no fake progress bars.
+### Typography
 
-## 7. Progressive disclosure, no dead ends
+Use a highly legible interface sans for navigation and prose, with tabular numerals for time, counts, and budgets. Use a restrained monospace only for code, paths, and measured values. Do not use typewriter styling as generic “technical” decoration.
 
-Empty states instruct (numbered, quiet, on the grid) and vanish on
-action. Errors surface in-flow with the fix named ("enter a key"),
-never as modal dead ends. Every pane is reachable from one toggle; no
-buried navigation.
+| Role | Size / line height | Weight | Use |
+|---|---:|---:|---|
+| Micro | 11 / 16 | 450–500 | Timestamps, quiet state labels |
+| Compact | 12 / 17 | 400–500 | Navigator metadata, controls |
+| Body | 14 / 20 | 400 | Conversation and document text |
+| Emphasis | 15 / 21 | 550–600 | Pane title, selected actor |
+| Section | 18 / 24 | 600 | Surface heading |
+| Display | 24 / 30 | 600 | Empty-state or settings title only |
 
-## 8. Widget-key contract (testability = agentability)
+Sentence case is the default. Establish hierarchy through size, weight, and spacing, not letter-spaced small caps. Keep long reading measure comfortable; let content surfaces use their own width within the pane.
 
-Every actionable element carries a stable surface key
-(`coding_agent.*`). Widget tests drive the REAL keys — a change that
-renames a key without migrating its tests is a bug. The keys ARE the
-agent's UI contract.
+### Spacing and geometry
 
-## 9. Multiplayer presence is annotation
+- Base spacing unit: 4 px. Common steps: 4, 8, 12, 16, 24, 32.
+- Navigator rows: 34–38 px, with a 28–32 px minimum interactive target only where density requires it; touch layouts use at least 44 px targets.
+- Region separators: one-pixel hairline. Use whitespace within a region and lines only between meaningful regions.
+- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. Avoid pill shapes except for compact status tokens whose shape conveys a real state.
+- Pane edges align to one grid. Do not add nested cards to represent hierarchy; use indentation, typography, spacing, and selection.
 
-Presence extends the existing grid vocabulary; it adds no visual
-machinery.
+### Elevation and motion
 
-- Peer identities are **gutter labels**: the role gutter's small-caps
-  vocabulary (`YOU`, `AFM`, `OR`, `SYS`, `PERM`) extends with peer/actor
-  labels (device name, agent name). Same size, same tracking, same
-  rules. No avatars, no colored dots, no presence bars, no toasts.
-- Joins and leaves are **SYS rows on a hairline**, like any system beat.
-  A peer going offline is data, not an alarm.
-- A remote permission request renders **exactly like a local one** — same
-  `PERM` row, same reject-first ordering — plus an origin label in the
-  gutter. Recorded as data on the turn, never dropped (ADR 0005 §5).
-- Connection truth lives on the **status rule** in tabular mono:
-  hosting / connected / peers / last-sync. The status rule remains the
-  one simple place.
-- Live activity (streaming, typing) is a `···` row under the acting
-  peer's gutter label — the existing live-state row, attributed. Nothing
-  that is not observable from the product side is shown (§6 applies to
-  peers as it does to agents).
+The pane canvas is flat. Menus, popovers, and miniwindows use one quiet raised surface with a thin edge and a soft shadow offset down by 4–6 px. Do not stack multiple shadows or use glass blur as decoration.
 
-## 10. Attention is a budget (ADHD-first, human-true)
+Hover and selection settle in 100–150 ms. Split, tab, and panel transitions are brief and reversible. Motion explains where a pane went or what selection changed; no ambient loops, pulsing, or attention-seeking animation. Respect reduced-motion settings.
 
-Attention is spent like money: monotonic, visible, never spent without
-consent. This section is written for ADHD users **literally, not as a
-metaphor** — the primary tuning instrument is an ADHD person, and the
-rules below are therapeutic before they are aesthetic.
+### Iconography and identity
 
-- **One decision per screen.** A creation flow never asks "which of
-  these am I?". Any surface offering N simultaneous choices where one
-  default would do is an attention overdraft — flag it.
-- **Externalize working memory.** Every state renders; nothing lives
-  only in the user's head. Queued messages are visible and editable,
-  not "trusted to send". Breadcrumbs, queue positions, binding state,
-  spend — all on screen, always.
-- **No state is only visible live.** Navigating away and back must
-  reconstruct everything (`···` rows, live beats included — resumed as
-  their durable residue). A state that vanishes on return is a bug.
-- **Collapsible, never absent.** Observability is layered, and every
-  layer is one tap away:
-  - **L0 — status rule**: one line (running/idle, spend, pending perm).
-  - **L1 — progress**: the `···` row + current activity in words
-    ("thinking" collapses here).
-  - **L2 — beats**: dim mono rows per tool/decision/thought.
-  - **L3 — full**: payloads, context assembly, the meaning cut, loop
-    warnings — expanded on tap only.
-    Capability flags gate which layers **exist** (per doc/user:
-    `inspector: none | summary | full`); view toggles gate which are
-    **open**. Transparency is always available, never mandatory.
-  - **The ladder is the density dial.** L0–L3 is how the same world is
-    read at two densities (§1): the Simple product is the grid collapsed
-    toward L0/L1, the Workshop opens the same content spatially. Density
-    is a dial, not a mode — there is no "simple mode" toggle, and a
-    density change never changes what the world contains.
-  - The **world inspector pane** (under the agent doc) obeys the same
-    ladder: collapsed it is one L0 rule that leads with the top NEED
-    (`1 needs you · perm: …`) instead of raw counts; expanded it becomes
-    the embedded 3D workbench — the world as canvas, the ranked Answer
-    Rail, summonable slates (ledger/budget/view/time), a
-    `world ↔ history` projection toggle, and the ⌘K palette whose verbs
-    (allow/reject/delegate) execute through the session registry here,
-    product-side. The inspector itself renders read-only.
-- **Latency to first action under the friction of starting.** Cold
-  start → typing in one gesture; Select→Do < 300 ms (pillars doc).
-- **Invariant geometry.** Fixed positions are motor memory: the rail
-  never rearranges; the composer never moves. Labels are verb-first,
-  concrete words — tested for cognitive load in EN/IT/RU, not just
-  correctness ("GDD" fails; "New" passes).
-- **Forgiveness is a feature.** The user abandons and returns
-  constantly; the system rewards return: queued messages editable,
-  denials recorded, children archived not deleted, per-turn edit
-  history.
-- **Time made visible.** Wall-clock on live turns, spend on verdicts,
-  queue position and age on queued rows. Honest surfaces (§6) are
-  directly therapeutic here: never remove them, extend them to
-  everything new.
-- **The doc renders as text first.** Harness layers are the ONLY
-  things allowed to be collapsed or gated. If a harness concept (beat,
-  verdict, projection) becomes mandatory reading for writing a note,
-  the product has become an abstract agentic harness — flag as review
-  blocker.
-- **Attention dials, not a mode.** Verbosity, motion, queue defaults
-  live in PROFILE (§4 — one simple place). No "ADHD mode" label: these
-  are ordinary attention settings anyone may use.
+Use a single 1.75–2 px outline icon family with a consistent 16/18/20 px size set. Icons accompany ambiguous actions; remove icons that merely repeat visible labels. Use a clear selected treatment, not a filled icon button for every control. Actor marks come from stable identity data; names remain the primary identification.
 
-## Forbidden (flag as review blockers)
+## Responsive behavior
 
-- Material chrome in doc surfaces (cards/chips/segmented controls/
-  filled buttons) where a hairline + typography suffices.
-- Bubble chat layouts (left/right alignment); the grid replaces them.
-- Build-time button guards derived from text fields (text edits never
-  rebuild the widget — validation happens in the action path; measured).
-- Untranslatable visuals: anything the debugState projection cannot
-  express is invisible to the agent — split it or drop it.
+- **Wide desktop (≥1440 px):** navigator, pane canvas, and optional context panel can coexist. Preserve a generous minimum width for the active pane.
+- **Compact desktop (1024–1439 px):** navigator can collapse to the global rail; context details become a temporary side panel. Keep the active pane and tab strip visible.
+- **Narrow web/tablet (600–1023 px):** show one primary pane; navigator and context panel slide in as explicitly opened drawers. Preserve keyboard and back-navigation behavior.
+- **Phone (<600 px):** one pane at a time. Keep workspace, back, pane-switch, and search actions reachable; do not compress the desktop columns. Splits become a pane switcher. Context details open as a pushed sheet or route with a clear return path.
 
-## Editable workbench projections (ADR 0015)
+Responsive changes alter presentation, not workspace contents, permissions, or view identity. Reopening a workspace should restore its pane tree as supported by the platform.
 
-The workbench connects authoritative project objects, typed relationships and
-supported operations. Documents are editable projections, not conversation containers.
-Direct manipulation exposes endpoints, layers and executable behaviour. Every handle
-changes supported project state or an identified candidate. Personal arrangement
-stays separate. Trackpad, keyboard, touch, Vosges and agent actions converge on the
-same product handlers, with input origin retained. Scene text stays readable and
-all manipulation has an accessible control alternative.
+## Interaction and state
+
+- Keyboard is first-class on desktop: search, switch pane, close pane, split, and move focus between navigator, canvas, and context panel.
+- Direct manipulation and keyboard/accessibility actions call the same product handlers.
+- Selection is visible at a glance. Focus is distinct from selection and remains visible on both themes.
+- Empty, loading, offline, denied, stale, and error states explain what happened and the available next action. Do not substitute a spinner for durable status.
+- Queued or pending work remains inspectable after navigation. Returning to a surface reconstructs its useful state.
+- Search covers actors, channels, workspaces, and openable surfaces. Results name their type and location so similar items are distinguishable.
+- Destructive actions are undoable when the owning data contract permits it; otherwise describe the consequence before the action.
+
+## Accessibility
+
+Support keyboard navigation, screen-reader names and roles, platform text scaling, reduced motion, visible focus, and high contrast. Do not convey actor type, presence, selection, permission, or verdict by color alone. Keep canvas nodes selectable by keyboard and offer a readable list or detail alternative. Touch targets are at least 44 × 44 px on touch platforms.
+
+## Extension contract for future panes
+
+A new surface (including terminal, world inspector, browser, or document editor) must specify:
+
+- its stable surface identity and user-facing title;
+- its natural initial pane size and whether it can appear in a side panel or miniwindow;
+- what selection/context it contributes to the shared context panel;
+- its keyboard actions and accessible alternative for direct manipulation;
+- loading, empty, permission, failure, offline, and recovery states;
+- which state is shared project meaning and which state is personal arrangement.
+
+It inherits the shell's type, spacing, focus, selection, surface, and motion tokens. It may add semantic colors only when they represent a durable domain state and meet contrast requirements.
+
+## Avoid
+
+- A fixed chat center with all other surfaces treated as secondary tools.
+- A second navigation system inside inspector, browser, or settings that duplicates workspace navigation.
+- Rainbow actor colors, decorative node clouds, status dashboards, or metrics without a source and task purpose.
+- Rounded boxes around every control, message bubbles, or cards used only to partition the layout.
+- Small caps as a replacement for hierarchy, tiny low-contrast timestamps, and color-only state.
+- Fake live data. Concept material uses clearly identified synthetic examples.

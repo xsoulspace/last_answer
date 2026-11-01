@@ -66,7 +66,7 @@ void main() {
     );
 
     // An agent without modes: the client-side policy is the only layer.
-    const none = AcpSessionModes(available: []);
+    const none = AcpSessionModes();
     expect(ChatPermissionPolicy.fullAccess.preferredAgentModeId(none), isNull);
   });
 

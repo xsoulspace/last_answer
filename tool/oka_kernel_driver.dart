@@ -10,6 +10,7 @@
 /// `--serve` keeps the process alive so a delta dill can be pushed into it
 /// (G3-real); every patchable label printed here comes from REAL module code
 /// (a ctor default in `doc_replica_store.dart`, the fractional-order policy).
+library;
 import 'dart:async';
 import 'dart:io';
 

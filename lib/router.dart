@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/home/home_screen.dart';
 import 'package:lastanswer/home/project_route.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/shell/app_shell.dart';
 import 'package:lastanswer/ui_pay/paywall_flow.dart';
 import 'package:lastanswer/ui_pay/paywall_screen.dart';
 import 'package:lastanswer/workbench/workbench_screen.dart';
@@ -20,26 +20,12 @@ final appRouter = GoRouter(
         AppRoute(ScreenPaths.intro, (final _) => const IntroScreen()),
         ShellRoute(
           builder: (final context, final state, final navigator) =>
-              ScreenScaffold(navigator: HomeScreen(navigator: navigator)),
+              ScreenScaffold(navigator: AppShell(child: navigator)),
           routes: [
-            AppRoute(
-              ScreenPaths.home,
-              (final _) => Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Builder(
-                      builder: (context) => TextButton(
-                        key: const ValueKey('home-open-workbench'),
-                        onPressed: () => context.push('/home/workbench'),
-                        child: const Text('Workbench'),
-                      ),
-                    ),
-                  ),
-                  const Expanded(child: ProjectsListScreen()),
-                ],
-              ),
-            ),
+            // ADR 0024 §4 — no home face: the route body is the center
+            // tab strip the shell owns; the rail (in AppShell) is the
+            // chrome.
+            AppRoute(ScreenPaths.home, (final _) => const CenterTabsArea()),
             AppRoute(
               '/home/workbench',
               (final state) => WorkbenchScreen(

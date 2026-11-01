@@ -34,7 +34,7 @@ Future<void> main(List<String> arguments) async {
   for (final package
       in (config['packages'] as List).cast<Map<String, Object?>>()) {
     package['rootUri'] = sourceConfig.uri
-        .resolve(package['rootUri'] as String)
+        .resolve(package['rootUri']! as String)
         .toString();
   }
   (config['packages'] as List).add({

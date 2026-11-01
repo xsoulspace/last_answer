@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:headless_core/headless_core.dart' as headless_core;
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart' as acp_runtime;
 import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
 import 'package:lastanswer/doc/acp_doc_inference_port.dart';
+import 'package:lastanswer/workspaces/workspace_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_local_db/universal_storage_local_db.dart';
@@ -99,6 +101,18 @@ class GlobalStatesProvider extends StatelessWidget {
       Provider<ProviderConfigurationStore>(
         create: (final _) => ProviderConfigurationStore(),
       ),
+      // ADR 0023 — the world chat runtime (durable threads + bots);
+      // opened lazily on first use, never at app startup. THE app-run
+      // singleton: a second instance would run a second bot host on the
+      // same world and answer every addressed beat twice. ChangeNotifier
+      // provider — a plain Provider asserts on first read (the Settings
+      // route sits above the root navigator, outside the shell's own
+      // provider, and reads this one).
+      ChangeNotifierProvider<RealmChatService>(
+        create: (final context) => RealmChatService(
+          providerConfiguration: context.read<ProviderConfigurationStore>(),
+        ),
+      ),
       Provider<AcpAgentRuntimeRegistry>(
         create: (final _) => AcpAgentRuntimeRegistry(),
       ),
@@ -116,6 +130,12 @@ class GlobalStatesProvider extends StatelessWidget {
       ChangeNotifierProvider(create: UserNotifier.new),
       ChangeNotifierProvider(create: AppNotifier.new),
       ChangeNotifierProvider(create: OpenedProjectNotifier.new),
+      // ADR 0026 — the workspace model the rail's WORKSPACES section
+      // projects; opens the realm's one control store lazily on first
+      // load, never at app startup.
+      ChangeNotifierProvider<WorkspaceNotifier>(
+        create: (final _) => WorkspaceNotifier(),
+      ),
 
       /// monetization
       ChangeNotifierProvider<MonetizationStoreStatusResource>(

@@ -1,8 +1,7 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:core/core.dart';
 import 'package:lastanswer/agent_config/agent_config_persistence.dart';
-import 'package:lastanswer/agent_config/agent_platform_config.dart';
 import 'package:lastanswer/agent_config/agent_config_settings_pane.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:provider/provider.dart';
@@ -33,10 +32,10 @@ Widget _wrap(final AgentConfigStore store) => MultiProvider(
       ),
     ),
   ],
-  child: MaterialApp(
+  child: const MaterialApp(
     localizationsDelegates: S.localizationsDelegates,
     supportedLocales: S.supportedLocales,
-    home: const Scaffold(body: AgentConfigSettingsPane(closeOnSave: false)),
+    home: Scaffold(body: AgentConfigSettingsPane(closeOnSave: false)),
   ),
 );
 
@@ -50,7 +49,6 @@ void main() {
     (tester) async {
       final store = AgentConfigStore(
         persistence: InMemoryAgentConfigPersistence(),
-        environment: const {},
       );
       await store.load();
       await tester.pumpWidget(_wrap(store));
@@ -71,7 +69,6 @@ void main() {
       (tester) async {
     final store = AgentConfigStore(
       persistence: InMemoryAgentConfigPersistence(),
-      environment: const {},
     );
     await store.load();
     await tester.pumpWidget(_wrap(store));

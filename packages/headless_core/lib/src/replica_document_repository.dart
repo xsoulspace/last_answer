@@ -282,7 +282,7 @@ class ReplicaDocumentRepository implements DocumentRepository {
     if (parentId == null) return _store.openedDocIds;
     return [
       for (final id in _store.openedDocIds)
-        if ((await get(id)) case final DocFound found
+        if (await get(id) case final DocFound found
             when found.node.parentDocId == parentId)
           id,
     ];

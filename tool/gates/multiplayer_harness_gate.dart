@@ -294,7 +294,7 @@ Future<void> main(final List<String> args) async {
           // The payload restore lands the shared doc; the surface
           // auto-opens in the ProjectView pane (measured) — otherwise
           // tap the restored tile.
-          final auto = await p.waitAny(const ['mesh tasks'], attempts: 30);
+          final auto = await p.waitAny(const ['mesh tasks']);
           if (auto == null) {
             await p.clickTextUntil('Untitled', expect: 'mesh tasks');
           }

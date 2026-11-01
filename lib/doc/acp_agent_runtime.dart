@@ -8,8 +8,8 @@ export 'package:dart_acp_toolkit/dart_acp_toolkit.dart'
         AcpAuthMethod,
         AcpAuthRequiredException,
         AcpRemoteError,
-        AcpSessionModes,
-        AcpSessionModeInfo;
+        AcpSessionModeInfo,
+        AcpSessionModes;
 
 /// A known desktop ACP agent and how to discover or install it.
 final class AcpAgentCatalogEntry {
@@ -42,6 +42,10 @@ final class AcpAgentCatalogEntry {
 }
 
 /// Declarative catalog for common desktop ACP clients.
+///
+/// Gemini is deliberately absent: deprecated by product decision
+/// (ADR 0023) — the owned ecsai agents are the primary path, Codex the
+/// optional third-party one.
 final class AcpAgentCatalog {
   const AcpAgentCatalog({this.entries = defaultEntries});
 
@@ -60,20 +64,6 @@ final class AcpAgentCatalog {
       authHint:
           'Run `claude /login` in a terminal (Anthropic OAuth); the '
           'ACP adapter reuses the CLI credentials.',
-    ),
-    AcpAgentCatalogEntry(
-      id: 'gemini',
-      displayName: 'Gemini CLI',
-      commandCandidates: ['gemini'],
-      // Bare `gemini` starts the interactive TUI and never speaks ACP —
-      // the protocol server rides behind this flag.
-      arguments: ['--experimental-acp'],
-      installCommand: ['npm', 'install', '-g', '@google/gemini-cli'],
-      installHint: 'Requires Node.js and Google authentication.',
-      authHint:
-          'Set GEMINI_API_KEY (or run gemini once in a terminal '
-          'and complete the Google OAuth sign-in); credentials stay in '
-          "the CLI's own store.",
     ),
     AcpAgentCatalogEntry(
       id: 'codex',

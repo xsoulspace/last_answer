@@ -466,10 +466,10 @@ Set<AgentCallEntry> agentMcpEntries() => {
             ? requested
             : LiveVerbs.thinking;
         final docId = parameters['docId'] is String
-            ? parameters['docId'] as String
+            ? parameters['docId']!
             : null;
         final detail = parameters['detail'] is String
-            ? parameters['detail'] as String
+            ? parameters['detail']!
             : null;
         final peerId = StorageBackendsNotifier.instance.meshPeerId;
         await live.publish(
@@ -512,7 +512,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
       name: 'live_presence',
       description:
           'The live multiplayer picture: who is on the mesh right now '
-          "and what each actor — human or agent — is doing (verb, doc "
+          'and what each actor — human or agent — is doing (verb, doc '
           "focus). action=publish announces THIS agent's activity so "
           'the human and other devices can watch it work. Privacy law: '
           'human activity appears only when its device opted in to '
@@ -524,7 +524,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
             'type': 'string',
             'enum': ['read', 'publish'],
             'description':
-                "read (default) returns the live picture; publish "
+                'read (default) returns the live picture; publish '
                 "announces this agent's activity.",
           },
           'verb': {

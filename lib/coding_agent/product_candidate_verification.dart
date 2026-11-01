@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:lastanswer/coding_agent/product_dart_runtime.dart';
 import 'package:lastanswer/coding_agent/product_package_candidate_verification.dart';
+import 'package:universal_tooling_runtime/universal_tooling_runtime.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';
-import 'package:xsoulspace_tooling_runtime/xsoulspace_tooling_runtime.dart';
 
 /// App-owned compiler evidence for dependency-free Dart. Functional criteria
 /// are an independent host recipe; this adapter never claims task acceptance.

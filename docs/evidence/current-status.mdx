@@ -26,6 +26,119 @@ current_status_pointer: docs/evidence/current-status.mdx
 
 # Current Evidence Status
 
+## 2026-10-30 WORKSPACES model replaces the rail's PROJECTS section (model + registry + rail slice)
+
+[ADR 0026](../decisions/0026-workspaces-multi-root-nesting-as-graph.md)
+landed as code: `lib/workspaces/` holds the model
+(`Workspace` — id/name/folders/parents/projects/createdAt, equality by
+id, folder paths validated absolute+normalized), the registry (LA-owned
+`workspaces` collection in the realm's ONE control store — same pattern
+and store as `channels`; constructor takes the store, tests wire a
+plain directory store), and the notifier (lazy world-store open, list
+projection, mutation reloads). The rail's PROJECTS section is now
+WORKSPACES: root rows with muted folder counts, expandable children
+(nesting-as-graph — a child renders under every parent), tap-select
+with the quiet file-tree empty-state note, search integration, and a
+"+ new workspace" dialog (name + optional `file_selector` folder
+picks). EN/IT/RU ARBs extended; `flutter gen-l10n` run.
+
+- Measured: `fvm flutter analyze` — my files (`lib/workspaces/`,
+  `lib/shell/actor_rail.dart`, `test/workspaces/`,
+  `test/shell/actor_rail_test.dart`, plus the one-provider harness
+  additions in `app_shell_test.dart` and the DI provider) report 0
+  issues; `fvm flutter test test/workspaces test/shell` — 68/68 green
+  (model validation, registry CRUD + durability across store
+  instances, nesting/overlap queries, cycle refusal,
+  detach-without-recursion delete, notifier notifications, rail
+  WORKSPACES section render/expand/select, and the pre-existing shell
+  suite, which needed the new notifier in its provider harness).
+- Non-claims: no GUI run, no multi-device behavior, no file-tree
+  surface (ADR 0026 non-goal this slice); remaining tree-wide analyze
+  errors during this window sit in parallel actors' in-flight files
+  (`realm_chat_substrate_test.dart`, `mlx_native`), never in the
+  files this slice touched.
+
+## 2026-10-30 conversation threads onto the ConvergenceDoc kernel (substrate slice)
+
+[ADR 0025](../decisions/0025-conversation-threads-on-the-convergence-doc-kernel.md)
+landed: `RealmWorld.conversation()` now returns `KernelConversation` — one
+ConvergenceDoc replica per thread under
+`<app-support>/world/threads/<threadId>.json` (beats = ordered child blocks;
+metadata = node fields), the journal keeps only a LA-owned `thread_index`
+record per thread (preview triple included, so the service's projection
+never scans a beat store), `wait` parks on the new
+`DocReplicaStore.changes` broadcast (docId + head; 0% idle, `timeoutMs`
+fallback keeps the journal answer shape), authorization keys on
+`authority.actor` only (both `RealmWorld.authorityFor` and harness
+`RealmActorSession.authority` work), and legacy journal `threads` /
+`thread_beats` records seed kernel docs idempotently on open (legacy records
+stay in place — the journal is shared with the ecsaid daemon). New
+`RealmWorld.sessionFor(actorId)` facade matches the harness
+`RealmActorSession` members the bot host binds (`authority`, `register`,
+`say`) so the construction-site swap is a separate, mechanical step —
+realm_bot_host.dart itself untouched here.
+
+Evidence so far (substrate slice, hermetic `rootOverride` worlds):
+
+- `fvm flutter analyze` (2026-10-30): zero issues in the touched files
+  (`kernel_conversation.dart`, `realm_world.dart`, `realm_chat_service.dart`,
+  `doc_replica_store.dart`, `realm_chat_substrate_test.dart`); the repo-wide
+  count is dominated by a parallel agent's in-flight edits.
+- `fvm flutter test test/coding_agent/realm_chat_substrate_test.dart
+  test/coding_agent/channel_registry_test.dart` (2026-10-30): 8 of 8 passed
+  — roundtrip with exact map shapes, refusal codes
+  (`thread_not_visible` / `thread_closed` / `thread_text_too_large`),
+  notification-driven `wait` (parks before the say, wakes in well under the
+  timeout; timeout keeps the journal answer shape; addressed-only cursor
+  semantics), restart persistence, idempotent legacy migration (legacy
+  journal records stay in place), and the `sessionFor` facade. First run
+  was 7 of 8: the wake assertion exposed a real bug (the wake completer was
+  deregistered before parking, so notifications never completed it) — fixed,
+  rerun green.
+- `fvm flutter test packages/headless_core/test` (2026-10-30): 70 of 70
+  passed with the `DocReplicaStore.changes` stream added;
+  `mesh_storage_doc_sync_test` + `storage_backends_mesh_attach_test` +
+  `channel_registry_test` green. (`agent_doc_mesh_wiring_test` did not load
+  — a mid-edit compile break in `actor_brain.dart`, another actor's active
+  claim, unrelated to this slice.)
+
+Non-claims: bot replies still ride the journal until the bot-host
+construction-site swap lands (kernel beats are invisible to
+`RealmActorSession.say` until then — named in the ADR as the integration
+step); daemon cross-process thread visibility is now a projection follow-up
+(harness surface_gaps, not edited here); mesh routing of thread docs is not
+wired.
+
+## 2026-10-29 ADR 0024 accepted — actors and channels; pane-tree shell (direction record, no runtime claims)
+
+[ADR 0024](../decisions/0024-actors-channels-and-panes.md) accepted
+(approved by Anton Malofeev, 2026-10-29): the product word "chat" is
+retired — actors, channels, and DMs over durable threads are the objects;
+the shell becomes a serialized pane tree of tab groups; navigation chrome
+(home route, project list as the app's face, Workbench entry, greeting
+header) dissolves into the rail and search; the realm world rides the ONE
+realm control store (`~/.xsoulspace/worlds/local/`, ecsai ADR 0107) as a
+conformance law. Amends ADR 0023's Decision 1; the durable-thread
+substrate is unchanged.
+
+Implementation slices in flight, none accepted as done by this entry:
+
+- Store-law conformance — durable state under the realm control store,
+  never `.dart_tool` or app-private dirs.
+- Actor identities — deterministic identicon avatars from actor ids, kind
+  badges, presence (listener loop = online, else `lastSeenAt`).
+- Channels — named mixed membership over durable threads, registered in an
+  LA-owned `channels` collection in the realm control store.
+- Rail + pane shell — identity rail, tab groups, axis splits, per-project
+  serialization/reopen.
+- Surface fill-in — DM, channel, browser, world inspector, project docs,
+  settings as pane-tree leaves.
+- Cleanup — retired navigation chrome and "new chat" phrasing.
+
+Non-claims: this entry records an accepted direction and work in flight;
+it claims no passing tests, no runtime proof, and no slice completion —
+each slice lands with its own evidence row.
+
 ## 2026-10-02 web peer over CDP (verb-free) — measured through pairing
 
 Measured on real apps (macOS host binary + Chrome web peer, 13 gate

@@ -31,7 +31,7 @@ enum ExternalAcpModelNames implements ModelName { externalAcp }
 /// package's [HarnessEmbed] (ADR 0025/0026):
 ///
 /// - per-session worlds and per-workspace snapshot stores
-///   (`<cwd>/.dart_tool/harnessd_store`) are owned by the backend — the
+///   (`<cwd>/.dart_tool/ecsaid_store`) are owned by the backend — the
 ///   host never touches them (the snapshot persists beats/verdicts/budgets
 ///   only; the meaning tree re-derives, ADR 0023 §2);
 /// - multiplayer-ready by construction (ADR 0015): the user's task input is
@@ -657,8 +657,8 @@ final class HarnessHostConfig {
                     OpenRouterInferenceClient(apiKey: key, defaultModel: model),
               },
             )
-            ..models[const ModelId('harnessd')] = const Model(
-              id: ModelId('harnessd'),
+            ..models[const ModelId('ecsaid')] = const Model(
+              id: ModelId('ecsaid'),
               name: OpenRouterModelNames.openRouter,
             );
       bindings['open_router'] = HarnessBackendBinding(
@@ -716,8 +716,8 @@ final class HarnessHostConfig {
                 ExternalAcpModelNames.externalAcp: () => client,
               },
             )
-            ..models[const ModelId('harnessd')] = const Model(
-              id: ModelId('harnessd'),
+            ..models[const ModelId('ecsaid')] = const Model(
+              id: ModelId('ecsaid'),
               name: ExternalAcpModelNames.externalAcp,
             );
       bindings['external_acp'] = HarnessBackendBinding(

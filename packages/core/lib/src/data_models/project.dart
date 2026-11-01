@@ -18,8 +18,9 @@ enum DocStatus { open, collapsed }
 
 /// Known format ids. Any other value is a user-installed format template.
 abstract final class DocFormatIds {
-  /// Opaque legacy metadata (ADR 0010 D2). Reads fine; no longer mints a
-  /// distinct surface — chat docs open the harness-backed grid.
+  /// ADR 0023 — the world conversation: durable realm threads between
+  /// the human (external actor) and roster bots, projected by
+  /// `WorldChatSurface`.
   static const chat = 'chat';
 
   /// Agents in docs (ADR 0003): a document bound to one or more workspaces

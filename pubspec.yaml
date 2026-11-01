@@ -31,8 +31,9 @@ dependencies:
   universal_automation_interface: ^0.2.0
   xsoulspace_meaning_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_meaning_core
-  xsoulspace_tooling_runtime:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_tooling_runtime
+  # Renamed from xsoulspace_tooling_runtime (retired in-repo, dfp #8) —
+  # same library, now published; the harness packages pin ^0.2.0 too.
+  universal_tooling_runtime: ^0.2.0
   universal_storage_live_apply:
     path: ../../universal_storage/pkgs/universal_storage_live_apply
   animations: ^2.2.0
@@ -109,6 +110,10 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_acp
   xsoulspace_inference_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_core
+  # The local MLX text casts (qwen/lfm) behind the world-chat actor
+  # brains (ADR 0023 §1a) — macOS/Metal only.
+  xsoulspace_inference_mlx_native:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_mlx_native
   xsoulspace_inference_openai:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openai
   # The local laya-serve runtime the agent doc's laya backend probes —
@@ -170,6 +175,10 @@ dependencies:
   # registration) — declared as the path dep it already resolves through.
   xsoulspace_inference_openrouter:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openrouter
+  meta: any
+  # ADR 0026 — the workspace model normalizes user-selected folder
+  # paths (absolute + normal form) through package:path.
+  path: any
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
@@ -216,6 +225,8 @@ dev_dependencies:
     path: ../../oka/packages/oka_play
 
   web: any
+  test: any
+  xsoulspace_ui_foundation: any
 dependency_overrides:
   # Shared DOM/event API used by Oka's manifest merger and Flutter's SVG
   # compiler; the latter currently admits XML only through 7.0.1.
@@ -381,6 +392,41 @@ dependency_overrides:
   # live-apply journal; path source until it publishes.
   universal_storage_live_apply:
     path: ../../universal_storage/pkgs/universal_storage_live_apply
+  # Same cascade (2026-10-29): afm + agentic_host declare hosted
+  # xsoulspace_permission_core ^0.1.0; the app path-depends on the monorepo
+  # checkout — the override makes those ONE package.
+  xsoulspace_permission_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
+  # Same cascade: afm pins its ecsai_harness siblings as hosted
+  # 0.1.0-dev.1 exact; the app path-depends on the same checkouts —
+  # the overrides make them ONE package (overrides ignore the pins).
+  xsoulspace_agentic_harness:
+    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness
+  xsoulspace_agentic_host:
+    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_host
+  xsoulspace_agentic_workspace:
+    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_workspace
+  # The harness repo's ecsly plugin split (context/conversation/tasks/wire)
+  # and the dev-train ecsly scene/app/codegen/replay stack: committed
+  # locally, not on the trains afm pins — same one-checkout law.
+  ecsly_context:
+    path: ../../ecsai_harness/pkgs/ecsly_context
+  ecsly_conversation:
+    path: ../../ecsai_harness/pkgs/ecsly_conversation
+  ecsly_tasks:
+    path: ../../ecsai_harness/pkgs/ecsly_tasks
+  ecsai_wire:
+    path: ../../ecsai_harness/pkgs/ecsai_wire
+  ecsly_app:
+    path: ../../ecsly/core_packages/ecsly_app
+  ecsly_codegen:
+    path: ../../ecsly/core_packages/ecsly_codegen
+  ecsly_replay:
+    path: ../../ecsly/plugins/ecsly_replay
+  # agentic_host/workspace reach materialization_core through a git pin;
+  # the monorepo checkout is the one live source (unpublished).
+  xsoulspace_materialization_core:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_materialization_core
   universal_storage_mesh:
     path: ../../universal_storage/pkgs/universal_storage_mesh
   universal_storage_mesh_transport:

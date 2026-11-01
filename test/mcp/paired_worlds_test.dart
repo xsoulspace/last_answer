@@ -5,15 +5,10 @@
 // it; the async resolver attaches with the bearer token. The
 // announcement builder (host side) reads manifests + token files and
 // skips worlds that cannot honestly serve a paired device.
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xsoulspace_agentic_host/src/world_manifest.dart'
-    show WorldManifest;
-import 'package:xsoulspace_agentic_host/src/world_manifest_io.dart'
-    show WorldManifestIO;
 
 void main() {
   setUp(() async {

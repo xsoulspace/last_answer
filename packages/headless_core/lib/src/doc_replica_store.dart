@@ -1,3 +1,4 @@
+import 'dart:async' show StreamController;
 import 'dart:convert';
 
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -5,6 +6,18 @@ import 'package:universal_storage_interface/universal_storage_interface.dart';
 
 import 'doc_replica.dart';
 import 'document_node.dart';
+
+/// One committed edit observed on [DocReplicaStore.changes]: the named
+/// document's head advanced (its version vector grew).
+final class DocReplicaChange {
+  const DocReplicaChange({required this.docId, required this.head});
+
+  /// The document that changed.
+  final NodeId docId;
+
+  /// The replica's version vector after the edit was folded in.
+  final VersionVector head;
+}
 
 /// Durable home for [DocReplica]s over any [StorageService] (ADR 0005 §1:
 /// docs are event-sourced over the kernel — this store persists and ships
@@ -58,7 +71,20 @@ final class DocReplicaStore {
   final Map<String, DocReplica> _replicas = {};
   final Set<String> _dirty = {};
 
+  final StreamController<DocReplicaChange> _changes =
+      StreamController<DocReplicaChange>.broadcast();
+
+  /// Broadcast of committed edits: one event per [edit] that issued ops,
+  /// per [applyRemote] that folded new ops, per [adoptSnapshot] adoption,
+  /// and per [absorbRemote]-folded op batch — [docId] plus the replica's
+  /// new head (version vector). Delivery is asynchronous; listeners never
+  /// block the writer. Notification only: persistence stays in [flush].
+  Stream<DocReplicaChange> get changes => _changes.stream;
+
   String _path(final NodeId docId) => '$dir/${docId.value}.json';
+
+  void _notify(final NodeId docId, final DocReplica replica) =>
+      _changes.add(DocReplicaChange(docId: docId, head: replica.versionVector));
 
   /// Opens (loads or births) the replica for [docId]. Idempotent: the
   /// already-opened replica is returned unchanged.
@@ -99,7 +125,10 @@ final class DocReplicaStore {
   ) async {
     final replica = await open(docId);
     final ops = action(replica);
-    if (ops.isNotEmpty) _dirty.add(docId.value);
+    if (ops.isNotEmpty) {
+      _dirty.add(docId.value);
+      _notify(docId, replica);
+    }
     return ops;
   }
 
@@ -126,7 +155,10 @@ final class DocReplicaStore {
   ) async {
     final replica = await open(docId);
     final applied = replica.applyRemote(ops);
-    if (applied > 0) _dirty.add(docId.value);
+    if (applied > 0) {
+      _dirty.add(docId.value);
+      _notify(docId, replica);
+    }
     return applied;
   }
 
@@ -158,7 +190,10 @@ final class DocReplicaStore {
     final replica = _replicas[docId.value];
     if (replica == null) return false;
     final adopted = replica.adoptSnapshot(snapshot);
-    if (adopted) _dirty.add(docId.value);
+    if (adopted) {
+      _dirty.add(docId.value);
+      _notify(docId, replica);
+    }
     return adopted;
   }
 
@@ -197,7 +232,10 @@ final class DocReplicaStore {
         applied += n;
         dirty = true;
       }
-      if (dirty) _dirty.add(docId);
+      if (dirty) {
+        _dirty.add(docId);
+        _notify(NodeId(docId), replica);
+      }
     }
     return applied;
   }
@@ -237,9 +275,13 @@ final class DocReplicaStore {
     return dirty.length;
   }
 
-  /// Flushes pending writes. The caller owns the store lifecycle; the
-  /// attached [MeshStorageService] never disposes it.
-  Future<void> dispose() => flush();
+  /// Flushes pending writes, then closes the change stream. The caller
+  /// owns the store lifecycle; the attached [MeshStorageService] never
+  /// disposes it.
+  Future<void> dispose() async {
+    await flush();
+    await _changes.close();
+  }
 
   /// Restores a replica from persisted [raw] JSON. Fast path: the file's
   /// actor is this store's actor → `DocReplica.fromJson` (which also

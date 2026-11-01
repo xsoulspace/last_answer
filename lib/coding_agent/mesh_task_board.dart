@@ -279,6 +279,10 @@ final class MeshTaskBoard {
     _allRecords().where((final record) => record.docId == docId).toList(),
   );
 
+  /// Every task on the board across docs, same deterministic order —
+  /// the Settings observability view (ADR 0023) reads this.
+  List<MeshTaskRecord> get allRecords => _sorted(_allRecords());
+
   /// Tasks of [docId] still waiting for a worker: status `requested` and
   /// not dispatched by [selfPeerId] (a dispatcher never picks up its own
   /// request). Same deterministic order as [tasksFor].

@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:lastanswer/coding_agent/product_dart_runtime.dart';
+import 'package:universal_tooling_runtime/universal_tooling_runtime.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';
-import 'package:xsoulspace_tooling_runtime/xsoulspace_tooling_runtime.dart';
 
 /// Compiler-only checks in the existing private candidate and native no-fork
 /// verifier. Discovery supplies no verification; only the snapshot pass does.

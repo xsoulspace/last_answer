@@ -49,11 +49,11 @@ Future<void> _waitVerb(
   for (var i = 0; i < attempts; i++) {
     try {
       final names = await vm.extensionNames();
-      if (names.contains('ext.mcp.toolkit.' + name)) return;
+      if (names.contains('ext.mcp.toolkit.$name')) return;
     } on Object catch (_) {}
     await Future<void>.delayed(const Duration(seconds: 1));
   }
-  throw StateError('toolkit verb never registered: ' + name);
+  throw StateError('toolkit verb never registered: $name');
 }
 
 Future<Map<String, Object?>> _verb(
@@ -294,8 +294,8 @@ Future<void> main(final List<String> args) async {
           : 'failures: ${failures.join(', ')}',
     );
   } on Object catch (e, st) {
-    row('FAIL', 'gate', '${e.toString().split('\n').first}');
-    row('INFO', 'stack', '${st.toString().split('\n').take(4).join(' | ')}');
+    row('FAIL', 'gate', e.toString().split('\n').first);
+    row('INFO', 'stack', st.toString().split('\n').take(4).join(' | '));
     row('FAIL', 'VERDICT', 'gate did not complete');
   } finally {
     File('${_evidenceDir.path}/daemon.log')

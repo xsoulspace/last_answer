@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lastanswer/bootstrap.dart';
 import 'package:lastanswer/browser/browser_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';
@@ -17,6 +18,9 @@ void main() {
       ..initialize()
       ..initializeFlutterToolkit();
     assert(() {
+      // NOTE: ensureSemantics here caused a continuous embedder task
+      // churn on macOS (semantics updates every frame). The toolkit
+      // enables semantics lazily on first snapshot instead.
       // Agent-driven storage tools (debug/profile only).
       unawaited(
         binding.addEntries(
@@ -26,6 +30,7 @@ void main() {
             ...storageMcpEntries(),
             ...docMcpEntries(),
             ...agentMcpEntries(),
+            ...realmChatMcpEntries(),
             ...worldInspectorMcpEntries(),
           },
         ),

@@ -1102,4 +1102,329 @@ class SIt extends S {
 
   @override
   String get supervisorExecutionStop => 'Ferma attività avviate';
+
+  @override
+  String get worldChatUnsupported =>
+      'La chat del mondo richiede un filesystem locale (desktop).';
+
+  @override
+  String get worldChatNewConversation => 'Nuova conversazione';
+
+  @override
+  String get worldChatTopicLabel => 'Argomento';
+
+  @override
+  String get worldChatTopicHint => 'Di cosa parla questa conversazione?';
+
+  @override
+  String get worldChatNoActorsYet =>
+      'Ancora nessun attore — creane uno in Impostazioni → Agenti e modelli.';
+
+  @override
+  String get worldChatOpen => 'Apri';
+
+  @override
+  String get worldChatCancel => 'Annulla';
+
+  @override
+  String get worldChatConversations => 'CONVERSAZIONI';
+
+  @override
+  String get worldChatNoConversations => 'Ancora nessuna conversazione.';
+
+  @override
+  String get worldChatCloseTooltip => 'Chiudi conversazione';
+
+  @override
+  String get worldChatPickHint =>
+      'Scegli una conversazione o iniziane una nuova.';
+
+  @override
+  String get worldChatFirstWord =>
+      'Di\' la prima parola — gli attori di questa conversazione la sentiranno.';
+
+  @override
+  String get worldChatComposerHint => 'Scrivi alla conversazione…';
+
+  @override
+  String get worldChatSend => 'Invia';
+
+  @override
+  String worldChatParticipants(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count partecipanti',
+      one: '$count partecipante',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String worldChatBeats(int count) {
+    return '$count messaggi';
+  }
+
+  @override
+  String get worldChatMenuMessageActor => 'Scrivi a un attore…';
+
+  @override
+  String get worldChatMenuNewChannel => 'Nuovo canale…';
+
+  @override
+  String get worldChatMenuNewWorkspace => 'Nuova area di lavoro…';
+
+  @override
+  String get worldChatPickActorTitle => 'Scrivi a un attore';
+
+  @override
+  String get worldChatSearchActors => 'Cerca attori…';
+
+  @override
+  String get worldChatNoMatchingActors => 'Nessun attore corrispondente.';
+
+  @override
+  String get worldChatNewChannelTitle => 'Nuovo canale';
+
+  @override
+  String get worldChatChannelNameLabel => 'Nome del canale';
+
+  @override
+  String get worldChatChannelNameHint => 'es. design-crit';
+
+  @override
+  String get worldChatChannelCreate => 'Crea';
+
+  @override
+  String get worldChatChannelNameTaken =>
+      'Esiste già un canale con questo nome.';
+
+  @override
+  String get worldChatNewWorkspaceTitle => 'Nuova area di lavoro';
+
+  @override
+  String get worldChatWorkspaceNameLabel => 'Nome';
+
+  @override
+  String get worldChatWorkspaceNameHint => 'es. lancio Orbit';
+
+  @override
+  String get worldChatWorkspaceAddFolder => 'Aggiungi cartella…';
+
+  @override
+  String get worldChatWorkspaceCreate => 'Crea';
+
+  @override
+  String worldChatMessageHint(String name) {
+    return 'Scrivi a $name…';
+  }
+
+  @override
+  String worldChatMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membri',
+      one: '$count membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actorsSectionTitle => 'ATTORI';
+
+  @override
+  String get actorsSectionHint =>
+      'Crea identità di attori — bot con cui parlare e lavorare. Le identità vivono nel roster sincronizzato e nel mondo ecsai; lo stesso meccanismo che gli attori usano quando generano altri attori.';
+
+  @override
+  String get actorsUnsupported =>
+      'Il mondo degli attori richiede un filesystem locale (desktop).';
+
+  @override
+  String get actorsNoneYet => 'Ancora nessun attore — crea il primo qui sotto.';
+
+  @override
+  String get actorsCreateActor => 'Crea attore';
+
+  @override
+  String get actorsNameLabel => 'Nome dell\'attore';
+
+  @override
+  String get actorsNameHint => 'es. Toby Researcher';
+
+  @override
+  String get actorsBrainLabel => 'Cervello (modello)';
+
+  @override
+  String get actorsRoleLabel => 'Ruolo (opzionale)';
+
+  @override
+  String get actorsRoleHint => 'es. assistente di ricerca';
+
+  @override
+  String get actorsRemoveTooltip => 'Rimuovi attore';
+
+  @override
+  String get actorsLocalNeedsMacos =>
+      'I cervelli locali richiedono macOS (MLX); i cervelli hosted funzionano ovunque sia configurata la chiave del provider.';
+
+  @override
+  String get settingsWorldInspector => 'Ispettore del mondo';
+
+  @override
+  String get newTabPageTitle => 'Nuova scheda';
+
+  @override
+  String get newTabHintConversations =>
+      'La superficie del mondo — canali e conversazioni dirette.';
+
+  @override
+  String get newTabHintBrowser => 'Sfoglia i file del workspace e il web.';
+
+  @override
+  String get newTabHintInspector => 'Osserva mondi, sessioni e binding.';
+
+  @override
+  String get settingsMeshTasks => 'Attività mesh';
+
+  @override
+  String get meshTasksNoReplica =>
+      'Nessuna replica mesh attiva su questo dispositivo. Abbina in Impostazioni → Generali → Archiviazione.';
+
+  @override
+  String get meshTasksEmpty => 'Nessuna attività sulla bacheca.';
+
+  @override
+  String get railActors => 'Attori';
+
+  @override
+  String get railChannels => 'Canali';
+
+  @override
+  String get railRowMiniwindow => 'Apri in mini-finestra';
+
+  @override
+  String get railDirect => 'DIRETTE';
+
+  @override
+  String get railProjects => 'PROGETTI';
+
+  @override
+  String get railWorkspaces => 'Aree di lavoro';
+
+  @override
+  String get railWorkspaceEmptyTree => 'L\'albero dei file arriverà qui.';
+
+  @override
+  String get railSearchHint => 'Cerca attori, canali, aree di lavoro…';
+
+  @override
+  String get railAddTooltip => 'Nuovo';
+
+  @override
+  String get railNoMatches => 'Nessun risultato.';
+
+  @override
+  String get worldChatSelectFromRail =>
+      'Seleziona una conversazione dalla barra laterale.';
+
+  @override
+  String get contextTopic => 'ARGOMENTO';
+
+  @override
+  String get contextParticipants => 'PARTECIPANTI';
+
+  @override
+  String get contextMembers => 'Membri';
+
+  @override
+  String get contextShowTooltip => 'Mostra contesto';
+
+  @override
+  String get contextHideTooltip => 'Nascondi contesto';
+
+  @override
+  String get contextTabPeople => 'Persone';
+
+  @override
+  String get contextTabBrowser => 'Browser';
+
+  @override
+  String get contextTabFiles => 'File';
+
+  @override
+  String get contextTabTerminal => 'Terminale';
+
+  @override
+  String get contextTabThreads => 'Thread';
+
+  @override
+  String get contextTabDocs => 'Documenti';
+
+  @override
+  String get contextFilesEmpty =>
+      'I file dell\'area di lavoro arriveranno qui.';
+
+  @override
+  String get contextTerminalEmpty => 'Il terminale arriverà qui.';
+
+  @override
+  String get contextThreadsEmpty => 'I thread dell\'harness arriveranno qui.';
+
+  @override
+  String get contextDocsEmpty => 'I documenti arriveranno qui.';
+
+  @override
+  String get contextBackToConversation => 'Torna alla conversazione';
+
+  @override
+  String get contextBrain => 'CERVELLO';
+
+  @override
+  String get contextSampling => 'CAMPIONAMENTO';
+
+  @override
+  String get contextPersona => 'PERSONA';
+
+  @override
+  String get contextNoBrain => 'Nessun cervello associato.';
+
+  @override
+  String get contextPersonaEmpty =>
+      'Nessuna persona — sintetizzata da nome e ruolo.';
+
+  @override
+  String get actorsEditTooltip => 'Modifica attore';
+
+  @override
+  String get actorsSaveChanges => 'Salva modifiche';
+
+  @override
+  String get actorsDiscardChanges => 'Scarta modifiche';
+
+  @override
+  String get actorsPersonaLabel => 'Prompt della persona';
+
+  @override
+  String get actorsPersonaHint =>
+      'Inviato verbatim come prompt di sistema quando l\'attore parla; vuoto = sintetizzato da nome e ruolo.';
+
+  @override
+  String get actorsTemperatureLabel => 'Temperatura';
+
+  @override
+  String get actorsRepetitionLabel => 'Penalità di ripetizione';
+
+  @override
+  String get actorsSamplingHint =>
+      'Parametri di campionamento per i cervelli locali; vuoto = predefiniti della chat.';
+
+  @override
+  String get workspacesFilesEmpty =>
+      'Ancora nessuna area di lavoro — aggiungine una dalla barra.';
+
+  @override
+  String get workspacesFilesNoFolders =>
+      'Ancora nessuna cartella — aggiungi cartelle a questa area di lavoro.';
 }

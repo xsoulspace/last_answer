@@ -2078,6 +2078,582 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Stop owned work'**
   String get supervisorExecutionStop;
+
+  /// No description provided for @worldChatUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The world chat needs a local filesystem (desktop).'**
+  String get worldChatUnsupported;
+
+  /// No description provided for @worldChatNewConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'New conversation'**
+  String get worldChatNewConversation;
+
+  /// No description provided for @worldChatTopicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get worldChatTopicLabel;
+
+  /// No description provided for @worldChatTopicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What is this conversation about?'**
+  String get worldChatTopicHint;
+
+  /// No description provided for @worldChatNoActorsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors yet — create one in Settings → Agents & Models.'**
+  String get worldChatNoActorsYet;
+
+  /// No description provided for @worldChatOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get worldChatOpen;
+
+  /// No description provided for @worldChatCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get worldChatCancel;
+
+  /// No description provided for @worldChatConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'CONVERSATIONS'**
+  String get worldChatConversations;
+
+  /// No description provided for @worldChatNoConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet.'**
+  String get worldChatNoConversations;
+
+  /// No description provided for @worldChatCloseTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Close conversation'**
+  String get worldChatCloseTooltip;
+
+  /// No description provided for @worldChatPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a conversation, or start a new one.'**
+  String get worldChatPickHint;
+
+  /// No description provided for @worldChatFirstWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Say the first word — actors in this conversation will hear it.'**
+  String get worldChatFirstWord;
+
+  /// No description provided for @worldChatComposerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write to the conversation…'**
+  String get worldChatComposerHint;
+
+  /// No description provided for @worldChatSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get worldChatSend;
+
+  /// No description provided for @worldChatParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} participant} other{{count} participants}}'**
+  String worldChatParticipants(int count);
+
+  /// No description provided for @worldChatBeats.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} beats'**
+  String worldChatBeats(int count);
+
+  /// No description provided for @worldChatMenuMessageActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Message an actor…'**
+  String get worldChatMenuMessageActor;
+
+  /// No description provided for @worldChatMenuNewChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'New channel…'**
+  String get worldChatMenuNewChannel;
+
+  /// No description provided for @worldChatMenuNewWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'New workspace…'**
+  String get worldChatMenuNewWorkspace;
+
+  /// No description provided for @worldChatPickActorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message an actor'**
+  String get worldChatPickActorTitle;
+
+  /// No description provided for @worldChatSearchActors.
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors…'**
+  String get worldChatSearchActors;
+
+  /// No description provided for @worldChatNoMatchingActors.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching actors.'**
+  String get worldChatNoMatchingActors;
+
+  /// No description provided for @worldChatNewChannelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New channel'**
+  String get worldChatNewChannelTitle;
+
+  /// No description provided for @worldChatChannelNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel name'**
+  String get worldChatChannelNameLabel;
+
+  /// No description provided for @worldChatChannelNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. design-crit'**
+  String get worldChatChannelNameHint;
+
+  /// No description provided for @worldChatChannelCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get worldChatChannelCreate;
+
+  /// No description provided for @worldChatChannelNameTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'A channel with this name already exists.'**
+  String get worldChatChannelNameTaken;
+
+  /// No description provided for @worldChatNewWorkspaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New workspace'**
+  String get worldChatNewWorkspaceTitle;
+
+  /// No description provided for @worldChatWorkspaceNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get worldChatWorkspaceNameLabel;
+
+  /// No description provided for @worldChatWorkspaceNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Orbit launch'**
+  String get worldChatWorkspaceNameHint;
+
+  /// No description provided for @worldChatWorkspaceAddFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add folder…'**
+  String get worldChatWorkspaceAddFolder;
+
+  /// No description provided for @worldChatWorkspaceCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get worldChatWorkspaceCreate;
+
+  /// No description provided for @worldChatMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Message {name}…'**
+  String worldChatMessageHint(String name);
+
+  /// No description provided for @worldChatMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} member} other{{count} members}}'**
+  String worldChatMembers(int count);
+
+  /// No description provided for @actorsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTORS'**
+  String get actorsSectionTitle;
+
+  /// No description provided for @actorsSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Create actor identities — bots you can talk and work with. Identities live in the synced roster and the ecsai world; the same mechanism actors themselves use when they spawn actors.'**
+  String get actorsSectionHint;
+
+  /// No description provided for @actorsUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The actor world needs a local filesystem (desktop).'**
+  String get actorsUnsupported;
+
+  /// No description provided for @actorsNoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors yet — create the first one below.'**
+  String get actorsNoneYet;
+
+  /// No description provided for @actorsCreateActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Create actor'**
+  String get actorsCreateActor;
+
+  /// No description provided for @actorsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor name'**
+  String get actorsNameLabel;
+
+  /// No description provided for @actorsNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Toby Researcher'**
+  String get actorsNameHint;
+
+  /// No description provided for @actorsBrainLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain (model)'**
+  String get actorsBrainLabel;
+
+  /// No description provided for @actorsRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Role (optional)'**
+  String get actorsRoleLabel;
+
+  /// No description provided for @actorsRoleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. research assistant'**
+  String get actorsRoleHint;
+
+  /// No description provided for @actorsRemoveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove actor'**
+  String get actorsRemoveTooltip;
+
+  /// No description provided for @actorsLocalNeedsMacos.
+  ///
+  /// In en, this message translates to:
+  /// **'Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.'**
+  String get actorsLocalNeedsMacos;
+
+  /// No description provided for @settingsWorldInspector.
+  ///
+  /// In en, this message translates to:
+  /// **'World inspector'**
+  String get settingsWorldInspector;
+
+  /// No description provided for @newTabPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New tab'**
+  String get newTabPageTitle;
+
+  /// No description provided for @newTabHintConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'The world face — channels and direct threads.'**
+  String get newTabHintConversations;
+
+  /// No description provided for @newTabHintBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the workspace\'s files and the web.'**
+  String get newTabHintBrowser;
+
+  /// No description provided for @newTabHintInspector.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch worlds, sessions and bindings.'**
+  String get newTabHintInspector;
+
+  /// No description provided for @settingsMeshTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Mesh tasks'**
+  String get settingsMeshTasks;
+
+  /// No description provided for @meshTasksNoReplica.
+  ///
+  /// In en, this message translates to:
+  /// **'No mesh replica is live on this device. Pair in Settings → General → Storage.'**
+  String get meshTasksNoReplica;
+
+  /// No description provided for @meshTasksEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks on the board.'**
+  String get meshTasksEmpty;
+
+  /// No description provided for @railActors.
+  ///
+  /// In en, this message translates to:
+  /// **'Actors'**
+  String get railActors;
+
+  /// No description provided for @railChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get railChannels;
+
+  /// No description provided for @railRowMiniwindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in miniwindow'**
+  String get railRowMiniwindow;
+
+  /// No description provided for @railDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'DIRECT'**
+  String get railDirect;
+
+  /// No description provided for @railProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'PROJECTS'**
+  String get railProjects;
+
+  /// No description provided for @railWorkspaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspaces'**
+  String get railWorkspaces;
+
+  /// No description provided for @railWorkspaceEmptyTree.
+  ///
+  /// In en, this message translates to:
+  /// **'The file tree lands here.'**
+  String get railWorkspaceEmptyTree;
+
+  /// No description provided for @railSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors, channels, workspaces…'**
+  String get railSearchHint;
+
+  /// No description provided for @railAddTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get railAddTooltip;
+
+  /// No description provided for @railNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches.'**
+  String get railNoMatches;
+
+  /// No description provided for @worldChatSelectFromRail.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a conversation from the rail.'**
+  String get worldChatSelectFromRail;
+
+  /// No description provided for @contextTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'TOPIC'**
+  String get contextTopic;
+
+  /// No description provided for @contextParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'PARTICIPANTS'**
+  String get contextParticipants;
+
+  /// No description provided for @contextMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get contextMembers;
+
+  /// No description provided for @contextShowTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show context'**
+  String get contextShowTooltip;
+
+  /// No description provided for @contextHideTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide context'**
+  String get contextHideTooltip;
+
+  /// No description provided for @contextTabPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get contextTabPeople;
+
+  /// No description provided for @contextTabBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Browser'**
+  String get contextTabBrowser;
+
+  /// No description provided for @contextTabFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get contextTabFiles;
+
+  /// No description provided for @contextTabTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal'**
+  String get contextTabTerminal;
+
+  /// No description provided for @contextTabThreads.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get contextTabThreads;
+
+  /// No description provided for @contextTabDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Docs'**
+  String get contextTabDocs;
+
+  /// No description provided for @contextFilesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspace files land here.'**
+  String get contextFilesEmpty;
+
+  /// No description provided for @contextTerminalEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'A terminal lands here.'**
+  String get contextTerminalEmpty;
+
+  /// No description provided for @contextThreadsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The harness threads land here.'**
+  String get contextThreadsEmpty;
+
+  /// No description provided for @contextDocsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Docs land here.'**
+  String get contextDocsEmpty;
+
+  /// No description provided for @contextBackToConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the conversation'**
+  String get contextBackToConversation;
+
+  /// No description provided for @contextBrain.
+  ///
+  /// In en, this message translates to:
+  /// **'BRAIN'**
+  String get contextBrain;
+
+  /// No description provided for @contextSampling.
+  ///
+  /// In en, this message translates to:
+  /// **'SAMPLING'**
+  String get contextSampling;
+
+  /// No description provided for @contextPersona.
+  ///
+  /// In en, this message translates to:
+  /// **'PERSONA'**
+  String get contextPersona;
+
+  /// No description provided for @contextNoBrain.
+  ///
+  /// In en, this message translates to:
+  /// **'No brain bound.'**
+  String get contextNoBrain;
+
+  /// No description provided for @contextPersonaEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No persona — synthesized from the name and role.'**
+  String get contextPersonaEmpty;
+
+  /// No description provided for @actorsEditTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit actor'**
+  String get actorsEditTooltip;
+
+  /// No description provided for @actorsSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get actorsSaveChanges;
+
+  /// No description provided for @actorsDiscardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get actorsDiscardChanges;
+
+  /// No description provided for @actorsPersonaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Persona prompt'**
+  String get actorsPersonaLabel;
+
+  /// No description provided for @actorsPersonaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent verbatim as the system prompt when this actor speaks; empty = synthesized from name and role.'**
+  String get actorsPersonaHint;
+
+  /// No description provided for @actorsTemperatureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get actorsTemperatureLabel;
+
+  /// No description provided for @actorsRepetitionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repetition penalty'**
+  String get actorsRepetitionLabel;
+
+  /// No description provided for @actorsSamplingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sampling overrides for local brains; empty = the chat defaults.'**
+  String get actorsSamplingHint;
+
+  /// No description provided for @workspacesFilesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No workspaces yet — add one from the rail.'**
+  String get workspacesFilesEmpty;
+
+  /// No description provided for @workspacesFilesNoFolders.
+  ///
+  /// In en, this message translates to:
+  /// **'No folders yet — add folders to this workspace.'**
+  String get workspacesFilesNoFolders;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

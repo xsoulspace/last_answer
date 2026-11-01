@@ -48,7 +48,7 @@ void main() {
       await tester.tap(find.text('Move down'));
       await tester.pumpAndSettle();
       final endpoint = WorkbenchScreen.endpoint!;
-      final id = endpoint.state()['proposal'] as String;
+      final id = endpoint.state()['proposal']! as String;
       await tester.ensureVisible(find.byKey(ValueKey('adopt-$id')));
       await tester.tap(find.byKey(ValueKey('adopt-$id')));
       await tester.pumpAndSettle();
@@ -114,11 +114,11 @@ void main() {
     await gesture.up();
     await tester.pumpAndSettle();
     final state = WorkbenchScreen.endpoint!.state();
-    final metadata = state['metadata'] as Map;
-    final proposal = ((metadata['proposals'] as Map).values.single as Map);
+    final metadata = state['metadata']! as Map;
+    final proposal = (metadata['proposals'] as Map).values.single as Map;
     expect((proposal['config'] as Map)['restore'], false);
     expect(proposal['status'], 'staged');
-    expect((state['behaviour'] as Map)['restore'], true);
+    expect((state['behaviour']! as Map)['restore'], true);
     expect(tester.takeException(), isNull);
   });
 

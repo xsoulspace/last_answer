@@ -141,7 +141,7 @@ void main() {
     final agent = _FakeAgent();
     var factories = 0;
     final runtime = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async {
+      clientFactory: (_, _, {onStderr}) async {
         factories += 1;
         return agent.client;
       },
@@ -174,7 +174,7 @@ void main() {
     // (process restart, or the session moved to another device's agent).
     final firstAgent = _FakeAgent();
     final first = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async => firstAgent.client,
+      clientFactory: (_, _, {onStderr}) async => firstAgent.client,
     );
     await first.start(config);
     await first.newSession('/tmp/project');
@@ -183,7 +183,7 @@ void main() {
     // Connection two: the persisted session id is RELOADED, not replaced.
     final secondAgent = _FakeAgent();
     final resumed = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async => secondAgent.client,
+      clientFactory: (_, _, {onStderr}) async => secondAgent.client,
     );
     await resumed.start(config);
     final id = await resumed.resume('session-1', workingDirectory: '/tmp');
@@ -204,7 +204,7 @@ void main() {
   test('cancel notifies the active ACP session', () async {
     final agent = _FakeAgent();
     final runtime = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async => agent.client,
+      clientFactory: (_, _, {onStderr}) async => agent.client,
     );
     await runtime.start(config);
     await runtime.newSession('/tmp/project');
@@ -228,7 +228,7 @@ void main() {
 
   test('reports error state when initialization fails', () async {
     final runtime = AcpAgentRuntime(
-      clientFactory: (_, __, {onStderr}) async =>
+      clientFactory: (_, _, {onStderr}) async =>
           throw StateError('spawn failed'),
     );
 
@@ -310,7 +310,6 @@ void main() {
               agentOutput: fromServer.stream,
               agentInput: _ForwardSink(fromClient),
               permissionHandler: permissionDelegate,
-              initializeSettleDelay: Duration.zero,
             ),
       );
       final pendings = <AcpPendingPermission>[];

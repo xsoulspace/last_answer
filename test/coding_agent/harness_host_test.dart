@@ -144,7 +144,7 @@ void main() {
     await host.stop();
     expect(host.isRunning, isFalse);
     expect(
-      Directory('${workspace.path}/.dart_tool/harnessd_store').existsSync(),
+      Directory('${workspace.path}/.dart_tool/ecsaid_store').existsSync(),
       isTrue,
       reason: 'the per-workspace snapshot store must exist',
     );

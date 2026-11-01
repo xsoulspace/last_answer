@@ -5,11 +5,11 @@
 /// daemons (pid-checked) and attach through the http serve facade ONLY.
 /// `allowSpawn: false` as a law: an embed never spawns a daemon — a
 /// world without its facade armed refuses honestly ("arm
-/// `harnessd --serve`"), it is never approximated by a new spawn.
+/// `ecsaid --serve`"), it is never approximated by a new spawn.
 ///
 /// Discovery never grants authority (ADR 0040): observation rides the
 /// facade's read-only state; operation stays with the client's own
-/// harnessd MCP seat.
+/// ecsaid MCP seat.
 library;
 
 import 'dart:convert';

@@ -341,14 +341,68 @@
   "supervisorSectionStateIdle": "Not running yet",
   "storageMeshPermissionBlocked": "macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.",
   "storageMeshRetrySharing": "Try again",
-  "@supervisorScheduleDailyAt": {"placeholders": {"time": {"type": "String"}}},
-  "@supervisorScheduleEveryDays": {"placeholders": {"n": {"type": "int"}}},
-  "@supervisorScheduleEveryHours": {"placeholders": {"n": {"type": "int"}}},
-  "@supervisorScheduleEveryMinutes": {"placeholders": {"n": {"type": "int"}}},
-  "@supervisorScheduleAt": {"placeholders": {"time": {"type": "String"}}},
-  "@supervisorSectionStats": {"placeholders": {"state": {"type": "String"}, "count": {"type": "int"}, "last": {"type": "String"}}},
-  "@supervisorSectionNextRun": {"placeholders": {"time": {"type": "String"}}},
-  "@supervisorSectionDeleteWarn": {"placeholders": {"name": {"type": "String"}}},
+  "@supervisorScheduleDailyAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@supervisorScheduleEveryDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@supervisorScheduleEveryHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@supervisorScheduleEveryMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@supervisorScheduleAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@supervisorSectionStats": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "@supervisorSectionNextRun": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@supervisorSectionDeleteWarn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "agentCodeChange": "Code change",
   "chatGptSubscriptionTitle": "ChatGPT plan",
   "chatGptContinue": "Continue with ChatGPT",
@@ -388,5 +442,129 @@
   "supervisorExecutionPause": "Pause schedules",
   "supervisorExecutionCancel": "Cancel running pass",
   "supervisorExecutionAppOpen": "Execution runs only while Last Answer is open.",
-  "supervisorExecutionStop": "Stop owned work"
+  "supervisorExecutionStop": "Stop owned work",
+  "worldChatUnsupported": "The world chat needs a local filesystem (desktop).",
+  "worldChatNewConversation": "New conversation",
+  "worldChatTopicLabel": "Topic",
+  "worldChatTopicHint": "What is this conversation about?",
+  "worldChatNoActorsYet": "No actors yet — create one in Settings → Agents & Models.",
+  "worldChatOpen": "Open",
+  "worldChatCancel": "Cancel",
+  "worldChatConversations": "CONVERSATIONS",
+  "worldChatNoConversations": "No conversations yet.",
+  "worldChatCloseTooltip": "Close conversation",
+  "worldChatPickHint": "Pick a conversation, or start a new one.",
+  "worldChatFirstWord": "Say the first word — actors in this conversation will hear it.",
+  "worldChatComposerHint": "Write to the conversation…",
+  "worldChatSend": "Send",
+  "worldChatParticipants": "{count, plural, one{{count} participant} other{{count} participants}}",
+  "@worldChatParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatBeats": "{count} beats",
+  "@worldChatBeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatMenuMessageActor": "Message an actor…",
+  "worldChatMenuNewChannel": "New channel…",
+  "worldChatMenuNewWorkspace": "New workspace…",
+  "worldChatPickActorTitle": "Message an actor",
+  "worldChatSearchActors": "Search actors…",
+  "worldChatNoMatchingActors": "No matching actors.",
+  "worldChatNewChannelTitle": "New channel",
+  "worldChatChannelNameLabel": "Channel name",
+  "worldChatChannelNameHint": "e.g. design-crit",
+  "worldChatChannelCreate": "Create",
+  "worldChatChannelNameTaken": "A channel with this name already exists.",
+  "worldChatNewWorkspaceTitle": "New workspace",
+  "worldChatWorkspaceNameLabel": "Name",
+  "worldChatWorkspaceNameHint": "e.g. Orbit launch",
+  "worldChatWorkspaceAddFolder": "Add folder…",
+  "worldChatWorkspaceCreate": "Create",
+  "worldChatMessageHint": "Message {name}…",
+  "@worldChatMessageHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatMembers": "{count, plural, one{{count} member} other{{count} members}}",
+  "@worldChatMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorsSectionTitle": "ACTORS",
+  "actorsSectionHint": "Create actor identities — bots you can talk and work with. Identities live in the synced roster and the ecsai world; the same mechanism actors themselves use when they spawn actors.",
+  "actorsUnsupported": "The actor world needs a local filesystem (desktop).",
+  "actorsNoneYet": "No actors yet — create the first one below.",
+  "actorsCreateActor": "Create actor",
+  "actorsNameLabel": "Actor name",
+  "actorsNameHint": "e.g. Toby Researcher",
+  "actorsBrainLabel": "Brain (model)",
+  "actorsRoleLabel": "Role (optional)",
+  "actorsRoleHint": "e.g. research assistant",
+  "actorsRemoveTooltip": "Remove actor",
+  "actorsLocalNeedsMacos": "Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.",
+  "settingsWorldInspector": "World inspector",
+  "newTabPageTitle": "New tab",
+  "newTabHintConversations": "The world face — channels and direct threads.",
+  "newTabHintBrowser": "Browse the workspace's files and the web.",
+  "newTabHintInspector": "Watch worlds, sessions and bindings.",
+  "settingsMeshTasks": "Mesh tasks",
+  "meshTasksNoReplica": "No mesh replica is live on this device. Pair in Settings → General → Storage.",
+  "meshTasksEmpty": "No tasks on the board.",
+  "railActors": "Actors",
+  "railChannels": "Channels",
+  "railRowMiniwindow": "Open in miniwindow",
+  "railDirect": "DIRECT",
+  "railProjects": "PROJECTS",
+  "railWorkspaces": "Workspaces",
+  "railWorkspaceEmptyTree": "The file tree lands here.",
+  "railSearchHint": "Search actors, channels, workspaces…",
+  "railAddTooltip": "New",
+  "railNoMatches": "No matches.",
+  "worldChatSelectFromRail": "Select a conversation from the rail.",
+  "contextTopic": "TOPIC",
+  "contextParticipants": "PARTICIPANTS",
+  "contextMembers": "Members",
+  "contextShowTooltip": "Show context",
+  "contextHideTooltip": "Hide context",
+  "contextTabPeople": "People",
+  "contextTabBrowser": "Browser",
+  "contextTabFiles": "Files",
+  "contextTabTerminal": "Terminal",
+  "contextTabThreads": "Threads",
+  "contextTabDocs": "Docs",
+  "contextFilesEmpty": "Workspace files land here.",
+  "contextTerminalEmpty": "A terminal lands here.",
+  "contextThreadsEmpty": "The harness threads land here.",
+  "contextDocsEmpty": "Docs land here.",
+  "contextBackToConversation": "Back to the conversation",
+  "contextBrain": "BRAIN",
+  "contextSampling": "SAMPLING",
+  "contextPersona": "PERSONA",
+  "contextNoBrain": "No brain bound.",
+  "contextPersonaEmpty": "No persona — synthesized from the name and role.",
+  "actorsEditTooltip": "Edit actor",
+  "actorsSaveChanges": "Save changes",
+  "actorsDiscardChanges": "Discard changes",
+  "actorsPersonaLabel": "Persona prompt",
+  "actorsPersonaHint": "Sent verbatim as the system prompt when this actor speaks; empty = synthesized from name and role.",
+  "actorsTemperatureLabel": "Temperature",
+  "actorsRepetitionLabel": "Repetition penalty",
+  "actorsSamplingHint": "Sampling overrides for local brains; empty = the chat defaults.",
+  "workspacesFilesEmpty": "No workspaces yet — add one from the rail.",
+  "workspacesFilesNoFolders": "No folders yet — add folders to this workspace."
 }

@@ -1286,6 +1286,26 @@ class SIt extends S {
   String get newTabHintInspector => 'Osserva mondi, sessioni e binding.';
 
   @override
+  String get newTabHintFilesystem =>
+      'Sfoglia l\'albero delle cartelle e i file del workspace.';
+
+  @override
+  String get newTabHintPeople =>
+      'Gli attori del realm: presenza, profili, modifica in linea.';
+
+  @override
+  String get viewFilesystemTitle => 'File';
+
+  @override
+  String get viewPinTooltip => 'Fissa la vista';
+
+  @override
+  String get viewUnpinTooltip => 'Sblocca la vista';
+
+  @override
+  String get viewDockRestoreTooltip => 'Mostra le viste fissate';
+
+  @override
   String get settingsMeshTasks => 'Attività mesh';
 
   @override
@@ -1348,19 +1368,10 @@ class SIt extends S {
   String get contextTabPeople => 'Persone';
 
   @override
-  String get contextTabBrowser => 'Browser';
-
-  @override
-  String get contextTabFiles => 'File';
-
-  @override
   String get contextTabTerminal => 'Terminale';
 
   @override
   String get contextTabThreads => 'Thread';
-
-  @override
-  String get contextTabDocs => 'Documenti';
 
   @override
   String get contextFilesEmpty =>
@@ -1371,9 +1382,6 @@ class SIt extends S {
 
   @override
   String get contextThreadsEmpty => 'I thread dell\'harness arriveranno qui.';
-
-  @override
-  String get contextDocsEmpty => 'I documenti arriveranno qui.';
 
   @override
   String get contextBackToConversation => 'Torna alla conversazione';

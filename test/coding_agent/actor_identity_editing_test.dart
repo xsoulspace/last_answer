@@ -9,6 +9,7 @@ import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/context_column.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/shell/view_people.dart';
 
 Future<RealmWorld> _hermeticWorld() async {
   final temp = await Directory.systemTemp.createTemp('la_actor_edit_');
@@ -286,7 +287,7 @@ void main() {
   });
 
   testWidgets(
-    'the tabbed panel: header identity click focuses the actor profile, '
+    'the people view: header identity click focuses the actor profile, '
     'the inline edit saves through updateActor (roster + world), back '
     'returns to the conversation',
     (final tester) async {
@@ -321,8 +322,13 @@ void main() {
         );
       });
 
+      // The same bridge the shell installs: a header-identity tap
+      // focuses the actor in the people view.
       final controller = ContextColumnController();
       addTearDown(controller.dispose);
+      final peopleFocus = PeopleFocus();
+      addTearDown(peopleFocus.dispose);
+      controller.onFocusActorIntent = peopleFocus.focus;
       await tester.pumpWidget(
         ChangeNotifierProvider<ContextColumnController>.value(
           value: controller,
@@ -336,7 +342,7 @@ void main() {
                   children: [
                     SizedBox(
                       width: ShellTokens.contextColumnWidth,
-                      child: ShellContextColumn(service: service),
+                      child: PeopleView(service: service, focus: peopleFocus),
                     ),
                     const VerticalDivider(width: 1),
                     Expanded(child: WorldChatSurface(service: service)),
@@ -349,10 +355,9 @@ void main() {
       );
       await tester.pump();
 
-      // Default PEOPLE tab: the conversation's people (the DM hides the
-      // topic), rows keyed per actor.
-      expect(controller.tab, ContextColumnTab.people);
-      expect(controller.focusedActorId, isNull);
+      // Default people list: the conversation's people (the DM hides
+      // the topic), rows keyed per actor.
+      expect(peopleFocus.actorId, isNull);
       expect(
         find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
         findsOneWidget,
@@ -362,7 +367,7 @@ void main() {
       // it focuses the actor.
       await tester.tap(find.byKey(const ValueKey('worldchat.identity')));
       await tester.pump();
-      expect(controller.focusedActorId, toby.actorId);
+      expect(peopleFocus.actorId, toby.actorId);
       expect(find.byKey(const ValueKey('shell.context.actor')), findsOneWidget);
       expect(find.text('Toby Researcher'), findsWidgets);
       // The panel's identity line AND the header's meta both render it.
@@ -372,12 +377,12 @@ void main() {
       // The people rows focus too.
       await tester.tap(find.byKey(const ValueKey('shell.context.actor.back')));
       await tester.pump();
-      expect(controller.focusedActorId, isNull);
+      expect(peopleFocus.actorId, isNull);
       await tester.tap(
         find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
       );
       await tester.pump();
-      expect(controller.focusedActorId, toby.actorId);
+      expect(peopleFocus.actorId, toby.actorId);
 
       // Edit mode: the same editor the Settings pane embeds.
       await tester.tap(find.byKey(const ValueKey('shell.context.actor.edit')));

@@ -1,19 +1,17 @@
-/// ADR 0024 — the app shell: actor rail on the left, a flat tab strip in
-/// the center, no home face. The shell owns the center's [CenterTabs]
-/// as state (persisted as one SharedPreferences JSON blob — the same
-/// store the storage backends use), installs the agent-doc mesh seams
-/// that used to live on the dissolved HomeScreen, and provides the
-/// shared [RealmChatService] to everything below it (rail, tab
-/// surfaces).
-///
-/// The pane tree (splits/stacks/tree editing) retired in favor of the
-/// flat strip; the old `shell.paneTree.v1` blob migrates one time
-/// ([_restoreTabs]).
+/// ADR 0024 — the app shell. WAVE 5 — unified views: ONE top bar of
+/// view tabs spans ABOVE the whole row (rail | center | dock); every
+/// center and right view opens as a tab; views PIN into the dock. The
+/// shell owns the layout as state ([ViewLayout], persisted as one
+/// SharedPreferences JSON blob — `shell.views.v2`, ONE-TIME migrated
+/// from `shell.tabs.v1`, which itself migrated from the retired
+/// `shell.paneTree.v1`), installs the agent-doc mesh seams that used
+/// to live on the dissolved HomeScreen, and provides the shared
+/// [RealmChatService] to everything below it (rail, view surfaces).
 ///
 /// Route shape: the shell wraps the router's nested navigator, so
 /// project docs/ideas/notes still push as full pages over the center
-/// while the rail stays. The `/home` route body is [CenterTabsArea] —
-/// the strip the shell owns.
+/// while the rail and the top bar stay. The `/home` route body is
+/// [CenterTabsArea] — the active view's host (the bar lives above).
 library;
 
 import 'dart:convert';
@@ -33,6 +31,8 @@ import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
+
+import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
@@ -55,21 +55,33 @@ import 'package:lastanswer/shell/pinned_conversation_peek.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
 import 'package:lastanswer/shell/surfaces.dart';
-import 'package:lastanswer/workspaces/workspace_files_tab.dart';
+
+import 'package:lastanswer/shell/view_dock.dart';
+
+import 'package:lastanswer/shell/view_layout.dart';
+
+import 'package:lastanswer/shell/view_people.dart';
+
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The SharedPreferences key holding the center tabs JSON.
+/// The SharedPreferences key holding the unified views layout JSON
+/// (`tabs` + `active` + `pinned` + `dockFocus`).
+const String kViewLayoutPrefsKey = 'shell.views.v2';
+
+/// The RETIRED center-strip key. Read once for the one-time migration
+/// (a v1 blob decodes as a v2 layout with the default pin); never
+/// written, never re-read once the new key exists.
 const String kCenterTabsPrefsKey = 'shell.tabs.v1';
 
 /// The RETIRED pane-tree key. Read once for the one-time migration;
-/// never written, never re-read once the new key exists.
+/// never written, never re-read once a newer key exists.
 const String kLegacyPaneTreePrefsKey = 'shell.paneTree.v1';
 
-/// The shell chrome: the rail, the center tab strip, and everything the
-/// old home face installed. Inject [service] in tests; production
-/// resolves it internally.
+/// The shell chrome: the rail, the top bar of view tabs, the center
+/// and the dock. Inject [service] in tests; production resolves it
+/// internally.
 final class AppShell extends StatefulWidget {
   const AppShell({required this.child, this.service, super.key});
 
@@ -93,7 +105,10 @@ class _AppShellState extends State<AppShell> {
       RealmChatService(
         providerConfiguration: context.read<ProviderConfigurationStore?>(),
       );
-  CenterTabs _tabs = CenterTabs();
+  ViewLayout _layout = ViewLayout();
+  final PeopleFocus _peopleFocus = PeopleFocus();
+
+  /// The dock's session intent + the conversation header's bridge.
   final ContextColumnController _contextColumn = ContextColumnController();
   var _seamsInstalled = false;
 
@@ -101,18 +116,25 @@ class _AppShellState extends State<AppShell> {
   /// never retried — see [_restorePersistedConversationTab]).
   String? _bootRestoredId;
 
+  /// Whether the window currently clears the dock's width gate —
+  /// captured by the build's LayoutBuilder; the actor-focus intent
+  /// reads it to decide WHERE the people view appears (a focused pin
+  /// in a hidden dock shows nothing, so narrow windows get the tab).
+  bool _windowWide = true;
+
   /// ADR 0027 — the miniwindow layer's state: floating windows (the
   /// window presentation of a surface), fed by the rail's "open in
-  /// miniwindow" affordance and persisted beside the tab strip.
+  /// miniwindow" affordance and persisted beside the layout.
   final MiniWindowController _miniWindows = MiniWindowController();
   final MiniWindowPersistence _miniWindowPersistence = MiniWindowPersistence();
 
   @override
   void initState() {
     super.initState();
+    _contextColumn.onFocusActorIntent = _onFocusActorIntent;
     unawaited(_service.ensureReady());
     _service.addListener(_onServiceChanged);
-    unawaited(_restoreTabs());
+    unawaited(_restoreLayout());
     unawaited(
       _miniWindowPersistence.restoreInto(_miniWindows, _miniWindowSpec),
     );
@@ -129,6 +151,7 @@ class _AppShellState extends State<AppShell> {
   void dispose() {
     _service.removeListener(_onServiceChanged);
     _contextColumn.dispose();
+    _peopleFocus.dispose();
     _miniWindowPersistence.dispose();
     _miniWindows.dispose();
     super.dispose();
@@ -192,14 +215,12 @@ class _AppShellState extends State<AppShell> {
   void _installAgentDocSeams() {
     if (_seamsInstalled) return;
     _seamsInstalled = true;
-    // The context panel's FILES tab mounts the workspace registry's
-    // folders (ADR 0026) — the panel file stays registry-agnostic via
-    // this seam; the notifier is the DI one (nullable read: hermetic
-    // test shells without DI keep the tab's honest empty state).
+    // The FILESYSTEM view reads the workspace registry's folders (ADR
+    // 0026) through the provider tree; the notifier is the DI one
+    // (nullable read: hermetic test shells without DI keep the view's
+    // honest empty state).
     final workspaces = context.read<WorkspaceNotifier?>();
     if (workspaces != null) {
-      ShellContextColumn.filesTabContentBuilder = (final tabContext) =>
-          WorkspaceFilesTab(notifier: workspaces);
       unawaited(workspaces.ensureLoaded());
     }
     AgentDocSurface.createMeaningExperimentHook = () =>
@@ -232,62 +253,76 @@ class _AppShellState extends State<AppShell> {
     }(), 'agent-doc mesh seams installed under the debug guard');
   }
 
-  // ---- center-tabs persistence -------------------------------------------
+  // ---- layout persistence -------------------------------------------------
 
-  /// Restores the persisted tabs; a corrupt blob keeps the default strip
-  /// (the model decodes tolerantly, so does the shell). When the new key
-  /// does not exist yet, the RETIRED pane-tree blob migrates one time:
-  /// its leaves flatten in document order (deduped, conversations
-  /// first) into tabs, the new key is written, and the legacy key stays
-  /// on disk but is never read again.
-  Future<void> _restoreTabs() async {
+  /// Restores the persisted layout; a corrupt blob keeps the default
+  /// (the model decodes tolerantly, so does the shell). When the v2 key
+  /// does not exist yet, the migration runs once: the RETIRED
+  /// `shell.tabs.v1` blob reads as a v2 layout (tabs + active carried,
+  /// People the default pin), else the RETIRED pane-tree blob's leaves
+  /// flatten in document order (deduped, conversations first) — the
+  /// v2 key is written and the legacy keys stay on disk but are never
+  /// read again.
+  Future<void> _restoreLayout() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(kCenterTabsPrefsKey);
+    final raw = prefs.getString(kViewLayoutPrefsKey);
     if (raw != null && raw.isNotEmpty) {
       try {
         final decoded = jsonDecode(raw);
-        if (mounted) setState(() => _tabs = CenterTabs.fromJson(decoded));
+        if (mounted) setState(() => _layout = ViewLayout.fromJson(decoded));
       } on Object {
         // Unreadable persisted state never takes the shell down.
       }
       _restorePersistedConversationTab();
       return;
     }
-    final legacy = prefs.getString(kLegacyPaneTreePrefsKey);
-    if (legacy == null || legacy.isEmpty) return;
+    final legacyTabs = prefs.getString(kCenterTabsPrefsKey);
+    if (legacyTabs != null && legacyTabs.isNotEmpty) {
+      try {
+        final migrated = ViewLayout.fromJson(jsonDecode(legacyTabs));
+        if (mounted) setState(() => _layout = migrated);
+        await prefs.setString(
+          kViewLayoutPrefsKey,
+          jsonEncode(migrated.toJson()),
+        );
+      } on Object {
+        // An unreadable legacy blob keeps the default layout.
+      }
+      _restorePersistedConversationTab();
+      return;
+    }
+    final legacyTree = prefs.getString(kLegacyPaneTreePrefsKey);
+    if (legacyTree == null || legacyTree.isEmpty) return;
     try {
-      final ids = legacyPaneTreeSurfaceIds(jsonDecode(legacy));
+      final ids = legacyPaneTreeSurfaceIds(jsonDecode(legacyTree));
       if (ids.isEmpty || !mounted) return;
-      final migrated = CenterTabs(surfaceIds: ids);
-      setState(() => _tabs = migrated);
-      await prefs.setString(kCenterTabsPrefsKey, jsonEncode(migrated.toJson()));
+      final migrated = ViewLayout(tabs: ids);
+      setState(() => _layout = migrated);
+      await prefs.setString(
+        kViewLayoutPrefsKey,
+        jsonEncode(migrated.toJson()),
+      );
     } on Object {
-      // An unreadable legacy tree keeps the default strip.
+      // An unreadable legacy tree keeps the default layout.
     }
     _restorePersistedConversationTab();
   }
 
-  void _onTabsChanged(final CenterTabs tabs) {
-    setState(() => _tabs = tabs);
-    _persistTabs(tabs);
+  void _onLayoutChanged(final ViewLayout layout) {
+    if (layout == _layout) return;
+    setState(() => _layout = layout);
+    _persistLayout(layout);
   }
 
-  void _persistTabs(final CenterTabs tabs) {
+  void _persistLayout(final ViewLayout layout) {
     unawaited(
       SharedPreferences.getInstance().then(
         (final prefs) =>
-            prefs.setString(kCenterTabsPrefsKey, jsonEncode(tabs.toJson())),
+            prefs.setString(kViewLayoutPrefsKey, jsonEncode(layout.toJson())),
       ),
     );
   }
 
-  /// The rail's selection flow. The rail never learns about tabs: its
-  /// rows select through the service (`openDm`/`selectChannel`), and the
-  /// shell translates the service's focused thread back to a
-  /// `dm:`/`channel:` surface id — reusing the ONE conversation slot
-  /// ([CenterTabs.openConversation], Discord flow, zero tab
-  /// accumulation). A thread that maps to no rail object (nothing
-  /// selected, an unregistered group) leaves the strip untouched.
   void _onServiceChanged() {
     if (!mounted) return;
     final surfaceId = conversationSurfaceId(
@@ -300,13 +335,10 @@ class _AppShellState extends State<AppShell> {
       _restorePersistedConversationTab();
       return;
     }
-    final next = _tabs.openConversation(surfaceId);
-    if (next == _tabs) return;
-    setState(() => _tabs = next);
-    _persistTabs(next);
+    _onLayoutChanged(_layout.openConversation(surfaceId));
   }
 
-  /// Boot restore: the strip persists its active conversation tab, but
+  /// Boot restore: the layout persists its active conversation tab, but
   /// the service boots with NO selected thread — the tab would sit on
   /// the calm empty note until the first click. Once, when the rail
   /// object behind the active id is known and the service is ready,
@@ -314,7 +346,7 @@ class _AppShellState extends State<AppShell> {
   /// thread for them — openDm would).
   void _restorePersistedConversationTab() {
     if (_service.activeThreadId != null || !_service.isReady) return;
-    final id = _tabs.activeId;
+    final id = _layout.activeId;
     if (_bootRestoredId == id) return;
     final dmActor = id.startsWith('dm:') ? id.substring('dm:'.length) : null;
     final channelId = id.startsWith('channel:')
@@ -333,6 +365,40 @@ class _AppShellState extends State<AppShell> {
 
   // ---- actions -------------------------------------------------------------
 
+  /// Pin intent from a tab's glyph: pinned views unpin (the tab stays),
+  /// unpinned ones pin (the tab stays too — a view may be tab AND pin).
+  void _togglePin(final String surfaceId) => _onLayoutChanged(
+    _layout.isPinned(surfaceId)
+        ? _layout.unpin(surfaceId)
+        : _layout.pin(surfaceId),
+  );
+
+  /// A dock pill tap: focuses that pin.
+  void _focusPin(final String surfaceId) =>
+      _onLayoutChanged(_layout.focusDock(surfaceId));
+
+  /// A dock pill's unpin glyph: removes the pin only (an open tab
+  /// stays open).
+  void _unpin(final String surfaceId) =>
+      _onLayoutChanged(_layout.unpin(surfaceId));
+
+  /// The conversation header's intent: show me this actor. The people
+  /// view appears where the human can SEE it: a focused pin when the
+  /// dock is actually visible (people pinned, window wide, dock not
+  /// hidden), else an open tab in the center.
+  void _onFocusActorIntent(final String actorId) {
+    _peopleFocus.focus(actorId);
+    final peoplePinned = _layout.isPinned(kPeopleSurfaceId);
+    final dockShowsPeople =
+        peoplePinned &&
+        _windowWide &&
+        _contextColumn.visible;
+    final next = dockShowsPeople
+        ? _layout.focusDock(kPeopleSurfaceId)
+        : _layout.open(kPeopleSurfaceId);
+    _onLayoutChanged(next);
+  }
+
   /// ADR 0027 — the rail's right-click affordance: a conversation in
   /// its own floating window. v1 content is the read-only peek (who is
   /// in it, the last word — [PinnedConversationPeek]); a DM without a
@@ -349,7 +415,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// The miniwindow behind a conversation surface id, null when the id
-  /// maps to no live thread (the same vocabulary as the tab strip).
+  /// maps to no live thread (the same vocabulary as the tab bar).
   /// The persistence lane re-resolves persisted ids through this on
   /// boot — a ghost id restores as nothing.
   MiniWindowSpec? _miniWindowSpec(final String surfaceId) {
@@ -382,7 +448,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// Settings stays a route push in v1: SettingsScreen's close button
-  /// pops the enclosing route, so a tab embedding would pop the whole
+  /// pops the enclosing route, so a view embedding would pop the whole
   /// shell (named follow-up — see surfaces.dart).
   void _openSettings() {
     Navigator.push(
@@ -394,15 +460,15 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  // ---- center-tabs keyboard (the browser map) -----------------------------
+  // ---- the top bar's keyboard (the browser map) ---------------------------
 
-  /// The strip's keyboard map: the picker shortcut (⌘T / ctrl+T) and the
+  /// The bar's keyboard map: the picker shortcut (⌘T / ctrl+T) and the
   /// close-the-active-tab shortcut (⌘W / ctrl+W). The modifier is
   /// chosen per platform — meta on macOS, ctrl elsewhere — so the map
   /// never shadows a text field's editing bindings (no text-editing
   /// default uses meta+T/meta+W, and ctrl+T/ctrl+W are only bound here
   /// on the platforms where they are not text-editing bindings).
-  Map<ShortcutActivator, Intent> _centerTabShortcuts() {
+  Map<ShortcutActivator, Intent> _viewTabShortcuts() {
     final useMeta = defaultTargetPlatform == TargetPlatform.macOS;
     return <ShortcutActivator, Intent>{
       if (useMeta)
@@ -429,109 +495,190 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// The `+`/⌘T flow: the picker opens/focuses as a new active tab.
-  void _openNewTab() => _onTabsChanged(_tabs.openNewTab());
+  void _openNewTab() => _onLayoutChanged(_layout.openNewTab());
 
   /// The ⌘W flow: the active tab closes (the close law applies — a lone
   /// real tab swaps the picker in).
-  void _closeActiveTab() => _onTabsChanged(_tabs.close(_tabs.activeId));
+  void _closeActiveTab() => _onLayoutChanged(_layout.close(_layout.activeId));
+
+  /// A bar tab tap: conversation tabs re-select their thread (the
+  /// service is the source of truth for WHAT is on the slot —
+  /// openDm/selectChannel are idempotent; the reverse mapping in
+  /// [_onServiceChanged] then re-enters as a no-op), every tab focuses.
+  void _onSelectTab(final String surfaceId) {
+    activateConversationSurface(_service, surfaceId);
+    _onLayoutChanged(_layout.open(surfaceId));
+  }
+
+  /// Identity marks for conversation tabs (the bar's compressed pills
+  /// and the dock pills): the actor's avatar for `dm:`, the channel's
+  /// `#` disc for `channel:`; static views carry their registry icon.
+  Widget? _leadingFor(final String surfaceId) {
+    if (surfaceId.startsWith('dm:')) {
+      final actorId = surfaceId.substring('dm:'.length);
+      final profile = _service.roster?.get(actorId);
+      if (profile == null) return null;
+      return ActorAvatar(profile: profile, size: _kIdentityMarkSize);
+    }
+    if (surfaceId.startsWith('channel:')) {
+      return SizedBox(
+        width: _kIdentityMarkSize,
+        height: _kIdentityMarkSize,
+        child: Center(
+          child: Text(
+            '#',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: context.shellMuted,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
+    }
+    return null;
+  }
+
+  static const double _kIdentityMarkSize = 16;
 
   @override
   Widget build(final BuildContext context) {
-    final surfaces =
-        buildShellSurfaces(context, service: _service)
-          ..[kNewTabSurfaceId] = SurfaceSpec(
-            id: kNewTabSurfaceId,
-            title: context.l10n.newTabPageTitle,
-            builder: (final tabContext) => const NewTabSurface(),
-            icon: Icons.crop_square,
-          );
+    final surfaces = buildShellSurfaces(context, service: _service)
+      ..[kNewTabSurfaceId] = SurfaceSpec(
+        id: kNewTabSurfaceId,
+        title: context.l10n.newTabPageTitle,
+        builder: (final tabContext) => const NewTabSurface(),
+        icon: Icons.crop_square,
+      );
     final screenLayout = ScreenLayout.of(context);
     // v1 is desktop-first; small layouts fall back to the navigator body
-    // alone (the old HomeScreen did the same with its rail). The context
-    // column joins at the app's minimum window width and up — the header
-    // toggle is the only hider (Discord keeps its member list on narrow
-    // windows) — and only while the human has not hidden it.
-    final body = screenLayout.small
-        ? widget.child
-        : LayoutBuilder(
-            builder: (final context, final constraints) => ListenableBuilder(
-              listenable: _contextColumn,
-              builder: (final context, final _) {
-                final showContext =
-                    constraints.maxWidth >= kContextColumnMinWindowWidth &&
-                    _contextColumn.visible;
-                // ADR 0027 — the miniwindow layer floats above the whole
-                // three-column body: windows may overlap every column,
-                // and gestures outside them fall through untouched.
-                return MiniWindowLayer(
-                  controller: _miniWindows,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        width: kActorRailWidth,
-                        child: ActorRail(
-                          service: _service,
-                          onOpenSettings: _openSettings,
-                          onConversationNewTab: (final surfaceId) =>
-                              _onTabsChanged(
-                                _tabs.openConversation(
-                                  surfaceId,
-                                  forceNew: true,
-                                ),
-                              ),
-                          onMiniWindow: _openMiniWindow,
-                        ),
-                      ),
-                      VerticalDivider(
-                        width: 1,
-                        color: Theme.of(context).dividerColor,
-                      ),
-                      Expanded(child: widget.child),
-                      if (showContext)
-                        SizedBox(
-                          width: ShellTokens.contextColumnWidth,
-                          child: ShellContextColumn(service: _service),
-                        ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
+    // alone (the rail is a desktop luxury) — the top bar still maps the
+    // session. The dock joins at the app's minimum window width and up —
+    // the width gate and the human's toggle are the only hiders.
     return ChangeNotifierProvider<RealmChatService>.value(
       value: _service,
-      child: ChangeNotifierProvider<ContextColumnController>.value(
-        value: _contextColumn,
-        child: CenterTabsScope(
-          tabs: _tabs,
-          surfaces: surfaces,
-          onChanged: _onTabsChanged,
-          child: Shortcuts(
-            shortcuts: _centerTabShortcuts(),
-            child: Actions(
-              actions: <Type, Action<Intent>>{
-                _NewTabIntent: CallbackAction<_NewTabIntent>(
-                  onInvoke: (final _) {
-                    _openNewTab();
-                    return null;
-                  },
+      child: ChangeNotifierProvider<PeopleFocus>.value(
+        value: _peopleFocus,
+        child: ChangeNotifierProvider<ContextColumnController>.value(
+          value: _contextColumn,
+          child: ViewScope(
+            layout: _layout,
+            surfaces: surfaces,
+            onChanged: _onLayoutChanged,
+            child: Shortcuts(
+              shortcuts: _viewTabShortcuts(),
+              child: Actions(
+                actions: <Type, Action<Intent>>{
+                  _NewTabIntent: CallbackAction<_NewTabIntent>(
+                    onInvoke: (final _) {
+                      _openNewTab();
+                      return null;
+                    },
+                  ),
+                  _CloseActiveTabIntent: CallbackAction<_CloseActiveTabIntent>(
+                    onInvoke: (final _) {
+                      _closeActiveTab();
+                      return null;
+                    },
+                  ),
+                },
+                // The focus anchor: shell-level shortcuts answer even
+                // when no text field holds focus — the anchor takes it
+                // once at mount (an autofocus request loses to any
+                // already-focused descendant, so the rail's search field
+                // is never stolen from) and key events then bubble up
+                // through the map.
+                child: Focus(
+                  autofocus: true,
+                  child: LayoutBuilder(
+                    builder: (final context, final constraints) {
+                      _windowWide =
+                          constraints.maxWidth >=
+                          kContextColumnMinWindowWidth;
+                      final pins = _layout.pinned;
+                      return MiniWindowLayer(
+                        controller: _miniWindows,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _buildTopBar(surfaces, pins),
+                            Expanded(
+                              child: ListenableBuilder(
+                                listenable: _contextColumn,
+                                builder: (final context, final _) {
+                                  // Recomputed per notify: the human's
+                                  // visibility toggle is one of the three
+                                  // conditions (width gate, visibility,
+                                  // something pinned).
+                                  final showDock =
+                                      _windowWide &&
+                                      _contextColumn.visible &&
+                                      pins.isNotEmpty;
+                                  return screenLayout.small
+                                    ? widget.child
+                                    : Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          SizedBox(
+                                            width: kActorRailWidth,
+                                            child: ActorRail(
+                                              service: _service,
+                                              onOpenSettings: _openSettings,
+                                              onConversationNewTab:
+                                                  (final surfaceId) =>
+                                                      _onLayoutChanged(
+                                                        _layout
+                                                            .openConversation(
+                                                              surfaceId,
+                                                              forceNew: true,
+                                                            ),
+                                                      ),
+                                              onMiniWindow: _openMiniWindow,
+                                            ),
+                                          ),
+                                          VerticalDivider(
+                                            width: 1,
+                                            color:
+                                                Theme.of(context).dividerColor,
+                                          ),
+                                          Expanded(child: widget.child),
+                                          if (showDock)
+                                            SizedBox(
+                                              width:
+                                                  ShellTokens
+                                                      .contextColumnWidth,
+                                              child: ViewDock(
+                                                layout: _layout,
+                                                surfaces: surfaces,
+                                                service: _service,
+                                                onFocusPin: _focusPin,
+                                                onUnpin: _unpin,
+                                                titleFor: (final id) =>
+                                                    conversationSurfaceTitle(
+                                                      id,
+                                                      channels:
+                                                          _service.channels,
+                                                      actors:
+                                                          _service
+                                                              .roster
+                                                              ?.all ??
+                                                          const <
+                                                              ActorProfile>[],
+                                                    ),
+                                                leadingFor: _leadingFor,
+                                              ),
+                                            ),
+                                        ],
+                                      );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                _CloseActiveTabIntent: CallbackAction<_CloseActiveTabIntent>(
-                  onInvoke: (final _) {
-                    _closeActiveTab();
-                    return null;
-                  },
-                ),
-              },
-              // The focus anchor: shell-level shortcuts answer even when
-              // no text field holds focus — the anchor takes it once at
-              // mount (an autofocus request loses to any already-focused
-              // descendant, so the rail's search field is never stolen
-              // from) and key events then bubble up through the map.
-              child: Focus(
-                autofocus: true,
-                child: body,
               ),
             ),
           ),
@@ -539,33 +686,49 @@ class _AppShellState extends State<AppShell> {
       ),
     );
   }
+
+  /// The ONE top bar: rebuilt per call inside the service's
+  /// ListenableBuilder so rail-driven title facts (roster, channels)
+  /// land without a layout change — never a cached widget instance
+  /// (the title-stuck bug law).
+  Widget _buildTopBar(
+    final SurfaceRegistry surfaces,
+    final List<String> pins,
+  ) => ListenableBuilder(
+    listenable: _service,
+    builder: (final context, final _) => ViewTabBar(
+      layout: _layout,
+      surfaces: surfaces,
+      onSelect: _onSelectTab,
+      onClose: (final id) => _onLayoutChanged(_layout.close(id)),
+      onNewTab: _openNewTab,
+      onReorder: (final from, final to) =>
+          _onLayoutChanged(_layout.move(from, to)),
+      onTogglePin: _togglePin,
+      titleFor: (final id) => conversationSurfaceTitle(
+        id,
+        channels: _service.channels,
+        actors: _service.roster?.all ?? const <ActorProfile>[],
+      ),
+      leadingFor: _leadingFor,
+      // Below the width gate the dock hides; the glyph focuses the
+      // first pinned view full-width — the simplest honest restore.
+      onDockRestore: !_windowWide && pins.isNotEmpty
+          ? () => _onLayoutChanged(_layout.open(pins.first))
+          : null,
+    ),
+  );
 }
 
-/// The center-tabs keyboard intents (the browser map, see
-/// [_AppShellState._centerTabShortcuts]).
+
+/// The top bar's keyboard intents (the browser map, see
+/// [_AppShellState._viewTabShortcuts]).
 class _NewTabIntent extends Intent {
   const _NewTabIntent();
 }
 
 class _CloseActiveTabIntent extends Intent {
   const _CloseActiveTabIntent();
-}
-
-/// The `/home` route body: the center tab strip plus the active
-/// surface. Pushed project routes render as full pages of the navigator
-/// above it; the strip (and its state) survive the round-trip in the
-/// shell.
-/// The spec for a conversation surface id (`dm:`/`channel:`): the ONE
-/// conversation slot's [WorldChatSurface]. Null for anything that is
-/// neither a static surface nor a conversation slot id (honest unknown).
-SurfaceSpec? conversationSurfaceSpec(
-  final String surfaceId,
-  final SurfaceRegistry surfaces,
-) {
-  if (!surfaceId.startsWith('dm:') && !surfaceId.startsWith('channel:')) {
-    return null;
-  }
-  return surfaces[kConversationsSurfaceId];
 }
 
 /// Re-selects the thread behind a conversation surface id through the
@@ -584,74 +747,34 @@ void activateConversationSurface(
   }
 }
 
+/// The `/home` route body: the ACTIVE view's host. The top bar lives
+/// above the whole row in the shell; the body only mounts the focused
+/// surface. Pushed project routes render as full pages of the navigator
+/// above it; the bar (and its state) survive the round-trip in the
+/// shell.
 final class CenterTabsArea extends StatelessWidget {
   const CenterTabsArea({super.key});
 
   @override
   Widget build(final BuildContext context) {
-    final scope = CenterTabsScope.of(context);
+    final scope = ViewScope.of(context);
     if (scope == null) {
       // Honest absence: the area only makes sense inside the shell.
       return const Center(child: Text('center tabs require the app shell'));
     }
-    final tabs = scope.tabs;
-    final activeId = tabs.activeId;
+    final layout = scope.layout;
+    final activeId = layout.activeId;
     // Conversation surface ids (`dm:`/`channel:`) are not in the static
     // registry — they share the ONE conversation slot, so they resolve
     // onto its [WorldChatSurface] spec.
     final spec =
         scope.surfaces[activeId] ??
         conversationSurfaceSpec(activeId, scope.surfaces);
-    final service = context.read<RealmChatService?>();
-    // Built per-call, never cached: a widget INSTANCE handed back from
-    // a builder is treated as unchanged and its subtree never rebuilds
-    // — pure title facts (channels/roster loading) would never land.
-    CenterTabsStrip buildStrip() => CenterTabsStrip(
-      tabs: tabs,
-      surfaces: scope.surfaces,
-      // Conversation surface ids are not in the static registry; their
-      // titles come from the service's projections (channel name / actor
-      // display name), falling back to the registry title, then the id.
-      titleFor: service == null
-          ? null
-          : (final id) => conversationSurfaceTitle(
-              id,
-              channels: service.channels,
-              actors: service.roster?.all ?? const <ActorProfile>[],
-            ),
-      onSelect: (final id) {
-        // A conversation tab re-selects its thread: the service is the
-        // source of truth for WHAT is on the slot, the strip only names
-        // it (openDm/selectChannel are idempotent; the reverse mapping
-        // in _onServiceChanged then re-enters as a no-op).
-        activateConversationSurface(service, id);
-        scope.onChanged(tabs.open(id));
-      },
-      onClose: (final id) => scope.onChanged(tabs.close(id)),
-      onNewTab: () => scope.onChanged(tabs.openNewTab()),
-      onReorder: (final from, final to) => scope.onChanged(tabs.move(from, to)),
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // The strip follows the service's notifications so rail-driven
-        // title facts (roster, channels) land without a tab change.
-        if (service == null)
-          buildStrip()
-        else
-          ListenableBuilder(
-            listenable: service,
-            builder: (final context, final _) => buildStrip(),
-          ),
-        Expanded(
-          child: KeyedSubtree(
-            key: ValueKey('pane.leaf.$activeId'),
-            child: spec == null
-                ? UnknownSurface(surfaceId: activeId)
-                : Builder(builder: spec.builder),
-          ),
-        ),
-      ],
+    return KeyedSubtree(
+      key: ValueKey('pane.leaf.$activeId'),
+      child: spec == null
+          ? UnknownSurface(surfaceId: activeId)
+          : Builder(builder: spec.builder),
     );
   }
 }

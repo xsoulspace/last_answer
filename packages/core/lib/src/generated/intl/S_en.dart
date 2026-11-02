@@ -1277,6 +1277,26 @@ class SEn extends S {
   String get newTabHintInspector => 'Watch worlds, sessions and bindings.';
 
   @override
+  String get newTabHintFilesystem =>
+      'Browse the workspace\'s folder tree and files.';
+
+  @override
+  String get newTabHintPeople =>
+      'The realm\'s actors: presence, profiles, inline editing.';
+
+  @override
+  String get viewFilesystemTitle => 'Files';
+
+  @override
+  String get viewPinTooltip => 'Pin view';
+
+  @override
+  String get viewUnpinTooltip => 'Unpin view';
+
+  @override
+  String get viewDockRestoreTooltip => 'Show pinned views';
+
+  @override
   String get settingsMeshTasks => 'Mesh tasks';
 
   @override
@@ -1338,19 +1358,10 @@ class SEn extends S {
   String get contextTabPeople => 'People';
 
   @override
-  String get contextTabBrowser => 'Browser';
-
-  @override
-  String get contextTabFiles => 'Files';
-
-  @override
   String get contextTabTerminal => 'Terminal';
 
   @override
   String get contextTabThreads => 'Threads';
-
-  @override
-  String get contextTabDocs => 'Docs';
 
   @override
   String get contextFilesEmpty => 'Workspace files land here.';
@@ -1360,9 +1371,6 @@ class SEn extends S {
 
   @override
   String get contextThreadsEmpty => 'The harness threads land here.';
-
-  @override
-  String get contextDocsEmpty => 'Docs land here.';
 
   @override
   String get contextBackToConversation => 'Back to the conversation';

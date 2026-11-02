@@ -1291,6 +1291,26 @@ class SRu extends S {
       'Наблюдение за мирами, сессиями и привязками.';
 
   @override
+  String get newTabHintFilesystem =>
+      'Дерево папок и файлы рабочего пространства.';
+
+  @override
+  String get newTabHintPeople =>
+      'Акторы мира: присутствие, профили, правка на месте.';
+
+  @override
+  String get viewFilesystemTitle => 'Файлы';
+
+  @override
+  String get viewPinTooltip => 'Закрепить вид';
+
+  @override
+  String get viewUnpinTooltip => 'Открепить вид';
+
+  @override
+  String get viewDockRestoreTooltip => 'Показать закреплённые виды';
+
+  @override
   String get settingsMeshTasks => 'Задачи mesh';
 
   @override
@@ -1352,19 +1372,10 @@ class SRu extends S {
   String get contextTabPeople => 'Люди';
 
   @override
-  String get contextTabBrowser => 'Браузер';
-
-  @override
-  String get contextTabFiles => 'Файлы';
-
-  @override
   String get contextTabTerminal => 'Терминал';
 
   @override
   String get contextTabThreads => 'Треды';
-
-  @override
-  String get contextTabDocs => 'Документы';
 
   @override
   String get contextFilesEmpty => 'Здесь появятся файлы рабочей области.';
@@ -1374,9 +1385,6 @@ class SRu extends S {
 
   @override
   String get contextThreadsEmpty => 'Здесь появятся ветки харнесса.';
-
-  @override
-  String get contextDocsEmpty => 'Здесь появятся документы.';
 
   @override
   String get contextBackToConversation => 'Вернуться к беседе';

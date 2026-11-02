@@ -2385,6 +2385,42 @@ abstract class S {
   /// **'Watch worlds, sessions and bindings.'**
   String get newTabHintInspector;
 
+  /// No description provided for @newTabHintFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the workspace\'s folder tree and files.'**
+  String get newTabHintFilesystem;
+
+  /// No description provided for @newTabHintPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'The realm\'s actors: presence, profiles, inline editing.'**
+  String get newTabHintPeople;
+
+  /// No description provided for @viewFilesystemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get viewFilesystemTitle;
+
+  /// No description provided for @viewPinTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin view'**
+  String get viewPinTooltip;
+
+  /// No description provided for @viewUnpinTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin view'**
+  String get viewUnpinTooltip;
+
+  /// No description provided for @viewDockRestoreTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pinned views'**
+  String get viewDockRestoreTooltip;
+
   /// No description provided for @settingsMeshTasks.
   ///
   /// In en, this message translates to:
@@ -2505,18 +2541,6 @@ abstract class S {
   /// **'People'**
   String get contextTabPeople;
 
-  /// No description provided for @contextTabBrowser.
-  ///
-  /// In en, this message translates to:
-  /// **'Browser'**
-  String get contextTabBrowser;
-
-  /// No description provided for @contextTabFiles.
-  ///
-  /// In en, this message translates to:
-  /// **'Files'**
-  String get contextTabFiles;
-
   /// No description provided for @contextTabTerminal.
   ///
   /// In en, this message translates to:
@@ -2528,12 +2552,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Threads'**
   String get contextTabThreads;
-
-  /// No description provided for @contextTabDocs.
-  ///
-  /// In en, this message translates to:
-  /// **'Docs'**
-  String get contextTabDocs;
 
   /// No description provided for @contextFilesEmpty.
   ///
@@ -2552,12 +2570,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'The harness threads land here.'**
   String get contextThreadsEmpty;
-
-  /// No description provided for @contextDocsEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'Docs land here.'**
-  String get contextDocsEmpty;
 
   /// No description provided for @contextBackToConversation.
   ///

@@ -1,6 +1,8 @@
-// ADR 0024 — the app shell widget tests: the rail is the chrome, the
-// center is a flat tab strip, and the strip survives a restart through
-// its persisted JSON blob (the retired pane-tree blob migrates once).
+// ADR 0024 — the app shell widget tests. WAVE 5: the rail is the
+// chrome, the top bar maps the session, views pin into the dock, and
+// the layout survives a restart through its persisted JSON blob
+// (`shell.views.v2`; the retired `shell.tabs.v1` and pane-tree blobs
+// migrate once).
 //
 // The injected RealmChatService is a REAL service. Two lanes:
 // - the default lane, whose world start fails honestly in the test
@@ -195,31 +197,32 @@ void main() {
   );
 
   testWidgets(
-    'context column: auto-hidden below the 980px minimum window width, '
-    'present at and above it, hideable by the human',
+    'the dock: width-gated (hidden below 980px), present above with the '
+    'default People pin, hideable by the human, gone when unpinned',
     (final tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       await _pumpShell(tester);
 
       // Default test surface (800px): below the gate — hidden.
-      expect(
-        find.byKey(const ValueKey('shell.contextColumn')),
-        findsNothing,
-      );
+      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
 
-      // 1000px clears the 980px gate: the column joins the shell row,
-      // quiet note while no conversation is open. (This pins the lowered
-      // gate — the old 1200px gate kept the column hidden here.)
+      // 1000px clears the 980px gate: the dock joins the shell row,
+      // carrying the DEFAULT PIN (People) and its quiet note while no
+      // conversation is open.
       tester.view
         ..physicalSize = const Size(1000, 900)
         ..devicePixelRatio = 1.0;
       await tester.pump();
-      final column = find.byKey(const ValueKey('shell.contextColumn'));
-      expect(column, findsOneWidget);
+      final dock = find.byKey(const ValueKey('view.dock'));
+      expect(dock, findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('view.dock.pill.$kPeopleSurfaceId')),
+        findsOneWidget,
+      );
       expect(
         find.descendant(
-          of: column,
+          of: dock,
           matching: find.text('Select a conversation from the rail.'),
         ),
         findsOneWidget,
@@ -227,17 +230,65 @@ void main() {
 
       // The human's toggle (the conversation header's panel-right
       // affordance drives the same controller) hides and restores it.
-      final controller = tester.element(column).read<ContextColumnController>()
+      final controller = tester.element(dock).read<ContextColumnController>()
         ..setVisible(value: false);
       await tester.pump();
-      expect(
-        find.byKey(const ValueKey('shell.contextColumn')),
-        findsNothing,
-      );
+      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
 
       controller.setVisible(value: true);
       await tester.pump();
-      expect(find.byKey(const ValueKey('shell.contextColumn')), findsOneWidget);
+      expect(find.byKey(const ValueKey('view.dock')), findsOneWidget);
+
+      // Unpinning the last pin empties the dock: no pins, no dock (the
+      // pinned state lives in the ONE layout).
+      await tester.tap(
+        find.byKey(const ValueKey('view.dock.unpin.$kPeopleSurfaceId')),
+      );
+      await tester.pump();
+      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
+      final stored =
+          jsonDecode(
+                (await SharedPreferences.getInstance()).getString(
+                  kViewLayoutPrefsKey,
+                )!,
+              )
+              as Map;
+      expect(stored['pinned'], isEmpty);
+    },
+  );
+
+  testWidgets(
+    'below the width gate the dock hides but its pins survive: the top '
+    "bar's dock glyph focuses the first pinned view full-width",
+    (final tester) async {
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      // People pinned by default; the inspector tab is the active face.
+      SharedPreferences.setMockInitialValues({
+        kViewLayoutPrefsKey: jsonEncode({
+          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
+          'active': 1,
+          'pinned': [kPeopleSurfaceId],
+          'dockFocus': kPeopleSurfaceId,
+        }),
+      });
+      await _pumpShell(tester);
+
+      // 800px < 980: no dock — but the bar offers the honest restore.
+      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
+      expect(
+        find.byKey(const ValueKey('view.dock.restore')),
+        findsOneWidget,
+      );
+
+      // The glyph focuses the first pinned view as a full-width tab.
+      await tester.tap(find.byKey(const ValueKey('view.dock.restore')));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('pane.leaf.$kPeopleSurfaceId')),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
     },
   );
 
@@ -250,7 +301,7 @@ void main() {
       // test binding; the inspector leaf is the real pane over the
       // empty shared registry.)
       SharedPreferences.setMockInitialValues({
-        kCenterTabsPrefsKey: jsonEncode({
+        kViewLayoutPrefsKey: jsonEncode({
           'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
           'active': 0,
         }),
@@ -289,7 +340,7 @@ void main() {
       final stored =
           jsonDecode(
                 (await SharedPreferences.getInstance()).getString(
-                  kCenterTabsPrefsKey,
+                  kViewLayoutPrefsKey,
                 )!,
               )
               as Map;
@@ -325,7 +376,7 @@ void main() {
     'app down)',
     (final tester) async {
       SharedPreferences.setMockInitialValues({
-        kCenterTabsPrefsKey: '{not json',
+        kViewLayoutPrefsKey: '{not json',
       });
       await _pumpShell(tester);
       expect(
@@ -379,15 +430,17 @@ void main() {
         findsOneWidget,
       );
 
-      // The migration wrote the new key; the legacy key is untouched.
+      // The migration wrote the new key (People the default pin); the
+      // legacy key is untouched.
       final prefs = await SharedPreferences.getInstance();
       final migrated =
-          jsonDecode(prefs.getString(kCenterTabsPrefsKey)!) as Map;
+          jsonDecode(prefs.getString(kViewLayoutPrefsKey)!) as Map;
       expect(migrated['tabs'], [
         kConversationsSurfaceId,
         kInspectorSurfaceId,
       ]);
       expect(migrated['active'], 0);
+      expect(migrated['pinned'], [kPeopleSurfaceId]);
       expect(
         prefs.getString(kLegacyPaneTreePrefsKey),
         isNotNull,
@@ -407,6 +460,66 @@ void main() {
         find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
         findsOneWidget,
       );
+    },
+  );
+
+  testWidgets(
+    'the retired shell.tabs.v1 blob migrates once: tabs and active '
+    'carry over, People becomes the default pin, the v2 key is written, '
+    'the legacy key is never read again',
+    (final tester) async {
+      SharedPreferences.setMockInitialValues({
+        kCenterTabsPrefsKey: jsonEncode({
+          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
+          'active': 1,
+        }),
+      });
+
+      await _pumpShell(tester);
+
+      // The carried strip renders; the migrated dock pin is in the
+      // layout document (the 800px window hides the dock itself).
+      expect(
+        find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
+        findsOneWidget,
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      final migrated =
+          jsonDecode(prefs.getString(kViewLayoutPrefsKey)!) as Map;
+      expect(migrated['tabs'], [
+        kConversationsSurfaceId,
+        kInspectorSurfaceId,
+      ]);
+      expect(migrated['active'], 1);
+      expect(migrated['pinned'], [kPeopleSurfaceId]);
+      expect(migrated['dockFocus'], kPeopleSurfaceId);
+      expect(prefs.getString(kCenterTabsPrefsKey), isNotNull);
+
+      // The old key is never read again: poisoning it changes nothing.
+      await prefs.setString(kCenterTabsPrefsKey, '{garbage');
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+      await _pumpShell(tester);
+      expect(
+        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
+        findsOneWidget,
+      );
+      // Dispose before the invariant check (the inspector pane polls).
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
     },
   );
 
@@ -448,7 +561,7 @@ void main() {
 
       // Two tabs: conversations + inspector.
       SharedPreferences.setMockInitialValues({
-        kCenterTabsPrefsKey: jsonEncode({
+        kViewLayoutPrefsKey: jsonEncode({
           'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
           'active': 0,
         }),
@@ -503,7 +616,7 @@ void main() {
       final stored =
           jsonDecode(
                 (await SharedPreferences.getInstance()).getString(
-                  kCenterTabsPrefsKey,
+                  kViewLayoutPrefsKey,
                 )!,
               )
               as Map;
@@ -547,7 +660,7 @@ void main() {
       // The strip persisted the DM tab from a previous run; the service
       // boots with NO selected thread.
       SharedPreferences.setMockInitialValues({
-        kCenterTabsPrefsKey: jsonEncode({
+        kViewLayoutPrefsKey: jsonEncode({
           'tabs': ['dm:${toby.actorId}'],
           'active': 0,
         }),
@@ -728,7 +841,7 @@ void main() {
       final stored =
           jsonDecode(
                 (await SharedPreferences.getInstance()).getString(
-                  kCenterTabsPrefsKey,
+                  kViewLayoutPrefsKey,
                 )!,
               )
               as Map;
@@ -750,6 +863,61 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  testWidgets('a tab\u2019s pin glyph pins the view into the dock and '
+      'unpins it (the tab stays open either way)', (final tester) async {
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    tester.view
+      ..physicalSize = const Size(1000, 900)
+      ..devicePixelRatio = 1.0;
+    await _pumpShell(tester);
+
+    // The conversations tab is unpinned; its glyph is the outline.
+    final glyph = find.byKey(
+      const ValueKey('pane.tab.pin.$kConversationsSurfaceId'),
+    );
+    expect(glyph, findsOneWidget);
+    expect(
+      tester.widget<Icon>(
+        find.descendant(of: glyph, matching: find.byType(Icon)),
+      ).icon,
+      Icons.push_pin_outlined,
+    );
+
+    // Pin: the dock grows a second pill; the tab stays open.
+    await tester.tap(glyph);
+    await tester.pump();
+    expect(
+      find.byKey(const ValueKey('view.dock.pill.$kConversationsSurfaceId')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
+      findsOneWidget,
+    );
+    final pinned =
+        jsonDecode(
+              (await SharedPreferences.getInstance()).getString(
+                kViewLayoutPrefsKey,
+              )!,
+            )
+            as Map;
+    expect(pinned['pinned'], [kPeopleSurfaceId, kConversationsSurfaceId]);
+
+    // Unpin: the pill goes, the tab stays.
+    await tester.tap(glyph);
+    await tester.pump();
+    expect(
+      find.byKey(const ValueKey('view.dock.pill.$kConversationsSurfaceId')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('a title fact arriving WITHOUT a tab change relabels the '
       'strip (the strip rebuilds on service notifications)', (
@@ -776,7 +944,7 @@ void main() {
     // The tab persists an id the roster cannot yet name — the honest
     // fallback labels it with the raw id.
     SharedPreferences.setMockInitialValues({
-      kCenterTabsPrefsKey: jsonEncode({
+      kViewLayoutPrefsKey: jsonEncode({
         'tabs': ['dm:ghost'],
         'active': 0,
       }),

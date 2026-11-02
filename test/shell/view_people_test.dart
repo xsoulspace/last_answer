@@ -1,19 +1,31 @@
+// The PEOPLE view's law (WAVE 5 — promoted from the context panel):
+// the bot narration line rides each row (`shell.people.status.<id>`),
+// humans stay quiet, a listening bot renders nothing — and the focus
+// flow (a row tap opens the actor's profile; back returns to the
+// list) works through the plain PeopleFocus notifier.
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/context_column.dart';
+
 import 'package:lastanswer/shell/shell_theme.dart';
 
+import 'package:lastanswer/shell/view_people.dart';
+
 void main() {
-  // Wave 3A — the People tab's quiet narration line under each bot row
+  // Wave 3A — the people view's quiet narration line under each bot row
   // (`shell.people.status.<actorId>`): what the actor is doing right
   // now, with elapsed minutes; humans stay quiet; a listening bot (the
   // normal) renders nothing.
   testWidgets(
-    'People tab renders the bot narration status line; humans stay '
+    'People view renders the bot narration status line; humans stay '
     'quiet; listening renders nothing',
     (final tester) async {
       // ALL setup rides REAL IO (the kernel store) — inside runAsync,
@@ -53,7 +65,7 @@ void main() {
               children: [
                 SizedBox(
                   width: ShellTokens.contextColumnWidth,
-                  child: ShellContextColumn(service: service),
+                  child: PeopleView(service: service),
                 ),
               ],
             ),
@@ -141,4 +153,86 @@ void main() {
       expect(humanLine, findsNothing);
     },
   );
+
+  testWidgets('a row tap focuses the actor profile through PeopleFocus; '
+      'back returns to the plain people list', (final tester) async {
+    // ALL setup rides REAL IO (the kernel store) — inside runAsync,
+    // or the FakeAsync zone parks the first store await forever.
+    late final RealmChatService service;
+    late final ActorProfile toby;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_people_focus_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      final roster = ActorRoster(replicaId: 'tester');
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      toby = (await service.createActor(
+        displayName: 'Toby Researcher',
+        kind: ActorKind.model,
+        brainRef: '',
+        role: 'researcher',
+        systemPrompt: 'You are Toby, a careful researcher.',
+      ))!;
+      await service.startThread(
+        topic: 'Toby Researcher',
+        participants: <String>[toby.actorId],
+      );
+    });
+
+    final focus = PeopleFocus();
+    addTearDown(focus.dispose);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RealmChatService>.value(
+        value: service,
+        child: MaterialApp(
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: Row(
+              children: [
+                SizedBox(
+                  width: ShellTokens.contextColumnWidth,
+                  child: PeopleView(service: service, focus: focus),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // The plain people list: rows keyed per actor, no profile.
+    expect(focus.actorId, isNull);
+    expect(
+      find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
+      findsOneWidget,
+    );
+
+    // A row tap focuses the actor: the profile view (keys unchanged
+    // from the panel — the agent's UI contract survives the promotion).
+    await tester.tap(
+      find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
+    );
+    await tester.pump();
+    expect(focus.actorId, toby.actorId);
+    expect(find.byKey(const ValueKey('shell.context.actor')), findsOneWidget);
+    expect(find.text('You are Toby, a careful researcher.'), findsOneWidget);
+
+    // Back clears the focus.
+    await tester.tap(find.byKey(const ValueKey('shell.context.actor.back')));
+    await tester.pump();
+    expect(focus.actorId, isNull);
+    expect(
+      find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
 }

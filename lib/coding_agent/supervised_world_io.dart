@@ -21,6 +21,19 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
 /// The one declared component of the machine's desired state.
 const String _componentId = 'ecsai-daemon';
 
+/// ONE WORLD PER MACHINE: the hint only steers realm resolution; the
+/// supervised component is always the machine's realm world home (the
+/// same truth `ecsai status` serves).
+String _resolveMachineWorkspace(String? workspaceHint) {
+  final report = collectEcsaiDoctorReport(
+    workspace: workspaceHint ?? Directory.current.path,
+  ).toJson();
+  final daemon = report['daemon']! as Map<String, Object?>;
+  return (daemon['worldHome'] as String?) ??
+      workspaceHint ??
+      Directory.current.path;
+}
+
 /// The provider name this adapter's factory resolves (guide vocabulary:
 /// the mechanics come from a leased process provider).
 const String _providerName = 'leased';
@@ -48,11 +61,14 @@ const Duration _probeInterval = Duration(milliseconds: 300);
 /// is restarted by the NEXT call within the budget, then `giveUp` until
 /// a revision bump.
 Future<Map<String, Object?>> startSupervisedEcsaiDaemon({
-  required String workspace,
   required String daemonExecutablePath,
+  String? workspaceHint,
   String? logPath,
   Duration readinessBudget = const Duration(seconds: 30),
 }) async {
+  // ONE WORLD PER MACHINE: the hint only steers realm resolution; the
+  // supervised component is always the machine's realm world home.
+  final workspace = _resolveMachineWorkspace(workspaceHint);
   final before = _daemonView(workspace);
   if (before['live'] == true) {
     return {

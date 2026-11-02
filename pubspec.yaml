@@ -128,9 +128,11 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
   # The on-device supervisor read surface (oka ADR-0041 §6): declared
   # automations + this device's records, one status view. resource_composition
-  # is already overridden below to the same local checkout.
-  oka_supervisor:
-    path: ../../oka/packages/oka_supervisor
+  # is already overridden below to the same local checkout. Hosted 0.9.1
+  # (the same release train as the path checkout) — the supervised ecsai
+  # daemon adapter (lib/coding_agent/supervised_world.dart) converges
+  # DesiredState through it; web builds never see it (dart.library.io gate).
+  oka_supervisor: ^0.9.1
   oka_core:
     path: ../../oka/packages/oka_core
   resource_composition: ^0.8.1

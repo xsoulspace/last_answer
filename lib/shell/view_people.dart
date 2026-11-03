@@ -28,6 +28,8 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
@@ -416,7 +418,25 @@ class _ActorPanelState extends State<_ActorPanel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(brainLabel, style: theme.textTheme.bodySmall),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        brainLabel,
+                        style: theme.textTheme.bodySmall,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (brainBase.isNotEmpty) ...[
+                      const SizedBox(width: 6),
+                      _BrainHealthDot(
+                        key: const ValueKey('shell.context.brain.health'),
+                        brainRef: profile?.brainRef ?? '',
+                      ),
+                    ],
+                  ],
+                ),
                 if (brainBase.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 2),
@@ -511,4 +531,41 @@ class _ViewNote extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// ADR 0119 — the brain's daemon-side health verdict as one small dot:
+/// green `ok`, grey `unknown`, amber `not_downloaded`/`downloading`/
+/// `loading`, red `failed`. The tooltip names the code and the daemon's
+/// fix hint; a brain the palette doesn't name (a local brain, a stale
+/// file) renders nothing at all — no verdict, no chrome.
+class _BrainHealthDot extends StatelessWidget {
+  const _BrainHealthDot({required this.brainRef, super.key});
+
+  final String brainRef;
+
+  static final PaletteHealthStore _store = PaletteHealthStore();
+
+  @override
+  Widget build(final BuildContext context) {
+    final health = _store.statusFor(brainRef);
+    if (health == null) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    final color = switch (health.status) {
+      'ok' => const Color(0xFF30A46C),
+      'failed' => theme.colorScheme.error,
+      'unknown' => context.shellMuted,
+      _ => const Color(0xFFB58A00),
+    };
+    return Tooltip(
+      message:
+          '${health.status}'
+          '${health.code == null ? '' : ' (${health.code})'}'
+          '${health.detail == null ? '' : ' — ${health.detail}'}',
+      child: Container(
+        width: 8,
+        height: 8,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      ),
+    );
+  }
 }

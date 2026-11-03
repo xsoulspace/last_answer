@@ -16,8 +16,10 @@
 
 ## Context
 
-The current consumer plan orders C0–C6 around a safe coding turn: delegate,
-review a proposed mutation, verify it, and recover the record. Those are
+The current consumer plan orders C0–C6 around a safe coding turn: send work to
+a durable actor, review a proposed mutation, verify it, and recover the record.
+(The harness actor era retired the worker-era delegate/claim/heartbeat verbs;
+work now arrives as messages to an actor addressed by conversationId.) Those are
 necessary execution-safety gates, but they do not by themselves prove the
 product outcome: a human and agents work directly on one evolving, writable
 document/workspace, with history and discussion attached to the work rather

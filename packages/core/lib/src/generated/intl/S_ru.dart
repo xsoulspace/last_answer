@@ -1438,4 +1438,32 @@ class SRu extends S {
   @override
   String get workspacesFilesNoFolders =>
       'Папок пока нет — добавьте папки в эту рабочую область.';
+
+  @override
+  String get viewBoardsTitle => 'Доски';
+
+  @override
+  String get newTabHintBoards => 'Планы, доски и декомпозиция.';
+
+  @override
+  String get boardsTitle => 'Планы';
+
+  @override
+  String boardsAddCardHint(Object column) {
+    return 'добавить в «$column»…';
+  }
+
+  @override
+  String get boardsAddStepHint => 'добавить шаг…';
+
+  @override
+  String boardsMoveTooltip(Object column) {
+    return 'переместить в «$column»';
+  }
+
+  @override
+  String get boardsSettleTooltip => 'отметить готовым';
+
+  @override
+  String get boardsDecomposeTooltip => 'добавить шаг';
 }

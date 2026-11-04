@@ -677,7 +677,7 @@ final class NewTabSurface extends StatelessWidget {
       kBrowserSurfaceId => l10n.newTabHintBrowser,
       kInspectorSurfaceId => l10n.newTabHintInspector,
       kFilesystemSurfaceId => l10n.newTabHintFilesystem,
-      kBoardsSurfaceId => 'Plans, boards and decomposition',
+      kBoardsSurfaceId => l10n.newTabHintBoards,
       kPeopleSurfaceId => l10n.newTabHintPeople,
       _ => null,
     };

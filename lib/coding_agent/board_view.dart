@@ -9,6 +9,7 @@
 /// imports the ontology and the controller, never the shell.
 library;
 
+import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/planning_board_controller.dart';
@@ -41,7 +42,7 @@ class _BoardViewState extends State<BoardView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Plans', style: theme.textTheme.titleMedium),
+            Text(context.l10n.boardsTitle, style: theme.textTheme.titleMedium),
             const SizedBox(height: 12),
             Expanded(
               child: Row(
@@ -171,7 +172,7 @@ class _CardRowState extends State<_CardRow> {
               if (index > 0)
                 _QuietOp(
                   key: const ValueKey('board.op.prev'),
-                  tooltip: 'move to ${columns[index - 1]}',
+                  tooltip: context.l10n.boardsMoveTooltip(columns[index - 1]),
                   icon: Icons.arrow_back,
                   onTap: () => _run(
                     () => widget.controller.moveCard(
@@ -183,7 +184,7 @@ class _CardRowState extends State<_CardRow> {
               if (index != -1 && index < columns.length - 1)
                 _QuietOp(
                   key: const ValueKey('board.op.next'),
-                  tooltip: 'move to ${columns[index + 1]}',
+                  tooltip: context.l10n.boardsMoveTooltip(columns[index + 1]),
                   icon: Icons.arrow_forward,
                   onTap: () => _run(
                     () => widget.controller.moveCard(
@@ -195,7 +196,7 @@ class _CardRowState extends State<_CardRow> {
               if (card.status != BoardTaskStatus.completed)
                 _QuietOp(
                   key: const ValueKey('board.op.done'),
-                  tooltip: 'settle done',
+                  tooltip: context.l10n.boardsSettleTooltip,
                   icon: Icons.check,
                   onTap: () => _run(
                     () => widget.controller.settle(
@@ -240,8 +241,8 @@ final class _ChildComposer extends StatelessWidget {
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.only(top: 4),
     child: TextField(
-      decoration: const InputDecoration(
-        hintText: 'add a step…',
+      decoration: InputDecoration(
+        hintText: context.l10n.boardsAddStepHint,
         isDense: true,
       ),
       style: Theme.of(context).textTheme.labelSmall,
@@ -309,7 +310,7 @@ class _ComposerState extends State<_Composer> {
   Widget build(final BuildContext context) => TextField(
     controller: _controller,
     decoration: InputDecoration(
-      hintText: 'add to ${widget.column}…',
+      hintText: context.l10n.boardsAddCardHint(widget.column),
       isDense: true,
     ),
     style: Theme.of(context).textTheme.labelSmall,

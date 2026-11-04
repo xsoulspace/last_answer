@@ -2666,6 +2666,54 @@ abstract class S {
   /// In en, this message translates to:
   /// **'No folders yet — add folders to this workspace.'**
   String get workspacesFilesNoFolders;
+
+  /// The boards view's tab title (plans and delegation on one substrate).
+  ///
+  /// In en, this message translates to:
+  /// **'Boards'**
+  String get viewBoardsTitle;
+
+  /// The new-tab picker hint for the boards view.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans, boards and decomposition.'**
+  String get newTabHintBoards;
+
+  /// The boards view's in-page header.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get boardsTitle;
+
+  /// The lane composer hint.
+  ///
+  /// In en, this message translates to:
+  /// **'add to {column}…'**
+  String boardsAddCardHint(Object column);
+
+  /// The decomposition composer hint.
+  ///
+  /// In en, this message translates to:
+  /// **'add a step…'**
+  String get boardsAddStepHint;
+
+  /// The lane-move button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'move to {column}'**
+  String boardsMoveTooltip(Object column);
+
+  /// The settle-done button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'settle done'**
+  String get boardsSettleTooltip;
+
+  /// The decompose toggle tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'add a step'**
+  String get boardsDecomposeTooltip;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

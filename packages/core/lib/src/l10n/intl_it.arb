@@ -454,5 +454,13 @@
   "actorsRepetitionLabel": "Penalità di ripetizione",
   "actorsSamplingHint": "Parametri di campionamento per i cervelli locali; vuoto = predefiniti della chat.",
   "workspacesFilesEmpty": "Ancora nessuna area di lavoro — aggiungine una dalla barra.",
-  "workspacesFilesNoFolders": "Ancora nessuna cartella — aggiungi cartelle a questa area di lavoro."
+  "workspacesFilesNoFolders": "Ancora nessuna cartella — aggiungi cartelle a questa area di lavoro.",
+  "viewBoardsTitle": "Bacheche",
+  "newTabHintBoards": "Piani, bacheche e scomposizione.",
+  "boardsTitle": "Piani",
+  "boardsAddCardHint": "aggiungi a {column}…",
+  "boardsAddStepHint": "aggiungi un passo…",
+  "boardsMoveTooltip": "sposta in {column}",
+  "boardsSettleTooltip": "segna come fatto",
+  "boardsDecomposeTooltip": "aggiungi un passo"
 }

@@ -568,5 +568,43 @@
   "actorsRepetitionLabel": "Repetition penalty",
   "actorsSamplingHint": "Sampling overrides for local brains; empty = the chat defaults.",
   "workspacesFilesEmpty": "No workspaces yet — add one from the rail.",
-  "workspacesFilesNoFolders": "No folders yet — add folders to this workspace."
+  "workspacesFilesNoFolders": "No folders yet — add folders to this workspace.",
+  "viewBoardsTitle": "Boards",
+  "@viewBoardsTitle": {
+    "description": "The boards view's tab title (plans and delegation on one substrate)."
+  },
+  "newTabHintBoards": "Plans, boards and decomposition.",
+  "@newTabHintBoards": {
+    "description": "The new-tab picker hint for the boards view."
+  },
+  "boardsTitle": "Plans",
+  "@boardsTitle": {
+    "description": "The boards view's in-page header."
+  },
+  "boardsAddCardHint": "add to {column}…",
+  "@boardsAddCardHint": {
+    "description": "The lane composer hint.",
+    "placeholders": {
+      "column": {}
+    }
+  },
+  "boardsAddStepHint": "add a step…",
+  "@boardsAddStepHint": {
+    "description": "The decomposition composer hint."
+  },
+  "boardsMoveTooltip": "move to {column}",
+  "@boardsMoveTooltip": {
+    "description": "The lane-move button tooltip.",
+    "placeholders": {
+      "column": {}
+    }
+  },
+  "boardsSettleTooltip": "settle done",
+  "@boardsSettleTooltip": {
+    "description": "The settle-done button tooltip."
+  },
+  "boardsDecomposeTooltip": "add a step",
+  "@boardsDecomposeTooltip": {
+    "description": "The decompose toggle tooltip."
+  }
 }

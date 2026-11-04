@@ -457,5 +457,13 @@
   "actorsRepetitionLabel": "Штраф за повторение",
   "actorsSamplingHint": "Параметры сэмплинга для локальных мозгов; пусто — значения по умолчанию.",
   "workspacesFilesEmpty": "Рабочих областей пока нет — добавьте из панели.",
-  "workspacesFilesNoFolders": "Папок пока нет — добавьте папки в эту рабочую область."
+  "workspacesFilesNoFolders": "Папок пока нет — добавьте папки в эту рабочую область.",
+  "viewBoardsTitle": "Доски",
+  "newTabHintBoards": "Планы, доски и декомпозиция.",
+  "boardsTitle": "Планы",
+  "boardsAddCardHint": "добавить в «{column}»…",
+  "boardsAddStepHint": "добавить шаг…",
+  "boardsMoveTooltip": "переместить в «{column}»",
+  "boardsSettleTooltip": "отметить готовым",
+  "boardsDecomposeTooltip": "добавить шаг"
 }

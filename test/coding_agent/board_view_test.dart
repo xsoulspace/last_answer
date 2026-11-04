@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart' show BoardTaskStatus;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +15,11 @@ void main() {
     final WidgetTester tester,
     final PlanningBoardController controller,
   ) => tester.pumpWidget(
-    MaterialApp(home: Scaffold(body: BoardView(controller: controller))),
+    MaterialApp(
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
+      home: Scaffold(body: BoardView(controller: controller)),
+    ),
   );
 
   testWidgets('an empty board shows the default lanes', (final tester) async {

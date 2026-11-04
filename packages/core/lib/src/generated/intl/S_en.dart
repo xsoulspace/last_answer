@@ -1424,4 +1424,32 @@ class SEn extends S {
   @override
   String get workspacesFilesNoFolders =>
       'No folders yet — add folders to this workspace.';
+
+  @override
+  String get viewBoardsTitle => 'Boards';
+
+  @override
+  String get newTabHintBoards => 'Plans, boards and decomposition.';
+
+  @override
+  String get boardsTitle => 'Plans';
+
+  @override
+  String boardsAddCardHint(Object column) {
+    return 'add to $column…';
+  }
+
+  @override
+  String get boardsAddStepHint => 'add a step…';
+
+  @override
+  String boardsMoveTooltip(Object column) {
+    return 'move to $column';
+  }
+
+  @override
+  String get boardsSettleTooltip => 'settle done';
+
+  @override
+  String get boardsDecomposeTooltip => 'add a step';
 }

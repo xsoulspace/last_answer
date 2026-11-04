@@ -1435,4 +1435,32 @@ class SIt extends S {
   @override
   String get workspacesFilesNoFolders =>
       'Ancora nessuna cartella — aggiungi cartelle a questa area di lavoro.';
+
+  @override
+  String get viewBoardsTitle => 'Bacheche';
+
+  @override
+  String get newTabHintBoards => 'Piani, bacheche e scomposizione.';
+
+  @override
+  String get boardsTitle => 'Piani';
+
+  @override
+  String boardsAddCardHint(Object column) {
+    return 'aggiungi a $column…';
+  }
+
+  @override
+  String get boardsAddStepHint => 'aggiungi un passo…';
+
+  @override
+  String boardsMoveTooltip(Object column) {
+    return 'sposta in $column';
+  }
+
+  @override
+  String get boardsSettleTooltip => 'segna come fatto';
+
+  @override
+  String get boardsDecomposeTooltip => 'aggiungi un passo';
 }

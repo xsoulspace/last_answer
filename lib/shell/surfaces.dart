@@ -275,9 +275,9 @@ SurfaceRegistry buildShellSurfaces(
   kBoardsSurfaceId: SurfaceSpec(
     id: kBoardsSurfaceId,
     // The boards program's product face (plans, decomposition,
-    // delegation rows on one substrate). Title rides the next intl
-    // train; the view itself is key-contracted (board.*).
-    title: 'Boards',
+    // delegation rows on one substrate); the view is key-contracted
+    // (board.*).
+    title: context.l10n.viewBoardsTitle,
     builder: (final tabContext) => BoardView(
       controller: tabContext.read<PlanningBoardController?>(),
     ),

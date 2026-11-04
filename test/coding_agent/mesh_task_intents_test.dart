@@ -254,7 +254,7 @@ void main() {
         await appService.sync();
         expect(
           (appService.storage.provider as _FakeProvider).files,
-          contains('task_boards/agent_world.json'),
+          contains('task_boards/main.json'),
         );
         owner.board.applyRemote(appBoard.opsSince(owner.board.versionVector));
         expect(

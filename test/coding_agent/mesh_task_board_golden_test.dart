@@ -15,7 +15,8 @@ void main() {
 
   MeshTaskBoard board() => MeshTaskBoard(
     replicaId: 'peer-alpha',
-    // boardId rides the pinned default ('agent_world' — key-schemes group).
+    // boardId rides the pinned default ('main' — ADR 0028 renamed it
+    // off the demo-era 'agent_world' through the absorption window).
     now: () => base,
   );
 
@@ -95,9 +96,10 @@ void main() {
   });
 
   group('key schemes', () {
-    test('the default board id is agent_world', () {
-      expect(MeshTaskBoard.defaultBoardId, 'agent_world');
-      expect(board().boardId, 'agent_world');
+    test('the default board id is main', () {
+      expect(MeshTaskBoard.defaultBoardId, 'main');
+      expect(MeshTaskBoard.legacyBoardId, 'agent_world');
+      expect(board().boardId, 'main');
     });
 
     test('sync keys stay task/<docId>/<localId>/task/<field>', () {
@@ -144,7 +146,7 @@ void main() {
         json.keys.toSet(),
         {'board_id', 'replica_id', 'world', 'issued_clock'},
       );
-      expect(json['board_id'], 'agent_world');
+      expect(json['board_id'], 'main');
       expect(json['replica_id'], 'peer-alpha');
 
       // After folding a remote op the receive floor rides the file too.
@@ -183,7 +185,7 @@ void main() {
       final fileJson = b.toJson();
 
       final restored = MeshTaskBoard.fromJson(fileJson);
-      expect(restored.boardId, 'agent_world');
+      expect(restored.boardId, 'main');
       expect(restored.replicaId, 'peer-alpha');
       expect(restored.allRecords.single.taskId, first);
       expect(restored.allRecords.single.status, 'running');

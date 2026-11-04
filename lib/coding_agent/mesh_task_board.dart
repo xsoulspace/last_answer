@@ -231,8 +231,52 @@ final class MeshTaskBoard {
   MeshTaskBoard._(this._sync, {final DateTime Function()? now})
     : _now = now ?? DateTime.now;
 
-  /// Default board id (and kernel doc id).
-  static const String defaultBoardId = 'agent_world';
+  /// Default board id (and kernel doc id). Renamed from the demo-era
+  /// `agent_world` through the versioned absorption window (ADR 0028):
+  /// the old id survives as [legacyBoardId] — absorbed forever, mirrored
+  /// while the migration window stands.
+  static const String defaultBoardId = 'main';
+
+  /// The pre-rename board id (ADR 0028). Files carrying it at any
+  /// `doc_id`/`board_id` level are rewritten by [rekeyDocId] before they
+  /// reach the kernel, which refuses foreign doc ids.
+  static const String legacyBoardId = 'agent_world';
+
+  /// Rewrites a board file between replica doc ids in place (ADR 0028).
+  ///
+  /// The replica doc id rides flat `doc_id` fields at every level of the
+  /// persisted shape — each log op ([OpRecord.toJson], where the op id is
+  /// derived as `docId#hlc#wall#counter#actor`), the adopted snapshot, the
+  /// convergence doc — plus the envelope's `board_id`. The kernel drops
+  /// ops whose `doc_id` differs from the replica's own, so a file must be
+  /// rewritten BEFORE it folds; entity keys are untouched (they embed the
+  /// TASK's document id, which is independent of the board id). Only
+  /// exact-match values on the two known keys are rewritten, and the
+  /// rewrite is idempotent under the version vector — re-absorbing the
+  /// same file folds nothing new.
+  static Map<Object?, Object?> rekeyDocId(
+    final Map<Object?, Object?> json, {
+    required final String from,
+    required final String to,
+  }) {
+    if (from == to) return json;
+    void walk(final Object? node) {
+      if (node is Map) {
+        node.forEach((final key, final value) {
+          if ((key == 'board_id' || key == 'doc_id') && value == from) {
+            node[key] = to;
+          } else {
+            walk(value);
+          }
+        });
+      } else if (node is List) {
+        node.forEach(walk);
+      }
+    }
+
+    walk(json);
+    return json;
+  }
 
   static const String _entityPrefix = 'task/';
   static const String _component = 'task';

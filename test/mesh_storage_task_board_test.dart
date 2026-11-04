@@ -17,7 +17,11 @@ import 'package:universal_storage_interface/universal_storage_interface.dart';
 /// anti-entropy overwrites local files with the peer's replica JSON
 /// (whole-file LWW).
 
-const _boardFile = 'task_boards/agent_world.json';
+const _boardFile = 'task_boards/main.json';
+
+/// ADR 0028 — the legacy path every flush also mirrors to while the
+/// absorption window stands.
+const _legacyBoardFile = 'task_boards/agent_world.json';
 
 /// Fake [StorageProvider]: in-memory map, sync is a recorded no-op that
 /// delivers injected peer files at the exchange point.
@@ -132,8 +136,10 @@ void main() {
     expect(providerA.files, isEmpty); // Batched — nothing written yet.
     await a.sync();
 
-    // The board file was flushed into storage BEFORE the exchange ran.
+    // The board file was flushed into storage BEFORE the exchange ran,
+    // together with its legacy mirror (ADR 0028 absorption window).
     expect(providerA.files.keys, contains(_boardFile));
+    expect(providerA.files.keys, contains(_legacyBoardFile));
     expect(providerA.syncLog.single, contains(_boardFile));
 
     // The exchange delivers A's file to B (whole-file LWW).

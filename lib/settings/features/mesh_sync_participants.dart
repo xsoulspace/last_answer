@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:lastanswer/coding_agent/planning_board_replica.dart';
-
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_mesh/universal_storage_mesh.dart';
@@ -79,6 +78,17 @@ final class RosterParticipant implements MeshSyncParticipant {
 /// folding the file's op log first would advance the vector past the
 /// snapshot base and silently refuse the snapshot content (the only
 /// carrier of a COMPACTED peer file's state).
+/// ADR 0028 — the versioned absorption window. While this flag stands,
+/// every task-board flush ALSO mirrors the merged state to the legacy
+/// path with all doc ids rewritten back, so a pre-rename peer folding
+/// `task_boards/agent_world.json` sees exactly the board it would have
+/// seen before the rename. Retirement is an operator decision: flip in a
+/// release once no pre-rename device syncs anymore. The reverse
+/// direction — absorbing the legacy path — stays forever (it is
+/// idempotent under the version vector and costs one null read once no
+/// peer writes the file).
+const bool kTaskBoardLegacyMirror = true;
+
 final class TaskBoardParticipant implements MeshSyncParticipant {
   TaskBoardParticipant(this.board) : path = 'task_boards/${board.boardId}.json';
 
@@ -87,6 +97,11 @@ final class TaskBoardParticipant implements MeshSyncParticipant {
   /// The single file this board ships and folds.
   final String path;
 
+  /// The pre-rename board path (ADR 0028): read forever, mirrored while
+  /// [kTaskBoardLegacyMirror] stands.
+  static const String legacyPath = 'task_boards/'
+      '${MeshTaskBoard.legacyBoardId}.json';
+
   @override
   Future<void> flush(final StorageService storage) async {
     await storage.saveFile(
@@ -94,15 +109,49 @@ final class TaskBoardParticipant implements MeshSyncParticipant {
       jsonEncode(board.toJson()),
       message: 'save task board ${board.boardId}',
     );
+    final windowOpen =
+        kTaskBoardLegacyMirror && board.boardId != MeshTaskBoard.legacyBoardId;
+    if (!windowOpen) {
+      return;
+    }
+    // ADR 0028 — the legacy mirror: the same merged state with every
+    // doc_id/board_id rewritten to the pre-rename id, so a v1 peer's
+    // kernel accepts the ops it would have refused as foreign.
+    final mirror = MeshTaskBoard.rekeyDocId(
+      jsonDecode(jsonEncode(board.toJson())) as Map<Object?, Object?>,
+      from: board.boardId,
+      to: MeshTaskBoard.legacyBoardId,
+    );
+    await storage.saveFile(
+      legacyPath,
+      jsonEncode(mirror),
+      message: 'mirror task board ${MeshTaskBoard.legacyBoardId}',
+    );
   }
 
   @override
   Future<void> absorb(final StorageService storage) async {
+    await _absorbFile(storage, path);
+    // ADR 0028 — the legacy path folds forever. A pre-rename peer file
+    // carries the legacy doc id at every level; [rekeyDocId] makes it
+    // foldable before it reaches the kernel.
+    await _absorbFile(storage, legacyPath);
+  }
+
+  Future<void> _absorbFile(
+    final StorageService storage,
+    final String path,
+  ) async {
     final raw = await storage.readFile(path);
     if (raw == null) return;
     final json = _boardJsonOf(raw);
     if (json == null) return;
     if (json['replica_id'] == board.replicaId) return; // our own flush
+    MeshTaskBoard.rekeyDocId(
+      json,
+      from: MeshTaskBoard.legacyBoardId,
+      to: board.boardId,
+    );
     var changed = false;
     final snapshotJson = json['snapshot'];
     if (snapshotJson is Map &&

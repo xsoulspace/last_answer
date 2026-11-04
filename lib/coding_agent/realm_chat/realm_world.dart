@@ -206,7 +206,7 @@ final class RealmWorld {
   /// caller passes it in (the roster owns the replica id).
   ProfileActorAuthority authorityFor(String actorId) => ProfileActorAuthority(
     actor: actorId,
-    docId: 'lastanswer',
+    conversationId: 'lastanswer',
     actorReference: 'persistent-entity:realm-actor:$actorId',
     projectId: root,
     projectRoot: root,

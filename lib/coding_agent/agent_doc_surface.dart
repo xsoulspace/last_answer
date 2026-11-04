@@ -1491,6 +1491,15 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         }
         return false;
       }
+      // An INJECTED lane (tests and embeds hand the host its own handler
+      // or its own tool set) owns its whole tool surface: product
+      // workspace prep is for the product GUI's own lanes. That prep
+      // asks path_provider for an application-support directory, which a
+      // widget test has no plugin for (measured: the auto-run's
+      // delegated turn died in prep and never reached its write gate).
+      final injectedSeam =
+          widget.config?.handlerFactory ??
+          widget.controller?.config.handlerFactory;
       final injectedTools =
           widget.config?.extraToolsWithContext ??
           widget.controller?.config.extraToolsWithContext;
@@ -1499,12 +1508,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           (autonomy == null
               ? MeaningExperimentPreparation.instance.toolsFor(workspaceBinding)
               : null);
-      // A scripted lane that already named its tools (the widget tests'
-      // injected handler) does not also need product workspace prep. That
-      // prep asks path_provider for an application-support directory, which
-      // a widget test has no plugin for. The product GUI, which injects no
-      // tools, still prepares.
-      if (injectedTools == null && workspaceBinding.isNotEmpty) {
+      if (injectedSeam == null &&
+          injectedTools == null &&
+          workspaceBinding.isNotEmpty) {
         try {
           final prepared =
               await (autonomy?.tooling ??

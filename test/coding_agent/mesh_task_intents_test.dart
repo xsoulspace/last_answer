@@ -378,7 +378,9 @@ void main() {
 
           // The scripted turn raises the write gate mid-turn; the host
           // side answers it (the same ALLOW mechanics as the perm gate).
-          await controller.nextPermission();
+          await controller.nextPermission(
+            timeout: const Duration(seconds: 30),
+          );
           controller.answerPermission(allow: true);
 
           // The auto-run completes the task with the REAL turn outcome.

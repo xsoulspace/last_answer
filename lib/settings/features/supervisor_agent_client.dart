@@ -5,19 +5,19 @@
 ///
 /// Two laws ride this file:
 ///
-/// - THE DELEGATION RECEIPT IS NOT A COMPLETION. `task_delegate` answers
+/// - THE CREATION RECEIPT IS NOT A COMPLETION. `task op:create` answers
 ///   `state: queued`: the world admitted the task, it did not run it.
-///   The terminal truth is the durable delegation state the world keeps
-///   on the admission beat, read back through
-///   `agent_context {op:'read', field:'tool_output'}`. A client that
-///   stops at the receipt fabricates success.
+///   The terminal truth is the durable task record the world keeps,
+///   read back through `task {op:'show'}` (ADR 0118 D3/D5 — one
+///   delegation concept, and the queue record is its authority). A
+///   client that stops at the receipt fabricates success.
 ///
 /// - A REFUSAL IS DATA. The world's own bounce code is carried verbatim
 ///   ([SupervisorAgentRefusal.code]); it is never rewritten into a
 ///   generic failure and never substituted by another provider.
 library;
 
-import 'dart:convert';
+import 'dart:convert' show jsonEncode;
 
 /// One allowlisted harness tool call over the app's existing client —
 /// the same shape the world inspector's seat uses
@@ -56,8 +56,8 @@ final class SupervisorAgentAdmission {
   /// The world's task id — the durable handle of the delegated work.
   final String taskId;
 
-  /// The beat that carries the delegation's durable state. The world's
-  /// own store keeps it; reading it is how completion is proven.
+  /// The world's anchor beat for the task's durable record
+  /// (`control:task:<id>`), kept as the run's identity token.
   final String admissionBeatId;
 
   /// The world state at admission (`queued`, `started`, …).
@@ -172,46 +172,37 @@ final class SupervisorAgentClientResolution {
   bool get available => client != null;
 }
 
-/// The client over the app's existing harness client: the participation
-/// verbs (`task_delegate`, `task_cancel`) and the context read that
-/// returns the world's durable delegation state.
+/// The client over the app's existing harness client: the world's
+/// universal task surface (`task` op:`create` / `show` / `cancel`,
+/// ADR 0118 D3/D5). Creation IS the delegation — the addressing is the
+/// delegation — and the durable truth is the queue record itself, read
+/// back through `task {op:'show'}`.
 final class HarnessWorldAgentClient implements SupervisorAgentClient {
-  HarnessWorldAgentClient({
-    required this.call,
-    this.pageLimit = 32768,
-    this.allowedTools,
-  });
+  HarnessWorldAgentClient({required this.call, this.allowedTools});
 
   /// The app's existing harness client: one allowlisted tool call.
   final SupervisorHarnessCall call;
 
   /// The live catalog this client may use — the seat's own tool
   /// allowlist. Null means "no catalog to check" (an embedded client
-  /// that serves the whole surface). A verb outside the catalog is
+  /// that serves the whole surface). A tool outside the catalog is
   /// refused by name BEFORE the call: the gap is reported, never
   /// approximated by another verb.
   final Set<String>? allowedTools;
-
-  /// The page size for the durable-state read (the harness serves the
-  /// beat's tool output in pages; the world refuses a page above 64000
-  /// characters with `invalid_page`).
-  final int pageLimit;
 
   @override
   Future<SupervisorAgentAdmission> admit({
     required final String task,
     required final String requestId,
   }) async {
-    final result = await _invoke('agent_participation', {
-      'op': 'task_delegate',
+    final result = await _invoke('task', {
+      'op': 'create',
       'task': task,
       'requestId': requestId,
       'purpose': 'coding',
     });
     if (result['ok'] != true) {
-      throw SupervisorAgentRefusal(
-        _bounceOf(result) ?? 'task_delegate_refused',
-      );
+      throw SupervisorAgentRefusal(_bounceOf(result) ?? 'task_create_refused');
     }
     final taskId = result['taskId'];
     final beatId = result['admissionBeatId'];
@@ -219,7 +210,7 @@ final class HarnessWorldAgentClient implements SupervisorAgentClient {
         taskId.isEmpty ||
         beatId is! String ||
         beatId.isEmpty) {
-      throw const SupervisorAgentRefusal('task_delegate_receipt_incomplete');
+      throw const SupervisorAgentRefusal('task_create_receipt_incomplete');
     }
     return SupervisorAgentAdmission(
       taskId: taskId,
@@ -232,28 +223,37 @@ final class HarnessWorldAgentClient implements SupervisorAgentClient {
   @override
   Future<SupervisorAgentOutcome> outcome({
     required final SupervisorAgentAdmission admission,
-  }) async => _outcomeOf(await _readDelegation(admission));
+  }) async {
+    final receipt = await _invoke('task', {
+      'op': 'show',
+      'taskId': admission.taskId,
+    });
+    if (receipt['ok'] != true) {
+      throw SupervisorAgentRefusal(
+        _bounceOf(receipt) ?? 'task_state_unreadable',
+      );
+    }
+    return _outcomeOf(receipt);
+  }
 
   @override
   Future<SupervisorAgentOutcome> cancel({
     required final SupervisorAgentAdmission admission,
     required final String requestId,
   }) async {
-    final result = await _invoke('agent_participation', {
-      'op': 'task_cancel',
+    // The world's cancellation is authoritative on the task record
+    // (`cancelRequested` on the queue row, ADR 0114) and idempotent —
+    // the request id is not part of the op; the join is the receipt
+    // read that follows.
+    final result = await _invoke('task', {
+      'op': 'cancel',
       'taskId': admission.taskId,
-      'requestId': requestId,
     });
     if (result['ok'] != true) {
-      throw SupervisorAgentRefusal(
-        _bounceOf(result) ?? 'task_cancel_refused',
-      );
+      throw SupervisorAgentRefusal(_bounceOf(result) ?? 'task_cancel_refused');
     }
     return outcome(admission: admission);
   }
-
-  /// The world's own read page ceiling (`invalid_page` above it).
-  static const int _maxPage = 64000;
 
   /// One catalog-checked call over the app's existing client.
   Future<Map<String, Object?>> _invoke(
@@ -267,125 +267,52 @@ final class HarnessWorldAgentClient implements SupervisorAgentClient {
     return call(tool, args);
   }
 
-  /// Reads the delegation's durable state — the world's own record of the
-  /// delegated work, page by page, exactly as the harness serves it.
-  Future<Map<String, Object?>> _readDelegation(
-    final SupervisorAgentAdmission admission,
-  ) async {
-    final beat = admission.admissionBeatId;
-    final buffer = StringBuffer();
-    var offset = 0;
-    int? total;
-    while (true) {
-      final Map<String, Object?> page;
-      try {
-        page = await _invoke('agent_context', {
-          'op': 'read',
-          'beat': beat,
-          'field': 'tool_output',
-          'offset': offset,
-          'limit': pageLimit.clamp(1, _maxPage),
-        });
-      } on Object catch (error) {
-        throw SupervisorAgentRefusal(
-          'delegation_state_unreadable',
-          detail: '$error',
-        );
-      }
-      if (page['ok'] != true) {
-        throw SupervisorAgentRefusal(
-          _bounceOf(page) ?? 'delegation_state_unreadable',
-        );
-      }
-      if (page['beatId'] != beat) {
-        throw const SupervisorAgentRefusal('delegation_beat_mismatch');
-      }
-      if (page['field'] != 'tool_output') {
-        throw const SupervisorAgentRefusal('delegation_state_field_mismatch');
-      }
-      if (page['offsetUnit'] != 'utf16_code_units') {
-        throw const SupervisorAgentRefusal('delegation_state_offset_unit');
-      }
-      final text = page['text'];
-      if (text is! String) {
-        throw const SupervisorAgentRefusal('delegation_state_empty');
-      }
-      final length = page['totalLength'];
-      if (length is! int || length < 0) {
-        throw const SupervisorAgentRefusal('delegation_state_length_invalid');
-      }
-      if (total != null && total != length) {
-        throw const SupervisorAgentRefusal('delegation_state_length_changed');
-      }
-      total = length;
-      buffer.write(text);
-      if (page['truncated'] != true) break;
-      final next = page['nextOffset'];
-      if (next is! int || next <= offset) {
-        throw const SupervisorAgentRefusal(
-          'delegation_state_next_offset_invalid',
-        );
-      }
-      offset = next;
-    }
-    final Object? decoded;
-    try {
-      decoded = jsonDecode(buffer.toString());
-    } on FormatException catch (error) {
-      throw SupervisorAgentRefusal(
-        'delegation_state_invalid',
-        detail: error.message,
-      );
-    }
-    if (decoded is! Map) {
-      throw const SupervisorAgentRefusal('delegation_state_invalid');
-    }
-    return Map<String, Object?>.from(decoded);
-  }
-
-  /// Maps the world's durable delegation state onto an outcome. The
-  /// terminal words and the verification flag are the world's, not ours.
-  SupervisorAgentOutcome _outcomeOf(final Map<String, Object?> data) {
-    final state = '${data['state'] ?? ''}';
-    final acceptance = data['goalAcceptance'];
-    final acceptanceMap = acceptance is Map
-        ? Map<String, Object?>.from(acceptance)
+  /// Maps the world's own task receipt onto an outcome. The state words
+  /// are the queue's (`queued`, `leased`, `started`, `succeeded`,
+  /// `failed`, `cancelled`, `unknown`); a settled task carries a
+  /// terminal record the world wrote — never one we infer.
+  SupervisorAgentOutcome _outcomeOf(final Map<String, Object?> receipt) {
+    final state = '${receipt['state'] ?? ''}';
+    final terminal = receipt['terminal'];
+    final terminalMap = terminal is Map
+        ? Map<String, Object?>.from(terminal)
         : const <String, Object?>{};
-    final verified = acceptanceMap['goalCompletionVerified'] == true;
-    final acceptanceFailed = acceptanceMap['status'] == 'failed';
-    final failureClass = data['failureClass'];
-    final failureDetail = data['failureDetail'];
-    final failure = failureClass is String && failureClass.isNotEmpty
-        ? (failureDetail is String && failureDetail.isNotEmpty
-              ? '$failureClass: $failureDetail'
-              : failureClass)
-        : (acceptanceFailed ? 'acceptance_failed' : null);
-    final terminal = switch (state) {
-      'loop_settled' || 'cancelled' || 'outcome_unknown' => true,
-      _ => failure != null,
+    final terminalState = '${terminalMap['state'] ?? state}';
+    final isTerminal =
+        terminalMap.isNotEmpty ||
+        const {'succeeded', 'failed', 'cancelled', 'unknown'}.contains(state);
+    final cancelled = terminalState == 'cancelled' || state == 'cancelled';
+    final succeeded = terminalState == 'succeeded';
+    final failure = switch (terminalState) {
+      'failed' => switch (terminalMap['reason']) {
+        final String reason when reason.isNotEmpty => reason,
+        _ => 'failed',
+      },
+      'unknown' => 'outcome_unknown',
+      _ => null,
     };
-    final cancelled = state == 'cancelled';
-    final succeeded = state == 'loop_settled' && verified;
     return SupervisorAgentOutcome(
       state: state,
-      terminal: terminal,
+      terminal: isTerminal,
       succeeded: succeeded,
       cancelled: cancelled,
       failure: failure,
-      detail: _detailOf(data),
-      raw: data,
+      detail: _detailOf(receipt),
+      raw: receipt,
     );
   }
 }
 
-String? _detailOf(final Map<String, Object?> data) {
-  final acceptance = data['goalAcceptance'];
-  if (acceptance is Map) {
-    final status = acceptance['status'];
-    if (status is String && status.isNotEmpty) return status;
+String? _detailOf(final Map<String, Object?> receipt) {
+  final terminal = receipt['terminal'];
+  if (terminal is! Map) return null;
+  final result = terminal['result'];
+  if (result is Map) {
+    final summary = result['summary'];
+    if (summary is String && summary.isNotEmpty) return summary;
   }
-  final detail = data['failureDetail'];
-  if (detail is String && detail.isNotEmpty) return detail;
+  final reason = terminal['reason'];
+  if (reason is String && reason.isNotEmpty) return reason;
   return null;
 }
 

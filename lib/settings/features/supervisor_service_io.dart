@@ -119,17 +119,17 @@ final class SupervisorService {
           'the world refused the seat',
         );
       }
-      // The seat's OWN allowlist is the live catalog. A verb it does not
+      // The seat's OWN allowlist is the live catalog. A tool it does not
       // serve is named here — the delegation is NOT claimed to work.
       final missing = [
-        for (final tool in const ['agent_participation', 'agent_context'])
+        for (final tool in const ['task'])
           if (!granted.tools.contains(tool)) tool,
       ];
       if (missing.isNotEmpty) {
         await granted.disconnect?.call();
         return SupervisorAgentClientResolution.refused(
-          'the seat does not serve ${missing.join(', ')} — delegation is not '
-          'available on this seat',
+          'the seat does not serve ${missing.join(', ')} — task delegation '
+          'is not available on this seat',
         );
       }
       return SupervisorAgentClientResolution.available(

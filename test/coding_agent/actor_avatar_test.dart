@@ -64,11 +64,15 @@ void main() {
 
     test('actorColor: hash pinned to FNV-1a + golden-angle hue', () {
       final h = _fnv1a('afm-coder');
+      // Saturation/lightness pinned at the de-Material values
+      // (0.45/0.36 — the ≥4.5:1 ink law, shell-de-material-plan §2);
+      // only the HUE is derived from the hash. A change here is a
+      // conscious design decision, never drift.
       final expected = HSLColor.fromAHSL(
         1,
         (h * 137.508) % 360,
-        0.58,
-        0.48,
+        0.45,
+        0.36,
       ).toColor();
       expect(actorColor('afm-coder'), expected);
     });

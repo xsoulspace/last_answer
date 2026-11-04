@@ -2968,11 +2968,10 @@ class _TurnView extends StatelessWidget {
             onToggleBeat: onToggleBeat,
           ),
         ),
-        if (turn.guidance != null && foldHarness)
-          // The ladder must be REACHABLE: a hidden harness layer without a
-          // way to open it is a lost state, not a collapsed one.
-          _LadderFold(label: 'guidance', onOpen: onOpenLadder),
-        if (turn.guidance != null && !foldHarness)
+        if (turn.guidance != null)
+          // Guidance is FIRST-CLASS grid state — the owner's voice to
+          // the agent — never hidden behind the harness fold (the
+          // fold covers the machine layer: tool beats and ladders).
           _GridRow(
             role: 'GUIDE',
             child: SelectableText(

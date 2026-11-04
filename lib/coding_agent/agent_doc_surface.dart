@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:core/core.dart';
-import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +19,7 @@ import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_preparation.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
+import 'package:lastanswer/coding_agent/mesh_board_bridge.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/product_autonomy.dart';
@@ -181,7 +181,10 @@ abstract interface class AgentDocAutonomyHandle {
 }
 
 class _AgentDocSurfaceState extends State<AgentDocSurface>
-    implements AgentDocProductHandle, AgentDocAutonomyHandle {
+    implements
+        AgentDocProductHandle,
+        AgentDocAutonomyHandle,
+        DocTurnRunner {
   late ProjectModelDoc _doc = widget.doc;
   late final HarnessSessionController _controller =
       widget.controller ??
@@ -948,10 +951,29 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// permission. Re-read the projection.
   void refreshAfterMeshSync() {
     _controller.refreshPermissions();
-    // PLAN 6.C — the mesh task console: remote requests on the shared
-    // board become local delegated turns on THIS (host) surface — the
-    // same app wiring hook that re-reads routed permissions.
-    _autoRunPendingRemoteTasks();
+    // PLAN 6.C / the boards program — remote requests on the shared
+    // board become local delegated turns on THIS (host) surface, but
+    // the claim → run → settle loop lives in [MeshBoardBridge]; the
+    // surface only hands it its turn capability.
+    final wiring = AgentDocSurface.meshWiring;
+    final board = wiring?.taskBoard?.call();
+    if (board != null && wiring!.selfPeerId?.call() != null) {
+      final bridge = _boardBridge ??= MeshBoardBridge(
+        board: board,
+        runner: this,
+        docId: () => _doc.id.value,
+        selfPeerId: () => wiring.selfPeerId?.call() ?? '',
+        autoRun: wiring.autoRunRemoteTasks,
+      );
+      unawaited(
+        bridge.cycle().then((_) {
+          // Re-project IMMEDIATELY after a settlement: the MCP/intent
+          // projection must match the live service within one sync
+          // cycle (the T3 gate diffs debugState byte-for-byte).
+          if (mounted) AgentDocSurface.debugState = _projectState();
+        }),
+      );
+    }
     // Task O — re-project IMMEDIATELY, not on the next frame: the
     // MCP/intent projection must match the live service within one sync
     // cycle (the T3 gate diffs debugState byte-for-byte) — a build-frame
@@ -961,158 +983,46 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   }
 
   // -------------------------------------------------------------------
-  // PLAN 6.C — the host side of the mesh task console: a peer's board
-  // request (`status: requested`, origin another device) is claimed
-  // (markRunning), delegated through the SAME route the composer and the
-  // `agent_task_delegate` verb use ([_syncConfigBeforeTurn] →
-  // createSession → [HarnessSessionController.delegate]), and its REAL
-  // turn outcome is written back as the board verdict (completeTask /
-  // failTask) — the mesh sync cycle ships it to the peer.
+  // PLAN 6.C / the boards program — this surface's turn capability for
+  // the board bridge: the loop (claim, verdict honesty, bookkeeping)
+  // lives in [MeshBoardBridge] and `package:ecsly_boards`; the surface
+  // owns only what is intrinsically widget state — its controller, its
+  // config lane, its bound workspace.
   // -------------------------------------------------------------------
 
-  /// Remote requests already handled in THIS session (in-memory dedupe,
-  /// never persisted: the board's own terminal status is the durable
-  /// record, so a fresh session re-runs nothing the board settled).
-  final Set<String> _handledRemoteTasks = <String>{};
+  /// The bridge for this surface's doc, built on the first sync cycle
+  /// that carries a board (never for a viewer shadow — no wiring, no
+  /// bridge).
+  MeshBoardBridge? _boardBridge;
 
-  /// True while an auto-run delegate is in flight — refreshAfterMeshSync
-  /// fires after every sync cycle, including the cycles the auto-run's
-  /// own board writes (and the queue flush's follow-up turns) trigger.
-  bool _autoRunInFlight = false;
-
-  /// Claims and runs at most ONE pending remote request per cycle — a
-  /// delegated turn is single-writer. Guard rails: this surface must be
-  /// the host side (a live controller with a bound workspace — the
-  /// `AgentDocShadow` viewer never reaches this code path at all); a
-  /// busy controller leaves the request unclaimed for a later cycle;
-  /// `autoRunRemoteTasks: false` (tests) disables the whole block.
-  void _autoRunPendingRemoteTasks() {
-    final wiring = AgentDocSurface.meshWiring;
-    if (wiring == null || !wiring.autoRunRemoteTasks) return;
-    if (_autoRunInFlight || _meaningAdmissionBusy || _controller.isRunning) {
-      return;
-    }
-    final board = wiring.taskBoard?.call();
-    final selfPeerId = wiring.selfPeerId?.call();
-    if (board == null || selfPeerId == null) return;
-    final pending = board.pendingRequestsFor(
-      _doc.id.value,
-      selfPeerId: selfPeerId,
-    );
-    if (pending.isEmpty) {
-      final rows = board.tasksFor(_doc.id.value);
-      if (rows.isNotEmpty) {
-        // Named observability (PLAN 6.C): rows exist on THIS device's
-        // board but none is claimable here — per-row status/origin plus
-        // this device's peer id, so a stalled console names its reason.
-        // ignore: avoid_print
-        print(
-          'mesh task console: '
-          '${rows.map((r) => '${r.taskId}=${r.status} (origin '
-              '${r.originPeerId})').join(', ')} — selfPeerId=$selfPeerId',
-        );
-      }
-      return;
-    }
-    for (final record in pending) {
-      if (_handledRemoteTasks.contains(record.taskId)) continue;
-      // ignore: avoid_print
-      print('mesh task console: claiming ${record.taskId}');
-      try {
-        board.markRunning(record.taskId);
-      } on Object {
-        continue; // board write failed — leave it for the next cycle.
-      }
-      _handledRemoteTasks.add(record.taskId);
-      unawaited(_autoRunTask(board, record));
-      return;
-    }
+  @override
+  String? get boundWorkspace {
+    final text = _workspaceField.text.trim();
+    return text.isEmpty ? null : text;
   }
 
-  /// The auto-run of ONE claimed request: delegate exactly like
-  /// `_delegate` does for a composer submit (config sync → session on the
-  /// bound workspace → workspace pinned into the payload → the
-  /// controller's delegate), then map the turn outcome onto the board
-  /// HONESTLY — only figures the controller truly exposed (an
-  /// interrupted turn carries no spend; nothing is invented, DESIGN §6).
-  /// Every exit writes a terminal board record: a request is never
-  /// silently dropped.
-  Future<void> _autoRunTask(
-    final MeshTaskBoard board,
-    final MeshTaskRecord record,
-  ) async {
-    _autoRunInFlight = true;
-    _setMeaningAdmissionBusy(true);
-    Map<String, Object?> verdictOf({
-      final AcpStopReason? stop,
-      final HarnessTurn? turn,
-    }) => {
-      if (turn?.verdictLine != null) 'verdict': turn!.verdictLine,
-      // The spend exists only when the verdict line carried figures —
-      // absent figures stay absent (never zeros, DESIGN §6).
-      if (turn?.spend case final spend?) ...{
-        'decisions': spend.decisions,
-        'rounds': spend.rounds,
-        'tokens': spend.tokens,
-        'wallMs': spend.wallMs,
-      },
-      if (stop != null) 'stopReason': stop.name,
-    };
-    try {
-      if (_workspaceField.text.trim().isEmpty) {
-        board.failTask(
-          record.taskId,
-          error: 'no workspace bound to the doc yet.',
-        );
-        return;
-      }
-      final session = await _prepareSession();
-      if (session == null) {
-        board.failTask(
-          record.taskId,
-          error:
-              'backend config for the turn could not be synced: '
-              '${_controller.error ?? 'unknown config error'}',
-        );
-        return;
-      }
-      final workspace = session.cwd;
-      final turnIndex = session.turns.length;
-      final agent = _doc.agent ?? const AgentDocModel();
-      if (!agent.workspaces.contains(workspace)) {
-        _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
-      }
-      final stop = await _controller.delegate(record.task, session: session);
-      final turn = _controller.current?.turns.elementAtOrNull(turnIndex);
-      final verdict = verdictOf(stop: stop, turn: turn);
-      if (stop == null) {
-        // delegate returns null only when the turn failed (the
-        // controller recorded the error) — the named error rides along.
-        board.failTask(
-          record.taskId,
-          verdict: verdict,
-          error:
-              _controller.error ??
-              'the delegated turn failed with no stop reason.',
-        );
-        return;
-      }
-      if (stop == AcpStopReason.cancelled) {
-        board.failTask(
-          record.taskId,
-          verdict: verdict,
-          error: 'the delegated turn was cancelled before completion.',
-        );
-        return;
-      }
-      board.completeTask(record.taskId, verdict: verdict);
-    } on Object catch (error) {
-      board.failTask(record.taskId, error: 'auto-run failed: $error');
-    } finally {
-      _autoRunInFlight = false;
-      _setMeaningAdmissionBusy(false);
-      if (mounted) AgentDocSurface.debugState = _projectState();
+  @override
+  Future<DocTurnOutcome> runTurn(final String task) async {
+    final session = await _prepareSession();
+    if (session == null) {
+      return DocTurnOutcome.failed(
+        'backend config for the turn could not be synced: '
+        '${_controller.error ?? 'unknown config error'}',
+      );
     }
+    final workspace = session.cwd;
+    final agent = _doc.agent ?? const AgentDocModel();
+    if (!agent.workspaces.contains(workspace)) {
+      _persist(agent.copyWith(workspaces: [...agent.workspaces, workspace]));
+    }
+    final turnIndex = session.turns.length;
+    final stop = await _controller.delegate(task, session: session);
+    final turn = _controller.current?.turns.elementAtOrNull(turnIndex);
+    return DocTurnOutcome(
+      verdictLine: turn?.verdictLine,
+      spend: turn?.spend,
+      stopReason: stop?.name,
+    );
   }
 
   /// The typed state both projections render ([AgentDocSurface

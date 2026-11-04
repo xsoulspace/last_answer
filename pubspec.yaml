@@ -159,6 +159,11 @@ dependencies:
   # universal_storage_convergence path dependency above.
   ecsly_world_sync:
     path: ../../ecsly/plugins/ecsly_world_sync
+  # The boards program: the canonical card ontology + host seam the app
+  # composes (the harness extraction; ADR-law in
+  # docs/design/ecsly-boards-extraction.md).
+  ecsly_boards:
+    path: ../../ecsai_harness/pkgs/ecsly_boards
   headless_core:
     path: packages/headless_core
   universal_io: ^2.3.1
@@ -417,6 +422,8 @@ dependency_overrides:
     path: ../../ecsai_harness/pkgs/ecsly_conversation
   ecsly_tasks:
     path: ../../ecsai_harness/pkgs/ecsly_tasks
+  ecsly_boards:
+    path: ../../ecsai_harness/pkgs/ecsly_boards
   ecsai_wire:
     path: ../../ecsai_harness/pkgs/ecsai_wire
   ecsly_app:

@@ -62,7 +62,7 @@ void main() {
 
     expect(
       controller.cardsOf('doing').single.status,
-      BoardTaskStatus.completed,
+      BoardTaskStatus.completed.name,
     );
   });
 

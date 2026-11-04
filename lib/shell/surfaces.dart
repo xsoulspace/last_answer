@@ -39,7 +39,7 @@ import 'package:lastanswer/browser/workspace_browser.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/board_view.dart';
-import 'package:lastanswer/coding_agent/planning_board_controller.dart';
+import 'package:lastanswer/settings/features/storage_backends_state.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 
@@ -279,7 +279,11 @@ SurfaceRegistry buildShellSurfaces(
     // (board.*).
     title: context.l10n.viewBoardsTitle,
     builder: (final tabContext) => BoardView(
-      controller: tabContext.read<PlanningBoardController?>(),
+      // The mesh-synced controller when the mesh seams are attached;
+      // otherwise the view owns a session-local one.
+      controller: tabContext
+          .read<StorageBackendsNotifier?>()
+          ?.planningController,
     ),
     icon: Icons.view_kanban_outlined,
   ),

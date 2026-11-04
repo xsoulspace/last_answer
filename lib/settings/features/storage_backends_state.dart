@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/coding_agent/planning_board_controller.dart';
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';
 import 'package:lastanswer/settings/features/mesh_storage_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_platform_stub.dart'
@@ -619,6 +621,19 @@ class StorageBackendsNotifier extends ChangeNotifier {
   /// The live task board (null before the mesh replica ever opened).
   MeshTaskBoard? get taskBoard => _taskBoard;
 
+  PlanningBoardReplica? _planningBoard;
+
+  /// The mesh-synced planning board (the boards program's sync lane),
+  /// null until the mesh seams attach.
+  PlanningBoardReplica? get planningBoard => _planningBoard;
+
+  PlanningBoardController? _planningController;
+
+  /// The controller bound to the synced planning board; null until the
+  /// mesh seams attach (a board view without it owns a session-local
+  /// controller).
+  PlanningBoardController? get planningController => _planningController;
+
   /// Stable browser-safe peer identity persisted with backend config.
   String get meshPeerId {
     final existing = _meshPeerId;
@@ -731,10 +746,13 @@ class StorageBackendsNotifier extends ChangeNotifier {
     );
     final roster = _actorRoster ??= ActorRoster(replicaId: meshPeerId);
     _taskBoard = MeshTaskBoard(replicaId: meshPeerId);
+    _planningBoard = PlanningBoardReplica(replicaId: meshPeerId);
+    _planningController = PlanningBoardController(replica: _planningBoard);
     service
       ..attachDocSync(_docReplicaStore!)
       ..attachRoster(roster)
-      ..attachTaskBoard(_taskBoard!);
+      ..attachTaskBoard(_taskBoard!)
+      ..attachPlanningBoard(_planningBoard!);
   }
 
   /// Seamless setup, step "this is my main device": hosts the relay,
@@ -811,6 +829,8 @@ class StorageBackendsNotifier extends ChangeNotifier {
     await _docReplicaStore?.dispose();
     _docReplicaStore = null;
     _taskBoard = null;
+    _planningBoard = null;
+    _planningController = null;
     _meshSyncService = null;
     await service?.dispose();
     _meshRole = MeshRole.none;
@@ -823,6 +843,8 @@ class StorageBackendsNotifier extends ChangeNotifier {
     unawaited(_docReplicaStore?.dispose());
     _docReplicaStore = null;
     _taskBoard = null;
+    _planningBoard = null;
+    _planningController = null;
     _meshSyncService = null;
     unawaited(_liveMesh?.dispose());
     _liveMesh = null;

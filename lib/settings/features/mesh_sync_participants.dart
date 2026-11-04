@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
+
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
@@ -162,3 +164,65 @@ List<OpRecord> _opsFromList(final List<dynamic> log) => [
   for (final entry in log)
     if (entry is Map) OpRecord.fromJson(Map<String, dynamic>.from(entry)),
 ];
+
+/// The planning board (WorldSync-backed): its whole state rides
+/// `planning_boards/<boardId>.json`, folded SNAPSHOT FIRST — the same
+/// discipline as the task board (the kernel adopts only snapshots its
+/// version vector does not already cover).
+final class PlanningBoardParticipant implements MeshSyncParticipant {
+  PlanningBoardParticipant(this.replica)
+    : path = 'planning_boards/${replica.boardId}.json';
+
+  final PlanningBoardReplica replica;
+
+  /// The single file this board ships and folds.
+  final String path;
+
+  @override
+  Future<void> flush(final StorageService storage) async {
+    await storage.saveFile(
+      path,
+      jsonEncode(replica.toJson()),
+      message: 'save planning board ${replica.boardId}',
+    );
+  }
+
+  @override
+  Future<void> absorb(final StorageService storage) async {
+    final raw = await storage.readFile(path);
+    if (raw == null) return;
+    final Object? decoded;
+    try {
+      decoded = jsonDecode(raw);
+    } on FormatException {
+      return;
+    }
+    if (decoded is! Map) return;
+    if (decoded['replica_id'] == replica.replicaId) return; // our own flush
+    var changed = false;
+    final snapshotJson = decoded['snapshot'];
+    if (snapshotJson is Map &&
+        replica.adoptSnapshot(
+          Snapshot.fromJson(Map<String, dynamic>.from(snapshotJson)),
+        )) {
+      changed = true;
+    }
+    final log = decoded['world'];
+    if (log is Map) {
+      final opsJson = log['log'];
+      if (opsJson is List) {
+        final ops = [
+          for (final op in opsJson)
+            if (op is Map) OpRecord.fromJson(Map<String, dynamic>.from(op)),
+        ];
+        if (replica.applyRemote(ops) > 0) changed = true;
+      }
+    }
+    if (changed) await flush(storage);
+  }
+
+  @override
+  Future<void> compact(final StorageService storage) async {
+    if (replica.compact() > 0) await flush(storage);
+  }
+}

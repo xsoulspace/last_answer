@@ -10,9 +10,12 @@
 library;
 
 import 'package:core/core.dart';
+import 'dart:async';
+
 import 'package:ecsly_boards/ecsly_boards.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/planning_board_controller.dart';
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 
 /// The planning board: one lane per column, ranked rows, inline add,
 /// lane moves, decomposition. The controller is injectable (tests hand
@@ -29,8 +32,26 @@ final class BoardView extends StatefulWidget {
 
 class _BoardViewState extends State<BoardView> {
   PlanningBoardController? _owned;
+  Timer? _poll;
   PlanningBoardController get controller =>
       widget.controller ?? (_owned ??= PlanningBoardController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Remote arrivals fold into the replica on mesh sync cycles; the
+    // lane re-reads on a quiet poll — the same cadence the Settings
+    // mesh-tasks page uses (ADR 0023 observability).
+    _poll = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _poll?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(final BuildContext context) {
@@ -97,7 +118,7 @@ final class _ColumnLane extends StatelessWidget {
         const SizedBox(height: 8),
         for (final card in cards)
           _CardRow(
-            key: ValueKey('board.card.${card.key}'),
+            key: ValueKey('board.card.${card.cardId}'),
             controller: controller,
             card: card,
             onMutate: onMutate,
@@ -126,7 +147,7 @@ final class _CardRow extends StatefulWidget {
   });
 
   final PlanningBoardController controller;
-  final BoardCardView card;
+  final PlanningCardRecord card;
   final VoidCallback onMutate;
 
   @override
@@ -163,7 +184,7 @@ class _CardRowState extends State<_CardRow> {
               Expanded(
                 child: Text(card.title, style: theme.textTheme.bodyMedium),
               ),
-              if (card.status == BoardTaskStatus.completed)
+              if (card.status == BoardTaskStatus.completed.name)
                 Icon(Icons.check, size: 14, color: theme.colorScheme.primary),
             ],
           ),
@@ -176,7 +197,7 @@ class _CardRowState extends State<_CardRow> {
                   icon: Icons.arrow_back,
                   onTap: () => _run(
                     () => widget.controller.moveCard(
-                      key: card.key,
+                      cardId: card.cardId,
                       column: columns[index - 1],
                     ),
                   ),
@@ -188,19 +209,19 @@ class _CardRowState extends State<_CardRow> {
                   icon: Icons.arrow_forward,
                   onTap: () => _run(
                     () => widget.controller.moveCard(
-                      key: card.key,
+                      cardId: card.cardId,
                       column: columns[index + 1],
                     ),
                   ),
                 ),
-              if (card.status != BoardTaskStatus.completed)
+              if (card.status != BoardTaskStatus.completed.name)
                 _QuietOp(
                   key: const ValueKey('board.op.done'),
                   tooltip: context.l10n.boardsSettleTooltip,
                   icon: Icons.check,
                   onTap: () => _run(
                     () => widget.controller.settle(
-                      key: card.key,
+                      cardId: card.cardId,
                       status: BoardTaskStatus.completed,
                     ),
                   ),
@@ -218,7 +239,7 @@ class _CardRowState extends State<_CardRow> {
               key: const ValueKey('board.child.input'),
               onSubmit: (final title) => _run(() {
                 widget.controller.addChildren(
-                  parentKey: card.key,
+                  parentCardId: card.cardId,
                   childTitles: [title],
                 );
                 setState(() => _addingChild = false);

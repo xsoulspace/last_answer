@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:headless_core/headless_core.dart' show DocReplicaStore;
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
 import 'package:lastanswer/settings/features/mesh_relay_host_stub.dart'
     if (dart.library.io) 'mesh_relay_host_io.dart' as relay_host;
@@ -326,6 +327,18 @@ final class MeshStorageService {
 
   /// The live task board, null until [attachTaskBoard].
   MeshTaskBoard? get taskBoard => _taskBoard;
+
+  /// Attaches the planning board as a [PlanningBoardParticipant] (the
+  /// boards program's sync lane). The caller keeps ownership.
+  void attachPlanningBoard(final PlanningBoardReplica replica) {
+    _planningBoard = replica;
+    _session.attachParticipant(PlanningBoardParticipant(replica));
+  }
+
+  PlanningBoardReplica? _planningBoard;
+
+  /// The live planning board, null until [attachPlanningBoard].
+  PlanningBoardReplica? get planningBoard => _planningBoard;
 
   /// Joins [docId]'s presence channel. Doc-scoped join is the CALLER's
   /// job (ADR 0031 §1).

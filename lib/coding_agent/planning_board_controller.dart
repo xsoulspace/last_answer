@@ -1,140 +1,120 @@
-/// The planning board controller: a session-scoped planning World over
-/// the `ecsly_boards` ontology — the product face of the boards
-/// program (stage 4).
+/// The planning board controller: the view's facade over the
+/// [PlanningBoardReplica] — the mesh-synced durable store (the boards
+/// program's sync lane). Ops write replica ops (one per field);
+/// reads project the fold in board order.
 ///
-/// Storage law, stated honestly: this first landing is LOCAL-FIRST
-/// ONLY — the World lives in memory, `package:ecsly_boards` is the
-/// model, and the cross-device sync lane (a convergence replica per
-/// board, the way `MeshTaskBoard` rides the mesh) is the NEXT program.
-/// Nothing here reaches for a server.
+/// Storage law: the replica rides the mesh cycle exactly like the task
+/// board (`planning_boards/<boardId>.json`, snapshot-first absorb);
+/// `package:ecsly_boards` remains the MODEL — the canonical status
+/// vocabulary and the fractional-rank discipline ([rankBetween]) this
+/// controller composes.
 ///
-/// Vocabulary law: planning cards use the SAME canonical
-/// [BoardTaskStatus] and the SAME substrate as delegation rows — plans
-/// are parent cards with ranked children (`orderedChildren`), never a
-/// parallel model.
+/// A controller without an injected replica owns a fresh in-memory one
+/// (session-scoped; it persists once it rides a mesh cycle).
 library;
 
-import 'package:ecsly/ecsly.dart';
 import 'package:ecsly_boards/ecsly_boards.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 
 /// The default columns a new board shows. Free-form strings — the UI
-/// names lanes, the ontology carries them.
+/// names lanes, the model carries them.
 const List<String> kDefaultBoardColumns = <String>['backlog', 'doing', 'done'];
 
-/// One board's working model: spawn, place, decompose, settle — each
-/// op through the package's substrate, notifications for the view.
+/// One board's facade: spawn, place, decompose, settle.
 final class PlanningBoardController extends ChangeNotifier {
   PlanningBoardController({
-    this.boardId = 'product',
+    PlanningBoardReplica? replica,
     this.columns = kDefaultBoardColumns,
-  }) : _world = World()..addPlugin(const BoardsPlugin());
+  }) : replica = replica ?? PlanningBoardReplica(replicaId: 'local');
 
-  final World _world;
-  final String boardId;
+  /// The durable replica (authority + wire).
+  final PlanningBoardReplica replica;
+
   final List<String> columns;
 
-  int _counter = 0;
-
   /// Every card of [column] in board order (rank, then createdAt).
-  List<BoardCardView> cardsOf(final String column) => cardsOfColumn(
-    _world,
-    board: boardId,
-    column: column,
-  );
+  List<PlanningCardRecord> cardsOf(final String column) =>
+      replica.cardsForColumn(column);
 
-  /// Adds one card to the END of [column]; returns its key.
+  /// Every card on the board.
+  List<PlanningCardRecord> get allCards => replica.allCards;
+
+  /// Adds one card to the END of [column]; returns its id.
   String addCard({required final String title, required final String column}) {
-    final key = 'card/$boardId/${_counter++}';
-    final last = cardsOf(column).lastOrNull;
-    spawnCard(
-      _world,
-      key: key,
-      board: boardId,
+    final last = replica.cardsForColumn(column).lastOrNull;
+    final lastRank = last == null || last.rank.isEmpty ? null : last.rank;
+    final id = replica.addCard(
       title: title,
-      status: BoardTaskStatus.requested,
-      createdAtMs: DateTime.now().millisecondsSinceEpoch,
       column: column,
-      rank: rankBetween(last?.rank, null),
+      rank: rankBetween(lastRank, null),
     );
-    _world.flush();
     notifyListeners();
-    return key;
+    return id;
   }
 
   /// Moves a card to [column], inserted AFTER [afterKey] (null → the
   /// top of the column). Returns false when the card is absent.
   bool moveCard({
-    required final String key,
+    required final String cardId,
     required final String column,
     final String? afterKey,
   }) {
-    final columnCards = cardsOf(column);
+    final columnCards = replica.cardsForColumn(column);
     final index = afterKey == null
         ? null
-        : columnCards.indexWhere((final card) => card.key == afterKey);
-    final before = index == null ? null : columnCards[index].rank;
+        : columnCards.indexWhere((final card) => card.cardId == afterKey);
+    String? rankOf(final PlanningCardRecord card) =>
+        card.rank.isEmpty ? null : card.rank;
+    final before = index == null ? null : rankOf(columnCards[index]);
     final after = index == null
-        ? columnCards.firstOrNull?.rank
-        : (index + 1 < columnCards.length ? columnCards[index + 1].rank : null);
-    final placed = placeCard(
-      _world,
-      key,
+        ? (columnCards.firstOrNull == null
+              ? null
+              : rankOf(columnCards.first))
+        : (index + 1 < columnCards.length
+              ? rankOf(columnCards[index + 1])
+              : null);
+    replica.placeCard(
+      cardId: cardId,
       column: column,
       rank: rankBetween(before, after),
     );
-    if (placed) {
-      _world.flush();
-      notifyListeners();
-    }
-    return placed;
+    notifyListeners();
+    return true;
   }
 
-  /// Decomposes [parentKey]: adds ranked children (appended in
-  /// order) — the package's `decompose` does the graph write.
+  /// Decomposes [parentCardId]: adds ranked children (appended in
+  /// order) in the parent's column.
   List<String> addChildren({
-    required final String parentKey,
+    required final String parentCardId,
     required final List<String> childTitles,
   }) {
-    final parent = cardOf(_world, parentKey);
+    final parent = replica.cardOf(parentCardId);
     if (parent == null) return const [];
-    final keys = <String>[];
+    final ids = <String>[];
     for (final title in childTitles) {
-      final key = 'card/$boardId/${_counter++}';
-      decompose(
-        _world,
-        parent.entity,
-        [
-          CardSpec(
-            key: key,
-            board: boardId,
-            title: title,
-            createdAtMs: DateTime.now().millisecondsSinceEpoch,
-          ),
-        ],
+      final column = parent.column.isEmpty ? columns.first : parent.column;
+      final last = replica.cardsForColumn(column).lastOrNull;
+      final lastRank = last == null || last.rank.isEmpty ? null : last.rank;
+      ids.add(
+        replica.addCard(
+          title: title,
+          column: column,
+          rank: rankBetween(lastRank, null),
+          parent: parentCardId,
+        ),
       );
-      final targetColumn = parent.column ?? columns.first;
-      placeCard(
-        _world,
-        key,
-        column: targetColumn,
-        rank: rankBetween(cardsOf(targetColumn).lastOrNull?.rank, null),
-      );
-      keys.add(key);
     }
-    _world.flush();
     notifyListeners();
-    return keys;
+    return ids;
   }
 
   /// Settles a card in the canonical vocabulary (done = completed).
   void settle({
-    required final String key,
+    required final String cardId,
     required final BoardTaskStatus status,
   }) {
-    if (settleCard(_world, key, to: status)) {
-      _world.flush();
-      notifyListeners();
-    }
+    replica.settle(cardId: cardId, status: status.name);
+    notifyListeners();
   }
 }

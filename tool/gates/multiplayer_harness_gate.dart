@@ -1,14 +1,16 @@
 // Multiplayer T3 gate as a flutter_mcp_harness scenario — the user-directed
 // regular cross-platform (incl. web) testing mechanism.
 //
-// Two REAL app instances, one doc, the mesh task console end to end:
+// Two REAL app instances, one doc, the mesh task board end to end:
 //   host (macOS binary, owns workspace + harness) ← relay → peer (Chrome
-//   web build). The peer dispatches an agent task from the VISIBLE mesh
-//   task console (MeshTaskConsoleView); the host auto-runs it through its
-//   delegate path; the verdict converges back over the CRDT task board
-//   (MeshTaskBoard over ecsly world-sync) and the peer READS it in the
-//   same console. The permission round-trip is answered reject-first from
-//   the peer's transcript buttons, proven by the workspace file oracle.
+//   web build). The peer dispatches an agent task (mesh_task_dispatch —
+//   the board is observed in Settings > Mesh tasks); the host auto-runs
+//   it through its delegate path (the MeshBoardBridge over the
+//   ecsly_boards host seam); the verdict converges back over the CRDT
+//   task board (MeshTaskBoard over ecsly world-sync) and the peer READS
+//   the settled row. The permission round-trip is answered reject-first
+//   from the peer's transcript buttons, proven by the workspace file
+//   oracle.
 //
 // Driving split (the 2026-10 CDP redesign):
 //   host  — macOS binary driven through the mcp-toolkit VM-service verbs

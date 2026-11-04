@@ -89,7 +89,7 @@ final class ProductAutonomy {
       '--csp',
       'main.dart',
       '-o',
-      '.dart_tool/task-board-check.js',
+      '.dart_tool/autonomy-check.js',
     ];
   }
 

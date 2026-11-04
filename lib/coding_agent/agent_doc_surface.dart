@@ -359,7 +359,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                 },
           child: Text(
             label(
-              'Start autonomous task board',
+              'Start autonomous board sample',
               'Avvia bacheca autonoma',
               'Создать автономную доску задач',
             ),

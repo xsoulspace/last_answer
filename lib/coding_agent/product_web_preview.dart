@@ -281,7 +281,7 @@ async function tick(){
     if(!target||target===visible||target===testing)return;
     testing=target;
     const frame=document.createElement('iframe');
-    frame.title='Running task board';frame.style.display='none';
+    frame.title='Running board app';frame.style.display='none';
     let finished=false;
     const fail=async(error)=>{
       if(finished)return;finished=true;

@@ -24,7 +24,7 @@ void main() {
 void render() {
   final app = querySelector('#app')!;
   app.children.clear();
-  app.append(HeadingElement.h1()..text = 'My task board');
+  app.append(HeadingElement.h1()..text = 'My board app');
   final list = UListElement()..id = 'tasks';
   for (final task in tasks) {
     final checkbox = CheckboxInputElement()..checked = task['done'] as bool;

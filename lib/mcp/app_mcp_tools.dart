@@ -88,7 +88,7 @@ const List<AppIntentSpec> appIntentCatalog = [
     name: 'agent_product_autonomy',
     group: 'doc',
     summary:
-        'Start, inspect or pause the addressed autonomous task-board product.',
+        'Start, inspect or pause the addressed autonomous board-sample product.',
   ),
   AppIntentSpec(
     name: 'agent_doc_configure_native',

@@ -665,7 +665,7 @@ void main() {
       final scopeRoot = '${temp.path}/world';
       ProfileActorAuthority humanActor() => ProfileActorAuthority(
         actor: 'human-test-device',
-        docId: 'lastanswer',
+        conversationId: 'lastanswer',
         actorReference: 'persistent-entity:realm-actor:human-test-device',
         projectId: scopeRoot,
         projectRoot: scopeRoot,

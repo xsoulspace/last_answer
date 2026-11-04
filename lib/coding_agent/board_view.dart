@@ -9,9 +9,9 @@
 /// imports the ontology and the controller, never the shell.
 library;
 
-import 'package:core/core.dart';
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart';
 import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/planning_board_controller.dart';
@@ -167,7 +167,7 @@ class _CardRowState extends State<_CardRow> {
     final theme = Theme.of(context);
     final card = widget.card;
     final columns = widget.controller.columns;
-    final index = columns.indexOf(card.column ?? '');
+    final index = columns.indexOf(card.column);
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),

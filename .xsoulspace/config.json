@@ -11,5 +11,23 @@
         ]
       }
     ]
+  },
+  "realm_actor_tools": {
+    "write": true,
+    "run": true,
+    "world": true,
+    "run_exact": [
+      "fvm flutter analyze",
+      "fvm dart analyze"
+    ],
+    "run_allow": [
+      "fvm flutter test",
+      "git status",
+      "git diff",
+      "git log --oneline"
+    ]
+  },
+  "realm_actor_context_windows": {
+    "qwen": 16000
   }
 }

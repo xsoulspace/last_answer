@@ -38,6 +38,8 @@ import 'package:lastanswer/browser/browser_strings.dart';
 import 'package:lastanswer/browser/workspace_browser.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/board_view.dart';
+import 'package:lastanswer/coding_agent/planning_board_controller.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 
@@ -105,6 +107,10 @@ const String kTerminalSurfaceId = 'terminal';
 
 /// The threads view's surface id (an honest quiet state today).
 const String kThreadsSurfaceId = 'threads';
+
+/// The boards view's surface id — plans, decomposition and delegation
+/// rows on the ecsly_boards substrate (the boards program, stage 4).
+const String kBoardsSurfaceId = 'boards';
 
 /// The new-tab picker's surface id (WAVE 4T — the browser model): the
 /// bar's `+` opens it, picking a destination replaces it in place.
@@ -265,6 +271,17 @@ SurfaceRegistry buildShellSurfaces(
     builder: (final tabContext) =>
         _QuietViewNote(text: tabContext.l10n.contextThreadsEmpty),
     icon: Icons.account_tree_outlined,
+  ),
+  kBoardsSurfaceId: SurfaceSpec(
+    id: kBoardsSurfaceId,
+    // The boards program's product face (plans, decomposition,
+    // delegation rows on one substrate). Title rides the next intl
+    // train; the view itself is key-contracted (board.*).
+    title: 'Boards',
+    builder: (final tabContext) => BoardView(
+      controller: tabContext.read<PlanningBoardController?>(),
+    ),
+    icon: Icons.view_kanban_outlined,
   ),
   // The newtab picker's spec is composed by AppShell (center_tabs.dart
   // hosts the [NewTabSurface] and the scope it navigates through) —

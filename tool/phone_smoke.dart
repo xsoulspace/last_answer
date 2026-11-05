@@ -4,7 +4,7 @@
 /// the toolkit verbs — boot, embedded world state, the honest external
 /// refusal (no manifests / no paired worlds on a phone), and a
 /// screenshot for evidence. Usage:
-///   fvm dart run tool/phone_smoke.dart <device-id>
+///   `fvm dart run tool/phone_smoke.dart <device-id>`
 library;
 
 import 'dart:async';
@@ -47,11 +47,14 @@ Future<void> main(final List<String> args) async {
   Future<Map<String, Object?>> verb(
     final String name, [
     final Map<String, Object?> args = const {},
-  ]) async =>
-      vm.callExtension('ext.mcp.toolkit.$name', args: args);
+  ]) => vm.callExtension('ext.mcp.toolkit.$name', args: args);
 
   var failures = 0;
-  void check(final bool ok, final String step, final String detail) {
+  void check(
+    final String step,
+    final String detail, {
+    required final bool ok,
+  }) {
     print('${ok ? "PASS" : "FAIL"}  $step  $detail');
     if (!ok) failures++;
   }
@@ -59,39 +62,41 @@ Future<void> main(final List<String> args) async {
   await waitVerb('app_intents');
   final intents = await verb('app_intents', {'group': 'inspector'});
   check(
-    intents['ok'] == true,
     'app-intents',
     '${intents['count']} inspector intents published',
+    ok: intents['ok'] == true,
   );
 
   await waitVerb('world_inspector_state');
   final state = await verb('world_inspector_state');
   check(
-    state['ok'] == true,
     'world-state',
     'embedded pane projection: ${state['summary'] ?? state['message']}',
+    ok: state['ok'] == true,
   );
   check(
-    state['external'] != true,
     'embedded-default',
     'no binding — the pane samples the embedded registry (default path)',
+    ok: state['external'] != true,
   );
 
   // The OSS connect contract on a phone: nothing to attach to until the
   // user pairs or adds an endpoint — the refusal must be HONEST.
   final attach = await verb('world_inspector_attach');
   check(
-    attach['ok'] == false,
     'attach-honest-refusal',
     '${attach['message']?.toString().split('.').first}.',
+    ok: attach['ok'] == false,
   );
 
   try {
     final shot = await verb('view_screenshots', {'compress': true});
     final images = shot['images'];
     final path = '$tmp/phone_smoke_evidence.json';
-    File(path).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(shot));
-    check(images is List && images.isNotEmpty, 'screenshot', 'saved $path');
+    File(path).writeAsStringSync(
+      const JsonEncoder.withIndent('  ').convert(shot),
+    );
+    check('screenshot', 'saved $path', ok: images is List && images.isNotEmpty);
   } on Object catch (e) {
     print('INFO  screenshot  unavailable: ${e.toString().split('\n').first}');
   }

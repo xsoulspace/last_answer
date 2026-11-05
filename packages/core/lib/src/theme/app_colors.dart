@@ -4,6 +4,10 @@ part of 'theme.dart';
 /// If there is a need to add new one—open an issue to add to figma.
 ///
 /// See [style guide](https://www.figma.com/file/ggehTTqGDzpUDnU3C1uzOA/?node-id=15%3A3)
+@Deprecated(
+  'Legacy brainstorming-app palette. Read tokens from LaThemeExtension '
+  '(context.la.*) instead; phase 4 deletes this class.',
+)
 class AppColors {
   /// This class is not meant to be instantiated or extended; this constructor
   /// prevents instantiation and extension.

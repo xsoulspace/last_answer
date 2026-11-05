@@ -1128,7 +1128,7 @@ class SRu extends S {
   String get worldChatCancel => 'Отмена';
 
   @override
-  String get worldChatConversations => 'РАЗГОВОРЫ';
+  String get worldChatConversations => 'Разговоры';
 
   @override
   String get worldChatNoConversations => 'Разговоров пока нет.';

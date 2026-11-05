@@ -1119,7 +1119,7 @@ class SEn extends S {
   String get worldChatCancel => 'Cancel';
 
   @override
-  String get worldChatConversations => 'CONVERSATIONS';
+  String get worldChatConversations => 'Conversations';
 
   @override
   String get worldChatNoConversations => 'No conversations yet.';

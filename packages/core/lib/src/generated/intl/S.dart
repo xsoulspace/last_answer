@@ -2124,7 +2124,7 @@ abstract class S {
   /// No description provided for @worldChatConversations.
   ///
   /// In en, this message translates to:
-  /// **'CONVERSATIONS'**
+  /// **'Conversations'**
   String get worldChatConversations;
 
   /// No description provided for @worldChatNoConversations.

@@ -367,7 +367,7 @@
   "worldChatNoActorsYet": "Актёров пока нет — создайте в Настройки → Агенты и модели.",
   "worldChatOpen": "Открыть",
   "worldChatCancel": "Отмена",
-  "worldChatConversations": "РАЗГОВОРЫ",
+  "worldChatConversations": "Разговоры",
   "worldChatNoConversations": "Разговоров пока нет.",
   "worldChatCloseTooltip": "Закрыть разговор",
   "worldChatPickHint": "Выберите разговор или начните новый.",

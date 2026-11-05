@@ -7,6 +7,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:lastanswer/common_imports.dart';
+
 abstract final class ShellTokens {
   /// Rail width (px) — the one fixed column of the shell.
   static const double railWidth = 272;
@@ -46,25 +48,23 @@ abstract final class ShellTokens {
 }
 
 /// Shell colors, derived from the ambient [ThemeData] each build — no
-/// second palette beside the app's design system.
+/// second palette beside the app's design system. Phase 0: the hairline and
+/// muted roles read the real tokens ([LaThemeExtension]); the hover/selected
+/// fills stay alpha steps of ink over whatever surface they sit on.
 extension ShellColors on BuildContext {
-  Color get shellHover =>
-      Theme.of(this).colorScheme.onSurface.withValues(alpha: 0.05);
+  Color get shellHover => la.ink.withValues(alpha: 0.05);
 
-  Color get shellSelected =>
-      Theme.of(this).colorScheme.onSurface.withValues(alpha: 0.09);
+  Color get shellSelected => la.ink.withValues(alpha: 0.09);
 
-  Color get shellHairline => Theme.of(this).dividerColor;
+  Color get shellHairline => la.rule;
 
-  Color get shellMuted => Theme.of(this).colorScheme.onSurfaceVariant;
+  Color get shellMuted => la.inkMuted;
 
-  Color get shellField =>
-      Theme.of(this).colorScheme.onSurface.withValues(alpha: 0.04);
+  Color get shellField => la.ink.withValues(alpha: 0.04);
 
   /// A raised surface one step of ink above the base (DESIGN §3 layered
   /// surfaces) — cards-on-canvas stay quiet without a border.
-  Color get shellRaised =>
-      Theme.of(this).colorScheme.onSurface.withValues(alpha: 0.03);
+  Color get shellRaised => la.surfaceRaised;
 }
 
 /// The micro-label style (DESIGN §3): sentence case, muted, one step
@@ -81,7 +81,7 @@ TextStyle shellSectionLabel(final BuildContext context) =>
 /// hairline, never a zero-offset halo, never an elevation ladder.
 List<BoxShadow> shellFloatingShadow(final BuildContext context) => [
   BoxShadow(
-    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.14),
+    color: context.la.ink.withValues(alpha: 0.14),
     offset: const Offset(0, 6),
     blurRadius: 20,
   ),

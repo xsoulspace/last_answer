@@ -450,7 +450,7 @@
   "worldChatNoActorsYet": "No actors yet — create one in Settings → Agents & Models.",
   "worldChatOpen": "Open",
   "worldChatCancel": "Cancel",
-  "worldChatConversations": "CONVERSATIONS",
+  "worldChatConversations": "Conversations",
   "worldChatNoConversations": "No conversations yet.",
   "worldChatCloseTooltip": "Close conversation",
   "worldChatPickHint": "Pick a conversation, or start a new one.",

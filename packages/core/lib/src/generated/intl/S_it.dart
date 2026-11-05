@@ -1127,7 +1127,7 @@ class SIt extends S {
   String get worldChatCancel => 'Annulla';
 
   @override
-  String get worldChatConversations => 'CONVERSAZIONI';
+  String get worldChatConversations => 'Conversazioni';
 
   @override
   String get worldChatNoConversations => 'Ancora nessuna conversazione.';

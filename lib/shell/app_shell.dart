@@ -600,6 +600,17 @@ class _AppShellState extends State<AppShell> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            // Phase 0 unified titlebar (macOS): the window
+                            // draws under the traffic lights, so the shell
+                            // reserves the system gutter above its one bar.
+                            // macOS reports no viewPadding for the titlebar,
+                            // hence the platform constant; zero elsewhere.
+                            SizedBox(
+                              height: defaultTargetPlatform ==
+                                      TargetPlatform.macOS
+                                  ? 28
+                                  : MediaQuery.of(context).viewPadding.top,
+                            ),
                             _buildTopBar(surfaces, pins),
                             Expanded(
                               child: ListenableBuilder(

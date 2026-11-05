@@ -2714,6 +2714,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'add a step'**
   String get boardsDecomposeTooltip;
+
+  /// No description provided for @unknownSurfaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown surface'**
+  String get unknownSurfaceTitle;
+
+  /// No description provided for @railViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get railViews;
+
+  /// No description provided for @railViewSwitchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch view'**
+  String get railViewSwitchTooltip;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

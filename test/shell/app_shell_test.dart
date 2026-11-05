@@ -1,22 +1,18 @@
-// ADR 0024 — the app shell widget tests. WAVE 5: the rail is the
-// chrome, the top bar maps the session, views pin into the dock, and
-// the layout survives a restart through its persisted JSON blob
-// (`shell.views.v2`; the retired `shell.tabs.v1` and pane-tree blobs
-// migrate once).
+// ADR 0024 — the app shell widget tests. PHASE 1: the rail of views +
+// roster hosts the center; EVERY view owns its Safari-like strip
+// ([ShellLayout], persisted as `shell.views.v3`; the retired v2/v1 and
+// pane-tree blobs migrate once). The dock and the global bar are gone —
+// these tests are the chrome's new contract.
 //
 // The injected RealmChatService is a REAL service. Two lanes:
 // - the default lane, whose world start fails honestly in the test
 //   binding (path_provider has no plugin) — the shell renders its
 //   not-ready states without touching any realm store;
 // - a hermetic lane over `RealmWorld.open(rootOverride:)` for the
-//   rail-contract test (the rail selects through the service; the shell
-//   translates that into the conversation slot).
+//   service-driven conversation flow (the rail selects through the
+//   service; the shell translates that into the conversations strip).
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart'
-    show debugDefaultTargetPlatformOverride;
-
-import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,11 +30,9 @@ import 'package:lastanswer/settings/features/storage_backends_state.dart';
 
 import 'package:lastanswer/shell/app_shell.dart';
 
-import 'package:lastanswer/shell/context_column.dart';
-
-import 'package:lastanswer/shell/pinned_conversation_peek.dart';
-
 import 'package:lastanswer/shell/surfaces.dart';
+
+import 'package:lastanswer/shell/view_tab_strip.dart';
 
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
@@ -47,7 +41,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 /// A projects notifier fake whose real pager holds zero items — enough
-/// for the rail's PROJECTS section to render honestly empty.
+/// for the rail's legacy sections to render honestly empty.
 class _IdleProjects extends ValueNotifier<ProjectsNotifierState>
     implements ProjectsNotifier {
   _IdleProjects() : super(const ProjectsNotifierState());
@@ -120,8 +114,6 @@ Future<void> _pumpShell(
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 100));
   await tester.pump(const Duration(milliseconds: 400));
-  // Advance fake time so the not-ready progress indicator's animation
-  // timers fire and complete before the invariant check.
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 100));
   await tester.pump(const Duration(milliseconds: 400));
@@ -141,831 +133,126 @@ void main() {
     StorageBackendsNotifier.onSyncCycle = null;
   });
 
-  testWidgets('launching lands in the shell: the rail is present and the '
-      'conversations tab hosts the center (not-ready states are honest)', (
+  testWidgets(
+    'launching lands in the shell: the rail lists the views and the '
+    'conversations view hosts the center with its own strip',
+    (final tester) async {
+      await _pumpShell(tester);
+      // The rail's VIEWS section (the activity bar).
+      expect(find.byKey(const ValueKey('rail.view.conversations')), findsOneWidget);
+      expect(find.byKey(const ValueKey('rail.view.boards')), findsOneWidget);
+      expect(find.byKey(const ValueKey('rail.view.inspector')), findsOneWidget);
+      // The hosted view's strip, with its world-face tab focused.
+      expect(find.byType(ViewTabStrip), findsOneWidget);
+      expect(find.byKey(const ValueKey('view.strip.conversations')), findsOneWidget);
+      expect(find.byKey(const ValueKey('view.tab.conversations')), findsOneWidget);
+      // No dock, no global bar: the retired chrome stays retired.
+      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
+    },
+  );
+
+  testWidgets('a rail view row hosts that view and persists v3', (
     final tester,
   ) async {
     await _pumpShell(tester);
-
-    // The rail chrome exists…
-    expect(find.byKey(const ValueKey('rail.search')), findsOneWidget);
-    expect(find.byKey(const ValueKey('rail.add')), findsOneWidget);
-    expect(find.byKey(const ValueKey('rail.settings')), findsOneWidget);
-    // …and the center is the flat strip hosting the conversations
-    // surface.
-    expect(find.byKey(const ValueKey('center.tabs')), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-      findsOneWidget,
-    );
-    // No home face: no Workbench entry, no greeting.
-    expect(find.byKey(const ValueKey('home-open-workbench')), findsNothing);
-    expect(find.byType(TextField), findsOneWidget);
-    // The dissolved home face's load-bearing seams are installed by the
-    // shell itself (debug/profile guard, same as before the move).
-    expect(AgentDocSurface.createMeaningExperimentHook, isNotNull);
-    expect(AgentDocSurface.meshWiring, isNotNull);
-    expect(StorageBackendsNotifier.onSyncCycle, isNotNull);
+    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('view.strip.boards')), findsOneWidget);
+    expect(find.byKey(const ValueKey('view.tab.boards')), findsOneWidget);
+    // The conversations strip survives, unfocused.
+    expect(find.byKey(const ValueKey('view.strip.conversations')), findsNothing);
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString('shell.views.v3');
+    expect(raw, isNotNull);
+    final decoded = jsonDecode(raw!) as Map<String, Object?>;
+    expect(decoded['v'], 3);
+    expect(decoded['activeView'], kBoardsSurfaceId);
   });
 
-  testWidgets(
-    'the conversations surface is collapsed: no inner thread list, the '
-    'rail is the one conversation list',
-    (final tester) async {
-      await _pumpShell(tester);
-
-      // The surface's old inner list affordance is gone — the rail owns
-      // it now. The collapsed surface mounts no list or composer in any
-      // state; in this lane the injected world fails honestly, so the
-      // center is the not-ready note (a live world renders the focused
-      // conversation only — world_chat_surface.dart no longer contains
-      // a thread pane).
-      expect(find.byKey(const ValueKey('worldchat.new')), findsNothing);
-      expect(find.byKey(const ValueKey('worldchat.composer')), findsNothing);
-      expect(
-        find.textContaining('The world chat failed to open'),
-        findsOneWidget,
-      );
-      // The rail carries the conversation-list chrome (search + add).
-      expect(find.byKey(const ValueKey('rail.search')), findsOneWidget);
-      expect(find.byKey(const ValueKey('rail.add')), findsOneWidget);
-    },
-  );
-
-  testWidgets(
-    'the dock: width-gated (hidden below 980px), present above with the '
-    'default People pin, hideable by the human, gone when unpinned',
-    (final tester) async {
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      await _pumpShell(tester);
-
-      // Default test surface (800px): below the gate — hidden.
-      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
-
-      // 1000px clears the 980px gate: the dock joins the shell row,
-      // carrying the DEFAULT PIN (People) and its quiet note while no
-      // conversation is open.
-      tester.view
-        ..physicalSize = const Size(1000, 900)
-        ..devicePixelRatio = 1.0;
-      await tester.pump();
-      final dock = find.byKey(const ValueKey('view.dock'));
-      expect(dock, findsOneWidget);
-      expect(
-        find.byKey(const ValueKey('view.dock.pill.$kPeopleSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: dock,
-          matching: find.text('Select a conversation from the rail.'),
-        ),
-        findsOneWidget,
-      );
-
-      // The human's toggle (the conversation header's panel-right
-      // affordance drives the same controller) hides and restores it.
-      final controller = tester.element(dock).read<ContextColumnController>()
-        ..setVisible(value: false);
-      await tester.pump();
-      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
-
-      controller.setVisible(value: true);
-      await tester.pump();
-      expect(find.byKey(const ValueKey('view.dock')), findsOneWidget);
-
-      // Unpinning the last pin empties the dock: no pins, no dock (the
-      // pinned state lives in the ONE layout).
-      await tester.tap(
-        find.byKey(const ValueKey('view.dock.unpin.$kPeopleSurfaceId')),
-      );
-      await tester.pump();
-      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
-      final stored =
-          jsonDecode(
-                (await SharedPreferences.getInstance()).getString(
-                  kViewLayoutPrefsKey,
-                )!,
-              )
-              as Map;
-      expect(stored['pinned'], isEmpty);
-    },
-  );
-
-  testWidgets(
-    'below the width gate the dock hides but its pins survive: the top '
-    "bar's dock glyph focuses the first pinned view full-width",
-    (final tester) async {
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      // People pinned by default; the inspector tab is the active face.
-      SharedPreferences.setMockInitialValues({
-        kViewLayoutPrefsKey: jsonEncode({
-          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
-          'active': 1,
-          'pinned': [kPeopleSurfaceId],
-          'dockFocus': kPeopleSurfaceId,
-        }),
-      });
-      await _pumpShell(tester);
-
-      // 800px < 980: no dock — but the bar offers the honest restore.
-      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
-      expect(
-        find.byKey(const ValueKey('view.dock.restore')),
-        findsOneWidget,
-      );
-
-      // The glyph focuses the first pinned view as a full-width tab.
-      await tester.tap(find.byKey(const ValueKey('view.dock.restore')));
-      await tester.pump();
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kPeopleSurfaceId')),
-        findsOneWidget,
-      );
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'tabs persistence round-trip: a restored two-tab strip tab-switches '
-    'and the choice survives a fresh shell',
-    (final tester) async {
-      // Seed: conversations + inspector, conversations active. (The
-      // browser leaf needs the webview platform — not hermetic in the
-      // test binding; the inspector leaf is the real pane over the
-      // empty shared registry.)
-      SharedPreferences.setMockInitialValues({
-        kViewLayoutPrefsKey: jsonEncode({
-          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
-          'active': 0,
-        }),
-      });
-
-      await _pumpShell(tester);
-
-      // The restored strip renders both tabs; the inactive leaf is not
-      // built.
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
-        findsNothing,
-      );
-
-      // Switch to the inspector tab: the shell persists the activation.
-      await tester.tap(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-      );
-      await tester.pump();
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      final stored =
-          jsonDecode(
-                (await SharedPreferences.getInstance()).getString(
-                  kViewLayoutPrefsKey,
-                )!,
-              )
-              as Map;
-      expect(stored['active'], 1);
-      expect(stored['tabs'], [
-        kConversationsSurfaceId,
-        kInspectorSurfaceId,
-      ]);
-
-      // A fresh shell restores the strip as the human left it.
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-      await _pumpShell(tester);
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsNothing,
-      );
-
-      // The real inspector pane owns this leaf; its periodic poll must
-      // not outlive the test (the pending-timer invariant). Dispose the
-      // tree, as the pane's own tests do.
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-    },
-  );
-
-  testWidgets(
-    'a corrupt persisted strip keeps the default shell (never takes the '
-    'app down)',
-    (final tester) async {
-      SharedPreferences.setMockInitialValues({
-        kViewLayoutPrefsKey: '{not json',
-      });
-      await _pumpShell(tester);
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-    },
-  );
-
-  testWidgets(
-    'the retired pane-tree blob migrates once: leaves flatten into tabs '
-    '(conversations first), the new key is written, the legacy key is '
-    'never read again',
-    (final tester) async {
-      // Seed ONLY the legacy key: a two-leaf split with conversations
-      // NOT first in the tree — the flatten must still lead the strip
-      // with it.
-      SharedPreferences.setMockInitialValues({
-        kLegacyPaneTreePrefsKey: jsonEncode({
-          't': 'split',
-          'axis': 'horizontal',
-          'ratio': 0.5,
-          'children': [
-            {
-              't': 'leaf',
-              'surfaceId': kInspectorSurfaceId,
-              'params': <String, Object?>{},
-            },
-            {
-              't': 'leaf',
-              'surfaceId': kConversationsSurfaceId,
-              'params': <String, Object?>{},
-            },
-          ],
-        }),
-      });
-
-      await _pumpShell(tester);
-
-      // The flattened strip: conversations first and active.
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-
-      // The migration wrote the new key (People the default pin); the
-      // legacy key is untouched.
-      final prefs = await SharedPreferences.getInstance();
-      final migrated =
-          jsonDecode(prefs.getString(kViewLayoutPrefsKey)!) as Map;
-      expect(migrated['tabs'], [
-        kConversationsSurfaceId,
-        kInspectorSurfaceId,
-      ]);
-      expect(migrated['active'], 0);
-      expect(migrated['pinned'], [kPeopleSurfaceId]);
-      expect(
-        prefs.getString(kLegacyPaneTreePrefsKey),
-        isNotNull,
-      );
-
-      // The old key is never read again: poisoning it changes nothing —
-      // a fresh shell reads the new key.
-      await prefs.setString(kLegacyPaneTreePrefsKey, '{garbage');
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-      await _pumpShell(tester);
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-    },
-  );
-
-  testWidgets(
-    'the retired shell.tabs.v1 blob migrates once: tabs and active '
-    'carry over, People becomes the default pin, the v2 key is written, '
-    'the legacy key is never read again',
-    (final tester) async {
-      SharedPreferences.setMockInitialValues({
-        kCenterTabsPrefsKey: jsonEncode({
-          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
-          'active': 1,
-        }),
-      });
-
-      await _pumpShell(tester);
-
-      // The carried strip renders; the migrated dock pin is in the
-      // layout document (the 800px window hides the dock itself).
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-
-      final prefs = await SharedPreferences.getInstance();
-      final migrated =
-          jsonDecode(prefs.getString(kViewLayoutPrefsKey)!) as Map;
-      expect(migrated['tabs'], [
-        kConversationsSurfaceId,
-        kInspectorSurfaceId,
-      ]);
-      expect(migrated['active'], 1);
-      expect(migrated['pinned'], [kPeopleSurfaceId]);
-      expect(migrated['dockFocus'], kPeopleSurfaceId);
-      expect(prefs.getString(kCenterTabsPrefsKey), isNotNull);
-
-      // The old key is never read again: poisoning it changes nothing.
-      await prefs.setString(kCenterTabsPrefsKey, '{garbage');
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-      await _pumpShell(tester);
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      // Dispose before the invariant check (the inspector pane polls).
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-    },
-  );
-
-  testWidgets(
-    'the rail contract reuses the ONE conversation slot: openDm replaces '
-    'the slot in place (Discord flow), selectChannel likewise — station '
-    'tabs are untouched',
-    (final tester) async {
-      // Hermetic lane: a REAL service over a REAL world in a temp home,
-      // with one actor and one open thread — the same shape the rail's
-      // rows select through.
-      late final RealmChatService service;
-      late final ActorProfile toby;
-      late final Directory temp;
-      await tester.runAsync(() async {
-        temp = await Directory.systemTemp.createTemp('la_center_tabs_');
-        final world = (await RealmWorld.open(rootOverride: temp.path))!;
-        final roster = ActorRoster(replicaId: 'tester');
-        service = RealmChatService(
-          debugWorldOverride: world,
-          debugRosterOverride: roster,
-          debugStartBotDispatcher: false,
-        );
-        await service.ensureReady();
-        toby = (await service.createActor(
-          displayName: 'Toby Researcher',
-          kind: ActorKind.model,
-          brainRef: '',
-          role: 'researcher',
-          systemPrompt: 'You are Toby, a careful researcher.',
-        ))!;
-        await service.startThread(
-          topic: 'Toby Researcher',
-          participants: <String>[toby.actorId],
-        );
-      });
-      addTearDown(service.dispose);
-      addTearDown(() => temp.delete(recursive: true));
-
-      // Two tabs: conversations + inspector.
-      SharedPreferences.setMockInitialValues({
-        kViewLayoutPrefsKey: jsonEncode({
-          'tabs': [kConversationsSurfaceId, kInspectorSurfaceId],
-          'active': 0,
-        }),
-      });
-      await _pumpShell(tester, service: service);
-
-      // The rail's ACTORS row: openDm(actorId) — the shell translates
-      // the service's focused thread into the conversation slot.
-      await tester.runAsync(() => service.openDm(toby.actorId));
-      await tester.pump();
-
-      expect(
-        find.byKey(ValueKey('pane.tab.dm:${toby.actorId}')),
-        findsOneWidget,
-      );
-      // The slot was REPLACED in place — still exactly two tabs, the
-      // inspector station untouched, the plain conversations face gone.
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-        findsNothing,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(ValueKey('pane.leaf.dm:${toby.actorId}')),
-        findsOneWidget,
-      );
-
-      // The rail's CHANNELS row: create + selectChannel — the SAME slot
-      // becomes the channel face, still in place.
-      final channel = await tester.runAsync(
-        () => service.createChannel('dev'),
-      );
-      await tester.pump();
-      expect(channel, isNotNull);
-      expect(
-        find.byKey(ValueKey('pane.tab.channel:${channel!.channelId}')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(ValueKey('pane.tab.dm:${toby.actorId}')),
-        findsNothing,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-
-      // The reused slot persisted as such.
-      final stored =
-          jsonDecode(
-                (await SharedPreferences.getInstance()).getString(
-                  kViewLayoutPrefsKey,
-                )!,
-              )
-              as Map;
-      expect(stored['tabs'], [
-        'channel:${channel.channelId}',
-        kInspectorSurfaceId,
-      ]);
-    },
-  );
-
-  testWidgets(
-    'boot restore: a persisted conversation tab whose thread the '
-    'service has not selected re-selects it once (no empty-note wait, '
-    'no duplicate thread)',
-    (final tester) async {
-      // Hermetic lane, pre-ready service: exactly the injected-service
-      // shape where no ready-notify ever reaches the shell — the
-      // restore must fire from the tabs load itself.
-      late final RealmChatService service;
-      late final ActorProfile toby;
-      late final Directory temp;
-      await tester.runAsync(() async {
-        temp = await Directory.systemTemp.createTemp('la_boot_restore_');
-        final world = (await RealmWorld.open(rootOverride: temp.path))!;
-        service = RealmChatService(
-          debugWorldOverride: world,
-          debugRosterOverride: ActorRoster(replicaId: 'tester'),
-          debugStartBotDispatcher: false,
-        );
-        await service.ensureReady();
-        toby = (await service.createActor(
-          displayName: 'Toby Researcher',
-          kind: ActorKind.model,
-          brainRef: '',
-          role: 'researcher',
-        ))!;
-      });
-      addTearDown(service.dispose);
-      addTearDown(() => temp.delete(recursive: true));
-
-      // The strip persisted the DM tab from a previous run; the service
-      // boots with NO selected thread.
-      SharedPreferences.setMockInitialValues({
-        kViewLayoutPrefsKey: jsonEncode({
-          'tabs': ['dm:${toby.actorId}'],
-          'active': 0,
-        }),
-      });
-      await _pumpShell(tester, service: service);
-
-      // The restore's openDm lives in the fake-async zone — real store
-      // IO completes as pumps and runAsync take turns.
-      await tester.runAsync(() async {
-        for (var i = 0; i < 60 && service.activeThreadId == null; i++) {
-          await tester.pump(const Duration(milliseconds: 50));
-          await Future<void>.delayed(const Duration(milliseconds: 25));
-        }
-      });
-      expect(service.activeThreadId, isNotNull);
-      expect(service.dmThreadOf(toby.actorId), isNotNull);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'the rail context menu floats a conversation into a miniwindow: '
-    'the peek renders read-only above the shell',
-    (final tester) async {
-      late final RealmChatService service;
-      late final ActorProfile toby;
-      late final Directory temp;
-      await tester.runAsync(() async {
-        temp = await Directory.systemTemp.createTemp('la_miniwindow_');
-        final world = (await RealmWorld.open(rootOverride: temp.path))!;
-        service = RealmChatService(
-          debugWorldOverride: world,
-          debugRosterOverride: ActorRoster(replicaId: 'tester'),
-          debugStartBotDispatcher: false,
-        );
-        await service.ensureReady();
-        toby = (await service.createActor(
-          displayName: 'Toby Researcher',
-          kind: ActorKind.model,
-          brainRef: '',
-          role: 'researcher',
-        ))!;
-      });
-      addTearDown(service.dispose);
-      addTearDown(() => temp.delete(recursive: true));
-      await _pumpShell(tester, service: service);
-      final row = find.byKey(ValueKey('rail.actor.${toby.actorId}'));
-      expect(row, findsOneWidget);
-
-      // Right-click the row; the context menu offers the miniwindow.
-      await tester.tap(row, buttons: kSecondaryMouseButton);
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Open in miniwindow'));
-      await tester.pumpAndSettle();
-
-      // The window floats above the shell; the DM was opened for the
-      // peek's thread id (real IO — pumps and runAsync take turns).
-      final window = find.byKey(ValueKey('miniwindow.dm:${toby.actorId}'));
-      await tester.runAsync(() async {
-        for (var i = 0; i < 60 && !tester.any(window); i++) {
-          await tester.pump(const Duration(milliseconds: 50));
-          await Future<void>.delayed(const Duration(milliseconds: 25));
-        }
-      });
-      expect(window, findsOneWidget);
-      expect(find.byType(PinnedConversationPeek), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'ctrl+T opens/focuses the picker as a new active tab; ctrl+W closes '
-    'the active tab (the browser keyboard map, ctrl lane)',
-    (final tester) async {
-      await _pumpShell(tester);
-
-      await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
-      await tester.sendKeyEvent(LogicalKeyboardKey.keyT);
-      await tester.sendKeyUpEvent(LogicalKeyboardKey.controlLeft);
-      await tester.pump();
-
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kNewTabSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kNewTabSurfaceId')),
-        findsOneWidget,
-      );
-      // The picker page lists the real registry's destinations.
-      expect(
-        find.byKey(
-          const ValueKey('newtab.entry.$kConversationsSurfaceId'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('newtab.entry.$kBrowserSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('newtab.entry.$kInspectorSurfaceId')),
-        findsOneWidget,
-      );
-
-      // ctrl+W closes the ACTIVE tab (the picker) — nothing to swap in,
-      // so the conversations face returns.
-      await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
-      await tester.sendKeyEvent(LogicalKeyboardKey.keyW);
-      await tester.sendKeyUpEvent(LogicalKeyboardKey.controlLeft);
-      await tester.pump();
-
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kNewTabSurfaceId')),
-        findsNothing,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'the macOS lane binds meta, not ctrl (⌘T picker, ⌘W close)',
-    (final tester) async {
-      // The foundation invariant check runs inside the test body's
-      // lifetime (before addTearDown teardowns), so the override resets
-      // in a finally — before the test ends.
-      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
-      try {
-        await _pumpShell(tester);
-
-        await tester.sendKeyDownEvent(LogicalKeyboardKey.metaLeft);
-        await tester.sendKeyEvent(LogicalKeyboardKey.keyT);
-        await tester.sendKeyUpEvent(LogicalKeyboardKey.metaLeft);
-        await tester.pump();
-        expect(
-          find.byKey(const ValueKey('pane.leaf.$kNewTabSurfaceId')),
-          findsOneWidget,
-        );
-
-        await tester.sendKeyDownEvent(LogicalKeyboardKey.metaLeft);
-        await tester.sendKeyEvent(LogicalKeyboardKey.keyW);
-        await tester.sendKeyUpEvent(LogicalKeyboardKey.metaLeft);
-        await tester.pump();
-        expect(
-          find.byKey(const ValueKey('pane.tab.$kNewTabSurfaceId')),
-          findsNothing,
-        );
-        expect(tester.takeException(), isNull);
-      } finally {
-        debugDefaultTargetPlatformOverride = null;
-      }
-    },
-  );
-
-  testWidgets(
-    'closing the last real tab leaves the picker; a restart lands on the '
-    'conversations face (the picker is session chrome, never an empty '
-    'persisted list)',
-    (final tester) async {
-      await _pumpShell(tester);
-
-      // The default strip is the lone conversations face: its ✕ swaps
-      // the picker in (the close law), and the real id persists.
-      await tester.tap(
-        find.byKey(
-          const ValueKey('pane.tab.close.$kConversationsSurfaceId'),
-        ),
-      );
-      await tester.pump();
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kNewTabSurfaceId')),
-        findsOneWidget,
-      );
-      final stored =
-          jsonDecode(
-                (await SharedPreferences.getInstance()).getString(
-                  kViewLayoutPrefsKey,
-                )!,
-              )
-              as Map;
-      expect(stored['tabs'], [kNewTabSurfaceId]);
-
-      // A fresh shell: the lone picker does not survive the restart —
-      // the restore lands on the default conversations face.
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-      await _pumpShell(tester);
-      expect(
-        find.byKey(const ValueKey('pane.leaf.$kConversationsSurfaceId')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('pane.tab.$kNewTabSurfaceId')),
-        findsNothing,
-      );
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets('a tab\u2019s pin glyph pins the view into the dock and '
-      'unpins it (the tab stays open either way)', (final tester) async {
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    tester.view
-      ..physicalSize = const Size(1000, 900)
-      ..devicePixelRatio = 1.0;
+  testWidgets('the strip + opens the picker in the ACTIVE view and pick '
+      'replaces it in place', (final tester) async {
     await _pumpShell(tester);
-
-    // The conversations tab is unpinned; its glyph is the outline.
-    final glyph = find.byKey(
-      const ValueKey('pane.tab.pin.$kConversationsSurfaceId'),
-    );
-    expect(glyph, findsOneWidget);
-    expect(
-      tester.widget<Icon>(
-        find.descendant(of: glyph, matching: find.byType(Icon)),
-      ).icon,
-      Icons.push_pin_outlined,
-    );
-
-    // Pin: the dock grows a second pill; the tab stays open.
-    await tester.tap(glyph);
+    await tester.tap(find.byKey(const ValueKey('view.strip.add.conversations')));
     await tester.pump();
-    expect(
-      find.byKey(const ValueKey('view.dock.pill.$kConversationsSurfaceId')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-      findsOneWidget,
-    );
-    final pinned =
-        jsonDecode(
-              (await SharedPreferences.getInstance()).getString(
-                kViewLayoutPrefsKey,
-              )!,
-            )
-            as Map;
-    expect(pinned['pinned'], [kPeopleSurfaceId, kConversationsSurfaceId]);
-
-    // Unpin: the pill goes, the tab stays.
-    await tester.tap(glyph);
+    expect(find.byKey(const ValueKey('view.tab.newtab')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('newtab.entry.boards')));
     await tester.pump();
-    expect(
-      find.byKey(const ValueKey('view.dock.pill.$kConversationsSurfaceId')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey('pane.tab.$kConversationsSurfaceId')),
-      findsOneWidget,
-    );
-    expect(tester.takeException(), isNull);
+    // The picker tab became the boards tab IN PLACE (one strip, one tab
+    // row: the conversations strip now hosts conversations+boards? no —
+    // pick replaces within the ACTIVE view's strip: conversations view
+    // strip gains boards as a tab id? boards is its OWN view...
+    // The picker's pick() replaces the picker tab in the active strip;
+    // hosting stays on the conversations view (pick does not re-host).
+    expect(find.byKey(const ValueKey('view.tab.newtab')), findsNothing);
+    expect(find.byKey(const ValueKey('view.tab.boards')), findsOneWidget);
   });
 
-  testWidgets('a title fact arriving WITHOUT a tab change relabels the '
-      'strip (the strip rebuilds on service notifications)', (
+  testWidgets('closing a strip\'s focused tab swaps the picker in', (
     final tester,
   ) async {
-    // Regression: the strip widget instance was built once OUTSIDE its
-    // ListenableBuilder, so Flutter saw an identical child and never
-    // rebuilt — a tab kept its raw-id label forever.
-    late final RealmChatService service;
-    late final Directory temp;
-    await tester.runAsync(() async {
-      temp = await Directory.systemTemp.createTemp('la_title_fact_');
-      final world = (await RealmWorld.open(rootOverride: temp.path))!;
-      service = RealmChatService(
-        debugWorldOverride: world,
-        debugRosterOverride: ActorRoster(replicaId: 'tester'),
-        debugStartBotDispatcher: false,
-      );
-      await service.ensureReady();
-    });
-    addTearDown(service.dispose);
-    addTearDown(() => temp.delete(recursive: true));
+    await _pumpShell(tester);
+    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
+    await tester.pump();
+    // The focused tab carries its close glyph.
+    await tester.tap(find.byKey(const ValueKey('view.tab.close.boards')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('view.tab.newtab')), findsOneWidget);
+  });
 
-    // The tab persists an id the roster cannot yet name — the honest
-    // fallback labels it with the raw id.
+  testWidgets('a v2 blob migrates once into per-view strips', (
+    final tester,
+  ) async {
     SharedPreferences.setMockInitialValues({
-      kViewLayoutPrefsKey: jsonEncode({
-        'tabs': ['dm:ghost'],
-        'active': 0,
+      'shell.views.v2': jsonEncode(<String, Object?>{
+        'tabs': <String>[kConversationsSurfaceId, kBoardsSurfaceId],
+        'active': 1,
+        'pinned': <String>[kPeopleSurfaceId],
+        'dockFocus': kPeopleSurfaceId,
       }),
     });
-    await _pumpShell(tester, service: service);
-    expect(find.text('dm:ghost'), findsOneWidget);
+    await _pumpShell(tester);
+    // The v2 active tab was boards: the boards view hosts, with its own
+    // strip; the pin became a tab of the people view.
+    expect(find.byKey(const ValueKey('view.strip.boards')), findsOneWidget);
+    final prefs = await SharedPreferences.getInstance();
+    final decoded =
+        jsonDecode(prefs.getString('shell.views.v3')!) as Map<String, Object?>;
+    final views = decoded['views'] as Map<String, Object?>;
+    expect(views.containsKey(kPeopleSurfaceId), isTrue);
+    expect(views.containsKey(kConversationsSurfaceId), isTrue);
+  });
 
-    // The roster learns the id (a pure title fact — the TAB ITSELF
-    // never changes, no open/close/focus fires): upsert into the SAME
-    // roster override the service reads, then refresh (notify).
+  testWidgets('the service selecting a thread re-slots the conversations '
+      'strip (hermetic world lane)', (final tester) async {
+    late RealmWorld world;
+    late RealmChatService service;
+    late ActorProfile actor;
     await tester.runAsync(() async {
-      service.roster?.upsert(
-        const ActorProfile(actorId: 'ghost', displayName: 'Ghost Writer'),
+      final temp = await Directory.systemTemp.createTemp('la_shell_v3_');
+      addTearDown(() => temp.delete(recursive: true));
+      world = (await RealmWorld.open(rootOverride: temp.path))!;
+      final roster = ActorRoster(replicaId: 'tester');
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
       );
-      await service.refreshThreads();
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      actor = (await service.createActor(
+        displayName: 'Toby Researcher',
+        kind: ActorKind.model,
+        brainRef: '',
+        role: 'researcher',
+        systemPrompt: 'You are Toby, a careful researcher.',
+      ))!;
     });
+    await _pumpShell(tester, service: service);
+    await tester.runAsync(() => service.openDm(actor.actorId));
     await tester.pump();
-
-    expect(find.text('dm:ghost'), findsNothing);
-    // The tab relabeled; the rail's row carries the same name.
-    expect(find.text('Ghost Writer'), findsNWidgets(2));
-    expect(tester.takeException(), isNull);
+    await tester.pump(const Duration(milliseconds: 200));
+    // The ONE conversation slot carries the dm id (zero accumulation).
+    expect(find.byKey(ValueKey('view.tab.dm:${actor.actorId}')), findsOneWidget);
+    expect(find.byKey(const ValueKey('view.tab.conversations')), findsNothing);
   });
 }

@@ -123,21 +123,4 @@ void main() {
     });
   });
 
-  group('pin affordance (WAVE 5)', () {
-    test('every STATIC registry view is pin-able', () {
-      expect(isPinnableSurfaceId(kConversationsSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kBrowserSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kInspectorSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kFilesystemSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kPeopleSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kTerminalSurfaceId), isTrue);
-      expect(isPinnableSurfaceId(kThreadsSurfaceId), isTrue);
-    });
-
-    test('conversation slot ids and the picker carry no pin glyph', () {
-      expect(isPinnableSurfaceId('dm:actor-x'), isFalse);
-      expect(isPinnableSurfaceId('channel:c1'), isFalse);
-      expect(isPinnableSurfaceId(kNewTabSurfaceId), isFalse);
-    });
-  });
-}
+  }

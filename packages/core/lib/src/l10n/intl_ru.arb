@@ -465,5 +465,8 @@
   "boardsAddStepHint": "добавить шаг…",
   "boardsMoveTooltip": "переместить в «{column}»",
   "boardsSettleTooltip": "отметить готовым",
-  "boardsDecomposeTooltip": "добавить шаг"
+  "boardsDecomposeTooltip": "добавить шаг",
+  "unknownSurfaceTitle": "Неизвестная поверхность",
+  "railViews": "Представления",
+  "railViewSwitchTooltip": "Переключить представление"
 }

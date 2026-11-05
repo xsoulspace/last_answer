@@ -1452,4 +1452,13 @@ class SEn extends S {
 
   @override
   String get boardsDecomposeTooltip => 'add a step';
+
+  @override
+  String get unknownSurfaceTitle => 'Unknown surface';
+
+  @override
+  String get railViews => 'Views';
+
+  @override
+  String get railViewSwitchTooltip => 'Switch view';
 }

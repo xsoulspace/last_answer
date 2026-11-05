@@ -127,15 +127,6 @@ bool isConversationSurfaceId(final String surfaceId) =>
     surfaceId.startsWith('dm:') ||
     surfaceId.startsWith('channel:');
 
-/// Whether [surfaceId]'s tab carries the pin affordance: every STATIC
-/// registry view is pin-able. Conversation slot ids (`dm:`/`channel:`)
-/// and the picker are not (the picker is chrome; pinned conversations
-/// arrive later — the model already holds them).
-bool isPinnableSurfaceId(final String surfaceId) =>
-    surfaceId != kNewTabSurfaceId &&
-    !surfaceId.startsWith('dm:') &&
-    !surfaceId.startsWith('channel:');
-
 /// The surface id standing for the service's focused thread, or null
 /// when the thread maps to no rail object (nothing selected, or an
 /// unregistered group thread): the shell keeps the slot's current face

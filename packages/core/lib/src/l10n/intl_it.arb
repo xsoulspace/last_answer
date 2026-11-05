@@ -462,5 +462,8 @@
   "boardsAddStepHint": "aggiungi un passo…",
   "boardsMoveTooltip": "sposta in {column}",
   "boardsSettleTooltip": "segna come fatto",
-  "boardsDecomposeTooltip": "aggiungi un passo"
+  "boardsDecomposeTooltip": "aggiungi un passo",
+  "unknownSurfaceTitle": "Superficie sconosciuta",
+  "railViews": "Viste",
+  "railViewSwitchTooltip": "Cambia vista"
 }

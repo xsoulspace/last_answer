@@ -7,7 +7,9 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/context_column.dart';
+import 'package:lastanswer/shell/shell_layout.dart';
+import 'package:lastanswer/shell/shell_scope.dart';
+import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_people.dart';
 
@@ -323,22 +325,22 @@ void main() {
       });
 
       // The same bridge the shell installs: a header-identity tap
-      // focuses the actor in the people view.
-      final controller = ContextColumnController();
-      addTearDown(controller.dispose);
+      // hosts the people view on the actor (phase 1 scope seam).
       final peopleFocus = PeopleFocus();
       addTearDown(peopleFocus.dispose);
-      controller.onFocusActorIntent = peopleFocus.focus;
       await tester.pumpWidget(
-        ChangeNotifierProvider<ContextColumnController>.value(
-          value: controller,
-          child: ChangeNotifierProvider<RealmChatService>.value(
-            value: service,
-            child: MaterialApp(
-              localizationsDelegates: S.localizationsDelegates,
-              supportedLocales: S.supportedLocales,
-              home: Scaffold(
-                body: Row(
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: service,
+          child: MaterialApp(
+            localizationsDelegates: S.localizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: ViewScope(
+                layout: ShellLayout.defaultLayout(),
+                surfaces: const <String, SurfaceSpec>{},
+                onChanged: (final _) {},
+                onFocusActor: peopleFocus.focus,
+                child: Row(
                   children: [
                     SizedBox(
                       width: ShellTokens.contextColumnWidth,

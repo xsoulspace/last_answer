@@ -1463,4 +1463,13 @@ class SIt extends S {
 
   @override
   String get boardsDecomposeTooltip => 'aggiungi un passo';
+
+  @override
+  String get unknownSurfaceTitle => 'Superficie sconosciuta';
+
+  @override
+  String get railViews => 'Viste';
+
+  @override
+  String get railViewSwitchTooltip => 'Cambia vista';
 }

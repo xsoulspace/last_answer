@@ -5,7 +5,7 @@ import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/context_column.dart';
+import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
 /// ADR 0024 — the world chat surface: the human-facing projection of the
@@ -320,27 +320,27 @@ class _ConversationHeader extends StatelessWidget {
         ? theme.colorScheme.primary
         : actorColor(other!.actorId);
     // The identity IS the entry point to the actor's profile: tapping
-    // the avatar/name focuses the actor in the context panel's PEOPLE
-    // tab (no modal; the panel's back affordance returns). Channels and
+    // the avatar/name hosts the people view on that actor (phase 1:
+    // the dock retired, the shell decides where — a tab). Channels and
     // group topics are not one identity — they stay inert.
-    final controller = context.read<ContextColumnController?>();
+    final onFocusActor = ViewScope.of(context)?.onFocusActor;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 10, 8, 8),
       child: Row(
         children: [
           InkWell(
             key: const ValueKey('worldchat.identity'),
-            onTap: other == null || controller == null
+            onTap: other == null || onFocusActor == null
                 ? null
-                : () => controller.focusActor(other!.actorId),
+                : () => onFocusActor(other!.actorId),
             child: _headerMark(theme),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: InkWell(
-              onTap: other == null || controller == null
+              onTap: other == null || onFocusActor == null
                   ? null
-                  : () => controller.focusActor(other!.actorId),
+                  : () => onFocusActor(other!.actorId),
               child: Text(
                 name,
                 maxLines: 1,
@@ -376,7 +376,6 @@ class _ConversationHeader extends StatelessWidget {
               ),
             ),
           ],
-          const _ContextToggle(),
           IconButton(
             key: const ValueKey('worldchat.close'),
             tooltip: l10n.worldChatCloseTooltip,
@@ -422,34 +421,6 @@ class _ConversationHeader extends StatelessWidget {
     profile.kind.name[0].toUpperCase() + profile.kind.name.substring(1),
     if (profile.role.isNotEmpty) profile.role,
   ].join(' · ');
-}
-
-/// The conversation header's panel-right toggle: shows/hides the
-/// shell's context column. Absent when no shell owns a controller or
-/// the window is too narrow to host the column at all.
-class _ContextToggle extends StatelessWidget {
-  const _ContextToggle();
-
-  @override
-  Widget build(final BuildContext context) {
-    final controller = context.read<ContextColumnController?>();
-    if (controller == null) return const SizedBox.shrink();
-    if (MediaQuery.sizeOf(context).width < kContextColumnMinWindowWidth) {
-      return const SizedBox.shrink();
-    }
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (final context, final _) => IconButton(
-        key: const ValueKey('worldchat.context'),
-        tooltip: controller.visible
-            ? context.l10n.contextHideTooltip
-            : context.l10n.contextShowTooltip,
-        icon: const Icon(Icons.view_sidebar_outlined, size: 20),
-        visualDensity: VisualDensity.compact,
-        onPressed: () => controller.setVisible(value: !controller.visible),
-      ),
-    );
-  }
 }
 
 /// One durable beat: gutter actor label + text on the shared grid.

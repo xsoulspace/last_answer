@@ -1466,4 +1466,13 @@ class SRu extends S {
 
   @override
   String get boardsDecomposeTooltip => 'добавить шаг';
+
+  @override
+  String get unknownSurfaceTitle => 'Неизвестная поверхность';
+
+  @override
+  String get railViews => 'Представления';
+
+  @override
+  String get railViewSwitchTooltip => 'Переключить представление';
 }

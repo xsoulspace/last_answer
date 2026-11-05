@@ -412,3 +412,38 @@ final class ShellLayout {
   String toString() =>
       'ShellLayout(activeView: $activeView, perView: $perView)';
 }
+
+/// Flattens a LEGACY `shell.paneTree.v1` tree (`leaf`/`stack`/`split`
+/// nodes) into its surface ids in document order — the one-time layout
+/// migration reads this instead of keeping the deleted pane-tree model
+/// alive. Unreadable nodes are skipped; the caller decides on an empty
+/// result.
+List<String> legacyPaneTreeSurfaceIds(final Object? json) {
+  final ids = <String>[];
+  void visit(final Object? node) {
+    if (node is! Map) return;
+    final surfaceId = node['surfaceId'];
+    if (surfaceId is String && surfaceId.isNotEmpty) {
+      ids.add(surfaceId);
+      return;
+    }
+    final children = node['children'];
+    if (children is List) {
+      children.forEach(visit);
+    }
+  }
+
+  visit(json);
+  // Conversations is the view's resident: bring it to the front, and
+  // keep one tab per surface id (first occurrence wins).
+  final ordered = <String>[];
+  void keep(final String id) {
+    if (!ordered.contains(id)) ordered.add(id);
+  }
+
+  if (ids.contains(kConversationsSurfaceId)) {
+    keep(kConversationsSurfaceId);
+  }
+  ids.forEach(keep);
+  return ordered;
+}

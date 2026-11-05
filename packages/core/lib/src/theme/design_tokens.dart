@@ -202,7 +202,10 @@ final class LaThemeExtension extends ThemeExtension<LaThemeExtension> {
 }
 
 /// The one shortcut for token reads: `context.la.ink`, `context.la.canvas`.
+/// Falls back to the brightness palette when a bare MaterialApp (tests,
+/// embedded hosts) carries no extension — tokens never crash a surface.
 extension LaThemeOf on BuildContext {
   LaPalette get la =>
-      Theme.of(this).extension<LaThemeExtension>()!.palette;
+      Theme.of(this).extension<LaThemeExtension>()?.palette ??
+      LaPalette.of(Theme.of(this).brightness);
 }

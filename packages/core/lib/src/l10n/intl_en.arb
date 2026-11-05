@@ -606,5 +606,8 @@
   "boardsDecomposeTooltip": "add a step",
   "@boardsDecomposeTooltip": {
     "description": "The decompose toggle tooltip."
-  }
+  },
+  "unknownSurfaceTitle": "Unknown surface",
+  "railViews": "Views",
+  "railViewSwitchTooltip": "Switch view"
 }

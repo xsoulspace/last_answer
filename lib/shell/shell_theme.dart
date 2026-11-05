@@ -10,8 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/common_imports.dart';
 
 abstract final class ShellTokens {
-  /// Rail width (px) — the one fixed column of the shell.
+  /// Rail width (px) — the one fixed column of the shell, expanded.
   static const double railWidth = 272;
+
+  /// Rail width (px) in its compact (icon-only) presentation — the
+  /// half-screen desktop case (phase 1b).
+  static const double railCompactWidth = 56;
+
+  /// Window width (px) at and above which the rail renders expanded;
+  /// below it, compact (the owner's half-screen desktop).
+  static const double railExpandedMinWindow = 1280;
+
+  /// The macOS unified-titlebar gutter the shell reserves above its
+  /// chrome for the traffic lights (phase 0).
+  static const double titlebarGutter = 28;
 
   /// Context column width (px) — the shell's right column
   /// (participants, topic, artifacts).
@@ -95,6 +107,7 @@ class ShellRow extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.height = ShellTokens.rowHeight,
+    this.padding = ShellTokens.rowPadding,
     super.key,
   });
 
@@ -103,6 +116,10 @@ class ShellRow extends StatefulWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final double height;
+
+  /// Horizontal inset inside the row's fill; the compact rail tightens
+  /// it so identity marks fit the icon column (phase 1b).
+  final EdgeInsetsGeometry padding;
 
   @override
   State<ShellRow> createState() => _ShellRowState();
@@ -131,7 +148,7 @@ class _ShellRowState extends State<ShellRow> {
         child: Container(
           height: widget.height,
           margin: const EdgeInsets.symmetric(horizontal: 8),
-          padding: ShellTokens.rowPadding,
+          padding: widget.padding,
           decoration: BoxDecoration(
             color: fill,
             borderRadius: BorderRadius.circular(ShellTokens.radius),

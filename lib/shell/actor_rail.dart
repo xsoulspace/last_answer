@@ -35,6 +35,7 @@ import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/workspaces/workspace.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
@@ -52,12 +53,21 @@ bool railRowIsSelected({
 }) => rowThreadId != null && rowThreadId == activeThreadId;
 
 /// The left pane of the app shell (ADR 0024 §4): identities first.
+/// PHASE 1b — the rail is the activity bar AND the roster: a VIEWS
+/// section on top switches the hosted view (Zed/VSCode anatomy), the
+/// roster below opens conversations inside the Conversations view.
+/// [expanded] false renders the compact icon column (the half-screen
+/// desktop case); the width gate lives in the shell.
 final class ActorRail extends StatefulWidget {
   const ActorRail({
     required this.service,
     required this.onOpenSettings,
     this.onConversationNewTab,
     this.onMiniWindow,
+    this.onOpenView,
+    this.views = const <SurfaceSpec>[],
+    this.activeView = kConversationsSurfaceId,
+    this.expanded = true,
     super.key,
   });
 
@@ -78,6 +88,19 @@ final class ActorRail extends StatefulWidget {
   /// miniwindow" and reports the same surface id to the shell, which
   /// floats a read-only peek window (ADR 0027). Null: no menu.
   final ValueChanged<String>? onMiniWindow;
+
+  /// A VIEWS row tap: the shell hosts that view. Null: the section is
+  /// not interactive (hermetic shells).
+  final ValueChanged<String>? onOpenView;
+
+  /// The view registry slice the VIEWS section lists (ordered).
+  final List<SurfaceSpec> views;
+
+  /// The hosted view — its VIEWS row carries the selected fill.
+  final String activeView;
+
+  /// Expanded (272 px, labels) vs compact (56 px, icons only).
+  final bool expanded;
 
   @override
   State<ActorRail> createState() => _ActorRailState();
@@ -528,6 +551,42 @@ class _ActorRailState extends State<ActorRail> {
         final bots = widget.service.bots;
         final activeThreadId = widget.service.activeThreadId;
         final sections = <Widget>[
+          if (widget.views.isNotEmpty)
+            if (!widget.expanded)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Column(
+                  children: [
+                    for (final spec in widget.views)
+                      _ViewRow(
+                        key: ValueKey('rail.view.${spec.id}'),
+                        spec: spec,
+                        selected: spec.id == widget.activeView,
+                        compact: true,
+                        onTap: widget.onOpenView == null
+                            ? null
+                            : () => widget.onOpenView!(spec.id),
+                      ),
+                  ],
+                ),
+              )
+            else
+              _Section(
+                label: l10n.railViews,
+                child: Column(
+                  children: [
+                    for (final spec in widget.views)
+                      _ViewRow(
+                        key: ValueKey('rail.view.${spec.id}'),
+                        spec: spec,
+                        selected: spec.id == widget.activeView,
+                        onTap: widget.onOpenView == null
+                            ? null
+                            : () => widget.onOpenView!(spec.id),
+                      ),
+                  ],
+                ),
+              ),
           if (actors.isNotEmpty)
             _Section(
               label: l10n.railActors,
@@ -544,7 +603,8 @@ class _ActorRailState extends State<ActorRail> {
                             bots?.statuses[actor.actorId] == 'listening',
                       ),
                       title: actor.displayName,
-                      preview: _actorPreview(actor),
+                      preview: widget.expanded ? _actorPreview(actor) : null,
+                      compact: !widget.expanded,
                       selected: railRowIsSelected(
                         rowThreadId: widget.service.dmThreadOf(actor.actorId),
                         activeThreadId: activeThreadId,
@@ -573,7 +633,10 @@ class _ActorRailState extends State<ActorRail> {
                       key: ValueKey('rail.channel.${channel.channelId}'),
                       lead: _ChannelDisc(channelId: channel.channelId),
                       title: '#${channel.name}',
-                      preview: widget.service.beatPreviews()[channel.threadId],
+                      preview: widget.expanded
+                          ? widget.service.beatPreviews()[channel.threadId]
+                          : null,
+                      compact: !widget.expanded,
                       selected: railRowIsSelected(
                         rowThreadId: channel.threadId,
                         activeThreadId: activeThreadId,
@@ -594,7 +657,7 @@ class _ActorRailState extends State<ActorRail> {
                 ],
               ),
             ),
-          if (rootWorkspaces.isNotEmpty)
+          if (widget.expanded && rootWorkspaces.isNotEmpty)
             _Section(
               label: l10n.railWorkspaces,
               child: Column(
@@ -617,8 +680,9 @@ class _ActorRailState extends State<ActorRail> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+            if (widget.expanded)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
               child: Row(
                 children: [
                   Expanded(
@@ -680,6 +744,7 @@ class _ActorRailState extends State<ActorRail> {
             _HumanRow(
               service: widget.service,
               onOpenSettings: widget.onOpenSettings,
+              compact: !widget.expanded,
             ),
           ],
         );
@@ -732,6 +797,7 @@ class _ConversationRow extends StatelessWidget {
     this.preview,
     this.onNewTab,
     this.onMiniWindow,
+    this.compact = false,
     super.key,
   });
 
@@ -750,6 +816,9 @@ class _ConversationRow extends StatelessWidget {
   /// Right-click offers "open in miniwindow" (ADR 0027) and reports
   /// here. Null: no context menu.
   final VoidCallback? onMiniWindow;
+
+  /// The compact rail: the identity mark alone, centered (phase 1b).
+  final bool compact;
 
   Future<void> _showContextMenu(
     final BuildContext context,
@@ -792,6 +861,9 @@ class _ConversationRow extends StatelessWidget {
             _showContextMenu(context, details.globalPosition),
         child: ShellRow(
           selected: selected,
+          padding: compact
+              ? const EdgeInsets.symmetric(horizontal: 6)
+              : ShellTokens.rowPadding,
           // ⌘+click (⌃+click off-mac) rides the normal tap; the modifier
           // decides what the tap MEANS (new tab vs selection) the moment
           // it lands.
@@ -805,8 +877,14 @@ class _ConversationRow extends StatelessWidget {
                     onTap();
                   }
                 },
-          height: preview == null ? ShellTokens.rowHeight : 46,
-          child: Row(
+          height: compact
+              ? 40
+              : preview == null
+              ? ShellTokens.rowHeight
+              : 46,
+          child: compact
+              ? Center(child: lead)
+              : Row(
             children: [
               lead,
               const SizedBox(width: 8),
@@ -1005,10 +1083,17 @@ class _WorkspaceRowState extends State<_WorkspaceRow> {
 
 /// The rail's bottom row: the human's identity and the settings gear.
 class _HumanRow extends StatelessWidget {
-  const _HumanRow({required this.service, required this.onOpenSettings});
+  const _HumanRow({
+    required this.service,
+    required this.onOpenSettings,
+    this.compact = false,
+  });
 
   final RealmChatService service;
   final VoidCallback onOpenSettings;
+
+  /// The compact rail: avatar + gear, no name (phase 1b).
+  final bool compact;
 
   @override
   Widget build(final BuildContext context) {
@@ -1016,20 +1101,24 @@ class _HumanRow extends StatelessWidget {
     final humanId = service.humanActorId;
     final human = humanId == null ? null : service.roster?.get(humanId);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 6, 4, 6),
+      padding: compact
+          ? const EdgeInsets.fromLTRB(6, 6, 2, 6)
+          : const EdgeInsets.fromLTRB(12, 6, 4, 6),
       child: Row(
         children: [
           if (human != null) ...[
             ActorAvatar(profile: human, size: 28),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                human.displayName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyMedium,
+            if (!compact) ...[
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  human.displayName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium,
+                ),
               ),
-            ),
+            ],
           ] else
             const Spacer(),
           IconButton(
@@ -1037,10 +1126,85 @@ class _HumanRow extends StatelessWidget {
             tooltip: context.l10n.settings,
             icon: const Icon(CupertinoIcons.gear, size: 20),
             visualDensity: VisualDensity.compact,
+            style: compact
+                ? IconButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(24, 24),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  )
+                : null,
             onPressed: onOpenSettings,
           ),
         ],
       ),
     );
   }
+}
+
+/// A VIEWS row (phase 1b): the registry's icon + title, the hosted view
+/// on the selected fill. Compact: the icon alone, centered — the rail's
+/// activity-bar presentation. Semantics: a named button (phase 2's
+/// contract starts here).
+class _ViewRow extends StatelessWidget {
+  const _ViewRow({
+    required this.spec,
+    required this.selected,
+    this.onTap,
+    this.compact = false,
+    super.key,
+  });
+
+  final SurfaceSpec spec;
+  final bool selected;
+  final VoidCallback? onTap;
+  final bool compact;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    label: spec.title,
+    child: ShellRow(
+      selected: selected,
+      onTap: onTap,
+      height: compact ? 40 : ShellTokens.rowHeight,
+      padding: compact
+          ? const EdgeInsets.symmetric(horizontal: 6)
+          : ShellTokens.rowPadding,
+      child: compact
+          ? Center(
+              child: Icon(
+                spec.icon ?? Icons.crop_square,
+                size: 18,
+                color: selected
+                    ? Theme.of(context).colorScheme.onSurface
+                    : context.shellMuted,
+              ),
+            )
+          : Row(
+              children: [
+                Icon(
+                  spec.icon ?? Icons.crop_square,
+                  size: 16,
+                  color: selected
+                      ? Theme.of(context).colorScheme.onSurface
+                      : context.shellMuted,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    spec.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: selected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    ),
+  );
 }

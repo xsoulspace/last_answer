@@ -1,5 +1,10 @@
 # Shared-world connection status — 2026-10-19
 
+> **Dated snapshot, not current status.** Read this as a ledger row: what was
+> observed and proved on 2026-10-19. It is not rewritten as facts change. For
+> today's state use [evidence/current-status.mdx](../evidence/current-status.mdx)
+> and [PLAN.md](../PLAN.md).
+
 **Partial: the six-step collaborative coding journey is not accepted.**
 
 The retained macOS `flutter run --no-pub --no-dds --target lib/main.dart`

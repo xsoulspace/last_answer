@@ -2,6 +2,10 @@
 
 - Status: Accepted (console slice; the full two-device run remains the
   human gate in [multiplayer-device-gates](../product/multiplayer-device-gates.md))
+- Id note (2026-11-05): the `boardId: 'agent_world'` this ADR pins was renamed
+  to `main` by [0028](0028-mesh-task-board-rename-absorption-window.md) through
+  a versioned absorption window. The body below is left as written — it is the
+  record of the 2026-09-26 decision, not a statement of today's board id.
 - Date: 2026-09-26
 - North Star impact: `strengthens` — the shared document/workspace is the
   collaboration surface; the task board is one more durable projection of

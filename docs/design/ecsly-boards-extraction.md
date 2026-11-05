@@ -29,7 +29,7 @@ forbade. The implementation violated its own law.
 
 | | Realm task queue (`ecsly_tasks`) | LA mesh board (`MeshTaskBoard`) |
 |---|---|---|
-| Store | journal `durable_tasks/*` in `$worldHome/coordination/` (machine-local) | CRDT doc `task_boards/agent_world.json` (mesh-converged) |
+| Store | journal `durable_tasks/*` in `$worldHome/coordination/` (machine-local) | CRDT doc `task_boards/main.json` (mesh-converged; legacy `task_boards/agent_world.json` still absorbed + mirrored while the ADR 0028 window stands) |
 | States | `queued, leased, started, succeeded, failed, cancelled, unknown` | `requested, running, completed, failed` |
 | Ids | `task-<sha256(actor|project|requestId)>` | `<docId>#<taskLocalId>`, keys `task/<docId>/<localId>` |
 | Acceptance | **frozen check** graded on retained artifact — never self-declared (ADR 0118 D5) | peer-written verdict map |
@@ -157,8 +157,10 @@ contract change updates the frozen gates.
 - **Stage 4 — grow.** Plans/decomposition schema v2 + product board UI as an
   LA view; decomposition events aligned with `ecsly_context`
   `DecompositionAdded`; goals/plans aligned with harness ADRs 0009/0044.
-  Renames (`agent_world` board id, demo-product "task board" strings) land
-  here, as versioned decisions — not cleanup.
+  Renames land here, as versioned decisions — not cleanup. (The `agent_world`
+  board id already did: ADR 0028 renamed it to `main` on 2026-11-04 through a
+  versioned absorption window. What remains for this stage is the demo-product
+  "task board" strings.)
 
 ## 5. Open decisions
 

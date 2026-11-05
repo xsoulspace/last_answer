@@ -61,7 +61,9 @@ pattern — two `flutter run` processes, two mcp_toolkit channels):
 5. **The mesh task console (PLAN 6.C)**: web dispatches an agent task for
    the shared doc via `mesh_task_dispatch` — a `requested` row on the
    shared CRDT task board (`MeshTaskBoard`, one `WorldSync` replica riding
-   the whole-file exchange as `task_boards/agent_world.json`). After a
+   the whole-file exchange as `task_boards/main.json`; the demo-era
+   `task_boards/agent_world.json` path is still absorbed and mirrored while
+   the ADR 0028 absorption window stands). After a
    sync cycle on both sides the macOS surface (the device with the bound
    workspace + live harness) claims the row (`markRunning`) and auto-runs
    the task through its normal delegate path; the REAL turn outcome is

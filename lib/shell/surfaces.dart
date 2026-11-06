@@ -58,6 +58,8 @@ import 'package:lastanswer/shell/shell_scope.dart';
 
 import 'package:lastanswer/shell/shell_theme.dart';
 
+import 'package:lastanswer/shell/view_documents.dart';
+
 import 'package:lastanswer/shell/view_models.dart';
 
 import 'package:lastanswer/shell/view_people.dart';
@@ -124,6 +126,11 @@ const String kBoardsSurfaceId = 'boards';
 /// the palette editor. Opened from the status edge or the picker; not a
 /// rail view (it is a fact surface, not a workspace).
 const String kModelsSurfaceId = 'models';
+
+/// The Documents view's surface id (phase 3a): the human document
+/// navigation — the registry's grid, opened documents as tabs of this
+/// view (`doc:<id>`).
+const String kDocumentsSurfaceId = 'documents';
 
 /// The settings surface's id (phase 1e): settings-as-view — the shell
 /// grammar has no exceptions, so the rail's gear opens a TAB of the
@@ -193,6 +200,23 @@ String? conversationSurfaceTitle(
     return null;
   }
   return null;
+}
+
+/// Whether [surfaceId] stands for an opened document tab (phase 3a).
+bool isDocumentSurfaceId(final String surfaceId) =>
+    surfaceId.startsWith('doc:');
+
+/// The spec for a `doc:<id>` tab: the registry's projection of the
+/// document through the route page's own doc→surface map, embedded.
+SurfaceSpec? documentSurfaceSpec(final String surfaceId) {
+  if (!isDocumentSurfaceId(surfaceId)) return null;
+  final docId = surfaceId.substring('doc:'.length);
+  return SurfaceSpec(
+    id: surfaceId,
+    title: docId,
+    builder: (final _) => DocumentsTabHost(docId: docId),
+    icon: Icons.description_outlined,
+  );
 }
 
 /// The spec for a conversation surface id (`dm:`/`channel:`): the ONE
@@ -309,6 +333,12 @@ SurfaceRegistry buildShellSurfaces(
       return ModelsView(world: world);
     },
     icon: Icons.tune,
+  ),
+  kDocumentsSurfaceId: SurfaceSpec(
+    id: kDocumentsSurfaceId,
+    title: context.l10n.viewDocumentsTitle,
+    builder: (final tabContext) => const DocumentsView(),
+    icon: Icons.description_outlined,
   ),
   kSettingsSurfaceId: SurfaceSpec(
     id: kSettingsSurfaceId,

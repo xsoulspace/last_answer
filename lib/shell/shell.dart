@@ -12,6 +12,7 @@ export 'shell_scope.dart';
 export 'shell_theme.dart';
 export 'status_edge.dart';
 export 'surfaces.dart';
+export 'view_documents.dart';
 export 'view_models.dart';
 export 'view_people.dart';
 export 'view_tab_strip.dart';

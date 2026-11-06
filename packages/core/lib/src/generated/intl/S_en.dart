@@ -1618,4 +1618,16 @@ class SEn extends S {
 
   @override
   String get commandPaletteActions => 'Actions';
+
+  @override
+  String get viewDocumentsTitle => 'Documents';
+
+  @override
+  String get documentsNewAgentDoc => 'New agent doc';
+
+  @override
+  String get documentsEmpty => 'No documents yet — create the first agent doc';
+
+  @override
+  String get documentsMissing => 'This document is not in the loaded list';
 }

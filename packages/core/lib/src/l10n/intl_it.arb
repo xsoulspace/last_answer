@@ -514,5 +514,9 @@
   "commandPaletteViews": "Viste",
   "commandPalettePeople": "Persone",
   "commandPaletteChannels": "Canali",
-  "commandPaletteActions": "Azioni"
+  "commandPaletteActions": "Azioni",
+  "viewDocumentsTitle": "Documenti",
+  "documentsNewAgentDoc": "Nuovo doc agente",
+  "documentsEmpty": "Nessun documento — crea il primo doc agente",
+  "documentsMissing": "Questo documento non è nell'elenco caricato"
 }

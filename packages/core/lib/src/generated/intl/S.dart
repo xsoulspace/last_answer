@@ -3026,6 +3026,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Actions'**
   String get commandPaletteActions;
+
+  /// The Documents view title.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get viewDocumentsTitle;
+
+  /// The Documents view's creation affordance.
+  ///
+  /// In en, this message translates to:
+  /// **'New agent doc'**
+  String get documentsNewAgentDoc;
+
+  /// The Documents view's empty grid.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet — create the first agent doc'**
+  String get documentsEmpty;
+
+  /// A doc tab whose id the registry page does not carry.
+  ///
+  /// In en, this message translates to:
+  /// **'This document is not in the loaded list'**
+  String get documentsMissing;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

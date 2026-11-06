@@ -1629,4 +1629,16 @@ class SIt extends S {
 
   @override
   String get commandPaletteActions => 'Azioni';
+
+  @override
+  String get viewDocumentsTitle => 'Documenti';
+
+  @override
+  String get documentsNewAgentDoc => 'Nuovo doc agente';
+
+  @override
+  String get documentsEmpty => 'Nessun documento — crea il primo doc agente';
+
+  @override
+  String get documentsMissing => 'Questo documento non è nell\'elenco caricato';
 }

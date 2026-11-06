@@ -1632,4 +1632,17 @@ class SRu extends S {
 
   @override
   String get commandPaletteActions => 'Действия';
+
+  @override
+  String get viewDocumentsTitle => 'Документы';
+
+  @override
+  String get documentsNewAgentDoc => 'Новый агент-док';
+
+  @override
+  String get documentsEmpty =>
+      'Документов пока нет — создайте первый агент-док';
+
+  @override
+  String get documentsMissing => 'Этого документа нет в загруженном списке';
 }

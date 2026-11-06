@@ -707,5 +707,13 @@
   "commandPaletteChannels": "Channels",
   "@commandPaletteChannels": {"description": "Palette group: channels."},
   "commandPaletteActions": "Actions",
-  "@commandPaletteActions": {"description": "Palette group: shell actions."}
+  "@commandPaletteActions": {"description": "Palette group: shell actions."},
+  "viewDocumentsTitle": "Documents",
+  "@viewDocumentsTitle": {"description": "The Documents view title."},
+  "documentsNewAgentDoc": "New agent doc",
+  "@documentsNewAgentDoc": {"description": "The Documents view's creation affordance."},
+  "documentsEmpty": "No documents yet — create the first agent doc",
+  "@documentsEmpty": {"description": "The Documents view's empty grid."},
+  "documentsMissing": "This document is not in the loaded list",
+  "@documentsMissing": {"description": "A doc tab whose id the registry page does not carry."}
 }

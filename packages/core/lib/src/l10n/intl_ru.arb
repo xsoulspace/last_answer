@@ -517,5 +517,9 @@
   "commandPaletteViews": "Виды",
   "commandPalettePeople": "Люди",
   "commandPaletteChannels": "Каналы",
-  "commandPaletteActions": "Действия"
+  "commandPaletteActions": "Действия",
+  "viewDocumentsTitle": "Документы",
+  "documentsNewAgentDoc": "Новый агент-док",
+  "documentsEmpty": "Документов пока нет — создайте первый агент-док",
+  "documentsMissing": "Этого документа нет в загруженном списке"
 }

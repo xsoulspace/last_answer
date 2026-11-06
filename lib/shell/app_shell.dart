@@ -69,6 +69,8 @@ import 'package:lastanswer/shell/surfaces.dart';
 
 import 'package:lastanswer/shell/view_tab_strip.dart';
 
+import 'package:lastanswer/shell/view_documents.dart';
+
 import 'package:lastanswer/shell/view_people.dart';
 
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
@@ -141,6 +143,10 @@ class _AppShellState extends State<AppShell> {
   /// The conversation id the boot restore already handled (once per id,
   /// never retried — see [_restorePersistedConversationTab]).
   String? _bootRestoredId;
+
+  /// The registry's loaded page, captured per build for `doc:<id>` tab
+  /// titles (phase 3a).
+  ProjectsNotifier? _projects;
 
   /// Whether the window currently clears the rail's expanded-width gate
   /// (captured by the build's LayoutBuilder); below it the rail collapses
@@ -669,10 +675,25 @@ class _AppShellState extends State<AppShell> {
 
   static const double _kIdentityMarkSize = 16;
 
+  /// The `doc:<id>` tab's title: the registry's loaded projection of the
+  /// document (phase 3a); an unloaded id keeps its honest raw id.
+  String? _documentTitle(final String id) {
+    final projects = _projects;
+    if (!isDocumentSurfaceId(id)) return null;
+    final docId = id.substring('doc:'.length);
+    final item = projects?.projectsPagedController.items.firstWhereOrNull(
+      (final project) => '${project.id}' == docId,
+    );
+    if (item == null) return null;
+    final title = projectTitleOf(item);
+    return title.isEmpty ? null : title;
+  }
+
   /// The VIEWS section's ordered registry slice (the rail's activity
   /// bar): every static surface except the session picker.
   List<SurfaceSpec> _viewSpecs(final SurfaceRegistry surfaces) => const [
     kConversationsSurfaceId,
+    kDocumentsSurfaceId,
     kBoardsSurfaceId,
     kFilesystemSurfaceId,
     kBrowserSurfaceId,
@@ -691,6 +712,7 @@ class _AppShellState extends State<AppShell> {
         builder: (final tabContext) => const NewTabSurface(),
         icon: Icons.crop_square,
       );
+    _projects = context.read<ProjectsNotifier?>();
     final screenLayout = ScreenLayout.of(context);
     return ChangeNotifierProvider<RealmChatService>.value(
       value: _service,
@@ -866,11 +888,13 @@ class _AppShellState extends State<AppShell> {
           onClose: (final id) =>
               _onLayoutChanged(_layout.closeTab(_layout.activeView, id)),
           onNewTab: _openNewTab,
-          titleFor: (final id) => conversationSurfaceTitle(
-            id,
-            channels: _service.channels,
-            actors: _service.roster?.all ?? const <ActorProfile>[],
-          ),
+          titleFor: (final id) =>
+              conversationSurfaceTitle(
+                id,
+                channels: _service.channels,
+                actors: _service.roster?.all ?? const <ActorProfile>[],
+              ) ??
+              _documentTitle(id),
           leadingFor: _leadingFor,
         ),
       ),
@@ -933,7 +957,8 @@ final class CenterTabsArea extends StatelessWidget {
     // onto its [WorldChatSurface] spec.
     final spec =
         scope.surfaces[activeId] ??
-        conversationSurfaceSpec(activeId, scope.surfaces);
+        conversationSurfaceSpec(activeId, scope.surfaces) ??
+        documentSurfaceSpec(activeId);
     return KeyedSubtree(
       key: ValueKey('pane.leaf.$activeId'),
       child: spec == null

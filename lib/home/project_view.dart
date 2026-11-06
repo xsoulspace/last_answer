@@ -11,10 +11,17 @@ import 'package:lastanswer/settings/views/changelog_view.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class ProjectView extends StatelessWidget {
-  const ProjectView({this.project, super.key});
+  const ProjectView({this.project, this.embedded = false, super.key});
 
   /// An addressed route retains its projection when another page is opened.
   final ProjectModel? project;
+
+  /// Phase 3a — hosted inside a shell view tab (the Documents view):
+  /// the route chrome (app bar, back button, top gutter) belongs to the
+  /// ROUTE presentation; a tab already carries the strip, so the doc's
+  /// surface renders bare. The doc→surface mapping stays single-sourced
+  /// here.
+  final bool embedded;
 
   @override
   Widget build(final BuildContext context) {
@@ -32,22 +39,25 @@ class ProjectView extends StatelessWidget {
     final id = selected.id;
     return selected.map(
       idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
-      note: (final note) => _AdaptiveView(
-        appBar: const _ProjectViewAppBar(),
-        child: NoteView(note: note, key: ValueKey(id)),
+      note: (final note) => _frame(
+        context,
+        const _ProjectViewAppBar(),
+        NoteView(note: note, key: ValueKey(id)),
       ),
-      changelog: (final changelog) => const _AdaptiveView(
-        appBar: _ChangelogViewAppBar(),
-        child: ChangelogView(),
+      changelog: (final changelog) => _frame(
+        context,
+        const _ChangelogViewAppBar(),
+        const ChangelogView(),
       ),
-      doc: (final doc) => _AdaptiveView(
-        appBar: const _ProjectViewAppBar(),
+      doc: (final doc) => _frame(
+        context,
+        const _ProjectViewAppBar(),
         // ADR 0023 — two surfaces: `chat` docs are the world conversation
         // (durable realm threads + bots); `agent` docs stay the harness
         // coding lane. ADR 0010 D2 metadata no longer mints a distinct
         // surface, and the observability panes moved to Settings
         // (world inspector, mesh tasks).
-        child: switch (doc.formatId) {
+        switch (doc.formatId) {
           DocFormatIds.chat => WorldChatSurface(key: ValueKey(id)),
           DocFormatIds.agent => doc.agent?.worldBinding != null
               ? WorldConversationView(
@@ -72,6 +82,14 @@ class ProjectView extends StatelessWidget {
       ),
     );
   }
+
+  Widget _frame(
+    final BuildContext context,
+    final Widget appBar,
+    final Widget child,
+  ) => embedded
+      ? child
+      : _AdaptiveView(appBar: appBar, child: child);
 }
 
 class _AdaptiveView extends StatelessWidget {

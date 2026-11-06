@@ -2955,6 +2955,18 @@ abstract class S {
   /// **'binary stale'**
   String get modelsDaemonStale;
 
+  /// Models header fact: the supervised realm scheduler (delegation claimant) is running.
+  ///
+  /// In en, this message translates to:
+  /// **'scheduler live'**
+  String get modelsSchedulerLive;
+
+  /// Models header fact: no supervised realm scheduler — delegated tasks would sit queued.
+  ///
+  /// In en, this message translates to:
+  /// **'scheduler down'**
+  String get modelsSchedulerDown;
+
   /// Opens the palette JSON editor.
   ///
   /// In en, this message translates to:

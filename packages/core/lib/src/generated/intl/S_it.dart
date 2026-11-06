@@ -1595,6 +1595,12 @@ class SIt extends S {
   String get modelsDaemonStale => 'binario obsoleto';
 
   @override
+  String get modelsSchedulerLive => 'scheduler attivo';
+
+  @override
+  String get modelsSchedulerDown => 'scheduler fermo';
+
+  @override
   String get modelsEditPalette => 'Modifica palette';
 
   @override

@@ -506,6 +506,8 @@
   "modelsDaemonLive": "демон активен",
   "modelsDaemonDown": "демон не запущен",
   "modelsDaemonStale": "бинарник устарел",
+  "modelsSchedulerLive": "планировщик активен",
+  "modelsSchedulerDown": "планировщик не запущен",
   "modelsEditPalette": "Правка палитры",
   "modelsValidate": "Проверить",
   "modelsSave": "Сохранить",

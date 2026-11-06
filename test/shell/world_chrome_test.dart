@@ -10,6 +10,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/landing_inbox.dart';
 import 'package:lastanswer/shell/status_edge.dart';
 import 'package:lastanswer/shell/view_models.dart';
+import 'package:oka_supervisor/oka_supervisor.dart';
 
 import 'hermetic_world_state.dart';
 
@@ -331,6 +332,47 @@ void main() {
       expect(find.byKey(const ValueKey('models.restart')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.edit')), findsOneWidget);
+    });
+
+    testWidgets('the header carries the honest scheduler row in both '
+        'states (G1)', (final tester) async {
+      await mountModels(tester);
+
+      // No supervisor record for this hermetic world home: the row is
+      // honestly DOWN — a delegated task would sit `queued`.
+      expect(find.byKey(const ValueKey('models.scheduler')), findsOneWidget);
+      expect(find.text('scheduler down'), findsOneWidget);
+
+      // A registry record naming a LIVE pid (the test process) flips
+      // the row to live · pid — the same read the arm writes.
+      final registry = MachineRegistry(root: '${temp.path}/oka-registry');
+      registry.upsert(
+        SupervisorRecord(
+          componentId: 'ecsai-scheduler',
+          providerName: 'leased-scheduler',
+          shape: 'service',
+          revisionHash: 'widgettest01',
+          epoch: 1,
+          killPolicy: KillPolicy.spawned,
+          startedAt: DateTime.now().toUtc(),
+          restartCount: 0,
+          windowStartedAt: DateTime.now().toUtc(),
+          trigger: 'none',
+          pid: pid,
+          handle: 'ecsai-scheduler',
+        ),
+        scope: registry.scopeFor(worldHome),
+      );
+      world.debugSupervisorRegistry = registry;
+      await world.refresh();
+      await tester.pump();
+
+      expect(find.byKey(const ValueKey('models.scheduler')), findsOneWidget);
+      expect(find.text('scheduler live · pid $pid'), findsOneWidget);
+      // The arm/stop buttons keep their labels — they arm the WORLD
+      // (both components) now.
+      expect(find.byKey(const ValueKey('models.restart')), findsOneWidget);
+      expect(find.byKey(const ValueKey('models.stop')), findsOneWidget);
     });
 
     testWidgets('a generative rung tap is the session delegation choice', (

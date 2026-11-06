@@ -114,6 +114,10 @@ final class AppShell extends StatefulWidget {
 
   @override
   State<AppShell> createState() => _AppShellState();
+
+  /// Debug-only root for the in-app semantics/element dump tool
+  /// (`debug_semantics_labels`, registered in debug/profile builds).
+  static BuildContext? debugRootContext;
 }
 
 class _AppShellState extends State<AppShell> {
@@ -171,6 +175,10 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    // G6 — the world's discovered palette becomes the chat bots' brain
+    // source, and the daemon's liveness becomes the defer law's input.
+    _service.resolveCastRung = _worldState.castDeclFor;
+    _service.daemonLiveGetter = () => _worldState.daemonLive;
     unawaited(_service.ensureReady());
     _service.addListener(_onServiceChanged);
     // Phase 1d: the world's ambient poll (the doctor/journal/registry
@@ -718,6 +726,7 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(final BuildContext context) {
+    AppShell.debugRootContext = context;
     final surfaces = buildShellSurfaces(context, service: _service)
       ..[kNewTabSurfaceId] = SurfaceSpec(
         id: kNewTabSurfaceId,

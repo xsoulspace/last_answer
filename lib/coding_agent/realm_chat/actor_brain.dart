@@ -21,6 +21,13 @@
 ///   does not have names nothing), while a filesystem path is checked at
 ///   attach time (a missing file is a named generate-time error).
 /// - `openrouter:<model-id>` — a hosted OpenRouter model.
+/// - `cast:<palette-entry-id>` — a rung of the DISCOVERED ecsai palette
+///   (phase G6): the entry's provider transport, endpoint and credential
+///   env name come from the config document, never from here. A builtin
+///   local name (`cast:qwen`) routes to the local engine; an
+///   `openai_compatible` or `openrouter` provider rides the hosted wire
+///   with the palette's base_url. An entry the palette does not declare
+///   resolves to null — the ref names nothing this world serves.
 ///
 /// Local casts are deliberately first-class: small context windows are
 /// the designed-for condition. Their engine lives on ONE persistent
@@ -30,12 +37,14 @@
 library;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 import 'dart:isolate';
 
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
+import 'package:http/http.dart' as http;
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
 
 /// Chat brains are not greedy: the echo evidence pinned pure-argmax decode
@@ -186,9 +195,9 @@ String? resolveLoraAdapterPath(String raw, {String? root}) {
   // Registry id shape guard: no separators, no traversal, not dot-names.
   final id = RegExp(r'^[A-Za-z0-9][A-Za-z0-9._-]*$').firstMatch(value);
   if (id == null || value == '.' || value == '..') return null;
-  final base = Directory(root == null || root.isEmpty
-      ? defaultLoraRoot()
-      : root);
+  final base = Directory(
+    root == null || root.isEmpty ? defaultLoraRoot() : root,
+  );
   final dir = Directory('${base.path}/$value');
   final defaultFile = File('${dir.path}/$_registryAdapterFileName');
   if (defaultFile.existsSync()) return defaultFile.path;
@@ -204,6 +213,74 @@ String? resolveLoraAdapterPath(String raw, {String? root}) {
   return candidates.isEmpty ? null : candidates.first;
 }
 
+/// One palette rung's wire facts, as the Models surface discovered them
+/// (G6): everything a `cast:` brain needs to speak, and nothing more —
+/// the palette document stays the only source of models.
+final class CastBrainDecl {
+  const CastBrainDecl({
+    required this.id,
+    required this.model,
+    required this.transport,
+    this.baseUrl,
+    this.credentialEnv,
+    this.maxOutputTokens,
+    this.reasoningEffort,
+  });
+
+  final String id;
+  final String model;
+
+  /// The palette transport wire name (`openrouter`, `openai_compatible`,
+  /// `system_one`) or `builtin` for the composition root's local lanes.
+  final String transport;
+  final String? baseUrl;
+
+  /// The environment VARIABLE name holding the credential (the palette
+  /// never carries values).
+  final String? credentialEnv;
+  final int? maxOutputTokens;
+  final String? reasoningEffort;
+
+  bool get isBuiltinLocal =>
+      transport == 'builtin' ||
+      const {'qwen', 'lfm', 'apple_foundation_afm', 'laya', 'jev'}.contains(id);
+}
+
+/// Reads a credential the way a GUI-spawned process must: the process
+/// environment first (a terminal-launched app inherits the shell), then
+/// the harness's flat EnvConfig stores (global, then project-local) —
+/// the same precedence chain the harness actor lanes use
+/// (`xsoulspace_inference_core` EnvConfig). Values are never logged.
+String? readInferenceCredential(
+  final String envName, {
+  final String? Function()? resolveHome,
+  final Map<String, String>? environment,
+}) {
+  if (envName.isEmpty) return null;
+  final env = environment ?? Platform.environment;
+  final direct = env[envName];
+  if (direct != null && direct.isNotEmpty) return direct;
+  final home = resolveHome?.call() ?? env['HOME'] ?? env['USERPROFILE'];
+  final candidates = <String>[
+    if (home != null && home.isNotEmpty)
+      '$home/.config/xsoulspace/inference/config.json',
+    '.xsoulspace/config.json',
+  ];
+  for (final path in candidates) {
+    try {
+      final file = File(path);
+      if (!file.existsSync()) continue;
+      final decoded = jsonDecode(file.readAsStringSync());
+      if (decoded is! Map) continue;
+      final value = decoded[envName];
+      if (value is String && value.isNotEmpty) return value;
+    } on Object {
+      // An unreadable store is an absence, never a crash.
+    }
+  }
+  return null;
+}
+
 /// Resolves a brainRef to a live brain, or null when the ref names
 /// nothing this build can run.
 ///
@@ -215,8 +292,31 @@ ActorBrain? resolveBrain(
   String brainRef, {
   required String? Function() resolveOpenRouterApiKey,
   String? loraRoot,
+  CastBrainDecl? Function(String entryId)? resolveCast,
+  String? Function(String envName)? resolveCredential,
 }) {
   final ref = brainRef.trim();
+  if (ref.startsWith('cast:')) {
+    final entryId = ref.substring('cast:'.length).trim();
+    if (entryId.isEmpty) return null;
+    final decl = resolveCast?.call(entryId);
+    if (decl == null) return null; // the palette names no such rung
+    if (decl.isBuiltinLocal) {
+      // A builtin cast IS the local lane: same engine, same law.
+      return resolveBrain(
+        'local:${decl.id}',
+        resolveOpenRouterApiKey: resolveOpenRouterApiKey,
+        loraRoot: loraRoot,
+      );
+    }
+    final credentialEnv = decl.credentialEnv;
+    return PaletteCastBrain(
+      decl: decl,
+      resolveApiKey: () => credentialEnv == null
+          ? null
+          : (resolveCredential ?? readInferenceCredential)(credentialEnv),
+    );
+  }
   final local = parseLocalBrainRef(ref);
   if (local != null) {
     if (!mlxSupported) return null;
@@ -266,6 +366,7 @@ ActorBrain? resolveBrain(
 List<({String ref, String label})> availableBrainOptions({
   required String defaultOpenRouterModel,
   List<CachedQwen3Snapshot> Function()? discoverQwen3Variants,
+  List<CastBrainDecl> paletteRungs = const [],
 }) {
   final variants = discoverQwen3Variants != null
       ? discoverQwen3Variants()
@@ -289,6 +390,10 @@ List<({String ref, String label})> availableBrainOptions({
         label: 'OpenRouter · $defaultOpenRouterModel',
       ),
     ],
+    // The discovered palette's generative rungs (G6): the world is the
+    // source of models; the picker lists what it declares.
+    for (final rung in paletteRungs)
+      (ref: 'cast:${rung.id}', label: 'Palette · ${rung.id}'),
   ];
 }
 
@@ -385,10 +490,7 @@ final class _LocalCastBrain implements ActorBrain {
 }
 
 final class OpenRouterBrain implements ActorBrain {
-  OpenRouterBrain({
-    required this.model,
-    required this._resolveApiKey,
-  });
+  OpenRouterBrain({required this.model, required this._resolveApiKey});
 
   @override
   String get ref => 'openrouter:$model';
@@ -425,6 +527,64 @@ final class OpenRouterBrain implements ActorBrain {
         // temperature. The repetition penalty stays opt-in for hosted
         // models (they handle repetition natively; the echo evidence was
         // a local-cast fact).
+        temperature: defaultChatTemperature,
+        repetitionPenalty: null,
+      ),
+    );
+    return _checkedResult(result);
+  }
+}
+
+/// A palette rung as a conversational brain (G6): the openai-compatible
+/// wire through the same client the OpenRouter lane uses, pointed at the
+/// palette's endpoint. The credential is the palette's env NAME resolved
+/// at generate time (a key rotated or added later takes effect without
+/// re-resolving the brain); its absence is the typed [BrainUnavailable],
+/// never a silent empty key.
+final class PaletteCastBrain implements ActorBrain {
+  PaletteCastBrain({
+    required this.decl,
+    required this.resolveApiKey,
+    this.httpClient,
+  });
+
+  final CastBrainDecl decl;
+  final String? Function() resolveApiKey;
+
+  /// Test seam: the wire client under the OpenAI-compatible lane.
+  final Object? httpClient;
+  OpenRouterInferenceClient? _client;
+
+  @override
+  String get ref => 'cast:${decl.id}';
+
+  @override
+  String get label => 'Palette · ${decl.id}';
+
+  InferenceClient _effectiveClient() {
+    final key = resolveApiKey();
+    if (key == null || key.isEmpty) {
+      throw BrainUnavailable(
+        'cast_credential_absent:${decl.credentialEnv ?? 'unnamed'}',
+      );
+    }
+    return _client ??= OpenRouterInferenceClient(
+      apiKey: key,
+      defaultModel: decl.model,
+      baseUrl: decl.baseUrl ?? 'https://openrouter.ai/api/v1',
+      httpClient: httpClient as http.Client?,
+    );
+  }
+
+  @override
+  Future<String> generate({
+    required String system,
+    required List<BrainTurn> turns,
+  }) async {
+    final result = await _effectiveClient().infer(
+      _renderRequest(
+        system: system,
+        turns: turns,
         temperature: defaultChatTemperature,
         repetitionPenalty: null,
       ),
@@ -752,11 +912,10 @@ final class BrainEngineServer {
 
   /// Resolves (and builds, once) the client for one cast. Building one
   /// drops the cast's attach record: a fresh engine runs the bare base.
-  InferenceClient _clientFor(String cast) =>
-      _clients.putIfAbsent(cast, () {
-        _attachedLora.remove(cast);
-        return _newClient(cast);
-      });
+  InferenceClient _clientFor(String cast) => _clients.putIfAbsent(cast, () {
+    _attachedLora.remove(cast);
+    return _newClient(cast);
+  });
 
   /// THE attach→generate seam: makes (path, scale) the attached adapter
   /// of [cast]'s engine and returns the attachment record. Skips the

@@ -5,11 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/supervised_world.dart';
+import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// Phase 1d — the world's read model: ONE dynamic assembly of the
 /// daemon truth, the DISCOVERED palette (never a hardcoded cast), the
-/// journal projections and the arm seam (leg B G2–G5).
+/// journal projections and the arm seam (leg B G2–G5), plus the G1
+/// scheduler truth: the delegation lane's claimant pump read from the
+/// oka supervisor registry, and the arm refusals that NAME the
+/// component missing its artifact.
 void main() {
   late Directory tempRoot;
   late Directory deviceHome;
@@ -21,6 +26,7 @@ void main() {
     final bool live = true,
     final bool exePresent = false,
     final String exePath = '/nonexistent/ecsai_daemon.exe',
+    final String? root,
   }) => {
     'daemon': <String, Object?>{
       'live': live,
@@ -30,6 +36,7 @@ void main() {
       'binaryStaleVsArtifact': false,
     },
     'artifacts': {
+      'root': root,
       'daemon': {'path': exePath, 'present': exePresent, 'fresh': true},
     },
   };
@@ -222,6 +229,131 @@ void main() {
       expect(service.armError, 'daemon_artifact_absent');
       // The refusal carries the fix hint — never a silent gap.
       expect(service.armFindings.single, contains('AOT daemon'));
+    });
+  });
+
+  group('the scheduler truth + the arm refusals (G1)', () {
+    /// A pid that is dead by the time it is used: a spawned-and-reaped
+    /// `/bin/sh` exit (the pid probe is `kill -0`, so a reaped pid is
+    /// honestly down).
+    Future<int> exitedPid() async {
+      final process = await Process.start('/bin/sh', ['-c', 'exit 0']);
+      await process.exitCode;
+      return process.pid;
+    }
+
+    SupervisorRecord schedulerRecord({required final int? pid}) =>
+        SupervisorRecord(
+          componentId: 'ecsai-scheduler',
+          providerName: 'leased-scheduler',
+          shape: 'service',
+          revisionHash: 'testrevision1',
+          epoch: 1,
+          killPolicy: KillPolicy.spawned,
+          startedAt: DateTime.now().toUtc(),
+          restartCount: 0,
+          windowStartedAt: DateTime.now().toUtc(),
+          trigger: 'none',
+          pid: pid,
+          handle: 'ecsai-scheduler',
+        );
+
+    test('schedulerLive/schedulerPid read the oka registry record', () async {
+      final registry = MachineRegistry(root: '${tempRoot.path}/oka-registry');
+      registry.upsert(
+        schedulerRecord(pid: pid), // the test process: alive
+        scope: registry.scopeFor(worldHome),
+      );
+      final service = buildService()..debugSupervisorRegistry = registry;
+      await service.refresh();
+
+      expect(service.schedulerLive, isTrue);
+      expect(service.schedulerPid, pid);
+
+      // A record naming a DEAD pid reads down — the record is evidence,
+      // the pid probe is the truth.
+      final dead = await exitedPid();
+      registry.upsert(
+        schedulerRecord(pid: dead),
+        scope: registry.scopeFor(worldHome),
+      );
+      await service.refresh();
+      expect(service.schedulerLive, isFalse);
+      expect(service.schedulerPid, dead);
+    });
+
+    test('no record: the scheduler is honestly down, never an error', () async {
+      final service = buildService(
+        doctorOverride: (_) => doctor(root: configRoot),
+      )..debugSupervisorRegistry = MachineRegistry(
+        root: '${tempRoot.path}/oka-empty',
+      );
+      await service.refresh();
+
+      expect(service.schedulerLive, isFalse);
+      expect(service.schedulerPid, isNull);
+      expect(service.harnessRoot, configRoot);
+    });
+
+    test(
+      'the arm refuses by name when the scheduler script is absent',
+      () async {
+      // A fake harness checkout that EXISTS but carries no
+      // pkgs/xsoulspace_agentic_afm/bin/realm_scheduler.dart.
+      final fakeHarness = '${tempRoot.path}/harness-checkout';
+      Directory(fakeHarness).createSync(recursive: true);
+      final service = buildService(
+        doctorOverride: (_) => doctor(
+          exePresent: true,
+          exePath: '$fakeHarness/build/ecsai_daemon.exe',
+          root: fakeHarness,
+        ),
+      );
+      await service.refresh();
+
+      final report = await service.armWorld();
+
+      expect(report['ok'], isFalse);
+      expect(report['bounce'], 'scheduler_entrypoint_absent');
+      // The refusal NAMES the component missing its artifact AND lists
+      // the world's components (the arm is both-or-neither).
+      expect(report['component'], 'ecsai-scheduler');
+      expect(report['components'], ['ecsai-daemon', 'ecsai-scheduler']);
+      expect(service.armState, WorldArmState.error);
+      expect(service.armError, 'scheduler_entrypoint_absent');
+      expect(
+        service.armFindings.single,
+        contains(schedulerEntrypointPath(fakeHarness)),
+      );
+    });
+
+    test('the arm refuses by name when no harness root was resolved', () async {
+      final service = buildService(
+        doctorOverride: (_) => doctor(exePresent: true),
+      );
+      await service.refresh();
+
+      final report = await service.armWorld();
+
+      expect(report['ok'], isFalse);
+      expect(report['bounce'], 'harness_root_unresolved');
+      expect(report['component'], 'ecsai-scheduler');
+      expect(service.armState, WorldArmState.error);
+      expect(service.armError, 'harness_root_unresolved');
+      expect(service.armFindings.single, contains('ECSAID_ROOT'));
+    });
+
+    test('the daemon artifact is still the FIRST refusal', () async {
+      final service = buildService(
+        doctorOverride: (_) => doctor(root: configRoot),
+      );
+      await service.refresh();
+
+      final report = await service.armWorld();
+
+      expect(report['bounce'], 'daemon_artifact_absent');
+      expect(report['component'], 'ecsai-daemon');
+      expect(report['components'], ['ecsai-daemon', 'ecsai-scheduler']);
     });
   });
 

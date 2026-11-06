@@ -1584,6 +1584,12 @@ class SEn extends S {
   String get modelsDaemonStale => 'binary stale';
 
   @override
+  String get modelsSchedulerLive => 'scheduler live';
+
+  @override
+  String get modelsSchedulerDown => 'scheduler down';
+
+  @override
   String get modelsEditPalette => 'Edit palette';
 
   @override

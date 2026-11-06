@@ -120,6 +120,25 @@ final class _DaemonHeader extends StatelessWidget {
                   fontSize: 10,
                 ),
               ),
+              // G1 — the scheduler's honest row: the durable delegation
+              // lane has a claimant pump (live · pid) or it does not
+              // (down — a delegated task would sit `queued`). One fact,
+              // never an invented health.
+              Text(
+                world.schedulerLive
+                    ? world.schedulerPid == null
+                          ? l10n.modelsSchedulerLive
+                          : '${l10n.modelsSchedulerLive} · '
+                                'pid ${world.schedulerPid}'
+                    : l10n.modelsSchedulerDown,
+                key: const ValueKey('models.scheduler'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: world.schedulerLive ? la.inkQuiet : la.caution,
+                  fontSize: 10,
+                ),
+              ),
             ],
           ),
         ),

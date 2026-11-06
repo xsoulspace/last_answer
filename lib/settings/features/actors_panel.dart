@@ -1,4 +1,5 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
@@ -29,9 +30,8 @@ class _ActorsPanelState extends State<ActorsPanel> {
   /// on the deactivated element (it is unsafe there).
   RealmChatService? _resolved;
 
-  RealmChatService get _service =>
-      _resolved ??=
-          context.read<RealmChatService?>() ?? (_owned ??= RealmChatService());
+  RealmChatService get _service => _resolved ??=
+      context.read<RealmChatService?>() ?? (_owned ??= RealmChatService());
 
   @override
   void initState() {
@@ -219,6 +219,9 @@ class _ActorRowState extends State<_ActorRow> {
               child: ActorProfileEditor(
                 profile: actor,
                 brainOptions: availableBrainOptions(
+                  paletteRungs:
+                      context.read<WorldStateService?>()?.generativeDecls ??
+                      const [],
                   defaultOpenRouterModel: widget.defaultOpenRouterModel,
                 ),
                 onCancel: () => setState(() => _editing = false),
@@ -278,6 +281,8 @@ class _CreateActorFormState extends State<_CreateActorForm> {
     final theme = Theme.of(context);
     final options = availableBrainOptions(
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
+      paletteRungs:
+          context.read<WorldStateService?>()?.generativeDecls ?? const [],
     );
     final effective = _brainRef ?? (options.isEmpty ? null : options.first.ref);
     final canCreate = _name.text.trim().isNotEmpty && effective != null;

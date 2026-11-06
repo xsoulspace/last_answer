@@ -29,6 +29,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 
@@ -92,10 +93,8 @@ final class PeopleView extends StatelessWidget {
         }
         return ListenableBuilder(
           listenable: service,
-          builder: (final context, final _) => _PeopleListBody(
-            service: service,
-            onFocus: focus?.focus,
-          ),
+          builder: (final context, final _) =>
+              _PeopleListBody(service: service, onFocus: focus?.focus),
         );
       },
     );
@@ -304,6 +303,9 @@ class _ActorPanelState extends State<_ActorPanel> {
           child: ActorProfileEditor(
             profile: profile,
             brainOptions: availableBrainOptions(
+              paletteRungs:
+                  context.read<WorldStateService?>()?.generativeDecls ??
+                  const [],
               defaultOpenRouterModel: _defaultOpenRouterModel(context),
             ),
             saveKey: const ValueKey('shell.context.actor.save'),
@@ -335,6 +337,8 @@ class _ActorPanelState extends State<_ActorPanel> {
     }
     final options = availableBrainOptions(
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
+      paletteRungs:
+          context.read<WorldStateService?>()?.generativeDecls ?? const [],
     );
     final brainBase = brainRefBase(profile?.brainRef ?? '');
     final knownLabels = options

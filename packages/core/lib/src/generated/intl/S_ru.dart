@@ -1598,6 +1598,12 @@ class SRu extends S {
   String get modelsDaemonStale => 'бинарник устарел';
 
   @override
+  String get modelsSchedulerLive => 'планировщик активен';
+
+  @override
+  String get modelsSchedulerDown => 'планировщик не запущен';
+
+  @override
   String get modelsEditPalette => 'Правка палитры';
 
   @override

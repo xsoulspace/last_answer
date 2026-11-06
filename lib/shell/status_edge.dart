@@ -5,8 +5,9 @@
 /// surface's seed. Every segment is source-honest (the doctor truth,
 /// the discovered palette, the session registry) and clickable into the
 /// surface that owns the fact: backend → Models tab, attention → the
-/// landing inbox, a dead daemon → the ONE-click arm (G2, the previously
-/// unwired `startSupervisedEcsaiDaemon` seam).
+/// landing inbox, a dead daemon → the ONE-click arm (G2 + G1: the arm
+/// converges the WHOLE world — daemon AND realm scheduler — through
+/// the supervised `startSupervisedWorld` seam).
 library;
 
 import 'package:flutter/material.dart';

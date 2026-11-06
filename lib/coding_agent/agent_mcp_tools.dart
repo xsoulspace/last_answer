@@ -1,5 +1,9 @@
+import 'package:flutter/rendering.dart';
+import 'package:flutter/semantics.dart';
+import 'package:flutter/widgets.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/shell/app_shell.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/product_agent_mcp_tools.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';
@@ -27,6 +31,125 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 /// and storage entries.
 Set<AgentCallEntry> agentMcpEntries() => {
   ...productAgentMcpEntries(),
+  // Debug-only tree dump (phase-5 diagnostics): the in-app semantics
+  // tree from the render view's root, one line per node — the oracle
+  // for walker-side drops (the fmtk rail/strip gap).
+  mcpToolkitTool(
+    handler: (final parameters) async {
+      final owner = WidgetsBinding.instance.renderViews.first.owner;
+      final root = owner?.semanticsOwner?.rootSemanticsNode;
+      final nodes = <String>[];
+      if (root != null) {
+        final stack = [root];
+        while (stack.isNotEmpty) {
+          final node = stack.removeLast();
+          final data = node.getSemanticsData();
+          var kids = 0;
+          node.visitChildren((final c) {
+            kids++;
+            return true;
+          });
+          nodes.add(
+            '${node.id}|${data.label.replaceAll('\n', ' / ')}'
+            '|${data.identifier}'
+            '|btn=${data.hasFlag(SemanticsFlag.isButton)}'
+            '|scr=${data.hasAction(SemanticsAction.scrollUp) || data.hasAction(SemanticsAction.scrollDown)}'
+            '|kids=$kids',
+          );
+          node.visitChildren((final child) {
+            stack.add(child);
+            return true;
+          });
+        }
+      }
+      // Per-render-view semantics trees: is the rail in ANOTHER view's
+      // owner? (the walker reads only the implicit/active view)
+      final perView = <String>[];
+      for (final view in WidgetsBinding.instance.renderViews) {
+        final vroot = view.owner?.semanticsOwner?.rootSemanticsNode;
+        var count = 0;
+        var rail = 0;
+        if (vroot != null) {
+          final stack = [vroot];
+          while (stack.isNotEmpty) {
+            final node = stack.removeLast();
+            count++;
+            if (node.label.startsWith('rail.view')) rail++;
+            node.visitChildren((final c) {
+              stack.add(c);
+              return true;
+            });
+          }
+        }
+        perView.add('view#${view.flutterView.viewId}|nodes=$count|rail=$rail');
+      }
+
+      // Element-tree side: are the Semantics ELEMENTS mounted, and do
+      // their render objects own semantics nodes? (debugSemantics is a
+      // debug getter — this tool is debug/profile-only by registration.)
+      final elementFacts = <String>[];
+      final rootContext = AppShell.debugRootContext;
+      if (rootContext != null) {
+        void visitElements(final Element element) {
+          final widget = element.widget;
+          if (widget is Semantics &&
+              (widget.properties.label?.startsWith('rail.view') == true ||
+                  widget.properties.label?.startsWith('view.tab') == true)) {
+            final ro = element.renderObject;
+            final chain = <String>[];
+            var cursor = ro;
+            while (cursor != null && chain.length < 14) {
+              var tag = '';
+              if (cursor is RenderIgnorePointer) {
+                tag = cursor.ignoring ? '!IGNORING' : '!not-ignoring';
+              }
+              chain.add(
+                '${cursor.runtimeType}'
+                '${cursor.debugSemantics != null ? '+NODE' : ''}'
+                '$tag',
+              );
+              cursor = cursor.parent as RenderObject?;
+            }
+            elementFacts.add(
+              '${widget.properties.label}|attached=${ro?.attached}'
+              '|node=${ro?.debugSemantics != null}'
+              '|chain=${chain.join(' < ')}',
+            );
+          }
+          element.visitChildElements(visitElements);
+        }
+
+        try {
+          visitElements(rootContext as Element);
+        } on Object catch (error) {
+          elementFacts.add('walk-error: $error');
+        }
+      } else {
+        elementFacts.add('no-root-context');
+      }
+      return MCPCallResult(
+        message: 'semantics ${nodes.length} nodes',
+        parameters: {
+          'ok': true,
+          'count': nodes.length,
+          'nodes': nodes,
+          'perView': perView,
+          'elementFacts': elementFacts,
+        },
+      );
+    },
+    definition: MCPToolDefinition(
+      name: 'debug_semantics_labels',
+      description:
+          'Debug: dump the in-app semantics tree (id|label|identifier|flags) '
+          'from the render view root — the oracle for walker-side drops.',
+      inputSchema: ObjectSchema.fromMap({
+        'type': 'object',
+        'properties': <String, Object?>{},
+        'additionalProperties': false,
+      }),
+    ),
+  ),
   mcpToolkitTool(
     handler: (parameters) async {
       try {
@@ -40,9 +163,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
             },
           );
         }
-        final result = await handle.meaningAction(
-          parameters['action']!,
-        );
+        final result = await handle.meaningAction(parameters['action']!);
         return MCPCallResult(
           message: '${result['error'] ?? 'Meaning experiment receipt'}',
           parameters: result,
@@ -98,12 +219,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
               '${snapshot.running ? 'RUNNING' : 'idle'}, '
               '${snapshot.turnCount} turn(s), '
               '${snapshot.beats.length} beat(s)$spend'
-              '${snapshot.verdict == null
-                  ? ''
-                  : ', verdict: ${snapshot.verdict}'}'
-              '${snapshot.pendingPermissionTitle == null
-                  ? ''
-                  : ' — the permission prompt '
+              '${snapshot.verdict == null ? '' : ', verdict: ${snapshot.verdict}'}'
+              '${snapshot.pendingPermissionTitle == null ? '' : ' — the permission prompt '
                         '(${snapshot.pendingPermissionTitle}) is awaiting '
                         'an answer'}';
         }
@@ -229,7 +346,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
     },
     definition: MCPToolDefinition(
       name: 'agent_meaning_experiment_create',
-      description: 'Prepare and open the app-owned reversible change experiment.',
+      description:
+          'Prepare and open the app-owned reversible change experiment.',
       inputSchema: ObjectSchema.fromMap(_emptySchema()),
     ),
   ),
@@ -396,20 +514,15 @@ Set<AgentCallEntry> agentMcpEntries() => {
                   'expiresAt': entry.expiresAt.toIso8601String(),
                 },
             ];
-      final endpoint =
-          service.advertisedEndpoint ?? service.connectedEndpoint;
+      final endpoint = service.advertisedEndpoint ?? service.connectedEndpoint;
       return MCPCallResult(
         message:
             'Mesh: ${service.isHosting ? 'HOSTING' : 'joined'}, '
             '${service.isConnected ? 'connected' : 'NOT connected'}'
             '${endpoint == null ? '' : ' via $endpoint'}; '
             '${service.peers.length} peer(s)'
-            '${service.connectError == null
-                ? ''
-                : '; last connect error: ${service.connectError}'}'
-            '${channel == null
-                ? ''
-                : '; ${presence.length} present on $channel'}.',
+            '${service.connectError == null ? '' : '; last connect error: ${service.connectError}'}'
+            '${channel == null ? '' : '; ${presence.length} present on $channel'}.',
         parameters: {
           'ok': true,
           'hosting': service.isHosting,
@@ -494,8 +607,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
       final summary = actors.isEmpty
           ? 'Nobody is live right now.'
           : 'Live actors: '
-              '${actors.map((final a) => a.docId == null ? '${a.displayName} (${a.verb})' : '${a.displayName} (${a.verb} on ${a.docId})').join(', ')}'
-              '.';
+                '${actors.map((final a) => a.docId == null ? '${a.displayName} (${a.verb})' : '${a.displayName} (${a.verb} on ${a.docId})').join(', ')}'
+                '.';
       return MCPCallResult(
         message: summary,
         parameters: {
@@ -638,12 +751,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
         return MCPCallResult(
           message:
               'Paired with ${peer.peerId}'
-              '${service.isConnected
-                  ? ' and connected to its relay'
-                  : ' (relay NOT connected)'}; '
-              'convergence ${synced
-                  ? 'cycle ran'
-                  : 'cycle FAILED — retry with storage_mesh_sync'}.',
+              '${service.isConnected ? ' and connected to its relay' : ' (relay NOT connected)'}; '
+              'convergence ${synced ? 'cycle ran' : 'cycle FAILED — retry with storage_mesh_sync'}.',
           parameters: {
             'ok': true,
             'peerId': peer.peerId,
@@ -677,7 +786,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
         'properties': {
           'pairingCode': {
             'type': 'string',
-            'description': 'The pairing payload as pasted (whitespace '
+            'description':
+                'The pairing payload as pasted (whitespace '
                 'and newlines tolerated).',
           },
         },
@@ -743,8 +853,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
         'properties': {
           'docId': {
             'type': 'string',
-            'description':
-                'Agent doc id (defaults to the open agent doc).',
+            'description': 'Agent doc id (defaults to the open agent doc).',
           },
         },
       }),
@@ -795,8 +904,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
         'properties': {
           'docId': {
             'type': 'string',
-            'description':
-                'Agent doc id (defaults to the open agent doc).',
+            'description': 'Agent doc id (defaults to the open agent doc).',
           },
         },
       }),
@@ -849,7 +957,8 @@ Set<AgentCallEntry> agentMcpEntries() => {
         'properties': {
           'enabled': {
             'type': 'boolean',
-            'description': 'True to announce pending permissions as doc '
+            'description':
+                'True to announce pending permissions as doc '
                 'ops, false to answer locally only.',
           },
         },
@@ -1118,9 +1227,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
         message:
             'Requested task $taskId on board ${board.boardId} '
             '(status requested); the mesh sync cycle ships it to the '
-            'device that owns the doc${synced
-                ? ''
-                : ' — the cycle FAILED, retry with storage_mesh_sync'}.',
+            'device that owns the doc${synced ? '' : ' — the cycle FAILED, retry with storage_mesh_sync'}.',
         parameters: {
           'ok': true,
           'taskId': taskId,
@@ -1272,9 +1379,7 @@ String _docStateMessage(final AgentDocDebugState state) {
             'awaiting an answer; call agent_permission_answer.';
   // PLAN 9 — the queue rides the state output (ADR 0011): headless
   // drivers see the same queue the human sees (DESIGN §5/§8).
-  final openQueue = state.queue
-      .where((final q) => q.status == 'open')
-      .toList();
+  final openQueue = state.queue.where((final q) => q.status == 'open').toList();
   final queueNote = openQueue.isEmpty
       ? ''
       : ', ${openQueue.length} queued message(s) '

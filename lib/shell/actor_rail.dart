@@ -713,11 +713,14 @@ class _ActorRailState extends State<ActorRail> {
                         ),
                       ),
                     )
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: sections,
-                      ),
+                  : ListView(
+                      // Same law as the strip: the SCV's semantics
+                      // subtree never assembles in a live desktop app
+                      // (measured); ListView-backed lists keep their
+                      // nodes, and the rail is the agent's address
+                      // book. (ListView stretches children on the
+                      // cross axis by construction.)
+                      children: sections,
                     ),
             ),
             Divider(height: 1, color: theme.dividerColor),

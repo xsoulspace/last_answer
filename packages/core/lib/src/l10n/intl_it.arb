@@ -503,6 +503,8 @@
   "modelsDaemonLive": "daemon attivo",
   "modelsDaemonDown": "daemon fermo",
   "modelsDaemonStale": "binario obsoleto",
+  "modelsSchedulerLive": "scheduler attivo",
+  "modelsSchedulerDown": "scheduler fermo",
   "modelsEditPalette": "Modifica palette",
   "modelsValidate": "Valida",
   "modelsSave": "Salva",

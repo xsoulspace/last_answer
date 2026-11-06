@@ -46,33 +46,54 @@ void row(final String status, final String step, final String detail) {
   _stepsLog.writeAsStringSync('$line\n', mode: FileMode.append);
 }
 
-/// Calls `ext.mcp.toolkit.<verb>` — the same service extensions the
-/// mcp-toolkit server routes to — and returns the app's `parameters`
-/// map (the multiplayer gate's proven helper).
-Future<Map<String, Object?>> _verb(
-  final VmClient vm,
-  final String verb, [
-  final Map<String, Object?> args = const <String, Object?>{},
-]) async {
-  final response = await vm.callExtension('ext.mcp.toolkit.$verb', args: args);
-  final parameters = response['parameters'];
-  if (parameters is Map) {
-    return parameters.cast<String, Object?>();
-  }
-  return response;
+/// The VM service URI in the ws form the toolkit CLI selects on
+/// (BinaryAppTarget announces the http form; the ws upgrade path is
+/// `<token>/ws` — the same conversion the interactive recipe uses).
+String _wsUri(final String uri) {
+  var out = uri;
+  if (out.startsWith('http://')) out = 'ws://${out.substring(7)}';
+  if (!out.endsWith('/ws'))
+    out = '${out.endsWith('/') ? out.substring(0, out.length - 1) : out}/ws';
+  return out;
 }
 
-Future<Map<String, Object?>> _verbSafe(
-  final VmClient vm,
+/// One verb over the fmtk CLI: a SHORT-LIVED connection per call, the
+/// proven lane (a held VM client plus a second concurrent one is
+/// refused by the service — reset/closed-before-header, measured
+/// twice; sequential CLI calls never contend). Returns the envelope's
+/// `data` map; a failed call answers empty so polls keep polling.
+Future<Map<String, Object?>> _verb(
+  final String vmUri,
   final String verb, [
   final Map<String, Object?> args = const <String, Object?>{},
 ]) async {
+  final result = await Process.run('fmtk', [
+    '--state-file',
+    '$_gateStateFile',
+    '--vm-service-uri',
+    vmUri,
+    '--flutter-device',
+    'macos',
+    '--flutter-project-dir',
+    _projectDir,
+    'exec',
+    '--name',
+    verb,
+    '--args',
+    jsonEncode(args),
+  ]);
+  if (result.exitCode != 0) return const <String, Object?>{};
   try {
-    return await _verb(vm, verb, args);
+    final envelope = jsonDecode('${result.stdout}') as Map<String, Object?>;
+    if (envelope['ok'] != true) return const <String, Object?>{};
+    final data = envelope['data'];
+    return data is Map ? data.cast<String, Object?>() : const {};
   } on Object {
     return const <String, Object?>{};
   }
 }
+
+final String _gateStateFile = '${_evidenceDir.path}/fmtk_state.json';
 
 /// Poll until [probe] returns non-null; a transient VM hiccup must not
 /// abort the run.
@@ -92,9 +113,9 @@ Future<T> _poll<T>(
 
 /// One semantic snapshot as (snapshotId, labels+hints blob, node list).
 Future<(int, String, List<Map<String, Object?>>)> _snapshot(
-  final VmClient vm,
+  final String vmUri,
 ) async {
-  final out = await _verb(vm, 'semantic_snapshot');
+  final out = await _verb(vmUri, 'semantic_snapshot');
   final nodes = (out['nodes'] as List? ?? const [])
       .cast<Map<String, Object?>>()
       .toList();
@@ -130,68 +151,29 @@ Future<void> _screenshot(
   final String name,
   final String dir,
 ) async {
-  // First try the in-app verb over the gate's OWN connection (the VM
-  // service rejects a second concurrent client — measured): the
-  // envelope nests the base64 list under `data.images`.
-  try {
-    final vm = await VmClient.connect(Uri.parse(vmUri));
-    try {
-      final envelope = await _verbSafe(vm, 'get_screenshots', {
-        'mode': 'flutter_layer',
-      });
-      final data = envelope['data'];
-      final images =
-          (data is Map ? data['images'] : null) as List? ??
-          envelope['images'] as List?;
-      final b64 = images?.whereType<String>().firstOrNull;
-      if (b64 != null && b64.isNotEmpty) {
-        final target = File('$dir/$name.png')
-          ..writeAsBytesSync(base64Decode(b64));
-        row('PASS', 'screenshot-$name', target.path);
-        return;
-      }
-    } finally {
-      await vm.dispose();
-    }
-  } on Object {
-    // Fall through to the CLI lane.
-  }
-  ProcessResult? result;
-  for (var attempt = 0; attempt < 3; attempt++) {
-    result = await Process.run('fmtk', [
-      '--state-file',
-      '$dir/fmtk_state.json',
-      '--vm-service-uri',
-      vmUri,
-      '--flutter-device',
-      'macos',
-      '--flutter-project-dir',
-      _projectDir,
-      '--save-images',
-      '--output-dir',
-      dir,
-      'exec',
-      '--name',
-      'get_screenshots',
-      '--args',
-      jsonEncode({'mode': 'flutter_layer'}),
-    ]);
-    final captured = Directory(dir)
-        .listSync()
-        .whereType<File>()
-        .where((final f) => f.path.endsWith('.png'))
-        .any(
-          (final f) => f.lastModifiedSync().isAfter(
-            DateTime.now().subtract(const Duration(seconds: 10)),
-          ),
-        );
-    if (captured) break;
-    await Future<void>.delayed(const Duration(seconds: 3));
-  }
+  final result = await Process.run('fmtk', [
+    '--state-file',
+    _gateStateFile,
+    '--vm-service-uri',
+    vmUri,
+    '--flutter-device',
+    'macos',
+    '--flutter-project-dir',
+    _projectDir,
+    '--save-images',
+    '--output-dir',
+    dir,
+    'exec',
+    '--name',
+    'get_screenshots',
+    '--args',
+    jsonEncode({'mode': 'flutter_layer'}),
+  ]);
   final target = File('$dir/$name.png');
-  // Adopt the newest png the CLI wrote into the evidence dir.
+  // Adopt the newest png the CLI saved (it nests them under
+  // .mcp_screenshots/ inside the output dir — hence recursive).
   final newest = Directory(dir)
-      .listSync()
+      .listSync(recursive: true)
       .whereType<File>()
       .where((final f) => f.path.endsWith('.png'))
       .fold<File?>(
@@ -202,7 +184,7 @@ Future<void> _screenshot(
             : a,
       );
   if (newest == null) {
-    row('WARN', 'screenshot-$name', '${result?.stderr}'.trim());
+    row('WARN', 'screenshot-$name', '${result.stderr}'.trim());
     return;
   }
   newest.copySync(target.path);
@@ -213,23 +195,25 @@ Future<void> _screenshot(
 /// by ref, and Enter-runs the single match. Typed navigation is
 /// deterministic where arrow-index navigation is not (the people and
 /// channels groups shift indices once the roster loads).
-Future<void> _paletteTo(final VmClient vm, final String query) async {
+Future<void> _paletteTo(final String vmUri, final String query) async {
   await _poll('palette opens for $query', () async {
-    await _verbSafe(vm, 'press_key', {'key': 'k', 'meta': true});
-    final snap = await _snapshot(vm);
+    await _verb(vmUri, 'press_key', {'key': 'k', 'meta': true});
+    final snap = await _snapshot(vmUri);
     return snap.$2.contains('palette.query') ? snap : null;
   }, attempts: 60);
-  final (sid, _, nodes) = await _snapshot(vm);
-  final fieldRef = _refFor(nodes, 'palette.query');
-  if (fieldRef == null) {
-    throw StateError('palette.query has no ref in snapshot $sid');
-  }
-  await _verb(vm, 'enter_text', {
+  // A transient empty snapshot (CLI hiccup) must not kill the flow:
+  // poll until one carries the field's ref.
+  final (sid, _, nodes) = await _poll('palette field ref', () async {
+    final snap = await _snapshot(vmUri);
+    return _refFor(snap.$3, 'palette.query') != null ? snap : null;
+  }, attempts: 20);
+  final fieldRef = _refFor(nodes, 'palette.query')!;
+  await _verb(vmUri, 'enter_text', {
     'ref': fieldRef,
     'text': query,
     'snapshotId': sid,
   });
-  await _verb(vm, 'press_key', {'key': 'Enter'});
+  await _verb(vmUri, 'press_key', {'key': 'Enter'});
 }
 
 Future<void> main(final List<String> args) async {
@@ -263,16 +247,18 @@ Future<void> main(final List<String> args) async {
               vmServiceTimeout: const Duration(minutes: 10),
             ).launch(build: !skipBuild);
             app = launched;
-            context.bag['vm'] = await VmClient.connect(launched.vmUri);
-            context.bag['vmUri'] = '${launched.vmUri}';
+            // No held VM client: every verb rides a short-lived CLI
+            // connection (the VM service refuses a second concurrent
+            // client — measured), so the capture lane never contends.
+            context.bag['vmUri'] = _wsUri('${launched.vmUri}');
             row('PASS', 'launch-shell', 'vm=${launched.vmUri}');
           },
         ),
         (
           'keyboard-to-conversations',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
             // The layout persists across launches (Safari-law tabs),
             // so the gate NEVER assumes the landing view: it drives
             // itself to Conversations through the palette — the Views
@@ -284,7 +270,7 @@ Future<void> main(final List<String> args) async {
             // their parameters map (no `ok` envelope key there), so a
             // non-empty answer IS the liveness proof.
             await _poll('toolkit verbs live', () async {
-              final out = await _verbSafe(vm, 'press_key', {
+              final out = await _verb(vmUri, 'press_key', {
                 'key': 'k',
                 'meta': true,
               });
@@ -293,7 +279,7 @@ Future<void> main(final List<String> args) async {
             // Typed navigation: deterministic where arrow-index navigation
             // is not (the people/channels groups shift indices once the
             // roster loads).
-            await _paletteTo(vm, 'conversations');
+            await _paletteTo(vmUri, 'conversations');
             // Oracle = the Conversations view's CONTENT (a persisted
             // tab may host a thread, so the composer counts too): the
             // fmtk walker drops the rail+strip regions on live apps
@@ -301,7 +287,7 @@ Future<void> main(final List<String> args) async {
             // content, and the widget-level §2.3 gate carries the
             // rail/strip key contract.
             await _poll('conversations hosts', () async {
-              final snap = await _snapshot(vm);
+              final snap = await _snapshot(vmUri);
               const conversationMarks = [
                 'inbox.',
                 'Running tasks',
@@ -312,10 +298,16 @@ Future<void> main(final List<String> args) async {
               ];
               return conversationMarks.any(snap.$2.contains) ? snap : null;
             }, attempts: 240);
+            // The rail/strip keys are NOT live-assertable today: a
+            // Flutter framework semantics-assembly gap drops those
+            // subtrees in live desktop apps (mounted elements, attached
+            // render objects, `debugSemantics` null after a forced full
+            // re-assembly, single render view, no cutter in the chain;
+            // the widget-level §2.3 gate carries the contract).
             row(
               'SKIP',
-              'rail-strip-snapshot',
-              'fmtk walker drops rail+strip live; widget gate owns §2.3',
+              'rail-strip-semantics',
+              'framework assembly gap live; widget gate owns §2.3 keys',
             );
             row('PASS', 'keyboard-to-conversations', 'palette-driven nav');
           },
@@ -323,14 +315,14 @@ Future<void> main(final List<String> args) async {
         (
           'landing-inbox-deterministic',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
             // The persisted layout may leave a thread tab focused: the
             // palette's "Landing inbox" action is the deterministic
             // route to the void-state inbox (clears the selection).
-            await _paletteTo(vm, 'landing');
+            await _paletteTo(vmUri, 'landing');
             await _poll('landing inbox hosts', () async {
-              final snap = await _snapshot(vm);
+              final snap = await _snapshot(vmUri);
               const inboxMarks = [
                 'inbox.',
                 'Running tasks',
@@ -346,8 +338,8 @@ Future<void> main(final List<String> args) async {
         (
           'edge-and-inbox-oracle',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
             // The realm service needs real boot time (journal open,
             // identity heal) before the inbox replaces the void: budget
             // 60s, the cold-start figure measured on this machine.
@@ -366,9 +358,9 @@ Future<void> main(final List<String> args) async {
             var lastBlob = '';
             final (_, blob, nodes) =
                 await _poll('edge + inbox oracle', () async {
-                  final snap = await _verbSafe(vm, 'semantic_snapshot');
+                  final snap = await _verb(vmUri, 'semantic_snapshot');
                   if ((snap['nodes'] as List? ?? const []).isEmpty) return null;
-                  final full = await _snapshot(vm);
+                  final full = await _snapshot(vmUri);
                   lastBlob = full.$2;
                   final edgeOk = const [
                     'edge.world',
@@ -394,12 +386,12 @@ Future<void> main(final List<String> args) async {
         (
           'palette-threads-flow',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
-            await _paletteTo(vm, 'threads');
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
+            await _paletteTo(vmUri, 'threads');
             row('PASS', 'palette-open', 'typed palette flow');
             final (_, after, _) = await _poll('threads view hosts', () async {
-              final snap = await _snapshot(vm);
+              final snap = await _snapshot(vmUri);
               return snap.$2.contains('World threads') ||
                       snap.$2.contains('threads.empty')
                   ? snap
@@ -414,11 +406,11 @@ Future<void> main(final List<String> args) async {
         (
           'palette-typed-documents-flow',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
-            await _paletteTo(vm, 'documents');
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
+            await _paletteTo(vmUri, 'documents');
             await _poll('documents view hosts', () async {
-              final snap = await _snapshot(vm);
+              final snap = await _snapshot(vmUri);
               // The Documents view's grammar: its grid (new/empty marks)
               // OR a persisted `doc:` tab hosting the document through
               // the embedded map (the agent doc's SETUP rule) — both
@@ -435,8 +427,8 @@ Future<void> main(final List<String> args) async {
         (
           'arm-honesty',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
-            context.bag['vm'] = vm;
+            final vmUri = context.take<String>('vmUri');
+            context.bag['vmUri'] = vmUri;
             final nodes = context.take<List<Map<String, Object?>>>('nodes');
             final armRef = _refFor(nodes, 'edge.arm');
             if (armRef == null) {
@@ -447,10 +439,13 @@ Future<void> main(final List<String> args) async {
               );
               return;
             }
-            final (sid, _, _) = await _snapshot(vm);
-            await _verb(vm, 'tap_widget', {'ref': armRef, 'snapshotId': sid});
+            final (sid, _, _) = await _snapshot(vmUri);
+            await _verb(vmUri, 'tap_widget', {
+              'ref': armRef,
+              'snapshotId': sid,
+            });
             await _poll('arm answers honestly', () async {
-              final snap = await _snapshot(vm);
+              final snap = await _snapshot(vmUri);
               const honest = ['arm failed', 'world arming', 'world live'];
               return honest.any(snap.$2.contains) ? snap : null;
             });
@@ -460,33 +455,11 @@ Future<void> main(final List<String> args) async {
         (
           'evidence-screens',
           (final context) async {
-            final vm = context.take<VmClient>('vm');
             final vmUri = context.take<String>('vmUri');
-            // The capture rides the gate's OWN live VM connection: the
-            // app's service refuses a second concurrent client and a
-            // post-dispose reconnect (measured twice).
-            final raw = await _verbSafe(vm, 'get_screenshots', {
-              'mode': 'flutter_layer',
-            });
-            row('INFO', 'screenshot-envelope', raw.keys.join(','));
-            final data = raw['data'];
-            final images =
-                (data is Map ? data['images'] : null) as List? ??
-                raw['images'] as List?;
-            final b64 = images?.whereType<String>().firstOrNull;
-            if (b64 == null || b64.isEmpty) {
-              row('WARN', 'screenshot-shell_gate_final', 'no image bytes');
-            } else {
-              final target = File('${_evidenceDir.path}/shell_gate_final.png')
-                ..writeAsBytesSync(base64Decode(b64));
-              row('PASS', 'screenshot-shell_gate_final', target.path);
-            }
-            await vm.dispose();
-            await _screenshot(
-              vmUri,
-              'shell_gate_cli_fallback',
-              _evidenceDir.path,
-            );
+            context.bag['vmUri'] = vmUri;
+            // The CLI capture lane: short-lived connection, server-side
+            // save — the same path the interactive loop uses.
+            await _screenshot(vmUri, 'shell_gate_final', _evidenceDir.path);
             row('PASS', 'evidence-screens', _evidenceDir.path);
           },
         ),

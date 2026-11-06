@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
@@ -86,6 +87,59 @@ final class RealmChatService extends ChangeNotifier {
       const <String, BotNarration>{};
 
   String? get humanActorId => _human?.actor;
+
+  // ---- G6 seams (the shell wires these from WorldStateService) ----
+
+  /// The discovered palette's rung facts for a `cast:` brainRef.
+  CastBrainDecl? Function(String entryId)? resolveCastRung;
+
+  /// Whether the harness daemon's actor loops are armed right now.
+  bool Function()? daemonLiveGetter;
+
+  /// Credential resolution by env NAME (palette rungs).
+  String? Function(String envName)? resolveCredential;
+
+  /// actorId → the durable realm row's `brainCast` (the daemon's binding
+  /// vocabulary, written by `actor_bind`): the defer law's second half.
+  final Map<String, String> _realmBrainCasts = {};
+
+  /// G6 — the defer-to-daemon predicate: a live daemon owns the actors
+  /// bound in its own vocabulary (`cast:` brainRefs and durable
+  /// `brainCast` rows); the in-app host stays out of their threads.
+  bool daemonOwnsActor(final ActorProfile actor) {
+    if (daemonLiveGetter?.call() != true) return false;
+    if (actor.brainRef.trim().startsWith('cast:')) return true;
+    final cast = _realmBrainCasts[actor.actorId];
+    return cast != null && cast.isNotEmpty;
+  }
+
+  /// Re-reads the durable `brainCast` bindings (the daemon may bind an
+  /// actor between app wakes; the defer law must see it).
+  Future<void> refreshBrainCasts() async {
+    final world = _world;
+    if (world == null) return;
+    try {
+      final records = await world.store.scan('realm_actors');
+      _realmBrainCasts
+        ..clear()
+        ..addEntries(
+          records.values
+              .where(
+                (final record) =>
+                    record['brainCast'] is String &&
+                    (record['brainCast']! as String).isNotEmpty,
+              )
+              .map(
+                (final record) => MapEntry(
+                  '${record['actorId']}',
+                  record['brainCast']! as String,
+                ),
+              ),
+        );
+    } on Object {
+      // An unreadable row keeps the previous binding view.
+    }
+  }
 
   /// Thread projections from `thread.list` (newest activity first).
   List<Map<String, Object?>> get threads => List.unmodifiable(_threads);
@@ -235,6 +289,11 @@ final class RealmChatService extends ChangeNotifier {
         world: world,
         humanActorId: humanId,
         resolveOpenRouterApiKey: () => _openRouterApiKey,
+        resolveCast: (final entryId) => resolveCastRung?.call(entryId),
+        resolveCredential: (final envName) =>
+            resolveCredential?.call(envName) ??
+            readInferenceCredential(envName),
+        daemonOwnsActor: daemonOwnsActor,
         debugStartDispatcher: _debugStartBotDispatcher,
         onChanged: notifyListeners,
         onWake: (_) {
@@ -255,6 +314,7 @@ final class RealmChatService extends ChangeNotifier {
         // Heal is best-effort; the registry still lists.
       }
       await _refreshChannels();
+      await refreshBrainCasts();
       await refreshThreads();
       _ready = true;
     } on Object catch (error) {
@@ -375,6 +435,7 @@ final class RealmChatService extends ChangeNotifier {
     final world = _world;
     final human = _human;
     if (world == null || human == null) return;
+    unawaited(refreshBrainCasts());
     try {
       final listing = await world.conversation().list(actor: human);
       _threads

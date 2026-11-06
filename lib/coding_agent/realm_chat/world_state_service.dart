@@ -16,9 +16,11 @@
 ///
 /// Process telemetry + read-only journal projections, never world
 /// authority: every absence degrades to a named quiet state, and the
-/// one WRITE this service performs is the supervised daemon converge
-/// (the already-built, previously unwired `startSupervisedEcsaiDaemon`
-/// seam — G2's one-click arm) and the validated palette-config save.
+/// one WRITE this service performs is the supervised WORLD converge —
+/// daemon AND realm scheduler in one oka pass (leg B G1: the scheduler
+/// is the durable delegation lane's claimant pump; without it a `task
+/// op:create` sits `queued` forever) — plus the validated palette-config
+/// save.
 library;
 
 import 'dart:async';
@@ -27,6 +29,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/supervised_world.dart';
@@ -229,6 +232,7 @@ final class WorldStateService extends ChangeNotifier {
   String? _daemonExePath;
   bool _daemonExePresent = false;
   String? _worldHome;
+  String? _harnessRoot;
 
   bool get daemonLive => _daemonLive;
   int? get daemonPid => _daemonPid;
@@ -243,6 +247,35 @@ final class WorldStateService extends ChangeNotifier {
   /// The realm world home the daemon serves (`~/.xsoulspace/worlds/local`
   /// shape); null until the first refresh resolved it.
   String? get worldHome => _worldHome ?? debugWorldHome;
+
+  /// The harness checkout root the doctor resolved (`artifacts.root`,
+  /// the `ECSAID_ROOT` / walk-up law) — the scheduler entrypoint's
+  /// discovery base; null when unresolved (the arm then refuses by
+  /// name).
+  String? get harnessRoot => _harnessRoot;
+
+  // ---- scheduler (the delegation lane's claimant pump, G1) ----
+
+  bool _schedulerLive = false;
+  int? _schedulerPid;
+
+  /// Whether the supervised scheduler's oka registry record names a LIVE
+  /// pid — the honest claimant fact for the durable delegation lane
+  /// (false: a `task op:create` will sit `queued` until the world is
+  /// armed). The scheduler has no pointer file; the record + pid probe
+  /// IS the truth.
+  bool get schedulerLive => _schedulerLive;
+
+  /// The scheduler's recorded pid, null when down or unknown.
+  int? get schedulerPid => _schedulerPid;
+
+  /// Test seam: replaces the machine's oka supervisor registry for the
+  /// scheduler record read (tests never touch the real `~/.oka`); the
+  /// value is the io adapter's `MachineRegistry` (typed `Object?` here
+  /// so this file stays free of the `dart:io`-only oka import — the
+  /// conditional-import law).
+  @visibleForTesting
+  Object? debugSupervisorRegistry;
 
   // ---- arm state (G2) ----
 
@@ -306,6 +339,40 @@ final class WorldStateService extends ChangeNotifier {
     }
     return null;
   }
+
+  /// G6 — the wire facts of one palette rung, for the `cast:` brainRef
+  /// grammar (actor_brain): the declaration's provider transport,
+  /// endpoint and credential env NAME, exactly as the config document
+  /// declares them. Null when the palette names no such entry.
+  CastBrainDecl? castDeclFor(final String entryId) {
+    final config = _palette;
+    if (config == null) return null;
+    final entry = config.entry(entryId);
+    if (entry == null) return null;
+    if (entry.builtin) {
+      return CastBrainDecl(id: entryId, model: entryId, transport: 'builtin');
+    }
+    final provider = entry.provider == null
+        ? null
+        : config.provider(entry.provider!);
+    final model = entry.model == null ? null : provider?.model(entry.model!);
+    return CastBrainDecl(
+      id: entryId,
+      model: entry.model ?? '',
+      transport: provider?.transport.wireName ?? 'openrouter',
+      baseUrl: provider?.baseUrl,
+      credentialEnv: provider?.credentialEnv,
+      maxOutputTokens: model?.maxOutputTokens,
+      reasoningEffort: model?.reasoningEffort,
+    );
+  }
+
+  /// The generative rungs as brain declarations (the actor picker's
+  /// palette section, G6).
+  List<CastBrainDecl> get generativeDecls => [
+    for (final rung in _rungs)
+      if (rung.role == 'generative') ?castDeclFor(rung.id),
+  ];
 
   // ---- journal projections (tasks, telemetry) ----
 
@@ -425,25 +492,86 @@ final class WorldStateService extends ChangeNotifier {
       _daemonExePresent = exe['present'] == true;
       _daemonExePath = exe['path'] as String?;
     }
+    if (artifacts is Map) {
+      final root = artifacts['root'];
+      _harnessRoot = root is String && root.isNotEmpty ? root : null;
+    }
+    // The scheduler's truth is its oka supervisor registry record + the
+    // recorded pid's liveness (no pointer file exists for it) — read
+    // through the conditional-import facade, so this stays web-safe.
+    final scheduler = readSupervisedScheduler(
+      workspace: workspace,
+      debugRegistry: debugSupervisorRegistry,
+    );
+    _schedulerLive = scheduler['live'] == true;
+    _schedulerPid = scheduler['pid'] as int?;
   }
 
-  /// G2 — the one-click arm: converges the machine's ONE daemon through
-  /// the supervised adapter (oka_supervisor SDK, readiness gate = the
-  /// owner pointer's live pid). Honest receipts: `alreadyRunning` is
-  /// success, findings render, a missing artifact refuses by name —
-  /// never a spinner without an end.
+  /// G2 + G1 — the one-click arm: converges the machine's WHOLE world
+  /// through the supervised adapter (oka_supervisor SDK) in ONE pass —
+  /// the daemon (readiness gate = the owner pointer's live pid) AND the
+  /// realm scheduler (readiness gate = the leased record's pid alive
+  /// across a bounded settle window), so a delegated `task op:create`
+  /// has a claimant pump from a cold machine. Honest receipts:
+  /// `alreadyRunning` is success, findings render, and a missing
+  /// artifact refuses BY NAME naming the component — the daemon's AOT
+  /// exe (`daemon_artifact_absent`), the harness root
+  /// (`harness_root_unresolved`) or the script-only scheduler
+  /// entrypoint (`scheduler_entrypoint_absent`) — never a spinner
+  /// without an end and never a half-armed world.
   Future<Map<String, Object?>> armWorld() async {
     if (_armState == WorldArmState.arming) return _lastArmReport ?? const {};
     final exe = _daemonExePath;
     if (!_daemonExePresent || exe == null || exe.isEmpty) {
+      const finding =
+          'build/ecsai_daemon.exe was not found under the harness root — '
+          'build the AOT daemon first (the app never downloads one).';
       _armState = WorldArmState.error;
       _armError = 'daemon_artifact_absent';
-      _armFindings = const [
-        'build/ecsai_daemon.exe was not found under the harness root — '
-            'build the AOT daemon first (the app never downloads one).',
-      ];
+      _armFindings = const [finding];
       notifyListeners();
-      return {'ok': false, 'bounce': 'daemon_artifact_absent'};
+      return {
+        'ok': false,
+        'bounce': 'daemon_artifact_absent',
+        'component': ecsaiDaemonComponentId,
+        'components': supervisedWorldComponentIds,
+      };
+    }
+    final root = _harnessRoot;
+    if (root == null || root.isEmpty) {
+      const finding =
+          'harness_root_unresolved: the doctor resolved no harness '
+          'checkout root (artifacts.root) — the realm scheduler '
+          'entrypoint cannot be located. Set ECSAID_ROOT for the '
+          'app environment.';
+      _armState = WorldArmState.error;
+      _armError = 'harness_root_unresolved';
+      _armFindings = const [finding];
+      notifyListeners();
+      return {
+        'ok': false,
+        'bounce': 'harness_root_unresolved',
+        'component': ecsaiSchedulerComponentId,
+        'components': supervisedWorldComponentIds,
+      };
+    }
+    final schedulerScript = schedulerEntrypointPath(root);
+    if (!File(schedulerScript).existsSync()) {
+      final finding =
+          'scheduler_entrypoint_absent: $schedulerScript does not exist '
+          '— the harness checkout is incomplete or artifacts.root is '
+          'stale (the scheduler is script-only; there is no AOT '
+          'artifact to fall back to).';
+      _armState = WorldArmState.error;
+      _armError = 'scheduler_entrypoint_absent';
+      _armFindings = [finding];
+      notifyListeners();
+      return {
+        'ok': false,
+        'bounce': 'scheduler_entrypoint_absent',
+        'component': ecsaiSchedulerComponentId,
+        'components': supervisedWorldComponentIds,
+      };
     }
     _armState = WorldArmState.arming;
     _armError = null;
@@ -451,17 +579,19 @@ final class WorldStateService extends ChangeNotifier {
     notifyListeners();
     try {
       final home = worldHome ?? _resolveWorldHome();
-      final report = await startSupervisedEcsaiDaemon(
+      final report = await startSupervisedWorld(
         daemonExecutablePath: exe,
+        harnessRoot: root,
         workspaceHint: home,
-        logPath: '$home/daemon-app.log',
+        daemonLogPath: '$home/daemon-app.log',
+        schedulerLogPath: '$home/scheduler-app.log',
       );
       _lastArmReport = report;
       _armState = report['ok'] == true
           ? WorldArmState.idle
           : WorldArmState.error;
       if (_armState == WorldArmState.error) {
-        _armError = '${report['bounce'] ?? 'daemon_arm_failed'}';
+        _armError = '${report['bounce'] ?? 'world_arm_failed'}';
         _armFindings = [
           for (final finding in (report['findings'] as List? ?? const []))
             '$finding',
@@ -478,10 +608,12 @@ final class WorldStateService extends ChangeNotifier {
     }
   }
 
-  /// Stops the machine's daemon through the same supervised ladder.
+  /// Stops the machine's WHOLE world through the same supervised
+  /// ladder, in the declared order: the scheduler first (stop stops
+  /// spawning), the daemon second.
   Future<Map<String, Object?>> stopWorld() async {
     try {
-      final report = await stopSupervisedEcsaiDaemon(
+      final report = await stopSupervisedWorld(
         workspace: worldHome ?? _resolveWorldHome(),
       );
       await refresh();

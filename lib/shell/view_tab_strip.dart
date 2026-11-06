@@ -82,32 +82,38 @@ final class ViewTabStrip extends StatelessWidget {
           return Row(
             children: [
               Expanded(
-                child: SingleChildScrollView(
+                // A ListView, not a SingleChildScrollView: the SCV's
+                // semantics subtree never assembles in a live desktop
+                // app (measured: elements mounted, render objects
+                // attached, `debugSemantics` null, full re-assembly
+                // forced — still absent; ListView-backed lists keep
+                // their nodes). Screen readers and agents need the
+                // strip's tabs, so the strip rides the primitive whose
+                // semantics provenly works.
+                child: ListView(
                   scrollDirection: Axis.horizontal,
                   physics: const ClampingScrollPhysics(),
-                  child: Row(
-                    children: [
-                      for (final id in tabs)
-                        _StripTab(
-                          key: ValueKey('view.tab.$id'),
-                          surfaceId: id,
-                          title: _titleOf(id),
-                          leading:
-                              leadingFor?.call(id) ??
-                              (surfaces[id]?.icon != null
-                                  ? Icon(
-                                      surfaces[id]!.icon,
-                                      size: 14,
-                                      color: context.shellMuted,
-                                    )
-                                  : null),
-                          focused: id == activeId,
-                          compact: compressed.contains(id),
-                          onTap: () => onSelect(id),
-                          onClose: () => onClose(id),
-                        ),
-                    ],
-                  ),
+                  children: [
+                    for (final id in tabs)
+                      _StripTab(
+                        key: ValueKey('view.tab.$id'),
+                        surfaceId: id,
+                        title: _titleOf(id),
+                        leading:
+                            leadingFor?.call(id) ??
+                            (surfaces[id]?.icon != null
+                                ? Icon(
+                                    surfaces[id]!.icon,
+                                    size: 14,
+                                    color: context.shellMuted,
+                                  )
+                                : null),
+                        focused: id == activeId,
+                        compact: compressed.contains(id),
+                        onTap: () => onSelect(id),
+                        onClose: () => onClose(id),
+                      ),
+                  ],
                 ),
               ),
               _AddTabButton(

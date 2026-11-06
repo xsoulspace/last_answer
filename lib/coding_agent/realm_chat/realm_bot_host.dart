@@ -120,11 +120,7 @@ enum BotNarrationState {
 /// exact status string ('failed: …', 'degraded: …') when failed, 'echo
 /// dropped' after a guard drop.
 final class BotNarration {
-  const BotNarration({
-    required this.state,
-    required this.since,
-    this.detail,
-  });
+  const BotNarration({required this.state, required this.since, this.detail});
 
   final BotNarrationState state;
   final String? detail;
@@ -158,6 +154,9 @@ final class RealmBotHost {
   RealmBotHost({
     required this.world,
     required this.humanActorId,
+    this.resolveCast,
+    this.resolveCredential,
+    this.daemonOwnsActor,
     required this.resolveOpenRouterApiKey,
     this.debugBrainOverride,
     this.onChanged,
@@ -191,6 +190,22 @@ final class RealmBotHost {
   /// Notified once per wake with the fresh beats (the UI subscribes to
   /// this instead of polling the journal itself — one scan, one copier).
   final void Function(List<Map<String, Object?>> beats)? onWake;
+
+  /// G6 — the defer-to-daemon law: when the harness daemon's actor
+  /// loops are armed, the actors IT owns (a `cast:` brainRef, or a
+  /// durable `brainCast` binding) are answered by the daemon, and this
+  /// host stops their in-app loop instead of starting one. ONE answerer
+  /// per actor; two is a double-answer. Null = nobody is deferred (the
+  /// pre-G6 behavior).
+  final bool Function(ActorProfile actor)? daemonOwnsActor;
+
+  /// G6 — the palette rung resolver a `cast:` brainRef rides (the shell
+  /// wires it from the world's discovered palette; null = no palette,
+  /// a cast ref names nothing).
+  final CastBrainDecl? Function(String entryId)? resolveCast;
+
+  /// G6 — credential resolution for palette rungs (env name → value).
+  final String? Function(String envName)? resolveCredential;
 
   final _loops = <String, _BotLoop>{};
 
@@ -228,11 +243,14 @@ final class RealmBotHost {
     final wanted = <String>{};
     for (final actor in actors) {
       if (actor.kind == ActorKind.human) continue;
+      if (daemonOwnsActor?.call(actor) == true) continue; // deferred
       final brain =
           debugBrainOverride?.call(actor) ??
           resolveBrain(
             actor.brainRef,
             resolveOpenRouterApiKey: resolveOpenRouterApiKey,
+            resolveCast: resolveCast,
+            resolveCredential: resolveCredential,
           );
       if (brain == null) continue;
       wanted.add(actor.actorId);
@@ -434,9 +452,7 @@ final class _BotLoop {
       final failed =
           value.startsWith('failed:') || value.startsWith('degraded:');
       _narration = BotNarration(
-        state: failed
-            ? BotNarrationState.failed
-            : BotNarrationState.listening,
+        state: failed ? BotNarrationState.failed : BotNarrationState.listening,
         detail: failed ? value : null,
         since: DateTime.now().toUtc(),
       );

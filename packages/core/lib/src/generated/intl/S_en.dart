@@ -1643,4 +1643,7 @@ class SEn extends S {
 
   @override
   String get boardsMeshTasks => 'Mesh tasks';
+
+  @override
+  String get actionLandingInbox => 'Landing inbox';
 }

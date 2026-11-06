@@ -1658,4 +1658,7 @@ class SRu extends S {
 
   @override
   String get boardsMeshTasks => 'Mesh-задачи';
+
+  @override
+  String get actionLandingInbox => 'Входящий обзор';
 }

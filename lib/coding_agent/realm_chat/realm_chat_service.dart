@@ -130,10 +130,10 @@ final class RealmChatService extends ChangeNotifier {
     if (world == null || human == null) return const <Map<String, Object?>>[];
     try {
       final read = await world.conversation().read(
-            actor: human,
-            threadId: threadId,
-            limit: beatsForLimit,
-          );
+        actor: human,
+        threadId: threadId,
+        limit: beatsForLimit,
+      );
       return (read['beats']! as List).cast<Map<String, Object?>>().toList();
     } on Object {
       return const <Map<String, Object?>>[];
@@ -572,6 +572,17 @@ final class RealmChatService extends ChangeNotifier {
     const max = 80;
     if (text.length <= max) return text;
     return '${text.substring(0, max - 1)}…';
+  }
+
+  /// Returns the Conversations surface to its LANDING state (the phase
+  /// 1d inbox): no thread selected. The rail/edge "show me what needs
+  /// attention" affordances route here — the inbox is the overview, and
+  /// a persisted tab never hides it.
+  void clearActiveThread() {
+    if (_activeThreadId == null) return;
+    _activeThreadId = null;
+    _beats.clear();
+    notifyListeners();
   }
 
   void selectThread(String threadId) {

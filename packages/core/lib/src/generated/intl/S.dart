@@ -3074,6 +3074,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Mesh tasks'**
   String get boardsMeshTasks;
+
+  /// Palette action: the Conversations landing inbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing inbox'**
+  String get actionLandingInbox;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -1654,4 +1654,7 @@ class SIt extends S {
 
   @override
   String get boardsMeshTasks => 'Task mesh';
+
+  @override
+  String get actionLandingInbox => 'Posta in arrivo';
 }

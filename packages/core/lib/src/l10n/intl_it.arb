@@ -522,5 +522,6 @@
   "threadsWorld": "Thread del mondo",
   "threadsSessions": "Sessioni live",
   "threadsEmpty": "Nessun thread — gli attori e i canali della rail li avviano",
-  "boardsMeshTasks": "Task mesh"
+  "boardsMeshTasks": "Task mesh",
+  "actionLandingInbox": "Posta in arrivo"
 }

@@ -14,6 +14,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -365,6 +366,50 @@ void main() {
         findsOneWidget,
       );
       addTearDown(world.dispose);
+    });
+
+    testWidgets('the palette\'s Landing inbox action clears a focused '
+        'thread back to the inbox (phase 3 verb)', (final tester) async {
+      late RealmChatService service;
+      late ActorProfile actor;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_inbox2_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = await RealmWorld.open(rootOverride: temp.path);
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        actor = (await service.createActor(
+          displayName: 'Inbox Checker',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+        await service.openDm(actor.actorId);
+      });
+      final worldState = hermeticWorldState(daemonLive: true);
+      await worldState.refresh();
+      await _pumpShell(tester, service: service, worldState: worldState);
+      // A focused thread hosts the chat pane, not the inbox.
+      expect(find.byKey(const ValueKey('shell.landingInbox')), findsNothing);
+
+      await tester.sendKeyDownEvent(LogicalKeyboardKey.control);
+      await tester.sendKeyEvent(LogicalKeyboardKey.keyK);
+      await tester.sendKeyUpEvent(LogicalKeyboardKey.control);
+      await tester.pump();
+      await tester.enterText(
+        find.byKey(const ValueKey('palette.query')),
+        'landing',
+      );
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.byKey(const ValueKey('shell.landingInbox')), findsOneWidget);
+      addTearDown(worldState.dispose);
     });
 
     testWidgets('the conversations void is the landing inbox (hermetic '

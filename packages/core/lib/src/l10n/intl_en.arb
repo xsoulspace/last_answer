@@ -723,5 +723,7 @@
   "threadsEmpty": "No threads yet — the rail's actors and channels start them",
   "@threadsEmpty": {"description": "Threads view: the quiet empty state."},
   "boardsMeshTasks": "Mesh tasks",
-  "@boardsMeshTasks": {"description": "Boards view: the mesh task settle section."}
+  "@boardsMeshTasks": {"description": "Boards view: the mesh task settle section."},
+ "actionLandingInbox": "Landing inbox",
+  "@actionLandingInbox": {"description": "Palette action: the Conversations landing inbox."}
 }

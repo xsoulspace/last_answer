@@ -193,17 +193,23 @@ final class _CommandPaletteState extends State<CommandPalette> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextField(
-                        key: const ValueKey('palette.query'),
-                        controller: _query,
-                        autofocus: true,
-                        onChanged: (_) => setState(() => _selected = 0),
-                        onSubmitted: (_) => _runSelected(),
-                        style: LaTokens.body.copyWith(color: la.ink),
-                        decoration: InputDecoration(
-                          isDense: true,
-                          hintText: l10n.commandPaletteHint,
-                          prefixIcon: const Icon(Icons.search, size: 16),
+                      Semantics(
+                        // The agent contract: the snapshot's identifier
+                        // is the palette's address (widget keys are not
+                        // semantics identifiers).
+                        identifier: 'palette.query',
+                        child: TextField(
+                          key: const ValueKey('palette.query'),
+                          controller: _query,
+                          autofocus: true,
+                          onChanged: (_) => setState(() => _selected = 0),
+                          onSubmitted: (_) => _runSelected(),
+                          style: LaTokens.body.copyWith(color: la.ink),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: l10n.commandPaletteHint,
+                            prefixIcon: const Icon(Icons.search, size: 16),
+                          ),
                         ),
                       ),
                       Container(height: 1, color: la.rule),

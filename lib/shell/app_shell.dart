@@ -511,8 +511,10 @@ class _AppShellState extends State<AppShell> {
   /// The status edge's attention click: the Conversations view, whose
   /// landing state is the inbox (open permissions reject-first, running
   /// tasks, last verdicts).
-  void _openInbox() =>
-      _onLayoutChanged(_layout.showView(kConversationsSurfaceId));
+  void _openInbox() {
+    _service.clearActiveThread();
+    _onLayoutChanged(_layout.showView(kConversationsSurfaceId));
+  }
 
   // ---- the strips' keyboard (the browser map) -----------------------------
 
@@ -568,7 +570,11 @@ class _AppShellState extends State<AppShell> {
           label: spec.title,
           group: 'views',
           icon: spec.icon,
-          run: () => _onLayoutChanged(_layout.showView(spec.id)),
+          // The palette is DETERMINISTIC where the rail is not: picking
+          // a view hosts the view's OWN face tab (a strip left on the
+          // picker would otherwise host the picker), while the rail's
+          // showView keeps the Safari picker law.
+          run: () => _onLayoutChanged(_layout.openTab(spec.id, spec.id)),
         ),
       CommandEntry(
         id: 'view.$kModelsSurfaceId',
@@ -612,6 +618,13 @@ class _AppShellState extends State<AppShell> {
         group: 'actions',
         icon: Icons.tune,
         run: _openModelsTab,
+      ),
+      CommandEntry(
+        id: 'action.inbox',
+        label: l10n.actionLandingInbox,
+        group: 'actions',
+        icon: Icons.inbox_outlined,
+        run: _openInbox,
       ),
       CommandEntry(
         id: 'action.armWorld',

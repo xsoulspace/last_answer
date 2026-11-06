@@ -525,5 +525,6 @@
   "threadsWorld": "Треды мира",
   "threadsSessions": "Живые сессии",
   "threadsEmpty": "Тредов пока нет — их начинают актёры и каналы в rail",
-  "boardsMeshTasks": "Mesh-задачи"
+  "boardsMeshTasks": "Mesh-задачи",
+  "actionLandingInbox": "Входящий обзор"
 }

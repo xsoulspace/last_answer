@@ -1,0 +1,47 @@
+# The shell redesign's acceptance gate in CI (phase 5): the widget-test
+# contract (analyze + the shell/coding_agent/settings suites) plus the
+# flutter_mcp_harness scenario that drives ONE real macOS binary
+# keyboard-first (tool/gates/shell_harness_gate.dart — palette nav,
+# edge+inbox oracle, typed documents flow, arm honesty, screenshots).
+#
+# The harness step needs a macOS runner (the app is a desktop binary)
+# and boots it headless-ish through the VM service; it never needs the
+# ecsai daemon — a down world is the arm-honesty path, a live world
+# skips it by name.
+name: shell-gate
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch: {}
+
+jobs:
+  shell-gate:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      # The repo pins its Flutter through FVM; the CI config is the
+      # .fvmrc the action reads.
+      - uses: kuhnroyal/flutter-fvm-config-action@v3
+        id: fvm-config
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.fvm-config.outputs.FLUTTER_VERSION }}
+          cache: true
+      - name: Analyze
+        run: flutter analyze
+      - name: Widget gates
+        run: flutter test test/shell test/coding_agent test/settings
+      - name: Shell harness gate (real binary, keyboard-first)
+        run: dart tool/gates/shell_harness_gate.dart
+      - name: Upload gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shell-gate-evidence
+          path: /tmp/shell_hgate_evidence/
+          if-no-files-found: ignore

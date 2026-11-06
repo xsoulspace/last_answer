@@ -58,3 +58,9 @@ build-rustore:
 # or be defined as environment: wid="" wis="" v="3.19." make run build-snap
 deploy-snap:
     snapcraft upload --release=edge last-answer_$(v)_arm64.snap
+
+# Shell redesign acceptance gate: one real macOS binary, keyboard-first
+# through the mcp-toolkit VM verbs (edge/inbox oracle, palette flows,
+# arm honesty, screenshots). Evidence: $TMPDIR/shell_hgate_evidence/
+gate-shell *ARGS:
+    fvm dart tool/gates/shell_harness_gate.dart {{ARGS}}

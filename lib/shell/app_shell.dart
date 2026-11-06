@@ -447,19 +447,12 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  /// Settings stays a route push until phase 1e gives it the embedding
-  /// seam (SettingsScreen's close button pops the enclosing route, so a
-  /// view embedding would pop the whole shell — named follow-up in
-  /// surfaces.dart).
-  void _openSettings() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (final _) => const SettingsScreen(),
-        fullscreenDialog: true,
-      ),
-    );
-  }
+  /// Phase 1e — settings-as-view: the gear opens the settings surface
+  /// as a TAB of the active view (the embedded seam closes through the
+  /// view scope). The shell grammar keeps zero exceptions: no route
+  /// push, no `Navigator.pop` from inside a view.
+  void _openSettings() =>
+      _onLayoutChanged(_layout.openTab(_layout.activeView, kSettingsSurfaceId));
 
   /// The status edge's backend click (phase 1d): the Models surface
   /// opens as a tab of the ACTIVE view (any view may host any surface —

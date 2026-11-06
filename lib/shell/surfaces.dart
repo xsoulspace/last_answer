@@ -26,11 +26,10 @@
 /// onto the same [WorldChatSurface] ([conversationSurfaceSpec] in
 /// app_shell.dart).
 ///
-/// `settings` is deliberately absent: [SettingsScreen]'s close button
-/// pops the enclosing route, so hosting it in a view would pop the
-/// whole shell. The rail's gear pushes the settings route until
-/// Settings grows an embedding seam (open-view callback instead of
-/// `Navigator.pop`).
+/// `settings` is a surface like any other (phase 1e): [SettingsScreen]
+/// grew the embedding seam (`onClose` + `embedded`), so the rail's gear
+/// opens a TAB of the active view and the shell grammar keeps zero
+/// exceptions.
 library;
 
 import 'package:lastanswer/browser/browser_strings.dart';
@@ -52,6 +51,10 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 
 import 'package:lastanswer/common_imports.dart';
+
+import 'package:lastanswer/settings/settings.dart';
+
+import 'package:lastanswer/shell/shell_scope.dart';
 
 import 'package:lastanswer/shell/shell_theme.dart';
 
@@ -121,6 +124,12 @@ const String kBoardsSurfaceId = 'boards';
 /// the palette editor. Opened from the status edge or the picker; not a
 /// rail view (it is a fact surface, not a workspace).
 const String kModelsSurfaceId = 'models';
+
+/// The settings surface's id (phase 1e): settings-as-view — the shell
+/// grammar has no exceptions, so the rail's gear opens a TAB of the
+/// active view instead of pushing a route (the embedded seam closes
+/// through the view, never through `Navigator.pop`).
+const String kSettingsSurfaceId = 'settings';
 
 /// The new-tab picker's surface id (WAVE 4T — the browser model): the
 /// bar's `+` opens it, picking a destination replaces it in place.
@@ -300,6 +309,23 @@ SurfaceRegistry buildShellSurfaces(
       return ModelsView(world: world);
     },
     icon: Icons.tune,
+  ),
+  kSettingsSurfaceId: SurfaceSpec(
+    id: kSettingsSurfaceId,
+    title: context.l10n.settings,
+    builder: (final tabContext) => SettingsScreen(
+      embedded: true,
+      // The embedded seam: close means close THIS TAB through the view
+      // scope — a Navigator.pop from inside a view would pop the shell.
+      onClose: () {
+        final scope = ViewScope.of(tabContext);
+        if (scope == null) return;
+        scope.onChanged(
+          scope.layout.closeTab(scope.layout.activeView, kSettingsSurfaceId),
+        );
+      },
+    ),
+    icon: Icons.settings_outlined,
   ),
   // The newtab picker's spec is composed by AppShell (center_tabs.dart
   // hosts the [NewTabSurface] and the scope it navigates through) —

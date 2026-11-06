@@ -4,11 +4,21 @@ import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/settings/views/views.dart';
 
 class SettingsScreen extends HookWidget {
-  const SettingsScreen({super.key});
+  const SettingsScreen({this.onClose, this.embedded = false, super.key});
+
+  /// Phase 1e — the embedding seam (settings-as-view): hosted in a
+  /// shell view tab, the close affordance calls THIS instead of
+  /// popping the enclosing route (a pop from inside a view would take
+  /// the whole shell down). Null keeps the route behaviour.
+  final VoidCallback? onClose;
+
+  /// Hosted inside a shell view: no Scaffold of its own — the tab is
+  /// the frame (the shell grammar has no exceptions, redesign §2.2.5).
+  final bool embedded;
 
   @override
   Widget build(final BuildContext context) {
-    void onBack() => Navigator.pop(context);
+    void onBack() => onClose != null ? onClose!() : Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
     final isAccountViewVisible = context
         .read<PurchasesNotifier>()
@@ -32,16 +42,23 @@ class SettingsScreen extends HookWidget {
       leading: CupertinoCloseButton(onPressed: onBack),
       actions: const [FeedbackButton()],
       title: Text(context.l10n.settings),
-        bottom: TabBar(
-          tabs: [
-            Tab(text: context.l10n.generalSettingsShortTitle),
-            Tab(text: context.l10n.agentSettingsTitle),
-            if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
-          ],
-        ),
+      bottom: TabBar(
+        tabs: [
+          Tab(text: context.l10n.generalSettingsShortTitle),
+          Tab(text: context.l10n.agentSettingsTitle),
+          if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
+        ],
+      ),
     );
 
-    if (screenLayout.small) {
+    if (embedded) {
+      child = Column(
+        children: [
+          SizedBox(width: double.infinity, height: 80, child: appbar),
+          Expanded(child: child),
+        ],
+      );
+    } else if (screenLayout.small) {
       child = Scaffold(
         appBar: appbar,
         backgroundColor: context.theme.canvasColor,

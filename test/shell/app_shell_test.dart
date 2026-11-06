@@ -26,9 +26,13 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 
+import 'package:lastanswer/_library/widgets/widgets.dart';
+
 import 'package:lastanswer/common_imports.dart';
 
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
+
+import 'package:lastanswer/settings/settings.dart';
 
 import 'package:lastanswer/shell/app_shell.dart';
 
@@ -98,26 +102,33 @@ Future<void> _pumpShell(
     await tester.runAsync(resolved.ensureReady);
   }
   await tester.pumpWidget(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ProjectsNotifier>.value(value: _IdleProjects()),
-        // ADR 0026 — the rail's WORKSPACES section: the store-less
-        // notifier renders the honest empty state (no store I/O).
-        ChangeNotifierProvider<WorkspaceNotifier>.value(
-          value: WorkspaceNotifier(storeLoader: () async => null),
-        ),
-      ],
-      child: MaterialApp(
-        locale: const Locale('en'),
-        localizationsDelegates: S.localizationsDelegates,
-        supportedLocales: S.supportedLocales,
-        // Production wraps the shell in ScreenScaffold's Scaffold; mirror
-        // that here so Material ancestors exist.
-        home: Scaffold(
-          body: AppShell(
-            service: resolved,
-            worldState: resolvedWorld,
-            child: const CenterTabsArea(),
+    // The production DI composition (lazy providers): phase 1e hosts
+    // Settings inside a view tab, so the harness needs the same graph
+    // the app root builds — PrefsDb rides the mocked SharedPreferences.
+    GlobalStatesProvider(
+      builder: (final _) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ProjectsNotifier>.value(
+            value: _IdleProjects(),
+          ),
+          // ADR 0026 — the rail's WORKSPACES section: the store-less
+          // notifier renders the honest empty state (no store I/O).
+          ChangeNotifierProvider<WorkspaceNotifier>.value(
+            value: WorkspaceNotifier(storeLoader: () async => null),
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          // Production wraps the shell in ScreenScaffold's Scaffold; mirror
+          // that here so Material ancestors exist.
+          home: Scaffold(
+            body: AppShell(
+              service: resolved,
+              worldState: resolvedWorld,
+              child: const CenterTabsArea(),
+            ),
           ),
         ),
       ),
@@ -380,5 +391,30 @@ void main() {
       expect(find.byKey(const ValueKey('inbox.arm.button')), findsOneWidget);
       addTearDown(worldState.dispose);
     });
+  });
+
+  testWidgets('phase 1e — the gear opens settings as a tab of the active '
+      'view and its close button closes the TAB, never the shell', (
+    final tester,
+  ) async {
+    await _pumpShell(tester);
+    await tester.tap(find.byKey(const ValueKey('rail.settings')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.byKey(const ValueKey('view.tab.settings')), findsOneWidget);
+    expect(find.byType(SettingsScreen), findsOneWidget);
+
+    // The embedded seam: the close affordance goes through the view
+    // scope (a route pop from inside a view would take the shell down).
+    await tester.tap(find.byType(CupertinoCloseButton).first);
+    await tester.pump();
+    expect(find.byKey(const ValueKey('view.tab.settings')), findsNothing);
+    expect(find.byType(SettingsScreen), findsNothing);
+    // The shell is still standing: edge, strip and rail all present.
+    expect(find.byKey(const ValueKey('shell.statusEdge')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('view.strip.conversations')),
+      findsOneWidget,
+    );
   });
 }

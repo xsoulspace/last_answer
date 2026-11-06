@@ -3050,6 +3050,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'This document is not in the loaded list'**
   String get documentsMissing;
+
+  /// Threads view: the realm thread section.
+  ///
+  /// In en, this message translates to:
+  /// **'World threads'**
+  String get threadsWorld;
+
+  /// Threads view: the session registry section.
+  ///
+  /// In en, this message translates to:
+  /// **'Live sessions'**
+  String get threadsSessions;
+
+  /// Threads view: the quiet empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'No threads yet — the rail\'s actors and channels start them'**
+  String get threadsEmpty;
+
+  /// Boards view: the mesh task settle section.
+  ///
+  /// In en, this message translates to:
+  /// **'Mesh tasks'**
+  String get boardsMeshTasks;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

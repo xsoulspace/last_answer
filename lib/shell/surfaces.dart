@@ -62,6 +62,8 @@ import 'package:lastanswer/shell/view_documents.dart';
 
 import 'package:lastanswer/shell/view_models.dart';
 
+import 'package:lastanswer/shell/view_threads.dart';
+
 import 'package:lastanswer/shell/view_people.dart';
 
 import 'package:lastanswer/workspaces/workspace_files_tab.dart';
@@ -294,15 +296,30 @@ SurfaceRegistry buildShellSurfaces(
   kTerminalSurfaceId: SurfaceSpec(
     id: kTerminalSurfaceId,
     title: context.l10n.contextTabTerminal,
+    // Phase 3c — the honest note stays (no PTY yet), but the status
+    // edge's arm instruction routes into a ONE-CLICK action here
+    // (redesign §2.2.3).
     builder: (final tabContext) =>
-        _QuietViewNote(text: tabContext.l10n.contextTerminalEmpty),
+        _TerminalViewEmbed(world: tabContext.read<WorldStateService?>()),
     icon: Icons.terminal,
   ),
   kThreadsSurfaceId: SurfaceSpec(
     id: kThreadsSurfaceId,
     title: context.l10n.contextTabThreads,
-    builder: (final tabContext) =>
-        _QuietViewNote(text: tabContext.l10n.contextThreadsEmpty),
+    // Phase 3b — the threads the rail cannot name: plain group threads
+    // and the live session registry, read-only.
+    builder: (final tabContext) {
+      final scope = ViewScope.of(tabContext);
+      return ThreadsView(
+        service: service ?? tabContext.read<RealmChatService?>(),
+        onOpenThread: (final threadId) {
+          final chat = service ?? tabContext.read<RealmChatService?>();
+          chat?.selectThread(threadId);
+          if (scope == null) return;
+          scope.onChanged(scope.layout.showView(kConversationsSurfaceId));
+        },
+      );
+    },
     icon: Icons.account_tree_outlined,
   ),
   kBoardsSurfaceId: SurfaceSpec(
@@ -311,12 +328,24 @@ SurfaceRegistry buildShellSurfaces(
     // delegation rows on one substrate); the view is key-contracted
     // (board.*).
     title: context.l10n.viewBoardsTitle,
-    builder: (final tabContext) => BoardView(
-      // The mesh-synced controller when the mesh seams are attached;
-      // otherwise the view owns a session-local one.
-      controller: tabContext
-          .read<StorageBackendsNotifier?>()
-          ?.planningController,
+    builder: (final tabContext) => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: BoardView(
+            // The mesh-synced controller when the mesh seams are
+            // attached; otherwise the view owns a session-local one.
+            controller: tabContext
+                .read<StorageBackendsNotifier?>()
+                ?.planningController,
+          ),
+        ),
+        // Phase 3c — the mesh task rows settle HERE, beside the cards
+        // they belong to (redesign §2.2.4), not only in Settings.
+        _MeshTasksSection(
+          backends: tabContext.read<StorageBackendsNotifier?>(),
+        ),
+      ],
     ),
     icon: Icons.view_kanban_outlined,
   ),
@@ -361,6 +390,122 @@ SurfaceRegistry buildShellSurfaces(
   // hosts the [NewTabSurface] and the scope it navigates through) —
   // this module stays a leaf and never imports the tabs feature.
 };
+
+/// The terminal view's honest state: no PTY yet (the package decision
+/// is separate), the quiet note plus — when the world is down — the
+/// ONE-click arm the status edge's instruction routes to (phase 3c).
+final class _TerminalViewEmbed extends StatelessWidget {
+  const _TerminalViewEmbed({required this.world});
+
+  final WorldStateService? world;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final la = context.la;
+    final down = world != null && !world!.daemonLive;
+    return ListenableBuilder(
+      listenable: world ?? ValueNotifier(0),
+      builder: (final context, final _) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _QuietViewNote(text: l10n.contextTerminalEmpty),
+          if (down) ...[
+            const SizedBox(height: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  world!.armState == WorldArmState.error
+                      ? '${l10n.inboxWorldArmFailed}: ${world!.armError ?? ''}'
+                      : l10n.inboxWorldDown,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(color: la.inkMuted),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  key: const ValueKey('terminal.arm'),
+                  onPressed: world!.armState == WorldArmState.arming
+                      ? null
+                      : () => unawaited(world!.armWorld()),
+                  child: Text(
+                    world!.armState == WorldArmState.arming
+                        ? l10n.edgeArming
+                        : l10n.edgeArmWorld,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The mesh task board's rows as settle data beside the planning cards
+/// (phase 3c): status, the sentence, the verdict word. Absent mesh =
+/// absent section — the board only exists once a replica is live.
+final class _MeshTasksSection extends StatelessWidget {
+  const _MeshTasksSection({required this.backends});
+
+  final StorageBackendsNotifier? backends;
+
+  @override
+  Widget build(final BuildContext context) {
+    final records = backends?.taskBoard?.allRecords ?? const [];
+    if (records.isEmpty) return const SizedBox.shrink();
+    final la = context.la;
+    return Container(
+      key: const ValueKey('boards.meshTasks'),
+      constraints: const BoxConstraints(maxHeight: 180),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: la.rule, width: 1)),
+      ),
+      child: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 2, 14, 4),
+            child: Text(
+              context.l10n.boardsMeshTasks,
+              style: shellSectionLabel(context),
+            ),
+          ),
+          for (final record in records.take(8))
+            Container(
+              key: ValueKey('boards.mesh.${record.taskId}'),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+              child: Row(
+                children: [
+                  Text(
+                    '[${record.status}]',
+                    style: LaTokens.mono(10, la.inkQuiet),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      record.task,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  ),
+                  if (record.verdict case final verdict?)
+                    Text(
+                      '${verdict['status'] ?? ''}',
+                      style: LaTokens.mono(10, la.inkMuted),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
 
 /// A view's quiet named empty state: honest absence, one line.
 final class _QuietViewNote extends StatelessWidget {

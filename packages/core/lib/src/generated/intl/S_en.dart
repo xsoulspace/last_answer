@@ -1630,4 +1630,17 @@ class SEn extends S {
 
   @override
   String get documentsMissing => 'This document is not in the loaded list';
+
+  @override
+  String get threadsWorld => 'World threads';
+
+  @override
+  String get threadsSessions => 'Live sessions';
+
+  @override
+  String get threadsEmpty =>
+      'No threads yet — the rail\'s actors and channels start them';
+
+  @override
+  String get boardsMeshTasks => 'Mesh tasks';
 }

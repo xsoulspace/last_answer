@@ -518,5 +518,9 @@
   "viewDocumentsTitle": "Documenti",
   "documentsNewAgentDoc": "Nuovo doc agente",
   "documentsEmpty": "Nessun documento — crea il primo doc agente",
-  "documentsMissing": "Questo documento non è nell'elenco caricato"
+  "documentsMissing": "Questo documento non è nell'elenco caricato",
+  "threadsWorld": "Thread del mondo",
+  "threadsSessions": "Sessioni live",
+  "threadsEmpty": "Nessun thread — gli attori e i canali della rail li avviano",
+  "boardsMeshTasks": "Task mesh"
 }

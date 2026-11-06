@@ -89,12 +89,19 @@ final class _CommandPaletteState extends State<CommandPalette> {
   /// The palette owns the keyboard while open: a HARDWARE-level handler
   /// (the field's internal text-editing shortcuts consume escape and
   /// the arrows before any focus bubble could reach an ancestor).
-  /// Enter stays with the field's onSubmitted.
+  /// Enter rides here too: a synthesized key (fmtk press_key, a raw
+  /// hardware event without the platform IME) never reaches the field's
+  /// onSubmitted, which fires on the IME's performAction — the palette
+  /// must answer both paths.
   bool _handleKey(final KeyEvent event) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) return false;
     switch (event.logicalKey) {
       case LogicalKeyboardKey.escape:
         widget.onClose();
+        return true;
+      case LogicalKeyboardKey.enter:
+      case LogicalKeyboardKey.numpadEnter:
+        _runSelected();
         return true;
       case LogicalKeyboardKey.arrowDown:
         _move(1);

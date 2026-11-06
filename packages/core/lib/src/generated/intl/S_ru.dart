@@ -1645,4 +1645,17 @@ class SRu extends S {
 
   @override
   String get documentsMissing => 'Этого документа нет в загруженном списке';
+
+  @override
+  String get threadsWorld => 'Треды мира';
+
+  @override
+  String get threadsSessions => 'Живые сессии';
+
+  @override
+  String get threadsEmpty =>
+      'Тредов пока нет — их начинают актёры и каналы в rail';
+
+  @override
+  String get boardsMeshTasks => 'Mesh-задачи';
 }

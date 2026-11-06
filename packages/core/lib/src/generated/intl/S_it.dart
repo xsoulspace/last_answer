@@ -1641,4 +1641,17 @@ class SIt extends S {
 
   @override
   String get documentsMissing => 'Questo documento non è nell\'elenco caricato';
+
+  @override
+  String get threadsWorld => 'Thread del mondo';
+
+  @override
+  String get threadsSessions => 'Sessioni live';
+
+  @override
+  String get threadsEmpty =>
+      'Nessun thread — gli attori e i canali della rail li avviano';
+
+  @override
+  String get boardsMeshTasks => 'Task mesh';
 }

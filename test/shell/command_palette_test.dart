@@ -96,6 +96,22 @@ void main() {
       expect(find.byKey(const ValueKey('shell.commandPalette')), findsNothing);
     });
 
+    testWidgets('a hardware Enter runs the selected pick', (
+      final tester,
+    ) async {
+      await _pumpShell(tester);
+      await _pressCtrlKey(tester, LogicalKeyboardKey.keyK);
+      await tester.enterText(
+        find.byKey(const ValueKey('palette.query')),
+        'models',
+      );
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      expect(find.byKey(const ValueKey('view.tab.models')), findsOneWidget);
+      expect(find.byKey(const ValueKey('shell.commandPalette')), findsNothing);
+    });
+
     testWidgets('escape closes without running anything', (final tester) async {
       await _pumpShell(tester);
       await _pressCtrlKey(tester, LogicalKeyboardKey.keyK);

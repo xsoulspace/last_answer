@@ -20,6 +20,8 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 
+import 'package:lastanswer/coding_agent/board_view.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
@@ -416,5 +418,55 @@ void main() {
       find.byKey(const ValueKey('view.strip.conversations')),
       findsOneWidget,
     );
+  });
+
+  group('phase 3 — threads, terminal arm, boards mesh settle', () {
+    testWidgets('the terminal view keeps its honest note and arms the '
+        'world from there (phase 3c)', (final tester) async {
+      final world = hermeticWorldState();
+      await world.refresh();
+      await _pumpShell(tester, worldState: world);
+      await tester.tap(find.byKey(const ValueKey('rail.view.terminal')));
+      await tester.pump();
+      expect(find.byKey(const ValueKey('terminal.arm')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('terminal.arm')));
+      await tester.pump();
+      expect(world.armError, 'daemon_artifact_absent');
+      addTearDown(world.dispose);
+    });
+
+    testWidgets('the boards view hosts the planning board; the mesh settle '
+        'section stays absent without a live replica (phase 3c)', (
+      final tester,
+    ) async {
+      await _pumpShell(tester);
+      await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
+      await tester.pump();
+      expect(find.byType(BoardView), findsOneWidget);
+      expect(find.byKey(const ValueKey('boards.meshTasks')), findsNothing);
+    });
+
+    testWidgets('the threads view lists the realm threads through the '
+        'shell (phase 3b, hermetic world lane)', (final tester) async {
+      late RealmChatService service;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_shell_thr_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = await RealmWorld.open(rootOverride: temp.path);
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        await service.startThread(topic: 'Shell threads lane');
+      });
+      await _pumpShell(tester, service: service);
+      await tester.tap(find.byKey(const ValueKey('rail.view.threads')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.text('Shell threads lane'), findsOneWidget);
+    });
   });
 }

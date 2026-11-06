@@ -521,5 +521,9 @@
   "viewDocumentsTitle": "Документы",
   "documentsNewAgentDoc": "Новый агент-док",
   "documentsEmpty": "Документов пока нет — создайте первый агент-док",
-  "documentsMissing": "Этого документа нет в загруженном списке"
+  "documentsMissing": "Этого документа нет в загруженном списке",
+  "threadsWorld": "Треды мира",
+  "threadsSessions": "Живые сессии",
+  "threadsEmpty": "Тредов пока нет — их начинают актёры и каналы в rail",
+  "boardsMeshTasks": "Mesh-задачи"
 }

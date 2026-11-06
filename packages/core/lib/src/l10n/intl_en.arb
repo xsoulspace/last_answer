@@ -715,5 +715,13 @@
   "documentsEmpty": "No documents yet — create the first agent doc",
   "@documentsEmpty": {"description": "The Documents view's empty grid."},
   "documentsMissing": "This document is not in the loaded list",
-  "@documentsMissing": {"description": "A doc tab whose id the registry page does not carry."}
+  "@documentsMissing": {"description": "A doc tab whose id the registry page does not carry."},
+  "threadsWorld": "World threads",
+  "@threadsWorld": {"description": "Threads view: the realm thread section."},
+  "threadsSessions": "Live sessions",
+  "@threadsSessions": {"description": "Threads view: the session registry section."},
+  "threadsEmpty": "No threads yet — the rail's actors and channels start them",
+  "@threadsEmpty": {"description": "Threads view: the quiet empty state."},
+  "boardsMeshTasks": "Mesh tasks",
+  "@boardsMeshTasks": {"description": "Boards view: the mesh task settle section."}
 }

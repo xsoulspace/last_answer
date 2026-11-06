@@ -181,7 +181,8 @@ final class _HeaderButton extends StatelessWidget {
     final la = context.la;
     return Semantics(
       button: true,
-      label: label,
+      label: keyName,
+      hint: label,
       child: MouseRegion(
         cursor: busy ? MouseCursor.defer : SystemMouseCursors.click,
         child: GestureDetector(
@@ -332,77 +333,83 @@ final class _RungRow extends StatelessWidget {
             '${health?.detail == null ? '' : ' · ${health!.detail}'}',
       _ => health?.detail,
     };
-    return ShellRow(
-      height: detail == null ? 38 : 50,
+    return Semantics(
+      button: onSelect != null,
       selected: selected,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      onTap: onSelect,
-      child: Row(
-        children: [
-          HealthDot(status: rung.healthStatus, size: 8),
-          const SizedBox(width: 9),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        rung.id,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: selected ? FontWeight.w600 : null,
-                        ),
-                      ),
-                    ),
-                    if (rung.model != null) ...[
-                      const SizedBox(width: 8),
+      label: 'models.rung.${rung.id}',
+      hint: rung.id,
+      child: ShellRow(
+        height: detail == null ? 38 : 50,
+        selected: selected,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        onTap: onSelect,
+        child: Row(
+          children: [
+            HealthDot(status: rung.healthStatus, size: 8),
+            const SizedBox(width: 9),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
                       Flexible(
                         child: Text(
-                          '${rung.provider ?? ''}/${rung.model}',
+                          rung.id,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            fontSize: 10,
-                            color: la.inkQuiet,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            fontWeight: selected ? FontWeight.w600 : null,
                           ),
                         ),
                       ),
+                      if (rung.model != null) ...[
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            '${rung.provider ?? ''}/${rung.model}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              fontSize: 10,
+                              color: la.inkQuiet,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-                if (detail != null)
-                  Text(
-                    detail,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      fontSize: 10,
-                      color: healthColor(la, health?.status ?? 'unknown'),
-                    ),
                   ),
-              ],
+                  if (detail != null)
+                    Text(
+                      detail,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontSize: 10,
+                        color: healthColor(la, health?.status ?? 'unknown'),
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          if (rung.primary)
-            _Chip(label: context.l10n.modelsChipPrimary, color: la.accent),
-          if (rung.builtin)
-            _Chip(label: context.l10n.modelsChipLocal, color: la.inkQuiet),
-          if (rung.ladderNext case final next?)
-            _Chip(label: '→ $next', color: la.inkQuiet, mono: true),
-          if (generative) ...[
-            const SizedBox(width: 6),
-            Icon(
-              selected ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 14,
-              color: selected ? la.accent : la.inkQuiet,
-            ),
+            const SizedBox(width: 8),
+            if (rung.primary)
+              _Chip(label: context.l10n.modelsChipPrimary, color: la.accent),
+            if (rung.builtin)
+              _Chip(label: context.l10n.modelsChipLocal, color: la.inkQuiet),
+            if (rung.ladderNext case final next?)
+              _Chip(label: '→ $next', color: la.inkQuiet, mono: true),
+            if (generative) ...[
+              const SizedBox(width: 6),
+              Icon(
+                selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                size: 14,
+                color: selected ? la.accent : la.inkQuiet,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -763,7 +770,8 @@ final class _DialogButton extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Semantics(
     button: true,
-    label: label,
+    label: keyName,
+    hint: label,
     child: TextButton(
       key: ValueKey(keyName),
       onPressed: onTap,

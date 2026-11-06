@@ -697,5 +697,15 @@
   "modelsChipPrimary": "primary",
   "@modelsChipPrimary": {"description": "Rung chip: the role's primary entry."},
   "modelsChipLocal": "local",
-  "@modelsChipLocal": {"description": "Rung chip: a builtin local lane."}
+  "@modelsChipLocal": {"description": "Rung chip: a builtin local lane."},
+  "commandPaletteHint": "Search views, people and actions…",
+  "@commandPaletteHint": {"description": "The ⌘K palette's field hint."},
+  "commandPaletteViews": "Views",
+  "@commandPaletteViews": {"description": "Palette group: the rail's views."},
+  "commandPalettePeople": "People",
+  "@commandPalettePeople": {"description": "Palette group: actors."},
+  "commandPaletteChannels": "Channels",
+  "@commandPaletteChannels": {"description": "Palette group: channels."},
+  "commandPaletteActions": "Actions",
+  "@commandPaletteActions": {"description": "Palette group: shell actions."}
 }

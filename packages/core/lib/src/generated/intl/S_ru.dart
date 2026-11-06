@@ -1617,4 +1617,19 @@ class SRu extends S {
 
   @override
   String get modelsChipLocal => 'локальная';
+
+  @override
+  String get commandPaletteHint => 'Поиск: виды, люди, действия…';
+
+  @override
+  String get commandPaletteViews => 'Виды';
+
+  @override
+  String get commandPalettePeople => 'Люди';
+
+  @override
+  String get commandPaletteChannels => 'Каналы';
+
+  @override
+  String get commandPaletteActions => 'Действия';
 }

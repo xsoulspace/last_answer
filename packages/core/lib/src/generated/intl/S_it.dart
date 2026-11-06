@@ -1614,4 +1614,19 @@ class SIt extends S {
 
   @override
   String get modelsChipLocal => 'locale';
+
+  @override
+  String get commandPaletteHint => 'Cerca viste, persone e azioni…';
+
+  @override
+  String get commandPaletteViews => 'Viste';
+
+  @override
+  String get commandPalettePeople => 'Persone';
+
+  @override
+  String get commandPaletteChannels => 'Canali';
+
+  @override
+  String get commandPaletteActions => 'Azioni';
 }

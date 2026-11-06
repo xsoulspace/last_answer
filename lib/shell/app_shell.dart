@@ -49,6 +49,8 @@ import 'package:lastanswer/shell/actor_rail.dart';
 
 import 'package:lastanswer/shell/center_tabs.dart';
 
+import 'package:lastanswer/shell/command_palette.dart';
+
 import 'package:lastanswer/shell/miniwindows/mini_window.dart';
 
 import 'package:lastanswer/shell/miniwindows/mini_window_persistence.dart';
@@ -145,6 +147,15 @@ class _AppShellState extends State<AppShell> {
   /// to its icon column (the owner's half-screen desktop case).
   bool _railExpanded = true;
 
+  /// Phase 2 — the ⌘K command palette overlay's open state.
+  bool _paletteOpen = false;
+
+  /// Phase 2 — the shell's focus anchor: shell-level shortcuts answer
+  /// even after clicks on non-focusable chrome (the `⌘T handled:false`
+  /// class) because the anchor reclaims primary focus whenever focus
+  /// falls to nothing.
+  final FocusNode _shellFocus = FocusNode(debugLabel: 'shell.anchor');
+
   /// ADR 0027 — the miniwindow layer's state: floating windows (the
   /// window presentation of a surface), fed by the rail's "open in
   /// miniwindow" affordance and persisted beside the layout.
@@ -166,6 +177,35 @@ class _AppShellState extends State<AppShell> {
       _miniWindowPersistence.restoreInto(_miniWindows, _miniWindowSpec),
     );
     _miniWindowPersistence.bind(_miniWindows);
+    FocusManager.instance.addListener(_onPrimaryFocusChanged);
+  }
+
+  /// Focus fell to nothing (a click on non-focusable chrome): the
+  /// shell's anchor takes it back so ⌘T/⌘W/K keep answering. A text
+  /// field holding focus is never stolen (primaryFocus is non-null).
+  void _onPrimaryFocusChanged() {
+    if (!mounted) return;
+    if (FocusManager.instance.primaryFocus == null) {
+      _shellFocus.requestFocus();
+    }
+  }
+
+  /// A pointer came up somewhere that is not a text field: the shell's
+  /// anchor reclaims primary focus so the strip keyboard keeps
+  /// answering (the `⌘T handled:false` class — focus stranded on a
+  /// popped route's node or on chrome that never took it). Editable
+  /// descendants keep their focus: typing is never stolen.
+  void _reclaimFocusUnlessEditing() {
+    if (!mounted) return;
+    final current = FocusManager.instance.primaryFocus;
+    if (current == _shellFocus) return;
+    final context0 = current?.context;
+    if (context0 != null &&
+        (context0.widget is EditableText ||
+            context0.findAncestorWidgetOfExactType<EditableText>() != null)) {
+      return;
+    }
+    _shellFocus.requestFocus();
   }
 
   @override
@@ -176,6 +216,8 @@ class _AppShellState extends State<AppShell> {
 
   @override
   void dispose() {
+    FocusManager.instance.removeListener(_onPrimaryFocusChanged);
+    _shellFocus.dispose();
     _service.removeListener(_onServiceChanged);
     if (_ownsWorldState) _worldState.dispose();
     _peopleFocus.dispose();
@@ -488,7 +530,91 @@ class _AppShellState extends State<AppShell> {
       if (!useMeta)
         const SingleActivator(LogicalKeyboardKey.keyW, control: true):
             const _CloseActiveTabIntent(),
+      // Phase 2 — the ⌘K command palette over the unified search.
+      if (useMeta)
+        const SingleActivator(LogicalKeyboardKey.keyK, meta: true):
+            const _PaletteIntent(),
+      if (!useMeta)
+        const SingleActivator(LogicalKeyboardKey.keyK, control: true):
+            const _PaletteIntent(),
     };
+  }
+
+  void _openPalette() {
+    if (_paletteOpen) return;
+    setState(() => _paletteOpen = true);
+  }
+
+  void _closePalette() {
+    if (!_paletteOpen) return;
+    setState(() => _paletteOpen = false);
+    _shellFocus.requestFocus();
+  }
+
+  /// The palette's unified search: views (rail + fact surfaces),
+  /// people, channels and shell actions — one list, keyboard-first.
+  List<CommandEntry> _paletteEntries(final SurfaceRegistry surfaces) {
+    final l10n = context.l10n;
+    return <CommandEntry>[
+      for (final spec in _viewSpecs(surfaces))
+        CommandEntry(
+          id: 'view.${spec.id}',
+          label: spec.title,
+          group: 'views',
+          icon: spec.icon,
+          run: () => _onLayoutChanged(_layout.showView(spec.id)),
+        ),
+      CommandEntry(
+        id: 'view.$kModelsSurfaceId',
+        label: surfaces[kModelsSurfaceId]?.title ?? l10n.viewModelsTitle,
+        group: 'views',
+        icon: Icons.tune,
+        run: _openModelsTab,
+      ),
+      CommandEntry(
+        id: 'view.$kSettingsSurfaceId',
+        label: surfaces[kSettingsSurfaceId]?.title ?? l10n.settings,
+        group: 'views',
+        icon: Icons.settings_outlined,
+        run: _openSettings,
+      ),
+      for (final actor in _service.roster?.all ?? const <ActorProfile>[])
+        CommandEntry(
+          id: 'dm.${actor.actorId}',
+          label: actor.displayName,
+          group: 'people',
+          run: () =>
+              activateConversationSurface(_service, 'dm:${actor.actorId}'),
+        ),
+      for (final channel in _service.channels)
+        CommandEntry(
+          id: 'channel.${channel.channelId}',
+          label: '#${channel.name}',
+          group: 'channels',
+          run: () => _service.selectChannel(channel.channelId),
+        ),
+      CommandEntry(
+        id: 'action.newTab',
+        label: l10n.newTabPageTitle,
+        group: 'actions',
+        icon: Icons.add,
+        run: _openNewTab,
+      ),
+      CommandEntry(
+        id: 'action.models',
+        label: l10n.viewModelsTitle,
+        group: 'actions',
+        icon: Icons.tune,
+        run: _openModelsTab,
+      ),
+      CommandEntry(
+        id: 'action.armWorld',
+        label: l10n.edgeArmWorld,
+        group: 'actions',
+        icon: Icons.power_settings_new,
+        run: () => unawaited(_worldState.armWorld()),
+      ),
+    ];
   }
 
   /// The `+`/⌘T flow: the picker opens/focuses as a new active tab of
@@ -599,6 +725,12 @@ class _AppShellState extends State<AppShell> {
                       return null;
                     },
                   ),
+                  _PaletteIntent: CallbackAction<_PaletteIntent>(
+                    onInvoke: (final _) {
+                      _openPalette();
+                      return null;
+                    },
+                  ),
                 },
                 // The focus anchor: shell-level shortcuts answer even
                 // when no text field holds focus — the anchor takes it
@@ -615,75 +747,93 @@ class _AppShellState extends State<AppShell> {
                           ShellTokens.railExpandedMinWindow;
                       return MiniWindowLayer(
                         controller: _miniWindows,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                        child: Stack(
                           children: [
-                            // Phase 0 unified titlebar (macOS): the window
-                            // draws under the traffic lights, so the shell
-                            // reserves the system gutter above its chrome.
-                            // macOS reports no viewPadding for the titlebar,
-                            // hence the platform constant; zero elsewhere.
-                            SizedBox(
-                              height:
-                                  defaultTargetPlatform == TargetPlatform.macOS
-                                  ? ShellTokens.titlebarGutter
-                                  : MediaQuery.of(context).viewPadding.top,
-                            ),
-                            Expanded(
-                              child: screenLayout.small
-                                  ? _centerColumn(surfaces)
-                                  : Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        SizedBox(
-                                          width: _railExpanded
-                                              ? ShellTokens.railWidth
-                                              : ShellTokens.railCompactWidth,
-                                          child: ActorRail(
-                                            service: _service,
-                                            expanded: _railExpanded,
-                                            activeView: _layout.activeView,
-                                            views: _viewSpecs(surfaces),
-                                            onOpenView: (final viewId) =>
-                                                _onLayoutChanged(
-                                                  _layout.showView(viewId),
-                                                ),
-                                            onOpenSettings: _openSettings,
-                                            onConversationNewTab:
-                                                (final surfaceId) =>
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Phase 0 unified titlebar (macOS): the window
+                                // draws under the traffic lights, so the shell
+                                // reserves the system gutter above its chrome.
+                                // macOS reports no viewPadding for the titlebar,
+                                // hence the platform constant; zero elsewhere.
+                                SizedBox(
+                                  height:
+                                      defaultTargetPlatform ==
+                                          TargetPlatform.macOS
+                                      ? ShellTokens.titlebarGutter
+                                      : MediaQuery.of(context).viewPadding.top,
+                                ),
+                                Expanded(
+                                  child: screenLayout.small
+                                      ? _centerColumn(surfaces)
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            SizedBox(
+                                              width: _railExpanded
+                                                  ? ShellTokens.railWidth
+                                                  : ShellTokens
+                                                        .railCompactWidth,
+                                              child: ActorRail(
+                                                service: _service,
+                                                expanded: _railExpanded,
+                                                activeView: _layout.activeView,
+                                                views: _viewSpecs(surfaces),
+                                                onOpenView: (final viewId) =>
                                                     _onLayoutChanged(
-                                                      _layout.openConversation(
-                                                        surfaceId,
-                                                        forceNew: true,
-                                                      ),
+                                                      _layout.showView(viewId),
                                                     ),
-                                            onMiniWindow: _openMiniWindow,
-                                          ),
+                                                onOpenSettings: _openSettings,
+                                                onOpenCommandPalette:
+                                                    _openPalette,
+                                                onConversationNewTab:
+                                                    (final surfaceId) =>
+                                                        _onLayoutChanged(
+                                                          _layout
+                                                              .openConversation(
+                                                                surfaceId,
+                                                                forceNew: true,
+                                                              ),
+                                                        ),
+                                                onMiniWindow: _openMiniWindow,
+                                              ),
+                                            ),
+                                            VerticalDivider(
+                                              width: 1,
+                                              color: Theme.of(
+                                                context,
+                                              ).dividerColor,
+                                            ),
+                                            Expanded(
+                                              child: _centerColumn(surfaces),
+                                            ),
+                                          ],
                                         ),
-                                        VerticalDivider(
-                                          width: 1,
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        Expanded(
-                                          child: _centerColumn(surfaces),
-                                        ),
-                                      ],
-                                    ),
+                                ),
+                                // Phase 1d — the status edge: ONE honest line
+                                // (mesh · backend · daemon · attention) at the
+                                // window bottom, spanning both layout branches;
+                                // its clicks route into the surfaces that own
+                                // the facts (Models tab, landing inbox, arm).
+                                StatusEdge(
+                                  world: _worldState,
+                                  onOpenModels: _openModelsTab,
+                                  onOpenInbox: _openInbox,
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(
+                                    context,
+                                  ).viewPadding.bottom,
+                                ),
+                              ],
                             ),
-                            // Phase 1d — the status edge: ONE honest line
-                            // (mesh · backend · daemon · attention) at the
-                            // window bottom, spanning both layout branches;
-                            // its clicks route into the surfaces that own
-                            // the facts (Models tab, landing inbox, arm).
-                            StatusEdge(
-                              world: _worldState,
-                              onOpenModels: _openModelsTab,
-                              onOpenInbox: _openInbox,
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).viewPadding.bottom,
-                            ),
+                            if (_paletteOpen)
+                              CommandPalette(
+                                entries: _paletteEntries(surfaces),
+                                onClose: _closePalette,
+                              ),
                           ],
                         ),
                       );
@@ -737,6 +887,11 @@ class _NewTabIntent extends Intent {
 
 class _CloseActiveTabIntent extends Intent {
   const _CloseActiveTabIntent();
+}
+
+/// Phase 2 — the ⌘K command palette intent.
+class _PaletteIntent extends Intent {
+  const _PaletteIntent();
 }
 
 /// Re-selects the thread behind a conversation surface id through the

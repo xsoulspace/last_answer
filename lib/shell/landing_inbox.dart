@@ -312,41 +312,45 @@ final class _TaskRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final la = context.la;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: la.rule, width: 0.5)),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 10,
-            height: 10,
-            child: CircularProgressIndicator(
-              strokeWidth: 1.5,
-              color: la.inkQuiet,
+    return Semantics(
+      label: 'inbox.task.${task.taskId}',
+      hint: task.task,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: la.rule, width: 0.5)),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 10,
+              height: 10,
+              child: CircularProgressIndicator(
+                strokeWidth: 1.5,
+                color: la.inkQuiet,
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              task.task.isEmpty ? task.taskId : task.task,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelMedium,
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                task.task.isEmpty ? task.taskId : task.task,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          if (task.modelId case final model?)
-            Text(model, style: LaTokens.mono(10, la.inkQuiet)),
-          const SizedBox(width: 8),
-          Text(
-            task.state,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: la.caution, fontSize: 10),
-          ),
-        ],
+            const SizedBox(width: 8),
+            if (task.modelId case final model?)
+              Text(model, style: LaTokens.mono(10, la.inkQuiet)),
+            const SizedBox(width: 8),
+            Text(
+              task.state,
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: la.caution, fontSize: 10),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -367,38 +371,42 @@ final class _VerdictRow extends StatelessWidget {
       'cancelled' => la.inkQuiet,
       _ => la.inkMuted,
     };
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: la.rule, width: 0.5)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 7,
-            height: 7,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          const SizedBox(width: 9),
-          Expanded(
-            child: Text(
-              verdict.line,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelMedium,
+    return Semantics(
+      label: 'inbox.verdict.${verdict.id}',
+      hint: verdict.line,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: la.rule, width: 0.5)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 7,
+              height: 7,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
-          ),
-          const SizedBox(width: 8),
-          if (verdict.spend case final spend?)
-            Text(spend, style: LaTokens.mono(10, la.inkQuiet)),
-          const SizedBox(width: 8),
-          Text(
-            verdict.state,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: color, fontSize: 10),
-          ),
-        ],
+            const SizedBox(width: 9),
+            Expanded(
+              child: Text(
+                verdict.line,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            const SizedBox(width: 8),
+            if (verdict.spend case final spend?)
+              Text(spend, style: LaTokens.mono(10, la.inkQuiet)),
+            const SizedBox(width: 8),
+            Text(
+              verdict.state,
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: color, fontSize: 10),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -421,25 +429,30 @@ final class _ThreadRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final la = context.la;
-    return ShellRow(
-      height: 34,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      onTap: () => onOpen(threadId),
-      child: Row(
-        children: [
-          Icon(Icons.forum_outlined, size: 13, color: la.inkQuiet),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              preview,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.labelMedium?.copyWith(color: la.inkMuted),
+    return Semantics(
+      button: true,
+      label: 'inbox.thread.$threadId',
+      hint: preview,
+      child: ShellRow(
+        height: 34,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        onTap: () => onOpen(threadId),
+        child: Row(
+          children: [
+            Icon(Icons.forum_outlined, size: 13, color: la.inkQuiet),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                preview,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: la.inkMuted),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -465,7 +478,8 @@ final class _InboxButton extends StatelessWidget {
     final color = danger ? la.danger : la.inkMuted;
     return Semantics(
       button: true,
-      label: label,
+      label: keyName,
+      hint: label,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(

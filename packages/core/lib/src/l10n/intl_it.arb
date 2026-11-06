@@ -509,5 +509,10 @@
   "modelsClose": "Chiudi",
   "modelsTelemetry": "Dispatch recenti",
   "modelsChipPrimary": "primario",
-  "modelsChipLocal": "locale"
+  "modelsChipLocal": "locale",
+  "commandPaletteHint": "Cerca viste, persone e azioni…",
+  "commandPaletteViews": "Viste",
+  "commandPalettePeople": "Persone",
+  "commandPaletteChannels": "Canali",
+  "commandPaletteActions": "Azioni"
 }

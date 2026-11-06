@@ -71,6 +71,7 @@ void main() {
             body: ActorRail(
               service: service,
               onOpenSettings: () {},
+              onOpenCommandPalette: () {},
               onConversationNewTab: onConversationNewTab,
             ),
           ),

@@ -512,5 +512,10 @@
   "modelsClose": "Закрыть",
   "modelsTelemetry": "Недавние отправки",
   "modelsChipPrimary": "основная",
-  "modelsChipLocal": "локальная"
+  "modelsChipLocal": "локальная",
+  "commandPaletteHint": "Поиск: виды, люди, действия…",
+  "commandPaletteViews": "Виды",
+  "commandPalettePeople": "Люди",
+  "commandPaletteChannels": "Каналы",
+  "commandPaletteActions": "Действия"
 }

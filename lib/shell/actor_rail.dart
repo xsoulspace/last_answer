@@ -62,6 +62,7 @@ final class ActorRail extends StatefulWidget {
   const ActorRail({
     required this.service,
     required this.onOpenSettings,
+    required this.onOpenCommandPalette,
     this.onConversationNewTab,
     this.onMiniWindow,
     this.onOpenView,
@@ -76,6 +77,10 @@ final class ActorRail extends StatefulWidget {
 
   /// Opens Settings (the create-actor affordance lives there, ADR 0023).
   final VoidCallback onOpenSettings;
+
+  /// Phase 2 — the rail's search field is the ⌘K palette's trigger
+  /// (redesign §2.2.6): the inline filter retired into the palette.
+  final VoidCallback onOpenCommandPalette;
 
   /// ⌘-click / middle-click on a conversation row: the row reports its
   /// surface id (`dm:<actorId>` / `channel:<channelId>`) and the SHELL
@@ -107,8 +112,6 @@ final class ActorRail extends StatefulWidget {
 }
 
 class _ActorRailState extends State<ActorRail> {
-  String _query = '';
-
   /// The selected workspace — local for this slice (ADR 0026 non-goal:
   /// the file-tree surface, where selection becomes durable state, is a
   /// later wave).
@@ -151,18 +154,11 @@ class _ActorRailState extends State<ActorRail> {
       if (actor.kind != ActorKind.human) actor,
   ];
 
-  bool _matches(final String text) =>
-      _query.isEmpty || text.toLowerCase().contains(_query.toLowerCase());
+  // Phase 2 — the inline roster filter retired into the ⌘K palette
+  // (redesign §2.2.6): the rail lists everything, the palette searches.
+  List<ActorProfile> get _filteredActors => _addressableActors;
 
-  List<ActorProfile> get _filteredActors => [
-    for (final actor in _addressableActors)
-      if (_matches(actor.displayName) || _matches(actor.role)) actor,
-  ];
-
-  List<ChannelInfo> get _filteredChannels => [
-    for (final channel in widget.service.channels)
-      if (_matches(channel.name)) channel,
-  ];
+  List<ChannelInfo> get _filteredChannels => widget.service.channels;
 
   /// A row's quiet second line: the thread's last beat when the DM has
   /// one, else the actor's authored role (who they are until they
@@ -186,34 +182,12 @@ class _ActorRailState extends State<ActorRail> {
     return childrenByParent;
   }
 
-  /// The ids that pass the search: a workspace matches by name, and a
-  /// parent stays visible when any descendant matches (the graph's
-  /// reachability is the search's).
+  /// The visible workspace ids: with the inline filter retired into
+  /// the ⌘K palette (phase 2), the tree shows its whole graph.
   Set<String> _passingWorkspaceIds(
     final List<Workspace> workspaces,
     final Map<String, List<Workspace>> childrenByParent,
-  ) {
-    final passing = <String>{};
-    void visit(final Workspace workspace) {
-      var anyChild = false;
-      final children = childrenByParent[workspace.id] ?? const <Workspace>[];
-      for (final child in children) {
-        if (!passing.contains(child.id)) visit(child);
-        if (passing.contains(child.id)) anyChild = true;
-      }
-      if (_matches(workspace.name) || anyChild) passing.add(workspace.id);
-    }
-
-    for (final workspace in workspaces) {
-      if (workspace.parentIds.isEmpty) visit(workspace);
-    }
-    // Members of no root (impossible by the registry's cycle law, but
-    // stay total): judge them by name alone.
-    for (final workspace in workspaces) {
-      if (_matches(workspace.name)) passing.add(workspace.id);
-    }
-    return passing;
-  }
+  ) => {for (final workspace in workspaces) workspace.id};
 
   // ---- actions ----------------------------------------------------------
 
@@ -595,6 +569,7 @@ class _ActorRailState extends State<ActorRail> {
                   for (final actor in actors)
                     _ConversationRow(
                       key: ValueKey('rail.actor.${actor.actorId}'),
+                      semanticsLabel: 'rail.actor.${actor.actorId}',
                       lead: ActorAvatar(
                         profile: actor,
                         size: ShellTokens.rowAvatar,
@@ -631,6 +606,7 @@ class _ActorRailState extends State<ActorRail> {
                   for (final channel in channels)
                     _ConversationRow(
                       key: ValueKey('rail.channel.${channel.channelId}'),
+                      semanticsLabel: 'rail.channel.${channel.channelId}',
                       lead: _ChannelDisc(channelId: channel.channelId),
                       title: '#${channel.name}',
                       preview: widget.expanded
@@ -686,31 +662,35 @@ class _ActorRailState extends State<ActorRail> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        key: const ValueKey('rail.search'),
-                        onChanged: (final value) =>
-                            setState(() => _query = value),
-                        style: theme.textTheme.bodySmall,
-                        decoration: InputDecoration(
-                          hintText: l10n.railSearchHint,
-                          hintStyle: theme.textTheme.bodySmall?.copyWith(
-                            color: context.shellMuted,
+                      child: Semantics(
+                        button: true,
+                        label: 'rail.search',
+                        child: TextField(
+                          key: const ValueKey('rail.search'),
+                          readOnly: true,
+                          onTap: widget.onOpenCommandPalette,
+                          style: theme.textTheme.bodySmall,
+                          decoration: InputDecoration(
+                            hintText: l10n.railSearchHint,
+                            hintStyle: theme.textTheme.bodySmall?.copyWith(
+                              color: context.shellMuted,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              size: 16,
+                              color: context.shellMuted,
+                            ),
+                            prefixIconConstraints: const BoxConstraints(
+                              minWidth: 30,
+                            ),
+                            isDense: true,
+                            // Linear's input: invisible until needed — the
+                            // surface IS the field; focus earns the caret,
+                            // never an always-on outline box.
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
                           ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            size: 16,
-                            color: context.shellMuted,
-                          ),
-                          prefixIconConstraints: const BoxConstraints(
-                            minWidth: 30,
-                          ),
-                          isDense: true,
-                          // Linear's input: invisible until needed — the
-                          // surface IS the field; focus earns the caret,
-                          // never an always-on outline box.
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
                         ),
                       ),
                     ),
@@ -802,6 +782,7 @@ class _ConversationRow extends StatelessWidget {
     this.onNewTab,
     this.onMiniWindow,
     this.compact = false,
+    this.semanticsLabel,
     super.key,
   });
 
@@ -811,6 +792,10 @@ class _ConversationRow extends StatelessWidget {
   final String? preview;
   final bool selected;
   final VoidCallback onTap;
+
+  /// Phase 2 — the Semantics name (the widget key: `rail.actor.<id>` /
+  /// `rail.channel.<id>`); the display title rides the hint.
+  final String? semanticsLabel;
 
   /// ⌘-click / middle-click opens this conversation in its own center
   /// tab instead of selecting it (browser convention). Null falls
@@ -852,75 +837,81 @@ class _ConversationRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    return Listener(
-      // Middle-click never reaches GestureDetector's tap recognizers;
-      // the DOWN event carries the button bits (the UP event does not).
-      onPointerDown: (final event) {
-        if (onNewTab == null) return;
-        if (event.buttons == kMiddleMouseButton) onNewTab!();
-      },
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onSecondaryTapUp: (final details) =>
-            _showContextMenu(context, details.globalPosition),
-        child: ShellRow(
-          selected: selected,
-          padding: compact
-              ? const EdgeInsets.symmetric(horizontal: 6)
-              : ShellTokens.rowPadding,
-          // ⌘+click (⌃+click off-mac) rides the normal tap; the modifier
-          // decides what the tap MEANS (new tab vs selection) the moment
-          // it lands.
-          onTap: onNewTab == null
-              ? onTap
-              : () {
-                  final modifiers = HardwareKeyboard.instance;
-                  if (modifiers.isMetaPressed || modifiers.isControlPressed) {
-                    onNewTab!();
-                  } else {
-                    onTap();
-                  }
-                },
-          height: compact
-              ? 40
-              : preview == null
-              ? ShellTokens.rowHeight
-              : 46,
-          child: compact
-              ? Center(child: lead)
-              : Row(
-                  children: [
-                    lead,
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontWeight: selected
-                                  ? FontWeight.w600
-                                  : FontWeight.w500,
-                            ),
-                          ),
-                          if (preview != null)
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: semanticsLabel ?? title,
+      hint: semanticsLabel == null ? null : title,
+      child: Listener(
+        // Middle-click never reaches GestureDetector's tap recognizers;
+        // the DOWN event carries the button bits (the UP event does not).
+        onPointerDown: (final event) {
+          if (onNewTab == null) return;
+          if (event.buttons == kMiddleMouseButton) onNewTab!();
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onSecondaryTapUp: (final details) =>
+              _showContextMenu(context, details.globalPosition),
+          child: ShellRow(
+            selected: selected,
+            padding: compact
+                ? const EdgeInsets.symmetric(horizontal: 6)
+                : ShellTokens.rowPadding,
+            // ⌘+click (⌃+click off-mac) rides the normal tap; the modifier
+            // decides what the tap MEANS (new tab vs selection) the moment
+            // it lands.
+            onTap: onNewTab == null
+                ? onTap
+                : () {
+                    final modifiers = HardwareKeyboard.instance;
+                    if (modifiers.isMetaPressed || modifiers.isControlPressed) {
+                      onNewTab!();
+                    } else {
+                      onTap();
+                    }
+                  },
+            height: compact
+                ? 40
+                : preview == null
+                ? ShellTokens.rowHeight
+                : 46,
+            child: compact
+                ? Center(child: lead)
+                : Row(
+                    children: [
+                      lead,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             Text(
-                              preview!,
+                              title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.labelSmall?.copyWith(
-                                color: context.shellMuted,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: selected
+                                    ? FontWeight.w600
+                                    : FontWeight.w500,
                               ),
                             ),
-                        ],
+                            if (preview != null)
+                              Text(
+                                preview!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: context.shellMuted,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );
@@ -1167,7 +1158,10 @@ class _ViewRow extends StatelessWidget {
   Widget build(final BuildContext context) => Semantics(
     button: true,
     selected: selected,
-    label: spec.title,
+    // Phase 2 — the agent contract: the Semantics name IS the widget
+    // key; the human title rides the hint.
+    label: 'rail.view.${spec.id}',
+    hint: spec.title,
     child: ShellRow(
       selected: selected,
       onTap: onTap,

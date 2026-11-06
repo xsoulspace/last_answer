@@ -230,7 +230,8 @@ final class _ArmButton extends StatelessWidget {
     final la = context.la;
     return Semantics(
       button: true,
-      label: 'arm world',
+      label: 'edge.arm',
+      hint: context.l10n.edgeArmWorld,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
@@ -415,9 +416,12 @@ final class _EdgeSegment extends StatelessWidget {
     if (tooltip != null && tooltip!.isNotEmpty) {
       segment = Tooltip(message: tooltip!, child: segment);
     }
+    // Phase 2 — the agent/screen-reader contract: the Semantics name
+    // IS the widget key; the human words ride the hint.
     segment = Semantics(
       button: onTap != null,
-      label: label,
+      label: keyName,
+      hint: label,
       child: MouseRegion(
         cursor: onTap != null ? SystemMouseCursors.click : MouseCursor.defer,
         child: GestureDetector(

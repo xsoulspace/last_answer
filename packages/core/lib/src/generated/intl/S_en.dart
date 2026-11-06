@@ -1603,4 +1603,19 @@ class SEn extends S {
 
   @override
   String get modelsChipLocal => 'local';
+
+  @override
+  String get commandPaletteHint => 'Search views, people and actions…';
+
+  @override
+  String get commandPaletteViews => 'Views';
+
+  @override
+  String get commandPalettePeople => 'People';
+
+  @override
+  String get commandPaletteChannels => 'Channels';
+
+  @override
+  String get commandPaletteActions => 'Actions';
 }

@@ -48,9 +48,7 @@ final class ViewTabStrip extends StatelessWidget {
   final Widget? Function(String surfaceId)? leadingFor;
 
   String _titleOf(final String surfaceId) =>
-      titleFor?.call(surfaceId) ??
-      surfaces[surfaceId]?.title ??
-      surfaceId;
+      titleFor?.call(surfaceId) ?? surfaces[surfaceId]?.title ?? surfaceId;
 
   @override
   Widget build(final BuildContext context) {
@@ -114,6 +112,7 @@ final class ViewTabStrip extends StatelessWidget {
               ),
               _AddTabButton(
                 key: ValueKey('view.strip.add.$viewId'),
+                label: 'view.strip.add.$viewId',
                 onTap: onNewTab,
               ),
               const SizedBox(width: 6),
@@ -174,7 +173,10 @@ final class _StripTabState extends State<_StripTab> {
     return Semantics(
       button: true,
       selected: widget.focused,
-      label: 'tab ${widget.title}',
+      // Phase 2 — the agent contract: the Semantics name IS the widget
+      // key; the human title rides the hint.
+      label: 'view.tab.${widget.surfaceId}',
+      hint: 'tab ${widget.title}',
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: (final _) => setState(() => _hovering = true),
@@ -190,9 +192,7 @@ final class _StripTabState extends State<_StripTab> {
             onTap: widget.onTap,
             child: Container(
               height: ShellTokens.tabHeight,
-              constraints: BoxConstraints(
-                maxWidth: widget.compact ? 44 : 200,
-              ),
+              constraints: BoxConstraints(maxWidth: widget.compact ? 44 : 200),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: widget.focused ? context.shellSelected : null,
@@ -256,14 +256,18 @@ final class _StripTabState extends State<_StripTab> {
 
 /// The strip's `+`: opens the picker as a tab of THIS view.
 final class _AddTabButton extends StatelessWidget {
-  const _AddTabButton({required this.onTap, super.key});
+  const _AddTabButton({required this.onTap, required this.label, super.key});
 
   final VoidCallback onTap;
+
+  /// The Semantics name (the widget key — phase 2 contract).
+  final String label;
 
   @override
   Widget build(final BuildContext context) => Semantics(
     button: true,
-    label: 'new tab',
+    label: label,
+    hint: 'new tab',
     child: MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -272,11 +276,7 @@ final class _AddTabButton extends StatelessWidget {
         child: SizedBox(
           width: 29,
           height: ShellTokens.tabHeight,
-          child: Icon(
-            Icons.add,
-            size: 16,
-            color: context.shellMuted,
-          ),
+          child: Icon(Icons.add, size: 16, color: context.shellMuted),
         ),
       ),
     ),

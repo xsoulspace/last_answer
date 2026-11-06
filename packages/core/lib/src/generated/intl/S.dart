@@ -2996,6 +2996,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'local'**
   String get modelsChipLocal;
+
+  /// The ⌘K palette's field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search views, people and actions…'**
+  String get commandPaletteHint;
+
+  /// Palette group: the rail's views.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get commandPaletteViews;
+
+  /// Palette group: actors.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get commandPalettePeople;
+
+  /// Palette group: channels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get commandPaletteChannels;
+
+  /// Palette group: shell actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get commandPaletteActions;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

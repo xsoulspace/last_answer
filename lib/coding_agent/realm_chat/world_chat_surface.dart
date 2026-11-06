@@ -224,20 +224,23 @@ class _ConversationPane extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
-                  child: TextField(
-                    key: const ValueKey('worldchat.composer'),
-                    controller: composer,
-                    minLines: 1,
-                    maxLines: 5,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: (final value) => unawaited(
-                      service.say(value).then((_) => composer.clear()),
-                    ),
-                    decoration: InputDecoration(
-                      hintText: composerHint,
-                      border: InputBorder.none,
-                      isDense: true,
-                      filled: false,
+                  child: Semantics(
+                    label: 'worldchat.composer',
+                    child: TextField(
+                      key: const ValueKey('worldchat.composer'),
+                      controller: composer,
+                      minLines: 1,
+                      maxLines: 5,
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (final value) => unawaited(
+                        service.say(value).then((_) => composer.clear()),
+                      ),
+                      decoration: InputDecoration(
+                        hintText: composerHint,
+                        border: InputBorder.none,
+                        isDense: true,
+                        filled: false,
+                      ),
                     ),
                   ),
                 ),

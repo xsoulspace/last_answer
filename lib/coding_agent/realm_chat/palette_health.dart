@@ -56,6 +56,14 @@ class PaletteHealthStore {
       Platform.environment['HOME'] ??
       '.';
 
+  /// Every entry the daemon's health file declares, keyed by cast id
+  /// (the Models surface's merged read model — phase 1d). Empty when the
+  /// file is absent or unreadable: telemetry is never authoritative.
+  Map<String, PaletteBrainHealth> get entries {
+    _ensureLoaded();
+    return Map.unmodifiable(_entries);
+  }
+
   /// The health for a brainRef: the cast id (possibly carrying
   /// `local:` parameters) resolved against the daemon's palette. Null
   /// when the palette names no such entry — a local or unknown brain
@@ -75,8 +83,7 @@ class PaletteHealthStore {
     }
     _loadedAt = now;
     try {
-      final path =
-          '${_resolveHome()}/.xsoulspace/palette_health.json';
+      final path = '${_resolveHome()}/.xsoulspace/palette_health.json';
       final file = File(path);
       if (!file.existsSync()) {
         _entries = const {};

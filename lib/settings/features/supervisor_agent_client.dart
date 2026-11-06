@@ -38,9 +38,8 @@ final class SupervisorAgentRefusal implements Exception {
   final String? detail;
 
   @override
-  String toString() => detail == null || detail!.isEmpty
-      ? code
-      : '$code: $detail';
+  String toString() =>
+      detail == null || detail!.isEmpty ? code : '$code: $detail';
 }
 
 /// The world's admission of one delegated task. [state] is the world's
@@ -121,9 +120,17 @@ abstract interface class SupervisorAgentClient {
   /// Asks the world to admit [task]. The answer is an ADMISSION, never a
   /// completion: the returned [SupervisorAgentAdmission.state] is the
   /// world's word at admission time.
+  ///
+  /// [modelId] is a PALETTE ENTRY id (leg B G3): omitted, the world
+  /// defaults to its primary generative rung — a degraded primary the
+  /// surface should have shown BEFORE the send. [addressees] are the
+  /// actor ids the task is addressed to (ADR 0118: the addressing IS
+  /// the delegation).
   Future<SupervisorAgentAdmission> admit({
     required String task,
     required String requestId,
+    String? modelId,
+    List<String>? addressees,
   });
 
   /// Reads the durable state of an admitted task.
@@ -150,10 +157,8 @@ typedef SupervisorAgentClientResolver =
 /// it never claims the capability is qualified: it names what the world
 /// (or the seat) did or did not serve.
 final class SupervisorAgentClientResolution {
-  const SupervisorAgentClientResolution.available(
-    this.client, {
-    this.release,
-  }) : refusal = null;
+  const SupervisorAgentClientResolution.available(this.client, {this.release})
+    : refusal = null;
 
   const SupervisorAgentClientResolution.refused(this.refusal)
     : client = null,
@@ -194,12 +199,16 @@ final class HarnessWorldAgentClient implements SupervisorAgentClient {
   Future<SupervisorAgentAdmission> admit({
     required final String task,
     required final String requestId,
+    final String? modelId,
+    final List<String>? addressees,
   }) async {
     final result = await _invoke('task', {
       'op': 'create',
       'task': task,
       'requestId': requestId,
       'purpose': 'coding',
+      if (modelId != null && modelId.isNotEmpty) 'modelId': modelId,
+      if (addressees != null && addressees.isNotEmpty) 'addressees': addressees,
     });
     if (result['ok'] != true) {
       throw SupervisorAgentRefusal(_bounceOf(result) ?? 'task_create_refused');

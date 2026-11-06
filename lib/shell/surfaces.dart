@@ -47,11 +47,15 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
 import 'package:lastanswer/shell/shell_theme.dart';
+
+import 'package:lastanswer/shell/view_models.dart';
 
 import 'package:lastanswer/shell/view_people.dart';
 
@@ -111,6 +115,12 @@ const String kThreadsSurfaceId = 'threads';
 /// The boards view's surface id — plans, decomposition and delegation
 /// rows on the ecsly_boards substrate (the boards program, stage 4).
 const String kBoardsSurfaceId = 'boards';
+
+/// The Models surface's id (phase 1d): the dynamic palette read model —
+/// rungs × health × ladder × telemetry, the daemon's arm controls and
+/// the palette editor. Opened from the status edge or the picker; not a
+/// rail view (it is a fact surface, not a workspace).
+const String kModelsSurfaceId = 'models';
 
 /// The new-tab picker's surface id (WAVE 4T — the browser model): the
 /// bar's `+` opens it, picking a destination replaces it in place.
@@ -201,8 +211,7 @@ SurfaceRegistry buildShellSurfaces(
     id: kConversationsSurfaceId,
     title: context.l10n.worldChatConversations,
     builder: (final tabContext) => WorldChatSurface(
-      service:
-          service ?? tabContext.read<RealmChatService?>(),
+      service: service ?? tabContext.read<RealmChatService?>(),
     ),
     icon: Icons.forum_outlined,
   ),
@@ -277,6 +286,20 @@ SurfaceRegistry buildShellSurfaces(
           ?.planningController,
     ),
     icon: Icons.view_kanban_outlined,
+  ),
+  kModelsSurfaceId: SurfaceSpec(
+    id: kModelsSurfaceId,
+    title: context.l10n.viewModelsTitle,
+    builder: (final tabContext) {
+      // The world's read model (phase 1d); a hermetic shell without it
+      // keeps the honest quiet note.
+      final world = tabContext.read<WorldStateService?>();
+      if (world == null) {
+        return _QuietViewNote(text: tabContext.l10n.modelsNoPalette);
+      }
+      return ModelsView(world: world);
+    },
+    icon: Icons.tune,
   ),
   // The newtab picker's spec is composed by AppShell (center_tabs.dart
   // hosts the [NewTabSurface] and the scope it navigates through) —

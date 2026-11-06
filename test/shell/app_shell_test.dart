@@ -24,6 +24,8 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+
 import 'package:lastanswer/common_imports.dart';
 
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
@@ -37,6 +39,8 @@ import 'package:lastanswer/shell/view_tab_strip.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'hermetic_world_state.dart';
 
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
@@ -72,8 +76,13 @@ class _IdleRequests extends ProjectsPagedDataRequestsBuilder {
 Future<void> _pumpShell(
   final WidgetTester tester, {
   final RealmChatService? service,
+  final WorldStateService? worldState,
 }) async {
   final resolved = service ?? RealmChatService();
+  // Phase 1d: the shell's world read model is hermetic in tests — the
+  // injected service never polls (no pending timers) and probes nothing
+  // real.
+  final resolvedWorld = worldState ?? hermeticWorldState();
   // Let the service's world start fail for real — BEFORE any widget
   // pumps: path_provider has no plugin in the test binding, so
   // `ensureReady` lands in its named error state without a journal
@@ -99,12 +108,17 @@ Future<void> _pumpShell(
         ),
       ],
       child: MaterialApp(
+        locale: const Locale('en'),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         // Production wraps the shell in ScreenScaffold's Scaffold; mirror
         // that here so Material ancestors exist.
         home: Scaffold(
-          body: AppShell(service: resolved, child: const CenterTabsArea()),
+          body: AppShell(
+            service: resolved,
+            worldState: resolvedWorld,
+            child: const CenterTabsArea(),
+          ),
         ),
       ),
     ),
@@ -120,8 +134,13 @@ Future<void> _pumpShell(
 }
 
 void main() {
+  late Directory devicePin;
   setUp(() {
     SharedPreferences.setMockInitialValues({});
+    // Pin the realm device root so the palette/health walk never reads
+    // the real machine's ~/.xsoulspace.
+    devicePin = Directory.systemTemp.createTempSync('la_shell_home_');
+    RealmWorld.debugDeviceHome = devicePin.path;
   });
 
   tearDown(() {
@@ -131,25 +150,35 @@ void main() {
     AgentDocSurface.createAgentProjectHook = null;
     AgentDocSurface.meshWiring = null;
     StorageBackendsNotifier.onSyncCycle = null;
+    RealmWorld.debugDeviceHome = null;
+    devicePin.deleteSync(recursive: true);
   });
 
-  testWidgets(
-    'launching lands in the shell: the rail lists the views and the '
-    'conversations view hosts the center with its own strip',
-    (final tester) async {
-      await _pumpShell(tester);
-      // The rail's VIEWS section (the activity bar).
-      expect(find.byKey(const ValueKey('rail.view.conversations')), findsOneWidget);
-      expect(find.byKey(const ValueKey('rail.view.boards')), findsOneWidget);
-      expect(find.byKey(const ValueKey('rail.view.inspector')), findsOneWidget);
-      // The hosted view's strip, with its world-face tab focused.
-      expect(find.byType(ViewTabStrip), findsOneWidget);
-      expect(find.byKey(const ValueKey('view.strip.conversations')), findsOneWidget);
-      expect(find.byKey(const ValueKey('view.tab.conversations')), findsOneWidget);
-      // No dock, no global bar: the retired chrome stays retired.
-      expect(find.byKey(const ValueKey('view.dock')), findsNothing);
-    },
-  );
+  testWidgets('launching lands in the shell: the rail lists the views and the '
+      'conversations view hosts the center with its own strip', (
+    final tester,
+  ) async {
+    await _pumpShell(tester);
+    // The rail's VIEWS section (the activity bar).
+    expect(
+      find.byKey(const ValueKey('rail.view.conversations')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('rail.view.boards')), findsOneWidget);
+    expect(find.byKey(const ValueKey('rail.view.inspector')), findsOneWidget);
+    // The hosted view's strip, with its world-face tab focused.
+    expect(find.byType(ViewTabStrip), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('view.strip.conversations')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('view.tab.conversations')),
+      findsOneWidget,
+    );
+    // No dock, no global bar: the retired chrome stays retired.
+    expect(find.byKey(const ValueKey('view.dock')), findsNothing);
+  });
 
   testWidgets('a rail view row hosts that view and persists v3', (
     final tester,
@@ -160,7 +189,10 @@ void main() {
     expect(find.byKey(const ValueKey('view.strip.boards')), findsOneWidget);
     expect(find.byKey(const ValueKey('view.tab.boards')), findsOneWidget);
     // The conversations strip survives, unfocused.
-    expect(find.byKey(const ValueKey('view.strip.conversations')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('view.strip.conversations')),
+      findsNothing,
+    );
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString('shell.views.v3');
     expect(raw, isNotNull);
@@ -172,7 +204,9 @@ void main() {
   testWidgets('the strip + opens the picker in the ACTIVE view and pick '
       'replaces it in place', (final tester) async {
     await _pumpShell(tester);
-    await tester.tap(find.byKey(const ValueKey('view.strip.add.conversations')));
+    await tester.tap(
+      find.byKey(const ValueKey('view.strip.add.conversations')),
+    );
     await tester.pump();
     expect(find.byKey(const ValueKey('view.tab.newtab')), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('newtab.entry.boards')));
@@ -252,7 +286,99 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
     // The ONE conversation slot carries the dm id (zero accumulation).
-    expect(find.byKey(ValueKey('view.tab.dm:${actor.actorId}')), findsOneWidget);
+    expect(
+      find.byKey(ValueKey('view.tab.dm:${actor.actorId}')),
+      findsOneWidget,
+    );
     expect(find.byKey(const ValueKey('view.tab.conversations')), findsNothing);
+  });
+
+  group('phase 1d — the status edge + landing inbox + Models surface', () {
+    testWidgets('the edge renders the honest world line and the ONE-click '
+        'arm refuses by name when the artifact is absent', (
+      final tester,
+    ) async {
+      final world = hermeticWorldState();
+      await world.refresh();
+      await _pumpShell(tester, worldState: world);
+
+      expect(find.byKey(const ValueKey('shell.statusEdge')), findsOneWidget);
+      expect(find.text('world down'), findsOneWidget);
+      expect(find.byKey(const ValueKey('edge.arm')), findsOneWidget);
+      // A down world still names its other segments honestly.
+      expect(find.text('mesh off'), findsOneWidget);
+      expect(find.text('attention: 0'), findsOneWidget);
+
+      await tester.tap(find.byKey(const ValueKey('edge.arm')));
+      await tester.pump();
+      expect(find.textContaining('arm failed'), findsOneWidget);
+      expect(world.armError, 'daemon_artifact_absent');
+      addTearDown(world.dispose);
+    });
+
+    testWidgets('the backend segment opens the Models surface as a tab of '
+        'the active view', (final tester) async {
+      final world = hermeticWorldState(daemonLive: true);
+      await world.refresh();
+      await _pumpShell(tester, worldState: world);
+
+      expect(find.text('world live'), findsOneWidget);
+      expect(find.text('no palette declared'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('edge.backend')));
+      await tester.pump();
+      expect(find.byKey(const ValueKey('view.tab.models')), findsOneWidget);
+      expect(find.byKey(const ValueKey('shell.modelsView')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('models.palette.empty')),
+        findsOneWidget,
+      );
+      addTearDown(world.dispose);
+    });
+
+    testWidgets('the attention segment re-hosts the conversations view', (
+      final tester,
+    ) async {
+      final world = hermeticWorldState(daemonLive: true);
+      await world.refresh();
+      await _pumpShell(tester, worldState: world);
+      await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
+      await tester.pump();
+      expect(find.byKey(const ValueKey('view.strip.boards')), findsOneWidget);
+
+      await tester.tap(find.byKey(const ValueKey('edge.attention')));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('view.strip.conversations')),
+        findsOneWidget,
+      );
+      addTearDown(world.dispose);
+    });
+
+    testWidgets('the conversations void is the landing inbox (hermetic '
+        'world lane)', (final tester) async {
+      late RealmChatService service;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_inbox_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = await RealmWorld.open(rootOverride: temp.path);
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+      });
+      final worldState = hermeticWorldState();
+      await worldState.refresh();
+      await _pumpShell(tester, service: service, worldState: worldState);
+
+      // No thread open: the void became the inbox — and a down daemon
+      // arms from there too (the first-session script's step 1).
+      expect(find.byKey(const ValueKey('shell.landingInbox')), findsOneWidget);
+      expect(find.byKey(const ValueKey('inbox.arm')), findsOneWidget);
+      expect(find.byKey(const ValueKey('inbox.arm.button')), findsOneWidget);
+      addTearDown(worldState.dispose);
+    });
   });
 }

@@ -5,10 +5,12 @@
 /// gap, not a silent lie.
 library;
 
-/// Unsupported on web: the supervised daemon needs `dart:io`.
+/// Unsupported on web: the supervised daemon needs `dart:io`. The
+/// signature MIRRORS the io variant exactly (the conditional-import
+/// law: both variants answer the same call shape).
 Future<Map<String, Object?>> startSupervisedEcsaiDaemon({
-  required String workspace,
   required String daemonExecutablePath,
+  String? workspaceHint,
   String? logPath,
   Duration readinessBudget = const Duration(seconds: 30),
 }) async => const {

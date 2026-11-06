@@ -589,7 +589,7 @@ class _ActorRailState extends State<ActorRail> {
               ),
           if (actors.isNotEmpty)
             _Section(
-              label: l10n.railActors,
+              label: widget.expanded ? l10n.railActors : null,
               child: Column(
                 children: [
                   for (final actor in actors)
@@ -625,7 +625,7 @@ class _ActorRailState extends State<ActorRail> {
             ),
           if (channels.isNotEmpty)
             _Section(
-              label: l10n.railChannels,
+              label: widget.expanded ? l10n.railChannels : null,
               child: Column(
                 children: [
                   for (final channel in channels)
@@ -683,46 +683,46 @@ class _ActorRailState extends State<ActorRail> {
             if (widget.expanded)
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      key: const ValueKey('rail.search'),
-                      onChanged: (final value) =>
-                          setState(() => _query = value),
-                      style: theme.textTheme.bodySmall,
-                      decoration: InputDecoration(
-                        hintText: l10n.railSearchHint,
-                        hintStyle: theme.textTheme.bodySmall?.copyWith(
-                          color: context.shellMuted,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        key: const ValueKey('rail.search'),
+                        onChanged: (final value) =>
+                            setState(() => _query = value),
+                        style: theme.textTheme.bodySmall,
+                        decoration: InputDecoration(
+                          hintText: l10n.railSearchHint,
+                          hintStyle: theme.textTheme.bodySmall?.copyWith(
+                            color: context.shellMuted,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            size: 16,
+                            color: context.shellMuted,
+                          ),
+                          prefixIconConstraints: const BoxConstraints(
+                            minWidth: 30,
+                          ),
+                          isDense: true,
+                          // Linear's input: invisible until needed — the
+                          // surface IS the field; focus earns the caret,
+                          // never an always-on outline box.
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
                         ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          size: 16,
-                          color: context.shellMuted,
-                        ),
-                        prefixIconConstraints: const BoxConstraints(
-                          minWidth: 30,
-                        ),
-                        isDense: true,
-                        // Linear's input: invisible until needed — the
-                        // surface IS the field; focus earns the caret,
-                        // never an always-on outline box.
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    key: const ValueKey('rail.add'),
-                    tooltip: l10n.railAddTooltip,
-                    icon: const Icon(Icons.add_comment_outlined, size: 20),
-                    onPressed: () => unawaited(_openNewMenu()),
-                  ),
-                ],
+                    IconButton(
+                      key: const ValueKey('rail.add'),
+                      tooltip: l10n.railAddTooltip,
+                      icon: const Icon(Icons.add_comment_outlined, size: 20),
+                      onPressed: () => unawaited(_openNewMenu()),
+                    ),
+                  ],
+                ),
               ),
-            ),
             Expanded(
               child: sections.isEmpty
                   ? Center(
@@ -755,9 +755,11 @@ class _ActorRailState extends State<ActorRail> {
 
 /// A muted section label above its content (DESIGN: small-caps labels).
 class _Section extends StatelessWidget {
-  const _Section({required this.label, required this.child});
+  const _Section({this.label, required this.child});
 
-  final String label;
+  /// Null in the compact rail: an icon column carries no section word
+  /// (a 56px column would wrap the label into noise).
+  final String? label;
   final Widget child;
 
   @override
@@ -768,15 +770,17 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurfaceVariant,
+          if (label != null) ...[
+            Text(
+              label!,
+              style: theme.textTheme.labelSmall?.copyWith(
+                letterSpacing: 1.2,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
+            const SizedBox(height: 6),
+          ],
           child,
         ],
       ),
@@ -885,38 +889,38 @@ class _ConversationRow extends StatelessWidget {
           child: compact
               ? Center(child: lead)
               : Row(
-            children: [
-              lead,
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: selected
-                            ? FontWeight.w600
-                            : FontWeight.w500,
+                    lead,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: selected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
+                            ),
+                          ),
+                          if (preview != null)
+                            Text(
+                              preview!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: context.shellMuted,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                    if (preview != null)
-                      Text(
-                        preview!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: context.shellMuted,
-                        ),
-                      ),
                   ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -1197,9 +1201,7 @@ class _ViewRow extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: selected
-                          ? FontWeight.w600
-                          : FontWeight.w500,
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                     ),
                   ),
                 ),

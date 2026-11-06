@@ -4,12 +4,14 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as external_worlds;
 import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_binding_sheet.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_seats.dart';
+import 'package:provider/provider.dart';
 import 'package:xsoulspace_agentic_harness_inspector/session_protocol.dart';
 // Deep imports are the package's DOCUMENTED web-safe pattern: the barrel
 // also carries dart:io transports (mcp_source/app_server) that must never
@@ -338,8 +340,13 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
   WorldSeatLease? _seatLease;
 
   /// The WRITE rung for a bound world: delegate the task sentence
-  /// through the paired world's seat channel. The outcome surfaces
-  /// honestly (accepted / refused / failed — named, never silent).
+  /// through the paired world's seat channel — `task {op:'create'}`
+  /// (ADR 0118: creation IS the delegation; the pre-0118
+  /// `agent_task_delegate` name never rode the seat catalog and answers
+  /// with a migration refusal — leg B G4). The session's chosen rung
+  /// (Models surface) rides `modelId`; omitted, the world defaults to
+  /// its primary generative entry. The receipt is an ADMISSION, so the
+  /// honest word is "admitted (queued)", never "done".
   Future<void> _delegateViaSeat(final String sentence) async {
     final bound = widget.binding;
     final world = _discovered;
@@ -357,19 +364,26 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
         );
         return;
       }
+      final rung = context.read<WorldStateService?>()?.selectedRungId;
       final result = await WorldSeatChannel.call(
         lease,
         seatWs: world.seatWs,
         token: world.token,
-        name: 'agent_task_delegate',
-        args: {'task': sentence},
+        name: 'task',
+        args: {
+          'op': 'create',
+          'task': sentence,
+          'requestId': 'inspector-${DateTime.now().microsecondsSinceEpoch}',
+          'purpose': 'coding',
+          if (rung != null && rung.isNotEmpty) 'modelId': rung,
+        },
       );
       final ok = result['ok'] == true;
       messenger?.showSnackBar(
         SnackBar(
           content: Text(
             'seat · ${bound.worldId}: '
-            '${ok ? 'task accepted' : 'refused'} '
+            '${ok ? 'task admitted (${result['state'] ?? 'queued'})' : 'refused'} '
             '${ok ? '' : result['bounce'] ?? result}',
           ),
         ),

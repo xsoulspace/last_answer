@@ -2732,6 +2732,270 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Switch view'**
   String get railViewSwitchTooltip;
+
+  /// Status edge: the ecsai daemon is live.
+  ///
+  /// In en, this message translates to:
+  /// **'world live'**
+  String get statusEdgeWorldLive;
+
+  /// Status edge: daemon live but its binary predates the last build.
+  ///
+  /// In en, this message translates to:
+  /// **'world live · binary stale'**
+  String get statusEdgeWorldLiveStale;
+
+  /// Status edge: no daemon is live.
+  ///
+  /// In en, this message translates to:
+  /// **'world down'**
+  String get statusEdgeWorldDown;
+
+  /// Status edge: the supervised converge is running.
+  ///
+  /// In en, this message translates to:
+  /// **'world arming…'**
+  String get statusEdgeWorldArming;
+
+  /// Status edge: the converge failed, named.
+  ///
+  /// In en, this message translates to:
+  /// **'arm failed · {reason}'**
+  String statusEdgeArmFailed(Object reason);
+
+  /// Status edge: the one-click arm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm'**
+  String get statusEdgeArm;
+
+  /// Status edge: no config declares a model palette.
+  ///
+  /// In en, this message translates to:
+  /// **'no palette declared'**
+  String get statusEdgeNoPalette;
+
+  /// Status edge: the palette document failed to parse.
+  ///
+  /// In en, this message translates to:
+  /// **'palette refused'**
+  String get statusEdgePaletteRefused;
+
+  /// Status edge: the declared primary generative rung.
+  ///
+  /// In en, this message translates to:
+  /// **'primary {rung}'**
+  String statusEdgePrimary(Object rung);
+
+  /// Status edge: the session's chosen delegation rung.
+  ///
+  /// In en, this message translates to:
+  /// **'via {rung}'**
+  String statusEdgeVia(Object rung);
+
+  /// Status edge: the app mesh has no role.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh off'**
+  String get statusEdgeMeshOff;
+
+  /// Status edge: this device hosts the mesh relay.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh main'**
+  String get statusEdgeMeshMain;
+
+  /// Status edge: joined another device's relay, connected.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh joined'**
+  String get statusEdgeMeshJoined;
+
+  /// Status edge: joined role, relay not connected yet.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh joining'**
+  String get statusEdgeMeshJoining;
+
+  /// Status edge: open permissions + running tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'attention: {count}'**
+  String statusEdgeAttention(Object count);
+
+  /// Status edge: a human decision waits.
+  ///
+  /// In en, this message translates to:
+  /// **'attention: {permissions} permissions, {running} running'**
+  String statusEdgeAttentionWaiting(Object permissions, Object running);
+
+  /// One-click daemon arm (G2).
+  ///
+  /// In en, this message translates to:
+  /// **'Arm world'**
+  String get edgeArmWorld;
+
+  /// The arm converge is running.
+  ///
+  /// In en, this message translates to:
+  /// **'Arming…'**
+  String get edgeArming;
+
+  /// Stops the supervised daemon.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get edgeStopWorld;
+
+  /// Verified stop, then one converge pass.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get edgeRestartWorld;
+
+  /// Landing inbox: open permission round-trips (reject-first).
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get inboxPermissions;
+
+  /// Landing inbox: queued/running durable tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Running tasks'**
+  String get inboxRunning;
+
+  /// Landing inbox: the newest terminal truths.
+  ///
+  /// In en, this message translates to:
+  /// **'Last verdicts'**
+  String get inboxVerdicts;
+
+  /// Landing inbox: the five most recent threads.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent threads'**
+  String get inboxThreads;
+
+  /// Landing inbox: the all-quiet row.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention'**
+  String get inboxEmpty;
+
+  /// The reject-first default action.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get inboxDeny;
+
+  /// The deliberate allow action.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get inboxAllow;
+
+  /// Landing inbox: daemon-down row.
+  ///
+  /// In en, this message translates to:
+  /// **'The ecsai world is not running'**
+  String get inboxWorldDown;
+
+  /// Landing inbox: converge running.
+  ///
+  /// In en, this message translates to:
+  /// **'Arming the world…'**
+  String get inboxWorldArming;
+
+  /// Landing inbox: converge failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm failed'**
+  String get inboxWorldArmFailed;
+
+  /// The Models surface title.
+  ///
+  /// In en, this message translates to:
+  /// **'Models'**
+  String get viewModelsTitle;
+
+  /// Models: no config file declares model_palette.
+  ///
+  /// In en, this message translates to:
+  /// **'No palette declared for this world'**
+  String get modelsNoPalette;
+
+  /// Models: the generative role section.
+  ///
+  /// In en, this message translates to:
+  /// **'Generative rungs'**
+  String get modelsGenerative;
+
+  /// Models: the decision role section.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision rungs'**
+  String get modelsDecision;
+
+  /// Models header fact.
+  ///
+  /// In en, this message translates to:
+  /// **'daemon live'**
+  String get modelsDaemonLive;
+
+  /// Models header fact.
+  ///
+  /// In en, this message translates to:
+  /// **'daemon down'**
+  String get modelsDaemonDown;
+
+  /// Models header fact: rebuilt after the resident booted.
+  ///
+  /// In en, this message translates to:
+  /// **'binary stale'**
+  String get modelsDaemonStale;
+
+  /// Opens the palette JSON editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit palette'**
+  String get modelsEditPalette;
+
+  /// Editor: dry-run the harness parser.
+  ///
+  /// In en, this message translates to:
+  /// **'Validate'**
+  String get modelsValidate;
+
+  /// Editor: validated write with a .bak sibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get modelsSave;
+
+  /// Editor: close the dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get modelsClose;
+
+  /// Models: per-actor tool-loop telemetry section.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent dispatches'**
+  String get modelsTelemetry;
+
+  /// Rung chip: the role's primary entry.
+  ///
+  /// In en, this message translates to:
+  /// **'primary'**
+  String get modelsChipPrimary;
+
+  /// Rung chip: a builtin local lane.
+  ///
+  /// In en, this message translates to:
+  /// **'local'**
+  String get modelsChipLocal;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

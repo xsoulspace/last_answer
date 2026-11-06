@@ -1472,4 +1472,146 @@ class SIt extends S {
 
   @override
   String get railViewSwitchTooltip => 'Cambia vista';
+
+  @override
+  String get statusEdgeWorldLive => 'mondo attivo';
+
+  @override
+  String get statusEdgeWorldLiveStale => 'mondo attivo · binario obsoleto';
+
+  @override
+  String get statusEdgeWorldDown => 'mondo fermo';
+
+  @override
+  String get statusEdgeWorldArming => 'avvio del mondo…';
+
+  @override
+  String statusEdgeArmFailed(Object reason) {
+    return 'avvio fallito · $reason';
+  }
+
+  @override
+  String get statusEdgeArm => 'Avvia';
+
+  @override
+  String get statusEdgeNoPalette => 'nessuna palette dichiarata';
+
+  @override
+  String get statusEdgePaletteRefused => 'palette rifiutata';
+
+  @override
+  String statusEdgePrimary(Object rung) {
+    return 'primario $rung';
+  }
+
+  @override
+  String statusEdgeVia(Object rung) {
+    return 'via $rung';
+  }
+
+  @override
+  String get statusEdgeMeshOff => 'mesh disattiva';
+
+  @override
+  String get statusEdgeMeshMain => 'mesh principale';
+
+  @override
+  String get statusEdgeMeshJoined => 'mesh connessa';
+
+  @override
+  String get statusEdgeMeshJoining => 'mesh in connessione';
+
+  @override
+  String statusEdgeAttention(Object count) {
+    return 'attenzione: $count';
+  }
+
+  @override
+  String statusEdgeAttentionWaiting(Object permissions, Object running) {
+    return 'attenzione: $permissions permessi, $running in corso';
+  }
+
+  @override
+  String get edgeArmWorld => 'Avvia il mondo';
+
+  @override
+  String get edgeArming => 'Avvio…';
+
+  @override
+  String get edgeStopWorld => 'Ferma';
+
+  @override
+  String get edgeRestartWorld => 'Riavvia';
+
+  @override
+  String get inboxPermissions => 'Permessi';
+
+  @override
+  String get inboxRunning => 'Attività in corso';
+
+  @override
+  String get inboxVerdicts => 'Ultimi verdetti';
+
+  @override
+  String get inboxThreads => 'Conversazioni recenti';
+
+  @override
+  String get inboxEmpty => 'Nessuna decisione in attesa';
+
+  @override
+  String get inboxDeny => 'Nega';
+
+  @override
+  String get inboxAllow => 'Consenti';
+
+  @override
+  String get inboxWorldDown => 'Il mondo ecsai non è in esecuzione';
+
+  @override
+  String get inboxWorldArming => 'Avvio del mondo…';
+
+  @override
+  String get inboxWorldArmFailed => 'Avvio fallito';
+
+  @override
+  String get viewModelsTitle => 'Modelli';
+
+  @override
+  String get modelsNoPalette => 'Nessuna palette dichiarata per questo mondo';
+
+  @override
+  String get modelsGenerative => 'Livelli generativi';
+
+  @override
+  String get modelsDecision => 'Livelli decisionali';
+
+  @override
+  String get modelsDaemonLive => 'daemon attivo';
+
+  @override
+  String get modelsDaemonDown => 'daemon fermo';
+
+  @override
+  String get modelsDaemonStale => 'binario obsoleto';
+
+  @override
+  String get modelsEditPalette => 'Modifica palette';
+
+  @override
+  String get modelsValidate => 'Valida';
+
+  @override
+  String get modelsSave => 'Salva';
+
+  @override
+  String get modelsClose => 'Chiudi';
+
+  @override
+  String get modelsTelemetry => 'Dispatch recenti';
+
+  @override
+  String get modelsChipPrimary => 'primario';
+
+  @override
+  String get modelsChipLocal => 'locale';
 }

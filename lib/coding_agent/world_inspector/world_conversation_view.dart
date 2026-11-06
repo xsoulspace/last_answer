@@ -91,8 +91,9 @@ class WorldConversationViewState extends State<WorldConversationView> {
   /// Guards a stale work read from overwriting a newer one.
   int _workEpoch = 0;
 
-  /// The seat's WORK surface: the palette cache plus `resource_bind`,
-  /// `task_delegate` and `tool_action`. Null until a seat is granted.
+  /// The seat's WORK surface: the palette cache plus the CURRENT work
+  /// verbs (ADR 0118: `task op:create/show/say`, `actor_bind`,
+  /// `tool_action`). Null until a seat is granted.
   WorldWorkSeat? _workSeat;
 
   /// The delegate purpose the human chose (`coding` | `decision`) and the
@@ -463,12 +464,14 @@ class WorldConversationViewState extends State<WorldConversationView> {
     return result;
   }
 
-  /// DELEGATE — the human's sentence becomes world work (`task_delegate`).
+  /// DELEGATE — the human's sentence becomes world work (`task
+  /// {op:'create'}`, ADR 0118: creation IS the delegation). The
+  /// receipt is an ADMISSION (`queued`), never a completion.
   ///
-  /// The composer is the affordance: the same text a message would carry.
-  /// A `coding` purpose never carries a model (the world bounces
-  /// `decision_purpose_required`); a `decision` purpose carries the picked
-  /// palette entry.
+  /// The composer is the affordance: the same text a message would
+  /// carry. The picked palette entry rides `modelId` for ANY purpose
+  /// (leg B G3 — a delegation without it lands on the world's primary
+  /// rung, which health may have already marked failed).
   Future<void> delegate(final String text) async {
     final seat = _workSeat;
     if (seat == null || _lease == null) throw StateError('Seat is not ready');
@@ -480,7 +483,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
       final receipt = await seat.delegate(
         task: task,
         purpose: _purpose,
-        modelId: _purpose == 'decision' ? _modelId : null,
+        modelId: _modelId,
       );
       _record(receipt);
       if (receipt.ok) {
@@ -493,9 +496,9 @@ class WorldConversationViewState extends State<WorldConversationView> {
     }
   }
 
-  /// BIND — `resource_bind` for THIS seat's actor on its own assignment
-  /// thread. Binding another actor bounces `binding_actor_not_authorized`,
-  /// so the actor is never a parameter here.
+  /// BIND — `actor_bind` for THIS seat's actor (ADR 0120: the brain
+  /// lives on the actor ROW, validated against the declared palette).
+  /// Binding another actor bounces, so the actor is never a parameter.
   Future<void> bindModel() async {
     final seat = _workSeat;
     final modelId = _modelId;
@@ -504,7 +507,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
     _workBusy = true;
     if (mounted) setState(() {});
     try {
-      _record(await seat.bind(purpose: _purpose, modelId: modelId));
+      _record(await seat.bindCast(brainCast: modelId));
     } finally {
       _workBusy = false;
       if (mounted) setState(() {});

@@ -1475,4 +1475,146 @@ class SRu extends S {
 
   @override
   String get railViewSwitchTooltip => 'Переключить представление';
+
+  @override
+  String get statusEdgeWorldLive => 'мир активен';
+
+  @override
+  String get statusEdgeWorldLiveStale => 'мир активен · бинарник устарел';
+
+  @override
+  String get statusEdgeWorldDown => 'мир не запущен';
+
+  @override
+  String get statusEdgeWorldArming => 'запуск мира…';
+
+  @override
+  String statusEdgeArmFailed(Object reason) {
+    return 'сбой запуска · $reason';
+  }
+
+  @override
+  String get statusEdgeArm => 'Запустить';
+
+  @override
+  String get statusEdgeNoPalette => 'палитра не объявлена';
+
+  @override
+  String get statusEdgePaletteRefused => 'палитра отклонена';
+
+  @override
+  String statusEdgePrimary(Object rung) {
+    return 'основная $rung';
+  }
+
+  @override
+  String statusEdgeVia(Object rung) {
+    return 'через $rung';
+  }
+
+  @override
+  String get statusEdgeMeshOff => 'mesh выкл';
+
+  @override
+  String get statusEdgeMeshMain => 'mesh: главный';
+
+  @override
+  String get statusEdgeMeshJoined => 'mesh: подключён';
+
+  @override
+  String get statusEdgeMeshJoining => 'mesh: подключение';
+
+  @override
+  String statusEdgeAttention(Object count) {
+    return 'внимание: $count';
+  }
+
+  @override
+  String statusEdgeAttentionWaiting(Object permissions, Object running) {
+    return 'внимание: $permissions разрешений, $running в работе';
+  }
+
+  @override
+  String get edgeArmWorld => 'Запустить мир';
+
+  @override
+  String get edgeArming => 'Запуск…';
+
+  @override
+  String get edgeStopWorld => 'Остановить';
+
+  @override
+  String get edgeRestartWorld => 'Перезапустить';
+
+  @override
+  String get inboxPermissions => 'Разрешения';
+
+  @override
+  String get inboxRunning => 'Задачи в работе';
+
+  @override
+  String get inboxVerdicts => 'Последние вердикты';
+
+  @override
+  String get inboxThreads => 'Недавние треды';
+
+  @override
+  String get inboxEmpty => 'Ничего не требует внимания';
+
+  @override
+  String get inboxDeny => 'Отклонить';
+
+  @override
+  String get inboxAllow => 'Разрешить';
+
+  @override
+  String get inboxWorldDown => 'Мир ecsai не запущен';
+
+  @override
+  String get inboxWorldArming => 'Запуск мира…';
+
+  @override
+  String get inboxWorldArmFailed => 'Сбой запуска';
+
+  @override
+  String get viewModelsTitle => 'Модели';
+
+  @override
+  String get modelsNoPalette => 'Для этого мира палитра не объявлена';
+
+  @override
+  String get modelsGenerative => 'Генеративные ранги';
+
+  @override
+  String get modelsDecision => 'Ранги решений';
+
+  @override
+  String get modelsDaemonLive => 'демон активен';
+
+  @override
+  String get modelsDaemonDown => 'демон не запущен';
+
+  @override
+  String get modelsDaemonStale => 'бинарник устарел';
+
+  @override
+  String get modelsEditPalette => 'Правка палитры';
+
+  @override
+  String get modelsValidate => 'Проверить';
+
+  @override
+  String get modelsSave => 'Сохранить';
+
+  @override
+  String get modelsClose => 'Закрыть';
+
+  @override
+  String get modelsTelemetry => 'Недавние отправки';
+
+  @override
+  String get modelsChipPrimary => 'основная';
+
+  @override
+  String get modelsChipLocal => 'локальная';
 }

@@ -1461,4 +1461,146 @@ class SEn extends S {
 
   @override
   String get railViewSwitchTooltip => 'Switch view';
+
+  @override
+  String get statusEdgeWorldLive => 'world live';
+
+  @override
+  String get statusEdgeWorldLiveStale => 'world live · binary stale';
+
+  @override
+  String get statusEdgeWorldDown => 'world down';
+
+  @override
+  String get statusEdgeWorldArming => 'world arming…';
+
+  @override
+  String statusEdgeArmFailed(Object reason) {
+    return 'arm failed · $reason';
+  }
+
+  @override
+  String get statusEdgeArm => 'Arm';
+
+  @override
+  String get statusEdgeNoPalette => 'no palette declared';
+
+  @override
+  String get statusEdgePaletteRefused => 'palette refused';
+
+  @override
+  String statusEdgePrimary(Object rung) {
+    return 'primary $rung';
+  }
+
+  @override
+  String statusEdgeVia(Object rung) {
+    return 'via $rung';
+  }
+
+  @override
+  String get statusEdgeMeshOff => 'mesh off';
+
+  @override
+  String get statusEdgeMeshMain => 'mesh main';
+
+  @override
+  String get statusEdgeMeshJoined => 'mesh joined';
+
+  @override
+  String get statusEdgeMeshJoining => 'mesh joining';
+
+  @override
+  String statusEdgeAttention(Object count) {
+    return 'attention: $count';
+  }
+
+  @override
+  String statusEdgeAttentionWaiting(Object permissions, Object running) {
+    return 'attention: $permissions permissions, $running running';
+  }
+
+  @override
+  String get edgeArmWorld => 'Arm world';
+
+  @override
+  String get edgeArming => 'Arming…';
+
+  @override
+  String get edgeStopWorld => 'Stop';
+
+  @override
+  String get edgeRestartWorld => 'Restart';
+
+  @override
+  String get inboxPermissions => 'Permissions';
+
+  @override
+  String get inboxRunning => 'Running tasks';
+
+  @override
+  String get inboxVerdicts => 'Last verdicts';
+
+  @override
+  String get inboxThreads => 'Recent threads';
+
+  @override
+  String get inboxEmpty => 'Nothing needs attention';
+
+  @override
+  String get inboxDeny => 'Deny';
+
+  @override
+  String get inboxAllow => 'Allow';
+
+  @override
+  String get inboxWorldDown => 'The ecsai world is not running';
+
+  @override
+  String get inboxWorldArming => 'Arming the world…';
+
+  @override
+  String get inboxWorldArmFailed => 'Arm failed';
+
+  @override
+  String get viewModelsTitle => 'Models';
+
+  @override
+  String get modelsNoPalette => 'No palette declared for this world';
+
+  @override
+  String get modelsGenerative => 'Generative rungs';
+
+  @override
+  String get modelsDecision => 'Decision rungs';
+
+  @override
+  String get modelsDaemonLive => 'daemon live';
+
+  @override
+  String get modelsDaemonDown => 'daemon down';
+
+  @override
+  String get modelsDaemonStale => 'binary stale';
+
+  @override
+  String get modelsEditPalette => 'Edit palette';
+
+  @override
+  String get modelsValidate => 'Validate';
+
+  @override
+  String get modelsSave => 'Save';
+
+  @override
+  String get modelsClose => 'Close';
+
+  @override
+  String get modelsTelemetry => 'Recent dispatches';
+
+  @override
+  String get modelsChipPrimary => 'primary';
+
+  @override
+  String get modelsChipLocal => 'local';
 }

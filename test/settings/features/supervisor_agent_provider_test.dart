@@ -33,13 +33,20 @@ final class FakeWorld implements SupervisorAgentClient {
   int admitCalls = 0;
   final List<String> admittedTasks = [];
 
+  /// The rung each admission asked for (leg B G3 — null = the world's
+  /// primary default).
+  final List<String?> admittedModels = [];
+
   @override
   Future<SupervisorAgentAdmission> admit({
     required final String task,
     required final String requestId,
+    final String? modelId,
+    final List<String>? addressees,
   }) async {
     admitCalls++;
     admittedTasks.add(task);
+    admittedModels.add(modelId);
     final denied = refusal;
     if (denied != null) throw denied;
     return admission;
@@ -190,9 +197,7 @@ void main() {
 
     test('a refusal is visible and never substituted', () async {
       final world = FakeWorld(
-        refusal: const SupervisorAgentRefusal(
-          'task_delegation_not_authorized',
-        ),
+        refusal: const SupervisorAgentRefusal('task_delegation_not_authorized'),
       );
       final provider = SupervisorAgentProvider(
         client: world,
@@ -212,62 +217,65 @@ void main() {
       expect(world.outcomeCalls, 0);
     });
 
-    test('cancellation joins the world before the start is abandoned',
-        () async {
-      final world = FakeWorld(outcomes: const [_open]);
-      final provider = SupervisorAgentProvider(
-        client: world,
-        specs: {'agent': _spec()},
-        pollInterval: const Duration(milliseconds: 5),
-      );
-      final cancellation = Cancellation();
-      final start = provider.start(
-        _request(
-          provider,
-          budget: const Duration(seconds: 30),
-          cancellation: cancellation,
-        ),
-      );
-      final expectation = expectLater(start, throwsA(isA<StartCancelled>()));
-      // The run is open: cancel it and the world must be told.
-      await Future<void>.delayed(const Duration(milliseconds: 20));
-      cancellation.cancel();
-
-      await expectation;
-      expect(world.cancelCalls, 1);
-    });
-
-    test('a resolver that refuses stops the run with the exact words',
-        () async {
-      final world = FakeWorld();
-      final provider = SupervisorAgentProvider(
-        specs: {'agent': _spec()},
-        resolver: () async => const SupervisorAgentClientResolution.refused(
-          'the seat does not serve agent_participation — delegation is not '
-          'available on this seat',
-        ),
-      );
-
-      await expectLater(
-        provider.start(_request(provider)),
-        throwsA(
-          isA<StateError>().having(
-            (e) => '$e',
-            'message',
-            contains('cannot run'),
+    test(
+      'cancellation joins the world before the start is abandoned',
+      () async {
+        final world = FakeWorld(outcomes: const [_open]);
+        final provider = SupervisorAgentProvider(
+          client: world,
+          specs: {'agent': _spec()},
+          pollInterval: const Duration(milliseconds: 5),
+        );
+        final cancellation = Cancellation();
+        final start = provider.start(
+          _request(
+            provider,
+            budget: const Duration(seconds: 30),
+            cancellation: cancellation,
           ),
-        ),
-      );
-      // The world was never asked: the capability was absent.
-      expect(world.admitCalls, 0);
-    });
+        );
+        final expectation = expectLater(start, throwsA(isA<StartCancelled>()));
+        // The run is open: cancel it and the world must be told.
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        cancellation.cancel();
+
+        await expectation;
+        expect(world.cancelCalls, 1);
+      },
+    );
+
+    test(
+      'a resolver that refuses stops the run with the exact words',
+      () async {
+        final world = FakeWorld();
+        final provider = SupervisorAgentProvider(
+          specs: {'agent': _spec()},
+          resolver: () async => const SupervisorAgentClientResolution.refused(
+            'the seat does not serve agent_participation — delegation is not '
+            'available on this seat',
+          ),
+        );
+
+        await expectLater(
+          provider.start(_request(provider)),
+          throwsA(
+            isA<StateError>().having(
+              (e) => '$e',
+              'message',
+              contains('cannot run'),
+            ),
+          ),
+        );
+        // The world was never asked: the capability was absent.
+        expect(world.admitCalls, 0);
+      },
+    );
 
     test('a resolver that serves a client runs the automation', () async {
       final world = FakeWorld(outcomes: const [_verified]);
       final provider = SupervisorAgentProvider(
         specs: {'agent': _spec()},
-        resolver: () async =>
-            SupervisorAgentClientResolution.available(world),
+        resolver: () async => SupervisorAgentClientResolution.available(world),
       );
 
       final report = await provider.start(_request(provider));
@@ -332,29 +340,31 @@ void main() {
       expect(world.admitCalls, 0);
     });
 
-    test('an unfinished delegation is stopped in the world, not abandoned',
-        () async {
-      final world = FakeWorld(outcomes: const [_open]);
-      final provider = SupervisorAgentProvider(
-        client: world,
-        specs: {'agent': _spec()},
-        pollInterval: const Duration(milliseconds: 1),
-      );
+    test(
+      'an unfinished delegation is stopped in the world, not abandoned',
+      () async {
+        final world = FakeWorld(outcomes: const [_open]);
+        final provider = SupervisorAgentProvider(
+          client: world,
+          specs: {'agent': _spec()},
+          pollInterval: const Duration(milliseconds: 1),
+        );
 
-      await expectLater(
-        provider.start(
-          _request(provider, budget: const Duration(milliseconds: 20)),
-        ),
-        throwsA(
-          isA<StateError>().having(
-            (e) => '$e',
-            'message',
-            contains('did not settle'),
+        await expectLater(
+          provider.start(
+            _request(provider, budget: const Duration(milliseconds: 20)),
           ),
-        ),
-      );
-      expect(world.cancelCalls, 1);
-    });
+          throwsA(
+            isA<StateError>().having(
+              (e) => '$e',
+              'message',
+              contains('did not settle'),
+            ),
+          ),
+        );
+        expect(world.cancelCalls, 1);
+      },
+    );
   });
 
   group('SupervisorExecution with the world client', () {
@@ -368,32 +378,34 @@ void main() {
     });
     tearDown(() => root.delete(recursive: true));
 
-    test('an agent automation runs in the world and records the evidence',
-        () async {
-      SpecStore(plans).save('agent', DesiredState(specs: [_spec()]));
-      final world = FakeWorld(outcomes: const [_verified]);
-      final execution = SupervisorExecution(
-        storeRoot: plans,
-        appRoot: root,
-        registry: registry,
-        agentClient: world,
-      );
+    test(
+      'an agent automation runs in the world and records the evidence',
+      () async {
+        SpecStore(plans).save('agent', DesiredState(specs: [_spec()]));
+        final world = FakeWorld(outcomes: const [_verified]);
+        final execution = SupervisorExecution(
+          storeRoot: plans,
+          appRoot: root,
+          registry: registry,
+          agentClient: world,
+        );
 
-      await execution.run();
+        await execution.run();
 
-      expect(execution.lastError, isNull);
-      final record = registry.snapshot(registry.scopeFor(root.path))['agent'];
-      expect(record, isNotNull);
-      expect(record!.lastRun, 'succeeded');
-      // The world's own task is named in the run log: the durable
-      // evidence of WHICH delegated task ran.
-      expect(
-        execution.logLines['agent']?.join('\n'),
-        contains('delegation:actor:req-1'),
-      );
-      expect(world.admittedTasks, ['Do the thing']);
-      await execution.close();
-    });
+        expect(execution.lastError, isNull);
+        final record = registry.snapshot(registry.scopeFor(root.path))['agent'];
+        expect(record, isNotNull);
+        expect(record!.lastRun, 'succeeded');
+        // The world's own task is named in the run log: the durable
+        // evidence of WHICH delegated task ran.
+        expect(
+          execution.logLines['agent']?.join('\n'),
+          contains('delegation:actor:req-1'),
+        );
+        expect(world.admittedTasks, ['Do the thing']);
+        await execution.close();
+      },
+    );
 
     test('an unverified delegation is recorded as a failed run', () async {
       SpecStore(plans).save('agent', DesiredState(specs: [_spec()]));
@@ -420,9 +432,7 @@ void main() {
     test('a refused delegation is a failed run, never a success', () async {
       SpecStore(plans).save('agent', DesiredState(specs: [_spec()]));
       final world = FakeWorld(
-        refusal: const SupervisorAgentRefusal(
-          'task_delegation_not_authorized',
-        ),
+        refusal: const SupervisorAgentRefusal('task_delegation_not_authorized'),
       );
       final execution = SupervisorExecution(
         storeRoot: plans,

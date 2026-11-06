@@ -8,8 +8,6 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 
-import 'package:lastanswer/shell/center_tabs.dart';
-
 import 'package:lastanswer/shell/surfaces.dart';
 
 void main() {

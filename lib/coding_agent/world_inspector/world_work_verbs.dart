@@ -1,5 +1,11 @@
-/// The seat's WORK verbs — `resource_bind`, `task_delegate`, `tool_action` —
-/// and the seat-visible palette read (`agent_participation {op:'actions'}`).
+/// The seat's WORK verbs — the CURRENT law (ADR 0118 D3/D5): delegation
+/// is `task {op:'create'}` (creation IS the delegation, the addressing
+/// is the delegation), a cast binding is `agent_participation
+/// {op:'actor_bind'}`, and `tool_action` stays the allowlisted tool
+/// call. The pre-0118 verbs (`resource_bind`, `task_delegate`) answer
+/// with a named migration error — this file no longer sends them
+/// (leg B G4). The seat-visible palette read (`agent_participation
+/// {op:'actions'}`) is unchanged.
 ///
 /// The world is the ONLY source of models and tools: this file parses what
 /// the world declares and never invents a default. A refusal is DATA — the
@@ -250,49 +256,48 @@ final class WorldWorkSeat {
     _loaded = true;
   }
 
-  /// `resource_bind` for THIS seat's actor on its own assignment thread.
+  /// `actor_bind` for THIS seat's actor (ADR 0120): the durable row's
+  /// brain binding, validated by the world against the declared
+  /// palette — an unknown cast bounces with the harness's own code.
   ///
-  /// [modelId] is a PALETTE ENTRY id — never a provider model string. The
-  /// world bounces `model_not_in_palette` for an unknown or unbound id.
-  Future<WorldWorkReceipt> bind({
-    required final String purpose,
-    required final String modelId,
-    final int? maxOutputTokens,
-    final String? reasoningEffort,
-    final bool? includeReasoning,
-  }) => _verb('resource_bind', {
-    'op': 'resource_bind',
-    'purpose': purpose,
-    'modelId': modelId,
-    'thread': thread,
-    'maxOutputTokens': ?maxOutputTokens,
-    'reasoningEffort': ?reasoningEffort,
-    'includeReasoning': ?includeReasoning,
-  });
+  /// [brainCast] is a PALETTE ENTRY id (`modelscope_qwen38max`) — never
+  /// a provider model string.
+  Future<WorldWorkReceipt> bindCast({required final String brainCast}) => _verb(
+    'agent_participation',
+    'actor_bind',
+    {'op': 'actor_bind', 'actorId': actor, 'brainCast': brainCast},
+  );
 
-  /// `task_delegate` — the human's sentence becomes world work.
+  /// `task {op:'create'}` — the human's sentence becomes world work
+  /// (ADR 0118: creation IS the delegation). The receipt is an
+  /// ADMISSION (`state: queued`), never a completion: the terminal
+  /// truth is the durable task record, read back through
+  /// `task {op:'show'}`.
   ///
-  /// [modelId] is legal ONLY with `purpose: 'decision'`; a coding purpose
-  /// carrying a model bounces `decision_purpose_required`, so it is never
-  /// sent there. An identical retry reuses its request id (the host dedupes
-  /// exact retries); a new sentence is a new request.
+  /// [modelId] is a PALETTE ENTRY id; omitted, the world defaults to
+  /// its primary generative rung (leg B G3: the surface should show the
+  /// rung it will use and let the human pick). [addressees] are the
+  /// actor ids the task is addressed to — the addressing is the
+  /// delegation. An identical retry reuses its request id (the host
+  /// dedupes exact retries); a new sentence is a new request.
   Future<WorldWorkReceipt> delegate({
     required final String task,
     final String purpose = 'coding',
     final String? modelId,
+    final List<String>? addressees,
   }) async {
-    final model = purpose == 'decision' ? modelId : null;
-    final key = jsonEncode([task, purpose, model]);
+    final key = jsonEncode([task, purpose, modelId, addressees]);
     if (_delegateKey != key || _delegateRequest == null) {
       _delegateKey = key;
       _delegateRequest = _nextRequest('delegate');
     }
-    final receipt = await _verb('task_delegate', {
-      'op': 'task_delegate',
+    final receipt = await _verb('task', 'create', {
+      'op': 'create',
       'task': task,
       'requestId': _delegateRequest,
       'purpose': purpose,
-      if (model != null && model.isNotEmpty) 'modelId': model,
+      if (modelId != null && modelId.isNotEmpty) 'modelId': modelId,
+      if (addressees != null && addressees.isNotEmpty) 'addressees': addressees,
     });
     if (receipt.ok) {
       _delegateKey = null;
@@ -300,6 +305,23 @@ final class WorldWorkSeat {
     }
     return receipt;
   }
+
+  /// Reads the durable state of a delegated task (`task {op:'show'}`) —
+  /// the terminal truth behind the admission receipt.
+  Future<WorldWorkReceipt> taskState({required final String taskId}) =>
+      _verb('task', 'show', {'op': 'show', 'taskId': taskId});
+
+  /// Posts one guidance line to a delegated task's conversation
+  /// (`task {op:'say'}`) — the re-delegate-with-guidance loop.
+  Future<WorldWorkReceipt> taskSay({
+    required final String taskId,
+    required final String text,
+  }) => _verb('task', 'say', {
+    'op': 'say',
+    'taskId': taskId,
+    'text': text,
+    'requestId': _nextRequest('say'),
+  });
 
   /// `tool_action` with the menu revision the world currently serves.
   ///
@@ -316,7 +338,7 @@ final class WorldWorkSeat {
         result: const {},
       );
     }
-    return _verb('tool_action', {
+    return _verb('agent_participation', 'tool_action', {
       'op': 'tool_action',
       'requestId': _nextRequest('tool'),
       'thread': thread,
@@ -325,13 +347,17 @@ final class WorldWorkSeat {
     });
   }
 
+  /// One raw call: [tool] is the harness tool name, [verb] the receipt's
+  /// label (the op word). A refusal is data — the bounce rides the
+  /// receipt, never an exception.
   Future<WorldWorkReceipt> _verb(
+    final String tool,
     final String verb,
     final Map<String, Object?> args,
   ) async {
     Map<String, Object?> result;
     try {
-      result = await invoke('agent_participation', args);
+      result = await invoke(tool, args);
     } on Object catch (error) {
       return WorldWorkReceipt(
         verb: verb,

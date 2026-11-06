@@ -4,7 +4,9 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/shell/landing_inbox.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
@@ -114,8 +116,18 @@ class _ConversationPane extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = context.l10n;
     if (threadId == null || thread == null) {
-      // No thread open: calm empty state — the rail lists the
-      // conversations, the surface never duplicates it.
+      // No thread open: the phase-1d LANDING INBOX — the void became a
+      // decision surface (open permissions reject-first, running tasks,
+      // last verdicts, recent threads). A hermetic shell without the
+      // world read model keeps the calm note.
+      final world = context.read<WorldStateService?>();
+      if (world != null) {
+        return LandingInbox(
+          world: world,
+          service: service,
+          onOpenThread: service.selectThread,
+        );
+      }
       return _CenteredNote(text: l10n.worldChatSelectFromRail);
     }
     final roster = service.roster;

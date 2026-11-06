@@ -3,13 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_model_picker.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_work_verbs.dart';
 
-/// LA AS A SEAT, v2: the human can make the world WORK.
+/// LA AS A SEAT, v3 (ADR 0118): the human can make the world WORK.
 ///
 /// The conversation surface already spoke (`message`) and listened
-/// (`events`/`delta`). These pin the three WORK verbs — `resource_bind`,
-/// `task_delegate`, `tool_action` — and the palette read that feeds them:
-/// the world is the ONLY source of models, and a refusal is the harness's
-/// own bounce code, verbatim.
+/// (`events`/`delta`). These pin the CURRENT work verbs — `task
+/// op:create/show/say` (delegation is not a verb: creation IS the
+/// delegation), `actor_bind` and `tool_action` — and the palette read
+/// that feeds them: the world is the ONLY source of models, and a
+/// refusal is the harness's own bounce code, verbatim. The retired
+/// pre-0118 verbs (`resource_bind`, `task_delegate`) must never appear
+/// on the wire again (leg B G4).
 final class _World {
   final responses = <String, Map<String, Object?>>{};
   final calls = <Map<String, Object?>>[];
@@ -135,80 +138,126 @@ void main() {
   });
 
   group('the work verbs', () {
-    test(
-      'resource_bind binds THIS seat on its own assignment thread',
-      () async {
-        final world = _World()
-          ..responses['actions'] = _actions()
-          ..responses['resource_bind'] = {'ok': true};
-        final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
-        await seat.load();
+    test('actor_bind binds THIS seat\'s own actor row', () async {
+      final world = _World()
+        ..responses['actions'] = _actions()
+        ..responses['actor_bind'] = {'ok': true};
+      final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
+      await seat.load();
 
-        final receipt = await seat.bind(
-          purpose: 'generative',
-          modelId: 'openrouter_minimax',
-        );
+      final receipt = await seat.bindCast(brainCast: 'openrouter_minimax');
 
-        expect(receipt.ok, isTrue);
-        final call = world.calls.last;
-        expect(call['op'], 'resource_bind');
-        expect(call['modelId'], 'openrouter_minimax');
-        expect(call['thread'], 'assignment:human-1');
-        // The actor is the seat's own identity — never a parameter.
-        expect(call.containsKey('actor'), isFalse);
-      },
-    );
+      expect(receipt.ok, isTrue);
+      final call = world.calls.last;
+      expect(call['name'], 'agent_participation');
+      expect(call['op'], 'actor_bind');
+      expect(call['brainCast'], 'openrouter_minimax');
+      // The actor is the seat's own identity — never another actor's.
+      expect(call['actorId'], 'human-1');
+    });
 
     test('a refusal is the harness bounce code, verbatim', () async {
       final world = _World()
         ..responses['actions'] = _actions()
-        ..responses['resource_bind'] = {
+        ..responses['actor_bind'] = {
           'ok': false,
           'bounce': 'model_not_in_palette',
         };
       final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
       await seat.load();
 
-      final receipt = await seat.bind(
-        purpose: 'generative',
-        modelId: 'laya_local',
-      );
+      final receipt = await seat.bindCast(brainCast: 'laya_local');
 
       expect(receipt.ok, isFalse);
       expect(receipt.bounce, 'model_not_in_palette');
-      expect(receipt.label, 'resource_bind · model_not_in_palette');
+      expect(receipt.label, 'actor_bind · model_not_in_palette');
     });
 
     test(
-      'a coding delegate never carries a model; a decision one does',
+      'a delegate rides task op:create; the picked rung rides modelId',
       () async {
         final world = _World()
           ..responses['actions'] = _actions()
-          ..responses['task_delegate'] = {'ok': true};
+          ..responses['create'] = {
+            'ok': true,
+            'taskId': 'task-1',
+            'admissionBeatId': 'control:task:task-1',
+            'state': 'queued',
+          };
         final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
         await seat.load();
 
-        await seat.delegate(
+        // Under ADR 0118 the modelId is legal for ANY purpose — the
+        // pre-0118 "coding never carries a model" rule retired with
+        // `decision_purpose_required` (leg B G3).
+        final receipt = await seat.delegate(
           task: 'write the note',
-          // `coding` is the default AND the case under test: a coding
-          // purpose must never carry a model.
           // ignore: avoid_redundant_argument_values
           purpose: 'coding',
-          modelId: 'laya_local',
+          modelId: 'openrouter_minimax',
         );
-        expect(world.calls.last['purpose'], 'coding');
-        expect(world.calls.last.containsKey('modelId'), isFalse);
+        expect(receipt.ok, isTrue);
+        // The admission is NOT a completion — the receipt says queued.
+        expect(receipt.result['state'], 'queued');
+        expect(world.calls.last['name'], 'task');
+        expect(world.calls.last['op'], 'create');
+        expect(world.calls.last['modelId'], 'openrouter_minimax');
 
         await seat.delegate(
-          task: 'write the note',
+          task: 'judge the note',
           purpose: 'decision',
           modelId: 'laya_local',
+          addressees: const ['scout'],
         );
         expect(world.calls.last['purpose'], 'decision');
         expect(world.calls.last['modelId'], 'laya_local');
+        expect(world.calls.last['addressees'], ['scout']);
         expect(world.calls.last['requestId'], isNotNull);
       },
     );
+
+    test('an identical FAILED delegate retries on one request id', () async {
+      final world = _World()
+        ..responses['actions'] = _actions()
+        ..responses['create'] = {'ok': false, 'bounce': 'queue_full'};
+      final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
+      await seat.load();
+
+      await seat.delegate(task: 'write the note');
+      final first = world.calls.last['requestId'];
+      await seat.delegate(task: 'write the note');
+      // The host dedupes exact retries: same sentence, same id.
+      expect(world.calls.last['requestId'], first);
+
+      await seat.delegate(task: 'a different sentence');
+      expect(world.calls.last['requestId'], isNot(first));
+    });
+
+    test('task show/say ride the same task tool', () async {
+      final world = _World()
+        ..responses['actions'] = _actions()
+        ..responses['show'] = {
+          'ok': true,
+          'state': 'succeeded',
+          'terminal': {
+            'state': 'succeeded',
+            'result': {'summary': 'the note is written'},
+          },
+        }
+        ..responses['say'] = {'ok': true};
+      final seat = WorldWorkSeat(actor: 'human-1', invoke: world.invoke);
+      await seat.load();
+
+      final shown = await seat.taskState(taskId: 'task-1');
+      expect(shown.ok, isTrue);
+      expect(world.calls.last['name'], 'task');
+      expect(world.calls.last['taskId'], 'task-1');
+
+      final said = await seat.taskSay(taskId: 'task-1', text: 'again, please');
+      expect(said.ok, isTrue);
+      expect(world.calls.last['op'], 'say');
+      expect(world.calls.last['text'], 'again, please');
+    });
 
     test('tool_action echoes the menu revision it just read', () async {
       final world = _World()

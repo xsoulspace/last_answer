@@ -43,7 +43,7 @@ Future<bool> showRemoveTitleDialog({
             child: Text(
               context.l10n.delete.toUpperCase(),
               style: theme.textTheme.labelLarge
-                  ?.copyWith(color: AppColors.accent2),
+                  ?.copyWith(color: context.la.danger),
             ),
           ),
         ],

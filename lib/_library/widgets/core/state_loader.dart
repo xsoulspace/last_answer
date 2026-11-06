@@ -68,14 +68,14 @@ class _StateLoaderState extends State<StateLoader>
         children: [
           if (!PlatformInfo.isTransparentBackgroundSupported)
             Container(
-              color: AppColors.black,
+              color: context.la.ink,
             ),
           if (PlatformInfo.isTransparentBackgroundSupported &&
               loaderOpacity.value > 0.0)
             Opacity(
               opacity: loaderOpacity.value,
               child: Container(
-                color: AppColors.black,
+                color: context.la.ink,
               ),
             ),
           if (_renderAllowed)

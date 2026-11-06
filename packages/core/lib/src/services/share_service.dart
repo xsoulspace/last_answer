@@ -65,7 +65,7 @@ class ShareService {
         MaterialBanner(
           content: Text(successTitle),
           leading: const Icon(Icons.done),
-          backgroundColor: AppColors.primary2.withValues(alpha: 0.2),
+          backgroundColor: context.la.accent.withValues(alpha: 0.2),
           actions: [
             TextButton(onPressed: closeBanner, child: Text(l10n.close)),
           ],

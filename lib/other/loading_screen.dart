@@ -9,7 +9,7 @@ class LoadingScreen extends StatelessWidget {
         // TODO(arenukvern): replace with default device textDirection
         textDirection: TextDirection.ltr,
         child: ColoredBox(
-          color: AppColors.black,
+          color: context.la.ink,
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,

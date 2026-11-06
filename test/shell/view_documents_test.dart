@@ -4,11 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/shell/center_tabs.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_documents.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';

@@ -29,7 +29,7 @@ class HeroId extends StatelessWidget {
       placeholderBuilder: placeholderBuilder,
       flightShuttleBuilder: flightShuttleBuilder,
       child: Material(
-        color: Colors.transparent,
+        color: const Color(0x00000000),
         child: child,
       ),
     );

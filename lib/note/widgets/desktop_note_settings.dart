@@ -30,7 +30,7 @@ class DesktopNoteSettingsMenu extends HookWidget {
           onTap: onRemove,
           leadingBuilder: (final context, final hovered) => Icon(
             Icons.delete_outline_rounded,
-            color: hovered ? AppColors.accent3 : theme.highlightColor,
+            color: hovered ? context.la.danger : theme.highlightColor,
           ),
           titleBuilder: (final context, final hovered) => Opacity(
             opacity: hovered ? 1.0 : 0.7,

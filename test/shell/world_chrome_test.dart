@@ -11,8 +11,6 @@ import 'package:lastanswer/shell/landing_inbox.dart';
 import 'package:lastanswer/shell/status_edge.dart';
 import 'package:lastanswer/shell/view_models.dart';
 
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-
 import 'hermetic_world_state.dart';
 
 /// Phase 1d chrome: the status edge, the landing inbox and the Models

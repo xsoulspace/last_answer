@@ -31,10 +31,10 @@ class ProjectTitleField extends HookWidget {
             .applyDefaults(Theme.of(context).inputDecorationTheme)
             .copyWith(
               contentPadding: const EdgeInsets.all(6),
-              fillColor: Colors.transparent,
+              fillColor: const Color(0x00000000),
               filled: true,
               isDense: true,
-              focusColor: Colors.transparent,
+              focusColor: const Color(0x00000000),
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: defaultBorderRadius,

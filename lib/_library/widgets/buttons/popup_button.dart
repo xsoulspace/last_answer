@@ -71,7 +71,7 @@ class _PopupButtonState extends State<PopupButton> {
     return showAdaptiveDialog(
       barrierDismissible: false,
       context: context,
-      barrierColor: Colors.black12,
+      barrierColor: context.la.ink.withValues(alpha: 0.12),
       builder: (final context) => MobilePopupButtonDialog(
         builder: effectiveBuilder,
         onRemove: widget.onMobileRemove,
@@ -159,7 +159,7 @@ class MobilePopupButtonDialog extends StatelessWidget {
         alignment: Alignment.topCenter,
         insetPadding: EdgeInsets.zero,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0x00000000),
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -212,7 +212,7 @@ class RemoveActionButton extends StatelessWidget {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: AppColors.accent3,
+          backgroundColor: context.la.danger,
           padding: const EdgeInsets.all(14),
           shape: RoundedRectangleBorder(borderRadius: defaultPopupBorderRadius),
         ),
@@ -229,7 +229,7 @@ class RemoveActionButton extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        foregroundColor: AppColors.accent3,
+        foregroundColor: context.la.danger,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: defaultPopupBorderRadius),
       ),
@@ -258,7 +258,7 @@ class OutlinedPrimaryButton extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final primaryColor = isDark ? AppColors.primary : AppColors.primary1;
+    final primaryColor = context.la.accent;
 
     return OutlinedButton(
       style: OutlinedButton.styleFrom(

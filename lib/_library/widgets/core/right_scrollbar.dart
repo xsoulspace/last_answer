@@ -20,7 +20,7 @@ class RightScrollbar extends StatelessWidget {
           data: theme.copyWith(
             scrollbarTheme: theme.scrollbarTheme.copyWith(
               crossAxisMargin: -10,
-              thumbColor: MaterialStateProperty.all(Colors.transparent),
+              thumbColor: MaterialStateProperty.all(const Color(0x00000000)),
             ),
           ),
           child: child,

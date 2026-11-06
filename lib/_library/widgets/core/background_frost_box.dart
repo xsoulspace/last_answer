@@ -19,8 +19,8 @@ class BackgroundFrostBox extends StatelessWidget {
         blur: theme.brightness == Brightness.dark ? 15 : 12,
         frostOpacity: 0.1,
         frostColor: theme.brightness == Brightness.dark
-            ? AppColors.black
-            : AppColors.white,
+            ? context.la.ink
+            : context.la.canvas,
       ),
     );
   }

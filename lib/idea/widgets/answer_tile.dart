@@ -108,7 +108,7 @@ class AnswerTile extends StatelessWidget {
                       final confirmed = await confirmDelete();
                       if (confirmed) onReadyToDelete(answer);
                     },
-                    color: AppColors.accent2.withOpacity(0.6),
+                    color: context.la.danger.withValues(alpha: 0.6),
                     icon: const Icon(Icons.close),
                   ),
                 ),
@@ -117,7 +117,7 @@ class AnswerTile extends StatelessWidget {
                 onPressed: () => onExpand(answer),
                 iconSize: 18,
                 icon: const Icon(Icons.expand),
-                color: AppColors.primary2.withOpacity(0.6),
+                color: context.la.accent.withValues(alpha: 0.6),
               ),
             ],
           ),

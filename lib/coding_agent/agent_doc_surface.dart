@@ -3201,7 +3201,7 @@ class _VerdictRow extends StatelessWidget {
     final color = interrupted || turn.completedUnverified
         ? theme.colorScheme.onSurfaceVariant
         : passed
-        ? Colors.green.shade600
+        ? context.la.accent
         : theme.colorScheme.error;
     final spend = turn.spend;
     final wallS = interrupted
@@ -4119,7 +4119,7 @@ class _TurnStatRow extends StatelessWidget {
         ? turn.interrupted
               ? theme.colorScheme.onSurfaceVariant
               : turn.verdictPassed
-              ? Colors.green.shade600
+              ? context.la.accent
               : theme.colorScheme.error
         : theme.colorScheme.onSurfaceVariant;
     return Padding(

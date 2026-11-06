@@ -33,7 +33,7 @@ Future<void> showNotificationDialog({
         shape: RoundedRectangleBorder(
           borderRadius: defaultPopupBorderRadius,
           side: BorderSide(
-            color: (isDark ? AppColors.cleanBlack : AppColors.grey4)
+            color: isDark ? context.la.ink : context.la.rule
                 .withOpacity(0.2),
           ),
         ),

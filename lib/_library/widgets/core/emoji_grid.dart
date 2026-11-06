@@ -36,8 +36,8 @@ class EmojiGrid extends StatelessWidget {
     final filteredEmoji = emojiNotifier.filteredValues;
     final theme = Theme.of(context);
     final borderColor = theme.brightness == Brightness.dark
-        ? AppColors.cleanBlack
-        : AppColors.grey4;
+        ? context.la.ink
+        : context.la.rule;
     const maxItemsInRow = 9;
     final emojiStyle = PlatformInfo.isNativeDesktop && Platform.isMacOS
         ? null
@@ -98,7 +98,7 @@ class EmojiGrid extends StatelessWidget {
           ),
         ),
         Material(
-          color: Colors.transparent,
+          color: const Color(0x00000000),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Row(

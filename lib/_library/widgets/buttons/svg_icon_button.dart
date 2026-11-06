@@ -91,16 +91,16 @@ const double _kMinButtonSize = kMinInteractiveDimension;
 /// @override
 /// Widget build(BuildContext context) {
 ///   return Material(
-///     color: Colors.white,
+///     color: context.la.ink,
 ///     child: Center(
 ///       child: Ink(
 ///         decoration: const ShapeDecoration(
-///           color: Colors.lightBlue,
+///           color: context.la.accent,
 ///           shape: CircleBorder(),
 ///         ),
 ///         child: SvgIconButton(
 ///           icon: const Icon(Icons.android),
-///           color: Colors.white,
+///           color: context.la.ink,
 ///           onPressed: () {},
 ///         ),
 ///       ),
@@ -232,7 +232,7 @@ class SvgIconButton extends StatelessWidget {
   ///
   /// ```dart
   /// SvgIconButton(
-  ///   color: Colors.blue,
+  ///   color: context.la.accent,
   ///   onPressed: _handleTap,
   ///   icon: Icons.widgets,
   /// )

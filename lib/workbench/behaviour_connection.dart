@@ -104,7 +104,7 @@ class _EdgePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = active ? Colors.teal : Colors.grey
+      ..color = active ? const Color(0xFF176D58) : const Color(0xFF687872)
       ..strokeWidth = active ? 3 : 1;
     canvas.drawLine(
       Offset(0, size.height - 8),

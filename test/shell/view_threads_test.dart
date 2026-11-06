@@ -8,8 +8,6 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/view_threads.dart';
 
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-
 /// Phase 3b — the Threads view: the threads the rail cannot name, as a
 /// read-only projection of the realm list; a click hands the thread to
 /// the Conversations view.

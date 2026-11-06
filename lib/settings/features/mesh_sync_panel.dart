@@ -332,7 +332,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
   }
 
   Widget _advancedSection(final S l10n) => Theme(
-    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+    data: Theme.of(context).copyWith(dividerColor: const Color(0x00000000)),
     child: ExpansionTile(
       tilePadding: EdgeInsets.zero,
       childrenPadding: const EdgeInsets.only(bottom: 8),
@@ -454,7 +454,7 @@ class _QrCard extends StatelessWidget {
   Widget build(final BuildContext context) => Container(
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: context.la.ink,
       borderRadius: BorderRadius.circular(12),
     ),
     child: CustomPaint(
@@ -477,7 +477,7 @@ class _MeshQrPainter extends CustomPainter {
       ),
     );
     final module = size.width / image.moduleCount;
-    final paint = Paint()..color = Colors.black;
+    final paint = Paint()..color = const Color(0xFF000000);
     for (var y = 0; y < image.moduleCount; y++) {
       for (var x = 0; x < image.moduleCount; x++) {
         if (!image.isDark(y, x)) continue;

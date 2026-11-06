@@ -360,7 +360,7 @@ class _AutomationRow extends StatelessWidget {
     final color = automation.drifted
         ? context.theme.colorScheme.error
         : automation.present
-        ? Colors.green
+        ? context.la.accent
         : context.theme.colorScheme.outline;
     final row = Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),

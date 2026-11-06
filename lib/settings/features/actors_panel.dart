@@ -171,7 +171,7 @@ class _ActorRowState extends State<_ActorRow> {
                 },
                 size: 14,
                 color: switch (status) {
-                  'listening' => Colors.green.shade600,
+                  'listening' => context.la.accent,
                   _ => failed ? theme.colorScheme.error : muted,
                 },
               ),

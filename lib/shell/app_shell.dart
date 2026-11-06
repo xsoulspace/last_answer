@@ -762,104 +762,115 @@ class _AppShellState extends State<AppShell> {
                 // through the map.
                 child: Focus(
                   autofocus: true,
-                  child: LayoutBuilder(
-                    builder: (final context, final constraints) {
-                      _railExpanded =
-                          constraints.maxWidth >=
-                          ShellTokens.railExpandedMinWindow;
-                      return MiniWindowLayer(
-                        controller: _miniWindows,
-                        child: Stack(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                // Phase 0 unified titlebar (macOS): the window
-                                // draws under the traffic lights, so the shell
-                                // reserves the system gutter above its chrome.
-                                // macOS reports no viewPadding for the titlebar,
-                                // hence the platform constant; zero elsewhere.
-                                SizedBox(
-                                  height:
-                                      defaultTargetPlatform ==
-                                          TargetPlatform.macOS
-                                      ? ShellTokens.titlebarGutter
-                                      : MediaQuery.of(context).viewPadding.top,
-                                ),
-                                Expanded(
-                                  child: screenLayout.small
-                                      ? _centerColumn(surfaces)
-                                      : Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            SizedBox(
-                                              width: _railExpanded
-                                                  ? ShellTokens.railWidth
-                                                  : ShellTokens
-                                                        .railCompactWidth,
-                                              child: ActorRail(
-                                                service: _service,
-                                                expanded: _railExpanded,
-                                                activeView: _layout.activeView,
-                                                views: _viewSpecs(surfaces),
-                                                onOpenView: (final viewId) =>
-                                                    _onLayoutChanged(
-                                                      _layout.showView(viewId),
-                                                    ),
-                                                onOpenSettings: _openSettings,
-                                                onOpenCommandPalette:
-                                                    _openPalette,
-                                                onConversationNewTab:
-                                                    (final surfaceId) =>
-                                                        _onLayoutChanged(
-                                                          _layout
-                                                              .openConversation(
-                                                                surfaceId,
-                                                                forceNew: true,
-                                                              ),
+                  focusNode: _shellFocus,
+                  child: Listener(
+                    behavior: HitTestBehavior.translucent,
+                    onPointerUp: (final _) => _reclaimFocusUnlessEditing(),
+                    child: LayoutBuilder(
+                      builder: (final context, final constraints) {
+                        _railExpanded =
+                            constraints.maxWidth >=
+                            ShellTokens.railExpandedMinWindow;
+                        return MiniWindowLayer(
+                          controller: _miniWindows,
+                          child: Stack(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // Phase 0 unified titlebar (macOS): the window
+                                  // draws under the traffic lights, so the shell
+                                  // reserves the system gutter above its chrome.
+                                  // macOS reports no viewPadding for the titlebar,
+                                  // hence the platform constant; zero elsewhere.
+                                  SizedBox(
+                                    height:
+                                        defaultTargetPlatform ==
+                                            TargetPlatform.macOS
+                                        ? ShellTokens.titlebarGutter
+                                        : MediaQuery.of(
+                                            context,
+                                          ).viewPadding.top,
+                                  ),
+                                  Expanded(
+                                    child: screenLayout.small
+                                        ? _centerColumn(surfaces)
+                                        : Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              SizedBox(
+                                                width: _railExpanded
+                                                    ? ShellTokens.railWidth
+                                                    : ShellTokens
+                                                          .railCompactWidth,
+                                                child: ActorRail(
+                                                  service: _service,
+                                                  expanded: _railExpanded,
+                                                  activeView:
+                                                      _layout.activeView,
+                                                  views: _viewSpecs(surfaces),
+                                                  onOpenView: (final viewId) =>
+                                                      _onLayoutChanged(
+                                                        _layout.showView(
+                                                          viewId,
                                                         ),
-                                                onMiniWindow: _openMiniWindow,
+                                                      ),
+                                                  onOpenSettings: _openSettings,
+                                                  onOpenCommandPalette:
+                                                      _openPalette,
+                                                  onConversationNewTab:
+                                                      (
+                                                        final surfaceId,
+                                                      ) => _onLayoutChanged(
+                                                        _layout
+                                                            .openConversation(
+                                                              surfaceId,
+                                                              forceNew: true,
+                                                            ),
+                                                      ),
+                                                  onMiniWindow: _openMiniWindow,
+                                                ),
                                               ),
-                                            ),
-                                            VerticalDivider(
-                                              width: 1,
-                                              color: Theme.of(
-                                                context,
-                                              ).dividerColor,
-                                            ),
-                                            Expanded(
-                                              child: _centerColumn(surfaces),
-                                            ),
-                                          ],
-                                        ),
-                                ),
-                                // Phase 1d — the status edge: ONE honest line
-                                // (mesh · backend · daemon · attention) at the
-                                // window bottom, spanning both layout branches;
-                                // its clicks route into the surfaces that own
-                                // the facts (Models tab, landing inbox, arm).
-                                StatusEdge(
-                                  world: _worldState,
-                                  onOpenModels: _openModelsTab,
-                                  onOpenInbox: _openInbox,
-                                ),
-                                SizedBox(
-                                  height: MediaQuery.of(
-                                    context,
-                                  ).viewPadding.bottom,
-                                ),
-                              ],
-                            ),
-                            if (_paletteOpen)
-                              CommandPalette(
-                                entries: _paletteEntries(surfaces),
-                                onClose: _closePalette,
+                                              VerticalDivider(
+                                                width: 1,
+                                                color: Theme.of(
+                                                  context,
+                                                ).dividerColor,
+                                              ),
+                                              Expanded(
+                                                child: _centerColumn(surfaces),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                  // Phase 1d — the status edge: ONE honest line
+                                  // (mesh · backend · daemon · attention) at the
+                                  // window bottom, spanning both layout branches;
+                                  // its clicks route into the surfaces that own
+                                  // the facts (Models tab, landing inbox, arm).
+                                  StatusEdge(
+                                    world: _worldState,
+                                    onOpenModels: _openModelsTab,
+                                    onOpenInbox: _openInbox,
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(
+                                      context,
+                                    ).viewPadding.bottom,
+                                  ),
+                                ],
                               ),
-                          ],
-                        ),
-                      );
-                    },
+                              if (_paletteOpen)
+                                CommandPalette(
+                                  entries: _paletteEntries(surfaces),
+                                  onClose: _closePalette,
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

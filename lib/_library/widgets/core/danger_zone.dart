@@ -24,7 +24,7 @@ class DangerZone extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: defaultPopupBorderRadius,
-              border: Border.all(color: AppColors.accent2),
+              border: Border.all(color: context.la.danger),
             ),
             height: 50,
           ),
@@ -41,7 +41,7 @@ class DangerZone extends StatelessWidget {
             child: Text(
               context.l10n.danger,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.accent3,
+                color: context.la.danger,
               ),
             ),
           ),

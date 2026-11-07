@@ -26,6 +26,10 @@ workspace:
 # to update use flutter pub upgrade --major-versions
 dependencies:
   ecsly: ^0.1.0
+  # LaWorld's reactive UI binding (EcsController/EcsWorldSelector/
+  # EcsFixedStepLoop) — 0.1.0 stable, the path override below pins the
+  # checkout.
+  ecsly_flutter: ^0.1.0
   ecsly_flutter_scene:
     path: ../../ecsly/plugins/ecsly_flutter_scene
   universal_automation_interface: ^0.2.0

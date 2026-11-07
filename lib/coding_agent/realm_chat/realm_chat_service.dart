@@ -103,14 +103,23 @@ final class RealmChatService extends ChangeNotifier {
   /// vocabulary, written by `actor_bind`): the defer law's second half.
   final Map<String, String> _realmBrainCasts = {};
 
+  /// The defer predicate's BINDING half: whether this actor is bound in
+  /// the daemon's own vocabulary (`cast:` brainRefs and durable
+  /// `brainCast` rows) — independent of the daemon being live right
+  /// now. The chat's honest-absence row (0f) reads this: a bound actor
+  /// with a SLEEPING daemon is exactly when the room must say so.
+  bool daemonBoundActor(final ActorProfile actor) {
+    if (actor.brainRef.trim().startsWith('cast:')) return true;
+    final cast = _realmBrainCasts[actor.actorId];
+    return cast != null && cast.isNotEmpty;
+  }
+
   /// G6 — the defer-to-daemon predicate: a live daemon owns the actors
   /// bound in its own vocabulary (`cast:` brainRefs and durable
   /// `brainCast` rows); the in-app host stays out of their threads.
   bool daemonOwnsActor(final ActorProfile actor) {
     if (daemonLiveGetter?.call() != true) return false;
-    if (actor.brainRef.trim().startsWith('cast:')) return true;
-    final cast = _realmBrainCasts[actor.actorId];
-    return cast != null && cast.isNotEmpty;
+    return daemonBoundActor(actor);
   }
 
   /// Re-reads the durable `brainCast` bindings (the daemon may bind an

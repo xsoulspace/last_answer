@@ -176,4 +176,169 @@ void main() {
       expect(find.byType(ListView), findsOneWidget);
     },
   );
+
+  testWidgets(
+    '0c — a permission naming a room actor interrupts the conversation '
+    'reject-first; an unjoined one stays in the inbox',
+    (final tester) async {
+      late final RealmChatService service;
+      late final ActorProfile toby;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_perminline_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        toby = (await service.createActor(
+          displayName: 'Toby Researcher',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+        await service.startThread(
+          topic: 'Toby Researcher',
+          participants: <String>[toby.actorId],
+        );
+        await service.say('go on then');
+      });
+
+      final answers = <bool>[];
+      final worldState = hermeticWorldState()
+        ..debugPermissionsOverride = <InboxPermission>[
+          InboxPermission(
+            sessionId: 'doc-toby',
+            title: 'Toby Researcher wants to write to notes.md',
+            kind: 'edit',
+            answer: (final allow) async => answers.add(allow),
+          ),
+          InboxPermission(
+            sessionId: 'doc-other',
+            title: 'write to lib/unrelated.dart',
+            answer: (final allow) async => answers.add(allow),
+          ),
+        ];
+      addTearDown(worldState.dispose);
+
+      await tester.pumpWidget(
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: service,
+          child: ChangeNotifierProvider<WorldStateService>.value(
+            value: worldState,
+            child: MaterialApp(
+              localizationsDelegates: S.localizationsDelegates,
+              supportedLocales: S.supportedLocales,
+              home: Scaffold(body: WorldChatSurface(service: service)),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // The joined round interrupts; the unjoined one does not (the
+      // inbox keeps the global ledger — never a misattributed card).
+      expect(
+        find.byKey(const ValueKey('worldchat.perm.doc-toby')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('worldchat.perm.doc-other')),
+        findsNothing,
+      );
+
+      // Reject-first: Deny answers false, Allow answers true — through
+      // the session's own handle.
+      await tester.tap(
+        find.byKey(const ValueKey('worldchat.perm.deny.doc-toby')),
+      );
+      await tester.pump();
+      expect(answers, <bool>[false]);
+    },
+  );
+
+  testWidgets(
+    '0f — a daemon-bound actor with the daemon asleep gets the honest '
+    'row + the one-click arm; a live daemon renders nothing',
+    (final tester) async {
+      late final RealmChatService service;
+      late final ActorProfile scout;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_daemonrow_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        // A cast: binding is the daemon's vocabulary — the actor
+        // answers through the daemon, so a sleeping daemon must speak.
+        scout = (await service.createActor(
+          displayName: 'Scout',
+          kind: ActorKind.model,
+          brainRef: 'cast:modelscope_qwen38max',
+        ))!;
+        await service.startThread(
+          topic: 'Scout',
+          participants: <String>[scout.actorId],
+        );
+        await service.say('are you there?');
+      });
+
+      final worldState = hermeticWorldState(daemonLive: false);
+      addTearDown(worldState.dispose);
+
+      Widget app() => ChangeNotifierProvider<RealmChatService>.value(
+        value: service,
+        child: ChangeNotifierProvider<WorldStateService>.value(
+          value: worldState,
+          child: MaterialApp(
+            localizationsDelegates: S.localizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(body: WorldChatSurface(service: service)),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(app());
+      await tester.pump();
+      expect(
+        find.byKey(ValueKey('worldchat.daemonAbsent.${scout.actorId}')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('worldchat.daemonAbsent.arm')),
+        findsOneWidget,
+      );
+
+      // A live daemon: the row disappears (the daemon answers — the
+      // defer law's other half).
+      final liveState = hermeticWorldState(daemonLive: true);
+      addTearDown(liveState.dispose);
+      await liveState.refresh();
+      await tester.pumpWidget(
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: service,
+          child: ChangeNotifierProvider<WorldStateService>.value(
+            value: liveState,
+            child: MaterialApp(
+              localizationsDelegates: S.localizationsDelegates,
+              supportedLocales: S.supportedLocales,
+              home: Scaffold(body: WorldChatSurface(service: service)),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(
+        find.byKey(ValueKey('worldchat.daemonAbsent.${scout.actorId}')),
+        findsNothing,
+      );
+    },
+  );
 }

@@ -207,6 +207,51 @@ class _WorkStripState extends State<_WorkStrip> {
           }
         }
 
+        // 3) 0f — honest absence: an actor bound in the daemon's
+        // vocabulary with the daemon ASLEEP says so in the room, with
+        // the one-click arm — never silence.
+        if (world != null && !world.daemonLive) {
+          for (final actorId in actors) {
+            final profile = service.roster?.get(actorId);
+            if (profile == null) continue;
+            if (!service.daemonBoundActor(profile)) continue;
+            rows.add(
+              _DaemonAbsentRow(
+                key: ValueKey('worldchat.daemonAbsent.$actorId'),
+                world: world,
+                name: profile.displayName,
+              ),
+            );
+          }
+        }
+
+        // 4) 0c — permission interrupts, IN the conversation: an open
+        // round whose title names one of this room's actors renders
+        // here reject-first (the inbox keeps the global ledger; the
+        // structural task→room join lands with the LaWorld fold — the
+        // name join is the honest one available today).
+        final permissions = world?.permissions ?? const <InboxPermission>[];
+        if (permissions.isNotEmpty && actors.isNotEmpty) {
+          final names = [
+            for (final id in actors) ...<String>[
+              id,
+              service.roster?.get(id)?.displayName ?? '',
+            ],
+          ].where((name) => name.isNotEmpty).map(
+            (name) => name.toLowerCase(),
+          );
+          for (final permission in permissions) {
+            final title = permission.title.toLowerCase();
+            if (!names.any(title.contains)) continue;
+            rows.add(
+              _PermissionInterrupt(
+                key: ValueKey('worldchat.perm.${permission.sessionId}'),
+                permission: permission,
+              ),
+            );
+          }
+        }
+
         if (rows.isEmpty) return const SizedBox.shrink();
         return Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
@@ -431,6 +476,175 @@ class _WorkCard extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// 0c — one open permission round interrupting the conversation,
+/// reject-first (Deny leftmost, the inbox law): the answer lands
+/// through the session's own handle, exactly as the inbox row does.
+class _PermissionInterrupt extends StatelessWidget {
+  const _PermissionInterrupt({required this.permission, super.key});
+
+  final InboxPermission permission;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    return Semantics(
+      label: 'worldchat.perm.${permission.sessionId}',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.shellField,
+            borderRadius: BorderRadius.circular(ShellTokens.radius),
+            border: Border.all(color: context.la.danger),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: Row(
+              children: [
+                Icon(Icons.lock_outline, size: 14, color: context.la.danger),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    permission.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                _StripButton(
+                  keyName: 'worldchat.perm.deny.${permission.sessionId}',
+                  label: l10n.inboxDeny,
+                  danger: true,
+                  onTap: () => unawaited(permission.answer(false)),
+                ),
+                const SizedBox(width: 6),
+                _StripButton(
+                  keyName: 'worldchat.perm.allow.${permission.sessionId}',
+                  label: l10n.inboxAllow,
+                  onTap: () => unawaited(permission.answer(true)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One quiet strip button (the inbox's button vocabulary, the shell's
+/// hairline law).
+class _StripButton extends StatelessWidget {
+  const _StripButton({
+    required this.keyName,
+    required this.label,
+    required this.onTap,
+    this.danger = false,
+  });
+
+  final String keyName;
+  final String label;
+  final VoidCallback onTap;
+  final bool danger;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    label: keyName,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        key: ValueKey(keyName),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: danger ? context.la.danger : context.shellHairline,
+            ),
+          ),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: danger ? context.la.danger : context.la.ink,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// 0f — the honest absence row: this actor answers through the world
+/// daemon, and the daemon is asleep. One click arms the supervised
+/// converge; a refusal renders in the world's own words. Silence is
+/// the one answer this row never gives.
+class _DaemonAbsentRow extends StatelessWidget {
+  const _DaemonAbsentRow({required this.world, required this.name, super.key});
+
+  final WorldStateService world;
+  final String name;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final arming = world.armState == WorldArmState.arming;
+    return Semantics(
+      label: 'worldchat.daemonAbsent',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: Row(
+          children: [
+            Icon(
+              Icons.power_settings_new,
+              size: 13,
+              color: context.la.caution,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '$name · ${l10n.inboxWorldDown}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: context.shellMuted,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            if (world.armState == WorldArmState.error &&
+                world.armError != null &&
+                world.armError!.isNotEmpty)
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    world.armError!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: context.la.danger,
+                    ),
+                  ),
+                ),
+              ),
+            _StripButton(
+              keyName: 'worldchat.daemonAbsent.arm',
+              label: arming ? l10n.inboxWorldArming : l10n.edgeArmWorld,
+              onTap: arming ? () {} : () => unawaited(world.armWorld()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 /// The visual top of an endless room: one quiet row that walks the

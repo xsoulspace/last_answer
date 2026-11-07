@@ -59,6 +59,12 @@ final class RealmChatService extends ChangeNotifier {
   final bool _debugStartBotDispatcher;
 
   RealmWorld? _world;
+
+  /// The opened world (null until ready / on web) — the store access
+  /// seam for world-adjacent surfaces (LaWorld's fold rides this, so
+  /// hermetic overrides flow and the real singleton is never opened
+  /// around them).
+  RealmWorld? get world => _world;
   RealmBotHost? _bots;
   ActorRoster? _roster;
   ProfileActorAuthority? _human;
@@ -722,6 +728,10 @@ final class RealmChatService extends ChangeNotifier {
     _activeThreadId = threadId;
     _beats.clear();
     _windowStart = null;
+    // Notify NOW: the rail's selection fill, badge suppression and the
+    // tab title follow the selection immediately — the beats arrive on
+    // their own async read (which notifies again when they land).
+    notifyListeners();
     unawaited(_refreshBeats());
   }
 

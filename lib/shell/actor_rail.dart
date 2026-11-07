@@ -22,6 +22,7 @@
 /// rows retired when PROJECTS folded into WORKSPACES — ADR 0026.)
 library;
 
+import 'package:ecsly_flutter/ecsly_flutter.dart';
 import 'package:file_selector/file_selector.dart' show getDirectoryPath;
 
 import 'package:flutter/cupertino.dart' show CupertinoIcons;
@@ -34,6 +35,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_picker.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/workspaces/workspace.dart';
@@ -579,6 +581,7 @@ class _ActorRailState extends State<ActorRail> {
                       ),
                       title: actor.displayName,
                       preview: widget.expanded ? _actorPreview(actor) : null,
+                      threadId: widget.service.dmThreadOf(actor.actorId),
                       compact: !widget.expanded,
                       selected: railRowIsSelected(
                         rowThreadId: widget.service.dmThreadOf(actor.actorId),
@@ -612,6 +615,7 @@ class _ActorRailState extends State<ActorRail> {
                       preview: widget.expanded
                           ? widget.service.beatPreviews()[channel.threadId]
                           : null,
+                      threadId: channel.threadId,
                       compact: !widget.expanded,
                       selected: railRowIsSelected(
                         rowThreadId: channel.threadId,
@@ -782,6 +786,7 @@ class _ConversationRow extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.preview,
+    this.threadId,
     this.onNewTab,
     this.onMiniWindow,
     this.compact = false,
@@ -795,6 +800,10 @@ class _ConversationRow extends StatelessWidget {
   final String? preview;
   final bool selected;
   final VoidCallback onTap;
+
+  /// The room this row opens (DM thread / channel thread) — the unread
+  /// badge's LaWorld join (1g). Null: no badge (a row without a room).
+  final String? threadId;
 
   /// Phase 2 — the Semantics name (the widget key: `rail.actor.<id>` /
   /// `rail.channel.<id>`); the display title rides the hint.
@@ -890,15 +899,26 @@ class _ConversationRow extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                fontWeight: selected
-                                    ? FontWeight.w600
-                                    : FontWeight.w500,
-                              ),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontWeight: selected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                if (threadId != null)
+                                  _UnreadBadge(
+                                    threadId: threadId!,
+                                    suppress: selected,
+                                  ),
+                              ],
                             ),
                             if (preview != null)
                               Text(
@@ -917,6 +937,56 @@ class _ConversationRow extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The room's unread badge (1g — the first LaWorld consumer): a
+/// compact status token (the one place DESIGN.md allows a pill), fed
+/// by an [EcsWorldSelector] over the journal projection — the count
+/// arrives reactively from the cursor fold, never from a poll. The
+/// selected room never badges (you are looking at it; the receipt
+/// follows the open). No LaWorld yet = honest absence, no badge.
+class _UnreadBadge extends StatelessWidget {
+  const _UnreadBadge({required this.threadId, required this.suppress});
+
+  final String threadId;
+  final bool suppress;
+
+  @override
+  Widget build(final BuildContext context) {
+    final laWorld = context.read<LaWorld?>();
+    if (laWorld == null || suppress) return const SizedBox.shrink();
+    return EcsWorldSelector<int>(
+      world: laWorld.world,
+      controller: laWorld.controller,
+      select: (final world) => laWorld.unreadByThread()[threadId] ?? 0,
+      builder: (final context, final unread) {
+        if (unread <= 0) return const SizedBox.shrink();
+        final label = unread > 99 ? '99+' : '$unread';
+        return Semantics(
+          key: ValueKey('rail.unread.$threadId'),
+          label: 'rail.unread.$threadId',
+          child: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+              decoration: BoxDecoration(
+                color: context.la.accent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

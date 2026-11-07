@@ -43,6 +43,10 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
+import 'package:lastanswer/la_world/la_world.dart';
+
+import 'package:lastanswer/la_world/la_world_feed.dart';
+
 import 'package:lastanswer/settings/settings.dart';
 
 import 'package:lastanswer/shell/actor_rail.dart';
@@ -67,11 +71,11 @@ import 'package:lastanswer/shell/status_edge.dart';
 
 import 'package:lastanswer/shell/surfaces.dart';
 
-import 'package:lastanswer/shell/view_tab_strip.dart';
-
 import 'package:lastanswer/shell/view_documents.dart';
 
 import 'package:lastanswer/shell/view_people.dart';
+
+import 'package:lastanswer/shell/view_tab_strip.dart';
 
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
@@ -144,6 +148,15 @@ class _AppShellState extends State<AppShell> {
   final PeopleFocus _peopleFocus = PeopleFocus();
   var _seamsInstalled = false;
 
+  /// 1a — LaWorld: the reactive ecsly projection over the realm
+  /// journal (cursor-fed, never polling). Null until the chat service
+  /// resolves the world and the human identity; the rail's unread
+  /// badges ride it first, surfaces migrate one by one. The feed's
+  /// watch subscription is cancelled in dispose (the pending-timer
+  /// law the WorldStateService poll follows).
+  LaWorld? _laWorld;
+  LaWorldFeed? _laWorldFeed;
+
   /// The conversation id the boot restore already handled (once per id,
   /// never retried — see [_restorePersistedConversationTab]).
   String? _bootRestoredId;
@@ -181,6 +194,7 @@ class _AppShellState extends State<AppShell> {
     _service.daemonLiveGetter = () => _worldState.daemonLive;
     unawaited(_service.ensureReady());
     _service.addListener(_onServiceChanged);
+    unawaited(_startLaWorld());
     // Phase 1d: the world's ambient poll (the doctor/journal/registry
     // pass behind the status edge). The shell polls only the service it
     // OWNS — an injected one (tests, a future root DI) manages its own
@@ -233,11 +247,36 @@ class _AppShellState extends State<AppShell> {
     FocusManager.instance.removeListener(_onPrimaryFocusChanged);
     _shellFocus.dispose();
     _service.removeListener(_onServiceChanged);
+    _laWorldFeed?.stop();
+    _laWorld?.dispose();
     if (_ownsWorldState) _worldState.dispose();
     _peopleFocus.dispose();
     _miniWindowPersistence.dispose();
     _miniWindows.dispose();
     super.dispose();
+  }
+
+  /// 1a — starts the LaWorld fold once the chat service has resolved
+  /// the world and the human identity (the receipts fold needs the
+  /// stable human id). The store rides the SERVICE's world — never
+  /// `RealmWorld.open()` — so hermetic overrides flow and the real
+  /// realm singleton is untouched by tests.
+  Future<void> _startLaWorld() async {
+    await _service.ensureReady();
+    if (!mounted) return;
+    final world = _service.world;
+    if (world == null) return;
+    String humanId() => _service.humanActorId ?? '';
+    final laWorld = LaWorld(humanActorId: humanId);
+    final feed = LaWorldFeed(
+      store: world.store,
+      laWorld: laWorld,
+      humanActorId: humanId,
+    );
+    _laWorld = laWorld;
+    _laWorldFeed = feed;
+    await feed.start();
+    if (mounted) setState(() {});
   }
 
   // ---- the dissolved home face's seams (load-bearing; tests pump them) --
@@ -740,158 +779,176 @@ class _AppShellState extends State<AppShell> {
       value: _service,
       child: ChangeNotifierProvider<WorldStateService>.value(
         value: _worldState,
-        child: ChangeNotifierProvider<PeopleFocus>.value(
-          value: _peopleFocus,
-          child: ViewScope(
-            layout: _layout,
-            surfaces: surfaces,
-            onChanged: _onLayoutChanged,
-            onFocusActor: _onFocusActorIntent,
-            titleFor: (final id) => conversationSurfaceTitle(
-              id,
-              channels: _service.channels,
-              actors: _service.roster?.all ?? const <ActorProfile>[],
-            ),
-            leadingFor: _leadingFor,
-            child: Shortcuts(
-              shortcuts: _viewTabShortcuts(),
-              child: Actions(
-                actions: <Type, Action<Intent>>{
-                  _NewTabIntent: CallbackAction<_NewTabIntent>(
-                    onInvoke: (final _) {
-                      _openNewTab();
-                      return null;
-                    },
-                  ),
-                  _CloseActiveTabIntent: CallbackAction<_CloseActiveTabIntent>(
-                    onInvoke: (final _) {
-                      _closeActiveTab();
-                      return null;
-                    },
-                  ),
-                  _PaletteIntent: CallbackAction<_PaletteIntent>(
-                    onInvoke: (final _) {
-                      _openPalette();
-                      return null;
-                    },
-                  ),
-                },
-                // The focus anchor: shell-level shortcuts answer even
-                // when no text field holds focus — the anchor takes it
-                // once at mount (an autofocus request loses to any
-                // already-focused descendant, so the rail's search field
-                // is never stolen from) and key events then bubble up
-                // through the map.
-                child: Focus(
-                  autofocus: true,
-                  focusNode: _shellFocus,
-                  child: Listener(
-                    behavior: HitTestBehavior.translucent,
-                    onPointerUp: (final _) => _reclaimFocusUnlessEditing(),
-                    child: LayoutBuilder(
-                      builder: (final context, final constraints) {
-                        _railExpanded =
-                            constraints.maxWidth >=
-                            ShellTokens.railExpandedMinWindow;
-                        return MiniWindowLayer(
-                          controller: _miniWindows,
-                          child: Stack(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  // Phase 0 unified titlebar (macOS): the window
-                                  // draws under the traffic lights, so the shell
-                                  // reserves the system gutter above its chrome.
-                                  // macOS reports no viewPadding for the titlebar,
-                                  // hence the platform constant; zero elsewhere.
-                                  SizedBox(
-                                    height:
-                                        defaultTargetPlatform ==
-                                            TargetPlatform.macOS
-                                        ? ShellTokens.titlebarGutter
-                                        : MediaQuery.of(
-                                            context,
-                                          ).viewPadding.top,
-                                  ),
-                                  Expanded(
-                                    child: screenLayout.small
-                                        ? _centerColumn(surfaces)
-                                        : Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              SizedBox(
-                                                width: _railExpanded
-                                                    ? ShellTokens.railWidth
-                                                    : ShellTokens
-                                                          .railCompactWidth,
-                                                child: ActorRail(
-                                                  service: _service,
-                                                  expanded: _railExpanded,
-                                                  activeView:
-                                                      _layout.activeView,
-                                                  views: _viewSpecs(surfaces),
-                                                  onOpenView: (final viewId) =>
-                                                      _onLayoutChanged(
-                                                        _layout.showView(
-                                                          viewId,
-                                                        ),
-                                                      ),
-                                                  onOpenSettings: _openSettings,
-                                                  onOpenCommandPalette:
-                                                      _openPalette,
-                                                  onConversationNewTab:
-                                                      (
-                                                        final surfaceId,
-                                                      ) => _onLayoutChanged(
-                                                        _layout
-                                                            .openConversation(
-                                                              surfaceId,
-                                                              forceNew: true,
-                                                            ),
-                                                      ),
-                                                  onMiniWindow: _openMiniWindow,
-                                                ),
-                                              ),
-                                              VerticalDivider(
-                                                width: 1,
-                                                color: Theme.of(
-                                                  context,
-                                                ).dividerColor,
-                                              ),
-                                              Expanded(
-                                                child: _centerColumn(surfaces),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                  // Phase 1d — the status edge: ONE honest line
-                                  // (mesh · backend · daemon · attention) at the
-                                  // window bottom, spanning both layout branches;
-                                  // its clicks route into the surfaces that own
-                                  // the facts (Models tab, landing inbox, arm).
-                                  StatusEdge(
-                                    world: _worldState,
-                                    onOpenModels: _openModelsTab,
-                                    onOpenInbox: _openInbox,
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(
-                                      context,
-                                    ).viewPadding.bottom,
-                                  ),
-                                ],
-                              ),
-                              if (_paletteOpen)
-                                CommandPalette(
-                                  entries: _paletteEntries(surfaces),
-                                  onClose: _closePalette,
-                                ),
-                            ],
-                          ),
-                        );
+        // 1a — LaWorld: the reactive journal projection (null until
+        // the fold starts; consumers render honest absence until then).
+        child: Provider<LaWorld?>.value(
+          value: _laWorld,
+          child: ChangeNotifierProvider<PeopleFocus>.value(
+            value: _peopleFocus,
+            child: ViewScope(
+              layout: _layout,
+              surfaces: surfaces,
+              onChanged: _onLayoutChanged,
+              onFocusActor: _onFocusActorIntent,
+              titleFor: (final id) => conversationSurfaceTitle(
+                id,
+                channels: _service.channels,
+                actors: _service.roster?.all ?? const <ActorProfile>[],
+              ),
+              leadingFor: _leadingFor,
+              child: Shortcuts(
+                shortcuts: _viewTabShortcuts(),
+                child: Actions(
+                  actions: <Type, Action<Intent>>{
+                    _NewTabIntent: CallbackAction<_NewTabIntent>(
+                      onInvoke: (final _) {
+                        _openNewTab();
+                        return null;
                       },
+                    ),
+                    _CloseActiveTabIntent:
+                        CallbackAction<_CloseActiveTabIntent>(
+                          onInvoke: (final _) {
+                            _closeActiveTab();
+                            return null;
+                          },
+                        ),
+                    _PaletteIntent: CallbackAction<_PaletteIntent>(
+                      onInvoke: (final _) {
+                        _openPalette();
+                        return null;
+                      },
+                    ),
+                  },
+                  // The focus anchor: shell-level shortcuts answer even
+                  // when no text field holds focus — the anchor takes it
+                  // once at mount (an autofocus request loses to any
+                  // already-focused descendant, so the rail's search field
+                  // is never stolen from) and key events then bubble up
+                  // through the map.
+                  child: Focus(
+                    autofocus: true,
+                    focusNode: _shellFocus,
+                    child: Listener(
+                      behavior: HitTestBehavior.translucent,
+                      onPointerUp: (final _) => _reclaimFocusUnlessEditing(),
+                      child: LayoutBuilder(
+                        builder: (final context, final constraints) {
+                          _railExpanded =
+                              constraints.maxWidth >=
+                              ShellTokens.railExpandedMinWindow;
+                          return MiniWindowLayer(
+                            controller: _miniWindows,
+                            child: Stack(
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    // Phase 0 unified titlebar
+                                    // (macOS): the window draws under
+                                    // the traffic lights, so the shell
+                                    // reserves the system gutter above
+                                    // its chrome. macOS reports no
+                                    // viewPadding for the titlebar,
+                                    // hence the platform constant;
+                                    // zero elsewhere.
+                                    SizedBox(
+                                      height:
+                                          defaultTargetPlatform ==
+                                              TargetPlatform.macOS
+                                          ? ShellTokens.titlebarGutter
+                                          : MediaQuery.of(
+                                              context,
+                                            ).viewPadding.top,
+                                    ),
+                                    Expanded(
+                                      child: screenLayout.small
+                                          ? _centerColumn(surfaces)
+                                          : Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                SizedBox(
+                                                  width: _railExpanded
+                                                      ? ShellTokens.railWidth
+                                                      : ShellTokens
+                                                            .railCompactWidth,
+                                                  child: ActorRail(
+                                                    service: _service,
+                                                    expanded: _railExpanded,
+                                                    activeView:
+                                                        _layout.activeView,
+                                                    views: _viewSpecs(surfaces),
+                                                    onOpenView:
+                                                        (final viewId) =>
+                                                            _onLayoutChanged(
+                                                              _layout.showView(
+                                                                viewId,
+                                                              ),
+                                                            ),
+                                                    onOpenSettings:
+                                                        _openSettings,
+                                                    onOpenCommandPalette:
+                                                        _openPalette,
+                                                    onConversationNewTab:
+                                                        (
+                                                          final surfaceId,
+                                                        ) => _onLayoutChanged(
+                                                          _layout
+                                                              .openConversation(
+                                                                surfaceId,
+                                                                forceNew: true,
+                                                              ),
+                                                        ),
+                                                    onMiniWindow:
+                                                        _openMiniWindow,
+                                                  ),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 1,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).dividerColor,
+                                                ),
+                                                Expanded(
+                                                  child: _centerColumn(
+                                                    surfaces,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                    ),
+                                    // Phase 1d — the status edge:
+                                    // ONE honest line (mesh · backend
+                                    // · daemon · attention) at the
+                                    // window bottom, spanning both
+                                    // layout branches; its clicks
+                                    // route into the surfaces that
+                                    // own the facts (Models tab,
+                                    // landing inbox, arm).
+                                    StatusEdge(
+                                      world: _worldState,
+                                      onOpenModels: _openModelsTab,
+                                      onOpenInbox: _openInbox,
+                                    ),
+                                    SizedBox(
+                                      height: MediaQuery.of(
+                                        context,
+                                      ).viewPadding.bottom,
+                                    ),
+                                  ],
+                                ),
+                                if (_paletteOpen)
+                                  CommandPalette(
+                                    entries: _paletteEntries(surfaces),
+                                    onClose: _closePalette,
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

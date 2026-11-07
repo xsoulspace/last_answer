@@ -21,7 +21,6 @@
 library;
 
 import 'dart:async';
-import 'dart:convert' show utf8;
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -33,9 +32,20 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 /// consecutive bot beats in one thread.
 const maxConsecutiveBotBeats = 8;
 
-/// How many thread beats form the reply transcript (small-context law:
-/// the window is the context budget).
-const _transcriptWindow = 24;
+/// The transcript PAGE the reply path loads before the plan picks the
+/// window (ADR 0122/0136): the plan's tiers never exceed 24 beats, and
+/// the quantized slide never walks back more than one quantum — a full
+/// page is a safe horizon for both, and the journal read caps at 128.
+const _transcriptPageLimit = 128;
+
+/// The in-app lane's context profile per brain grammar (the daemon's
+/// per-cast config chain has no LA-side equivalent yet): local MLX
+/// models ride the compact tier, hosted brains the owner's standing
+/// remote assumption (256k). Pure, so the law tests without a host.
+ContextProfile botContextProfileFor(final String brainRef) =>
+    brainRef.trim().startsWith('local:')
+        ? const ContextProfile(windowTokens: 32000)
+        : const ContextProfile.defaults();
 
 /// How many recent thread beats the echo guard compares against.
 const echoGuardWindow = 6;
@@ -570,16 +580,23 @@ final class _BotLoop {
     final author = beat['author']! as String;
     final conversation = world.conversation();
     final current = beat['beat']! as int;
-    final windowAfter = current > _transcriptWindow
-        ? current - _transcriptWindow
+    // The endless-participation law (ADR 0122/0136): load one page, let
+    // the PLAN pick the window tier, and slide the window's front only
+    // in quantized steps — between slides the transcript is a strict
+    // PREFIX-EXTENSION of the previous dispatch's, so the provider's
+    // prefix cache serves everything up to the new beat. The thread
+    // itself never ends; the window is a viewport, and omitted beats
+    // stay whole in the journal (a `thread read` pans back).
+    final pageAfter = current > _transcriptPageLimit
+        ? current - _transcriptPageLimit
         : 0;
     final Map<String, Object?> read;
     try {
       read = await conversation.read(
         actor: session.authority,
         threadId: threadId,
-        afterBeat: windowAfter,
-        limit: _transcriptWindow,
+        afterBeat: pageAfter,
+        limit: _transcriptPageLimit,
       );
     } on Object {
       // The transcript read failed: the wake produced no work — back to
@@ -587,7 +604,34 @@ final class _BotLoop {
       _setNarration(BotNarrationState.listening);
       return;
     }
-    final window = (read['beats']! as List).cast<Map>();
+    final page = (read['beats']! as List).cast<Map>();
+    // The frozen head is composed BEFORE the plan resolves (its byte
+    // length is the plan's systemChars input) and carries NO reply
+    // target — the target rides the grounding tail on the final turn,
+    // so the head stays byte-stable per (actor, persona) across
+    // dispatches (ADR 0136; also fixes the latent "Reply to <yourself>"
+    // when the bot answered its own room).
+    final system = _persona(
+      displayName: _displayNames[profile.actorId] ?? profile.displayName,
+      role: profile.role,
+    );
+    final plan = ContextPlan.resolve(
+      profile: botContextProfileFor(profile.brainRef),
+      systemChars: system.length,
+      promptChars: page.fold<int>(
+        0,
+        (sum, entry) => sum + (entry['text']! as String).length,
+      ),
+      beatCount: page.length,
+    );
+    final windowStart = quantizedWindowStart(
+      beatCount: current,
+      windowBeats: plan.windowBeats,
+    );
+    final window = [
+      for (final entry in page)
+        if ((entry['beat']! as int) > windowStart) entry,
+    ];
     // Bot-chain guard: a thread whose tail is one long bot-to-bot
     // exchange pauses this bot until a non-bot word arrives.
     var trailingBotBeats = 0;
@@ -600,15 +644,19 @@ final class _BotLoop {
       return;
     }
 
-    // Reply grounding: the system prompt names who is being answered;
-    // the ADDRESSED beat rides as the FINAL user turn, explicitly marked
-    // as the message being answered (speaker-prefixed), so the model's
-    // next token is drawn against the right antecedent even when the
-    // window is busy. The addressed beat is excluded from the raw
-    // window first — it re-enters as the marked final turn.
+    // Reply grounding: the ADDRESSED beat rides as the FINAL user turn,
+    // speaker-prefixed (the grounding tail names the reply target the
+    // head no longer carries), plus — when the plan had to compress —
+    // one honest line about the viewport (compression is a decision the
+    // model is told about, never a silent squeeze).
     final addressedText = (beat['text']! as String).trim();
     final currentBeat = beat['beat']! as int;
     final replyingTo = _displayNames[author] ?? author;
+    final grounding = plan.compressed
+        ? '$replyingTo: $addressedText\n'
+              '(You see the newest ${window.length} beats; older ones '
+              'remain in the thread.)'
+        : '$replyingTo: $addressedText';
     final turns = [
       for (final entry in window)
         if (entry['beat'] != currentBeat)
@@ -616,13 +664,8 @@ final class _BotLoop {
             fromMe: entry['author'] == profile.actorId,
             content: entry['text']! as String,
           ),
-      BrainTurn(fromMe: false, content: '$replyingTo: $addressedText'),
+      BrainTurn(fromMe: false, content: grounding),
     ];
-    final system = _persona(
-      displayName: _displayNames[profile.actorId] ?? profile.displayName,
-      role: profile.role,
-      replyingTo: replyingTo,
-    );
     // Wave 3A: the brain is about to run — the narration names WHAT it
     // works on (the thread topic; a topic-less thread keeps the actor).
     final topic = '${read['topic'] ?? ''}';
@@ -680,9 +723,13 @@ final class _BotLoop {
         if (participant != profile.actorId) participant,
     ];
     try {
+      // Verbatim write law (ADR 0138 D5): the reply lands as generated
+      // — the LA-side 8KB clamp is retired with the kernel plane's;
+      // size is a read problem (windows, summaries, zoom), never a
+      // write squeeze.
       await session.say(
         threadId,
-        _clamp(reply),
+        reply,
         addressedTo: room.isEmpty ? <String>[author] : room,
       );
       _setStatus('listening');
@@ -693,41 +740,32 @@ final class _BotLoop {
     }
   }
 
-  /// The system prompt for one reply. An owner-authored persona
+  /// The system prompt for one reply — the FROZEN HEAD (ADR 0136):
+  /// byte-stable per (actor, persona), carrying NO reply target (the
+  /// target rides the grounding tail on the final turn), so the
+  /// provider's prefix cache extends across dispatches instead of
+  /// cold-starting per author. An owner-authored persona
   /// ([ActorProfile.systemPrompt], editable in the actor panel and the
   /// Settings pane) IS the prompt verbatim — the one-line reply
   /// discipline below is still appended, because those bounds are the
   /// host's, not the persona's. Without one, today's synthesized shape.
-  String _persona({
-    required String displayName,
-    required String role,
-    required String replyingTo,
-  }) {
+  String _persona({required String displayName, required String role}) {
     if (profile.systemPrompt.isNotEmpty) {
-      return '${profile.systemPrompt}\n${_replyDiscipline(replyingTo)}';
+      return '${profile.systemPrompt}\n$_replyDiscipline';
     }
     final roleLine = role.isEmpty ? '' : '\nRole: $role.';
     return 'You are $displayName, a participant in a shared '
         'conversation.$roleLine'
-        '\n${_replyDiscipline(replyingTo)}';
+        '\n$_replyDiscipline';
   }
 
   /// The one-line reply discipline every persona carries: the bounds
   /// that keep a small model conversational (one message, answer the
-  /// addressed beat, no echoes, no meta).
-  String _replyDiscipline(String replyingTo) =>
-      'Reply to $replyingTo with ONE short conversational message. '
-      'The last message is the one you are answering. '
+  /// addressed beat, no echoes, no meta). A const string on purpose —
+  /// any interpolation here destabilizes the frozen head.
+  String get _replyDiscipline =>
+      'Reply with ONE short conversational message. '
+      'The last message names who you are answering. '
       'Never repeat a message that was already said. '
       'No name labels, no signatures, no roleplay directions.';
-
-  String _clamp(String text) {
-    final bytes = utf8.encode(text).length;
-    if (bytes <= 8192) return text;
-    var end = text.length;
-    while (end > 0 && utf8.encode(text.substring(0, end)).length > 8192) {
-      end -= 16;
-    }
-    return text.substring(0, end.clamp(0, text.length));
-  }
 }

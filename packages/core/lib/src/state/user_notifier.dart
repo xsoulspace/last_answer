@@ -14,6 +14,11 @@ class UserNotifierDto {
   final AppFeaturesNotifier appFeaturesNotifier;
 }
 
+/// The UI locale, global by design: it OUTLIVES any one [UserNotifier]
+/// instance (its lifetime is the isolate's), so an instance must never
+/// dispose it — a UserNotifier.dispose that did made every later
+/// instance in the same isolate (a second test tree, a hot restart)
+/// crash with "used after being disposed".
 final uiLocaleNotifier = ValueNotifier(Locales.en);
 
 @resource
@@ -30,12 +35,6 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     : dto = UserNotifierDto(context),
       super(const LoadableContainer(value: UserModel.empty));
   final UserNotifierDto dto;
-
-  @override
-  void dispose() {
-    uiLocaleNotifier.dispose();
-    return super.dispose();
-  }
 
   Future<void> loadRemoteUser({final bool isAfterLogin = false}) async {
     // if (isAfterLogin) await dto.userRepository.completeRemoteLogin();
@@ -75,9 +74,12 @@ class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
     resetRemoteUser();
   }
 
+  /// Marks onboarding done and persists it through [UserRepository] —
+  /// the flag the first-run routing branch reads on every launch, so
+  /// the first-run flow shows exactly once. (Fixed 2026-11-07: this
+  /// used to copy the flag to itself, silently never completing.)
   void completeOnboarding() => _updateUser(
-    (final user) =>
-        user.copyWith(hasCompletedOnboarding: hasCompletedOnboarding),
+    (final user) => user.copyWith(hasCompletedOnboarding: true),
   );
   void updateCharactersLimitForNewNotes(final int newLimit) => _updateSettings(
     (final settings) => settings.copyWith(charactersLimitForNewNotes: newLimit),

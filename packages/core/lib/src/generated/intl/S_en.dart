@@ -1267,6 +1267,51 @@ class SEn extends S {
       'Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.';
 
   @override
+  String get firstRunTitle => 'Meet your first actor';
+
+  @override
+  String get firstRunSubtitle =>
+      'Everything here starts from a conversation. Give your first actor a name, an optional persona and a brain — it will greet you in a direct message, and you can change everything later.';
+
+  @override
+  String get firstRunNameLabel => 'Name';
+
+  @override
+  String get firstRunNameHint => 'e.g. Toby';
+
+  @override
+  String get firstRunPersonaLabel => 'Persona (optional)';
+
+  @override
+  String get firstRunPersonaHint => 'How should this actor think and speak?';
+
+  @override
+  String get firstRunBrainLabel => 'Brain';
+
+  @override
+  String get firstRunNoBrains =>
+      'No brains are available on this device yet. You can skip for now and create an actor later from Settings.';
+
+  @override
+  String get firstRunCreate => 'Create and start chatting';
+
+  @override
+  String get firstRunCreating => 'Creating your actor…';
+
+  @override
+  String get firstRunSkip => 'Skip for now';
+
+  @override
+  String firstRunCreateFailed(String error) {
+    return 'Could not create the actor: $error';
+  }
+
+  @override
+  String firstRunGreeting(String name) {
+    return 'Hello — I\'m $name, your first actor. I live in this workspace\'s world: write to me here and I\'ll answer. You can change my name, persona or brain any time in Settings.';
+  }
+
+  @override
   String get settingsWorldInspector => 'World inspector';
 
   @override

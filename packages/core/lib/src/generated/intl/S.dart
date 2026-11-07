@@ -2367,6 +2367,84 @@ abstract class S {
   /// **'Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.'**
   String get actorsLocalNeedsMacos;
 
+  /// No description provided for @firstRunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet your first actor'**
+  String get firstRunTitle;
+
+  /// No description provided for @firstRunSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything here starts from a conversation. Give your first actor a name, an optional persona and a brain — it will greet you in a direct message, and you can change everything later.'**
+  String get firstRunSubtitle;
+
+  /// No description provided for @firstRunNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get firstRunNameLabel;
+
+  /// No description provided for @firstRunNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Toby'**
+  String get firstRunNameHint;
+
+  /// No description provided for @firstRunPersonaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Persona (optional)'**
+  String get firstRunPersonaLabel;
+
+  /// No description provided for @firstRunPersonaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How should this actor think and speak?'**
+  String get firstRunPersonaHint;
+
+  /// No description provided for @firstRunBrainLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain'**
+  String get firstRunBrainLabel;
+
+  /// No description provided for @firstRunNoBrains.
+  ///
+  /// In en, this message translates to:
+  /// **'No brains are available on this device yet. You can skip for now and create an actor later from Settings.'**
+  String get firstRunNoBrains;
+
+  /// No description provided for @firstRunCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and start chatting'**
+  String get firstRunCreate;
+
+  /// No description provided for @firstRunCreating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating your actor…'**
+  String get firstRunCreating;
+
+  /// No description provided for @firstRunSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get firstRunSkip;
+
+  /// No description provided for @firstRunCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the actor: {error}'**
+  String firstRunCreateFailed(String error);
+
+  /// No description provided for @firstRunGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello — I\'m {name}, your first actor. I live in this workspace\'s world: write to me here and I\'ll answer. You can change my name, persona or brain any time in Settings.'**
+  String firstRunGreeting(String name);
+
   /// No description provided for @settingsWorldInspector.
   ///
   /// In en, this message translates to:

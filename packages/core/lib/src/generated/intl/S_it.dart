@@ -1276,6 +1276,52 @@ class SIt extends S {
       'I cervelli locali richiedono macOS (MLX); i cervelli hosted funzionano ovunque sia configurata la chiave del provider.';
 
   @override
+  String get firstRunTitle => 'Incontra il tuo primo attore';
+
+  @override
+  String get firstRunSubtitle =>
+      'Tutto qui inizia da una conversazione. Dai al tuo primo attore un nome, una persona facoltativa e un cervello — ti saluterà in un messaggio diretto, e potrai cambiare tutto in seguito.';
+
+  @override
+  String get firstRunNameLabel => 'Nome';
+
+  @override
+  String get firstRunNameHint => 'es. Toby';
+
+  @override
+  String get firstRunPersonaLabel => 'Persona (facoltativa)';
+
+  @override
+  String get firstRunPersonaHint =>
+      'Come dovrebbe pensare e parlare questo attore?';
+
+  @override
+  String get firstRunBrainLabel => 'Cervello';
+
+  @override
+  String get firstRunNoBrains =>
+      'Nessun cervello disponibile su questo dispositivo per ora. Puoi saltare e creare un attore più tardi dalle Impostazioni.';
+
+  @override
+  String get firstRunCreate => 'Crea e inizia a chattare';
+
+  @override
+  String get firstRunCreating => 'Creazione dell\'attore…';
+
+  @override
+  String get firstRunSkip => 'Salta per ora';
+
+  @override
+  String firstRunCreateFailed(String error) {
+    return 'Impossibile creare l\'attore: $error';
+  }
+
+  @override
+  String firstRunGreeting(String name) {
+    return 'Ciao — sono $name, il tuo primo attore. Vivo nel mondo di questo workspace: scrivimi qui e ti risponderò. Puoi cambiare il mio nome, la persona o il cervello in qualsiasi momento nelle Impostazioni.';
+  }
+
+  @override
   String get settingsWorldInspector => 'Ispettore del mondo';
 
   @override

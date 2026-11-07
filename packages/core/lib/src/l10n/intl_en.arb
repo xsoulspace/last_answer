@@ -519,6 +519,33 @@
   "actorsRoleHint": "e.g. research assistant",
   "actorsRemoveTooltip": "Remove actor",
   "actorsLocalNeedsMacos": "Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.",
+  "firstRunTitle": "Meet your first actor",
+  "firstRunSubtitle": "Everything here starts from a conversation. Give your first actor a name, an optional persona and a brain — it will greet you in a direct message, and you can change everything later.",
+  "firstRunNameLabel": "Name",
+  "firstRunNameHint": "e.g. Toby",
+  "firstRunPersonaLabel": "Persona (optional)",
+  "firstRunPersonaHint": "How should this actor think and speak?",
+  "firstRunBrainLabel": "Brain",
+  "firstRunNoBrains": "No brains are available on this device yet. You can skip for now and create an actor later from Settings.",
+  "firstRunCreate": "Create and start chatting",
+  "firstRunCreating": "Creating your actor…",
+  "firstRunSkip": "Skip for now",
+  "firstRunCreateFailed": "Could not create the actor: {error}",
+  "@firstRunCreateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "firstRunGreeting": "Hello — I'm {name}, your first actor. I live in this workspace's world: write to me here and I'll answer. You can change my name, persona or brain any time in Settings.",
+  "@firstRunGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "settingsWorldInspector": "World inspector",
   "newTabPageTitle": "New tab",
   "newTabHintConversations": "The world face — channels and direct threads.",

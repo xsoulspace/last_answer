@@ -79,15 +79,25 @@ class GlobalStatesInitializer implements StateInitializer {
       AppStatus.offline,
       // isConnected ? AppStatus.online : AppStatus.offline,
     );
-    if (dto.userNotifier.hasCompletedOnboarding) {
-      router.go(ScreenPaths.home);
-    } else {
-      router.go(ScreenPaths.home);
-      // router.go(ScreenPaths.intro);
-    }
+    routeAfterLoad(
+      router,
+      hasCompletedOnboarding: dto.userNotifier.hasCompletedOnboarding,
+    );
     unawaited(_initMonetization());
     unawaited(_loadPost());
   }
+
+  /// The one first-run routing decision, extracted so tests pin it:
+  /// a fresh user lands on the first-run flow (`/intro`), a returning
+  /// user (onboarding complete, persisted through [UserNotifier]) lands
+  /// on home and NEVER sees the flow again.
+  @visibleForTesting
+  static void routeAfterLoad(
+    final GoRouter router, {
+    required final bool hasCompletedOnboarding,
+  }) => router.go(
+    hasCompletedOnboarding ? ScreenPaths.home : ScreenPaths.intro,
+  );
 
   /// Initializes monetization: local restore first, then store init.
   Future<void> _initMonetization() async {

@@ -405,6 +405,33 @@
   "actorsRoleHint": "es. assistente di ricerca",
   "actorsRemoveTooltip": "Rimuovi attore",
   "actorsLocalNeedsMacos": "I cervelli locali richiedono macOS (MLX); i cervelli hosted funzionano ovunque sia configurata la chiave del provider.",
+  "firstRunTitle": "Incontra il tuo primo attore",
+  "firstRunSubtitle": "Tutto qui inizia da una conversazione. Dai al tuo primo attore un nome, una persona facoltativa e un cervello — ti saluterà in un messaggio diretto, e potrai cambiare tutto in seguito.",
+  "firstRunNameLabel": "Nome",
+  "firstRunNameHint": "es. Toby",
+  "firstRunPersonaLabel": "Persona (facoltativa)",
+  "firstRunPersonaHint": "Come dovrebbe pensare e parlare questo attore?",
+  "firstRunBrainLabel": "Cervello",
+  "firstRunNoBrains": "Nessun cervello disponibile su questo dispositivo per ora. Puoi saltare e creare un attore più tardi dalle Impostazioni.",
+  "firstRunCreate": "Crea e inizia a chattare",
+  "firstRunCreating": "Creazione dell'attore…",
+  "firstRunSkip": "Salta per ora",
+  "firstRunCreateFailed": "Impossibile creare l'attore: {error}",
+  "@firstRunCreateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "firstRunGreeting": "Ciao — sono {name}, il tuo primo attore. Vivo nel mondo di questo workspace: scrivimi qui e ti risponderò. Puoi cambiare il mio nome, la persona o il cervello in qualsiasi momento nelle Impostazioni.",
+  "@firstRunGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "settingsWorldInspector": "Ispettore del mondo",
   "newTabPageTitle": "Nuova scheda",
   "newTabHintConversations": "La superficie del mondo — canali e conversazioni dirette.",

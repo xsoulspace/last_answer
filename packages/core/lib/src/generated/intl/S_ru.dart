@@ -1280,6 +1280,51 @@ class SRu extends S {
       'Локальные мозги требуют macOS (MLX); хостинг-мозги работают везде, где настроен ключ провайдера.';
 
   @override
+  String get firstRunTitle => 'Познакомьтесь с первым актором';
+
+  @override
+  String get firstRunSubtitle =>
+      'Всё здесь начинается с разговора. Дайте первому актору имя, необязательную персону и мозг — он поприветствует вас в личном сообщении, и всё это можно изменить позже.';
+
+  @override
+  String get firstRunNameLabel => 'Имя';
+
+  @override
+  String get firstRunNameHint => 'напр. Тоби';
+
+  @override
+  String get firstRunPersonaLabel => 'Персона (необязательно)';
+
+  @override
+  String get firstRunPersonaHint => 'Как этот актор должен думать и говорить?';
+
+  @override
+  String get firstRunBrainLabel => 'Мозг';
+
+  @override
+  String get firstRunNoBrains =>
+      'На этом устройстве пока нет доступных мозгов. Можно пропустить и создать актора позже в настройках.';
+
+  @override
+  String get firstRunCreate => 'Создать и начать общение';
+
+  @override
+  String get firstRunCreating => 'Создаём актора…';
+
+  @override
+  String get firstRunSkip => 'Пропустить';
+
+  @override
+  String firstRunCreateFailed(String error) {
+    return 'Не удалось создать актора: $error';
+  }
+
+  @override
+  String firstRunGreeting(String name) {
+    return 'Привет — я $name, твой первый актор. Я живу в мире этого рабочего пространства: напиши мне здесь, и я отвечу. Имя, персону и мозг можно изменить в любой момент в настройках.';
+  }
+
+  @override
   String get settingsWorldInspector => 'Инспектор мира';
 
   @override

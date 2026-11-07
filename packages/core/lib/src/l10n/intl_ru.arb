@@ -408,6 +408,33 @@
   "actorsRoleHint": "напр. научный ассистент",
   "actorsRemoveTooltip": "Удалить актёра",
   "actorsLocalNeedsMacos": "Локальные мозги требуют macOS (MLX); хостинг-мозги работают везде, где настроен ключ провайдера.",
+  "firstRunTitle": "Познакомьтесь с первым актором",
+  "firstRunSubtitle": "Всё здесь начинается с разговора. Дайте первому актору имя, необязательную персону и мозг — он поприветствует вас в личном сообщении, и всё это можно изменить позже.",
+  "firstRunNameLabel": "Имя",
+  "firstRunNameHint": "напр. Тоби",
+  "firstRunPersonaLabel": "Персона (необязательно)",
+  "firstRunPersonaHint": "Как этот актор должен думать и говорить?",
+  "firstRunBrainLabel": "Мозг",
+  "firstRunNoBrains": "На этом устройстве пока нет доступных мозгов. Можно пропустить и создать актора позже в настройках.",
+  "firstRunCreate": "Создать и начать общение",
+  "firstRunCreating": "Создаём актора…",
+  "firstRunSkip": "Пропустить",
+  "firstRunCreateFailed": "Не удалось создать актора: {error}",
+  "@firstRunCreateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "firstRunGreeting": "Привет — я {name}, твой первый актор. Я живу в мире этого рабочего пространства: напиши мне здесь, и я отвечу. Имя, персону и мозг можно изменить в любой момент в настройках.",
+  "@firstRunGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "settingsWorldInspector": "Инспектор мира",
   "newTabPageTitle": "Новая вкладка",
   "newTabHintConversations": "Поверхность мира — каналы и личные переписки.",

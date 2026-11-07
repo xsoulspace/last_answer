@@ -103,7 +103,14 @@ void main() {
 
         final beats = await service.beatsFor(threadId);
         expect(beats, hasLength(RealmChatService.beatsForLimit));
-        expect(beats.last['beat']! as int, RealmChatService.beatsForLimit);
+        // Tail law (2026-11-07, endless rooms): a bounded read returns
+        // the NEWEST beatsForLimit beats — an endless thread lives at
+        // its tail, never frozen at its head.
+        expect(beats.first['beat']! as int, 6);
+        expect(
+          beats.last['beat']! as int,
+          RealmChatService.beatsForLimit + 5,
+        );
       },
       timeout: const Timeout(Duration(minutes: 2)),
     );

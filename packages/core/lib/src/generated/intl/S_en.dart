@@ -1135,6 +1135,12 @@ class SEn extends S {
       'Say the first word — actors in this conversation will hear it.';
 
   @override
+  String get worldChatLoadOlder => 'Load older messages';
+
+  @override
+  String get worldChatJumpToLatest => 'Jump to latest';
+
+  @override
   String get worldChatComposerHint => 'Write to the conversation…';
 
   @override

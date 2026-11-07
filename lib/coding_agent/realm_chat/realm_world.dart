@@ -54,7 +54,8 @@ final class RealmWorld {
   RealmWorld._({
     required this.store,
     required this.root,
-    required this._conversation,
+    required this._kernel,
+    required this._journal,
   });
 
   /// Directory name of the realm's coordination store inside its parent
@@ -85,13 +86,20 @@ final class RealmWorld {
   /// scope inside the realm's one world (ADR 0107 D1).
   final String root;
 
-  /// The kernel-backed thread/beat verb library (ADR 0025): one
-  /// ConvergenceDoc replica per thread under the thread home — the
-  /// realm project area in realm mode (`realmThreadsHome()`),
-  /// `<override>/threads` hermetic — and cheap index records in the
-  /// journal. Built once at open — the migration from legacy journal
-  /// threads runs there.
-  final KernelConversation _conversation;
+  /// The kernel-backed thread/beat archive (ADR 0025 — retired as the
+  /// live plane by the 2026-11-07 plane convergence: ADR 0138 D1 makes
+  /// the journal the ONE beat plane, and the cursor-fed projection fold
+  /// removed the whole-collection scan cost the kernel lane existed to
+  /// avoid). Kept as the EXPORT SOURCE ([exportKernelThreads]) and the
+  /// offline archive; new beats never land here.
+  final KernelConversation _kernel;
+
+  /// The journal-backed conversation verbs (the live beat plane):
+  /// threads/beats as `RealmControlStore` collections, read through the
+  /// cursor-fed [ConversationProjection] (ADR 0126/0138 D2), visible to
+  /// every actor of the realm — daemon-owned actors, external seats and
+  /// the in-app loops all ride the same plane.
+  final DurableConversation _journal;
 
   bool get isSupported => !kIsWeb;
 
@@ -123,11 +131,13 @@ final class RealmWorld {
     return RealmWorld._(
       store: store,
       root: root,
-      conversation: await KernelConversation.load(
+      kernel: await KernelConversation.load(
         store: store,
         root: root,
         threadsHome: realmThreadsHome(),
+        migrateLegacy: false,
       ),
+      journal: DurableConversation(store: store),
     );
   }
 
@@ -143,11 +153,13 @@ final class RealmWorld {
     return RealmWorld._(
       store: store,
       root: scopeRoot,
-      conversation: await KernelConversation.load(
+      kernel: await KernelConversation.load(
         store: store,
         root: scopeRoot,
         threadsHome: '$override/${KernelConversation.threadsDirName}',
+        migrateLegacy: false,
       ),
+      journal: DurableConversation(store: store),
     );
   }
 
@@ -189,9 +201,184 @@ final class RealmWorld {
   @visibleForTesting
   static String? debugDeviceHome;
 
-  /// The durable thread/beat verb library — kernel-backed (ADR 0025),
-  /// surface-identical to the journal `DurableConversation` it replaced.
-  KernelConversation conversation() => _conversation;
+  /// The durable thread/beat verb library — the JOURNAL plane (ADR
+  /// 0138 D1: one beat plane). Surface-identical to the kernel lane it
+  /// replaces, so callers keep their shapes; reads ride the cursor-fed
+  /// [projection] under the hood.
+  DurableConversation conversation() => _journal;
+
+  /// The kernel archive (retired as the live plane): the export source
+  /// for [exportKernelThreads] and the offline beat archive.
+  KernelConversation get kernel => _kernel;
+
+  /// The cursor-fed conversation projection over this world's store
+  /// (ADR 0126/0138 D2): one per store per process, O(delta) refreshes.
+  /// Tail pages, thread rows and grant sets all read from here.
+  ConversationProjection get projection => conversationProjectionFor(store);
+
+  /// The journal's append watch — the wake source for live surfaces
+  /// (chat appends, the bot dispatcher's drain). A hint only: readers
+  /// always re-read the exact tail (`changesSince`).
+  Stream<void> watchJournal({
+    Duration pollInterval = const Duration(milliseconds: 400),
+  }) => store.watch(pollInterval: pollInterval);
+
+  /// Plane convergence (2026-11-07): exports every kernel-archive
+  /// thread into the journal — the reverse of the ADR 0025 migration,
+  /// additive and idempotent (a beat key `$threadId#$beat` is a put of
+  /// the same value; a thread row is created once, then merged).
+  /// Exported threads are REALM-SEALED (no project): visible to every
+  /// actor of the realm — the daemon's drain, external seats and the
+  /// in-app loops answer in the same rooms (ADR 0121: plain
+  /// conversation needs no project). Returns the exported thread count.
+  Future<int> exportKernelThreads() async {
+    var exported = 0;
+    // The union: index records AND bare replica files (a crash between
+    // the kernel edit and the index commit leaves the doc as the truth
+    // and the record missing — file-only threads export too, rebuilt
+    // through the archive's self-heal record).
+    final ids = <String>{..._kernel.index.keys, ..._kernel.archiveThreadIds()};
+    for (final threadId in ids) {
+      final record =
+          _kernel.index[threadId] ?? await _kernel.archiveRecordOf(threadId);
+      final kernelLast = (record['lastBeat'] as int?) ?? 0;
+      final existing = await store.read('threads', threadId);
+      final priorLast = (existing?['lastBeat'] as int?) ?? 0;
+      // Fast skip: the journal already carries everything the archive
+      // counted — no beat load, no write (the idempotent reopen path).
+      if (existing != null && priorLast >= kernelLast) continue;
+      final beats = await _kernel.beatsOf(threadId);
+      final fresh = [
+        for (final beat in beats)
+          if ((beat['beat']! as int) > priorLast) beat,
+      ];
+      if (existing != null && fresh.isEmpty) continue;
+      final participants = <String>{
+        ...(existing?['participants'] as List? ?? const <Object?>[])
+            .cast<String>(),
+        ...(record['participants'] as List? ?? const <Object?>[])
+            .cast<String>(),
+      }.toList()
+        ..sort();
+      final lastBeat = beats.isEmpty
+          ? priorLast
+          : (beats.last['beat']! as int) > priorLast
+          ? beats.last['beat']! as int
+          : priorLast;
+      final last = beats.isEmpty ? null : beats.last;
+      await store.transact((tx) {
+        tx.put('threads', threadId, <String, Object?>{
+          'threadId': threadId,
+          // Realm-sealed: the room belongs to the realm, not to LA's
+          // project scope — every actor may converse here.
+          'projectId': null,
+          'projectRoot': null,
+          'topic': existing?['topic'] ?? record['topic'] ?? '',
+          'createdBy': existing?['createdBy'] ?? record['createdBy'] ?? '',
+          'createdAt':
+              existing?['createdAt'] ??
+              record['createdAt'] ??
+              DateTime.now().toUtc().toIso8601String(),
+          'closed': (existing?['closed'] ?? record['closed'] ?? false) == true,
+          if (existing?['closedAt'] != null) 'closedAt': existing!['closedAt'],
+          'participants': participants,
+          'lastBeat': lastBeat,
+          if (last != null) ...<String, Object?>{
+            'lastBeatAuthor': last['author'],
+            'lastBeatText': last['text'],
+            'lastBeatAt': last['at'],
+          } else ...<String, Object?>{
+            if (existing?['lastBeatAuthor'] != null)
+              'lastBeatAuthor': existing!['lastBeatAuthor'],
+            if (existing?['lastBeatText'] != null)
+              'lastBeatText': existing!['lastBeatText'],
+            if (existing?['lastBeatAt'] != null)
+              'lastBeatAt': existing!['lastBeatAt'],
+          },
+        });
+        for (final beat in fresh) {
+          tx.put('thread_beats', '$threadId#${beat['beat']}', <String, Object?>{
+            'threadId': threadId,
+            'beat': beat['beat'],
+            'author': beat['author'],
+            'conversationId': 'lastanswer',
+            'text': beat['text'],
+            'at': beat['at'],
+            'addressedTo': beat['addressedTo'],
+            if (beat['replyTo'] != null) 'replyTo': beat['replyTo'],
+          });
+        }
+        return null;
+      });
+      exported++;
+    }
+    return exported;
+  }
+
+  /// The journal-plane twin of [KernelConversation.healHumanIdentity]:
+  /// substitutes THIS device's one stable human id for stale per-launch
+  /// `human-<timestamp>` participants in journal thread rows. Returns
+  /// the healed row count; idempotent.
+  Future<int> healJournalHumanIdentity({required String stableActorId}) async {
+    final stale = RegExp(r'^human-\d+$');
+    var healed = 0;
+    for (final entry in (await projection.threadRows()).entries) {
+      final participants =
+          (entry.value['participants'] as List? ?? const <Object?>[])
+              .cast<String>()
+              .toList();
+      if (!participants.any(
+        (id) => id != stableActorId && stale.hasMatch(id),
+      )) {
+        continue;
+      }
+      final next = <String>{
+        for (final id in participants)
+          if (stale.hasMatch(id)) stableActorId else id,
+      }.toList()
+        ..sort();
+      final row = entry.value;
+      await store.transact(
+        (tx) => tx.put('threads', entry.key, <String, Object?>{
+          ...row,
+          'participants': next,
+        }),
+      );
+      healed++;
+    }
+    return healed;
+  }
+
+  /// Closes one room. Project-sealed threads ride the journal verb;
+  /// REALM-SEALED rooms close through the store directly — the verb's
+  /// participant check is right but its project check refuses the null
+  /// seal (filed as a harness surface gap; LA is a journal writer like
+  /// any seat, and `registerActor` sets the direct-write precedent).
+  Future<void> closeThread({
+    required ActorAuthority actor,
+    required String threadId,
+  }) async {
+    final row = await store.read('threads', threadId);
+    if (row == null) {
+      throw const DurableRealmRefusal('thread_not_visible');
+    }
+    if (row['projectId'] != null) {
+      await _journal.close(actor: actor, threadId: threadId);
+      return;
+    }
+    final participants =
+        (row['participants'] as List? ?? const <Object?>[]).cast<String>();
+    if (!participants.contains(actor.actor)) {
+      throw const DurableRealmRefusal('thread_close_not_participant');
+    }
+    await store.transact(
+      (tx) => tx.put('threads', threadId, <String, Object?>{
+        ...row,
+        'closed': true,
+        'closedAt': DateTime.now().toUtc().toIso8601String(),
+      }),
+    );
+  }
 
   /// One actor's working session over this world — the drop-in shape
   /// the bot host binds per actor (the same members it reads on the

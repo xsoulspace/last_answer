@@ -231,6 +231,12 @@ final class RealmBotHost {
   /// never read in product paths.
   Object? debugLoopFor(String actorId) => _loops[actorId];
 
+  /// The in-process dispatch shortcut: an app-local say nudges the
+  /// dispatcher's drain immediately instead of waiting for the
+  /// journal watch's next poll. External appends (daemon actors,
+  /// seats) still arrive through the watch on their own cadence.
+  void nudgeDispatcher() => _wake?.nudge();
+
   bool isRunning(String actorId) => _loops.containsKey(actorId);
 
   /// Aligns the workers with the roster: starts workers for actors with
@@ -297,7 +303,16 @@ final class RealmBotHost {
   }
 }
 
-/// The one door-knock: listen across threads, fan out by addressing.
+/// The one door-knock: ride the journal's append watch and drain the
+/// exact tail (the daemon dispatcher's own pattern — the watch event is
+/// a HINT, `changesSince` is the truth), fan out by addressing.
+///
+/// Plane convergence (2026-11-07): the dispatcher no longer rides the
+/// `wait` verb — its cross-thread scan is project-filtered, and LA rooms
+/// are realm-sealed (visible to every actor, project-free, ADR 0121).
+/// The byte-offset drain sees EVERY `thread_beats` append in the realm:
+/// the human's says, in-app replies, daemon-owned actors and external
+/// seats alike.
 final class _WakeLoop {
   _WakeLoop({required this.host}) : _bornAt = DateTime.now().toUtc();
   final RealmBotHost host;
@@ -310,7 +325,16 @@ final class _WakeLoop {
   int _wakes = 0;
   int _dispatches = 0;
   bool _stopped = false;
-  RealmWorldSession? _session;
+  StreamSubscription<void>? _watchSub;
+
+  /// The journal byte cursor + the drain's re-entrance guard. Nudges
+  /// before the seed are no-ops (the first pump drains everything said
+  /// since the seed anyway).
+  int _offset = 0;
+  bool _seeded = false;
+  bool _draining = false;
+  bool _rerun = false;
+  int _failures = 0;
 
   bool get isStopped => _stopped;
 
@@ -320,84 +344,125 @@ final class _WakeLoop {
 
   void stop() {
     _stopped = true;
+    unawaited(_watchSub?.cancel() ?? Future<void>.value());
+    _watchSub = null;
+  }
+
+  /// The in-process shortcut: a say committed by THIS app drains
+  /// immediately instead of waiting for the watch's next poll (external
+  /// appends — daemon actors, seats — still ride the watch at its own
+  /// cadence, the daemon's pattern).
+  void nudge() {
+    if (_stopped || !_seeded) return;
+    unawaited(_pump());
   }
 
   Future<void> _run() async {
-    final session = _session ??= host.world.sessionFor(host.humanActorId);
-    // Seed the cursor at the current lastBeat per thread so a restart
-    // never re-processes history.
+    final store = host.world.store;
+    // Seed at the journal's CURRENT end: history is never re-answered
+    // (the born-at guard stays as the second law). The per-thread
+    // cursor map seeds alongside for the debug surface.
+    _offset = store.journalLength();
     try {
-      final listing = await host.world.conversation().list(
-        actor: session.authority,
-      );
-      for (final thread in (listing['threads']! as List).cast<Map>()) {
-        _cursor[thread['threadId']! as String] = thread['lastBeat']! as int;
+      for (final row in (await host.world.projection.threadRows()).values) {
+        final id = row['threadId'];
+        final last = row['lastBeat'];
+        if (id is String && last is int) _cursor[id] = last;
       }
     } on Object {
-      // Without a seed the first wake may replay old beats; the per-bot
-      // guards still refuse stale replies (own-author + echo guards).
+      // Debug-surface seeding only; the byte cursor is the truth.
     }
-    var listenFailures = 0;
-    while (!_stopped) {
-      final List<Map<String, Object?>> beats;
-      try {
-        // The dispatcher is the app's ears: EVERY beat in the project's
-        // threads wakes it (the human's own says included — a room
-        // reply is addressed to the room, never to its author).
-        final result = await host.world.conversation().wait(
-          actor: session.authority,
-          addressedToMe: false,
-          afterByThread: _cursor,
-          timeoutMs: 30000,
-        );
-        _cursor.addAll(
-          (result['lastBeatByThread']! as Map).cast<String, int>(),
-        );
-        beats = (result['beats']! as List)
-            .cast<Map>()
-            .map((final beat) => Map<String, Object?>.from(beat))
-            .toList();
-        listenFailures = 0;
-        _wakes++;
-      } on DurableRealmRefusal catch (refusal) {
-        host.onChanged?.call();
-        // The dispatcher cannot read the room: stop loudly (status rows
-        // surface it through the bots' shared failure display).
-        for (final loop in host._loops.values) {
-          loop._setStatus('failed: dispatcher ${refusal.code}');
-        }
-        return;
-      } on Object {
-        listenFailures++;
-        if (listenFailures >= 3) {
-          for (final loop in host._loops.values) {
-            loop._setStatus('failed: dispatcher');
+    _seeded = true;
+
+    await _pump();
+    if (_stopped) return;
+    _watchSub = host.world.watchJournal().listen(
+      (_) => unawaited(_pump()),
+      onError: (Object e) {
+        if (++_failures >= 3) _failLoudly('dispatcher watch');
+      },
+    );
+  }
+
+  /// One drain-to-empty pass with a re-entrance guard: an append that
+  /// lands mid-dispatch (a bot's own reply, a second room) sets
+  /// [_rerun] and the pass repeats — correctness never relies on the
+  /// watch hint, the cursor re-reads the exact tail.
+  Future<void> _pump() async {
+    if (_draining) {
+      _rerun = true;
+      return;
+    }
+    _draining = true;
+    final store = host.world.store;
+    try {
+      do {
+        _rerun = false;
+        while (!_stopped) {
+          final changes = await store.changesSince(_offset);
+          if (changes.isEmpty) break;
+          final beats = <Map<String, Object?>>[
+            for (final record in changes.records)
+              for (final mutation in record.mutations)
+                if (!mutation.isRemove &&
+                    mutation.collection == 'thread_beats' &&
+                    mutation.value != null)
+                  Map<String, Object?>.from(mutation.value!),
+          ];
+          _offset = changes.newByteOffset;
+          if (beats.isEmpty) continue; // beat-less tail: cursor only
+          _wakes++;
+          _failures = 0;
+          for (final beat in beats) {
+            if (_stopped) return;
+            final threadId = beat['threadId']! as String;
+            final number = beat['beat']! as int;
+            _cursor[threadId] = number;
+            final addressed = (beat['addressedTo']! as List).cast<String>();
+            final author = beat['author']! as String;
+            final at = DateTime.tryParse(beat['at'] as String? ?? '');
+            if (at != null && at.isBefore(_bornAt)) continue;
+            _dispatches++;
+            host.onWake?.call([beat]);
+            for (final loop in host._loops.values) {
+              if (loop.isStopped || loop.profile.actorId == author) continue;
+              if (!addressed.contains(loop.profile.actorId)) continue;
+              // Serialize generation: one worker at a time keeps the
+              // MLX engine honest and replies ordered.
+              await loop.handleBeat(beat);
+              if (_stopped) return;
+            }
           }
-          return;
         }
-        await Future<void>.delayed(const Duration(seconds: 5));
-        continue;
+      } while (_rerun && !_stopped);
+    } on RealmControlStoreException catch (error) {
+      if (_stopped) return;
+      if (error.code == RealmControlStoreCode.offsetInvalid) {
+        // A replaced journal generation: resynchronize at the end.
+        _offset = store.journalLength();
+      } else if (++_failures >= 3) {
+        _failLoudly('dispatcher ${error.code}');
+        return;
       }
-      for (final beat in beats) {
-        if (_stopped) return;
-        final threadId = beat['threadId']! as String;
-        _cursor[threadId] = beat['beat']! as int;
-        final addressed = (beat['addressedTo']! as List).cast<String>();
-        final author = beat['author']! as String;
-        final at = DateTime.tryParse(beat['at'] as String? ?? '');
-        if (at != null && at.isBefore(_bornAt)) continue;
-        _dispatches++;
-        host.onWake?.call([beat]);
-        for (final loop in host._loops.values) {
-          if (loop.isStopped || loop.profile.actorId == author) continue;
-          if (!addressed.contains(loop.profile.actorId)) continue;
-          // Serialize generation: one worker at a time keeps the MLX
-          // engine honest and replies ordered.
-          await loop.handleBeat(beat);
-          if (_stopped) return;
-        }
+    } on Object {
+      if (_stopped) return;
+      if (++_failures >= 3) {
+        _failLoudly('dispatcher');
+        return;
       }
+    } finally {
+      _draining = false;
     }
+  }
+
+  void _failLoudly(String reason) {
+    for (final loop in host._loops.values) {
+      loop._setStatus('failed: $reason');
+    }
+    _stopped = true;
+    unawaited(_watchSub?.cancel() ?? Future<void>.value());
+    _watchSub = null;
+    host.onChanged?.call();
   }
 }
 

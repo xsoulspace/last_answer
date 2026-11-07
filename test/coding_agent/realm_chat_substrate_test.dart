@@ -103,7 +103,7 @@ void main() {
     timeout: const Timeout(Duration(minutes: 2)),
   );
 
-  test('overlong beat text is refused with the named code', () async {
+  test('overlong beat text lands VERBATIM (ADR 0138 D5 write law)', () async {
     final temp = await Directory.systemTemp.createTemp('la_realm_chat_');
     addTearDown(() => temp.delete(recursive: true));
     final world = await RealmWorld.open(rootOverride: temp.path);
@@ -111,24 +111,26 @@ void main() {
     final human = world.authorityFor('human-test-device');
     final conversation = world.conversation();
     final opened = await conversation.open(actor: human, topic: 'bounds');
-    expect(
-      conversation.say(
-        actor: human,
-        threadId: opened['threadId']! as String,
-        text: 'x' * 9000,
-      ),
-      throwsA(
-        isA<DurableRealmRefusal>().having(
-          (refusal) => refusal.code,
-          'code',
-          contains('thread_text_too_large'),
-        ),
-      ),
+    // The write path is unconditional: any size lands verbatim — size
+    // is a READ problem (budgeted views + zoom routes), never a write
+    // clamp. The kernel plane's 8192-byte refusal is retired with it.
+    final text = 'x' * 9000;
+    final said = await conversation.say(
+      actor: human,
+      threadId: opened['threadId']! as String,
+      text: text,
     );
+    expect(said['beat'], 1);
+    final read = await conversation.read(
+      actor: human,
+      threadId: opened['threadId']! as String,
+    );
+    final beats = (read['beats']! as List).cast<Map>();
+    expect(beats.single['text'], text);
   });
 
   test(
-    'kernel threads: exact map shapes, previews, authorization, close',
+    'journal threads: exact map shapes, project authorization, close',
     () async {
       final temp = await _hermeticHome();
       addTearDown(() => temp.delete(recursive: true));
@@ -176,7 +178,10 @@ void main() {
       final beats = (read['beats']! as List).cast<Map>();
       expect(beats, hasLength(1));
       final beat = beats.single;
-      expect(beat['threadId'], threadId);
+      // Journal `read` beats omit the per-beat threadId (implicit in
+      // the request — the harness verb shape); the raw projection rows
+      // the UI and the dispatcher drain consume carry it.
+      expect(beat.containsKey('threadId'), isFalse);
       expect(beat['beat'], 1);
       expect(beat['author'], 'human-test-device');
       expect(beat['text'], 'first beat');
@@ -189,8 +194,9 @@ void main() {
         contains('human-test-device'),
       );
 
-      // The list projection carries the preview triple so the service
-      // never scans a beat store.
+      // The journal list carries the ROW fields; the preview triple is
+      // a read-model concern (the service computes it from the folded
+      // beats — plane convergence 2026-11-07).
       final listing = await conversation.list(actor: human);
       expect(listing['ok'], true);
       expect(listing['total'], 1);
@@ -203,23 +209,30 @@ void main() {
       expect(thread['createdAt'], isA<String>());
       expect(thread['closed'], false);
       expect(thread['lastBeat'], 1);
-      expect(thread['lastBeatAuthor'], 'human-test-device');
-      expect(thread['lastBeatText'], 'first beat');
-      expect(thread['lastBeatAt'], beat['at']);
+      expect(
+        (thread['participants']! as List).cast<String>(),
+        containsAll(['human-test-device', 'human-guest']),
+      );
 
-      // Authorization keys on the actor id only: a non-participant
-      // authority (built the same way) sees nothing, says nothing,
-      // closes nothing.
+      // Authorization is PROJECT law on the journal plane (ADR 0121):
+      // an authority from ANOTHER project sees nothing on every verb.
+      final foreign = ProfileActorAuthority(
+        actor: 'human-foreign',
+        conversationId: 'lastanswer',
+        actorReference: 'persistent-entity:realm-actor:human-foreign',
+        projectId: '/somewhere/else',
+        projectRoot: '/somewhere/else',
+      );
       for (final verb in [
-        () => conversation.read(actor: outsider, threadId: threadId),
+        () => conversation.read(actor: foreign, threadId: threadId),
         () => conversation.say(
-          actor: outsider,
+          actor: foreign,
           threadId: threadId,
           text: 'intrusion',
         ),
-        () => conversation.close(actor: outsider, threadId: threadId),
+        () => conversation.close(actor: foreign, threadId: threadId),
         () => conversation.wait(
-          actor: outsider,
+          actor: foreign,
           threadId: threadId,
           timeoutMs: 10,
         ),
@@ -235,6 +248,38 @@ void main() {
           ),
         );
       }
+
+      // A same-project NON-participant is visible (conversation is
+      // actor-equal, never membership-gated): reading works, closing
+      // stays participant-gated, and saying AUTO-JOINS.
+      final beforeJoin = await conversation.read(
+        actor: outsider,
+        threadId: threadId,
+      );
+      expect(beforeJoin['ok'], true);
+      await expectLater(
+        conversation.close(actor: outsider, threadId: threadId),
+        throwsA(
+          isA<DurableRealmRefusal>().having(
+            (refusal) => refusal.code,
+            'code',
+            'thread_close_not_participant',
+          ),
+        ),
+      );
+      await conversation.say(
+        actor: outsider,
+        threadId: threadId,
+        text: 'joining by acting',
+      );
+      final afterJoin = await conversation.read(
+        actor: human,
+        threadId: threadId,
+      );
+      expect(
+        (afterJoin['participants']! as List).cast<String>(),
+        contains('human-outsider'),
+      );
 
       final closed = await conversation.close(
         actor: human,
@@ -370,14 +415,15 @@ void main() {
       );
 
       // A fresh world over the SAME directory (a restart, not a
-      // singleton reuse) sees the thread and its beats.
+      // singleton reuse) sees the thread and its beats. (The preview
+      // triple is a service read-model concern, not a journal row
+      // field — the row carries the `lastBeat` counter.)
       final second = await RealmWorld.open(rootOverride: temp.path);
       final listing = await second!.conversation().list(actor: human);
       final threads = (listing['threads']! as List).cast<Map>();
       expect(threads, hasLength(1));
       expect(threads.single['threadId'], threadId);
       expect(threads.single['lastBeat'], 1);
-      expect(threads.single['lastBeatText'], 'written before the restart');
       final read = await second.conversation().read(
         actor: human,
         threadId: threadId,
@@ -397,8 +443,8 @@ void main() {
   );
 
   test(
-    'legacy migration: journal thread/beat records seed kernel docs, '
-    'idempotently',
+    'journal-native threads are already home: no kernel seeding, direct '
+    'reads, numbering continues, reopen is idempotent',
     () async {
       final temp = await _hermeticHome();
       addTearDown(() => temp.delete(recursive: true));
@@ -446,15 +492,15 @@ void main() {
       final human = world.authorityFor('human-test-device');
       final conversation = world.conversation();
 
-      // The migrated thread is listed with its preview triple, and the
-      // beats read back in order with their legacy numbers.
+      // Plane convergence (2026-11-07): the journal IS the beat plane
+      // (ADR 0138 D1) — these records are not "legacy" anymore, they
+      // are home. Nothing seeds a kernel doc; the thread lists and
+      // reads directly off the fold.
       final listing = await conversation.list(actor: human);
       final threads = (listing['threads']! as List).cast<Map>();
       expect(threads, hasLength(1));
       expect(threads.single['topic'], 'legacy thread');
       expect(threads.single['lastBeat'], 2);
-      expect(threads.single['lastBeatAuthor'], 'bot-9f');
-      expect(threads.single['lastBeatText'], 'legacy second');
       final read = await conversation.read(
         actor: human,
         threadId: 'thread-legacy0001',
@@ -467,25 +513,29 @@ void main() {
       expect(beats[1]['beat'], 2);
       expect(beats[1]['author'], 'bot-9f');
 
-      // New beats continue the legacy numbering.
+      // New beats continue the numbering on the same plane.
       final said = await conversation.say(
         actor: human,
         threadId: 'thread-legacy0001',
-        text: 'after migration',
+        text: 'after convergence',
       );
       expect(said['beat'], 3);
 
-      // Reopening is idempotent: the migrated doc is not re-seeded.
+      // Reopening is idempotent — and the kernel archive stays empty:
+      // no replica file is ever seeded for a journal-native thread.
       final again = await RealmWorld.open(rootOverride: temp.path);
       final reread = await again!.conversation().read(
         actor: human,
         threadId: 'thread-legacy0001',
       );
       expect(reread['beats']! as List, hasLength(3));
-      // Legacy journal records stay in place (additive migration).
-      final legacy = await store.read('threads', 'thread-legacy0001');
-      expect(legacy, isNotNull);
-      expect(legacy!['lastBeat'], 2);
+      expect(
+        File('${temp.path}/threads/thread-legacy0001.json').existsSync(),
+        isFalse,
+      );
+      final journalRow = await store.read('threads', 'thread-legacy0001');
+      expect(journalRow, isNotNull);
+      expect(journalRow!['lastBeat'], 3);
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );
@@ -534,15 +584,14 @@ void main() {
   );
 
   test(
-    'healHumanIdentity substitutes per-launch human ids with the stable '
-    'one in doc + index, so the human sees its own history again',
+    'healJournalHumanIdentity substitutes per-launch human ids with the '
+    'stable one in the journal rows, so the human keeps its own history',
     () async {
       final temp = await _hermeticHome();
       addTearDown(() => temp.delete(recursive: true));
       final world = await RealmWorld.open(rootOverride: temp.path);
       if (world == null) fail('realm world unsupported on this platform');
       final staleHuman = world.authorityFor('human-1793337269742932');
-      final bot = world.authorityFor('bot-heal');
       final conversation = world.conversation();
       final opened = await conversation.open(
         actor: staleHuman,
@@ -551,31 +600,27 @@ void main() {
       );
       final threadId = opened['threadId']! as String;
 
-      // The stable human is NOT a participant: the thread is invisible.
+      // Journal visibility is PROJECT law (ADR 0121), not participant
+      // law: the stable human — the same project authority — sees the
+      // room even before the heal. What the stale id breaks is
+      // membership and addressing: the participants still name a dead
+      // per-launch id.
       final stableHuman = world.authorityFor('human-1793338232211325');
-      final invisible = await conversation.list(actor: stableHuman);
+      final before = await conversation.read(
+        actor: stableHuman,
+        threadId: threadId,
+      );
       expect(
-        (invisible['threads']! as List).cast<Map>().any(
-          (thread) => thread['threadId'] == threadId,
-        ),
-        isFalse,
+        (before['participants']! as List).cast<String>(),
+        contains('human-1793337269742932'),
       );
 
-      final healed = await conversation.healHumanIdentity(
+      final healed = await world.healJournalHumanIdentity(
         stableActorId: 'human-1793338232211325',
       );
       expect(healed, 1);
 
-      // Healed: the stable human lists and reads the thread; the doc's
-      // participant register carries the substitution too.
-      final visible = await conversation.list(actor: stableHuman);
-      final listed = (visible['threads']! as List).cast<Map>().firstWhere(
-        (thread) => thread['threadId'] == threadId,
-      );
-      expect(
-        (listed['participants']! as List).cast<String>(),
-        contains('human-1793338232211325'),
-      );
+      // Healed: the row's participant register carries the substitution.
       final read = await conversation.read(
         actor: stableHuman,
         threadId: threadId,
@@ -589,7 +634,7 @@ void main() {
       );
 
       // Idempotent: a second heal is a no-op.
-      final again = await conversation.healHumanIdentity(
+      final again = await world.healJournalHumanIdentity(
         stableActorId: 'human-1793338232211325',
       );
       expect(again, 0);
@@ -598,7 +643,8 @@ void main() {
   );
 
   test(
-    'hermetic worlds persist thread replicas under <override>/threads',
+    'hermetic worlds persist threads in the journal under '
+    '<override>/world/coordination — no kernel replica files',
     () async {
       final temp = await _hermeticHome();
       addTearDown(() => temp.delete(recursive: true));
@@ -611,19 +657,24 @@ void main() {
       await conversation.say(
         actor: human,
         threadId: threadId,
-        text: 'written into the thread home',
+        text: 'written into the journal',
       );
 
-      // The replica file lives under <override>/threads (the thread
-      // home, named once in KernelConversation); the legacy in-scope
-      // location is never written.
+      // The journal is the beat plane (ADR 0138 D1): the durable home
+      // is the coordination store's append log, and a new thread never
+      // materializes a kernel replica file.
       expect(
-        File('${temp.path}/threads/$threadId.json').existsSync(),
+        File(
+          '${temp.path}/world/coordination/$realmControlJournalFileName',
+        ).existsSync(),
         isTrue,
       );
-      expect(Directory('${temp.path}/world/threads').existsSync(), isFalse);
+      expect(
+        File('${temp.path}/threads/$threadId.json').existsSync(),
+        isFalse,
+      );
 
-      // A reopen over the same override reads the replica back.
+      // A reopen over the same override reads the beats back.
       final second = await RealmWorld.open(rootOverride: temp.path);
       final read = await second!.conversation().read(
         actor: human,
@@ -631,7 +682,74 @@ void main() {
       );
       final beats = (read['beats']! as List).cast<Map>();
       expect(beats, hasLength(1));
-      expect(beats.single['text'], 'written into the thread home');
+      expect(beats.single['text'], 'written into the journal');
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  test(
+    'kernel archive export: indexed threads AND file-only orphans land '
+    'in the journal realm-sealed, idempotently',
+    () async {
+      final temp = await _hermeticHome();
+      addTearDown(() => temp.delete(recursive: true));
+      final world = await RealmWorld.open(rootOverride: temp.path);
+      if (world == null) fail('realm world unsupported on this platform');
+      final human = world.authorityFor('human-test-device');
+
+      // An archived thread through the kernel verbs (the retired plane
+      // still writes its archive), plus a FILE-ONLY orphan: a replica
+      // whose index record never committed (the crash-window case the
+      // doc-as-truth law covers).
+      final archived = await world.kernel.open(
+        actor: human,
+        topic: 'archive room',
+        participants: ['bot-9f'],
+      );
+      final archivedId = archived['threadId']! as String;
+      await world.kernel.say(
+        actor: human,
+        threadId: archivedId,
+        text: 'archived beat',
+        addressedTo: ['bot-9f'],
+      );
+      final orphan = await world.kernel.open(actor: human, topic: 'orphan');
+      final orphanId = orphan['threadId']! as String;
+      await world.kernel.say(
+        actor: human,
+        threadId: orphanId,
+        text: 'orphan beat',
+      );
+      await world.store.transact((tx) {
+        tx.remove('thread_index', orphanId);
+        return null;
+      });
+
+      // The export carries BOTH into the journal — realm-sealed, so
+      // every actor of the realm sees the rooms.
+      final exported = await world.exportKernelThreads();
+      expect(exported, 2);
+      for (final id in [archivedId, orphanId]) {
+        final row = await world.store.read('threads', id);
+        expect(row, isNotNull, reason: 'exported: $id');
+        expect(row!['projectId'], isNull, reason: 'realm-sealed: $id');
+        expect(row['lastBeat'], 1);
+        final read = await world.conversation().read(
+          actor: human,
+          threadId: id,
+        );
+        final beats = (read['beats']! as List).cast<Map>();
+        expect(beats.single['author'], 'human-test-device');
+      }
+      final archivedRow = await world.store.read('threads', archivedId);
+      expect(
+        (archivedRow!['participants']! as List).cast<String>(),
+        containsAll(['human-test-device', 'bot-9f']),
+      );
+
+      // Idempotent: a second export skips both (the journal already
+      // carries everything the archive counted).
+      expect(await world.exportKernelThreads(), 0);
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );

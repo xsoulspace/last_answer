@@ -455,6 +455,8 @@
   "worldChatCloseTooltip": "Close conversation",
   "worldChatPickHint": "Pick a conversation, or start a new one.",
   "worldChatFirstWord": "Say the first word — actors in this conversation will hear it.",
+  "worldChatLoadOlder": "Load older messages",
+  "worldChatJumpToLatest": "Jump to latest",
   "worldChatComposerHint": "Write to the conversation…",
   "worldChatSend": "Send",
   "worldChatParticipants": "{count, plural, one{{count} participant} other{{count} participants}}",

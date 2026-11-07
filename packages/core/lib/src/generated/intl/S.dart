@@ -2151,6 +2151,18 @@ abstract class S {
   /// **'Say the first word — actors in this conversation will hear it.'**
   String get worldChatFirstWord;
 
+  /// No description provided for @worldChatLoadOlder.
+  ///
+  /// In en, this message translates to:
+  /// **'Load older messages'**
+  String get worldChatLoadOlder;
+
+  /// No description provided for @worldChatJumpToLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to latest'**
+  String get worldChatJumpToLatest;
+
   /// No description provided for @worldChatComposerHint.
   ///
   /// In en, this message translates to:

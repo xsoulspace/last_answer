@@ -11,7 +11,7 @@
 /// conversation continues while no surface watches.
 library;
 
-import 'dart:async' show unawaited;
+import 'dart:async' show StreamSubscription, Timer, unawaited;
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
@@ -169,26 +169,19 @@ final class RealmChatService extends ChangeNotifier {
   /// miniwindow peek's poll size).
   static const int beatsForLimit = 50;
 
-  /// The recent beats of ONE thread (oldest → newest, newest last),
-  /// read through the same kernel `read` the active-thread refresh
-  /// uses (`_refreshBeats`): the human's actor authority, the given
-  /// [threadId], bounded to [beatsForLimit]. The read is in-memory —
-  /// the kernel replica — so polling it every couple of seconds (the
-  /// peek's cadence) is cheap. An unknown thread, a not-yet-ready
-  /// service or any kernel refusal reads as an empty list: this never
-  /// throws and never notifies (a notifying read would loop its
-  /// pollers).
+  /// The recent beats of ONE thread (oldest → newest, newest last):
+  /// the folded projection's TAIL, bounded to [beatsForLimit]. Pure
+  /// read — no receipt advance (a peek must not mark a room seen) and
+  /// no notify (a notifying read would loop its pollers). An unknown
+  /// thread, a not-yet-ready service or any fold failure reads as an
+  /// empty list: this never throws.
   Future<List<Map<String, Object?>>> beatsFor(final String threadId) async {
     final world = _world;
-    final human = _human;
-    if (world == null || human == null) return const <Map<String, Object?>>[];
+    if (world == null) return const <Map<String, Object?>>[];
     try {
-      final read = await world.conversation().read(
-        actor: human,
-        threadId: threadId,
-        limit: beatsForLimit,
-      );
-      return (read['beats']! as List).cast<Map<String, Object?>>().toList();
+      final all = await world.projection.beatsOfThread(threadId);
+      if (all.length <= beatsForLimit) return all;
+      return all.sublist(all.length - beatsForLimit);
     } on Object {
       return const <Map<String, Object?>>[];
     }
@@ -216,6 +209,19 @@ final class RealmChatService extends ChangeNotifier {
   String _previewSignature = '';
   bool _sending = false;
   final Map<String, int> _pollCursor = <String, int>{};
+
+  /// The journal's append watch (live surfaces): every append — the
+  /// human's own say, an in-app bot's reply, a daemon-owned actor's
+  /// beat, an external seat's message — fires one debounced refresh of
+  /// threads + the active thread's beats. Independent of the bot host's
+  /// onWake, so deferred (daemon-owned) actors update the UI too.
+  StreamSubscription<void>? _journalSub;
+  Timer? _journalDebounce;
+
+  /// The active thread's loaded window start (index into the folded
+  /// beat list). Null = not paged yet (tail view on first refresh);
+  /// [loadOlderBeats] walks it toward 0.
+  int? _windowStart;
 
   /// Opens the world, mints/loads the human identity, registers it, and
   /// starts the bots + the wake loop. Idempotent; a failed start may be
@@ -272,14 +278,17 @@ final class RealmChatService extends ChangeNotifier {
         );
       }
       _human = world.authorityFor(humanId);
-      // One-device-one-human heal: threads and channels minted before
-      // the stable identity carry older per-launch human ids in their
-      // participants — substitute the stable id so the human's own
-      // history (channel clicks, DM threads) stays visible. Idempotent.
+      // One-device-one-human heal + plane convergence (2026-11-07):
+      // heal the kernel archive, export its threads into the journal
+      // (the ONE beat plane — ADR 0138 D1; realm-sealed so daemon-owned
+      // actors and external seats answer in the same rooms), then heal
+      // the journal rows. All three idempotent, all best-effort.
       try {
-        await world.conversation().healHumanIdentity(stableActorId: humanId);
+        await world.kernel.healHumanIdentity(stableActorId: humanId);
+        await world.exportKernelThreads();
+        await world.healJournalHumanIdentity(stableActorId: humanId);
       } on Object {
-        // Heal is best-effort; the world verbs still work.
+        // Best-effort; refreshThreads surfaces what landed.
       }
       // The dispatcher starts EARLY (it only needs the world + the
       // human id): its cursor seeds at the current lastBeat, so any
@@ -316,6 +325,15 @@ final class RealmChatService extends ChangeNotifier {
       await _refreshChannels();
       await refreshBrainCasts();
       await refreshThreads();
+      _journalSub = world.watchJournal().listen((_) {
+        if (_disposed) return;
+        _journalDebounce?.cancel();
+        _journalDebounce = Timer(const Duration(milliseconds: 300), () {
+          if (_disposed) return;
+          unawaited(refreshThreads());
+          if (_activeThreadId != null) unawaited(_refreshBeats());
+        });
+      });
       _ready = true;
     } on Object catch (error) {
       _error = error.toString();
@@ -430,17 +448,52 @@ final class RealmChatService extends ChangeNotifier {
 
   // ---- thread verbs (the human's words) ----
 
-  /// Reloads the thread list (newest activity first).
+  /// Reloads the room list (newest activity first) from the folded
+  /// journal projection — NOT the `list` verb: rooms are realm-sealed
+  /// (the verb's project filter would hide them) and endless (the verb
+  /// caps at 50). Visibility for the human = the same three-way law
+  /// the harness applies to agents: realm-sealed rooms, the app's own
+  /// project scope, and durably granted projects. Preview triples are
+  /// enriched from the folded beats (journal rows carry only the
+  /// `lastBeat` counter).
   Future<void> refreshThreads() async {
     final world = _world;
     final human = _human;
     if (world == null || human == null) return;
     unawaited(refreshBrainCasts());
     try {
-      final listing = await world.conversation().list(actor: human);
+      final projection = world.projection;
+      final rows = await projection.threadRows();
+      final grants = await projection.grantsOf(human.actor);
+      final enriched = <Map<String, Object?>>[];
+      for (final row in rows.values) {
+        final project = row['projectId'];
+        final visible =
+            project == null ||
+            project == human.projectId ||
+            grants.contains(project);
+        if (!visible) continue;
+        final threadId = '${row['threadId'] ?? ''}';
+        if (threadId.isEmpty) continue;
+        final beats = await projection.beatsOfThread(threadId);
+        final last = beats.isEmpty ? null : beats.last;
+        enriched.add(<String, Object?>{
+          ...row,
+          if (last != null) ...<String, Object?>{
+            'lastBeatAuthor': last['author'],
+            'lastBeatText': last['text'],
+            'lastBeatAt': last['at'],
+          },
+        });
+      }
+      String activityOf(final Map<String, Object?> row) =>
+          (row['lastBeatAt'] ?? row['createdAt'] ?? '') as String;
+      enriched.sort(
+        (a, b) => activityOf(b).compareTo(activityOf(a)),
+      );
       _threads
         ..clear()
-        ..addAll((listing['threads']! as List).cast<Map<String, Object?>>());
+        ..addAll(enriched);
       final active = _activeThreadId;
       if (active != null &&
           !_threads.any((thread) => thread['threadId'] == active)) {
@@ -467,9 +520,14 @@ final class RealmChatService extends ChangeNotifier {
         actor: human,
         topic: topic.trim().isEmpty ? 'Conversation' : topic.trim(),
         participants: participants,
+        // Realm-sealed (ADR 0121): the room belongs to the realm, not
+        // to LA's project scope — daemon-owned actors, external seats
+        // and in-app loops all see and answer in it.
+        realmSealed: true,
       );
       _activeThreadId = result['threadId']! as String;
       _beats.clear();
+      _windowStart = null;
       await refreshThreads();
     } on Object catch (error) {
       _error = error.toString();
@@ -555,6 +613,8 @@ final class RealmChatService extends ChangeNotifier {
         actor: human,
         topic: trimmed,
         participants: members,
+        // Realm-sealed like every LA room (see startThread).
+        realmSealed: true,
       );
       final threadId = opened['threadId']! as String;
       final channel = await registry.create(
@@ -565,6 +625,7 @@ final class RealmChatService extends ChangeNotifier {
       await _refreshChannels();
       _activeThreadId = threadId;
       _beats.clear();
+      _windowStart = null;
       await refreshThreads();
       return channel;
     } on Object catch (error) {
@@ -643,6 +704,7 @@ final class RealmChatService extends ChangeNotifier {
     if (_activeThreadId == null) return;
     _activeThreadId = null;
     _beats.clear();
+    _windowStart = null;
     notifyListeners();
   }
 
@@ -650,6 +712,7 @@ final class RealmChatService extends ChangeNotifier {
     if (_activeThreadId == threadId) return;
     _activeThreadId = threadId;
     _beats.clear();
+    _windowStart = null;
     unawaited(_refreshBeats());
   }
 
@@ -678,6 +741,9 @@ final class RealmChatService extends ChangeNotifier {
         text: trimmed,
         addressedTo: others,
       );
+      // The in-process shortcut: our own append dispatches immediately
+      // (the journal watch covers everyone else's).
+      _bots?.nudgeDispatcher();
       await _refreshBeats();
     } on DurableRealmRefusal catch (refusal) {
       _error = refusal.code;
@@ -694,10 +760,11 @@ final class RealmChatService extends ChangeNotifier {
     final human = _human;
     if (world == null || human == null) return;
     try {
-      await world.conversation().close(actor: human, threadId: threadId);
+      await world.closeThread(actor: human, threadId: threadId);
       if (_activeThreadId == threadId) {
         _activeThreadId = null;
         _beats.clear();
+        _windowStart = null;
       }
       await refreshThreads();
     } on Object catch (error) {
@@ -706,22 +773,72 @@ final class RealmChatService extends ChangeNotifier {
     }
   }
 
+  /// The active thread's tail page size — the first view shows the
+  /// NEWEST [tailPageSize] beats (never the thread's head: an endless
+  /// room lives at its tail), and [loadOlderBeats] walks the window
+  /// toward the beginning one page at a time.
+  static const int tailPageSize = 128;
+
+  /// Whether the active thread has older beats above the loaded window.
+  bool get hasOlderBeats => (_windowStart ?? 0) > 0;
+
+  /// Extends the active thread's window one [tailPageSize] page toward
+  /// the thread's beginning (the chat surface's scroll-up trigger).
+  /// Prepend-only: the loaded tail never changes, so the surface keeps
+  /// its scroll position.
+  Future<void> loadOlderBeats() async {
+    final world = _world;
+    final threadId = _activeThreadId;
+    if (world == null || threadId == null) return;
+    try {
+      final all = await world.projection.beatsOfThread(threadId);
+      final start =
+          _windowStart ??
+          (all.length > tailPageSize ? all.length - tailPageSize : 0);
+      if (start <= 0) return;
+      final next = start - tailPageSize;
+      _windowStart = next < 0 ? 0 : next;
+      _beats
+        ..clear()
+        ..addAll(all.sublist(_windowStart!));
+    } on Object catch (error) {
+      _error = error.toString();
+    }
+    notifyListeners();
+  }
+
   Future<void> _refreshBeats() async {
     final world = _world;
     final human = _human;
     final threadId = _activeThreadId;
     if (world == null || human == null || threadId == null) return;
     try {
-      final read = await world.conversation().read(
-        actor: human,
-        threadId: threadId,
-        limit: 128,
-      );
+      // The folded projection answers in memory (O(delta) refreshes);
+      // the window is a tail slice — an endless thread never
+      // re-materializes into the UI whole.
+      final all = await world.projection.beatsOfThread(threadId);
+      final start =
+          _windowStart ??
+          (all.length > tailPageSize ? all.length - tailPageSize : 0);
+      _windowStart = start > all.length ? all.length : start;
       _beats
         ..clear()
-        ..addAll((read['beats']! as List).cast<Map<String, Object?>>());
-      final last = read['lastBeat'];
-      if (last is int) _pollCursor[threadId] = last;
+        ..addAll(all.sublist(_windowStart!));
+      // Reading IS the read receipt (ADR 0124): the human's cursor
+      // advances to the newest beat, so rail badges and the inbox stop
+      // counting what this surface just showed.
+      if (all.isNotEmpty) {
+        final lastBeat = all.last['beat'];
+        if (lastBeat is int) {
+          _pollCursor[threadId] = lastBeat;
+          await advanceReadReceipt(
+            store: world.store,
+            actorId: human.actor,
+            threadId: threadId,
+            upToBeat: lastBeat,
+          );
+        }
+      }
     } on Object catch (error) {
       _error = error.toString();
     }
@@ -733,6 +850,8 @@ final class RealmChatService extends ChangeNotifier {
     debugInstances.remove(this);
     _disposed = true;
     _ready = false;
+    _journalDebounce?.cancel();
+    unawaited(_journalSub?.cancel() ?? Future<void>.value());
     _bots?.stopAll();
     super.dispose();
   }

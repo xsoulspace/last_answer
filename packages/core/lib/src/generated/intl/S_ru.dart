@@ -1144,6 +1144,12 @@ class SRu extends S {
       'Скажите первое слово — актёры этого разговора его услышат.';
 
   @override
+  String get worldChatLoadOlder => 'Загрузить старые сообщения';
+
+  @override
+  String get worldChatJumpToLatest => 'К последнему';
+
+  @override
   String get worldChatComposerHint => 'Напишите в разговор…';
 
   @override

@@ -372,6 +372,8 @@
   "worldChatCloseTooltip": "Закрыть разговор",
   "worldChatPickHint": "Выберите разговор или начните новый.",
   "worldChatFirstWord": "Скажите первое слово — актёры этого разговора его услышат.",
+  "worldChatLoadOlder": "Загрузить старые сообщения",
+  "worldChatJumpToLatest": "К последнему",
   "worldChatComposerHint": "Напишите в разговор…",
   "worldChatSend": "Отправить",
   "worldChatParticipants": "{count, plural, one{{count} участник} few{{count} участника} many{{count} участников} other{{count} участников}}",

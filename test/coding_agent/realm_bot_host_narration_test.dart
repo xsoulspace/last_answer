@@ -148,6 +148,10 @@ void main() {
         addressedTo: [actor.actorId],
       );
 
+      // The journal-plane dispatcher drains on the watch/nudge cadence,
+      // not synchronously inside say — wait for the generate to park
+      // before releasing it (the other tests always did).
+      await _waitFor(() => brain.hasPending, because: 'generate parked');
       brain.reply('The onboarding flow, then exports.');
       await _waitFor(
         () => host.narrations[actor.actorId]?.state ==

@@ -1144,6 +1144,12 @@ class SIt extends S {
       'Di\' la prima parola — gli attori di questa conversazione la sentiranno.';
 
   @override
+  String get worldChatLoadOlder => 'Carica messaggi precedenti';
+
+  @override
+  String get worldChatJumpToLatest => 'Vai all\'ultimo';
+
+  @override
   String get worldChatComposerHint => 'Scrivi alla conversazione…';
 
   @override

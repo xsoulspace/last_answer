@@ -60,6 +60,7 @@ final class KernelConversation {
     required this._store,
     required this._root,
     required this._replicas,
+    required this._threadsHome,
   });
 
   /// The realm's one control store: index records and legacy records
@@ -72,6 +73,13 @@ final class KernelConversation {
   /// One ConvergenceDoc replica per thread, persisted under
   /// `<threadsHome>/<threadId>.json`.
   final DocReplicaStore _replicas;
+
+  /// The replica home directory — the archive enumeration root for the
+  /// journal export (a replica file can exist WITHOUT an index record:
+  /// a crash between the kernel edit and the index commit leaves the
+  /// doc as the truth and the record missing — the exporter must see
+  /// the files, not only the index).
+  final String _threadsHome;
 
   /// Actor id every kernel op issued here carries — stable across
   /// restarts so persisted replica files restore through the fast path.
@@ -112,6 +120,7 @@ final class KernelConversation {
     required RealmControlStore store,
     required String root,
     required String threadsHome,
+    bool migrateLegacy = true,
   }) async {
     final home = Directory(threadsHome);
     await _adoptLegacyReplicas(
@@ -138,6 +147,7 @@ final class KernelConversation {
       store: store,
       root: root,
       replicas: replicas,
+      threadsHome: home.path,
     );
     conversation._changesSub = replicas.changes.listen((_) {
       for (final waiter in conversation._waiters) {
@@ -145,7 +155,12 @@ final class KernelConversation {
       }
     });
     await conversation._loadIndex();
-    await conversation._migrateLegacyThreads();
+    // Plane convergence (2026-11-07): the journal is the beat plane
+    // again (ADR 0138 D1 — one beat plane; the projection fold removed
+    // the scan cost this kernel lane existed to avoid). The world loads
+    // the kernel as the EXPORT SOURCE and archive — re-running the
+    // journal→kernel migration would fight the kernel→journal export.
+    if (migrateLegacy) await conversation._migrateLegacyThreads();
     return conversation;
   }
 
@@ -186,6 +201,47 @@ final class KernelConversation {
     _index
       ..clear()
       ..addAll(await _store.scan(_indexCollection));
+  }
+
+  // ---- the export face (plane convergence, 2026-11-07) ----
+
+  /// The in-memory thread index (threadId → record) — the exporter's
+  /// work list. Records mirror the last committed index state.
+  Map<String, Map<String, Object?>> get index => Map.unmodifiable(_index);
+
+  /// Every thread id with a replica FILE under the home — including
+  /// docs whose index record never committed (the crash-window case
+  /// the doc-as-truth law covers). The exporter enumerates this union
+  /// so no archive beat is orphaned by a missing record.
+  Set<String> archiveThreadIds() {
+    final home = Directory(_threadsHome);
+    if (!home.existsSync()) return const <String>{};
+    final ids = <String>{};
+    for (final entity in home.listSync(followLinks: false)) {
+      if (entity is! File) continue;
+      final name = entity.path
+          .split(Platform.pathSeparator)
+          .lastWhere((segment) => segment.isNotEmpty);
+      if (!name.endsWith('.json')) continue;
+      ids.add(name.substring(0, name.length - '.json'.length));
+    }
+    return ids;
+  }
+
+  /// Rebuilds one index record from its archive doc (the self-heal
+  /// builder — the doc is the truth, the record is the cache). The
+  /// exporter's source for file-only threads.
+  Future<Map<String, Object?>> archiveRecordOf(String threadId) async {
+    final replica = await _replicas.open(NodeId(threadId));
+    return _indexRecordFromDoc(replica);
+  }
+
+  /// Every beat of one thread, oldest first, straight from the kernel
+  /// doc — the exporter's source (see `RealmWorld.exportKernelThreads`).
+  /// An unknown or empty thread reads as an empty list.
+  Future<List<Map<String, Object?>>> beatsOf(String threadId) async {
+    final replica = await _replicas.open(NodeId(threadId));
+    return _docBeats(replica, threadId);
   }
 
   // ---- thread verbs (surface-identical to DurableConversation) ----

@@ -104,10 +104,114 @@ class _CenteredNote extends StatelessWidget {
   );
 }
 
-class _ConversationPane extends StatelessWidget {
+/// The visual top of an endless room: one quiet row that walks the
+/// window one page into history. The scroll trigger's twin — tappable,
+/// so keyboards and agents reach older beats too (the semantics label
+/// IS the widget key, the phase-2 contract).
+class _LoadOlderRow extends StatelessWidget {
+  const _LoadOlderRow({required this.label, required this.onTap, super.key});
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    label: 'worldchat.loadOlder',
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: TextButton(
+          onPressed: onTap,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// The jump-to-latest pill: appears once the reader has scrolled a
+/// screenful away from the tail (Discord law — new beats never yank the
+/// reading position), one tap animates back to the newest beat.
+class _JumpToLatestPill extends StatelessWidget {
+  const _JumpToLatestPill({required this.label, required this.onTap, super.key});
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    label: 'worldchat.jumpLatest',
+    hint: label,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+            color: context.la.surfaceRaised,
+            borderRadius: BorderRadius.circular(17),
+            border: Border.all(color: context.shellHairline),
+            boxShadow: shellFloatingShadow(context),
+          ),
+          child: Icon(
+            Icons.arrow_downward,
+            size: 16,
+            color: context.shellMuted,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+class _ConversationPane extends StatefulWidget {
   const _ConversationPane({required this.service, required this.composer});
   final RealmChatService service;
   final TextEditingController composer;
+
+  @override
+  State<_ConversationPane> createState() => _ConversationPaneState();
+}
+
+class _ConversationPaneState extends State<_ConversationPane> {
+  /// The reversed list's controller: offset 0 = the newest beat (the
+  /// bottom). An endless room lives at its tail; scrolling UP walks
+  /// into history and triggers [RealmChatService.loadOlderBeats].
+  final ScrollController _scroll = ScrollController();
+  bool _showJumpToLatest = false;
+
+  RealmChatService get service => widget.service;
+  TextEditingController get composer => widget.composer;
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scroll.hasClients) return;
+    final away = _scroll.offset > 240;
+    if (away != _showJumpToLatest) {
+      setState(() => _showJumpToLatest = away);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scroll
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(final BuildContext context) {
@@ -177,36 +281,96 @@ class _ConversationPane extends StatelessWidget {
         Expanded(
           child: beats.isEmpty
               ? _CenteredNote(text: l10n.worldChatFirstWord)
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  itemCount: beats.length,
-                  itemBuilder: (final context, final index) {
-                    final beat = beats[index];
-                    final author = beat['author']! as String;
-                    final previous = index == 0 ? null : beats[index - 1];
-                    final grouped =
-                        previous != null &&
-                        previous['author'] == author &&
-                        previous['addressedTo'].toString() ==
-                            beat['addressedTo'].toString();
-                    final profile =
-                        roster?.get(author) ??
-                        ActorProfile(
-                          actorId: author,
-                          displayName: displayNameOf(author),
-                        );
-                    return _MessageRow(
-                      key: ValueKey('worldchat.beat.$threadId#${beat['beat']}'),
-                      profile: profile,
-                      isHuman: author == service.humanActorId,
-                      text: beat['text']! as String,
-                      at: beat['at'] as String?,
-                      showHeader: !grouped,
-                    );
-                  },
+              : Stack(
+                  children: [
+                    NotificationListener<ScrollNotification>(
+                      onNotification: (final notification) {
+                        // Reversed list: OLDER beats live at larger
+                        // offsets — nearing the top edge is the
+                        // scroll-up pagination trigger. Prepending
+                        // older pages never shifts the visible window
+                        // (offsets anchor at the bottom), so the
+                        // reading position survives the fetch.
+                        final metrics = notification.metrics;
+                        if (service.hasOlderBeats &&
+                            metrics.maxScrollExtent - metrics.pixels < 160) {
+                          unawaited(service.loadOlderBeats());
+                        }
+                        return false;
+                      },
+                      child: ListView.builder(
+                        controller: _scroll,
+                        reverse: true,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        itemCount:
+                            beats.length + (service.hasOlderBeats ? 1 : 0),
+                        itemBuilder: (final context, final index) {
+                          if (index >= beats.length) {
+                            // The visual top: the explicit load-older
+                            // affordance (the scroll trigger's twin —
+                            // tappable, so agents and keyboards reach
+                            // it too).
+                            return _LoadOlderRow(
+                              key: const ValueKey('worldchat.loadOlder'),
+                              label: l10n.worldChatLoadOlder,
+                              onTap: () =>
+                                  unawaited(service.loadOlderBeats()),
+                            );
+                          }
+                          // Newest-first: index 0 = the newest beat at
+                          // the bottom; the visually-ABOVE neighbour is
+                          // the next-older beat (grouping rule
+                          // unchanged: same author + same addressing
+                          // hides the header).
+                          final beat = beats[beats.length - 1 - index];
+                          final above = index + 1 < beats.length
+                              ? beats[beats.length - 2 - index]
+                              : null;
+                          final author = beat['author']! as String;
+                          final grouped =
+                              above != null &&
+                              above['author'] == author &&
+                              above['addressedTo'].toString() ==
+                                  beat['addressedTo'].toString();
+                          final profile =
+                              roster?.get(author) ??
+                              ActorProfile(
+                                actorId: author,
+                                displayName: displayNameOf(author),
+                              );
+                          return _MessageRow(
+                            key: ValueKey(
+                              'worldchat.beat.$threadId#${beat['beat']}',
+                            ),
+                            profile: profile,
+                            isHuman: author == service.humanActorId,
+                            text: beat['text']! as String,
+                            at: beat['at'] as String?,
+                            showHeader: !grouped,
+                          );
+                        },
+                      ),
+                    ),
+                    if (_showJumpToLatest)
+                      Positioned(
+                        bottom: 12,
+                        right: 20,
+                        child: _JumpToLatestPill(
+                          key: const ValueKey('worldchat.jumpLatest'),
+                          label: l10n.worldChatJumpToLatest,
+                          onTap: () => unawaited(
+                            _scroll.animateTo(
+                              0,
+                              duration: const Duration(milliseconds: 180),
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
         ),
         Divider(height: 1, color: theme.dividerColor),

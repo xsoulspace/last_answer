@@ -422,6 +422,12 @@ dependency_overrides:
     path: ../../ecsai_harness/pkgs/ecsly_conversation
   ecsly_tasks:
     path: ../../ecsai_harness/pkgs/ecsly_tasks
+  # ADR 0138 D2 — the four shared journal primitives (AppendLog /
+  # SingleWriterFence / LogCursor / TailFold) landed 2026-11-07 as the
+  # harness's own workspace package; ecsly_tasks rides them, so the
+  # path graph needs the same one-checkout override.
+  append_log:
+    path: ../../ecsai_harness/pkgs/append_log
   ecsly_boards:
     path: ../../ecsai_harness/pkgs/ecsly_boards
   ecsai_wire:

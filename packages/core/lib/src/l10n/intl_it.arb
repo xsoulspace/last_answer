@@ -369,6 +369,8 @@
   "worldChatCloseTooltip": "Chiudi conversazione",
   "worldChatPickHint": "Scegli una conversazione o iniziane una nuova.",
   "worldChatFirstWord": "Di' la prima parola — gli attori di questa conversazione la sentiranno.",
+  "worldChatLoadOlder": "Carica messaggi precedenti",
+  "worldChatJumpToLatest": "Vai all'ultimo",
   "worldChatComposerHint": "Scrivi alla conversazione…",
   "worldChatSend": "Invia",
   "worldChatParticipants": "{count, plural, one{{count} partecipante} other{{count} partecipanti}}",

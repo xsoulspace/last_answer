@@ -64,3 +64,9 @@ deploy-snap:
 # arm honesty, screenshots). Evidence: $TMPDIR/shell_hgate_evidence/
 gate-shell *ARGS:
     fvm dart tool/gates/shell_harness_gate.dart {{ARGS}}
+
+# Endless-chat live smoke: seeded 500-beat room tail/paging/receipts,
+# first-run boot, kernel->journal export, daemon roundtrip.
+# Evidence: $TMPDIR/chat_smoke_evidence/
+smoke-chat *ARGS:
+    fvm dart tool/smoke/chat_endless_smoke.dart {{ARGS}}

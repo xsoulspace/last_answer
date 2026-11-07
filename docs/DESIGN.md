@@ -1,14 +1,24 @@
 # DESIGN — the Last Answer workspace
 
+> **v2 amendment (2026-11-08, pending the owner gate):** the two-layer
+> law — *calm chrome, living creatures* — and the shadcn-discipline
+> neutral palette. The chrome layer keeps every rule below; the
+> creature layer amends exactly three clauses (motion, identity,
+> pills), each marked **v2** in place. The interactive mockup is the
+> gate artifact; until the owner approves it, implemented surfaces
+> keep the v1 tokens.
+
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 
 ## Direction
 
-Last Answer is a calm, precise workroom for people and the actors they invite into their work. Its main surface makes the workspace feel continuous: actors, conversations, browser tabs, files, settings, and the world inspector are panes onto one shared workspace. The shell is present but quiet; the work in each pane carries the attention.
+Last Answer is a calm, precise workroom for people and the actors they invite into their work. **Conversation is the primary interaction mode** (v2): rooms with actors are the front door — every other pane (documents, inspector, browser, terminal, settings) is a companion to the rooms, not a competing destination. Work starts from a sentence to an actor; tasks are tools that emerge from conversation, never the door. The shell is present but quiet; the work in each pane carries the attention.
 
 The visual references contribute two useful ideas. The conversation reference has a legible participant list and familiar writing surface. The inspector references make a large shared world explorable through spatial layout, selection, and time. Keep the everyday shell readable and ordinary; let spatial visualization appear where it carries meaning, inside the inspector pane.
 
 The mode is **Operate**. The user is here to work, switch context, inspect, and make decisions. Optimize for orientation, direct manipulation, keyboard access, recovery, and long sessions. This is an application surface, not a promotional dashboard.
+
+**The two-layer law (v2).** The chrome — every navigation, list, form, tab, edge and dialog — is *calm*: shadcn-grade neutral discipline, hairlines, flat surfaces, one shadow, zero decoration. The life lives in ONE layer: the *creatures* — the actors' procedural marks are small living beings whose state is the world's own truth (narration, presence, settlements). Chrome never animates for its own sake; creatures never carry chrome's job. The dial is "expressive cozy": warm, discoverable charm at the identity layer; an undistracting professional instrument everywhere else.
 
 ## One workspace, many panes
 
@@ -43,30 +53,31 @@ The graph, timeline, filters, event list, and selected-object details are inspec
 
 ### Palette
 
-Use a restrained, blue-green neutral palette suited to long desktop sessions. Dark is the initial reference theme because it supports a spacious inspector canvas, but light is a first-class theme with equal hierarchy and contrast. Derive all widget colors from the semantic theme tokens below; do not create a competing palette per surface.
+Use a restrained neutral palette suited to long desktop sessions. **v2: zinc-family neutrals** (the shadcn discipline — warmless grays that make content the only color) with the **glade green accent kept** as the product's one signature hue. Dark is the initial reference theme because it supports a spacious inspector canvas, but light is a first-class theme with equal hierarchy and contrast. Derive all widget colors from the semantic theme tokens below; do not create a competing palette per surface.
 
-| Token | Dark reference | Light reference | Use |
+| Token | Dark reference (v2) | Light reference (v2) | Use |
 |---|---|---|---|
-| `canvas` | `#0B1114` | `#F6F8F7` | App and canvas background |
-| `surface` | `#111A1E` | `#FFFFFF` | Pane and navigator surfaces |
-| `surfaceRaised` | `#172328` | `#EEF2F0` | Selected rows and quiet raised regions |
-| `surfaceOverlay` | `#1D2B30` | `#E7EDEA` | Menus, popovers, floating windows |
-| `ink` | `#E5ECE9` | `#192522` | Primary text and icons |
-| `inkMuted` | `#B0BFBA` | `#53635E` | Secondary labels and descriptions |
-| `inkQuiet` | `#879A94` | `#687872` | Timestamps and tertiary metadata |
-| `rule` | `#2B3A3F` | `#D9E1DD` | Region boundaries and separators |
-| `accent` | `#8DDCC2` | `#176D58` | Keyboard focus, active marker, primary action |
-| `danger` | `#F18A83` | `#B33935` | Destructive or failed state |
-| `caution` | `#E8BD71` | `#875A12` | Pending or attention-needed state |
+| `canvas` | `#09090B` | `#FAFAFA` | App and canvas background |
+| `surface` | `#18181B` | `#FFFFFF` | Pane and navigator surfaces |
+| `surfaceRaised` | `#27272A` | `#F4F4F5` | Selected rows and quiet raised regions |
+| `surfaceOverlay` | `#323236` | `#E9E9EC` | Menus, popovers, floating windows |
+| `ink` | `#F4F4F5` | `#18181B` | Primary text and icons |
+| `inkMuted` | `#A1A1AA` | `#52525B` | Secondary labels and descriptions |
+| `inkQuiet` | `#71717A` | `#71717A` | Timestamps and tertiary metadata |
+| `rule` | `#27272A` | `#E4E4E7` | Region boundaries and separators |
+| `accent` | `#8DDCC2` | `#176D58` | Keyboard focus, active marker, primary action — the glade, kept |
+| `ring` (v2) | `#8DDCC2` | `#176D58` | The focus ring: a 2px offset outline on keyboard travel, never on hover |
+| `danger` | `#F87171` | `#DC2626` | Destructive or failed state |
+| `caution` | `#FBBF24` | `#B45309` | Pending or attention-needed state |
 | `success` | `#8DDCC2` | `#176D58` | Confirmed success |
 
 Treat these as starting theme values, not hard-coded widget colors. Validate normal text to at least 4.5:1, large text to 3:1, and focus/selected indicators to at least 3:1 against adjacent surfaces. If a theme cannot meet that, adjust the theme token rather than making individual labels brighter by hand.
 
-Actor identity is stable and derived from the actor record. Use the deterministic identicon and kind label; avoid random saturated avatar colors. Presence is explicit text where it matters and a small, accessible state mark in dense lists. Never rely on color alone.
+Actor identity is stable and derived from the actor record. Use the deterministic identicon and kind label; avoid random saturated avatar colors. Presence is explicit text where it matters and a small, accessible state mark in dense lists. Never rely on color alone. **v2: the identicon is a creature** — see "The creature layer".
 
 ### Typography
 
-Use a highly legible interface sans for navigation and prose, with tabular numerals for time, counts, and budgets. Use a restrained monospace only for code, paths, and measured values. Do not use typewriter styling as generic “technical” decoration.
+Use a highly legible interface sans for navigation and prose, with tabular numerals for time, counts, and budgets. **v2: the interface sans is Inter (SIL OFL), bundled** — the shadcn look is Inter-geometry, and a bundled face makes every platform render the same law; the platform system stack is the fallback. Use a restrained monospace only for code, paths, and measured values. Do not use typewriter styling as generic “technical” decoration.
 
 | Role | Size / line height | Weight | Use |
 |---|---:|---:|---|
@@ -84,18 +95,28 @@ Sentence case is the default. Establish hierarchy through size, weight, and spac
 - Base spacing unit: 4 px. Common steps: 4, 8, 12, 16, 24, 32.
 - Navigator rows: 34–38 px, with a 28–32 px minimum interactive target only where density requires it; touch layouts use at least 44 px targets.
 - Region separators: one-pixel hairline. Use whitespace within a region and lines only between meaningful regions.
-- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. Avoid pill shapes except for compact status tokens whose shape conveys a real state.
+- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. Avoid pill shapes except for compact status tokens whose shape conveys a real state (v2: the rail's unread badge and the chat's jump-to-latest control are exactly such tokens — the exception, not a new freedom).
 - Pane edges align to one grid. Do not add nested cards to represent hierarchy; use indentation, typography, spacing, and selection.
 
 ### Elevation and motion
 
 The pane canvas is flat. Menus, popovers, and miniwindows use one quiet raised surface with a thin edge and a soft shadow offset down by 4–6 px. Do not stack multiple shadows or use glass blur as decoration.
 
-Hover and selection settle in 100–150 ms. Split, tab, and panel transitions are brief and reversible. Motion explains where a pane went or what selection changed; no ambient loops, pulsing, or attention-seeking animation. Respect reduced-motion settings.
+Hover and selection settle in 100–150 ms. Split, tab, and panel transitions are brief and reversible. Motion explains where a pane went or what selection changed; **the chrome layer has no ambient loops, pulsing, or attention-seeking animation** (v2 wording: the ban binds chrome; the creature layer's motion law follows). Respect reduced-motion settings.
+
+**Creature-layer motion (v2).** Creatures animate ONLY on events, never idly: a blink when their beat lands, a squish-and-return on identity tap (≤250 ms), mood transitions with the narration state (150–250 ms), and ONE settlement celebration — a hop plus a small confetti burst (≤400 ms, once per settled PASS). No creature motion while the human is typing or reading mid-scroll; no loops; no sound. Under reduced-motion, creatures are static — state renders through posture alone (the motion-free truth of the same facts). Chrome motion budgets are unchanged by this layer.
 
 ### Iconography and identity
 
 Use a single 1.75–2 px outline icon family with a consistent 16/18/20 px size set. Icons accompany ambiguous actions; remove icons that merely repeat visible labels. Use a clear selected treatment, not a filled icon button for every control. Actor marks come from stable identity data; names remain the primary identification.
+
+**The creature layer (v2).** The actor's procedural mark is a small living being, not a logo: the six existing shape families (triad, diamond, leaf, bars, ring, peaks) become SPECIES — deterministic from the actor id, exactly as today's identicon — now with eyes that carry the world's own truth: awake/asleep with the daemon, thinking/generating with the narration state, a settled-PASS celebration, a squish when tapped. The laws:
+
+- **A creature's state is world truth, never decorative fiction.** It sleeps only when the daemon is down; it thinks only when the loop says so. No invented moods, no mascots that talk unasked.
+- **Species carries the variety that color must not**: hues stay deterministic and muted (the no-rainbow law stands); shape, eyes and posture do the individuating.
+- **The 22 px rail avatar is the creature's everyday home.** Larger creature moments belong to empty and first-run states only (the landing inbox greeter, the first-run "meet your actor", the sleeping-world status edge) — never over content, never between the human and a decision.
+- **Creatures ride LaWorld**: their state components live in the in-process ecsly World (fed by the journal fold), animated by fixed-step systems, painted through selector-scoped CustomPainter windows — no setState animation controllers, no per-frame whole-tree rebuilds.
+- The kind label (M/A/H) and presence dot remain: a creature never becomes the ONLY carrier of actor type or presence (color-alone and shape-alone bans).
 
 ## Responsive behavior
 
@@ -135,9 +156,10 @@ It inherits the shell's type, spacing, focus, selection, surface, and motion tok
 
 ## Avoid
 
-- A fixed chat center with all other surfaces treated as secondary tools.
+- A fixed chat center with all other surfaces treated as secondary tools. (v2 note: conversation is the primary INTERACTION mode — the door — but the pane law stands: artifacts, inspector and terminal are peers of the rooms, never hidden tools of a chat app.)
 - A second navigation system inside inspector, browser, or settings that duplicates workspace navigation.
 - Rainbow actor colors, decorative node clouds, status dashboards, or metrics without a source and task purpose.
 - Rounded boxes around every control, message bubbles, or cards used only to partition the layout.
 - Small caps as a replacement for hierarchy, tiny low-contrast timestamps, and color-only state.
+- Creature motion that carries no world fact (v2): an idly dancing mascot, a mood with no source, a celebration for nothing settled.
 - Fake live data. Concept material uses clearly identified synthetic examples.

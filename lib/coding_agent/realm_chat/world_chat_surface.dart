@@ -104,6 +104,335 @@ class _CenteredNote extends StatelessWidget {
   );
 }
 
+/// 0b — the inline work texture (the ZCode/Zed law: an actor's work is
+/// CHAT TEXTURE, not a separate observability room). Rides the stream's
+/// tail (reversed index 0 — under the newest beat, above the composer):
+/// narration rows for the in-app loops' live states, and work cards for
+/// the native actors' task loops joined by room participation — running
+/// first, the newest settled last word per actor. Cards expand to the
+/// loop's own facts (rounds, tool calls, applied writes, tokens, cache
+/// share, spend, verdict line) — everything the journal already
+/// carries; nothing here invents a summary.
+class _WorkStrip extends StatefulWidget {
+  const _WorkStrip({required this.service, required this.participants});
+
+  final RealmChatService service;
+  final List<String> participants;
+
+  @override
+  State<_WorkStrip> createState() => _WorkStripState();
+}
+
+class _WorkStripState extends State<_WorkStrip> {
+  final Set<String> _expanded = <String>{};
+
+  @override
+  Widget build(final BuildContext context) {
+    final world = context.read<WorldStateService?>();
+    final service = widget.service;
+    return ListenableBuilder(
+      listenable: world == null
+          ? service
+          : Listenable.merge(<Listenable>[service, world]),
+      builder: (final context, final _) {
+        final human = service.humanActorId;
+        final actors = [
+          for (final id in widget.participants)
+            if (id != human) id,
+        ];
+        final rows = <Widget>[];
+
+        // 1) Narration rows — the in-app loops' live cycle states (the
+        // service getter honors the debug seam the header shares).
+        final narrations = service.botNarration;
+        for (final actorId in actors) {
+          final narration = narrations[actorId];
+          if (narration == null) continue;
+          final state = narration.state;
+          if (state != BotNarrationState.thinking &&
+              state != BotNarrationState.generating &&
+              state != BotNarrationState.failed) {
+            continue;
+          }
+          rows.add(
+            _NarrationRow(
+              key: ValueKey('worldchat.narration.$actorId'),
+              service: service,
+              actorId: actorId,
+              narration: narration,
+            ),
+          );
+        }
+
+        // 2) Work cards — the native task loops of this room's actors.
+        if (world != null && actors.isNotEmpty) {
+          final actorSet = actors.toSet();
+          bool inRoom(final WorldTaskRow task) => task.addressees.any(
+            actorSet.contains,
+          );
+          final running = [
+            for (final task in world.tasks)
+              if (!task.terminal && inRoom(task)) task,
+          ];
+          // The newest settled last word per actor (one card each — the
+          // room shows the verdict, the inbox keeps the full ledger).
+          final settledByActor = <String, WorldTaskRow>{};
+          for (final task in world.tasks) {
+            if (!task.terminal || !inRoom(task)) continue;
+            for (final actorId in task.addressees) {
+              if (!actorSet.contains(actorId)) continue;
+              final current = settledByActor[actorId];
+              if (current == null ||
+                  (task.at ?? '').compareTo(current.at ?? '') > 0) {
+                settledByActor[actorId] = task;
+              }
+            }
+          }
+          for (final task in [...running, ...settledByActor.values]) {
+            rows.add(
+              _WorkCard(
+                key: ValueKey('worldchat.work.${task.taskId}'),
+                world: world,
+                service: service,
+                task: task,
+                participants: actorSet,
+                expanded: _expanded.contains(task.taskId),
+                onToggle: () => setState(() {
+                  if (!_expanded.remove(task.taskId)) {
+                    _expanded.add(task.taskId);
+                  }
+                }),
+              ),
+            );
+          }
+        }
+
+        if (rows.isEmpty) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: rows,
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// One live narration line: the actor's mark + its own status words
+/// (the loop composes them — never invented here).
+class _NarrationRow extends StatelessWidget {
+  const _NarrationRow({
+    required this.service,
+    required this.actorId,
+    required this.narration,
+    super.key,
+  });
+
+  final RealmChatService service;
+  final String actorId;
+  final BotNarration narration;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final profile = service.roster?.get(actorId);
+    final name = profile?.displayName ?? actorDisplayFallback(actorId);
+    final line = narration.statusLine ?? narration.state.name;
+    return Semantics(
+      label: 'worldchat.narration.$actorId',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: Row(
+          children: [
+            ActorAvatar(
+              profile:
+                  profile ??
+                  ActorProfile(actorId: actorId, displayName: name),
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                '$name — $line',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: narration.state == BotNarrationState.failed
+                      ? context.la.danger
+                      : context.shellMuted,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// One work card: the delegated sentence + the world's own state word
+/// + the rung; expanded, the loop's measured facts. Reject-first
+/// honesty: a terminal card shows the verdict line verbatim (the
+/// journal's summary or reason), never a prettified invention.
+class _WorkCard extends StatelessWidget {
+  const _WorkCard({
+    required this.world,
+    required this.service,
+    required this.task,
+    required this.participants,
+    required this.expanded,
+    required this.onToggle,
+    super.key,
+  });
+
+  final WorldStateService world;
+  final RealmChatService service;
+  final WorldTaskRow task;
+  final Set<String> participants;
+  final bool expanded;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final stateColor = task.terminal
+        ? (task.state == 'succeeded' ? context.la.accent : context.la.danger)
+        : context.la.caution;
+    // The telemetry join: the executing actor is one of the addressed
+    // room participants (the journal rows are per-actor).
+    final actorId = task.addressees.firstWhere(
+      participants.contains,
+      orElse: () => task.addressees.isEmpty ? '' : task.addressees.first,
+    );
+    final telemetry = actorId.isEmpty ? null : world.telemetryByActor[actorId];
+    final verdict = expanded
+        ? world.verdicts.where((v) => v.id == task.taskId).firstOrNull
+        : null;
+    return Semantics(
+      label: 'worldchat.work.${task.taskId}',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.shellField,
+            borderRadius: BorderRadius.circular(ShellTokens.radius),
+            border: Border.all(color: context.shellHairline),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                key: ValueKey('worldchat.work.expand.${task.taskId}'),
+                onTap: onToggle,
+                borderRadius: BorderRadius.circular(ShellTokens.radius),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 7,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 7,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: stateColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          task.task,
+                          maxLines: expanded ? 4 : 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: context.la.ink,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        task.state,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: stateColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(
+                        expanded ? Icons.expand_less : Icons.expand_more,
+                        size: 15,
+                        color: context.shellMuted,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (expanded)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (task.modelId != null &&
+                          task.modelId!.isNotEmpty)
+                        _factLine(theme, context, 'rung · ${task.modelId}'),
+                      if (telemetry != null)
+                        _factLine(
+                          theme,
+                          context,
+                          () {
+                            final cache = telemetry.cacheHitRate == null
+                                ? '—'
+                                : '${(telemetry.cacheHitRate! * 100).round()}%';
+                            final tokens =
+                                telemetry.promptTokens +
+                                telemetry.completionTokens;
+                            return '${telemetry.rounds}r · '
+                                '${telemetry.toolCalls} tools · '
+                                '${telemetry.appliedWrites} writes · '
+                                'cache $cache · $tokens tok';
+                          }(),
+                        ),
+                      if (task.at != null) _factLine(theme, context, task.at!),
+                      if (verdict != null) ...[
+                        if (verdict.spend != null &&
+                            verdict.spend!.isNotEmpty)
+                          _factLine(theme, context, 'spend · ${verdict.spend}'),
+                        if (verdict.line.isNotEmpty)
+                          _factLine(theme, context, verdict.line),
+                      ] else if (task.summary != null &&
+                          task.summary!.isNotEmpty)
+                        _factLine(theme, context, task.summary!),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _factLine(
+    final ThemeData theme,
+    final BuildContext context,
+    final String text,
+  ) => Padding(
+    padding: const EdgeInsets.only(top: 3),
+    child: Text(
+      text,
+      style: theme.textTheme.labelSmall?.copyWith(
+        color: context.shellMuted,
+        fontFeatures: const [FontFeature.tabularFigures()],
+      ),
+    ),
+  );
+}
+
 /// The visual top of an endless room: one quiet row that walks the
 /// window one page into history. The scroll trigger's twin — tappable,
 /// so keyboards and agents reach older beats too (the semantics label
@@ -139,7 +468,12 @@ class _LoadOlderRow extends StatelessWidget {
 /// screenful away from the tail (Discord law — new beats never yank the
 /// reading position), one tap animates back to the newest beat.
 class _JumpToLatestPill extends StatelessWidget {
-  const _JumpToLatestPill({required this.label, required this.onTap, super.key});
+  const _JumpToLatestPill({
+    required this.label,
+    required this.onTap,
+    super.key,
+  });
+
   final String label;
   final VoidCallback onTap;
 
@@ -305,10 +639,22 @@ class _ConversationPaneState extends State<_ConversationPane> {
                           horizontal: 16,
                           vertical: 8,
                         ),
+                        // Index 0 = the work strip (the stream's live
+                        // tail — under the newest beat, above the
+                        // composer); beats follow newest-first; the
+                        // load-older row sits at the visual top.
                         itemCount:
-                            beats.length + (service.hasOlderBeats ? 1 : 0),
+                            1 +
+                            beats.length +
+                            (service.hasOlderBeats ? 1 : 0),
                         itemBuilder: (final context, final index) {
-                          if (index >= beats.length) {
+                          if (index == 0) {
+                            return _WorkStrip(
+                              service: service,
+                              participants: participants,
+                            );
+                          }
+                          if (index > beats.length) {
                             // The visual top: the explicit load-older
                             // affordance (the scroll trigger's twin —
                             // tappable, so agents and keyboards reach
@@ -320,14 +666,14 @@ class _ConversationPaneState extends State<_ConversationPane> {
                                   unawaited(service.loadOlderBeats()),
                             );
                           }
-                          // Newest-first: index 0 = the newest beat at
+                          // Newest-first: index 1 = the newest beat at
                           // the bottom; the visually-ABOVE neighbour is
                           // the next-older beat (grouping rule
                           // unchanged: same author + same addressing
                           // hides the header).
-                          final beat = beats[beats.length - 1 - index];
-                          final above = index + 1 < beats.length
-                              ? beats[beats.length - 2 - index]
+                          final beat = beats[beats.length - index];
+                          final above = index < beats.length
+                              ? beats[beats.length - index - 1]
                               : null;
                           final author = beat['author']! as String;
                           final grouped =

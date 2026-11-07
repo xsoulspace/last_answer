@@ -188,6 +188,10 @@ void main() {
         'rounds': 5,
         'promptTokens': 2000,
         'cachedTokens': 1600,
+        'completionTokens': 400,
+        'toolCalls': 12,
+        'promptChars': 3400,
+        'appliedWrites': 3,
         'stalled': true,
         'at': '2026-11-05T12:00:00Z',
       });
@@ -568,6 +572,13 @@ void main() {
         expect(scout.stalled, isTrue);
         expect(scout.cacheHitRate, closeTo(0.8, 0.001));
         expect(scout.at, '2026-11-05T12:00:00Z');
+        // 0b — the inline work texture: the projection keeps the FULL
+        // journal row (the old one discarded these and the work cards
+        // starved).
+        expect(scout.toolCalls, 12);
+        expect(scout.completionTokens, 400);
+        expect(scout.promptChars, 3400);
+        expect(scout.appliedWrites, 3);
       },
     );
 

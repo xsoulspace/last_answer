@@ -178,6 +178,10 @@ final class ActorTelemetry {
     required this.promptTokens,
     required this.cachedTokens,
     required this.stalled,
+    this.toolCalls = 0,
+    this.completionTokens = 0,
+    this.promptChars = 0,
+    this.appliedWrites = 0,
     this.at,
   });
 
@@ -186,6 +190,14 @@ final class ActorTelemetry {
   final int promptTokens;
   final int cachedTokens;
   final bool stalled;
+
+  /// The rest of the journal row (0b — the inline work texture): the
+  /// loop's per-dispatch counts. The journal carries them; the old
+  /// projection discarded them and the work cards starved.
+  final int toolCalls;
+  final int completionTokens;
+  final int promptChars;
+  final int appliedWrites;
   final String? at;
 
   /// Cached-token share of the prompt (ADR 0122's hit-rate), null when
@@ -393,7 +405,13 @@ final class WorldStateService extends ChangeNotifier {
   ];
 
   /// The newest telemetry row per actor (cache-hit %, rounds, stalled).
-  Map<String, ActorTelemetry> get telemetryByActor => _telemetryByActor;
+  /// Test seam: overrides the journal telemetry projection (widget
+  /// tests bind no journal rows). Never set from product.
+  @visibleForTesting
+  Map<String, ActorTelemetry>? debugTelemetryOverride;
+
+  Map<String, ActorTelemetry> get telemetryByActor =>
+      debugTelemetryOverride ?? _telemetryByActor;
 
   // ---- session registry projections (permissions, verdicts) ----
 
@@ -736,6 +754,10 @@ final class WorldStateService extends ChangeNotifier {
         promptTokens: (row['promptTokens'] as num?)?.toInt() ?? 0,
         cachedTokens: (row['cachedTokens'] as num?)?.toInt() ?? 0,
         stalled: row['stalled'] == true,
+        toolCalls: (row['toolCalls'] as num?)?.toInt() ?? 0,
+        completionTokens: (row['completionTokens'] as num?)?.toInt() ?? 0,
+        promptChars: (row['promptChars'] as num?)?.toInt() ?? 0,
+        appliedWrites: (row['appliedWrites'] as num?)?.toInt() ?? 0,
         at: row['at'] as String?,
       );
     }

@@ -4,10 +4,11 @@
 > living creatures* — and the shadcn-discipline neutral palette. The
 > chrome layer keeps every rule below; the creature layer amends exactly
 > three clauses (motion, identity, pills), each marked **v2** in place.
-> The owner approved the base mockup on 2026-11-08 and directed three
+> The owner approved the base mockup on 2026-11-08 and directed four
 > additions, now law here and in the mockup: the compact actor HUD,
-> threads over the conversation graph-tree, and point/select/comment
-> over live web + native previews. The interactive mockup remains the
+> threads over the conversation graph-tree, point/select/comment over
+> live web + native previews, and the tab law — the strip is the
+> universal content surface, the rail an activity bar. The interactive mockup remains the
 > gate artifact; until the owner's final nod on the additions,
 > implemented surfaces keep the v1 tokens.
 
@@ -126,6 +127,8 @@ Use a single 1.75–2 px outline icon family with a consistent 16/18/20 px size 
 **Threads: the conversation is a graph-tree (v2, Discord law).** Every beat can branch; a branch is its own room with a parent link, not a copy. In the trunk, a branch shows as a thread chip under its parent beat — branch glyph, the faces of who replied, reply count, last activity — and never as nested indentation (depth is unreadable past one level). The chip opens a side pane: parent quote on an accent bar, the branch's beats, its own composer. Unread law rides the same receipts: a thread's unread is a member's fact, badged on the chip and the rail row alike. Actor↔actor rooms and threads share one mechanic: addressing joins, watching does not.
 
 **Point, select, comment: the product is a comment surface (v2, Cursor law).** Any running artifact — web preview in the tokenized loopback, native screen on device — can enter pick mode: point selects one element (accent outline + mono selector tag), select-area draws a dashed marquee over a region. A comment pin on a selection is NOT an annotation tool: sending it mints an addressed beat in the docked room carrying a ref chip (pin · selector · surface), so the actor's reply, work card and attributed diff return to the same thread, and "keep" applies the staged change where the pin points. One picker over web AND native; the ref chip is the contract that keeps a comment addressable after the surface re-renders.
+
+**Tabs are the universal content surface (v2, owner law).** The strip over the center column carries the browser/VS Code law: everything openable — a room, a thread, an artifact, a design surface (the web/native picker), an actor page, and every future format (image editing/generation, video, audio, multitrack timelines) — opens as a TAB in the one strip: persisted by ViewLayout, closable with ×, re-openable from the rail or the new-tab picker. The rail is an activity bar, not a mode switcher: its icons open/activate tabs and carry presence and badges; they never hide what a tab holds, and no view is a "mode" the user must leave another view to enter. The new-tab picker enumerates the format registry (the formatId runway): rows openable today, plus named runway rows as honest absences. Onboarding/first-run is a BOOT state, never a tab. VS Code-style splits (two tabs side by side) are the sanctioned later step for loops that want a conversation beside a design surface; until then the picker tab carries its own comment dock. Usability consequence: a working set is a SET OF TABS — restorable, shareable as a layout — and a new content kind is a new tab-view registration on the format registry, never a new shell.
 
 ## Responsive behavior
 

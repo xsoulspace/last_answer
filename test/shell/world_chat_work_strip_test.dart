@@ -58,13 +58,13 @@ void main() {
             addressees: <String>[toby.actorId],
           ),
           // Another room's task — must NOT surface in this stream.
-          WorldTaskRow(
+          const WorldTaskRow(
             taskId: 'task-elsewhere',
             state: 'started',
             task: 'somewhere else entirely',
             terminal: false,
             at: '2026-11-07T10:00:00Z',
-            addressees: const <String>['weaver'],
+            addressees: <String>['weaver'],
           ),
         ]
         ..debugTelemetryOverride = <String, ActorTelemetry>{
@@ -290,7 +290,7 @@ void main() {
         await service.say('are you there?');
       });
 
-      final worldState = hermeticWorldState(daemonLive: false);
+      final worldState = hermeticWorldState();
       addTearDown(worldState.dispose);
 
       Widget app() => ChangeNotifierProvider<RealmChatService>.value(

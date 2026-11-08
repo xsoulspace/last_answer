@@ -164,10 +164,9 @@ final class RealmBotHost {
   RealmBotHost({
     required this.world,
     required this.humanActorId,
-    this.resolveCast,
+    required this.resolveOpenRouterApiKey, this.resolveCast,
     this.resolveCredential,
     this.daemonOwnsActor,
-    required this.resolveOpenRouterApiKey,
     this.debugBrainOverride,
     this.onChanged,
     this.onWake,

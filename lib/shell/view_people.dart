@@ -19,24 +19,15 @@
 library;
 
 import 'package:lastanswer/agent_config/agent_config.dart';
-
 import 'package:lastanswer/coding_agent/actor_roster.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-
 import 'package:lastanswer/shell/shell_theme.dart';
 
 /// Which actor the people view focuses (session state, not persisted —

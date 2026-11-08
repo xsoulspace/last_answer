@@ -28,7 +28,7 @@ final class MiniWindowPersistence {
   Timer? _saveTimer;
   VoidCallback? _boundListener;
   MiniWindowController? _boundController;
-  var _restoring = false;
+  final _restoring = false;
 
   /// Restores every persisted record the factory can still resolve;
   /// returns how many windows came back. Bad JSON or a bad record is

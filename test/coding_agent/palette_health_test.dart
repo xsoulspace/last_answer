@@ -19,7 +19,7 @@ void main() {
   test('reads the daemon status file and maps cast ids to verdicts', () {
     Directory('${scratch.path}/.xsoulspace').createSync(recursive: true);
     File('${scratch.path}/.xsoulspace/palette_health.json')
-      ..writeAsStringSync(
+      .writeAsStringSync(
         jsonEncode({
           'schema': 1,
           'updatedAt': '2026-11-03T10:00:00.000Z',

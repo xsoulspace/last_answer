@@ -129,9 +129,8 @@ final class InboxPermission {
   const InboxPermission({
     required this.sessionId,
     required this.title,
-    this.kind,
+    required this.answer, this.kind,
     this.since,
-    required this.answer,
   });
 
   final String sessionId;
@@ -213,12 +212,11 @@ enum WorldArmState { idle, arming, error }
 /// supervised daemon, save a validated palette config).
 final class WorldStateService extends ChangeNotifier {
   WorldStateService({
-    RealmControlStore? store,
+    this._store,
     PaletteHealthStore? health,
     this.debugDoctor,
     this.debugWorldHome,
-  }) : _store = store,
-       _health = health ?? PaletteHealthStore();
+  }) : _health = health ?? PaletteHealthStore();
 
   /// Test seam: replaces the host doctor probe (file IO) with a fixed
   /// report map (`daemon` + `daemonExe` sections).
@@ -935,7 +933,7 @@ final class WorldStateService extends ChangeNotifier {
     try {
       for (final entry in HarnessSessionRegistry.instance.sessions.entries) {
         final snapshot = entry.value.state;
-        final id = '${entry.key}';
+        final id = entry.key;
         final title = snapshot.pendingPermissionTitle;
         if (title != null && title.isNotEmpty) {
           final handle = entry.value;

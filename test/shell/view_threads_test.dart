@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
@@ -64,11 +63,11 @@ void main() {
 
   testWidgets('an empty world says so quietly', (final tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('en'),
+      const MaterialApp(
+        locale: Locale('en'),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
-        home: const Scaffold(
+        home: Scaffold(
           body: ThreadsView(service: null, onOpenThread: _noop),
         ),
       ),

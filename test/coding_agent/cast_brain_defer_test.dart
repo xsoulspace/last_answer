@@ -166,10 +166,9 @@ void main() {
       final temp = await Directory.systemTemp.createTemp('cast_defer_');
       addTearDown(() => temp.delete(recursive: true));
       final world = (await RealmWorld.open(rootOverride: temp.path))!;
-      final profile = ActorProfile(
+      const profile = ActorProfile(
         actorId: 'scout',
         displayName: 'Scout',
-        kind: ActorKind.model,
         brainRef: 'cast:modelscope_qwen38max',
       );
       RealmBotHost host({required bool daemonLive}) => RealmBotHost(

@@ -52,8 +52,9 @@ void row(final String status, final String step, final String detail) {
 String _wsUri(final String uri) {
   var out = uri;
   if (out.startsWith('http://')) out = 'ws://${out.substring(7)}';
-  if (!out.endsWith('/ws'))
+  if (!out.endsWith('/ws')) {
     out = '${out.endsWith('/') ? out.substring(0, out.length - 1) : out}/ws';
+  }
   return out;
 }
 
@@ -69,7 +70,7 @@ Future<Map<String, Object?>> _verb(
 ]) async {
   final result = await Process.run('fmtk', [
     '--state-file',
-    '$_gateStateFile',
+    _gateStateFile,
     '--vm-service-uri',
     vmUri,
     '--flutter-device',

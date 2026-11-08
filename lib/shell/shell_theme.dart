@@ -5,7 +5,6 @@
 /// no palette, it only fixes the shell's constants.
 library;
 
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/common_imports.dart';
 

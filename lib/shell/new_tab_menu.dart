@@ -62,7 +62,6 @@ final class NewTabMenu extends StatelessWidget {
     children: [
       Positioned.fill(
         child: ModalBarrier(
-          dismissible: true,
           color: const Color(0x00000000),
           onDismiss: onClose,
         ),

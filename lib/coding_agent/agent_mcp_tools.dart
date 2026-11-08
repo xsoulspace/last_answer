@@ -1,13 +1,12 @@
 import 'package:flutter/rendering.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-import 'package:lastanswer/shell/app_shell.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
 import 'package:lastanswer/coding_agent/product_agent_mcp_tools.dart';
 import 'package:lastanswer/settings/features/live_mesh_service.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
+import 'package:lastanswer/shell/app_shell.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -108,7 +107,7 @@ Set<AgentCallEntry> agentMcpEntries() => {
                 '${cursor.debugSemantics != null ? '+NODE' : ''}'
                 '$tag',
               );
-              cursor = cursor.parent as RenderObject?;
+              cursor = cursor.parent;
             }
             elementFacts.add(
               '${widget.properties.label}|attached=${ro?.attached}'

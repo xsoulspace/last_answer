@@ -16,10 +16,9 @@ final class ViewScope extends InheritedWidget {
     required this.layout,
     required this.surfaces,
     required this.onChanged,
-    this.onFocusActor,
+    required super.child, this.onFocusActor,
     this.titleFor,
     this.leadingFor,
-    required super.child,
     super.key,
   });
 

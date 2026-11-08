@@ -9,7 +9,6 @@
 /// `workspaces.filesTab.folder`.
 library;
 
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_theme.dart';

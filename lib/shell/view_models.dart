@@ -16,7 +16,6 @@ library;
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -92,17 +91,14 @@ final class _DaemonHeader extends StatelessWidget {
     final la = context.la;
     final theme = Theme.of(context);
     final facts = <String>[
-      world.daemonLive
-          ? world.daemonPid == null
+      if (world.daemonLive) world.daemonPid == null
                 ? l10n.modelsDaemonLive
-                : '${l10n.modelsDaemonLive} · pid ${world.daemonPid}'
-          : l10n.modelsDaemonDown,
+                : '${l10n.modelsDaemonLive} · pid ${world.daemonPid}' else l10n.modelsDaemonDown,
       if (world.daemonBinaryStale == true) l10n.modelsDaemonStale,
-      if (world.paletteConfigPath case final path?) path,
+      ?world.paletteConfigPath,
     ];
     return Row(
       key: const ValueKey('models.header'),
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         HealthDot(status: world.daemonLive ? 'ok' : 'failed', size: 8),
         const SizedBox(width: 8),
@@ -701,7 +697,7 @@ final class _PaletteEditorDialogState extends State<PaletteEditorDialog> {
                 ),
               const SizedBox(height: 10),
               Expanded(
-                child: Container(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: la.canvas,
                     borderRadius: BorderRadius.circular(ShellTokens.radius),

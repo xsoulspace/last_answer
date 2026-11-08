@@ -58,7 +58,7 @@ final class ThreadsView extends StatelessWidget {
             for (final session in sessions)
               _SessionRow(
                 key: ValueKey('threads.session.${session.key}'),
-                sessionId: '${session.key}',
+                sessionId: session.key,
                 snapshot: session.value.state,
               ),
           ],

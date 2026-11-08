@@ -11,8 +11,6 @@
 /// snapshot (redesign §2.3).
 library;
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
@@ -165,7 +163,7 @@ final class _CommandPaletteState extends State<CommandPalette> {
       // A click on the veil closes; the layer itself stops the tap.
       behavior: HitTestBehavior.opaque,
       onTap: widget.onClose,
-      child: Container(
+      child: ColoredBox(
         color: la.ink.withValues(alpha: 0.18),
         child: Align(
           alignment: Alignment.topCenter,
@@ -261,7 +259,6 @@ final class _PaletteRow extends StatelessWidget {
     label: 'palette.entry.${entry.id}',
     hint: entry.label,
     child: ShellRow(
-      height: 34,
       selected: selected,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       onTap: onTap,

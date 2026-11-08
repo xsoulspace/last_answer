@@ -1,9 +1,9 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 
 /// ADR 0023 §1a — the Settings actors pane: where a human mints actor

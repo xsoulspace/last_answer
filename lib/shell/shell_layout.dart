@@ -82,8 +82,8 @@ final class ViewState {
     if (index < 0 || index >= tabs.length || index == active) return this;
     final trimmed = <String>[
       for (final id in hist.take(histAt + 1))
-        if (id != tabs[index]) id,
-    ]..add(tabs[index]);
+        if (id != tabs[index]) id, tabs[index],
+    ];
     while (trimmed.length > histCap) {
       trimmed.removeAt(0);
     }
@@ -97,8 +97,8 @@ final class ViewState {
     final ids = List<String>.of(tabs)..insert(at, id);
     final trimmed = <String>[
       for (final entry in hist.take(histAt + 1))
-        if (entry != id) entry,
-    ]..add(id);
+        if (entry != id) entry, id,
+    ];
     while (trimmed.length > histCap) {
       trimmed.removeAt(0);
     }

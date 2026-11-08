@@ -61,8 +61,6 @@ ThemeData _laTheme(final Brightness brightness) {
     canvasColor: p.canvas,
     cardColor: p.surface,
     dividerColor: p.rule,
-    dialogBackgroundColor: p.surfaceOverlay,
-    indicatorColor: p.accent,
     hintColor: p.inkQuiet,
     disabledColor: p.inkQuiet.withValues(alpha: 0.6),
     splashFactory: NoSplash.splashFactory,
@@ -138,7 +136,7 @@ ThemeData _laTheme(final Brightness brightness) {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(LaTokens.radius),
-        borderSide: BorderSide(color: p.accent, width: LaTokens.hairline),
+        borderSide: BorderSide(color: p.accent),
       ),
       hintStyle: text.bodyMedium?.copyWith(color: p.inkQuiet),
     ),

@@ -42,9 +42,9 @@ import 'dart:io' show Directory, File, Platform;
 import 'dart:isolate';
 
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:http/http.dart' as http;
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
-import 'package:http/http.dart' as http;
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
 
 /// Chat brains are not greedy: the echo evidence pinned pure-argmax decode

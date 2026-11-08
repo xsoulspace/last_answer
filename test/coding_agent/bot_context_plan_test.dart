@@ -93,10 +93,9 @@ void main() {
           debugBrainOverride: (_) => brain,
         );
         addTearDown(host.stopAll);
-        final bot = ActorProfile(
+        const bot = ActorProfile(
           actorId: 'bot-ctx',
           displayName: 'Ctx Bot',
-          kind: ActorKind.model,
           brainRef: 'cast:test-rung',
         );
         roster.upsert(bot);

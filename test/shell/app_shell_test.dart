@@ -13,44 +13,25 @@
 //   service-driven conversation flow (the picker/palette select through
 //   the service; the shell translates that into room tabs).
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-
-import 'package:lastanswer/coding_agent/board_view.dart';
-
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
-
 import 'package:lastanswer/_library/widgets/widgets.dart';
-
+import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/board_view.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-
-import 'package:lastanswer/settings/features/storage_backends_state.dart';
-
 import 'package:lastanswer/settings/settings.dart';
-
 import 'package:lastanswer/shell/app_shell.dart';
-
 import 'package:lastanswer/shell/pane_strip.dart';
-
 import 'package:lastanswer/shell/surfaces.dart';
-
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 import 'hermetic_world_state.dart';
-
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 /// A projects notifier fake whose real pager holds zero items — enough
 /// for the document surfaces to render honestly empty.
@@ -224,10 +205,10 @@ void main() {
     expect(raw, isNotNull);
     final decoded = jsonDecode(raw!) as Map<String, Object?>;
     expect(decoded['v'], 4);
-    final groups = decoded['groups'] as List<Object?>;
+    final groups = decoded['groups']! as List<Object?>;
     expect(groups, hasLength(1));
     expect(
-      (groups.first as Map<String, Object?>)['tabs'],
+      (groups.first! as Map<String, Object?>)['tabs'],
       contains(kBoardsSurfaceId),
     );
   });
@@ -235,7 +216,7 @@ void main() {
   /// The picker panel is a LAZY list (measured: `cacheExtent` does not
   /// extend the built window on this Flutter): rows past the fold exist
   /// only after scrolling — the same truth for users, agents and tests.
-  Future<void> _scrollPickerTo(
+  Future<void> scrollPickerTo(
     final WidgetTester tester,
     final String key,
   ) async {
@@ -266,7 +247,7 @@ void main() {
     // in the lazy list — scroll materializes them).
     await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
     await tester.pump();
-    await _scrollPickerTo(tester, 'newtab.runway.image');
+    await scrollPickerTo(tester, 'newtab.runway.image');
     expect(find.byKey(const ValueKey('newtab.runway.image')), findsOneWidget);
   });
 
@@ -281,7 +262,7 @@ void main() {
     // the browser suite's job (workspace_browser_test injects a fake).
     // The scroll targets the LAST row (the lazy list builds everything
     // above it): the registry's honest tail is complete or absent.
-    await _scrollPickerTo(tester, 'newtab.runway.audio');
+    await scrollPickerTo(tester, 'newtab.runway.audio');
     expect(
       find.byKey(const ValueKey('newtab.instance.browser')),
       findsOneWidget,
@@ -298,7 +279,7 @@ void main() {
     expect(find.byKey(const ValueKey('newtab.runway.audio')), findsOneWidget);
   });
 
-  testWidgets('the action bar CYCLES a kind\'s open tabs (the Discord '
+  testWidgets("the action bar CYCLES a kind's open tabs (the Discord "
       'law, hermetic world lane)', (final tester) async {
     late RealmChatService service;
     late ActorProfile first;
@@ -333,13 +314,13 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
-    await _scrollPickerTo(tester, 'newtab.entry.dm:${first.actorId}');
+    await scrollPickerTo(tester, 'newtab.entry.dm:${first.actorId}');
     await tester.tap(find.byKey(ValueKey('newtab.entry.dm:${first.actorId}')));
     await tester.pump();
     await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
-    await _scrollPickerTo(tester, 'newtab.entry.dm:${second.actorId}');
+    await scrollPickerTo(tester, 'newtab.entry.dm:${second.actorId}');
     await tester.tap(find.byKey(ValueKey('newtab.entry.dm:${second.actorId}')));
     await tester.pump();
     await tester.runAsync(
@@ -461,9 +442,9 @@ void main() {
     final decoded =
         jsonDecode(prefs.getString('shell.views.v4')!) as Map<String, Object?>;
     expect(decoded['v'], 4);
-    final groups = decoded['groups'] as List<Object?>;
+    final groups = decoded['groups']! as List<Object?>;
     expect(groups, hasLength(1));
-    final tabs = ((groups.first as Map)['tabs'] as List).cast<String>();
+    final tabs = ((groups.first! as Map)['tabs'] as List).cast<String>();
     expect(tabs.first, kBoardsSurfaceId);
     expect(tabs, containsAll(<String>['dm:scout', kConversationsSurfaceId]));
   });
@@ -487,9 +468,9 @@ void main() {
     final decoded =
         jsonDecode(prefs.getString('shell.views.v4')!) as Map<String, Object?>;
     expect(decoded['v'], 4);
-    final groups = decoded['groups'] as List<Object?>;
+    final groups = decoded['groups']! as List<Object?>;
     expect(groups, hasLength(1));
-    expect(((groups.first as Map)['tabs'] as List), contains(kPeopleSurfaceId));
+    expect((groups.first! as Map)['tabs'] as List, contains(kPeopleSurfaceId));
   });
 
   testWidgets('the service selecting a thread opens its ROOM tab beside the '
@@ -596,7 +577,7 @@ void main() {
       addTearDown(world.dispose);
     });
 
-    testWidgets('the palette\'s Landing inbox action clears a focused '
+    testWidgets("the palette's Landing inbox action clears a focused "
         'thread back to the inbox (phase 3 verb)', (final tester) async {
       late RealmChatService service;
       late ActorProfile actor;

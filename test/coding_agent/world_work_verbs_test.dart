@@ -138,7 +138,7 @@ void main() {
   });
 
   group('the work verbs', () {
-    test('actor_bind binds THIS seat\'s own actor row', () async {
+    test("actor_bind binds THIS seat's own actor row", () async {
       final world = _World()
         ..responses['actions'] = _actions()
         ..responses['actor_bind'] = {'ok': true};

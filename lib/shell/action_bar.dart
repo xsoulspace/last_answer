@@ -66,7 +66,6 @@ final class ActionBar extends StatelessWidget {
         border: Border(
           right: BorderSide(
             color: context.shellHairline,
-            width: ShellTokens.hairline,
           ),
         ),
       ),

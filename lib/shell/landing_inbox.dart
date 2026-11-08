@@ -9,7 +9,6 @@
 /// second source of truth ([WorldStateService], [RealmChatService]).
 library;
 
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
@@ -38,8 +37,7 @@ final class LandingInbox extends StatelessWidget {
   final ValueChanged<String> onOpenThread;
 
   @override
-  Widget build(final BuildContext context) {
-    return Center(
+  Widget build(final BuildContext context) => Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: _kInboxMeasure),
         child: ListenableBuilder(
@@ -56,7 +54,6 @@ final class LandingInbox extends StatelessWidget {
         ),
       ),
     );
-  }
 
   List<Widget> _sections(final BuildContext context) {
     final l10n = context.l10n;
@@ -434,7 +431,6 @@ final class _ThreadRow extends StatelessWidget {
       label: 'inbox.thread.$threadId',
       hint: preview,
       child: ShellRow(
-        height: 34,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         onTap: () => onOpen(threadId),
         child: Row(

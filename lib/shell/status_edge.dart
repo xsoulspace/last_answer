@@ -10,12 +10,10 @@
 /// the supervised `startSupervisedWorld` seam).
 library;
 
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
 
 /// The edge's height — one compact line, quieter than a tab strip.
 const double kStatusEdgeHeight = 26;
@@ -82,7 +80,7 @@ final class StatusEdge extends StatelessWidget {
       decoration: BoxDecoration(
         color: la.surface,
         border: Border(
-          top: BorderSide(color: la.rule, width: ShellTokens.hairline),
+          top: BorderSide(color: la.rule),
         ),
       ),
       child: ListenableBuilder(
@@ -415,7 +413,7 @@ final class _EdgeSegment extends StatelessWidget {
       ],
     );
     if (tooltip != null && tooltip!.isNotEmpty) {
-      segment = Tooltip(message: tooltip!, child: segment);
+      segment = Tooltip(message: tooltip, child: segment);
     }
     // Phase 2 — the agent/screen-reader contract: the Semantics name
     // IS the widget key; the human words ride the hint.

@@ -111,7 +111,7 @@ void main() {
       expect(layout.activeSurfaceId, 'doc:42');
     });
 
-    test('closing a trailing group\'s last tab removes the group', () {
+    test("closing a trailing group's last tab removes the group", () {
       final layout = ShellLayout.defaultLayout()
           .openTab('dm:scout')
           .openTab('doc:42')
@@ -153,7 +153,7 @@ void main() {
     });
   });
 
-  group('per-group history (the strip\'s ‹ ›)', () {
+  group("per-group history (the strip's ‹ ›)", () {
     test('back and forward walk the focus MRU', () {
       final layout = ShellLayout.defaultLayout()
           .openTab('dm:scout')
@@ -184,7 +184,7 @@ void main() {
 
   group('migration', () {
     test('a v3 per-view blob flattens into ONE group, active view first', () {
-      final layout = ShellLayout.fromJson(<String, Object?>{
+      final layout = ShellLayout.fromJson(const <String, Object?>{
         'v': 3,
         'activeView': kBoardsSurfaceId,
         'views': <String, Object?>{
@@ -215,7 +215,7 @@ void main() {
     });
 
     test('a v3 picker tab is session chrome — not restored', () {
-      final layout = ShellLayout.fromJson(<String, Object?>{
+      final layout = ShellLayout.fromJson(const <String, Object?>{
         'v': 3,
         'activeView': kConversationsSurfaceId,
         'views': <String, Object?>{
@@ -229,7 +229,7 @@ void main() {
     });
 
     test('the v2 global bar + pins flatten into the one group', () {
-      final layout = ShellLayout.fromJson(<String, Object?>{
+      final layout = ShellLayout.fromJson(const <String, Object?>{
         'tabs': <String>[kConversationsSurfaceId, kBoardsSurfaceId, 'dm:scout'],
         'active': 2,
         'pinned': <String>[kPeopleSurfaceId, kInspectorSurfaceId],
@@ -247,7 +247,7 @@ void main() {
     });
 
     test('a lone picker blob restores to the default layout', () {
-      final layout = ShellLayout.fromJson(<String, Object?>{
+      final layout = ShellLayout.fromJson(const <String, Object?>{
         'tabs': <String>[kNewTabSurfaceId],
         'active': 0,
       });
@@ -264,14 +264,14 @@ void main() {
       expect(decoded, layout);
       final blob = layout.toJson();
       expect(blob['v'], 4);
-      expect((blob['groups'] as List), hasLength(2));
+      expect(blob['groups']! as List, hasLength(2));
     });
 
     test('garbage decodes to the default layout', () {
       expect(ShellLayout.fromJson('nope'), ShellLayout.defaultLayout());
       expect(ShellLayout.fromJson(null), ShellLayout.defaultLayout());
       expect(
-        ShellLayout.fromJson(<String, Object?>{'v': 4, 'groups': <Object?>[]}),
+        ShellLayout.fromJson(const <String, Object?>{'v': 4, 'groups': <Object?>[]}),
         ShellLayout.defaultLayout(),
       );
     });

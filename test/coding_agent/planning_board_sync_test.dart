@@ -14,7 +14,6 @@ void main() {
     final DateTime Function()? now,
   }) => PlanningBoardReplica(
     replicaId: replicaId,
-    boardId: 'product',
     now: now ?? () => base,
   );
 

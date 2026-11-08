@@ -90,7 +90,6 @@ void main() {
         final opened = await conversation.open(
           actor: human,
           topic: 'bounded',
-          participants: const <String>[],
         );
         final threadId = opened['threadId']! as String;
         for (var i = 1; i <= RealmChatService.beatsForLimit + 5; i++) {

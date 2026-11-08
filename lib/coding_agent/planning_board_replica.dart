@@ -25,7 +25,6 @@
 /// the projection the unified boards view renders.
 library;
 
-import 'package:collection/collection.dart';
 import 'package:ecsly_world_sync/ecsly_world_sync.dart';
 import 'package:flutter/foundation.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -409,14 +408,14 @@ final class PlanningBoardReplica {
           boardId: cardId.substring(0, cardId.lastIndexOf('#')),
           title: title,
           status: fields[_fieldStatus] is String
-              ? fields[_fieldStatus] as String
+              ? fields[_fieldStatus]! as String
               : 'requested',
           column: fields[_fieldColumn] is String
-              ? fields[_fieldColumn] as String
+              ? fields[_fieldColumn]! as String
               : '',
-          rank: fields[_fieldRank] is String ? fields[_fieldRank] as String : '',
+          rank: fields[_fieldRank] is String ? fields[_fieldRank]! as String : '',
           parent: fields[_fieldParent] is String
-              ? fields[_fieldParent] as String
+              ? fields[_fieldParent]! as String
               : '',
           createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt, isUtc: true),
         ),

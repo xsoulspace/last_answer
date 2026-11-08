@@ -9,8 +9,8 @@ import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_layout.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
-import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/shell/view_people.dart';
 
 Future<RealmWorld> _hermeticWorld() async {

@@ -404,7 +404,6 @@ class _MiniWindowView extends StatelessWidget {
               color: colors.surface,
               border: Border.all(
                 color: colors.outlineVariant,
-                width: ShellTokens.hairline,
               ),
             ),
             child: Stack(
@@ -481,7 +480,6 @@ class _MiniWindowTitleBar extends StatelessWidget {
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
-                  width: ShellTokens.hairline,
                 ),
               ),
             ),

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +18,7 @@ import 'hermetic_world_state.dart';
 /// TAB of the Documents view through the route page's own doc→surface
 /// map (embedded), and an unknown id renders an honest quiet note.
 final _chatDoc = ProjectModel.doc(
-  id: ProjectModelId('doc-chat-1'),
+  id: const ProjectModelId('doc-chat-1'),
   createdAt: DateTime(2026),
   updatedAt: DateTime(2026),
   formatId: DocFormatIds.chat,
@@ -27,7 +26,7 @@ final _chatDoc = ProjectModel.doc(
 );
 
 final _agentDoc = ProjectModel.doc(
-  id: ProjectModelId('doc-agent-1'),
+  id: const ProjectModelId('doc-agent-1'),
   createdAt: DateTime(2026),
   updatedAt: DateTime(2026),
   formatId: DocFormatIds.agent,
@@ -162,10 +161,10 @@ void main() {
             value: _DocsProjects(),
           ),
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
-          home: const Scaffold(body: DocumentsTabHost(docId: 'ghost-doc')),
+          home: Scaffold(body: DocumentsTabHost(docId: 'ghost-doc')),
         ),
       ),
     );

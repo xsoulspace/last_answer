@@ -16,7 +16,6 @@
 library;
 
 import 'package:flutter/gestures.dart' show kMiddleMouseButton;
-import 'package:flutter/material.dart';
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_layout.dart';
@@ -111,7 +110,6 @@ final class PaneStrip extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: context.shellHairline,
-              width: ShellTokens.hairline,
             ),
           ),
         ),
@@ -309,9 +307,9 @@ final class _StripTabState extends State<_StripTab> {
                 borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
                 boxShadow: widget.focused
                     ? [
-                        BoxShadow(
-                          color: const Color(0x2E000000),
-                          offset: const Offset(0, 1),
+                        const BoxShadow(
+                          color: Color(0x2E000000),
+                          offset: Offset(0, 1),
                           blurRadius: 2,
                         ),
                       ]

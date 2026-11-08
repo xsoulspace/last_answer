@@ -216,7 +216,7 @@ void main() {
 
       // Authorization is PROJECT law on the journal plane (ADR 0121):
       // an authority from ANOTHER project sees nothing on every verb.
-      final foreign = ProfileActorAuthority(
+      const foreign = ProfileActorAuthority(
         actor: 'human-foreign',
         conversationId: 'lastanswer',
         actorReference: 'persistent-entity:realm-actor:human-foreign',

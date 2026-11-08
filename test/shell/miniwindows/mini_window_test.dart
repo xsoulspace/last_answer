@@ -435,7 +435,7 @@ void main() {
   });
 
   group('restore', () {
-    MiniWindowRecord _record(
+    MiniWindowRecord record0(
       final String id, {
       final Offset position = Offset.zero,
       final Size size = const Size(320, 220),
@@ -453,7 +453,7 @@ void main() {
       final MiniWindowController controller = MiniWindowController();
       addTearDown(controller.dispose);
       controller.restore(
-        _record('a', position: const Offset(40, 60), size: const Size(300, 240)),
+        record0('a', position: const Offset(40, 60), size: const Size(300, 240)),
         _spec('a'),
       );
       expect(controller.contains('a'), isTrue);
@@ -466,7 +466,7 @@ void main() {
       final MiniWindowController controller = MiniWindowController();
       addTearDown(controller.dispose);
       controller.restore(
-        _record('a', size: const Size(100, 100)),
+        record0('a', size: const Size(100, 100)),
         _spec('a'),
       );
       expect(controller.sizeOf('a'), MiniWindowLayer.minWindowSize);
@@ -476,18 +476,18 @@ void main() {
       final MiniWindowController controller = MiniWindowController();
       addTearDown(controller.dispose);
       controller
-        ..restore(_record('b', order: 0), _spec('b'))
-        ..restore(_record('a', order: 1), _spec('a'));
+        ..restore(record0('b'), _spec('b'))
+        ..restore(record0('a', order: 1), _spec('a'));
       expect(controller.windows.map((w) => w.id).toList(), ['b', 'a']);
       expect(controller.frontId, 'a');
 
       // An order past the live stack lands at the front.
-      controller.restore(_record('c', order: 9), _spec('c'));
+      controller.restore(record0('c', order: 9), _spec('c'));
       expect(controller.windows.map((w) => w.id).toList(), ['b', 'a', 'c']);
       expect(controller.frontId, 'c');
 
       // Order 0 slots at the back without disturbing the front.
-      controller.restore(_record('d', order: 0), _spec('d'));
+      controller.restore(record0('d'), _spec('d'));
       expect(controller.windows.map((w) => w.id).toList(), [
         'd',
         'b',
@@ -505,7 +505,7 @@ void main() {
         ..open(_spec('a'))
         ..open(_spec('b'))
         ..restore(
-          _record('a', position: const Offset(70, 70), order: 0),
+          record0('a', position: const Offset(70, 70)),
           _spec('a', title: 'A-AGAIN'),
         );
       expect(controller.windows.length, 2);
@@ -517,7 +517,7 @@ void main() {
         'A',
       );
 
-      controller.restore(_record('a', order: 5), _spec('a'));
+      controller.restore(record0('a', order: 5), _spec('a'));
       expect(controller.windows.map((w) => w.id).toList(), ['b', 'a']);
       expect(controller.frontId, 'a');
     });

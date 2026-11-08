@@ -1723,6 +1723,9 @@ class SRu extends S {
   String get documentsNewAgentDoc => 'Новый агент-док';
 
   @override
+  String get documentsNewCodeFile => 'Новый файл кода';
+
+  @override
   String get documentsEmpty =>
       'Документов пока нет — создайте первый агент-док';
 

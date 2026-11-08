@@ -1720,6 +1720,9 @@ class SIt extends S {
   String get documentsNewAgentDoc => 'Nuovo doc agente';
 
   @override
+  String get documentsNewCodeFile => 'Nuovo file di codice';
+
+  @override
   String get documentsEmpty => 'Nessun documento — crea il primo doc agente';
 
   @override

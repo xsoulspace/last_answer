@@ -4,6 +4,7 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/doc/code_view.dart';
 import 'package:lastanswer/doc/doc_view.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
@@ -59,6 +60,10 @@ class ProjectView extends StatelessWidget {
         // (world inspector, mesh tasks).
         switch (doc.formatId) {
           DocFormatIds.chat => WorldChatSurface(key: ValueKey(id)),
+          // 2a — the code format: one monospace artifact surface on
+          // the open registry (zero migration, the doc spine carries
+          // the content block).
+          DocFormatIds.code => CodeDocumentView(doc: doc, key: ValueKey(id)),
           DocFormatIds.agent => doc.agent?.worldBinding != null
               ? WorldConversationView(
                   binding: doc.agent!.worldBinding!,

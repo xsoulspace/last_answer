@@ -1708,6 +1708,9 @@ class SEn extends S {
   String get documentsNewAgentDoc => 'New agent doc';
 
   @override
+  String get documentsNewCodeFile => 'New code file';
+
+  @override
   String get documentsEmpty => 'No documents yet — create the first agent doc';
 
   @override

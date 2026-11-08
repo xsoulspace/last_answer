@@ -3171,6 +3171,12 @@ abstract class S {
   /// **'New agent doc'**
   String get documentsNewAgentDoc;
 
+  /// The code format's creation affordance (2a): documents view button and picker row share it.
+  ///
+  /// In en, this message translates to:
+  /// **'New code file'**
+  String get documentsNewCodeFile;
+
   /// The Documents view's empty grid.
   ///
   /// In en, this message translates to:

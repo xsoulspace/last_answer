@@ -556,6 +556,7 @@
   "commandPaletteActions": "Действия",
   "viewDocumentsTitle": "Документы",
   "documentsNewAgentDoc": "Новый агент-док",
+  "documentsNewCodeFile": "Новый файл кода",
   "documentsEmpty": "Документов пока нет — создайте первый агент-док",
   "documentsMissing": "Этого документа нет в загруженном списке",
   "threadsWorld": "Треды мира",

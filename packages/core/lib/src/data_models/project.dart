@@ -26,6 +26,12 @@ abstract final class DocFormatIds {
   /// Agents in docs (ADR 0003): a document bound to one or more workspaces
   /// where humans and agents work the same task surface.
   static const agent = 'agent';
+
+  /// 2a — code/file documents: monospace artifacts on the open format
+  /// registry (zero migration — a formatId is a plain string, and the
+  /// content rides ONE paragraph block). The language is derived from
+  /// the title's extension, never stored twice.
+  static const code = 'code';
 }
 
 /// An EXTERNAL harness world a doc can bind to — discovered on this
@@ -119,6 +125,24 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     updatedAt: DateTime.now(),
     formatId: DocFormatIds.chat,
   );
+
+  /// 2a — a fresh code document: the title carries the filename (the
+  /// language is derived from its extension) and the content lives in
+  /// ONE paragraph block on the shared doc spine.
+  factory ProjectModel.emptyCode({final String title = ''}) =>
+      ProjectModel.doc(
+        id: ProjectModelId.generate(),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        formatId: DocFormatIds.code,
+        title: title,
+        blocks: [
+          DocBlockModel(
+            id: DocBlockId.generate(),
+            type: DocBlockType.paragraph,
+          ),
+        ],
+      );
 
   /// ADR 0003 — Agents live in docs: a new agent doc binds to no workspace
   /// yet; the first session pins it (Phase 1). [worldBinding] opts the doc

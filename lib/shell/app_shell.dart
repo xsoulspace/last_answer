@@ -907,6 +907,19 @@ class _AppShellState extends State<AppShell> {
 
   static const double _kIdentityMarkSize = 14;
 
+  /// 2a — the picker's code-file creation flow: persist through the
+  /// registry's own update lane, then open the doc's tab (the same
+  /// composition the documents view's button rides).
+  Future<void> _createCodeFile() async {
+    final projects = _projects;
+    if (projects == null) return;
+    final doc = ProjectModel.emptyCode();
+    await projects.updateProject(doc);
+    projects.onReset();
+    if (!mounted) return;
+    _onLayoutChanged(_layout.openTab('doc:${doc.id}'));
+  }
+
   /// The `doc:<id>` tab's title: the registry's loaded projection of the
   /// document (phase 3a); an unloaded id keeps its honest raw id.
   String? _documentTitle(final String id) {
@@ -1048,6 +1061,14 @@ class _AppShellState extends State<AppShell> {
             label: l10n.worldChatMenuNewWorkspace,
             icon: Icons.create_new_folder_outlined,
             onTap: () => tap(() => unawaited(openNewWorkspaceFlow(context))),
+          ),
+          // 2a — the code format's creation flow: the registry's own
+          // update lane, then the doc's tab (the documents view's twin).
+          NewTabRow(
+            key: 'newtab.create.code',
+            label: l10n.documentsNewCodeFile,
+            icon: Icons.code,
+            onTap: () => tap(() => unawaited(_createCodeFile())),
           ),
           NewTabRow(
             key: 'newtab.create.actor-new',

@@ -764,6 +764,8 @@
   "@viewDocumentsTitle": {"description": "The Documents view title."},
   "documentsNewAgentDoc": "New agent doc",
   "@documentsNewAgentDoc": {"description": "The Documents view's creation affordance."},
+  "documentsNewCodeFile": "New code file",
+  "@documentsNewCodeFile": {"description": "The code format's creation affordance (2a): documents view button and picker row share it."},
   "documentsEmpty": "No documents yet — create the first agent doc",
   "@documentsEmpty": {"description": "The Documents view's empty grid."},
   "documentsMissing": "This document is not in the loaded list",

@@ -74,6 +74,7 @@ final class _DocumentsViewState extends State<DocumentsView> {
             children: [
               Text(l10n.viewDocumentsTitle, style: shellSectionLabel(context)),
               const Spacer(),
+              _NewCodeFileButton(projects: projects),
               _NewAgentDocButton(projects: projects),
             ],
           ),
@@ -120,6 +121,7 @@ final class _DocumentRow extends StatelessWidget {
     doc: (final doc) => switch (doc.formatId) {
       DocFormatIds.chat => Icons.forum_outlined,
       DocFormatIds.agent => Icons.smart_toy_outlined,
+      DocFormatIds.code => Icons.code,
       _ => Icons.description_outlined,
     },
   );
@@ -157,11 +159,45 @@ final class _DocumentRow extends StatelessWidget {
   }
 }
 
+/// 2a — the code file's creation affordance: the registry's own update
+/// lane (persist → refresh → open the tab), the agent-doc button's twin
+/// on the open format registry.
+final class _NewCodeFileButton extends StatelessWidget {
+  const _NewCodeFileButton({required this.projects});
+
+  final ProjectsNotifier? projects;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    return Semantics(
+      button: true,
+      label: 'documents.newCode',
+      hint: l10n.documentsNewCodeFile,
+      child: TextButton.icon(
+        key: const ValueKey('documents.newCode'),
+        onPressed: projects == null
+            ? null
+            : () async {
+                final doc = ProjectModel.emptyCode();
+                await projects!.updateProject(doc);
+                projects!.onReset();
+                if (!context.mounted) return;
+                final scope = ViewScope.of(context);
+                if (scope == null) return;
+                scope.onChanged(scope.layout.openTab('doc:${doc.id}'));
+              },
+        icon: const Icon(Icons.code, size: 15),
+        label: Text(l10n.documentsNewCodeFile),
+      ),
+    );
+  }
+}
+
 /// The human-click creation affordance: persist a fresh agent doc
 /// through the registry's own update lane, refresh the grid, open its
 /// tab (what `agent_doc_create` does for agents).
-final class _NewAgentDocButton extends StatelessWidget {
-  const _NewAgentDocButton({required this.projects});
+final class _NewAgentDocButton extends StatelessWidget {  const _NewAgentDocButton({required this.projects});
 
   final ProjectsNotifier? projects;
 

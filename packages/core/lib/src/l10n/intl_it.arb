@@ -553,6 +553,7 @@
   "commandPaletteActions": "Azioni",
   "viewDocumentsTitle": "Documenti",
   "documentsNewAgentDoc": "Nuovo doc agente",
+  "documentsNewCodeFile": "Nuovo file di codice",
   "documentsEmpty": "Nessun documento — crea il primo doc agente",
   "documentsMissing": "Questo documento non è nell'elenco caricato",
   "threadsWorld": "Thread del mondo",

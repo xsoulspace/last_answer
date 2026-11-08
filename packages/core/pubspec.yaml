@@ -106,6 +106,30 @@ flutter:
     - assets/json/
     - google_fonts/
 
+  # DESIGN.md v2 (2026-11-08): the interface sans is Inter (SIL OFL 1.1,
+  # bundled — Inter 4.001 statics; the license rides Inter-OFL.txt).
+  # NOTE: the `fonts:` block further down this file sits at the TOP
+  # level, which Flutter ignores — a latent inert declaration predating
+  # this one. This block is the live declaration (inside `flutter:`).
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: google_fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: google_fonts/Inter-RegularItalic.ttf
+          weight: 400
+          style: italic
+        - asset: google_fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: google_fonts/Inter-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: google_fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: google_fonts/Inter-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+
 fonts:
   - family: IBMPlexSans
     fonts:
@@ -129,3 +153,5 @@ fonts:
       - asset: google_fonts/NotoSans-Regular.ttf
 flutter_intl:
   enabled: true
+  arb_dir: lib/src/l10n
+  output_dir: lib/src/generated

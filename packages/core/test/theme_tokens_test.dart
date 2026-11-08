@@ -23,6 +23,7 @@ void main() {
       expect(la.surfaceRaised, LaTokens.darkSurfaceRaised);
       expect(la.surfaceOverlay, LaTokens.darkSurfaceOverlay);
       expect(la.inkMuted, LaTokens.darkInkMuted);
+      expect(la.onAccent, LaTokens.darkOnAccent);
       expect(la.success, la.accent);
     });
 
@@ -39,6 +40,7 @@ void main() {
       expect(theme.dividerColor, LaTokens.lightRule);
       final la = theme.extension<LaThemeExtension>()!.palette;
       expect(la.ink, LaTokens.lightInk);
+      expect(la.onAccent, LaTokens.lightOnAccent);
       expect(la.caution, LaTokens.lightCaution);
     });
 
@@ -63,6 +65,19 @@ void main() {
       final theme = Theme.of(tester.element(find.byType(_Probe)));
       expect(theme.splashFactory, NoSplash.splashFactory);
       expect(theme.highlightColor, const Color(0x00000000));
+    });
+
+    testWidgets('the interface sans is the bundled Inter (v2)', (
+      final tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(theme: darkThemeData, home: const _Probe()),
+      );
+      final theme = Theme.of(tester.element(find.byType(_Probe)));
+      // DESIGN.md v2: Inter, bundled in packages/core/google_fonts —
+      // if this pin drifts, the shipped look is no longer the mockup's.
+      expect(theme.textTheme.bodyMedium?.fontFamily, 'Inter');
+      expect(theme.textTheme.titleMedium?.fontFamily, 'Inter');
     });
   });
 }

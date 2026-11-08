@@ -9,7 +9,7 @@ part of 'theme.dart';
 /// instead of ripples until phase 4 restyles them).
 ThemeData _laTheme(final Brightness brightness) {
   final p = LaPalette.of(brightness);
-  final onAccent = p.isDark ? p.canvas : const Color(0xFFFFFFFF);
+  final onAccent = p.onAccent;
   final scheme = ColorScheme(
     brightness: brightness,
     primary: p.accent,
@@ -23,7 +23,7 @@ ThemeData _laTheme(final Brightness brightness) {
     tertiary: p.caution,
     onTertiary: p.canvas,
     error: p.danger,
-    onError: p.isDark ? p.canvas : const Color(0xFFFFFFFF),
+    onError: onAccent,
     errorContainer: p.danger.withValues(alpha: 0.16),
     onErrorContainer: p.danger,
     surface: p.surface,
@@ -51,6 +51,10 @@ ThemeData _laTheme(final Brightness brightness) {
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    // DESIGN.md v2: the interface sans is Inter, bundled (SIL OFL,
+    // packages/core/google_fonts) — every platform renders the same law;
+    // glyphs Inter lacks fall through to the platform stack.
+    fontFamily: 'Inter',
     colorScheme: scheme,
     extensions: [LaThemeExtension(p)],
     scaffoldBackgroundColor: p.canvas,

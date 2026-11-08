@@ -5,37 +5,41 @@ part of 'theme.dart';
 /// app derives from these tokens through [LaThemeExtension]; nothing invents
 /// a hex value beside this file (phase 4 sweeps the legacy leaks).
 ///
-/// The palette is the documented blue-green neutral system: a calm workroom
-/// for long desktop sessions. Dark is the inspector-friendly reference;
-/// light is first-class with equal hierarchy.
+/// v2 (2026-11-08, owner-approved mockup gate): the zinc-family neutral
+/// palette — the shadcn discipline, warmless grays that make content the
+/// only color — with the glade green accent kept as the one signature hue.
+/// Dark is the inspector-friendly reference; light is first-class with
+/// equal hierarchy.
 abstract final class LaTokens {
   LaTokens._();
 
-  // ── dark reference ────────────────────────────────────────────────
-  static const Color darkCanvas = Color(0xFF0B1114);
-  static const Color darkSurface = Color(0xFF111A1E);
-  static const Color darkSurfaceRaised = Color(0xFF172328);
-  static const Color darkSurfaceOverlay = Color(0xFF1D2B30);
-  static const Color darkInk = Color(0xFFE5ECE9);
-  static const Color darkInkMuted = Color(0xFFB0BFBA);
-  static const Color darkInkQuiet = Color(0xFF879A94);
-  static const Color darkRule = Color(0xFF2B3A3F);
+  // ── dark reference (DESIGN.md v2 palette table) ──────────────────
+  static const Color darkCanvas = Color(0xFF09090B);
+  static const Color darkSurface = Color(0xFF18181B);
+  static const Color darkSurfaceRaised = Color(0xFF27272A);
+  static const Color darkSurfaceOverlay = Color(0xFF323236);
+  static const Color darkInk = Color(0xFFF4F4F5);
+  static const Color darkInkMuted = Color(0xFFA1A1AA);
+  static const Color darkInkQuiet = Color(0xFF71717A);
+  static const Color darkRule = Color(0xFF27272A);
   static const Color darkAccent = Color(0xFF8DDCC2);
-  static const Color darkDanger = Color(0xFFF18A83);
-  static const Color darkCaution = Color(0xFFE8BD71);
+  static const Color darkOnAccent = Color(0xFF0B1F18);
+  static const Color darkDanger = Color(0xFFF87171);
+  static const Color darkCaution = Color(0xFFFBBF24);
 
-  // ── light reference ───────────────────────────────────────────────
-  static const Color lightCanvas = Color(0xFFF6F8F7);
+  // ── light reference (DESIGN.md v2 palette table) ─────────────────
+  static const Color lightCanvas = Color(0xFFFAFAFA);
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color lightSurfaceRaised = Color(0xFFEEF2F0);
-  static const Color lightSurfaceOverlay = Color(0xFFE7EDEA);
-  static const Color lightInk = Color(0xFF192522);
-  static const Color lightInkMuted = Color(0xFF53635E);
-  static const Color lightInkQuiet = Color(0xFF687872);
-  static const Color lightRule = Color(0xFFD9E1DD);
+  static const Color lightSurfaceRaised = Color(0xFFF4F4F5);
+  static const Color lightSurfaceOverlay = Color(0xFFE9E9EC);
+  static const Color lightInk = Color(0xFF18181B);
+  static const Color lightInkMuted = Color(0xFF52525B);
+  static const Color lightInkQuiet = Color(0xFF71717A);
+  static const Color lightRule = Color(0xFFE4E4E7);
   static const Color lightAccent = Color(0xFF176D58);
-  static const Color lightDanger = Color(0xFFB33935);
-  static const Color lightCaution = Color(0xFF875A12);
+  static const Color lightOnAccent = Color(0xFFFFFFFF);
+  static const Color lightDanger = Color(0xFFDC2626);
+  static const Color lightCaution = Color(0xFFB45309);
 
   // ── geometry (DESIGN.md §Spacing and geometry) ────────────────────
   /// Base spacing unit; common steps 4, 8, 12, 16, 24, 32.
@@ -125,6 +129,7 @@ final class LaPalette {
     required this.inkQuiet,
     required this.rule,
     required this.accent,
+    required this.onAccent,
     required this.danger,
     required this.caution,
   });
@@ -142,6 +147,7 @@ final class LaPalette {
           inkQuiet: LaTokens.darkInkQuiet,
           rule: LaTokens.darkRule,
           accent: LaTokens.darkAccent,
+          onAccent: LaTokens.darkOnAccent,
           danger: LaTokens.darkDanger,
           caution: LaTokens.darkCaution,
         )
@@ -156,6 +162,7 @@ final class LaPalette {
           inkQuiet: LaTokens.lightInkQuiet,
           rule: LaTokens.lightRule,
           accent: LaTokens.lightAccent,
+          onAccent: LaTokens.lightOnAccent,
           danger: LaTokens.lightDanger,
           caution: LaTokens.lightCaution,
         );
@@ -170,6 +177,10 @@ final class LaPalette {
   final Color inkQuiet;
   final Color rule;
   final Color accent;
+
+  /// Text/icons ON the accent (the send button, an unread badge): the
+  /// v2 token — a near-black glade in dark, white in light.
+  final Color onAccent;
   final Color danger;
   final Color caution;
 

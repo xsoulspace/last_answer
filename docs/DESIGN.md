@@ -9,18 +9,25 @@
 > threads over the conversation graph-tree, point/select/comment over
 > live web + native previews, and the tab law — the strip is the
 > universal content surface, the rail an activity bar. The interactive mockup remains the
-> gate artifact. **Implementation status (2026-11-08, owner directive
-> "implement the mockup design — in principles, not 1:1"):** the v2
-> tokens (zinc palette, `onAccent`, bundled Inter), the tab law's shell
-> anatomy (group-scoped strips, pane-group splits, instance tabs, the
-> anchored + picker with runway rows, the Discord action bar, the
-> title-bar-is-gone lights zone) and the compact actor HUD are
-> IMPLEMENTED; threads-as-graph-tree, point/select/comment and the
-> creature animation systems remain design law awaiting their product
-> phases (the mockup's threads/pick surfaces are the gate, not the
-> code). The mockup has known deviations from the shipped skeleton by
-> design: the shipped picker is rooms-first, its rows lazy below the
-> fold, and the split/fold controls live on the strip's right edge.
+> gate artifact. **Implementation status (2026-11-08 late, plan-v5 waves
+> landed):** the v2 tokens (zinc palette, `onAccent`, bundled Inter),
+> the tab law's shell anatomy (group-scoped strips, pane-group splits,
+> instance tabs, the anchored + picker with runway rows, the Discord
+> action bar, the title-bar-is-gone lights zone) and the compact actor
+> HUD are IMPLEMENTED; the room UX wave landed on top (unread "N new"
+> dividers, replyTo quotes, addressedTo chips, the beat-facts popover,
+> watchable actor↔actor `room:` tabs), the CREATURE layer is now live
+> (Species/Mood/Blink on the LaWorld actor entities, `CreatureMark`
+> painter — one gated blink loop awake, static poses asleep/distressed,
+> celebration hop on settle; the two-layer law's living half); the code
+> format, the workbench trinity (room dock | artifact | file tree +
+> preview lane), attributed change cards, Select→Do and the FREE/PRO
+> tier gates shipped the same day. Threads-as-graph-tree and
+> point/select/comment remain design law awaiting their product phases
+> (the mockup's threads/pick surfaces are the gate, not the code). The
+> mockup has known deviations from the shipped skeleton by design: the
+> shipped picker is rooms-first, its rows lazy below the fold, and the
+> split/fold controls live on the strip's right edge.
 
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 

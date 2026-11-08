@@ -214,6 +214,28 @@ the composer, and the status edge.
 > card (`worldchat.card`, `worldchat.actorCard`). `rail_sem_probe_test.dart`
 > and `command_palette_test.dart` own this contract.
 
+> **Plan-v5 wave amendment (2026-11-08 late):** the room/creature/tier
+> waves extended the contract, same grammar. Rooms: `newtab.entry.room:<threadId>`
+> (watchable actor↔actor rooms, 1d). Chat (1g/2c): `worldchat.unreadDivider`
+> (the "N new" capture-at-entry boundary), `worldchat.quote.<threadId>#<n>`
+> (the replyTo quote), `worldchat.addressed.<actorId>` (the proper-subset
+> mention chip), `worldchat.replying` + `.close` (the composer's reply
+> anchor), `worldchat.beatDetails` + `.close` (the beat's durable-facts
+> popover), `worldchat.card.edit` / `worldchat.card.save` (tune-from-card,
+> 1b), `worldchat.perm.<sessionId>.actor` (the attributed change card's
+> "proposed by" row, 2c), `worldchat.perm.<sessionId>.diff` +
+> `worldchat.diffview` (the inline unified diff). Code format (2a):
+> `documents.newCode`, `newtab.create.code`, `code.{view,title,lang,editor,saveState}`.
+> Trinity (2b): `workbench.dock.chat`, `workbench.dock.absent`,
+> `workbench.files.absent`, `workbench.preview.{absent,start,state,open}`.
+> Doc toolbar (2d): `doc.toolbar.{expand,summarise,sendToRoom}`. Creatures
+> (3d): `creature.<actorId>` (Semantics label; the mood word rides the
+> hint). Tiers (4b): `tier.absence.<feature>`. Binding honesty (1c):
+> `world_inspector.degraded`. The owning tests: `world_chat_room_ux_test.dart`,
+> `world_chat_work_strip_test.dart`, `world_chat_typing_test.dart`,
+> `code_view_test.dart`, `workbench_screen_test.dart`, `creatures_test.dart`,
+> `tier_gate_test.dart`, `world_binding_store_test.dart`.
+
 ## 3. Design language — light, Apple-inspired, UX-needs-first
 
 Principle: **materials and depth only where they carry a UX fact.** Apple is an

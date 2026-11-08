@@ -6,13 +6,11 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/shell/center_tabs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 import 'hermetic_world_state.dart';
 
 void main() {
-  testWidgets('compact rail WITH roster: semantics labels', (tester) async {
+  testWidgets('action bar WITH roster: semantics labels', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final pin = Directory.systemTemp.createTempSync('rail_sem_');
     RealmWorld.debugDeviceHome = pin.path;
@@ -73,10 +71,14 @@ void main() {
     }
 
     visit(tester.binding.pipelineOwner.semanticsOwner!.rootSemanticsNode!);
-    // §2.3 at the COMPACT rail width with a populated roster: every
-    // rail entry, the open tab and the edge keep their key-contract
-    // names in Flutter's own semantics tree (the live fmtk walker's
-    // rail-drop is a toolkit gap, not an app absence — commit 06017111).
+    // §2.3 on the v2 anatomy (DESIGN.md 2026-11-08): the action bar's
+    // kind buttons keep the rail.view.* vocabulary, the group-scoped
+    // strip keeps view.tab.*/view.strip.add.<group>, and the edge keeps
+    // its segment names — all in Flutter's own semantics tree (the live
+    // fmtk walker's rail-drop is a framework gap, not an app absence —
+    // commit 06017111). The persistent roster rows (rail.actor.*)
+    // retired with the room list: rooms live in the picker and the
+    // palette now.
     final snapshot = labels.join('\n');
     for (final id in const [
       'conversations',
@@ -92,8 +94,10 @@ void main() {
       expect(snapshot, contains('rail.view.$id'));
     }
     expect(snapshot, contains('view.tab.conversations'));
+    expect(snapshot, contains('view.strip.add.0'));
     expect(snapshot, contains('edge.world'));
-    expect(snapshot, contains('rail.actor.'));
+    expect(snapshot, contains('rail.search'));
+    expect(snapshot, contains('rail.settings'));
     handle.dispose();
   });
 }

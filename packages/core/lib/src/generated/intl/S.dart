@@ -3182,6 +3182,90 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Landing inbox'**
   String get actionLandingInbox;
+
+  /// No description provided for @newTabSectionOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get newTabSectionOpen;
+
+  /// No description provided for @newTabSectionRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get newTabSectionRooms;
+
+  /// No description provided for @newTabSectionInstances.
+  ///
+  /// In en, this message translates to:
+  /// **'New instance'**
+  String get newTabSectionInstances;
+
+  /// No description provided for @newTabSectionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get newTabSectionCreate;
+
+  /// No description provided for @newTabSectionRunway.
+  ///
+  /// In en, this message translates to:
+  /// **'Format runway — registers as tabs when the format lands'**
+  String get newTabSectionRunway;
+
+  /// No description provided for @newTabBrowserInstance.
+  ///
+  /// In en, this message translates to:
+  /// **'Browser · new window'**
+  String get newTabBrowserInstance;
+
+  /// No description provided for @newTabRunwayImage.
+  ///
+  /// In en, this message translates to:
+  /// **'image editor · generation'**
+  String get newTabRunwayImage;
+
+  /// No description provided for @newTabRunwayVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'video · generation timeline'**
+  String get newTabRunwayVideo;
+
+  /// No description provided for @newTabRunwayAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'audio · multitrack'**
+  String get newTabRunwayAudio;
+
+  /// No description provided for @stripBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get stripBack;
+
+  /// No description provided for @stripForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward'**
+  String get stripForward;
+
+  /// No description provided for @stripSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Split — two tabs at once'**
+  String get stripSplit;
+
+  /// No description provided for @stripFold.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold split — back to one pane'**
+  String get stripFold;
+
+  /// No description provided for @worldChatActorCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor card'**
+  String get worldChatActorCard;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -1703,4 +1703,47 @@ class SEn extends S {
 
   @override
   String get actionLandingInbox => 'Landing inbox';
+
+  @override
+  String get newTabSectionOpen => 'Open';
+
+  @override
+  String get newTabSectionRooms => 'Rooms';
+
+  @override
+  String get newTabSectionInstances => 'New instance';
+
+  @override
+  String get newTabSectionCreate => 'Create';
+
+  @override
+  String get newTabSectionRunway =>
+      'Format runway — registers as tabs when the format lands';
+
+  @override
+  String get newTabBrowserInstance => 'Browser · new window';
+
+  @override
+  String get newTabRunwayImage => 'image editor · generation';
+
+  @override
+  String get newTabRunwayVideo => 'video · generation timeline';
+
+  @override
+  String get newTabRunwayAudio => 'audio · multitrack';
+
+  @override
+  String get stripBack => 'Back';
+
+  @override
+  String get stripForward => 'Forward';
+
+  @override
+  String get stripSplit => 'Split — two tabs at once';
+
+  @override
+  String get stripFold => 'Fold split — back to one pane';
+
+  @override
+  String get worldChatActorCard => 'Actor card';
 }

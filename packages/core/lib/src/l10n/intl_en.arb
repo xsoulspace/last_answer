@@ -758,5 +758,19 @@
   "boardsMeshTasks": "Mesh tasks",
   "@boardsMeshTasks": {"description": "Boards view: the mesh task settle section."},
  "actionLandingInbox": "Landing inbox",
-  "@actionLandingInbox": {"description": "Palette action: the Conversations landing inbox."}
+  "@actionLandingInbox": {"description": "Palette action: the Conversations landing inbox."},
+  "newTabSectionOpen": "Open",
+  "newTabSectionRooms": "Rooms",
+  "newTabSectionInstances": "New instance",
+  "newTabSectionCreate": "Create",
+  "newTabSectionRunway": "Format runway — registers as tabs when the format lands",
+  "newTabBrowserInstance": "Browser · new window",
+  "newTabRunwayImage": "image editor · generation",
+  "newTabRunwayVideo": "video · generation timeline",
+  "newTabRunwayAudio": "audio · multitrack",
+  "stripBack": "Back",
+  "stripForward": "Forward",
+  "stripSplit": "Split — two tabs at once",
+  "stripFold": "Fold split — back to one pane",
+  "worldChatActorCard": "Actor card"
 }

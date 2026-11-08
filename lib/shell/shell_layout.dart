@@ -1,42 +1,48 @@
-/// Phase 1 — the shell redesign's layout document (docs/design/
-/// shell-redesign-rail-views-tabs-2026-11-05.md §2.1): the ORIGINAL idea,
-/// restored — a left rail of VIEWS (Zed/VSCode anatomy) where EACH view owns
-/// a Safari-like tab strip. Replaces the WAVE 5 model (one global bar + a
-/// dock of pins) with per-view tab state:
+/// The shell's layout document, v4 — DESIGN.md v2 tab law (owner law
+/// 2026-11-08, the approved mockup's anatomy): tabs are the universal
+/// content surface, OWNED BY PANE GROUPS (VS Code/Zed), never by the
+/// window and never by "views":
 ///
 /// ```
 /// ShellLayout {
-///   activeView: viewId            // the view the center hosts
-///   perView: {viewId: ViewState}  // each view's own strip
-///   ViewState { tabs: [surfaceId], active: int }
+///   groups: [ViewState]   // pane columns, left → right; normally ONE
+///   active: int           // the group holding focus
+///   ViewState { tabs: [tabId], active: int, hist/histAt (runtime MRU) }
 /// }
 /// ```
 ///
-/// Tab ids are surface ids with prefix-generic parameters: static registry
-/// ids (`boards`), conversation ids (`dm:<actor>`, `channel:<id>`), and the
-/// kinds phase 3 adds (`doc:<docId>`, `board:<boardId>`,
-/// `browser:<windowId>`). The registry resolves a prefix to a [SurfaceSpec];
-/// the layout model never learns a kind.
+/// The laws this model carries:
+/// - **Splits are pane groups.** [split] moves the active tab into a NEW
+///   group to the right (the mockup law); the emptied source refills
+///   with the conversations world face (the front door — a strip is
+///   never empty and the picker is no longer a tab). [fold] merges a
+///   group back into its left neighbour. A diff/side-by-side view is
+///   ONE group showing two panes, never two groups.
+/// - **Tabs are instances, not singletons.** A tab id is a surface id
+///   (`boards`), a content id (`dm:<actor>`, `channel:<id>`,
+///   `doc:<docId>`) or an INSTANCE id (`browser:2` — [nextInstanceId]
+///   mints them; the registry resolves the prefix). Ids stay unique
+///   across groups: opening an id that is open somewhere focuses it
+///   where it lives.
+/// - **Per-group history.** Each group keeps a runtime MRU of focus
+///   (not persisted — history is a session fact, the tab set is the
+///   durable one); [back]/[forward] walk it, skipping closed tabs.
+/// - **Closing the last tab** of a group removes the group (when
+///   another survives) or lands on the world face (the sole group —
+///   conversation is the door).
 ///
-/// Laws carried from the browser model (WAVE 4T) and kept per view:
-/// `+`/⌘T opens the ONE newtab tab in the ACTIVE view's strip; picking a
-/// destination replaces it in place; closing a view's LAST tab swaps the
-/// picker in (a strip never goes empty); the picker is session chrome (a
-/// lone newtab never survives a restore). Conversation ids reuse the ONE
-/// conversation slot of the conversations view unless `forceNew`.
-///
-/// Persisted as `shell.views.v3`; [ShellLayout.fromJson] migrates the v2/v1
-/// blob (`{"tabs": […], "active": n, "pinned": […]}`) in one pass: each tab
-/// lands in its own view's strip (order kept), pins become tabs of their
-/// view (nothing is lost when the dock retires), and the active id chooses
-/// the active view.
+/// Persisted as `shell.views.v4`; [ShellLayout.fromJson] migrates the
+/// v3 per-view blob (the active view's strip first, then the rest in
+/// order, one group — v3 had no splits), the v2/v1 global bar + pins,
+/// and (through [legacyPaneTreeSurfaceIds]) the pane-tree fossil.
 library;
 
 import 'package:flutter/foundation.dart' show immutable, listEquals;
 
 import 'package:lastanswer/shell/surfaces.dart';
 
-/// One view's tab strip: ordered unique surface ids + the focused one.
+/// One pane group's tab strip: ordered unique tab ids, the focused one,
+/// and the session's focus history (back/forward).
 @immutable
 final class ViewState {
   factory ViewState({
@@ -45,24 +51,123 @@ final class ViewState {
   }) {
     final deduped = <String>[];
     for (final id in tabs) {
-      if (!deduped.contains(id)) deduped.add(id);
+      if (id.isNotEmpty && !deduped.contains(id)) deduped.add(id);
     }
-    if (deduped.isEmpty) deduped.add(kNewTabSurfaceId);
-    return ViewState._(
-      List.unmodifiable(deduped),
-      active.clamp(0, deduped.length - 1),
-    );
+    if (deduped.isEmpty) deduped.add(kConversationsSurfaceId);
+    final at = active.clamp(0, deduped.length - 1);
+    return ViewState._(deduped, at, <String>[deduped[at]], 0);
   }
 
-  const ViewState._(this.tabs, this.active);
+  const ViewState._(this.tabs, this.active, this.hist, this.histAt);
 
-  /// Ordered, unique tab ids; never empty.
+  /// The history's cap — a session-long back stack, not an archive.
+  static const int histCap = 24;
+
+  /// Ordered, unique tab ids; never empty (the world face is the floor).
   final List<String> tabs;
 
   /// The focused tab index, always in range.
   final int active;
 
+  /// Runtime MRU of focused ids, oldest → newest; [histAt] is the
+  /// cursor. Session-scoped by law: never persisted, never in `==`
+  /// (every history move also moves `active`, so rebuilds never lag).
+  final List<String> hist;
+  final int histAt;
+
   String get activeId => tabs[active];
+
+  /// Focuses [index], pushing the MRU. Same index = no-op.
+  ViewState focusedOn(final int index) {
+    if (index < 0 || index >= tabs.length || index == active) return this;
+    final trimmed = <String>[
+      for (final id in hist.take(histAt + 1))
+        if (id != tabs[index]) id,
+    ]..add(tabs[index]);
+    while (trimmed.length > histCap) {
+      trimmed.removeAt(0);
+    }
+    return ViewState._(tabs, index, trimmed, trimmed.length - 1);
+  }
+
+  /// Inserts [id] at [at], focused, carrying the MRU forward (the
+  /// factory constructor seeds a fresh history — this path must not:
+  /// an open tab is a focus step, not a new session).
+  ViewState inserted(final String id, final int at) {
+    final ids = List<String>.of(tabs)..insert(at, id);
+    final trimmed = <String>[
+      for (final entry in hist.take(histAt + 1))
+        if (entry != id) entry,
+    ]..add(id);
+    while (trimmed.length > histCap) {
+      trimmed.removeAt(0);
+    }
+    return ViewState._(ids, at, trimmed, trimmed.length - 1);
+  }
+
+  bool get canBack {
+    for (var i = 0; i < histAt; i++) {
+      if (tabs.contains(hist[i])) return true;
+    }
+    return false;
+  }
+
+  bool get canForward {
+    for (var i = histAt + 1; i < hist.length; i++) {
+      if (tabs.contains(hist[i])) return true;
+    }
+    return false;
+  }
+
+  /// Steps the cursor to the nearest live older entry (closed tabs are
+  /// skipped, never resurrected).
+  ViewState back() {
+    for (var i = histAt - 1; i >= 0; i--) {
+      final idx = tabs.indexOf(hist[i]);
+      if (idx >= 0) return ViewState._(tabs, idx, hist, i);
+    }
+    return this;
+  }
+
+  ViewState forward() {
+    for (var i = histAt + 1; i < hist.length; i++) {
+      final idx = tabs.indexOf(hist[i]);
+      if (idx >= 0) return ViewState._(tabs, idx, hist, i);
+    }
+    return this;
+  }
+
+  /// The state after [id] left the strip: the neighbour takes focus
+  /// (the one that slides into its place, else the previous), and the
+  /// MRU forgets the closed tab.
+  ViewState without(final int index) {
+    final ids = List<String>.of(tabs)..removeAt(index);
+    var nextActive = active;
+    if (index < active) {
+      nextActive = active - 1;
+    } else if (index == active) {
+      nextActive = index.clamp(0, ids.length - 1);
+    }
+    final closed = tabs[index];
+    final newHist = <String>[
+      for (final id in hist)
+        if (id != closed) id,
+    ];
+    var newAt = histAt;
+    for (var i = 0; i < histAt && i < hist.length; i++) {
+      if (hist[i] == closed) newAt--;
+    }
+    if (newHist.isEmpty) {
+      newHist.add(ids[nextActive]);
+      newAt = 0;
+    }
+    return ViewState._(
+      ids,
+      nextActive,
+      newHist,
+      newAt.clamp(0, newHist.length - 1),
+    );
+  }
 
   Map<String, Object?> toJson() => <String, Object?>{
     'tabs': List<String>.of(tabs),
@@ -82,335 +187,338 @@ final class ViewState {
   String toString() => 'ViewState(tabs: $tabs, active: $active)';
 }
 
-/// The shell's one layout document: which view is hosted, and every view's
-/// own tab strip. Pure value semantics — every operation returns a new
-/// [ShellLayout].
+/// The shell's one layout document: the pane groups, left → right, and
+/// which one holds focus. Pure value semantics — every operation
+/// returns a new [ShellLayout].
 @immutable
 final class ShellLayout {
   factory ShellLayout({
-    final String activeView = kConversationsSurfaceId,
-    final Map<String, ViewState> perView = const <String, ViewState>{},
+    final List<ViewState> groups = const <ViewState>[],
+    final int active = 0,
   }) {
-    final views = <String, ViewState>{...perView};
-    views.putIfAbsent(
-      activeView,
-      () => ViewState(tabs: _defaultTabsOf(activeView)),
-    );
-    return ShellLayout._(activeView, Map.unmodifiable(views));
+    final list = groups.isEmpty ? <ViewState>[ViewState()] : List.of(groups);
+    return ShellLayout._(list, active.clamp(0, list.length - 1));
   }
 
-  const ShellLayout._(this.activeView, this.perView);
+  const ShellLayout._(this.groups, this.active);
 
-  /// The default layout: the conversations view hosted with its world face,
-  /// and the people view holding its own strip (the dock's old default pin,
-  /// now a view like any other).
-  factory ShellLayout.defaultLayout() => ShellLayout(
-    perView: const <String, ViewState>{
-      kConversationsSurfaceId: ViewState._(
-        <String>[kConversationsSurfaceId],
-        0,
-      ),
-      kPeopleSurfaceId: ViewState._(<String>[kPeopleSurfaceId], 0),
-    },
-  );
+  /// The default layout: ONE pane group on the conversations world face
+  /// (conversation is the primary interaction mode — the front door).
+  factory ShellLayout.defaultLayout() => const ShellLayout._(<ViewState>[
+    ViewState._(
+      <String>[kConversationsSurfaceId],
+      0,
+      <String>[kConversationsSurfaceId],
+      0,
+    ),
+  ], 0);
 
-  /// Decodes the persisted shape, migrating v2/v1 blobs in the same pass.
-  /// Tolerant: anything unusable decodes to [ShellLayout.defaultLayout].
+  /// Decodes the persisted shape, migrating v3/v2/v1 blobs in the same
+  /// pass. Tolerant: anything unusable decodes to
+  /// [ShellLayout.defaultLayout].
   factory ShellLayout.fromJson(final Object? json) {
     if (json is! Map) return ShellLayout.defaultLayout();
     final version = json['v'];
+    if (version == 4) return _fromV4(json);
     if (version == 3) return _fromV3(json);
     return _fromV2(json);
   }
 
-  static ShellLayout _fromV3(final Map json) {
-    final rawViews = json['views'];
-    final views = <String, ViewState>{};
-    if (rawViews is Map) {
-      rawViews.forEach((final key, final value) {
-        if (key is! String || value is! Map) return;
-        final rawTabs = value['tabs'];
-        final tabs = <String>[
-          if (rawTabs is List)
-            for (final id in rawTabs)
-              if (id is String && id.isNotEmpty) id,
-        ];
-        if (tabs.isEmpty) return;
-        final active = value['active'];
-        views[key] = ViewState(tabs: tabs, active: active is int ? active : 0);
-      });
-    }
-    final activeView = json['activeView'];
-    final view = activeView is String && views.containsKey(activeView)
-        ? activeView
-        : (views.containsKey(kConversationsSurfaceId)
-              ? kConversationsSurfaceId
-              : views.keys.first);
-    // A lone picker tab never survives a restore (session chrome).
-    final restored = ShellLayout(activeView: view, perView: views);
-    if (restored.tabsOf(view).every((final id) => id == kNewTabSurfaceId)) {
-      return ShellLayout.defaultLayout();
-    }
-    return restored;
-  }
-
-  /// The v2/v1 migration: one global bar becomes per-view strips. Each tab
-  /// lands in its own view (conversation ids share the conversations view,
-  /// order kept); pins become tabs of their view so the dock's retirement
-  /// loses nothing; the active id chooses the active view and its tab.
-  static ShellLayout _fromV2(final Map json) {
-    final rawTabs = json['tabs'];
-    final tabs = <String>[
-      if (rawTabs is List)
-        for (final id in rawTabs)
-          if (id is String && id.isNotEmpty) id,
-    ];
-    final rawPins = json['pinned'];
-    if (rawPins is List) {
-      for (final id in rawPins) {
-        if (id is String && id.isNotEmpty) tabs.add(id);
+  static ShellLayout _fromV4(final Map json) {
+    final rawGroups = json['groups'];
+    final groups = <ViewState>[];
+    if (rawGroups is List) {
+      for (final raw in rawGroups) {
+        if (raw is! Map) continue;
+        final tabs = _stringList(raw['tabs']);
+        if (tabs.isEmpty) continue;
+        final active = raw['active'];
+        groups.add(ViewState(tabs: tabs, active: active is int ? active : 0));
       }
     }
-    if (tabs.isEmpty || tabs.every((final id) => id == kNewTabSurfaceId)) {
-      return ShellLayout.defaultLayout();
-    }
-    final views = <String, List<String>>{};
-    for (final id in tabs) {
-      if (id == kNewTabSurfaceId) continue; // session chrome, not restored
-      views.putIfAbsent(viewOfSurface(id), () => <String>[]).add(id);
-    }
+    if (groups.isEmpty) return ShellLayout.defaultLayout();
     final active = json['active'];
-    final activeId = active is int && active >= 0 && active < tabs.length
-        ? tabs[active]
-        : tabs.first;
-    final activeView = viewOfSurface(activeId);
+    return ShellLayout(groups: groups, active: active is int ? active : 0);
+  }
+
+  /// The v3 migration: per-view strips flatten into ONE group — the
+  /// hosted view's strip first (its focused tab keeps focus), then the
+  /// other views in order. v3 had no splits, so one group is faithful.
+  static ShellLayout _fromV3(final Map json) {
+    final rawViews = json['views'];
+    if (rawViews is! Map) return ShellLayout.defaultLayout();
+    final ordered = <String>[];
+    void addAll(final Object? value) {
+      if (value is! Map) return;
+      for (final id in _stringList(value['tabs'])) {
+        if (id != kNewTabSurfaceId && !ordered.contains(id)) ordered.add(id);
+      }
+    }
+
+    final activeView = json['activeView'];
+    if (activeView is String) addAll(rawViews[activeView]);
+    rawViews.forEach((final key, final value) {
+      if (key != activeView) addAll(value);
+    });
+    if (ordered.isEmpty) return ShellLayout.defaultLayout();
+    String? activeId;
+    final activeState = activeView is String && rawViews[activeView] is Map
+        ? rawViews[activeView] as Map
+        : null;
+    final rawActive = activeState?['active'];
+    final stateTabs = _stringList(activeState?['tabs']);
+    if (rawActive is int && rawActive >= 0 && rawActive < stateTabs.length) {
+      activeId = stateTabs[rawActive];
+    }
+    final at = activeId == null ? 0 : ordered.indexOf(activeId);
     return ShellLayout(
-      activeView: views.containsKey(activeView)
-          ? activeView
-          : views.keys.first,
-      perView: <String, ViewState>{
-        for (final entry in views.entries)
-          entry.key: ViewState(
-            tabs: entry.value,
-            active: entry.key == activeView
-                ? entry.value.indexOf(activeId).clamp(0, entry.value.length - 1)
-                : 0,
-          ),
-      },
+      groups: <ViewState>[ViewState(tabs: ordered, active: at < 0 ? 0 : at)],
     );
   }
 
-  /// The view a surface id belongs to: conversation ids share the
-  /// conversations view; everything else is its own view (phase 3 kinds
-  /// extend this switch with their prefixes).
-  static String viewOfSurface(final String surfaceId) =>
-      isConversationSurfaceId(surfaceId)
-      ? kConversationsSurfaceId
-      : surfaceId == kNewTabSurfaceId
-      ? kNewTabSurfaceId
-      : surfaceId;
+  /// The v2/v1 migration: one global bar (+ pins) becomes the single
+  /// group; the picker tab is session chrome and is not restored.
+  static ShellLayout _fromV2(final Map json) {
+    final tabs = <String>[
+      ..._stringList(json['tabs']),
+      ..._stringList(json['pinned']),
+    ];
+    final ordered = <String>[];
+    for (final id in tabs) {
+      if (id != kNewTabSurfaceId && !ordered.contains(id)) ordered.add(id);
+    }
+    if (ordered.isEmpty) return ShellLayout.defaultLayout();
+    final active = json['active'];
+    final rawTabs = _stringList(json['tabs']);
+    var at = 0;
+    if (active is int && active >= 0 && active < rawTabs.length) {
+      final idx = ordered.indexOf(rawTabs[active]);
+      if (idx >= 0) at = idx;
+    }
+    return ShellLayout(
+      groups: <ViewState>[ViewState(tabs: ordered, active: at)],
+    );
+  }
 
-  /// The default strip of a view opened with no history: static views host
-  /// their own id; the conversations view hosts the world face.
-  static List<String> _defaultTabsOf(final String viewId) =>
-      viewId == kConversationsSurfaceId
-      ? const <String>[kConversationsSurfaceId]
-      : <String>[viewId];
+  static List<String> _stringList(final Object? raw) => <String>[
+    if (raw is List)
+      for (final id in raw)
+        if (id is String && id.isNotEmpty) id,
+  ];
 
-  /// The hosted view's id.
-  final String activeView;
+  /// The pane groups, left → right; never empty.
+  final List<ViewState> groups;
 
-  /// Every view's strip; a view with no entry has no open tabs.
-  final Map<String, ViewState> perView;
+  /// The focused group's index, always in range.
+  final int active;
 
-  /// [viewId]'s tab ids (empty when the view holds no strip).
-  List<String> tabsOf(final String viewId) =>
-      perView[viewId]?.tabs ?? const <String>[];
+  ViewState get activeGroup => groups[active];
 
-  /// [viewId]'s focused tab id (null when the view holds no strip).
-  String? activeTabOf(final String viewId) => perView[viewId]?.activeId;
+  /// The focused group's focused tab — what the center renders. Never
+  /// null: a group always holds at least the world face.
+  String get activeSurfaceId => activeGroup.activeId;
 
-  /// The hosted view's focused tab id — what the center renders.
-  String? get activeSurfaceId => activeTabOf(activeView);
+  /// The group holding [tabId], or -1 (ids are unique across groups).
+  int groupOf(final String tabId) {
+    for (var g = 0; g < groups.length; g++) {
+      if (groups[g].tabs.contains(tabId)) return g;
+    }
+    return -1;
+  }
+
+  /// Every open tab id, group order then strip order.
+  List<String> get allTabs => <String>[
+    for (final group in groups) ...group.tabs,
+  ];
+
+  bool get isSplit => groups.length > 1;
 
   Map<String, Object?> toJson() => <String, Object?>{
-    'v': 3,
-    'activeView': activeView,
-    'views': <String, Object?>{
-      for (final entry in perView.entries) entry.key: entry.value.toJson(),
-    },
+    'v': 4,
+    'groups': <Object?>[for (final group in groups) group.toJson()],
+    'active': active,
   };
 
-  // ---- view switching ----
+  // ---- tab operations ----
 
-  /// Hosts [viewId], opening its default strip when it has none.
-  ShellLayout showView(final String viewId) {
-    if (viewId == activeView && perView.containsKey(viewId)) return this;
-    final views = Map<String, ViewState>.of(perView);
-    views.putIfAbsent(viewId, () => ViewState(tabs: _defaultTabsOf(viewId)));
-    return ShellLayout._(viewId, Map.unmodifiable(views));
-  }
-
-  // ---- per-view tab operations ----
-
-  /// Focuses [surfaceId] in [viewId]'s strip, opening it right of the
-  /// focused tab when new, and hosts the view.
-  ShellLayout openTab(final String viewId, final String surfaceId) {
-    final state = perView[viewId] ?? ViewState(tabs: _defaultTabsOf(viewId));
-    final existing = state.tabs.indexOf(surfaceId);
-    final ViewState next;
-    if (existing >= 0) {
-      next = ViewState(tabs: state.tabs, active: existing);
-    } else {
-      final at = (state.active + 1).clamp(0, state.tabs.length);
-      next = ViewState(tabs: <String>[...state.tabs]..insert(at, surfaceId), active: at);
-    }
-    return _withView(viewId, next, host: true);
-  }
-
-  /// The `+`/⌘T flow: the picker as a tab of the ACTIVE view's strip.
-  /// At most ONE newtab tab per strip.
-  ShellLayout openNewTab() => openTab(activeView, kNewTabSurfaceId);
-
-  /// The picker's flow in the ACTIVE view: choosing a destination replaces
-  /// the picker tab IN PLACE; a destination that already holds a tab in
-  /// that strip focuses it and the picker closes instead.
-  ShellLayout pick(final String surfaceId) {
-    if (surfaceId == kNewTabSurfaceId) return this;
-    final viewId = activeView;
-    final state = perView[viewId];
-    if (state == null) return openTab(viewId, surfaceId);
-    final pickerIndex = state.tabs.indexOf(kNewTabSurfaceId);
-    if (pickerIndex < 0) return openTab(viewId, surfaceId);
-    final existing = state.tabs.indexOf(surfaceId);
-    if (existing >= 0) {
-      final ids = List<String>.of(state.tabs)..removeAt(pickerIndex);
-      final target = pickerIndex < existing ? existing - 1 : existing;
-      return _withView(viewId, ViewState(tabs: ids, active: target), host: true);
-    }
-    final ids = List<String>.of(state.tabs);
-    ids[pickerIndex] = surfaceId;
-    return _withView(viewId, ViewState(tabs: ids, active: pickerIndex), host: true);
-  }
-
-  /// The rail's conversation flow: ids reuse the ONE conversation slot of
-  /// the conversations view (slot id replaced in place, zero tab
-  /// accumulation); `forceNew` (⌘-click intent) gives the id its own tab
-  /// next to the slot. Hosts the conversations view.
-  ShellLayout openConversation(
-    final String surfaceId, {
-    final bool forceNew = false,
-  }) {
-    const viewId = kConversationsSurfaceId;
-    final state =
-        perView[viewId] ??
-        const ViewState._(<String>[kConversationsSurfaceId], 0);
-    final slot = _conversationSlotOf(state);
-    if (slot == null) {
-      return _withView(
-        viewId,
-        ViewState(tabs: <String>[...state.tabs, surfaceId], active: state.tabs.length),
-        host: true,
+  /// Focuses [tabId] wherever it lives (an open id never duplicates);
+  /// a new id opens right of the focused tab of [group] (default: the
+  /// active group) and takes focus.
+  ShellLayout openTab(final String tabId, {final int? group}) {
+    final found = groupOf(tabId);
+    if (found >= 0) {
+      final state = groups[found];
+      return _withGroup(
+        found,
+        state.focusedOn(state.tabs.indexOf(tabId)),
+        activate: true,
       );
     }
-    if (!forceNew) {
-      if (state.activeId == surfaceId) return showView(viewId);
-      final kept = <String>[
-        for (var i = 0; i < state.tabs.length; i++)
-          if (i == slot) surfaceId else if (state.tabs[i] != surfaceId) state.tabs[i],
-      ];
-      return _withView(viewId, ViewState(tabs: kept, active: slot), host: true);
-    }
-    final existing = state.tabs.indexOf(surfaceId);
-    if (existing >= 0) {
-      return _withView(viewId, ViewState(tabs: state.tabs, active: existing), host: true);
-    }
-    final ids = List<String>.of(state.tabs)..insert(slot + 1, surfaceId);
-    return _withView(viewId, ViewState(tabs: ids, active: slot + 1), host: true);
+    final g = (group ?? active).clamp(0, groups.length - 1);
+    final state = groups[g];
+    final at = state.active + 1;
+    return _withGroup(g, state.inserted(tabId, at), activate: true);
   }
 
-  /// Focuses an already-open tab (a strip tap).
-  ShellLayout focusTab(final String viewId, final String surfaceId) {
-    final state = perView[viewId];
-    if (state == null) return this;
-    final index = state.tabs.indexOf(surfaceId);
-    if (index < 0) return this;
-    return _withView(viewId, ViewState(tabs: state.tabs, active: index), host: true);
-  }
+  /// Rooms are ordinary tabs now (the persistent room list retired —
+  /// opening lives in the picker and the palette). The name survives
+  /// for the first-run boot grammar.
+  ShellLayout openConversation(final String surfaceId) => openTab(surfaceId);
 
-  /// Closes [surfaceId] from [viewId]'s strip (✕, middle-click, ⌘W). A
-  /// strip never goes empty: closing the LAST tab swaps the picker in.
-  /// The lone picker itself is refused. Closing the focused tab focuses
-  /// the neighbor that takes its place, else the previous one.
-  ShellLayout closeTab(final String viewId, final String surfaceId) {
-    final state = perView[viewId];
-    if (state == null) return this;
-    final index = state.tabs.indexOf(surfaceId);
-    if (index < 0) return this;
+  /// Registry faces open like any tab (kept for callers speaking the v3
+  /// vocabulary: "host this view" = "focus its tab").
+  ShellLayout showView(final String surfaceId) => openTab(surfaceId);
+
+  /// The picker's flow: choosing a destination is opening its tab.
+  ShellLayout pick(final String surfaceId) => openTab(surfaceId);
+
+  /// Closes [tabId] (✕, middle-click, ⌘W). The last tab of a group
+  /// removes the group when another survives; the sole group lands on
+  /// the conversations world face (the front door — a strip is never
+  /// empty).
+  ShellLayout closeTab(final String tabId) {
+    final g = groupOf(tabId);
+    if (g < 0) return this;
+    final state = groups[g];
+    final index = state.tabs.indexOf(tabId);
     if (state.tabs.length == 1) {
-      if (surfaceId == kNewTabSurfaceId) return this;
-      return _withView(viewId, const ViewState._(<String>[kNewTabSurfaceId], 0));
+      if (groups.length == 1) {
+        if (tabId == kConversationsSurfaceId) return this;
+        return ShellLayout._(<ViewState>[ViewState()], 0);
+      }
+      final next = List<ViewState>.of(groups)..removeAt(g);
+      var nextActive = active;
+      if (g < active) {
+        nextActive = active - 1;
+      } else if (g == active) {
+        nextActive = (g - 1).clamp(0, next.length - 1);
+      }
+      return ShellLayout._(next, nextActive);
     }
-    final ids = List<String>.of(state.tabs)..removeAt(index);
-    var nextActive = state.active;
-    if (index < state.active) {
-      nextActive = state.active - 1;
-    } else if (index == state.active) {
-      nextActive = index.clamp(0, ids.length - 1);
-    }
-    return _withView(viewId, ViewState(tabs: ids, active: nextActive));
+    return _withGroup(g, state.without(index));
   }
 
-  /// Moves the tab at [from] to [to] inside [viewId]'s strip; the focused
-  /// id stays focused.
-  ShellLayout moveTab(final String viewId, final int from, final int to) {
-    final state = perView[viewId];
-    if (state == null || from < 0 || from >= state.tabs.length) return this;
+  /// Moves a tab within its group's strip; the focused id stays
+  /// focused.
+  ShellLayout moveTab(final int group, final int from, final int to) {
+    if (group < 0 || group >= groups.length) return this;
+    final state = groups[group];
+    if (from < 0 || from >= state.tabs.length) return this;
     final focused = state.activeId;
     final ids = List<String>.of(state.tabs);
     final id = ids.removeAt(from);
     ids.insert(to.clamp(0, ids.length), id);
-    return _withView(viewId, ViewState(tabs: ids, active: ids.indexOf(focused)));
+    return _withGroup(
+      group,
+      ViewState(tabs: ids, active: ids.indexOf(focused)),
+    );
+  }
+
+  // ---- splits: pane groups (VS Code anatomy) ----
+
+  /// The strip's split control: the active tab MOVES into a new group
+  /// to the right, which takes focus. An emptied source refills with
+  /// the world face; splitting the lone world face is refused (there
+  /// would be nothing honest to show beside itself).
+  ShellLayout split({final int? group}) {
+    final g = (group ?? active).clamp(0, groups.length - 1);
+    final state = groups[g];
+    final tabId = state.activeId;
+    if (state.tabs.length == 1 && tabId == kConversationsSurfaceId) {
+      return this;
+    }
+    final rest = <String>[
+      for (final id in state.tabs)
+        if (id != tabId) id,
+    ];
+    if (rest.isEmpty) rest.add(kConversationsSurfaceId);
+    final sourceActive = state.active > state.tabs.indexOf(tabId)
+        ? state.active - 1
+        : state.active.clamp(0, rest.length - 1);
+    final next = List<ViewState>.of(groups)
+      ..[g] = ViewState(tabs: rest, active: sourceActive)
+      ..insert(g + 1, ViewState(tabs: <String>[tabId]));
+    return ShellLayout._(next, g + 1);
+  }
+
+  /// The second pane's fold control: the group merges into its left
+  /// neighbour (group 0 folds right); its focused tab keeps focus.
+  ShellLayout fold({final int? group}) {
+    if (groups.length < 2) return this;
+    final g = (group ?? active).clamp(0, groups.length - 1);
+    final target = g > 0 ? g - 1 : 1;
+    final moved = groups[g];
+    final into = groups[target];
+    final merged = <String>[...into.tabs];
+    for (final id in moved.tabs) {
+      if (!merged.contains(id)) merged.add(id);
+    }
+    final focusId = moved.activeId;
+    final next = List<ViewState>.of(groups)..removeAt(g);
+    final mergedAt = target > g ? target - 1 : target;
+    next[mergedAt] = ViewState(
+      tabs: merged,
+      active: merged.indexOf(focusId).clamp(0, merged.length - 1),
+    );
+    var nextActive = active;
+    if (g < active) nextActive = active - 1;
+    if (nextActive >= next.length) nextActive = next.length - 1;
+    if (g == active || target == active) nextActive = mergedAt;
+    return ShellLayout._(next, nextActive.clamp(0, next.length - 1));
+  }
+
+  // ---- per-group history (the strip's ‹ ›) ----
+
+  ShellLayout back({final int? group}) {
+    final g = (group ?? active).clamp(0, groups.length - 1);
+    final next = groups[g].back();
+    if (next == groups[g]) return this;
+    return _withGroup(g, next, activate: true);
+  }
+
+  ShellLayout forward({final int? group}) {
+    final g = (group ?? active).clamp(0, groups.length - 1);
+    final next = groups[g].forward();
+    if (next == groups[g]) return this;
+    return _withGroup(g, next, activate: true);
+  }
+
+  // ---- instances (the tab law: same kind, N times) ----
+
+  /// The next free instance id for [kind] (`browser` → `browser:2`):
+  /// the bare kind counts as instance 1, numeric suffixes scan upward.
+  String nextInstanceId(final String kind) {
+    var max = 1;
+    for (final id in allTabs) {
+      if (!id.startsWith('$kind:')) continue;
+      final n = int.tryParse(id.substring(kind.length + 1));
+      if (n != null && n > max) max = n;
+    }
+    return '$kind:${max + 1}';
   }
 
   // ---- internals ----
 
-  static int? _conversationSlotOf(final ViewState state) {
-    for (var i = 0; i < state.tabs.length; i++) {
-      if (isConversationSurfaceId(state.tabs[i])) return i;
-    }
-    return null;
-  }
-
-  ShellLayout _withView(
-    final String viewId,
+  ShellLayout _withGroup(
+    final int index,
     final ViewState state, {
-    final bool host = false,
+    final bool activate = false,
   }) {
-    final views = Map<String, ViewState>.of(perView)..[viewId] = state;
-    return ShellLayout._(host ? viewId : activeView, Map.unmodifiable(views));
+    final next = List<ViewState>.of(groups)..[index] = state;
+    return ShellLayout._(next, activate ? index : active);
   }
 
   @override
   bool operator ==(final Object other) =>
       other is ShellLayout &&
-      other.activeView == activeView &&
-      other.perView.length == perView.length &&
-      other.perView.entries.every(
-        (final entry) => perView[entry.key] == entry.value,
-      );
+      other.active == active &&
+      listEquals(other.groups, groups);
 
   @override
-  int get hashCode => Object.hash(
-    activeView,
-    Object.hashAllUnordered(
-      perView.entries.map((final entry) => Object.hash(entry.key, entry.value)),
-    ),
-  );
+  int get hashCode => Object.hash(active, Object.hashAll(groups));
 
   @override
-  String toString() =>
-      'ShellLayout(activeView: $activeView, perView: $perView)';
+  String toString() => 'ShellLayout(groups: $groups, active: $active)';
 }
 
 /// Flattens a LEGACY `shell.paneTree.v1` tree (`leaf`/`stack`/`split`
@@ -434,8 +542,8 @@ List<String> legacyPaneTreeSurfaceIds(final Object? json) {
   }
 
   visit(json);
-  // Conversations is the view's resident: bring it to the front, and
-  // keep one tab per surface id (first occurrence wins).
+  // Conversations is the door: bring it to the front, and keep one tab
+  // per surface id (first occurrence wins).
   final ordered = <String>[];
   void keep(final String id) {
     if (!ordered.contains(id)) ordered.add(id);

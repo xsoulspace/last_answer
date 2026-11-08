@@ -10,27 +10,33 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/common_imports.dart';
 
 abstract final class ShellTokens {
-  /// Rail width (px) — the one fixed column of the shell, expanded.
-  static const double railWidth = 272;
+  /// The action bar's width (px) — the Discord-law rail: rounded-square
+  /// kind icons, unread pips, active pip; the persistent room list is
+  /// retired (opening lives in the + picker and the palette).
+  static const double actionBarWidth = 56;
 
-  /// Rail width (px) in its compact (icon-only) presentation — the
-  /// half-screen desktop case (phase 1b).
-  static const double railCompactWidth = 56;
+  /// One action-bar kind button (mockup: 40px rounded square).
+  static const double actionButtonSize = 40;
 
-  /// Window width (px) at and above which the rail renders expanded;
-  /// below it, compact (the owner's half-screen desktop).
-  static const double railExpandedMinWindow = 1280;
+  /// The kind button's corner radii: resting → hover/active (the
+  /// Discord squircle settle, 120ms).
+  static const double actionButtonRadius = 14;
+  static const double actionButtonRadiusActive = 12;
 
-  /// The macOS unified-titlebar gutter the shell reserves above its
-  /// chrome for the traffic lights (phase 0).
-  static const double titlebarGutter = 28;
-
-  /// Context column width (px) — the shell's right column
-  /// (participants, topic, artifacts).
+  /// Context column width (px) — a general narrow-column constant
+  /// (tests and side panes); the retired WAVE 5 dock left it behind.
   static const double contextColumnWidth = 240;
 
-  /// Tab strip height (px) — the pane stack's one quiet rule.
-  static const double tabHeight = 36;
+  /// The tab strip's row height (px) — ONE chrome row per pane group
+  /// (DESIGN.md v2 chrome budget).
+  static const double stripHeight = 34;
+
+  /// The tab pill's height (px) — rounded compact tabs (v2 law: 27px,
+  /// radius 8, the only chrome up top).
+  static const double tabHeight = 27;
+
+  /// The tab pill's corner radius (v2 law).
+  static const double tabRadius = 8;
 
   /// Compact row height in lists (channel/DM tiles).
   static const double rowHeight = 34;

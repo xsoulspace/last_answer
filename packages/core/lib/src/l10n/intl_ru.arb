@@ -557,5 +557,19 @@
   "threadsSessions": "Живые сессии",
   "threadsEmpty": "Тредов пока нет — их начинают актёры и каналы в rail",
   "boardsMeshTasks": "Mesh-задачи",
-  "actionLandingInbox": "Входящий обзор"
+  "actionLandingInbox": "Входящий обзор",
+  "newTabSectionOpen": "Открыть",
+  "newTabSectionRooms": "Комнаты",
+  "newTabSectionInstances": "Новый экземпляр",
+  "newTabSectionCreate": "Создать",
+  "newTabSectionRunway": "Форматы на подходе — станут вкладками, когда формат появится",
+  "newTabBrowserInstance": "Браузер · новое окно",
+  "newTabRunwayImage": "редактор изображений · генерация",
+  "newTabRunwayVideo": "видео · таймлайн генерации",
+  "newTabRunwayAudio": "аудио · мультитрек",
+  "stripBack": "Назад",
+  "stripForward": "Вперёд",
+  "stripSplit": "Разделить — две вкладки сразу",
+  "stripFold": "Свернуть разбиение — к одной панели",
+  "worldChatActorCard": "Карточка актора"
 }

@@ -167,9 +167,8 @@ class _WorkStripState extends State<_WorkStrip> {
         // 2) Work cards — the native task loops of this room's actors.
         if (world != null && actors.isNotEmpty) {
           final actorSet = actors.toSet();
-          bool inRoom(final WorldTaskRow task) => task.addressees.any(
-            actorSet.contains,
-          );
+          bool inRoom(final WorldTaskRow task) =>
+              task.addressees.any(actorSet.contains);
           final running = [
             for (final task in world.tasks)
               if (!task.terminal && inRoom(task)) task,
@@ -237,9 +236,7 @@ class _WorkStripState extends State<_WorkStrip> {
               id,
               service.roster?.get(id)?.displayName ?? '',
             ],
-          ].where((name) => name.isNotEmpty).map(
-            (name) => name.toLowerCase(),
-          );
+          ].where((name) => name.isNotEmpty).map((name) => name.toLowerCase());
           for (final permission in permissions) {
             final title = permission.title.toLowerCase();
             if (!names.any(title.contains)) continue;
@@ -293,8 +290,7 @@ class _NarrationRow extends StatelessWidget {
           children: [
             ActorAvatar(
               profile:
-                  profile ??
-                  ActorProfile(actorId: actorId, displayName: name),
+                  profile ?? ActorProfile(actorId: actorId, displayName: name),
               size: 16,
             ),
             const SizedBox(width: 8),
@@ -422,30 +418,24 @@ class _WorkCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (task.modelId != null &&
-                          task.modelId!.isNotEmpty)
+                      if (task.modelId != null && task.modelId!.isNotEmpty)
                         _factLine(theme, context, 'rung · ${task.modelId}'),
                       if (telemetry != null)
-                        _factLine(
-                          theme,
-                          context,
-                          () {
-                            final cache = telemetry.cacheHitRate == null
-                                ? '—'
-                                : '${(telemetry.cacheHitRate! * 100).round()}%';
-                            final tokens =
-                                telemetry.promptTokens +
-                                telemetry.completionTokens;
-                            return '${telemetry.rounds}r · '
-                                '${telemetry.toolCalls} tools · '
-                                '${telemetry.appliedWrites} writes · '
-                                'cache $cache · $tokens tok';
-                          }(),
-                        ),
+                        _factLine(theme, context, () {
+                          final cache = telemetry.cacheHitRate == null
+                              ? '—'
+                              : '${(telemetry.cacheHitRate! * 100).round()}%';
+                          final tokens =
+                              telemetry.promptTokens +
+                              telemetry.completionTokens;
+                          return '${telemetry.rounds}r · '
+                              '${telemetry.toolCalls} tools · '
+                              '${telemetry.appliedWrites} writes · '
+                              'cache $cache · $tokens tok';
+                        }()),
                       if (task.at != null) _factLine(theme, context, task.at!),
                       if (verdict != null) ...[
-                        if (verdict.spend != null &&
-                            verdict.spend!.isNotEmpty)
+                        if (verdict.spend != null && verdict.spend!.isNotEmpty)
                           _factLine(theme, context, 'spend · ${verdict.spend}'),
                         if (verdict.line.isNotEmpty)
                           _factLine(theme, context, verdict.line),
@@ -602,11 +592,7 @@ class _DaemonAbsentRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 3),
         child: Row(
           children: [
-            Icon(
-              Icons.power_settings_new,
-              size: 13,
-              color: context.la.caution,
-            ),
+            Icon(Icons.power_settings_new, size: 13, color: context.la.caution),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -858,9 +844,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                         // composer); beats follow newest-first; the
                         // load-older row sits at the visual top.
                         itemCount:
-                            1 +
-                            beats.length +
-                            (service.hasOlderBeats ? 1 : 0),
+                            1 + beats.length + (service.hasOlderBeats ? 1 : 0),
                         itemBuilder: (final context, final index) {
                           if (index == 0) {
                             return _WorkStrip(
@@ -876,8 +860,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                             return _LoadOlderRow(
                               key: const ValueKey('worldchat.loadOlder'),
                               label: l10n.worldChatLoadOlder,
-                              onTap: () =>
-                                  unawaited(service.loadOlderBeats()),
+                              onTap: () => unawaited(service.loadOlderBeats()),
                             );
                           }
                           // Newest-first: index 1 = the newest beat at
@@ -995,11 +978,16 @@ class _ConversationPaneState extends State<_ConversationPane> {
   }
 }
 
-/// The quiet conversation header, on the `_MessageRow` style system:
-/// identity mark (avatar / channel disc), name in strong ink, muted
-/// meta (kind·role for a DM, member/participant counts otherwise), then
-/// the context-column toggle and the close affordance.
-class _ConversationHeader extends StatelessWidget {
+/// The COMPACT ACTOR HUD (DESIGN.md v2, owner law 2026-11-08): a room
+/// header carries IDENTITY and MOOD, nothing else — creature mark
+/// (20px), the name, one 6px pulse while the loop cycles, and a single
+/// card button. The facts a debugger needs (brain, kind·role, health,
+/// seat, thread) live one tap away in the actor-card popover, mono
+/// 10.5px — field names, not prose (journal vocabulary, never
+/// localized: every value is a durable fact). The law: if a fact is
+/// not identity or live state, it does not sit between the human and
+/// the conversation.
+class _ConversationHeader extends StatefulWidget {
   const _ConversationHeader({
     required this.service,
     required this.threadId,
@@ -1023,26 +1011,78 @@ class _ConversationHeader extends StatelessWidget {
   final bool presenceOnline;
 
   @override
+  State<_ConversationHeader> createState() => _ConversationHeaderState();
+}
+
+class _ConversationHeaderState extends State<_ConversationHeader> {
+  final LayerLink _cardLink = LayerLink();
+  OverlayEntry? _cardEntry;
+
+  @override
+  void dispose() {
+    _removeCard();
+    super.dispose();
+  }
+
+  void _removeCard() {
+    _cardEntry?.remove();
+    _cardEntry = null;
+  }
+
+  void _toggleCard() {
+    if (_cardEntry != null) {
+      setState(_removeCard);
+      return;
+    }
+    setState(() {
+      _cardEntry = OverlayEntry(
+        builder: (final overlayContext) => Stack(
+          children: [
+            Positioned.fill(
+              child: ModalBarrier(
+                dismissible: true,
+                color: const Color(0x00000000),
+                onDismiss: () {
+                  if (mounted) setState(_removeCard);
+                },
+              ),
+            ),
+            Positioned.fill(
+              child: CompositedTransformFollower(
+                link: _cardLink,
+                targetAnchor: Alignment.bottomRight,
+                followerAnchor: Alignment.topRight,
+                offset: const Offset(0, 6),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: _ActorCard(header: widget, onClose: _removeCard),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+      Overlay.of(context).insert(_cardEntry!);
+    });
+  }
+
+  @override
   Widget build(final BuildContext context) {
+    final service = widget.service;
     final theme = Theme.of(context);
-    final l10n = context.l10n;
-    final muted = context.shellMuted;
-    final meta = channel != null
-        ? l10n.worldChatMembers(channel!.memberIds.length)
-        : other != null
-        ? _kindAndRole(other!)
-        : l10n.worldChatParticipants(participants.length);
+    final other = widget.other;
+    final channel = widget.channel;
     final name = channel != null
-        ? '#${channel!.name}'
-        : other?.displayName ?? topic;
-    // Wave 3A — the quiet typing indicator, derived from the service's
-    // narration for this thread's participants: a DM names its one bot,
-    // a channel or group any member bot mid-reply (thinking or
-    // generating). Absent = nothing rendered, no reserved space.
+        ? '#${channel.name}'
+        : other?.displayName ?? widget.topic;
+    // The mood: a pulse while any non-human participant of THIS thread
+    // is mid-reply (thinking or generating) — the state word lives in
+    // the Semantics label and the creature's eyes, never as header
+    // text (the HUD law). Absent = nothing rendered, no reserved space.
     final narrations = service.botNarration;
     final human = service.humanActorId;
     String? typingName;
-    for (final participant in participants) {
+    for (final participant in widget.participants) {
       if (participant == human) continue;
       final state = narrations[participant]?.state;
       if (state == BotNarrationState.thinking ||
@@ -1055,111 +1095,325 @@ class _ConversationHeader extends StatelessWidget {
     }
     final nameColor = other == null
         ? null // Channels and topics keep the ambient ink.
-        : other!.kind == ActorKind.human
+        : other.kind == ActorKind.human
         ? theme.colorScheme.primary
-        : actorColor(other!.actorId);
+        : actorColor(other.actorId);
     // The identity IS the entry point to the actor's profile: tapping
-    // the avatar/name hosts the people view on that actor (phase 1:
-    // the dock retired, the shell decides where — a tab). Channels and
-    // group topics are not one identity — they stay inert.
+    // the mark or name hosts the people view on that actor. Channels
+    // and group topics are not one identity — they stay inert.
     final onFocusActor = ViewScope.of(context)?.onFocusActor;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 8, 8),
+      padding: const EdgeInsets.fromLTRB(14, 5, 8, 5),
       child: Row(
         children: [
-          InkWell(
-            key: const ValueKey('worldchat.identity'),
-            onTap: other == null || onFocusActor == null
-                ? null
-                : () => onFocusActor(other!.actorId),
-            child: _headerMark(theme),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: InkWell(
-              onTap: other == null || onFocusActor == null
-                  ? null
-                  : () => onFocusActor(other!.actorId),
-              child: Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: nameColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 6),
+          // The identity cluster is BOUNDED (Flexible): the inner Row
+          // shrink-wraps around mark + ellipsized name. An unbounded
+          // inner flex crashes layout ("non-zero flex, unbounded
+          // width") — paid once, 2026-11-08.
           Flexible(
-            child: Text(
-              meta,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall?.copyWith(color: muted),
+            child: CompositedTransformTarget(
+              link: _cardLink,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    key: const ValueKey('worldchat.identity'),
+                    onTap: other == null || onFocusActor == null
+                        ? null
+                        : () => onFocusActor(other.actorId),
+                    child: _headerMark(theme),
+                  ),
+                  const SizedBox(width: 7),
+                  Flexible(
+                    child: InkWell(
+                      onTap: other == null || onFocusActor == null
+                          ? null
+                          : () => onFocusActor(other.actorId),
+                      child: Text(
+                        name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontSize: 13,
+                          color: nameColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           if (typingName != null) ...[
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                '$typingName is thinking…',
-                key: const ValueKey('worldchat.typing'),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: muted,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
+            const SizedBox(width: 7),
+            _ThinkingPulse(
+              key: const ValueKey('worldchat.typing'),
+              label: '$typingName is thinking…',
             ),
           ],
-          IconButton(
-            key: const ValueKey('worldchat.close'),
-            tooltip: l10n.worldChatCloseTooltip,
-            icon: const Icon(Icons.archive_outlined, size: 20),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => unawaited(service.closeThread(threadId)),
+          const Spacer(),
+          _CardButton(
+            key: const ValueKey('worldchat.card'),
+            open: _cardEntry != null,
+            onTap: _toggleCard,
           ),
         ],
       ),
     );
   }
 
-  /// The header's identity mark: the DM avatar (with presence), the
-  /// channel's bare `#` glyph in its quiet ink (no box — the glyph IS
-  /// the mark), or a derived identicon for a group.
+  /// The header's identity mark (20px — the HUD law): the DM avatar
+  /// (with presence), the channel's bare `#` glyph in its quiet ink,
+  /// or a derived identicon for a group.
   Widget _headerMark(final ThemeData theme) => switch (this) {
-    _ when channel != null => SizedBox(
-      width: 28,
-      height: 28,
+    _ when widget.channel != null => SizedBox(
+      width: 20,
+      height: 20,
       child: Center(
         child: Text(
           '#',
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: actorColor(channel!.channelId),
+          style: theme.textTheme.titleSmall?.copyWith(
+            color: actorColor(widget.channel!.channelId),
             fontWeight: FontWeight.w600,
           ),
         ),
       ),
     ),
-    _ when other != null => ActorAvatar(
-      profile: other!,
-      size: 28,
-      showPresence: showPresence,
-      presenceOnline: presenceOnline,
+    _ when widget.other != null => ActorAvatar(
+      profile: widget.other!,
+      size: 20,
+      showPresence: widget.showPresence,
+      presenceOnline: widget.presenceOnline,
     ),
-    _ => actorIdenticon(threadId, size: 28),
+    _ => actorIdenticon(widget.threadId, size: 20),
   };
+}
 
-  /// A DM's meta names WHO holds the agency: the kind, then the role
-  /// the human authored for it (ADR 0024 §2 — labels, not icons;
-  /// sentence case per DESIGN §2).
-  static String _kindAndRole(final ActorProfile profile) => [
-    profile.kind.name[0].toUpperCase() + profile.kind.name.substring(1),
-    if (profile.role.isNotEmpty) profile.role,
-  ].join(' · ');
+/// A DM's card row: the kind, then the role the human authored for it
+/// (ADR 0024 §2 — labels, not icons; sentence case per DESIGN §2).
+String _kindAndRole(final ActorProfile profile) => [
+  profile.kind.name[0].toUpperCase() + profile.kind.name.substring(1),
+  if (profile.role.isNotEmpty) profile.role,
+].join(' · ');
+
+/// The one live-state mark of the HUD: a 6px pulse while the loop
+/// cycles (caution ink — the state word rides the Semantics label,
+/// never color alone). Reduced-motion renders it static at full
+/// opacity: the motion-free truth of the same fact.
+class _ThinkingPulse extends StatefulWidget {
+  const _ThinkingPulse({required this.label, super.key});
+
+  final String label;
+
+  @override
+  State<_ThinkingPulse> createState() => _ThinkingPulseState();
+}
+
+class _ThinkingPulseState extends State<_ThinkingPulse>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reduced-motion renders the pulse static at full opacity: the
+    // motion-free truth of the same fact.
+    if (!MediaQuery.disableAnimationsOf(context) && !_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final dot = Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: context.la.caution,
+        borderRadius: BorderRadius.circular(3),
+      ),
+    );
+    return Semantics(
+      label: widget.label,
+      child: MediaQuery.disableAnimationsOf(context)
+          ? dot
+          : FadeTransition(
+              opacity: Tween<double>(begin: 0.35, end: 1).animate(
+                CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+              ),
+              child: dot,
+            ),
+    );
+  }
+}
+
+/// The HUD's single card button: one tap away from the facts.
+class _CardButton extends StatelessWidget {
+  const _CardButton({required this.open, required this.onTap, super.key});
+
+  final bool open;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    label: 'worldchat.card',
+    hint: context.l10n.worldChatActorCard,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          width: 22,
+          height: 22,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: open ? context.la.accent : context.shellHairline,
+            ),
+            borderRadius: BorderRadius.circular(6),
+            color: open ? context.shellSelected : null,
+          ),
+          child: Text(
+            'i',
+            style: LaTokens.mono(
+              11,
+              open ? context.la.accent : context.la.inkQuiet,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// The actor-card popover (the HUD law's other half): the facts a
+/// debugger needs, mono 10.5px, one tap away — brain, kind·role,
+/// health (the palette rung's own verdict), seat (who owns the loop),
+/// thread — plus the room's close affordance (`worldchat.close`, the
+/// key's home since ADR 0023). Rows the shell cannot fact are omitted
+/// (honest absence, never a guess).
+class _ActorCard extends StatelessWidget {
+  const _ActorCard({required this.header, required this.onClose});
+
+  final _ConversationHeader header;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(final BuildContext context) {
+    final service = header.service;
+    final other = header.other;
+    final channel = header.channel;
+    final worldState = context.read<WorldStateService?>();
+    final rows = <(String, String)>[];
+    if (other != null) {
+      rows.add(('brain', other.brainRef.isEmpty ? '—' : other.brainRef));
+      rows.add(('kind', _kindAndRole(other)));
+      final entryId = other.brainRef.startsWith('cast:')
+          ? other.brainRef.substring('cast:'.length)
+          : null;
+      if (entryId != null && worldState != null) {
+        for (final rung in worldState.rungs) {
+          if (rung.id == entryId) {
+            rows.add(('health', rung.healthStatus));
+            break;
+          }
+        }
+      }
+      rows.add((
+        'seat',
+        service.daemonOwnsActor(other)
+            ? 'daemon-owned'
+            : service.daemonBoundActor(other)
+            ? 'daemon-bound · asleep'
+            : 'app-hosted loop',
+      ));
+    } else if (channel != null) {
+      rows.add((
+        'members',
+        context.l10n.worldChatMembers(channel.memberIds.length),
+      ));
+    } else {
+      rows.add((
+        'participants',
+        context.l10n.worldChatParticipants(header.participants.length),
+      ));
+    }
+    final threadId = header.threadId;
+    rows.add((
+      'thread',
+      threadId.length > 12
+          ? '…${threadId.substring(threadId.length - 8)}'
+          : threadId,
+    ));
+    return Container(
+      key: const ValueKey('worldchat.actorCard'),
+      width: 252,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+      decoration: BoxDecoration(
+        color: context.la.surfaceRaised,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: context.shellHairline),
+        boxShadow: shellFloatingShadow(context),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final (label, value) in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 76,
+                    child: Text(
+                      label,
+                      style: LaTokens.mono(10.5, context.la.inkMuted),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      value,
+                      style: LaTokens.mono(10.5, context.la.ink),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 6),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton.icon(
+              key: const ValueKey('worldchat.close'),
+              onPressed: () {
+                onClose();
+                unawaited(service.closeThread(header.threadId));
+              },
+              icon: const Icon(Icons.archive_outlined, size: 15),
+              label: Text(context.l10n.worldChatCloseTooltip),
+              style: TextButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// One durable beat: gutter actor label + text on the shared grid.

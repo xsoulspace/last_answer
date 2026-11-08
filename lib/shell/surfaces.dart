@@ -140,11 +140,11 @@ const String kDocumentsSurfaceId = 'documents';
 /// through the view, never through `Navigator.pop`).
 const String kSettingsSurfaceId = 'settings';
 
-/// The new-tab picker's surface id (WAVE 4T — the browser model): the
-/// bar's `+` opens it, picking a destination replaces it in place.
-/// It is session chrome, not a persisted face — a LONE newtab tab does
-/// not survive a restart (the layout's tolerant decode maps it back to
-/// the default conversations face).
+/// The RETIRED picker-tab's surface id (WAVE 4T's browser model: the
+/// `+` opened the picker AS A TAB). DESIGN.md v2 made the picker an
+/// anchored MENU — this constant survives only as migration vocabulary:
+/// legacy blobs may contain `newtab` tabs, and the layout's tolerant
+/// decode drops them (session chrome never survives a restart).
 const String kNewTabSurfaceId = 'newtab';
 
 /// Whether [surfaceId] stands for a conversation — the world face or a
@@ -207,6 +207,41 @@ String? conversationSurfaceTitle(
 /// Whether [surfaceId] stands for an opened document tab (phase 3a).
 bool isDocumentSurfaceId(final String surfaceId) =>
     surfaceId.startsWith('doc:');
+
+/// Whether [surfaceId] stands for the browser surface or one of its
+/// INSTANCES (the tab law: the same kind opens N times — `browser:2`).
+bool isBrowserSurfaceId(final String surfaceId) =>
+    surfaceId == kBrowserSurfaceId || surfaceId.startsWith('browser:');
+
+/// The spec for a `browser:<n>` instance tab: the one browser surface,
+/// per instance (each tab mounts its own [WorkspaceBrowser] state).
+SurfaceSpec? browserSurfaceSpec(
+  final String surfaceId,
+  final SurfaceRegistry surfaces,
+) {
+  if (!surfaceId.startsWith('browser:')) return null;
+  final base = surfaces[kBrowserSurfaceId];
+  if (base == null) return null;
+  final n = surfaceId.substring('browser:'.length);
+  return SurfaceSpec(
+    id: surfaceId,
+    title: '${base.title} $n',
+    builder: base.builder,
+    icon: base.icon,
+  );
+}
+
+/// The action-bar KIND of a tab id (DESIGN.md v2: the rail is a
+/// Discord-style action bar of rounded-square kind icons; one click
+/// opens the kind, further clicks cycle its open tabs). Conversation
+/// ids fold into `conversations`, documents into `documents`, browser
+/// instances into `browser`; static registry ids are their own kind.
+String kindOfSurfaceId(final String surfaceId) {
+  if (isConversationSurfaceId(surfaceId)) return kConversationsSurfaceId;
+  if (isDocumentSurfaceId(surfaceId)) return kDocumentsSurfaceId;
+  if (isBrowserSurfaceId(surfaceId)) return kBrowserSurfaceId;
+  return surfaceId;
+}
 
 /// The spec for a `doc:<id>` tab: the registry's projection of the
 /// document through the route page's own doc→surface map, embedded.
@@ -379,16 +414,13 @@ SurfaceRegistry buildShellSurfaces(
       onClose: () {
         final scope = ViewScope.of(tabContext);
         if (scope == null) return;
-        scope.onChanged(
-          scope.layout.closeTab(scope.layout.activeView, kSettingsSurfaceId),
-        );
+        scope.onChanged(scope.layout.closeTab(kSettingsSurfaceId));
       },
     ),
     icon: Icons.settings_outlined,
   ),
-  // The newtab picker's spec is composed by AppShell (center_tabs.dart
-  // hosts the [NewTabSurface] and the scope it navigates through) —
-  // this module stays a leaf and never imports the tabs feature.
+  // The new-tab picker is an anchored MENU (new_tab_menu.dart), not a
+  // surface: the registry has no `newtab` entry any more.
 };
 
 /// The terminal view's honest state: no PTY yet (the package decision

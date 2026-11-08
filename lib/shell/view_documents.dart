@@ -14,7 +14,6 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
-import 'package:lastanswer/shell/surfaces.dart';
 
 /// The human title of one registry project, across the sealed variants
 /// (idea title, note text, doc title; the changelog names itself).
@@ -137,7 +136,7 @@ final class _DocumentRow extends StatelessWidget {
         onTap: () {
           final scope = ViewScope.of(context);
           if (scope == null) return;
-          scope.onChanged(scope.layout.openTab(kDocumentsSurfaceId, 'doc:$id'));
+          scope.onChanged(scope.layout.openTab('doc:$id'));
         },
         child: Row(
           children: [
@@ -184,9 +183,7 @@ final class _NewAgentDocButton extends StatelessWidget {
                 if (!context.mounted) return;
                 final scope = ViewScope.of(context);
                 if (scope == null) return;
-                scope.onChanged(
-                  scope.layout.openTab(kDocumentsSurfaceId, 'doc:${doc.id}'),
-                );
+                scope.onChanged(scope.layout.openTab('doc:${doc.id}'));
               },
         child: Text(l10n.documentsNewAgentDoc),
       ),

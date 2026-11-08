@@ -554,5 +554,19 @@
   "threadsSessions": "Sessioni live",
   "threadsEmpty": "Nessun thread — gli attori e i canali della rail li avviano",
   "boardsMeshTasks": "Task mesh",
-  "actionLandingInbox": "Posta in arrivo"
+  "actionLandingInbox": "Posta in arrivo",
+  "newTabSectionOpen": "Apri",
+  "newTabSectionRooms": "Stanze",
+  "newTabSectionInstances": "Nuova istanza",
+  "newTabSectionCreate": "Crea",
+  "newTabSectionRunway": "Formati in arrivo — diventeranno schede quando il formato arriva",
+  "newTabBrowserInstance": "Browser · nuova finestra",
+  "newTabRunwayImage": "editor immagini · generazione",
+  "newTabRunwayVideo": "video · timeline di generazione",
+  "newTabRunwayAudio": "audio · multitraccia",
+  "stripBack": "Indietro",
+  "stripForward": "Avanti",
+  "stripSplit": "Dividi — due schede insieme",
+  "stripFold": "Ricomponi — torna a un riquadro",
+  "worldChatActorCard": "Scheda attore"
 }

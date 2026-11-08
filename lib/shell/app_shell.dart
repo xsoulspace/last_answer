@@ -1,20 +1,31 @@
-/// ADR 0024 — the app shell. PHASE 1 — the shell redesign (docs/design/
-/// shell-redesign-rail-views-tabs-2026-11-05.md): the ORIGINAL idea,
-/// restored — a left rail of VIEWS plus the roster, and EVERY view owns a
-/// Safari-like tab strip above its content ([ShellLayout], persisted as
-/// `shell.views.v3`, migrated in one pass from `shell.views.v2` /
-/// `shell.tabs.v1` / `shell.paneTree.v1`). The WAVE 5 global top bar and
-/// the dock of pins are retired: pins became tabs of their view, and
-/// "keep an eye on this" is the miniwindow's job (ADR 0027).
+/// ADR 0024 — the app shell. DESIGN.md v2 (owner law 2026-11-08, the
+/// approved mockup's anatomy): the shell is an ACTION BAR + PANE GROUPS.
+///
+/// - The rail is a Discord-style action bar (56px): rounded-square kind
+///   icons with unread badges and an active pip; one click opens the
+///   kind's first tab, further clicks CYCLE its open tabs. The
+///   persistent room list is retired — opening lives in the strip's `+`
+///   picker and the ⌘K palette.
+/// - Tabs are the universal content surface, owned by PANE GROUPS
+///   ([ShellLayout] v4, persisted as `shell.views.v4`, migrated in one
+///   pass from `shell.views.v3` / `shell.views.v2` / `shell.tabs.v1` /
+///   `shell.paneTree.v1`). Each group renders its own [PaneStrip]; the
+///   split control moves the active tab into a new group, the fold
+///   control merges it back.
+/// - Tabs are INSTANCES: content ids (`dm:`, `channel:`, `doc:`),
+///   registry faces, and instance ids (`browser:2`) — one strip grammar.
+/// - First-run stays a BOOT state, never a tab; the status edge spans
+///   the window once; "keep an eye on this" is still the miniwindow
+///   (ADR 0027), reached from a tab's context menu.
 ///
 /// The shell owns the layout as state, installs the agent-doc mesh seams
 /// that used to live on the dissolved HomeScreen, and provides the shared
-/// [RealmChatService] to everything below it (rail, strips, view bodies).
+/// [RealmChatService] to everything below it (bar, strips, pane bodies).
 ///
-/// Route shape: the shell wraps the router's nested navigator, so project
-/// docs/ideas/notes still push as full pages over the center while the
-/// rail and the active view's strip stay. The `/home` route body is
-/// [CenterTabsArea] — the active view's active tab host.
+/// Route shape: the shell wraps the router's nested navigator; the
+/// navigator rides the ACTIVE group's pane slot (GlobalKey reparenting
+/// keeps pushed routes alive across group switches). The `/home` route
+/// body is [CenterTabsArea] — the active group's active tab host.
 library;
 
 import 'dart:convert';
@@ -49,15 +60,21 @@ import 'package:lastanswer/la_world/la_world_feed.dart';
 
 import 'package:lastanswer/settings/settings.dart';
 
-import 'package:lastanswer/shell/actor_rail.dart';
+import 'package:lastanswer/shell/action_bar.dart';
 
 import 'package:lastanswer/shell/center_tabs.dart';
 
 import 'package:lastanswer/shell/command_palette.dart';
 
+import 'package:lastanswer/shell/create_flows.dart';
+
 import 'package:lastanswer/shell/miniwindows/mini_window.dart';
 
 import 'package:lastanswer/shell/miniwindows/mini_window_persistence.dart';
+
+import 'package:lastanswer/shell/new_tab_menu.dart';
+
+import 'package:lastanswer/shell/pane_strip.dart';
 
 import 'package:lastanswer/shell/pinned_conversation_peek.dart';
 
@@ -75,18 +92,20 @@ import 'package:lastanswer/shell/view_documents.dart';
 
 import 'package:lastanswer/shell/view_people.dart';
 
-import 'package:lastanswer/shell/view_tab_strip.dart';
-
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The SharedPreferences key holding the per-view layout JSON
-/// (`activeView` + each view's strip).
-const String kViewLayoutPrefsKey = 'shell.views.v3';
+/// The SharedPreferences key holding the pane-group layout JSON v4
+/// (`groups` + the active group index).
+const String kViewLayoutPrefsKey = 'shell.views.v4';
+
+/// The RETIRED per-view key (v3). Read once for the one-time migration
+/// into v4; never written again.
+const String kViewLayoutV3PrefsKey = 'shell.views.v3';
 
 /// The RETIRED unified-views key (one global bar + pins). Read once for
-/// the one-time migration into v3; never written again.
+/// the one-time migration; never written again.
 const String kViewLayoutV2PrefsKey = 'shell.views.v2';
 
 /// The RETIRED center-strip key, read only when v2 is absent.
@@ -95,9 +114,9 @@ const String kCenterTabsPrefsKey = 'shell.tabs.v1';
 /// The RETIRED pane-tree key, read only when v2 and v1 are absent.
 const String kLegacyPaneTreePrefsKey = 'shell.paneTree.v1';
 
-/// The shell chrome: the rail of views + roster, the active view's tab
-/// strip, the center host. Inject [service] in tests; production resolves
-/// it internally.
+/// The shell chrome: the action bar, the pane groups (each with its own
+/// strip), the picker overlay, the status edge. Inject [service] in
+/// tests; production resolves it internally.
 final class AppShell extends StatefulWidget {
   const AppShell({
     required this.child,
@@ -150,10 +169,10 @@ class _AppShellState extends State<AppShell> {
 
   /// 1a — LaWorld: the reactive ecsly projection over the realm
   /// journal (cursor-fed, never polling). Null until the chat service
-  /// resolves the world and the human identity; the rail's unread
-  /// badges ride it first, surfaces migrate one by one. The feed's
-  /// watch subscription is cancelled in dispose (the pending-timer
-  /// law the WorldStateService poll follows).
+  /// resolves the world and the human identity; the action bar's
+  /// unread badge rides it first, surfaces migrate one by one. The
+  /// feed's watch subscription is cancelled in dispose (the
+  /// pending-timer law the WorldStateService poll follows).
   LaWorld? _laWorld;
   LaWorldFeed? _laWorldFeed;
 
@@ -165,13 +184,14 @@ class _AppShellState extends State<AppShell> {
   /// titles (phase 3a).
   ProjectsNotifier? _projects;
 
-  /// Whether the window currently clears the rail's expanded-width gate
-  /// (captured by the build's LayoutBuilder); below it the rail collapses
-  /// to its icon column (the owner's half-screen desktop case).
-  bool _railExpanded = true;
-
   /// Phase 2 — the ⌘K command palette overlay's open state.
   bool _paletteOpen = false;
+
+  /// The new-tab picker overlay (v4: a menu anchored to a strip's `+`,
+  /// never a tab): which group's `+` owns it, and the anchor link.
+  bool _pickerOpen = false;
+  int _pickerGroup = 0;
+  final LayerLink _pickerLink = LayerLink();
 
   /// Phase 2 — the shell's focus anchor: shell-level shortcuts answer
   /// even after clicks on non-focusable chrome (the `⌘T handled:false`
@@ -179,9 +199,14 @@ class _AppShellState extends State<AppShell> {
   /// falls to nothing.
   final FocusNode _shellFocus = FocusNode(debugLabel: 'shell.anchor');
 
+  /// The navigator's reparenting key: the router's nested navigator
+  /// rides the ACTIVE group's pane slot, and a group switch moves the
+  /// element (with its pushed-route stack) instead of remounting it.
+  final GlobalKey _navigatorKey = GlobalKey(debugLabel: 'shell.navigator');
+
   /// ADR 0027 — the miniwindow layer's state: floating windows (the
-  /// window presentation of a surface), fed by the rail's "open in
-  /// miniwindow" affordance and persisted beside the layout.
+  /// window presentation of a surface), fed by a tab's context menu
+  /// and persisted beside the layout.
   final MiniWindowController _miniWindows = MiniWindowController();
   final MiniWindowPersistence _miniWindowPersistence = MiniWindowPersistence();
 
@@ -379,11 +404,11 @@ class _AppShellState extends State<AppShell> {
 
   /// Restores the persisted layout; a corrupt blob keeps the default
   /// (the model decodes tolerantly, so does the shell). The migration
-  /// chain runs once, newest key first: v3 reads as-is; a v2/v1 blob
-  /// (one global bar + pins) migrates through [ShellLayout.fromJson]
-  /// (each tab to its own view's strip, pins become tabs); else the
-  /// retired pane-tree blob's leaves flatten in document order. The v3
-  /// key is written; legacy keys stay on disk but are never read again.
+  /// chain runs once, newest key first: v4 reads as-is; a v3 per-view
+  /// blob flattens into ONE group (v3 had no splits); a v2/v1 blob (one
+  /// global bar + pins) flattens likewise; else the retired pane-tree
+  /// blob's leaves flatten in document order. The v4 key is written;
+  /// legacy keys stay on disk but are never read again.
   Future<void> _restoreLayout() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(kViewLayoutPrefsKey);
@@ -399,7 +424,11 @@ class _AppShellState extends State<AppShell> {
       _restorePersistedConversationTab();
       return;
     }
-    for (final legacyKey in [kViewLayoutV2PrefsKey, kCenterTabsPrefsKey]) {
+    for (final legacyKey in [
+      kViewLayoutV3PrefsKey,
+      kViewLayoutV2PrefsKey,
+      kCenterTabsPrefsKey,
+    ]) {
       final legacy = prefs.getString(legacyKey);
       if (legacy == null || legacy.isEmpty) continue;
       try {
@@ -444,6 +473,10 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  /// The service's sync law (v4): the room the human is IN always has a
+  /// tab — but the user's focus is the user's. A thread selection the
+  /// layout already shows changes nothing (v3 re-slotted and could
+  /// steal focus on any notify); only a room WITHOUT a tab opens one.
   void _onServiceChanged() {
     if (!mounted) return;
     final surfaceId = conversationSurfaceId(
@@ -456,7 +489,9 @@ class _AppShellState extends State<AppShell> {
       _restorePersistedConversationTab();
       return;
     }
-    _onLayoutChanged(_layout.openConversation(surfaceId));
+    if (_layout.groupOf(surfaceId) < 0) {
+      _onLayoutChanged(_layout.openTab(surfaceId));
+    }
   }
 
   /// Boot restore: the layout persists its active conversation tab, but
@@ -467,9 +502,9 @@ class _AppShellState extends State<AppShell> {
   /// thread for them — openDm would).
   void _restorePersistedConversationTab() {
     if (_service.activeThreadId != null || !_service.isReady) return;
-    if (_layout.activeView != kConversationsSurfaceId) return;
     final id = _layout.activeSurfaceId;
-    if (id == null || _bootRestoredId == id) return;
+    if (!id.startsWith('dm:') && !id.startsWith('channel:')) return;
+    if (_bootRestoredId == id) return;
     final dmActor = id.startsWith('dm:') ? id.substring('dm:'.length) : null;
     final channelId = id.startsWith('channel:')
         ? id.substring('channel:'.length)
@@ -488,15 +523,15 @@ class _AppShellState extends State<AppShell> {
   // ---- actions -------------------------------------------------------------
 
   /// The conversation header's intent: show me this actor. The dock
-  /// retired, so the people view appears as its own hosted tab.
+  /// retired, so the people view appears as its own tab.
   void _onFocusActorIntent(final String actorId) {
     _peopleFocus.focus(actorId);
-    _onLayoutChanged(_layout.openTab(kPeopleSurfaceId, kPeopleSurfaceId));
+    _onLayoutChanged(_layout.openTab(kPeopleSurfaceId));
   }
 
-  /// ADR 0027 — the rail's right-click affordance: a conversation in
-  /// its own floating window. v1 content is the read-only peek (who is
-  /// in it, the last word — [PinnedConversationPeek]); a DM without a
+  /// ADR 0027 — a tab's context-menu affordance: a conversation in its
+  /// own floating window. v1 content is the read-only peek (who is in
+  /// it, the last word — [PinnedConversationPeek]); a DM without a
   /// thread yet is opened first (idempotent), a conversation that maps
   /// to no thread stays unopened. Replying stays in the main surface.
   void _openMiniWindow(final String surfaceId) {
@@ -506,6 +541,37 @@ class _AppShellState extends State<AppShell> {
       }
       final spec = _miniWindowSpec(surfaceId);
       if (spec != null) _miniWindows.open(spec);
+    }());
+  }
+
+  /// A tab's right-click (or long-press): the window presentation for
+  /// conversation tabs — the miniwindow (ADR 0027). Other kinds have no
+  /// context actions yet (honest absence: no menu).
+  void _onTabContext(final String surfaceId, final Offset globalPosition) {
+    if (_miniWindowSpec(surfaceId) == null &&
+        !surfaceId.startsWith('dm:') &&
+        !surfaceId.startsWith('channel:')) {
+      return;
+    }
+    unawaited(() async {
+      final overlay =
+          Overlay.of(context).context.findRenderObject()! as RenderBox;
+      final choice = await showMenu<String>(
+        context: context,
+        position: RelativeRect.fromLTRB(
+          globalPosition.dx,
+          globalPosition.dy,
+          overlay.size.width - globalPosition.dx,
+          overlay.size.height - globalPosition.dy,
+        ),
+        items: [
+          PopupMenuItem<String>(
+            value: 'miniwindow',
+            child: Text(context.l10n.railRowMiniwindow),
+          ),
+        ],
+      );
+      if (choice == 'miniwindow') _openMiniWindow(surfaceId);
     }());
   }
 
@@ -543,33 +609,52 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// Phase 1e — settings-as-view: the gear opens the settings surface
-  /// as a TAB of the active view (the embedded seam closes through the
-  /// view scope). The shell grammar keeps zero exceptions: no route
-  /// push, no `Navigator.pop` from inside a view.
-  void _openSettings() =>
-      _onLayoutChanged(_layout.openTab(_layout.activeView, kSettingsSurfaceId));
+  /// as a TAB of the active group (the embedded seam closes through
+  /// the view scope). The shell grammar keeps zero exceptions: no
+  /// route push, no `Navigator.pop` from inside a view.
+  void _openSettings() => _onLayoutChanged(_layout.openTab(kSettingsSurfaceId));
 
   /// The status edge's backend click (phase 1d): the Models surface
-  /// opens as a tab of the ACTIVE view (any view may host any surface —
-  /// the Safari law).
-  void _openModelsTab() =>
-      _onLayoutChanged(_layout.openTab(_layout.activeView, kModelsSurfaceId));
+  /// opens as a tab of the ACTIVE group (any pane may host any surface).
+  void _openModelsTab() => _onLayoutChanged(_layout.openTab(kModelsSurfaceId));
 
-  /// The status edge's attention click: the Conversations view, whose
-  /// landing state is the inbox (open permissions reject-first, running
-  /// tasks, last verdicts).
+  /// The status edge's attention click: the conversations world face,
+  /// whose landing state is the inbox (open permissions reject-first,
+  /// running tasks, last verdicts).
   void _openInbox() {
     _service.clearActiveThread();
-    _onLayoutChanged(_layout.showView(kConversationsSurfaceId));
+    _onLayoutChanged(_layout.openTab(kConversationsSurfaceId));
+  }
+
+  /// The action bar's kind click (the Discord cycle law): no open tab
+  /// of the kind → open its face; the active tab IS the kind → cycle to
+  /// the kind's next open tab (wrapping); else focus the kind's first.
+  void _onKindTap(final String kind) {
+    final tabs = <String>[
+      for (final id in _layout.allTabs)
+        if (kindOfSurfaceId(id) == kind) id,
+    ];
+    if (tabs.isEmpty) {
+      _onLayoutChanged(_layout.openTab(kind));
+      return;
+    }
+    final activeId = _layout.activeSurfaceId;
+    if (kindOfSurfaceId(activeId) == kind) {
+      final i = tabs.indexOf(activeId);
+      _onSelectTab(tabs[(i + 1) % tabs.length]);
+    } else {
+      _onSelectTab(tabs.first);
+    }
   }
 
   // ---- the strips' keyboard (the browser map) -----------------------------
 
-  /// The strip keyboard map: the picker shortcut (⌘T / ctrl+T) opens the
-  /// picker in the ACTIVE view's strip; ⌘W / ctrl+W closes its focused
-  /// tab. The modifier is chosen per platform — meta on macOS, ctrl
-  /// elsewhere — so the map never shadows a text field's editing
-  /// bindings.
+  /// The strip keyboard map: ⌘T opens the picker on the ACTIVE group;
+  /// ⌘W closes its focused tab; ⌘\ splits (the VS Code muscle memory);
+  /// ⌘K is the command palette. The modifier is chosen per platform —
+  /// meta on macOS, ctrl elsewhere — so the map never shadows a text
+  /// field's editing bindings. Escape closes the picker while it is
+  /// open (and only then — the map is rebuilt per state).
   Map<ShortcutActivator, Intent> _viewTabShortcuts() {
     final useMeta = defaultTargetPlatform == TargetPlatform.macOS;
     return <ShortcutActivator, Intent>{
@@ -579,12 +664,18 @@ class _AppShellState extends State<AppShell> {
       if (useMeta)
         const SingleActivator(LogicalKeyboardKey.keyW, meta: true):
             const _CloseActiveTabIntent(),
+      if (useMeta)
+        const SingleActivator(LogicalKeyboardKey.backslash, meta: true):
+            const _SplitIntent(),
       if (!useMeta)
         const SingleActivator(LogicalKeyboardKey.keyT, control: true):
             const _NewTabIntent(),
       if (!useMeta)
         const SingleActivator(LogicalKeyboardKey.keyW, control: true):
             const _CloseActiveTabIntent(),
+      if (!useMeta)
+        const SingleActivator(LogicalKeyboardKey.backslash, control: true):
+            const _SplitIntent(),
       // Phase 2 — the ⌘K command palette over the unified search.
       if (useMeta)
         const SingleActivator(LogicalKeyboardKey.keyK, meta: true):
@@ -592,6 +683,8 @@ class _AppShellState extends State<AppShell> {
       if (!useMeta)
         const SingleActivator(LogicalKeyboardKey.keyK, control: true):
             const _PaletteIntent(),
+      if (_pickerOpen)
+        const SingleActivator(LogicalKeyboardKey.escape): const DismissIntent(),
     };
   }
 
@@ -606,7 +699,26 @@ class _AppShellState extends State<AppShell> {
     _shellFocus.requestFocus();
   }
 
-  /// The palette's unified search: views (rail + fact surfaces),
+  /// The `+`/⌘T flow: the picker menu toggles on the given group's `+`
+  /// (ONE picker — a second `+` re-anchors it, the mockup's bindPlus
+  /// law).
+  void _togglePicker(final int group) {
+    setState(() {
+      if (_pickerOpen && _pickerGroup == group) {
+        _pickerOpen = false;
+      } else {
+        _pickerOpen = true;
+        _pickerGroup = group;
+      }
+    });
+  }
+
+  void _closePicker() {
+    if (!_pickerOpen) return;
+    setState(() => _pickerOpen = false);
+  }
+
+  /// The palette's unified search: views (action bar + fact surfaces),
   /// people, channels and shell actions — one list, keyboard-first.
   List<CommandEntry> _paletteEntries(final SurfaceRegistry surfaces) {
     final l10n = context.l10n;
@@ -617,11 +729,9 @@ class _AppShellState extends State<AppShell> {
           label: spec.title,
           group: 'views',
           icon: spec.icon,
-          // The palette is DETERMINISTIC where the rail is not: picking
-          // a view hosts the view's OWN face tab (a strip left on the
-          // picker would otherwise host the picker), while the rail's
-          // showView keeps the Safari picker law.
-          run: () => _onLayoutChanged(_layout.openTab(spec.id, spec.id)),
+          // The palette is DETERMINISTIC: picking a view opens (or
+          // focuses) the view's OWN face tab.
+          run: () => _onLayoutChanged(_layout.openTab(spec.id)),
         ),
       CommandEntry(
         id: 'view.$kModelsSurfaceId',
@@ -642,15 +752,14 @@ class _AppShellState extends State<AppShell> {
           id: 'dm.${actor.actorId}',
           label: actor.displayName,
           group: 'people',
-          run: () =>
-              activateConversationSurface(_service, 'dm:${actor.actorId}'),
+          run: () => _onSelectTab('dm:${actor.actorId}'),
         ),
       for (final channel in _service.channels)
         CommandEntry(
           id: 'channel.${channel.channelId}',
           label: '#${channel.name}',
           group: 'channels',
-          run: () => _service.selectChannel(channel.channelId),
+          run: () => _onSelectTab('channel:${channel.channelId}'),
         ),
       CommandEntry(
         id: 'action.newTab',
@@ -683,30 +792,55 @@ class _AppShellState extends State<AppShell> {
     ];
   }
 
-  /// The `+`/⌘T flow: the picker opens/focuses as a new active tab of
-  /// the hosted view.
-  void _openNewTab() => _onLayoutChanged(_layout.openNewTab());
+  /// The ⌘T flow: the picker on the ACTIVE group's `+`.
+  void _openNewTab() => _togglePicker(_layout.active);
 
-  /// The ⌘W flow: the hosted view's focused tab closes (the close law
-  /// applies — a strip's lone real tab swaps the picker in).
-  void _closeActiveTab() {
-    final id = _layout.activeSurfaceId;
-    if (id == null) return;
-    _onLayoutChanged(_layout.closeTab(_layout.activeView, id));
+  /// The ⌘W flow: the active group's focused tab closes (the close law
+  /// applies — the last tab of a group removes it, the sole group lands
+  /// on the world face).
+  void _closeActiveTab() => _onCloseTab(_layout.activeSurfaceId);
+
+  /// A tab's ✕ (or ⌘W): closing a ROOM's tab also leaves the room —
+  /// otherwise the service's active thread would re-open the tab on the
+  /// next notify (the ensure-exists law must never resurrect what the
+  /// human closed).
+  void _onCloseTab(final String surfaceId) {
+    if (surfaceId.startsWith('dm:') || surfaceId.startsWith('channel:')) {
+      final mapped = conversationSurfaceId(
+        activeThreadId: _service.activeThreadId,
+        channels: _service.channels,
+        actors: _service.roster?.all ?? const <ActorProfile>[],
+        dmThreadOf: _service.dmThreadOf,
+      );
+      if (mapped == surfaceId) _service.clearActiveThread();
+    }
+    _onLayoutChanged(_layout.closeTab(surfaceId));
   }
 
   /// A strip tab tap: conversation tabs re-select their thread (the
-  /// service is the source of truth for WHAT is on the slot —
-  /// openDm/selectChannel are idempotent; the reverse mapping in
+  /// service is the source of truth for WHAT the room shows;
+  /// openDm/selectChannel are idempotent — the reverse mapping in
   /// [_onServiceChanged] then re-enters as a no-op); every tab focuses
-  /// in its own view's strip and hosts that view.
-  void _onSelectTab(final String viewId, final String surfaceId) {
+  /// where it lives.
+  void _onSelectTab(final String surfaceId) {
     activateConversationSurface(_service, surfaceId);
-    _onLayoutChanged(_layout.openTab(viewId, surfaceId));
+    _onLayoutChanged(_layout.openTab(surfaceId));
   }
 
-  /// Identity marks for conversation tabs (the strip's compressed pills):
-  /// the actor's avatar for `dm:`, the channel's `#` disc for `channel:`;
+  /// The strip's split control (group 0): the active tab moves into a
+  /// new pane to the right (the mockup law).
+  void _onSplit() => _onLayoutChanged(_layout.split());
+
+  /// A trailing pane's fold control: its tabs merge back left.
+  void _onFold(final int group) => _onLayoutChanged(_layout.fold(group: group));
+
+  void _onBack(final int group) => _onLayoutChanged(_layout.back(group: group));
+
+  void _onForward(final int group) =>
+      _onLayoutChanged(_layout.forward(group: group));
+
+  /// Identity marks for conversation tabs (the strip's pills): the
+  /// actor's avatar for `dm:`, the channel's `#` disc for `channel:`;
   /// static views carry their registry icon.
   Widget? _leadingFor(final String surfaceId) {
     if (surfaceId.startsWith('dm:')) {
@@ -733,7 +867,7 @@ class _AppShellState extends State<AppShell> {
     return null;
   }
 
-  static const double _kIdentityMarkSize = 16;
+  static const double _kIdentityMarkSize = 14;
 
   /// The `doc:<id>` tab's title: the registry's loaded projection of the
   /// document (phase 3a); an unloaded id keeps its honest raw id.
@@ -749,8 +883,8 @@ class _AppShellState extends State<AppShell> {
     return title.isEmpty ? null : title;
   }
 
-  /// The VIEWS section's ordered registry slice (the rail's activity
-  /// bar): every static surface except the session picker.
+  /// The kind list's ordered registry slice (the action bar's grammar):
+  /// every static surface the bar fronts.
   List<SurfaceSpec> _viewSpecs(final SurfaceRegistry surfaces) => const [
     kConversationsSurfaceId,
     kDocumentsSurfaceId,
@@ -763,18 +897,154 @@ class _AppShellState extends State<AppShell> {
     kPeopleSurfaceId,
   ].map((final id) => surfaces[id]).whereType<SurfaceSpec>().toList();
 
+  /// The picker's sections (the format registry enumerated): faces
+  /// openable today, the rooms, the instance row, the creation flows,
+  /// and the named runway rows as honest absences.
+  List<NewTabSection> _pickerSections(final SurfaceRegistry surfaces) {
+    final l10n = context.l10n;
+    // Every row tap closes the picker first — a pick is a commitment.
+    void tap(final VoidCallback open) {
+      _closePicker();
+      open();
+    }
+
+    return <NewTabSection>[
+      NewTabSection(
+        label: l10n.newTabSectionRooms,
+        rows: <NewTabRow>[
+          for (final actor in _service.roster?.all ?? const <ActorProfile>[])
+            if (actor.kind != ActorKind.human)
+              NewTabRow(
+                key: 'newtab.entry.dm:${actor.actorId}',
+                label: actor.displayName,
+                leading: ActorAvatar(profile: actor, size: 16),
+                onTap: () => tap(() => _onSelectTab('dm:${actor.actorId}')),
+              ),
+          for (final channel in _service.channels)
+            NewTabRow(
+              key: 'newtab.entry.channel:${channel.channelId}',
+              label: '#${channel.name}',
+              icon: Icons.tag,
+              onTap: () =>
+                  tap(() => _onSelectTab('channel:${channel.channelId}')),
+            ),
+        ],
+      ),
+      NewTabSection(
+        label: l10n.newTabSectionOpen,
+        rows: <NewTabRow>[
+          for (final spec in _viewSpecs(surfaces))
+            NewTabRow(
+              key: 'newtab.entry.${spec.id}',
+              label: spec.title,
+              icon: spec.icon,
+              onTap: () =>
+                  tap(() => _onLayoutChanged(_layout.openTab(spec.id))),
+            ),
+          NewTabRow(
+            key: 'newtab.entry.$kModelsSurfaceId',
+            label: surfaces[kModelsSurfaceId]?.title ?? l10n.viewModelsTitle,
+            icon: Icons.tune,
+            onTap: () => tap(_openModelsTab),
+          ),
+          NewTabRow(
+            key: 'newtab.entry.$kSettingsSurfaceId',
+            label: surfaces[kSettingsSurfaceId]?.title ?? l10n.settings,
+            icon: Icons.settings_outlined,
+            onTap: () => tap(_openSettings),
+          ),
+        ],
+      ),
+      NewTabSection(
+        label: l10n.newTabSectionInstances,
+        rows: <NewTabRow>[
+          NewTabRow(
+            key: 'newtab.instance.$kBrowserSurfaceId',
+            label: l10n.newTabBrowserInstance,
+            icon: Icons.web,
+            onTap: () => tap(() {
+              final id = _layout.nextInstanceId(kBrowserSurfaceId);
+              _onLayoutChanged(_layout.openTab(id));
+            }),
+          ),
+        ],
+      ),
+      NewTabSection(
+        label: l10n.newTabSectionCreate,
+        rows: <NewTabRow>[
+          NewTabRow(
+            key: 'newtab.create.actor',
+            label: l10n.worldChatMenuMessageActor,
+            icon: Icons.person_search_outlined,
+            onTap: () => tap(
+              () => unawaited(
+                openMessageActorFlow(
+                  context,
+                  service: _service,
+                  onOpenSettings: _openSettings,
+                ),
+              ),
+            ),
+          ),
+          NewTabRow(
+            key: 'newtab.create.channel',
+            label: l10n.worldChatMenuNewChannel,
+            icon: Icons.tag,
+            onTap: () => tap(
+              () => unawaited(openNewChannelFlow(context, service: _service)),
+            ),
+          ),
+          NewTabRow(
+            key: 'newtab.create.workspace',
+            label: l10n.worldChatMenuNewWorkspace,
+            icon: Icons.create_new_folder_outlined,
+            onTap: () => tap(() => unawaited(openNewWorkspaceFlow(context))),
+          ),
+          NewTabRow(
+            key: 'newtab.create.actor-new',
+            label: l10n.actorsCreateActor,
+            icon: Icons.person_add_alt,
+            onTap: () => tap(_openSettings),
+          ),
+        ],
+      ),
+      NewTabSection(
+        label: l10n.newTabSectionRunway,
+        rows: <NewTabRow>[
+          NewTabRow(
+            key: 'newtab.runway.image',
+            label: l10n.newTabRunwayImage,
+            enabled: false,
+          ),
+          NewTabRow(
+            key: 'newtab.runway.video',
+            label: l10n.newTabRunwayVideo,
+            enabled: false,
+          ),
+          NewTabRow(
+            key: 'newtab.runway.audio',
+            label: l10n.newTabRunwayAudio,
+            enabled: false,
+          ),
+        ],
+      ),
+    ];
+  }
+
   @override
   Widget build(final BuildContext context) {
     AppShell.debugRootContext = context;
-    final surfaces = buildShellSurfaces(context, service: _service)
-      ..[kNewTabSurfaceId] = SurfaceSpec(
-        id: kNewTabSurfaceId,
-        title: context.l10n.newTabPageTitle,
-        builder: (final tabContext) => const NewTabSurface(),
-        icon: Icons.crop_square,
-      );
+    final surfaces = buildShellSurfaces(context, service: _service);
     _projects = context.read<ProjectsNotifier?>();
     final screenLayout = ScreenLayout.of(context);
+    final kinds = <ActionBarKind>[
+      for (final spec in _viewSpecs(surfaces))
+        ActionBarKind(
+          id: spec.id,
+          icon: spec.icon ?? Icons.crop_square,
+          tooltip: spec.title,
+        ),
+    ];
     return ChangeNotifierProvider<RealmChatService>.value(
       value: _service,
       child: ChangeNotifierProvider<WorldStateService>.value(
@@ -790,11 +1060,13 @@ class _AppShellState extends State<AppShell> {
               surfaces: surfaces,
               onChanged: _onLayoutChanged,
               onFocusActor: _onFocusActorIntent,
-              titleFor: (final id) => conversationSurfaceTitle(
-                id,
-                channels: _service.channels,
-                actors: _service.roster?.all ?? const <ActorProfile>[],
-              ),
+              titleFor: (final id) =>
+                  conversationSurfaceTitle(
+                    id,
+                    channels: _service.channels,
+                    actors: _service.roster?.all ?? const <ActorProfile>[],
+                  ) ??
+                  _documentTitle(id),
               leadingFor: _leadingFor,
               child: Shortcuts(
                 shortcuts: _viewTabShortcuts(),
@@ -813,9 +1085,21 @@ class _AppShellState extends State<AppShell> {
                             return null;
                           },
                         ),
+                    _SplitIntent: CallbackAction<_SplitIntent>(
+                      onInvoke: (final _) {
+                        _onSplit();
+                        return null;
+                      },
+                    ),
                     _PaletteIntent: CallbackAction<_PaletteIntent>(
                       onInvoke: (final _) {
                         _openPalette();
+                        return null;
+                      },
+                    ),
+                    DismissIntent: CallbackAction<DismissIntent>(
+                      onInvoke: (final _) {
+                        _closePicker();
                         return null;
                       },
                     ),
@@ -823,131 +1107,90 @@ class _AppShellState extends State<AppShell> {
                   // The focus anchor: shell-level shortcuts answer even
                   // when no text field holds focus — the anchor takes it
                   // once at mount (an autofocus request loses to any
-                  // already-focused descendant, so the rail's search field
-                  // is never stolen from) and key events then bubble up
-                  // through the map.
+                  // already-focused descendant) and key events then
+                  // bubble up through the map.
                   child: Focus(
                     autofocus: true,
                     focusNode: _shellFocus,
                     child: Listener(
                       behavior: HitTestBehavior.translucent,
                       onPointerUp: (final _) => _reclaimFocusUnlessEditing(),
-                      child: LayoutBuilder(
-                        builder: (final context, final constraints) {
-                          _railExpanded =
-                              constraints.maxWidth >=
-                              ShellTokens.railExpandedMinWindow;
-                          return MiniWindowLayer(
-                            controller: _miniWindows,
-                            child: Stack(
+                      child: MiniWindowLayer(
+                        controller: _miniWindows,
+                        child: Stack(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    // Phase 0 unified titlebar
-                                    // (macOS): the window draws under
-                                    // the traffic lights, so the shell
-                                    // reserves the system gutter above
-                                    // its chrome. macOS reports no
-                                    // viewPadding for the titlebar,
-                                    // hence the platform constant;
-                                    // zero elsewhere.
-                                    SizedBox(
-                                      height:
-                                          defaultTargetPlatform ==
-                                              TargetPlatform.macOS
-                                          ? ShellTokens.titlebarGutter
-                                          : MediaQuery.of(
-                                              context,
-                                            ).viewPadding.top,
-                                    ),
-                                    Expanded(
-                                      child: screenLayout.small
-                                          ? _centerColumn(surfaces)
-                                          : Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: [
-                                                SizedBox(
-                                                  width: _railExpanded
-                                                      ? ShellTokens.railWidth
-                                                      : ShellTokens
-                                                            .railCompactWidth,
-                                                  child: ActorRail(
-                                                    service: _service,
-                                                    expanded: _railExpanded,
-                                                    activeView:
-                                                        _layout.activeView,
-                                                    views: _viewSpecs(surfaces),
-                                                    onOpenView:
-                                                        (final viewId) =>
-                                                            _onLayoutChanged(
-                                                              _layout.showView(
-                                                                viewId,
-                                                              ),
-                                                            ),
-                                                    onOpenSettings:
-                                                        _openSettings,
-                                                    onOpenCommandPalette:
-                                                        _openPalette,
-                                                    onConversationNewTab:
-                                                        (
-                                                          final surfaceId,
-                                                        ) => _onLayoutChanged(
-                                                          _layout
-                                                              .openConversation(
-                                                                surfaceId,
-                                                                forceNew: true,
-                                                              ),
-                                                        ),
-                                                    onMiniWindow:
-                                                        _openMiniWindow,
-                                                  ),
-                                                ),
-                                                VerticalDivider(
-                                                  width: 1,
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).dividerColor,
-                                                ),
-                                                Expanded(
-                                                  child: _centerColumn(
-                                                    surfaces,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                    ),
-                                    // Phase 1d — the status edge:
-                                    // ONE honest line (mesh · backend
-                                    // · daemon · attention) at the
-                                    // window bottom, spanning both
-                                    // layout branches; its clicks
-                                    // route into the surfaces that
-                                    // own the facts (Models tab,
-                                    // landing inbox, arm).
-                                    StatusEdge(
-                                      world: _worldState,
-                                      onOpenModels: _openModelsTab,
-                                      onOpenInbox: _openInbox,
-                                    ),
-                                    SizedBox(
-                                      height: MediaQuery.of(
-                                        context,
-                                      ).viewPadding.bottom,
-                                    ),
-                                  ],
+                                // DESIGN.md v2 — the title bar is gone:
+                                // on macOS the first group's strip is the
+                                // window's top row (the traffic lights
+                                // ride at its head), so no gutter is
+                                // reserved there; other platforms keep
+                                // their system inset.
+                                SizedBox(
+                                  height: MediaQuery.of(
+                                    context,
+                                  ).viewPadding.top,
                                 ),
-                                if (_paletteOpen)
-                                  CommandPalette(
-                                    entries: _paletteEntries(surfaces),
-                                    onClose: _closePalette,
-                                  ),
+                                Expanded(
+                                  child: screenLayout.small
+                                      ? _paneColumn(_layout.active, surfaces)
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            ActionBar(
+                                              layout: _layout,
+                                              kinds: kinds,
+                                              onKindTap: _onKindTap,
+                                              onOpenSettings: _openSettings,
+                                              onOpenPalette: _openPalette,
+                                            ),
+                                            Expanded(
+                                              child: _panesRow(surfaces),
+                                            ),
+                                          ],
+                                        ),
+                                ),
+                                // Phase 1d — the status edge: ONE
+                                // honest line (mesh · backend · daemon ·
+                                // attention) at the window bottom,
+                                // spanning every layout branch; its
+                                // clicks route into the surfaces that
+                                // own the facts (Models tab, landing
+                                // inbox, arm).
+                                StatusEdge(
+                                  world: _worldState,
+                                  onOpenModels: _openModelsTab,
+                                  onOpenInbox: _openInbox,
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(
+                                    context,
+                                  ).viewPadding.bottom,
+                                ),
                               ],
                             ),
-                          );
-                        },
+                            if (_paletteOpen)
+                              CommandPalette(
+                                entries: _paletteEntries(surfaces),
+                                onClose: _closePalette,
+                              ),
+                            if (_pickerOpen)
+                              ListenableBuilder(
+                                // Rooms arrive async (the roster and the
+                                // channel registry load after boot): the
+                                // open picker re-renders with them.
+                                listenable: _service,
+                                builder: (final context, final _) => NewTabMenu(
+                                  link: _pickerLink,
+                                  sections: _pickerSections(surfaces),
+                                  onClose: _closePicker,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -960,24 +1203,47 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  /// The center: the hosted view's own tab strip above the router body
-  /// (the `/home` route renders the strip's focused surface).
-  Widget _centerColumn(final SurfaceRegistry surfaces) => Column(
+  /// The pane groups, left → right, hairline-separated (the split
+  /// anatomy: N groups = N strips, each owning its tabs).
+  Widget _panesRow(final SurfaceRegistry surfaces) {
+    final groups = _layout.groups;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var g = 0; g < groups.length; g++) ...[
+          if (g > 0)
+            VerticalDivider(width: 1, color: Theme.of(context).dividerColor),
+          Expanded(child: _paneColumn(g, surfaces)),
+        ],
+      ],
+    );
+  }
+
+  /// ONE pane column (the chrome budget: one strip row, then content):
+  /// the group's strip above its focused surface. The ACTIVE group's
+  /// slot hosts the router navigator (GlobalKey-reparented, so pushed
+  /// routes survive a group switch); the others render their surface
+  /// directly.
+  Widget _paneColumn(final int group, final SurfaceRegistry surfaces) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       ListenableBuilder(
-        // Rebuilt per service notify so rail-driven title facts (roster,
-        // channels) land without a layout change — never a cached widget
-        // instance (the title-stuck bug law).
+        // Rebuilt per service notify so title facts (roster, channels)
+        // land without a layout change — never a cached widget instance
+        // (the title-stuck bug law).
         listenable: _service,
-        builder: (final context, final _) => ViewTabStrip(
-          viewId: _layout.activeView,
+        builder: (final context, final _) => PaneStrip(
+          group: group,
           layout: _layout,
           surfaces: surfaces,
-          onSelect: (final id) => _onSelectTab(_layout.activeView, id),
-          onClose: (final id) =>
-              _onLayoutChanged(_layout.closeTab(_layout.activeView, id)),
-          onNewTab: _openNewTab,
+          onSelect: _onSelectTab,
+          onClose: _onCloseTab,
+          onNewTab: () => _togglePicker(group),
+          onSplit: _onSplit,
+          onFold: () => _onFold(group),
+          onBack: () => _onBack(group),
+          onForward: () => _onForward(group),
+          onTabContext: _onTabContext,
           titleFor: (final id) =>
               conversationSurfaceTitle(
                 id,
@@ -986,9 +1252,21 @@ class _AppShellState extends State<AppShell> {
               ) ??
               _documentTitle(id),
           leadingFor: _leadingFor,
+          pickerLink: _pickerLink,
+          pickerOwner: _pickerOpen && _pickerGroup == group,
+          lightsGutter:
+              group == 0 && defaultTargetPlatform == TargetPlatform.macOS,
         ),
       ),
-      Expanded(child: widget.child),
+      Expanded(
+        child: group == _layout.active
+            ? KeyedSubtree(key: _navigatorKey, child: widget.child)
+            : buildSurfaceFor(
+                context,
+                _layout.groups[group].activeId,
+                surfaces,
+              ),
+      ),
     ],
   );
 }
@@ -1003,15 +1281,20 @@ class _CloseActiveTabIntent extends Intent {
   const _CloseActiveTabIntent();
 }
 
+/// The split shortcut (⌘\ — the VS Code muscle memory).
+class _SplitIntent extends Intent {
+  const _SplitIntent();
+}
+
 /// Phase 2 — the ⌘K command palette intent.
 class _PaletteIntent extends Intent {
   const _PaletteIntent();
 }
 
 /// Re-selects the thread behind a conversation surface id through the
-/// service (the source of truth for the slot's content). Fire-and-
+/// service (the source of truth for the room's content). Fire-and-
 /// forget: selection is idempotent, and the service's notification
-/// re-enters `_onServiceChanged` as a no-op for the same id.
+/// re-enters `_onServiceChanged` as a no-op for an open tab.
 void activateConversationSurface(
   final RealmChatService? service,
   final String surfaceId,
@@ -1024,10 +1307,11 @@ void activateConversationSurface(
   }
 }
 
-/// The `/home` route body: the ACTIVE view's ACTIVE tab host. The strip
-/// lives above it in the shell; the body only mounts the focused surface.
-/// Pushed project routes render as full pages of the navigator above it;
-/// the rail and the strips (and their state) survive the round-trip.
+/// The `/home` route body: the ACTIVE group's ACTIVE tab host. The
+/// strip lives above it in the shell; the body only mounts the focused
+/// surface. Pushed project routes render as full pages of the navigator
+/// above it; the bar and the strips (and their state) survive the
+/// round-trip.
 final class CenterTabsArea extends StatelessWidget {
   const CenterTabsArea({super.key});
 
@@ -1038,22 +1322,10 @@ final class CenterTabsArea extends StatelessWidget {
       // Honest absence: the area only makes sense inside the shell.
       return const Center(child: Text('center tabs require the app shell'));
     }
-    final activeId = scope.layout.activeSurfaceId;
-    if (activeId == null) {
-      return const SizedBox.shrink();
-    }
-    // Conversation surface ids (`dm:`/`channel:`) are not in the static
-    // registry — they share the ONE conversation slot, so they resolve
-    // onto its [WorldChatSurface] spec.
-    final spec =
-        scope.surfaces[activeId] ??
-        conversationSurfaceSpec(activeId, scope.surfaces) ??
-        documentSurfaceSpec(activeId);
-    return KeyedSubtree(
-      key: ValueKey('pane.leaf.$activeId'),
-      child: spec == null
-          ? UnknownSurface(surfaceId: activeId)
-          : Builder(builder: spec.builder),
+    return buildSurfaceFor(
+      context,
+      scope.layout.activeSurfaceId,
+      scope.surfaces,
     );
   }
 }

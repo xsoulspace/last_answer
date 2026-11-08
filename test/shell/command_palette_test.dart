@@ -122,10 +122,11 @@ void main() {
       expect(find.byKey(const ValueKey('view.tab.models')), findsNothing);
     });
 
-    testWidgets('the rail search field is the palette trigger', (
+    testWidgets('the action bar search button is the palette trigger', (
       final tester,
     ) async {
-      // The search field only renders in the expanded rail.
+      // The search button rides the action bar (always rendered at
+      // desktop widths — the expanded-rail gate retired with the rail).
       await tester.binding.setSurfaceSize(const Size(1400, 900));
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await _pumpShell(tester);
@@ -155,8 +156,9 @@ void main() {
       await tester.pump();
       expect(find.byKey(const ValueKey('shell.commandPalette')), findsNothing);
 
+      // v4: ⌘T opens the PICKER MENU (the picker-as-tab retired).
       await _pressCtrlKey(tester, LogicalKeyboardKey.keyT);
-      expect(find.byKey(const ValueKey('view.tab.newtab')), findsOneWidget);
+      expect(find.byKey(const ValueKey('newtab.page')), findsOneWidget);
     });
   });
 
@@ -203,7 +205,7 @@ void main() {
       }
       // …the open tab…
       expect(snapshot, contains('view.tab.$kConversationsSurfaceId'));
-      expect(snapshot, contains('view.strip.add.$kConversationsSurfaceId'));
+      expect(snapshot, contains('view.strip.add.0'));
       // …the search trigger…
       expect(snapshot, contains('rail.search'));
       // …and the status edge, segment by segment.

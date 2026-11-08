@@ -1718,4 +1718,47 @@ class SRu extends S {
 
   @override
   String get actionLandingInbox => 'Входящий обзор';
+
+  @override
+  String get newTabSectionOpen => 'Открыть';
+
+  @override
+  String get newTabSectionRooms => 'Комнаты';
+
+  @override
+  String get newTabSectionInstances => 'Новый экземпляр';
+
+  @override
+  String get newTabSectionCreate => 'Создать';
+
+  @override
+  String get newTabSectionRunway =>
+      'Форматы на подходе — станут вкладками, когда формат появится';
+
+  @override
+  String get newTabBrowserInstance => 'Браузер · новое окно';
+
+  @override
+  String get newTabRunwayImage => 'редактор изображений · генерация';
+
+  @override
+  String get newTabRunwayVideo => 'видео · таймлайн генерации';
+
+  @override
+  String get newTabRunwayAudio => 'аудио · мультитрек';
+
+  @override
+  String get stripBack => 'Назад';
+
+  @override
+  String get stripForward => 'Вперёд';
+
+  @override
+  String get stripSplit => 'Разделить — две вкладки сразу';
+
+  @override
+  String get stripFold => 'Свернуть разбиение — к одной панели';
+
+  @override
+  String get worldChatActorCard => 'Карточка актора';
 }

@@ -1715,4 +1715,47 @@ class SIt extends S {
 
   @override
   String get actionLandingInbox => 'Posta in arrivo';
+
+  @override
+  String get newTabSectionOpen => 'Apri';
+
+  @override
+  String get newTabSectionRooms => 'Stanze';
+
+  @override
+  String get newTabSectionInstances => 'Nuova istanza';
+
+  @override
+  String get newTabSectionCreate => 'Crea';
+
+  @override
+  String get newTabSectionRunway =>
+      'Formati in arrivo — diventeranno schede quando il formato arriva';
+
+  @override
+  String get newTabBrowserInstance => 'Browser · nuova finestra';
+
+  @override
+  String get newTabRunwayImage => 'editor immagini · generazione';
+
+  @override
+  String get newTabRunwayVideo => 'video · timeline di generazione';
+
+  @override
+  String get newTabRunwayAudio => 'audio · multitraccia';
+
+  @override
+  String get stripBack => 'Indietro';
+
+  @override
+  String get stripForward => 'Avanti';
+
+  @override
+  String get stripSplit => 'Dividi — due schede insieme';
+
+  @override
+  String get stripFold => 'Ricomponi — torna a un riquadro';
+
+  @override
+  String get worldChatActorCard => 'Scheda attore';
 }

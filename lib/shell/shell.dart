@@ -1,12 +1,16 @@
-/// ADR 0024 — the app shell. PHASE 1 — one layout ([ShellLayout]) of
-/// per-view tab strips drives the rail of views and the center host;
-/// every view is a [SurfaceSpec] in the ONE registry.
+/// ADR 0024 — the app shell. DESIGN.md v2 — one layout ([ShellLayout]
+/// v4) of PANE GROUPS drives the action bar and the group-scoped tab
+/// strips; every tab is a [SurfaceSpec] face, a content id, or an
+/// instance id in the ONE registry.
 library;
 
-export 'actor_rail.dart';
+export 'action_bar.dart';
 export 'app_shell.dart';
 export 'center_tabs.dart';
+export 'create_flows.dart';
 export 'landing_inbox.dart';
+export 'new_tab_menu.dart';
+export 'pane_strip.dart';
 export 'shell_layout.dart';
 export 'shell_scope.dart';
 export 'shell_theme.dart';
@@ -15,4 +19,3 @@ export 'surfaces.dart';
 export 'view_documents.dart';
 export 'view_models.dart';
 export 'view_people.dart';
-export 'view_tab_strip.dart';

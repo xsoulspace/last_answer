@@ -10,7 +10,7 @@
 //   live apps (the named Flutter framework live-semantics gap — the
 //   gate's SKIP row). Navigation rides the ⌘K palette (typed, the
 //   gate-proven lane); badge visuals are screenshot evidence, their
-//   law is widget-gated in actor_rail_test.
+//   law is widget-gated in action_bar_test.
 // - Seed text VARIES per beat: a 500-beat repetition chain trips the
 //   ADR 0137 echo guard (correctly!) and throttles dispatch.
 // - The round-trip runs in its OWN fresh room (no echo tail) and
@@ -402,7 +402,7 @@ Future<void> main(final List<String> args) async {
     }
 
     // ---- rail badge: semantics-INVISIBLE live (framework gap) ----
-    // The badge law is widget-gated (actor_rail_test); live evidence is
+    // The badge law is widget-gated (action_bar_test); live evidence is
     // the screenshot below. Named WARN, never a silent skip.
     row(
       'WARN',

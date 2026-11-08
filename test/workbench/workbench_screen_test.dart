@@ -145,4 +145,58 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  // 2b — the trinity's honest legs: the room dock mounts the ONE world
+  // chat (outside the shell it NAMES the absence, never a second chat
+  // implementation), and the runtime projection is the real file tree +
+  // the preview lane (no registry / no folder = named absence, never a
+  // placeholder string pretending to be a tree).
+  testWidgets('the trinity: room dock + runtime pane name their absences '
+      'hermetically', (tester) async {
+    tester.view.resetPhysicalSize();
+    tester.view.physicalSize = const Size(1400, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final repo = InMemoryDocumentRepository();
+    await tester.pumpWidget(
+      Provider<DocumentRepository>.value(
+        value: repo,
+        child: const MaterialApp(home: WorkbenchScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Open sample article'));
+    await tester.pumpAndSettle();
+
+    // The dock toggle exists; opening it without the shell's service
+    // names the absence.
+    await tester.tap(find.byKey(const ValueKey('workbench.dock.chat')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('workbench.dock.absent')),
+      findsOneWidget,
+    );
+
+    // The runtime projection: file tree + preview lane, both honest.
+    await tester.tap(find.text('runtime'));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('workbench.files.absent')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('workbench.preview.absent')),
+      findsOneWidget,
+    );
+
+    // Closing the dock leaves the artifact and its projection pane.
+    await tester.tap(find.byKey(const ValueKey('workbench.dock.chat')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('workbench.dock.absent')),
+      findsNothing,
+    );
+    expect(tester.takeException(), isNull);
+  });
 }

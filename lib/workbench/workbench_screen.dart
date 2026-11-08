@@ -6,13 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart' as hc;
+import 'package:lastanswer/browser/browser_entry.dart';
+import 'package:lastanswer/coding_agent/product_autonomy.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/workbench/behaviour_connection.dart';
 import 'package:lastanswer/workbench/workbench_harness_tools.dart';
 import 'package:lastanswer/workbench/workbench_investigation.dart';
 import 'package:lastanswer/workbench/workbench_scene.dart';
 import 'package:lastanswer/workbench/workbench_strings.dart';
+import 'package:lastanswer/workspaces/workspace.dart';
+import 'package:lastanswer/workspaces/workspace_files_tab.dart';
+import 'package:lastanswer/workspaces/workspace_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_automation_interface/universal_automation_interface.dart';
+import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -70,6 +78,10 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   Future<void> _uiTail = Future.value();
   bool inspect = false;
   bool away = false;
+
+  /// 2b — the trinity's conversation leg: the room docked beside the
+  /// artifact (session state, like [inspect] — chrome never persists).
+  bool dockChat = false;
   hc.WorkProjection projection = hc.WorkProjection.document;
   hc.ReturnBehaviour? candidate;
   double? _dragWidth;
@@ -777,6 +789,54 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
     );
   }
 
+  /// 2b — the trinity's conversation leg: the ONE world-chat slot,
+  /// docked beside the artifact (never a second chat implementation).
+  /// Outside the shell's provider tree the dock names its absence.
+  Widget _chatDock() {
+    final service = context.read<RealmChatService?>();
+    if (service == null) {
+      return Center(
+        child: Text(
+          'the room dock needs the shell',
+          key: const ValueKey('workbench.dock.absent'),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+    return WorldChatSurface(service: service);
+  }
+
+  /// 2b — the trinity's preview/run leg: the REAL file tree (the
+  /// workspace registry's own tab — no placeholder strings) plus the
+  /// product preview lane (ProductWebPreview's tokenized loopback
+  /// through [ProductAutonomy]). No registry / no folder = honest
+  /// named absence; the terminal stays an honest placeholder (the
+  /// plan's own word).
+  Widget _runtimePane() {
+    final notifier = context.read<WorkspaceNotifier?>();
+    final folders = <String>[
+      for (final workspace in notifier?.workspaces ?? const <Workspace>[])
+        ...workspace.folderPaths,
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: notifier == null
+              ? Center(
+                  child: Text(
+                    'no workspace registry — the file tree rides the shell',
+                    key: const ValueKey('workbench.files.absent'),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : WorkspaceFilesTab(notifier: notifier),
+        ),
+        _PreviewRow(folders: folders),
+      ],
+    );
+  }
+
   Widget _inspector() {
     final block = node!.blockById(hc.NodeId(selected ?? ''));
     final proposals =
@@ -1247,6 +1307,15 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                           selected ??= 'project_open';
                         }),
                 ),
+                // 2b — the trinity toggle: the room docks beside the
+                // artifact (conversation | artifact | preview/run).
+                _action(
+                  dockChat ? 'Close room dock' : 'Room dock',
+                  node == null
+                      ? null
+                      : () => setState(() => dockChat = !dockChat),
+                  key: 'workbench.dock.chat',
+                ),
               ],
             ),
             if (busy) const LinearProgressIndicator(),
@@ -1300,16 +1369,28 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                   ? _projectPicker()
                   : LayoutBuilder(
                       builder: (context, size) {
-                        if (!inspect) return _document();
+                        // 2b — the trinity layout: artifact | room dock
+                        // | projection pane. Wide screens carry all
+                        // three; narrow screens carry ONE (the explicit
+                        // inspect pick wins over the dock — the
+                        // pre-trinity law stays intact when the dock is
+                        // closed).
+                        final right = projection == hc.WorkProjection.runtime
+                            ? _runtimePane()
+                            : _inspector();
+                        if (!inspect && !dockChat) return _document();
                         if (size.maxWidth >= 900) {
                           return Row(
                             children: [
                               Expanded(child: _document()),
-                              SizedBox(width: 380, child: _inspector()),
+                              if (dockChat)
+                                SizedBox(width: 340, child: _chatDock()),
+                              if (inspect) SizedBox(width: 380, child: right),
                             ],
                           );
                         }
-                        return _inspector();
+                        if (inspect) return right;
+                        return _chatDock();
                       },
                     ),
             ),
@@ -1318,4 +1399,90 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
       ),
     ),
   );
+}
+
+/// 2b — the preview/run row: the product preview lane's honest state
+/// (stopped → one Start; live → the tokenized loopback URL opens in
+/// the workspace browser). One workspace folder is the preview's
+/// subject today (the FIRST registered folder); a multi-folder
+/// preview picker is named runway, not a silent guess.
+class _PreviewRow extends StatefulWidget {
+  const _PreviewRow({required this.folders});
+
+  final List<String> folders;
+
+  @override
+  State<_PreviewRow> createState() => _PreviewRowState();
+}
+
+class _PreviewRowState extends State<_PreviewRow> {
+  bool _starting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final path = widget.folders.isEmpty ? null : widget.folders.first;
+    if (path == null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Text(
+          'no workspace folder — preview needs one',
+          key: const ValueKey('workbench.preview.absent'),
+        ),
+      );
+    }
+    final autonomy = ProductAutonomy.forWorkspace(path);
+    final preview = autonomy?.preview;
+    if (preview == null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            const Expanded(child: Text('preview stopped')),
+            TextButton(
+              key: const ValueKey('workbench.preview.start'),
+              onPressed: _starting
+                  ? null
+                  : () => unawaited(() async {
+                      setState(() => _starting = true);
+                      try {
+                        await ProductAutonomy.start(Directory(path));
+                      } finally {
+                        if (mounted) setState(() => _starting = false);
+                      }
+                    }()),
+              child: Text(_starting ? 'starting…' : 'Start preview'),
+            ),
+          ],
+        ),
+      );
+    }
+    return ListenableBuilder(
+      listenable: preview,
+      builder: (context, _) {
+        final url = preview.url;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  url == null ? 'preview building…' : 'preview live',
+                  key: const ValueKey('workbench.preview.state'),
+                ),
+              ),
+              TextButton(
+                key: const ValueKey('workbench.preview.open'),
+                onPressed: url == null
+                    ? null
+                    : () => unawaited(
+                        openWorkspaceBrowser(context, initialUrl: url),
+                      ),
+                child: const Text('Open preview'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

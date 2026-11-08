@@ -168,7 +168,12 @@ AcpActorBridge _startBridge(
 Future<void> _settle(
   final bool Function() done, {
   final String reason = 'condition',
-  final Duration timeout = const Duration(seconds: 8),
+  // 20s, not 8s: these conditions poll real async chains (journal read +
+  // service notify + bridge scan) with no fake clock to pump, and the
+  // full-suite parallel load stretches them well past 8s (the observed
+  // cursor-seed flake). A longer deadline only delays the give-up point;
+  // it never changes a passing run.
+  final Duration timeout = const Duration(seconds: 20),
 }) async {
   final deadline = DateTime.now().add(timeout);
   while (!done()) {

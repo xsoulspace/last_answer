@@ -358,6 +358,15 @@ const List<AppIntentSpec> appIntentCatalog = [
   ),
 ];
 
+/// Registered-but-unpublished BY LAW: debug-only diagnostics that ride
+/// the toolkit registration (debug/profile builds) but are NOT
+/// controller intents — the catalog is the controller-facing vocabulary
+/// and a diagnostic dump is not an intent. The contract test subtracts
+/// exactly this named set: an unnamed hidden verb still fails.
+const Set<String> kDebugOnlyDiagnosticTools = <String>{
+  'debug_semantics_labels', // phase-5 walker-gap oracle (43e68298)
+};
+
 /// The catalog plus the executable app-shell entries. The catalog tool
 /// is the DISCOVERY half of the contract; the other three are the
 /// actions the app shell owns that no doc/mesh/storage family carries

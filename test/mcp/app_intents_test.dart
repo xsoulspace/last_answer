@@ -63,8 +63,11 @@ void main() {
       reason: 'catalog names no registered entry: $unanswerable',
     );
     // …and every registered name is PUBLISHED (a controller reads the
-    // catalog, never the code — an unpublished tool is a hidden verb).
-    final hidden = registered.difference(published);
+    // catalog, never the code — an unpublished tool is a hidden verb)
+    // minus the NAMED debug-only diagnostics (kDebugOnlyDiagnosticTools:
+    // registered for gates, deliberately not controller intents).
+    final hidden =
+        registered.difference(published).difference(kDebugOnlyDiagnosticTools);
     expect(
       hidden,
       isEmpty,

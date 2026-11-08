@@ -331,7 +331,13 @@ void main() {
 
     expect(pending.isAnswered, isTrue);
     await turn;
-    expect(controller.current!.verdictLine, contains('FAIL'));
+    // Re-pinned 2026-11-08 to the harness's N4 escalation law (ADR 0137
+    // content-aware round cap, harness bbac789b): the scripted mover's
+    // rejected write exhausts the attempt budget, and budget exhaustion
+    // hands the task to the client (awaitingGuidance → WAITING) instead
+    // of dropping it to a hard FAIL. The reject is still recorded as
+    // data with its origin (below) and the write still never lands.
+    expect(controller.current!.verdictLine, contains('WAITING'));
     expect(
       File('${workspace.path}/main.dart').readAsStringSync(),
       isNot(contains("print('ok')")),

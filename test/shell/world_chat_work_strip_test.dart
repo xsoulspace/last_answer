@@ -16,166 +16,162 @@ void main() {
   // expandable into the loop's own measured facts (rounds, tool calls,
   // applied writes, cache share, tokens). Nothing is invented: every
   // fact is a journal field.
-  testWidgets(
-    'the work strip shows the narration row + the room task card and '
-    'expands into the loop facts',
-    (final tester) async {
-      late final RealmChatService service;
-      late final ActorProfile toby;
-      late final WorldStateService worldState;
-      await tester.runAsync(() async {
-        final temp = await Directory.systemTemp.createTemp('la_workstrip_');
-        addTearDown(() => temp.delete(recursive: true));
-        final world = (await RealmWorld.open(rootOverride: temp.path))!;
-        service = RealmChatService(
-          debugWorldOverride: world,
-          debugRosterOverride: ActorRoster(replicaId: 'tester'),
-          debugStartBotDispatcher: false,
-        );
-        addTearDown(service.dispose);
-        await service.ensureReady();
-        toby = (await service.createActor(
-          displayName: 'Toby Researcher',
-          kind: ActorKind.model,
-          brainRef: '',
-        ))!;
-        await service.startThread(
-          topic: 'Toby Researcher',
-          participants: <String>[toby.actorId],
-        );
-        await service.say('What should we ship first?');
-      });
+  testWidgets('the work strip shows the narration row + the room task card and '
+      'expands into the loop facts', (final tester) async {
+    late final RealmChatService service;
+    late final ActorProfile toby;
+    late final WorldStateService worldState;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_workstrip_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      toby = (await service.createActor(
+        displayName: 'Toby Researcher',
+        kind: ActorKind.model,
+        brainRef: '',
+      ))!;
+      await service.startThread(
+        topic: 'Toby Researcher',
+        participants: <String>[toby.actorId],
+      );
+      await service.say('What should we ship first?');
+    });
 
-      worldState = hermeticWorldState()
-        ..debugTasksOverride = <WorldTaskRow>[
-          WorldTaskRow(
-            taskId: 'task-room',
-            state: 'started',
-            task: 'fix the frozen-head bug',
-            terminal: false,
-            modelId: 'modelscope_qwen38max',
-            at: '2026-11-07T10:00:00Z',
-            addressees: <String>[toby.actorId],
-          ),
-          // Another room's task — must NOT surface in this stream.
-          const WorldTaskRow(
-            taskId: 'task-elsewhere',
-            state: 'started',
-            task: 'somewhere else entirely',
-            terminal: false,
-            at: '2026-11-07T10:00:00Z',
-            addressees: <String>['weaver'],
-          ),
-        ]
-        ..debugTelemetryOverride = <String, ActorTelemetry>{
-          toby.actorId: ActorTelemetry(
-            actorId: toby.actorId,
-            rounds: 4,
-            promptTokens: 1000,
-            cachedTokens: 840,
-            completionTokens: 120,
-            toolCalls: 9,
-            appliedWrites: 2,
-            stalled: false,
-            at: '2026-11-07T10:05:00Z',
-          ),
-        };
-      addTearDown(worldState.dispose);
-
-      service.debugNarrationOverride = <String, BotNarration>{
-        toby.actorId: BotNarration(
-          state: BotNarrationState.generating,
-          detail: 'Toby Researcher',
-          since: DateTime.now(),
+    worldState = hermeticWorldState()
+      ..debugTasksOverride = <WorldTaskRow>[
+        WorldTaskRow(
+          taskId: 'task-room',
+          state: 'started',
+          task: 'fix the frozen-head bug',
+          terminal: false,
+          modelId: 'modelscope_qwen38max',
+          at: '2026-11-07T10:00:00Z',
+          addressees: <String>[toby.actorId],
+        ),
+        // Another room's task — must NOT surface in this stream.
+        const WorldTaskRow(
+          taskId: 'task-elsewhere',
+          state: 'started',
+          task: 'somewhere else entirely',
+          terminal: false,
+          at: '2026-11-07T10:00:00Z',
+          addressees: <String>['weaver'],
+        ),
+      ]
+      ..debugTelemetryOverride = <String, ActorTelemetry>{
+        toby.actorId: ActorTelemetry(
+          actorId: toby.actorId,
+          rounds: 4,
+          promptTokens: 1000,
+          cachedTokens: 840,
+          completionTokens: 120,
+          toolCalls: 9,
+          appliedWrites: 2,
+          stalled: false,
+          at: '2026-11-07T10:05:00Z',
         ),
       };
+    addTearDown(worldState.dispose);
 
-      Widget app() => ChangeNotifierProvider<RealmChatService>.value(
+    service.debugNarrationOverride = <String, BotNarration>{
+      toby.actorId: BotNarration(
+        state: BotNarrationState.generating,
+        detail: 'Toby Researcher',
+        since: DateTime.now(),
+      ),
+    };
+
+    Widget app() => ChangeNotifierProvider<RealmChatService>.value(
+      value: service,
+      child: ChangeNotifierProvider<WorldStateService>.value(
+        value: worldState,
+        child: MaterialApp(
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: WorldChatSurface(service: service)),
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(app());
+    await tester.pump();
+
+    // The in-stream narration row (the header indicator's sibling).
+    expect(
+      find.byKey(ValueKey('worldchat.narration.${toby.actorId}')),
+      findsOneWidget,
+    );
+
+    // The work card for THIS room's task — and only this room's.
+    expect(
+      find.byKey(const ValueKey('worldchat.work.task-room')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('worldchat.work.task-elsewhere')),
+      findsNothing,
+    );
+    expect(find.text('fix the frozen-head bug'), findsOneWidget);
+    expect(find.text('started'), findsOneWidget);
+
+    // Collapsed: the loop facts stay folded.
+    expect(find.textContaining('9 tools'), findsNothing);
+
+    // Expanded: the loop's own measured facts, all journal fields.
+    await tester.tap(
+      find.byKey(const ValueKey('worldchat.work.expand.task-room')),
+    );
+    await tester.pump();
+    expect(find.textContaining('4r'), findsOneWidget);
+    expect(find.textContaining('9 tools'), findsOneWidget);
+    expect(find.textContaining('2 writes'), findsOneWidget);
+    expect(find.textContaining('cache 84%'), findsOneWidget);
+    expect(find.textContaining('1120 tok'), findsOneWidget);
+    expect(find.textContaining('modelscope_qwen38max'), findsOneWidget);
+  });
+
+  testWidgets('a quiet room renders no strip at all (no reserved space)', (
+    final tester,
+  ) async {
+    late final RealmChatService service;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_workstrip_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      await service.startThread(topic: 'quiet room');
+      await service.say('just words');
+    });
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RealmChatService>.value(
         value: service,
-        child: ChangeNotifierProvider<WorldStateService>.value(
-          value: worldState,
-          child: MaterialApp(
-            localizationsDelegates: S.localizationsDelegates,
-            supportedLocales: S.supportedLocales,
-            home: Scaffold(body: WorldChatSurface(service: service)),
-          ),
+        child: MaterialApp(
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: WorldChatSurface(service: service)),
         ),
-      );
+      ),
+    );
+    await tester.pump();
 
-      await tester.pumpWidget(app());
-      await tester.pump();
-
-      // The in-stream narration row (the header indicator's sibling).
-      expect(
-        find.byKey(ValueKey('worldchat.narration.${toby.actorId}')),
-        findsOneWidget,
-      );
-
-      // The work card for THIS room's task — and only this room's.
-      expect(
-        find.byKey(const ValueKey('worldchat.work.task-room')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('worldchat.work.task-elsewhere')),
-        findsNothing,
-      );
-      expect(find.text('fix the frozen-head bug'), findsOneWidget);
-      expect(find.text('started'), findsOneWidget);
-
-      // Collapsed: the loop facts stay folded.
-      expect(find.textContaining('9 tools'), findsNothing);
-
-      // Expanded: the loop's own measured facts, all journal fields.
-      await tester.tap(
-        find.byKey(const ValueKey('worldchat.work.expand.task-room')),
-      );
-      await tester.pump();
-      expect(find.textContaining('4r'), findsOneWidget);
-      expect(find.textContaining('9 tools'), findsOneWidget);
-      expect(find.textContaining('2 writes'), findsOneWidget);
-      expect(find.textContaining('cache 84%'), findsOneWidget);
-      expect(find.textContaining('1120 tok'), findsOneWidget);
-      expect(find.textContaining('modelscope_qwen38max'), findsOneWidget);
-    },
-  );
-
-  testWidgets(
-    'a quiet room renders no strip at all (no reserved space)',
-    (final tester) async {
-      late final RealmChatService service;
-      await tester.runAsync(() async {
-        final temp = await Directory.systemTemp.createTemp('la_workstrip_');
-        addTearDown(() => temp.delete(recursive: true));
-        final world = (await RealmWorld.open(rootOverride: temp.path))!;
-        service = RealmChatService(
-          debugWorldOverride: world,
-          debugRosterOverride: ActorRoster(replicaId: 'tester'),
-          debugStartBotDispatcher: false,
-        );
-        addTearDown(service.dispose);
-        await service.ensureReady();
-        await service.startThread(topic: 'quiet room');
-        await service.say('just words');
-      });
-
-      await tester.pumpWidget(
-        ChangeNotifierProvider<RealmChatService>.value(
-          value: service,
-          child: MaterialApp(
-            localizationsDelegates: S.localizationsDelegates,
-            supportedLocales: S.supportedLocales,
-            home: Scaffold(body: WorldChatSurface(service: service)),
-          ),
-        ),
-      );
-      await tester.pump();
-
-      // No narration, no cards — and the beat renders normally.
-      expect(find.text('just words'), findsOneWidget);
-      expect(find.byType(ListView), findsOneWidget);
-    },
-  );
+    // No narration, no cards — and the beat renders normally.
+    expect(find.text('just words'), findsOneWidget);
+    expect(find.byType(ListView), findsOneWidget);
+  });
 
   testWidgets(
     '0c — a permission naming a room actor interrupts the conversation '
@@ -339,6 +335,109 @@ void main() {
         find.byKey(ValueKey('worldchat.daemonAbsent.${scout.actorId}')),
         findsNothing,
       );
+    },
+  );
+
+  // 2c — the attributed change card: the interrupt names the ASKING
+  // ACTOR (the id join, not only the title-name match) and expands the
+  // proposed unified diff inline — review where the ask lives, and
+  // Apply/Reject stays the ONE round-trip.
+  testWidgets(
+    'a permission carrying actorId + diff attributes the ask and expands '
+    'the diff inline',
+    (final tester) async {
+      late final RealmChatService service;
+      late final ActorProfile toby;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_diffcard_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        toby = (await service.createActor(
+          displayName: 'Toby Researcher',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+        await service.startThread(
+          topic: 'Toby Researcher',
+          participants: <String>[toby.actorId],
+        );
+        // The stream (and its work strip) exists only once the room has
+        // a beat — the human's first word.
+        await service.say('go on then');
+      });
+
+      final answers = <bool>[];
+      const diff = '''--- a/notes.md
++++ b/notes.md
+@@ -1,2 +1,3 @@
+ kept line
+-removed line
++added line''';
+      final worldState = hermeticWorldState()
+        ..debugPermissionsOverride = <InboxPermission>[
+          InboxPermission(
+            sessionId: 'doc-diff',
+            // The title names NO actor — the join rides the actorId.
+            title: 'write to notes.md',
+            kind: 'edit',
+            actorId: toby.actorId,
+            diff: diff,
+            answer: (final allow) async => answers.add(allow),
+          ),
+        ];
+      addTearDown(worldState.dispose);
+
+      await tester.pumpWidget(
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: service,
+          child: ChangeNotifierProvider<WorldStateService>.value(
+            value: worldState,
+            child: MaterialApp(
+              localizationsDelegates: S.localizationsDelegates,
+              supportedLocales: S.supportedLocales,
+              home: Scaffold(body: WorldChatSurface(service: service)),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // The id join interrupted (the title alone would not have).
+      final card = find.byKey(const ValueKey('worldchat.perm.doc-diff'));
+      expect(card, findsOneWidget);
+      // Attribution names the actor, resolved through the roster.
+      expect(
+        find.descendant(
+          of: card,
+          matching: find.byKey(const ValueKey('worldchat.perm.doc-diff.actor')),
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('proposed by Toby Researcher'), findsOneWidget);
+
+      // The diff starts collapsed; the toggle expands it inline.
+      expect(find.text('+added line'), findsNothing);
+      await tester.tap(
+        find.byKey(const ValueKey('worldchat.perm.doc-diff.diff')),
+      );
+      await tester.pump();
+      expect(find.text('+added line'), findsOneWidget);
+      expect(find.text('-removed line'), findsOneWidget);
+      expect(find.text('@@ -1,2 +1,3 @@'), findsOneWidget);
+
+      // Allow answers the SAME round-trip (2c adds no second door).
+      await tester.tap(
+        find.byKey(const ValueKey('worldchat.perm.allow.doc-diff')),
+      );
+      await tester.pump();
+      expect(answers, <bool>[true]);
     },
   );
 }

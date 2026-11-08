@@ -235,19 +235,35 @@ class _WorkStripState extends State<_WorkStrip> {
         // name join is the honest one available today).
         final permissions = world?.permissions ?? const <InboxPermission>[];
         if (permissions.isNotEmpty && actors.isNotEmpty) {
-          final names = [
-            for (final id in actors) ...<String>[
-              id,
-              service.roster?.get(id)?.displayName ?? '',
-            ],
-          ].where((name) => name.isNotEmpty).map((name) => name.toLowerCase());
           for (final permission in permissions) {
+            // The join law, upgraded by 2c: the ASKING ACTOR's id is
+            // the primary fact; the title-name match stays the
+            // fallback for registry snapshots that carry no actor
+            // identity (the harness gap). The matched actor IS the
+            // attribution — the card never says "SYS".
             final title = permission.title.toLowerCase();
-            if (!names.any(title.contains)) continue;
+            String? matched =
+                permission.actorId != null &&
+                    actors.contains(permission.actorId)
+                ? permission.actorId
+                : null;
+            if (matched == null) {
+              for (final id in actors) {
+                final display = (service.roster?.get(id)?.displayName ?? '')
+                    .toLowerCase();
+                if ((display.isNotEmpty && title.contains(display)) ||
+                    title.contains(id.toLowerCase())) {
+                  matched = id;
+                  break;
+                }
+              }
+            }
+            if (matched == null) continue;
             rows.add(
               _PermissionInterrupt(
                 key: ValueKey('worldchat.perm.${permission.sessionId}'),
                 permission: permission,
+                actorName: service.roster?.get(matched)?.displayName ?? matched,
               ),
             );
           }
@@ -475,15 +491,35 @@ class _WorkCard extends StatelessWidget {
 /// 0c — one open permission round interrupting the conversation,
 /// reject-first (Deny leftmost, the inbox law): the answer lands
 /// through the session's own handle, exactly as the inbox row does.
-class _PermissionInterrupt extends StatelessWidget {
-  const _PermissionInterrupt({required this.permission, super.key});
+/// 2c — the interrupt is an ATTRIBUTED change card: the asking actor's
+/// name rides the title (never an anonymous ask), and when the pending
+/// round-trip carries the proposed unified diff, one quiet toggle
+/// expands it inline (the Replit pattern on the native lane: review the
+/// change where the ask lives; Apply/Reject IS the round-trip).
+class _PermissionInterrupt extends StatefulWidget {
+  const _PermissionInterrupt({
+    required this.permission,
+    this.actorName,
+    super.key,
+  });
 
   final InboxPermission permission;
+  final String? actorName;
+
+  @override
+  State<_PermissionInterrupt> createState() => _PermissionInterruptState();
+}
+
+class _PermissionInterruptState extends State<_PermissionInterrupt> {
+  var _diffOpen = false;
 
   @override
   Widget build(final BuildContext context) {
+    final permission = widget.permission;
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final diff = permission.diff;
+    final actorName = widget.actorName;
     return Semantics(
       label: 'worldchat.perm.${permission.sessionId}',
       child: Padding(
@@ -496,34 +532,121 @@ class _PermissionInterrupt extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(Icons.lock_outline, size: 14, color: context.la.danger),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    permission.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.lock_outline,
+                      size: 14,
+                      color: context.la.danger,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            permission.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          if (actorName != null)
+                            Text(
+                              'proposed by $actorName',
+                              key: ValueKey(
+                                'worldchat.perm.${permission.sessionId}.actor',
+                              ),
+                              style: LaTokens.mono(10, context.la.inkMuted),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _StripButton(
+                      keyName: 'worldchat.perm.deny.${permission.sessionId}',
+                      label: l10n.inboxDeny,
+                      danger: true,
+                      onTap: () => unawaited(permission.answer(false)),
+                    ),
+                    const SizedBox(width: 6),
+                    _StripButton(
+                      keyName: 'worldchat.perm.allow.${permission.sessionId}',
+                      label: l10n.inboxAllow,
+                      onTap: () => unawaited(permission.answer(true)),
+                    ),
+                  ],
+                ),
+                if (diff != null && diff.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      key: ValueKey(
+                        'worldchat.perm.${permission.sessionId}.diff',
+                      ),
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => setState(() => _diffOpen = !_diffOpen),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          _diffOpen ? 'diff ▾' : 'diff ▸',
+                          style: LaTokens.mono(10.5, context.la.accent),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                _StripButton(
-                  keyName: 'worldchat.perm.deny.${permission.sessionId}',
-                  label: l10n.inboxDeny,
-                  danger: true,
-                  onTap: () => unawaited(permission.answer(false)),
-                ),
-                const SizedBox(width: 6),
-                _StripButton(
-                  keyName: 'worldchat.perm.allow.${permission.sessionId}',
-                  label: l10n.inboxAllow,
-                  onTap: () => unawaited(permission.answer(true)),
-                ),
+                  if (_diffOpen) _UnifiedDiffView(diff: diff),
+                ],
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The unified diff's quiet read (2c): mono 10.5, one bounded scroll
+/// region — additions in the accent, removals in the danger color,
+/// hunk/file headers quiet. No syntax theater; the diff IS the data.
+class _UnifiedDiffView extends StatelessWidget {
+  const _UnifiedDiffView({required this.diff});
+
+  final String diff;
+
+  @override
+  Widget build(final BuildContext context) {
+    final la = context.la;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 160),
+      child: SingleChildScrollView(
+        key: const ValueKey('worldchat.diffview'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final line in diff.split('\n'))
+              Text(
+                line.isEmpty ? ' ' : line,
+                maxLines: 1,
+                overflow: TextOverflow.clip,
+                softWrap: false,
+                style: LaTokens.mono(
+                  10.5,
+                  line.startsWith('+++') || line.startsWith('---')
+                      ? la.inkQuiet
+                      : line.startsWith('@@')
+                      ? la.inkMuted
+                      : line.startsWith('+')
+                      ? la.accent
+                      : line.startsWith('-')
+                      ? la.danger
+                      : la.ink,
+                ),
+              ),
+          ],
         ),
       ),
     );

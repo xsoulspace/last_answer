@@ -129,8 +129,11 @@ final class InboxPermission {
   const InboxPermission({
     required this.sessionId,
     required this.title,
-    required this.answer, this.kind,
+    required this.answer,
+    this.kind,
     this.since,
+    this.actorId,
+    this.diff,
   });
 
   final String sessionId;
@@ -138,9 +141,44 @@ final class InboxPermission {
   final String? kind;
   final String? since;
 
+  /// 2c — the ASKING ACTOR (the session's origin actor id, unresolved):
+  /// the change card is attributed, never an anonymous "SYS". Null when
+  /// the session carries no actor identity (honest absence).
+  final String? actorId;
+
+  /// 2c — the proposed change's unified diff, when the pending
+  /// round-trip carries one (the meaning review proposal, exact-matched
+  /// to the pending permission by proposalId+effectDigest upstream).
+  /// Null = no diff to show; the card stays a title-only interrupt.
+  final String? diff;
+
   /// Answers the round-trip through the session's own handle (allow =
   /// the write proceeds; reject = it never lands).
   final Future<void> Function(bool allow) answer;
+}
+
+/// 2c — the tolerant diff finder: the review proposal nests its unified
+/// diff under the host's own payload shape (`result.proposal.diff`
+/// today); the walk names the FACT (the first `diff` string), never the
+/// path, and is bounded (a display read, never an unbounded descent).
+String? _firstDiffString(final Object? node, [final int depth = 0]) {
+  if (node == null || depth > 6) return null;
+  if (node is Map) {
+    final direct = node['diff'];
+    if (direct is String && direct.isNotEmpty) return direct;
+    for (final value in node.values) {
+      final found = _firstDiffString(value, depth + 1);
+      if (found != null) return found;
+    }
+    return null;
+  }
+  if (node is List) {
+    for (final value in node) {
+      final found = _firstDiffString(value, depth + 1);
+      if (found != null) return found;
+    }
+  }
+  return null;
 }
 
 /// One last-verdict row: a session's verdict/spend projection or a
@@ -943,6 +981,13 @@ final class WorldStateService extends ChangeNotifier {
               title: title,
               kind: snapshot.pendingPermissionKind,
               since: snapshot.pendingPermissionSince?.toIso8601String(),
+              // 2c — the proposed diff rides the interrupt: the
+              // snapshot's own review proposal (the host keeps the
+              // issued proposal; display JSON supplies no authority).
+              // The asking actor's ID is NOT in the registry snapshot
+              // (harness gap — attribution resolves through the room
+              // join at render time, and the gap is filed).
+              diff: _firstDiffString(snapshot.reviewProposal),
               answer: (final allow) async {
                 handle.answerPermission(allow: allow);
                 await refresh();

@@ -201,9 +201,16 @@ Future<void> main(final List<String> args) async {
     // ---- the work order: ONE human sentence, addressed by LA's own say ----
     final before = await projection.beatsOfThread(threadId);
     final beforeCount = before.length;
+    // Probe law (2026-11-09): NEVER "reply with exactly X" — the harness
+    // echo guard's containment clause drops any ≥8-char reply that is a
+    // substring of a recent beat, and the demanded token is BY
+    // CONSTRUCTION inside the task beat (the silent no-post class; gap
+    // filed harness-side). An original sentence can never be contained
+    // in the question; this leg only needs author == actor.
     final task =
-        '$actor — dogfood delegation through Last Answer itself. Reply with '
-        'exactly: DOGFOOD-OK';
+        '$actor — dogfood delegation through Last Answer itself. Reply '
+        'with ONE original sentence of your own confirming you received '
+        'this work order. Do not quote this beat.';
     final said = await _laTool(vmUri, 'realm_chat_say', {'text': task});
     if (said.containsKey('_refused') || said.containsKey('_err') ||
         _deepFind(said, 'ok') != true) {

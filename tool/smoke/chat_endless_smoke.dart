@@ -596,10 +596,21 @@ Future<void> main(final List<String> args) async {
         const [],
       );
       last++;
+      // Probe law (2026-11-09, paid live): NEVER "reply with exactly X" —
+      // the harness echo guard's containment clause (isEchoOfRecentBeats,
+      // daemon_actor_loops.dart L195) drops any ≥8-char reply that is a
+      // substring of a recent beat, and the exact token the task demands
+      // is BY CONSTRUCTION contained in the task beat → the correct reply
+      // is silently dropped (the "telemetry-without-beat" class; gap
+      // filed in the harness surface_gaps.md). An ORIGINAL-sentence probe
+      // can never be contained in the question, and this leg only needs
+      // author == daemonActor.
       await say(
         last,
-        '$daemonActor — reply with exactly: SMOKE-OK '
-        '(take ${DateTime.now().millisecondsSinceEpoch})',
+        '$daemonActor — roundtrip probe (take '
+            '${DateTime.now().millisecondsSinceEpoch}): reply with ONE '
+            'original sentence of your own about what this room proves. '
+            'Do not quote this beat.',
         [daemonActor],
       );
       row(

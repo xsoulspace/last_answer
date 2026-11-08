@@ -2,6 +2,7 @@ import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
+import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -320,9 +321,19 @@ class _CreateActorFormState extends State<_CreateActorForm> {
                     for (final option in options)
                       DropdownMenuItem(
                         value: option.ref,
-                        child: Text(
-                          option.label,
-                          overflow: TextOverflow.ellipsis,
+                        // 1b — the brain is a RESOURCE: its daemon-side
+                        // health verdict rides its name in the picker.
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                option.label,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            BrainHealthDot(brainRef: option.ref),
+                          ],
                         ),
                       ),
                   ],

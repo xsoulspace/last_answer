@@ -23,7 +23,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
-import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
+import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
@@ -188,7 +188,7 @@ class _PeopleList extends StatelessWidget {
     final ActorRoster? roster,
     final RealmBotHost? bots,
   ) {
-    final line = _statusLineOf(id);
+    final line = _statusLineOf(context, id);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
@@ -244,11 +244,24 @@ class _PeopleList extends StatelessWidget {
   }
 
   /// The quiet narration line under one row (Wave 3A): only bots with a
-  /// narration speak; humans and unknown ids return null.
-  String? _statusLineOf(final String id) {
+  /// narration speak; humans and unknown ids return null. 1b appends
+  /// the parallel-work fact: the actor's RUNNING durable tasks, at a
+  /// glance (the room's work card owns the detail — the row owns the
+  /// "is my cast busy" answer).
+  String? _statusLineOf(final BuildContext context, final String id) {
     final profile = service.roster?.get(id);
     if (profile == null || profile.kind == ActorKind.human) return null;
-    return service.botNarration[id]?.statusLine;
+    final narration = service.botNarration[id]?.statusLine;
+    final world = context.read<WorldStateService?>();
+    var running = 0;
+    if (world != null) {
+      for (final task in world.tasks) {
+        if (!task.terminal && task.addressees.contains(id)) running++;
+      }
+    }
+    if (running == 0) return narration;
+    final work = running == 1 ? '1 task running' : '$running tasks running';
+    return narration == null ? work : '$narration · $work';
   }
 }
 
@@ -425,7 +438,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                     ),
                     if (brainBase.isNotEmpty) ...[
                       const SizedBox(width: 6),
-                      _BrainHealthDot(
+                      BrainHealthDot(
                         key: const ValueKey('shell.context.brain.health'),
                         brainRef: profile?.brainRef ?? '',
                       ),
@@ -528,39 +541,6 @@ class _ViewNote extends StatelessWidget {
   );
 }
 
-/// ADR 0119 — the brain's daemon-side health verdict as one small dot:
-/// green `ok`, grey `unknown`, amber `not_downloaded`/`downloading`/
-/// `loading`, red `failed`. The tooltip names the code and the daemon's
-/// fix hint; a brain the palette doesn't name (a local brain, a stale
-/// file) renders nothing at all — no verdict, no chrome.
-class _BrainHealthDot extends StatelessWidget {
-  const _BrainHealthDot({required this.brainRef, super.key});
-
-  final String brainRef;
-
-  static final PaletteHealthStore _store = PaletteHealthStore();
-
-  @override
-  Widget build(final BuildContext context) {
-    final health = _store.statusFor(brainRef);
-    if (health == null) return const SizedBox.shrink();
-    final theme = Theme.of(context);
-    final color = switch (health.status) {
-      'ok' => const Color(0xFF30A46C),
-      'failed' => theme.colorScheme.error,
-      'unknown' => context.shellMuted,
-      _ => const Color(0xFFB58A00),
-    };
-    return Tooltip(
-      message:
-          '${health.status}'
-          '${health.code == null ? '' : ' (${health.code})'}'
-          '${health.detail == null ? '' : ' — ${health.detail}'}',
-      child: Container(
-        width: 8,
-        height: 8,
-        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      ),
-    );
-  }
-}
+/// ADR 0119 — the brain health dot moved to its shared home
+/// (`brain_health_dot.dart`, 1b): every brain picker renders the same
+/// verdict beside the same name.

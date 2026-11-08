@@ -2502,7 +2502,7 @@ abstract class S {
   /// No description provided for @newTabHintInspector.
   ///
   /// In en, this message translates to:
-  /// **'Watch worlds, sessions and bindings.'**
+  /// **'Watch worlds and actor work.'**
   String get newTabHintInspector;
 
   /// No description provided for @newTabHintFilesystem.
@@ -3189,10 +3189,10 @@ abstract class S {
   /// **'World threads'**
   String get threadsWorld;
 
-  /// Threads view: the session registry section.
+  /// Threads view: the live agent-work registry section. 1c vocabulary law: 'sessions' are an implementation detail; the UX says actor work.
   ///
   /// In en, this message translates to:
-  /// **'Live sessions'**
+  /// **'Actor work'**
   String get threadsSessions;
 
   /// Threads view: the quiet empty state.

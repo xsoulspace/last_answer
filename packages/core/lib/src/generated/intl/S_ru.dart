@@ -1365,8 +1365,7 @@ class SRu extends S {
   String get newTabHintBrowser => 'Файлы рабочего пространства и веб.';
 
   @override
-  String get newTabHintInspector =>
-      'Наблюдение за мирами, сессиями и привязками.';
+  String get newTabHintInspector => 'Наблюдение за мирами и работой актёров.';
 
   @override
   String get newTabHintFilesystem =>
@@ -1734,7 +1733,7 @@ class SRu extends S {
   String get threadsWorld => 'Треды мира';
 
   @override
-  String get threadsSessions => 'Живые сессии';
+  String get threadsSessions => 'Работа актёров';
 
   @override
   String get threadsEmpty =>

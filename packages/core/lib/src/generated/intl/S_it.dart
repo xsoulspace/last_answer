@@ -1360,7 +1360,7 @@ class SIt extends S {
   String get newTabHintBrowser => 'Sfoglia i file del workspace e il web.';
 
   @override
-  String get newTabHintInspector => 'Osserva mondi, sessioni e binding.';
+  String get newTabHintInspector => 'Osserva mondi e lavoro degli attori.';
 
   @override
   String get newTabHintFilesystem =>
@@ -1729,7 +1729,7 @@ class SIt extends S {
   String get threadsWorld => 'Thread del mondo';
 
   @override
-  String get threadsSessions => 'Sessioni live';
+  String get threadsSessions => 'Lavoro degli attori';
 
   @override
   String get threadsEmpty =>

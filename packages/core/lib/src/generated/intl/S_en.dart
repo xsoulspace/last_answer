@@ -1350,7 +1350,7 @@ class SEn extends S {
   String get newTabHintBrowser => 'Browse the workspace\'s files and the web.';
 
   @override
-  String get newTabHintInspector => 'Watch worlds, sessions and bindings.';
+  String get newTabHintInspector => 'Watch worlds and actor work.';
 
   @override
   String get newTabHintFilesystem =>
@@ -1717,7 +1717,7 @@ class SEn extends S {
   String get threadsWorld => 'World threads';
 
   @override
-  String get threadsSessions => 'Live sessions';
+  String get threadsSessions => 'Actor work';
 
   @override
   String get threadsEmpty =>

@@ -159,4 +159,70 @@ void main() {
       findsOneWidget,
     );
   });
+
+  // 1b — tune from conversation context: the card switches IN PLACE to
+  // the one actor-identity editor (no modals anywhere), and Save routes
+  // through updateActor — the durable record, not a local rename.
+  testWidgets('the card Edit switches in place to the profile editor and '
+      'Save persists through updateActor', (final tester) async {
+    late final RealmChatService service;
+    late final ActorProfile toby;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_tune_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      toby = (await service.createActor(
+        displayName: 'Tune Bot',
+        kind: ActorKind.model,
+        brainRef: '',
+        role: 'scout',
+      ))!;
+      await service.openDm(toby.actorId);
+    });
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RealmChatService>.value(
+        value: service,
+        child: MaterialApp(
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: WorldChatSurface(service: service)),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    await tester.tap(find.byKey(const ValueKey('worldchat.card')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('worldchat.card.edit')));
+    await tester.pumpAndSettle();
+
+    // The editor renders IN the card (the card key survives the switch).
+    expect(
+      find.byKey(const ValueKey('worldchat.actorCard')),
+      findsOneWidget,
+    );
+    final nameField = find.byKey(const ValueKey('actor.edit.name'));
+    expect(nameField, findsOneWidget);
+
+    await tester.enterText(nameField, 'Tuned Bot');
+    await tester.tap(find.byKey(const ValueKey('worldchat.card.save')));
+    await tester.pump();
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 200)),
+    );
+    await tester.pumpAndSettle();
+
+    // Save closes the card; the rename is the DURABLE record's.
+    expect(find.byKey(const ValueKey('worldchat.actorCard')), findsNothing);
+    expect(service.roster?.get(toby.actorId)?.displayName, 'Tuned Bot');
+  });
 }

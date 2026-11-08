@@ -1,6 +1,9 @@
+import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
@@ -1249,8 +1252,12 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
             Positioned.fill(
               child: CompositedTransformFollower(
                 link: _cardLink,
-                targetAnchor: Alignment.bottomRight,
-                followerAnchor: Alignment.topRight,
+                // The HUD's identity cluster sits at the LEFT edge, so
+                // the card hangs from its bottom-left corner rightward
+                // (the right-anchored recipe belongs to the picker on
+                // the strip's right edge — one law, two edges).
+                targetAnchor: Alignment.bottomLeft,
+                followerAnchor: Alignment.topLeft,
                 offset: const Offset(0, 6),
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -1502,12 +1509,40 @@ class _CardButton extends StatelessWidget {
 /// health (the palette rung's own verdict), seat (who owns the loop),
 /// thread — plus the room's close affordance (`worldchat.close`, the
 /// key's home since ADR 0023). Rows the shell cannot fact are omitted
-/// (honest absence, never a guess).
-class _ActorCard extends StatelessWidget {
+/// (honest absence, never a guess). 1b: the card is also where the
+/// human TUNES the actor from conversation context — Edit switches the
+/// card in place to [ActorProfileEditor] (no modals anywhere, the
+/// editor's own law); Save routes through `updateActor` and closes the
+/// card (the reopened card reads the fresh facts).
+class _ActorCard extends StatefulWidget {
   const _ActorCard({required this.header, required this.onClose});
 
   final _ConversationHeader header;
   final VoidCallback onClose;
+
+  @override
+  State<_ActorCard> createState() => _ActorCardState();
+}
+
+class _ActorCardState extends State<_ActorCard> {
+  var _editing = false;
+
+  _ConversationHeader get header => widget.header;
+  VoidCallback get onClose => widget.onClose;
+
+  /// The hosted-model option the brain pickers offer (the actors-pane
+  /// derivation; absence keeps the local casts only).
+  static String _defaultOpenRouterModel(final BuildContext context) {
+    try {
+      final config = context.read<AgentConfigStore>().config;
+      return config.chat.defaultModel.isNotEmpty
+          ? config.chat.defaultModel
+          : (config.providers[AgentPlatformConfig.openRouterId]?.defaultModel ??
+                '');
+    } on Object {
+      return '';
+    }
+  }
 
   @override
   Widget build(final BuildContext context) {
@@ -1515,6 +1550,48 @@ class _ActorCard extends StatelessWidget {
     final other = header.other;
     final channel = header.channel;
     final worldState = context.read<WorldStateService?>();
+    if (_editing && other != null) {
+      return Container(
+        key: const ValueKey('worldchat.actorCard'),
+        width: 252,
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+        decoration: _decoration(context),
+        // The overlay floats above the Scaffold's Material — the
+        // editor's fields need their own sheet (transparent: the
+        // card's decoration stays the visible surface).
+        child: Material(
+          type: MaterialType.transparency,
+          child: ActorProfileEditor(
+            profile: other,
+            brainOptions: availableBrainOptions(
+              defaultOpenRouterModel: _defaultOpenRouterModel(context),
+              paletteRungs: worldState?.generativeDecls ?? const [],
+            ),
+            saveKey: const ValueKey('worldchat.card.save'),
+            onCancel: () => setState(() => _editing = false),
+            onSave:
+                ({
+                  required final String displayName,
+                  required final String role,
+                  required final String systemPrompt,
+                  required final String brainRef,
+                }) {
+                  unawaited(
+                    service
+                        .updateActor(
+                          actorId: other.actorId,
+                          displayName: displayName,
+                          role: role,
+                          systemPrompt: systemPrompt,
+                          brainRef: brainRef,
+                        )
+                        .then((final _) => onClose()),
+                  );
+                },
+          ),
+        ),
+      );
+    }
     final rows = <(String, String)>[];
     if (other != null) {
       rows.add(('brain', other.brainRef.isEmpty ? '—' : other.brainRef));
@@ -1560,12 +1637,7 @@ class _ActorCard extends StatelessWidget {
       key: const ValueKey('worldchat.actorCard'),
       width: 252,
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-      decoration: BoxDecoration(
-        color: context.la.surfaceRaised,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: context.shellHairline),
-        boxShadow: shellFloatingShadow(context),
-      ),
+      decoration: _decoration(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1593,26 +1665,51 @@ class _ActorCard extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 6),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              key: const ValueKey('worldchat.close'),
-              onPressed: () {
-                onClose();
-                unawaited(service.closeThread(header.threadId));
-              },
-              icon: const Icon(Icons.archive_outlined, size: 15),
-              label: Text(context.l10n.worldChatCloseTooltip),
-              style: TextButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+          // The affordance row WRAPS: two honest labels never fit one
+          // 252px line — an overflow stripe is louder than a second
+          // row (calm chrome).
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 4,
+            runSpacing: 2,
+            children: [
+              if (other != null)
+                TextButton.icon(
+                  key: const ValueKey('worldchat.card.edit'),
+                  onPressed: () => setState(() => _editing = true),
+                  icon: const Icon(Icons.edit_outlined, size: 15),
+                  label: Text(context.l10n.actorsEditTooltip),
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                ),
+              TextButton.icon(
+                key: const ValueKey('worldchat.close'),
+                onPressed: () {
+                  onClose();
+                  unawaited(service.closeThread(header.threadId));
+                },
+                icon: const Icon(Icons.archive_outlined, size: 15),
+                label: Text(context.l10n.worldChatCloseTooltip),
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
+
+  BoxDecoration _decoration(final BuildContext context) => BoxDecoration(
+    color: context.la.surfaceRaised,
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: context.shellHairline),
+    boxShadow: shellFloatingShadow(context),
+  );
 }
 
 /// One durable beat: gutter actor label + text on the shared grid.

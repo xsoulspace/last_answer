@@ -15,6 +15,7 @@ library;
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/common_imports.dart';
 
 /// The editor's agent-contract widget keys (DESIGN §6) — shared by both
@@ -221,7 +222,20 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
             for (final option in options)
               DropdownMenuItem(
                 value: option.ref,
-                child: Text(option.label, overflow: TextOverflow.ellipsis),
+                // 1b — the brain's health verdict rides its name here
+                // too (the resource law travels with the picker).
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        option.label,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    BrainHealthDot(brainRef: option.ref),
+                  ],
+                ),
               ),
           ],
           onChanged: (final value) => setState(() => _brainBase = value),

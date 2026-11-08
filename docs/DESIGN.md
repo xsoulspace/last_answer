@@ -1,12 +1,15 @@
 # DESIGN — the Last Answer workspace
 
-> **v2 amendment (2026-11-08, pending the owner gate):** the two-layer
-> law — *calm chrome, living creatures* — and the shadcn-discipline
-> neutral palette. The chrome layer keeps every rule below; the
-> creature layer amends exactly three clauses (motion, identity,
-> pills), each marked **v2** in place. The interactive mockup is the
-> gate artifact; until the owner approves it, implemented surfaces
-> keep the v1 tokens.
+> **v2 amendment (2026-11-08):** the two-layer law — *calm chrome,
+> living creatures* — and the shadcn-discipline neutral palette. The
+> chrome layer keeps every rule below; the creature layer amends exactly
+> three clauses (motion, identity, pills), each marked **v2** in place.
+> The owner approved the base mockup on 2026-11-08 and directed three
+> additions, now law here and in the mockup: the compact actor HUD,
+> threads over the conversation graph-tree, and point/select/comment
+> over live web + native previews. The interactive mockup remains the
+> gate artifact; until the owner's final nod on the additions,
+> implemented surfaces keep the v1 tokens.
 
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 
@@ -117,6 +120,12 @@ Use a single 1.75–2 px outline icon family with a consistent 16/18/20 px size 
 - **The 22 px rail avatar is the creature's everyday home.** Larger creature moments belong to empty and first-run states only (the landing inbox greeter, the first-run "meet your actor", the sleeping-world status edge) — never over content, never between the human and a decision.
 - **Creatures ride LaWorld**: their state components live in the in-process ecsly World (fed by the journal fold), animated by fixed-step systems, painted through selector-scoped CustomPainter windows — no setState animation controllers, no per-frame whole-tree rebuilds.
 - The kind label (M/A/H) and presence dot remain: a creature never becomes the ONLY carrier of actor type or presence (color-alone and shape-alone bans).
+
+**The compact actor HUD (v2, owner law 2026-11-08).** A room header carries IDENTITY and MOOD, nothing else: creature (20 px, eyes carrying the state), the actor's name, one 6 px pulse while the loop cycles, and a single card button. The facts a debugger needs (brain cast, health, seat, grants, memory) live one tap away in the actor card popover, mono 10.5 px, never in the header line. The law: **the header is game-light — if a fact is not identity or live state, it does not sit between the human and the conversation.** Status words ("thinking", "idle") are titles and creature eyes, not header text; Codex/Cursor/ZCode restraint is the bar, the creature is the difference.
+
+**Threads: the conversation is a graph-tree (v2, Discord law).** Every beat can branch; a branch is its own room with a parent link, not a copy. In the trunk, a branch shows as a thread chip under its parent beat — branch glyph, the faces of who replied, reply count, last activity — and never as nested indentation (depth is unreadable past one level). The chip opens a side pane: parent quote on an accent bar, the branch's beats, its own composer. Unread law rides the same receipts: a thread's unread is a member's fact, badged on the chip and the rail row alike. Actor↔actor rooms and threads share one mechanic: addressing joins, watching does not.
+
+**Point, select, comment: the product is a comment surface (v2, Cursor law).** Any running artifact — web preview in the tokenized loopback, native screen on device — can enter pick mode: point selects one element (accent outline + mono selector tag), select-area draws a dashed marquee over a region. A comment pin on a selection is NOT an annotation tool: sending it mints an addressed beat in the docked room carrying a ref chip (pin · selector · surface), so the actor's reply, work card and attributed diff return to the same thread, and "keep" applies the staged change where the pin points. One picker over web AND native; the ref chip is the contract that keeps a comment addressable after the surface re-renders.
 
 ## Responsive behavior
 

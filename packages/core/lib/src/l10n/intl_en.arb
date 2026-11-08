@@ -453,6 +453,25 @@
   "worldChatConversations": "Conversations",
   "worldChatNoConversations": "No conversations yet.",
   "worldChatCloseTooltip": "Close conversation",
+  "worldChatUnreadDivider": "{count, plural, one{{count} new} other{{count} new}}",
+  "@worldChatUnreadDivider": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatBeatReply": "Reply",
+  "worldChatBeatDetails": "Beat details",
+  "worldChatReplyingTo": "Replying to {name}",
+  "@worldChatReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatCancelReply": "Cancel reply",
   "worldChatPickHint": "Pick a conversation, or start a new one.",
   "worldChatFirstWord": "Say the first word — actors in this conversation will hear it.",
   "worldChatLoadOlder": "Load older messages",

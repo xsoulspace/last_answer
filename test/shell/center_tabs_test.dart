@@ -44,15 +44,14 @@ void main() {
       final id = conversationSurfaceId(
         activeThreadId: 'thread-9',
         channels: const [],
-        actors: const [
-          ActorProfile(actorId: 'toby', displayName: 'Toby'),
-        ],
+        actors: const [ActorProfile(actorId: 'toby', displayName: 'Toby')],
         dmThreadOf: (final actorId) => actorId == 'toby' ? 'thread-9' : null,
       );
       expect(id, 'dm:toby');
     });
 
-    test('null or unknown threads map to no surface id', () {
+    test('null maps to no surface id; an unnamed thread maps to its '
+        'room: slot (1d watchable rooms)', () {
       expect(
         conversationSurfaceId(
           activeThreadId: null,
@@ -62,6 +61,9 @@ void main() {
         ),
         isNull,
       );
+      // 1d — a thread no rail object names (actor↔actor room, group
+      // thread) is still a ROOM: the room the human is in always has
+      // a tab, so it maps to its own `room:<threadId>` slot.
       expect(
         conversationSurfaceId(
           activeThreadId: 'group-thread',
@@ -69,7 +71,7 @@ void main() {
           actors: const [],
           dmThreadOf: (final _) => null,
         ),
-        isNull,
+        'room:group-thread',
       );
     });
 
@@ -93,11 +95,7 @@ void main() {
         '#dev',
       );
       expect(
-        conversationSurfaceTitle(
-          'dm:toby',
-          channels: channels,
-          actors: actors,
-        ),
+        conversationSurfaceTitle('dm:toby', channels: channels, actors: actors),
         'Toby',
       );
       // Unknown rail object: the bar falls back to the raw id.
@@ -120,5 +118,4 @@ void main() {
       );
     });
   });
-
-  }
+}

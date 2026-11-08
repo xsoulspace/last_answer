@@ -1137,6 +1137,33 @@ class SRu extends S {
   String get worldChatCloseTooltip => 'Закрыть разговор';
 
   @override
+  String worldChatUnreadDivider(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count новых',
+      many: '$count новых',
+      few: '$count новых',
+      one: '$count новое',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get worldChatBeatReply => 'Ответить';
+
+  @override
+  String get worldChatBeatDetails => 'Факты сообщения';
+
+  @override
+  String worldChatReplyingTo(String name) {
+    return 'Ответ для $name';
+  }
+
+  @override
+  String get worldChatCancelReply => 'Отменить ответ';
+
+  @override
   String get worldChatPickHint => 'Выберите разговор или начните новый.';
 
   @override

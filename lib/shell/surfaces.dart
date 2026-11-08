@@ -33,41 +33,23 @@
 library;
 
 import 'package:lastanswer/browser/browser_strings.dart';
-
 import 'package:lastanswer/browser/workspace_browser.dart';
-
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/board_view.dart';
-import 'package:lastanswer/settings/features/storage_backends_state.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
-
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
 import 'package:lastanswer/settings/settings.dart';
-
 import 'package:lastanswer/shell/shell_scope.dart';
-
 import 'package:lastanswer/shell/shell_theme.dart';
-
 import 'package:lastanswer/shell/view_documents.dart';
-
 import 'package:lastanswer/shell/view_models.dart';
-
-import 'package:lastanswer/shell/view_threads.dart';
-
 import 'package:lastanswer/shell/view_people.dart';
-
+import 'package:lastanswer/shell/view_threads.dart';
 import 'package:lastanswer/workspaces/workspace_files_tab.dart';
-
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
 /// Declarative description of one surface kind that can live in a view
@@ -147,18 +129,21 @@ const String kSettingsSurfaceId = 'settings';
 /// decode drops them (session chrome never survives a restart).
 const String kNewTabSurfaceId = 'newtab';
 
-/// Whether [surfaceId] stands for a conversation — the world face or a
-/// rail-selected `dm:`/`channel:` — and therefore shares the ONE
-/// conversation slot in the bar.
+/// Whether [surfaceId] stands for a conversation — the world face, a
+/// rail-selected `dm:`/`channel:`, or a watchable `room:<threadId>`
+/// (1d: actor↔actor rooms and group threads are rooms like any other)
+/// — and therefore shares the ONE conversation slot in the bar.
 bool isConversationSurfaceId(final String surfaceId) =>
     surfaceId == kConversationsSurfaceId ||
     surfaceId.startsWith('dm:') ||
-    surfaceId.startsWith('channel:');
+    surfaceId.startsWith('channel:') ||
+    surfaceId.startsWith('room:');
 
-/// The surface id standing for the service's focused thread, or null
-/// when the thread maps to no rail object (nothing selected, or an
-/// unregistered group thread): the shell keeps the slot's current face
-/// rather than guessing.
+/// The surface id standing for the service's focused thread. DM and
+/// channel threads map to their rail-object slots; ANY OTHER thread
+/// (an actor↔actor room, a group thread — the 1d watchable rooms)
+/// maps to its own `room:<threadId>` slot, so the room the human is
+/// IN always has a tab. Null only when nothing is selected.
 String? conversationSurfaceId({
   required final String? activeThreadId,
   required final Iterable<ChannelInfo> channels,
@@ -176,16 +161,18 @@ String? conversationSurfaceId({
       return 'dm:${actor.actorId}';
     }
   }
-  return null;
+  return 'room:$activeThreadId';
 }
 
 /// The human title of a conversation surface id (the tab label), null
 /// when the registry's own title covers it or the rail object is
 /// unknown (the bar falls back to the raw id — honest, never blank).
+/// A `room:` tab titles from the thread's topic via [topicOf].
 String? conversationSurfaceTitle(
   final String surfaceId, {
   required final Iterable<ChannelInfo> channels,
   required final Iterable<ActorProfile> actors,
+  final String? Function(String threadId)? topicOf,
 }) {
   if (surfaceId.startsWith('channel:')) {
     final channelId = surfaceId.substring('channel:'.length);
@@ -200,6 +187,9 @@ String? conversationSurfaceTitle(
       if (actor.actorId == actorId) return actor.displayName;
     }
     return null;
+  }
+  if (surfaceId.startsWith('room:')) {
+    return topicOf?.call(surfaceId.substring('room:'.length));
   }
   return null;
 }
@@ -256,15 +246,17 @@ SurfaceSpec? documentSurfaceSpec(final String surfaceId) {
   );
 }
 
-/// The spec for a conversation surface id (`dm:`/`channel:`): the ONE
-/// conversation slot's [WorldChatSurface]. Null for anything that is
-/// neither a static surface nor a conversation slot id (honest
-/// unknown).
+/// The spec for a conversation surface id (`dm:`/`channel:`/`room:`):
+/// the ONE conversation slot's [WorldChatSurface]. Null for anything
+/// that is neither a static surface nor a conversation slot id
+/// (honest unknown).
 SurfaceSpec? conversationSurfaceSpec(
   final String surfaceId,
   final SurfaceRegistry surfaces,
 ) {
-  if (!surfaceId.startsWith('dm:') && !surfaceId.startsWith('channel:')) {
+  if (!surfaceId.startsWith('dm:') &&
+      !surfaceId.startsWith('channel:') &&
+      !surfaceId.startsWith('room:')) {
     return null;
   }
   return surfaces[kConversationsSurfaceId];
@@ -351,7 +343,18 @@ SurfaceRegistry buildShellSurfaces(
           final chat = service ?? tabContext.read<RealmChatService?>();
           chat?.selectThread(threadId);
           if (scope == null) return;
-          scope.onChanged(scope.layout.showView(kConversationsSurfaceId));
+          // 1d — the thread opens as ITS OWN room tab (dm:/channel:
+          // when a rail object names it, room:<threadId> otherwise),
+          // never as a face swap that leaves the tab bar lying.
+          final surfaceId =
+              conversationSurfaceId(
+                activeThreadId: threadId,
+                channels: chat?.channels ?? const <ChannelInfo>[],
+                actors: chat?.roster?.all ?? const <ActorProfile>[],
+                dmThreadOf: chat?.dmThreadOf ?? (_) => null,
+              ) ??
+              kConversationsSurfaceId;
+          scope.onChanged(scope.layout.showView(surfaceId));
         },
       );
     },
@@ -493,7 +496,7 @@ final class _MeshTasksSection extends StatelessWidget {
       key: const ValueKey('boards.meshTasks'),
       constraints: const BoxConstraints(maxHeight: 180),
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: la.rule, width: 1)),
+        border: Border(top: BorderSide(color: la.rule)),
       ),
       child: ListView(
         shrinkWrap: true,

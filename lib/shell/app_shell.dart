@@ -503,18 +503,26 @@ class _AppShellState extends State<AppShell> {
   void _restorePersistedConversationTab() {
     if (_service.activeThreadId != null || !_service.isReady) return;
     final id = _layout.activeSurfaceId;
-    if (!id.startsWith('dm:') && !id.startsWith('channel:')) return;
+    if (!id.startsWith('dm:') &&
+        !id.startsWith('channel:') &&
+        !id.startsWith('room:')) {
+      return;
+    }
     if (_bootRestoredId == id) return;
     final dmActor = id.startsWith('dm:') ? id.substring('dm:'.length) : null;
     final channelId = id.startsWith('channel:')
         ? id.substring('channel:'.length)
+        : null;
+    final roomThread = id.startsWith('room:')
+        ? id.substring('room:'.length)
         : null;
     final known =
         (dmActor != null && _service.roster?.get(dmActor) != null) ||
         (channelId != null &&
             _service.channels.any(
               (final channel) => channel.channelId == channelId,
-            ));
+            )) ||
+        (roomThread != null && _service.knowsThread(roomThread));
     _bootRestoredId = id;
     if (!known) return;
     activateConversationSurface(_service, id);
@@ -550,7 +558,8 @@ class _AppShellState extends State<AppShell> {
   void _onTabContext(final String surfaceId, final Offset globalPosition) {
     if (_miniWindowSpec(surfaceId) == null &&
         !surfaceId.startsWith('dm:') &&
-        !surfaceId.startsWith('channel:')) {
+        !surfaceId.startsWith('channel:') &&
+        !surfaceId.startsWith('room:')) {
       return;
     }
     unawaited(() async {
@@ -586,18 +595,24 @@ class _AppShellState extends State<AppShell> {
     final channelId = surfaceId.startsWith('channel:')
         ? surfaceId.substring('channel:'.length)
         : null;
-    final threadId = dmActor != null
-        ? _service.dmThreadOf(dmActor)
-        : _service.channels
-              .where((final channel) => channel.channelId == channelId)
-              .map((final channel) => channel.threadId)
-              .firstOrNull;
+    final roomThread = surfaceId.startsWith('room:')
+        ? surfaceId.substring('room:'.length)
+        : null;
+    final threadId =
+        roomThread ??
+        (dmActor != null
+            ? _service.dmThreadOf(dmActor)
+            : _service.channels
+                  .where((final channel) => channel.channelId == channelId)
+                  .map((final channel) => channel.threadId)
+                  .firstOrNull);
     if (threadId == null) return null;
     final title =
         conversationSurfaceTitle(
           surfaceId,
           channels: _service.channels,
           actors: _service.roster?.all ?? const <ActorProfile>[],
+          topicOf: _service.topicOf,
         ) ??
         surfaceId;
     return MiniWindowSpec(
@@ -761,6 +776,14 @@ class _AppShellState extends State<AppShell> {
           group: 'channels',
           run: () => _onSelectTab('channel:${channel.channelId}'),
         ),
+      for (final thread in _service.roomThreads)
+        CommandEntry(
+          id: 'room.${thread['threadId']}',
+          label: '${thread['topic'] ?? thread['threadId']}',
+          group: 'rooms',
+          icon: Icons.forum_outlined,
+          run: () => _onSelectTab('room:${thread['threadId']}'),
+        ),
       CommandEntry(
         id: 'action.newTab',
         label: l10n.newTabPageTitle,
@@ -805,7 +828,9 @@ class _AppShellState extends State<AppShell> {
   /// next notify (the ensure-exists law must never resurrect what the
   /// human closed).
   void _onCloseTab(final String surfaceId) {
-    if (surfaceId.startsWith('dm:') || surfaceId.startsWith('channel:')) {
+    if (surfaceId.startsWith('dm:') ||
+        surfaceId.startsWith('channel:') ||
+        surfaceId.startsWith('room:')) {
       final mapped = conversationSurfaceId(
         activeThreadId: _service.activeThreadId,
         channels: _service.channels,
@@ -861,6 +886,19 @@ class _AppShellState extends State<AppShell> {
               fontWeight: FontWeight.w600,
             ),
           ),
+        ),
+      );
+    }
+    if (surfaceId.startsWith('room:')) {
+      // A watchable room (1d): the forum mark — a room that is nobody's
+      // DM and no registered channel still deserves an identity.
+      return SizedBox(
+        width: _kIdentityMarkSize,
+        height: _kIdentityMarkSize,
+        child: Icon(
+          Icons.forum_outlined,
+          size: _kIdentityMarkSize,
+          color: context.shellMuted,
         ),
       );
     }
@@ -927,6 +965,17 @@ class _AppShellState extends State<AppShell> {
               icon: Icons.tag,
               onTap: () =>
                   tap(() => _onSelectTab('channel:${channel.channelId}')),
+            ),
+          // 1d — the WATCHABLE ROOMS: actor↔actor threads and group
+          // threads are rooms like any other; the human watches and
+          // joins by addressing.
+          for (final thread in _service.roomThreads)
+            NewTabRow(
+              key: 'newtab.entry.room:${thread['threadId']}',
+              label: '${thread['topic'] ?? thread['threadId']}',
+              icon: Icons.forum_outlined,
+              onTap: () =>
+                  tap(() => _onSelectTab('room:${thread['threadId']}')),
             ),
         ],
       ),
@@ -1065,6 +1114,7 @@ class _AppShellState extends State<AppShell> {
                     id,
                     channels: _service.channels,
                     actors: _service.roster?.all ?? const <ActorProfile>[],
+                    topicOf: _service.topicOf,
                   ) ??
                   _documentTitle(id),
               leadingFor: _leadingFor,
@@ -1249,6 +1299,7 @@ class _AppShellState extends State<AppShell> {
                 id,
                 channels: _service.channels,
                 actors: _service.roster?.all ?? const <ActorProfile>[],
+                topicOf: _service.topicOf,
               ) ??
               _documentTitle(id),
           leadingFor: _leadingFor,
@@ -1304,6 +1355,10 @@ void activateConversationSurface(
     unawaited(service.openDm(surfaceId.substring('dm:'.length)));
   } else if (surfaceId.startsWith('channel:')) {
     service.selectChannel(surfaceId.substring('channel:'.length));
+  } else if (surfaceId.startsWith('room:')) {
+    // A watchable room (1d): selection is the join — the human watches
+    // from the same surface and speaks by addressing.
+    service.selectThread(surfaceId.substring('room:'.length));
   }
 }
 

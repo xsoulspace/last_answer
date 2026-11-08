@@ -1136,6 +1136,31 @@ class SIt extends S {
   String get worldChatCloseTooltip => 'Chiudi conversazione';
 
   @override
+  String worldChatUnreadDivider(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nuovi',
+      one: '$count nuovo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get worldChatBeatReply => 'Rispondi';
+
+  @override
+  String get worldChatBeatDetails => 'Dettagli del messaggio';
+
+  @override
+  String worldChatReplyingTo(String name) {
+    return 'In risposta a $name';
+  }
+
+  @override
+  String get worldChatCancelReply => 'Annulla risposta';
+
+  @override
   String get worldChatPickHint =>
       'Scegli una conversazione o iniziane una nuova.';
 

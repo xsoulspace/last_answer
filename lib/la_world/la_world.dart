@@ -197,6 +197,17 @@ final class LaWorld {
       if (_unreadOf(room) > 0) room.threadId: _unreadOf(room),
   };
 
+  /// ONE room's human receipt fact (the 1g "N new" divider's need):
+  /// the member-gated unread plus the raw last-read beat — the divider
+  /// captures these at room entry, because reading IS the receipt
+  /// (ADR 0124) and the projection advances the moment the tail loads.
+  /// Null when the projection does not know the room (honest absence).
+  ({int lastReadBeat, int unread})? roomReceipt(final String threadId) {
+    final room = _rooms[threadId];
+    if (room == null) return null;
+    return (lastReadBeat: room.lastReadBeat, unread: _unreadOf(room));
+  }
+
   /// Every task, running first then most recent (the inbox law).
   List<TaskSnapshot> taskSnapshots() {
     final tasks = _tasks.values.toList()

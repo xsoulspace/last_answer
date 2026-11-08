@@ -503,9 +503,7 @@ final class RealmChatService extends ChangeNotifier {
       }
       String activityOf(final Map<String, Object?> row) =>
           (row['lastBeatAt'] ?? row['createdAt'] ?? '') as String;
-      enriched.sort(
-        (a, b) => activityOf(b).compareTo(activityOf(a)),
-      );
+      enriched.sort((a, b) => activityOf(b).compareTo(activityOf(a)));
       _threads
         ..clear()
         ..addAll(enriched);
@@ -572,6 +570,43 @@ final class RealmChatService extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  /// The topic of a known thread, null when the projection does not
+  /// carry it (the `room:` tab title's source — honest raw-id fallback
+  /// upstream).
+  String? topicOf(final String threadId) {
+    for (final thread in _threads) {
+      if (thread['threadId'] == threadId) return thread['topic'] as String?;
+    }
+    return null;
+  }
+
+  /// Whether the projection knows this thread (the boot-restore gate
+  /// for `room:` tabs — a ghost id never re-selects).
+  bool knowsThread(final String threadId) =>
+      _threads.any((thread) => thread['threadId'] == threadId);
+
+  /// The WATCHABLE ROOMS (1d): open threads that are neither a DM slot
+  /// nor a channel — actor↔actor rooms and plain group threads. The
+  /// human watches them like any room and joins by addressing (the
+  /// mention grammar already exists); the picker and palette list them.
+  List<Map<String, Object?>> get roomThreads {
+    final human = humanActorId;
+    return [
+      for (final thread in _threads)
+        if (thread['closed'] != true && !_isDmOrChannel(thread, human)) thread,
+    ];
+  }
+
+  bool _isDmOrChannel(final Map<String, Object?> thread, final String? human) {
+    final threadId = '${thread['threadId'] ?? ''}';
+    if (channelByThreadId(threadId) != null) return true;
+    if (human == null) return false;
+    final participants = (thread['participants'] as List? ?? const <Object?>[])
+        .cast<String>()
+        .toSet();
+    return participants.length == 2 && participants.contains(human);
   }
 
   /// Opens the DM with [actorId]: the existing two-member thread with
@@ -736,8 +771,10 @@ final class RealmChatService extends ChangeNotifier {
   }
 
   /// Says one beat as the human, addressed to the thread's other
-  /// participants (so every bot in the thread hears it).
-  Future<void> say(String text) async {
+  /// participants (so every bot in the thread hears it). [replyTo]
+  /// anchors the beat to an earlier beat number (the 1g quote law —
+  /// the substrate carries it, ADR 0136's `replyingTo` vocabulary).
+  Future<void> say(String text, {final int? replyTo}) async {
     final world = _world;
     final human = _human;
     final threadId = _activeThreadId;
@@ -759,6 +796,7 @@ final class RealmChatService extends ChangeNotifier {
         threadId: threadId,
         text: trimmed,
         addressedTo: others,
+        replyTo: replyTo,
       );
       // The in-process shortcut: our own append dispatches immediately
       // (the journal watch covers everyone else's).

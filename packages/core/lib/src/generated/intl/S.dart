@@ -2139,6 +2139,36 @@ abstract class S {
   /// **'Close conversation'**
   String get worldChatCloseTooltip;
 
+  /// No description provided for @worldChatUnreadDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} new} other{{count} new}}'**
+  String worldChatUnreadDivider(int count);
+
+  /// No description provided for @worldChatBeatReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get worldChatBeatReply;
+
+  /// No description provided for @worldChatBeatDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat details'**
+  String get worldChatBeatDetails;
+
+  /// No description provided for @worldChatReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String worldChatReplyingTo(String name);
+
+  /// No description provided for @worldChatCancelReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reply'**
+  String get worldChatCancelReply;
+
   /// No description provided for @worldChatPickHint.
   ///
   /// In en, this message translates to:

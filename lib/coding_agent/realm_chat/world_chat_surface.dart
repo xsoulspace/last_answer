@@ -6,6 +6,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/landing_inbox.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
@@ -722,8 +723,31 @@ class _ConversationPaneState extends State<_ConversationPane> {
   final ScrollController _scroll = ScrollController();
   bool _showJumpToLatest = false;
 
+  // ---- 1g: the unread divider's capture-at-entry state ----
+  // Reading IS the receipt (ADR 0124): the projection's lastReadBeat
+  // advances the moment the tail loads, so the pane snapshots the
+  // receipt AT ROOM ENTRY and keeps the divider for the whole visit —
+  // the boundary between what the human had read and what arrived.
+  String? _receiptThreadId;
+  int? _dividerBeat;
+  int _dividerUnread = 0;
+
+  /// The beat the composer is replying to (1g: replyTo rides the say).
+  Map<String, Object?>? _replyBeat;
+
   RealmChatService get service => widget.service;
   TextEditingController get composer => widget.composer;
+
+  /// LaWorld when the shell provides it; a hermetic surface without the
+  /// projection keeps working (no divider — honest absence, never a
+  /// crash: the provider may legitimately not exist outside the shell).
+  LaWorld? _laWorldOf(final BuildContext context) {
+    try {
+      return context.read<LaWorld?>();
+    } on ProviderNotFoundException {
+      return null;
+    }
+  }
 
   @override
   void initState() {
@@ -737,6 +761,65 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (away != _showJumpToLatest) {
       setState(() => _showJumpToLatest = away);
     }
+  }
+
+  static String _oneLine(final String raw) {
+    final text = raw.replaceAll('\n', ' ');
+    const max = 90;
+    return text.length <= max ? text : '${text.substring(0, max - 1)}…';
+  }
+
+  /// A beat's right-click / long-press (1g): Reply anchors the
+  /// composer; Details opens the beat's durable facts (mono, journal
+  /// vocabulary — never localized, every value is a fact).
+  Future<void> _onBeatContext(
+    final Map<String, Object?> beat,
+    final Offset globalPosition,
+    final String Function(String actorId) displayNameOf,
+  ) async {
+    final l10n = context.l10n;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final choice = await showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        globalPosition.dx,
+        globalPosition.dy,
+        overlay.size.width - globalPosition.dx,
+        overlay.size.height - globalPosition.dy,
+      ),
+      items: [
+        PopupMenuItem<String>(
+          value: 'reply',
+          child: Text(l10n.worldChatBeatReply),
+        ),
+        PopupMenuItem<String>(
+          value: 'details',
+          child: Text(l10n.worldChatBeatDetails),
+        ),
+      ],
+    );
+    if (!mounted || choice == null) return;
+    if (choice == 'reply') {
+      setState(() => _replyBeat = beat);
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (final dialogContext) => _BeatDetailsDialog(
+        beat: beat,
+        displayNameOf: displayNameOf,
+        onClose: () => Navigator.of(dialogContext).pop(),
+      ),
+    );
+  }
+
+  Future<void> _send(final String raw) async {
+    final replyTo = _replyBeat?['beat'] as int?;
+    await service.say(raw, replyTo: replyTo);
+    if (!mounted) return;
+    composer.clear();
+    if (_replyBeat != null) setState(() => _replyBeat = null);
   }
 
   @override
@@ -767,6 +850,16 @@ class _ConversationPaneState extends State<_ConversationPane> {
         );
       }
       return _CenteredNote(text: l10n.worldChatSelectFromRail);
+    }
+    // 1g — capture the receipt AT ENTRY: the build right after
+    // selectThread runs before the async tail read writes the new
+    // receipt, so this snapshot is the pre-visit read position.
+    if (threadId != _receiptThreadId) {
+      _receiptThreadId = threadId;
+      final receipt = _laWorldOf(context)?.roomReceipt(threadId);
+      _dividerBeat = receipt?.lastReadBeat ?? 0;
+      _dividerUnread = receipt?.unread ?? 0;
+      _replyBeat = null;
     }
     final roster = service.roster;
     String displayNameOf(String actorId) =>
@@ -884,7 +977,38 @@ class _ConversationPaneState extends State<_ConversationPane> {
                                 actorId: author,
                                 displayName: displayNameOf(author),
                               );
-                          return _MessageRow(
+                          // 1g — the replyTo quote: the referenced beat
+                          // when the loaded window carries it, an
+                          // honest "#n" when it does not (the tail page
+                          // is a window, not the room).
+                          final replyNum = beat['replyTo'] as int?;
+                          String? replyQuote;
+                          if (replyNum != null) {
+                            final target = beats.firstWhereOrNull(
+                              (final candidate) =>
+                                  candidate['beat'] == replyNum,
+                            );
+                            replyQuote = target == null
+                                ? '#$replyNum'
+                                : '${displayNameOf(target['author']! as String)}: '
+                                      '${_oneLine('${target['text'] ?? ''}')}';
+                          }
+                          // 1g — addressedTo chips: only a PROPER
+                          // SUBSET of the other participants is a
+                          // mention worth showing; addressing everyone
+                          // is the default, not a fact.
+                          final addressed =
+                              (beat['addressedTo'] as List? ??
+                                      const <Object?>[])
+                                  .cast<String>();
+                          final chips =
+                              addressed.length < participants.length - 1
+                              ? [
+                                  for (final id in addressed)
+                                    (id: id, name: displayNameOf(id)),
+                                ]
+                              : const <({String id, String name})>[];
+                          final row = _MessageRow(
                             key: ValueKey(
                               'worldchat.beat.$threadId#${beat['beat']}',
                             ),
@@ -893,7 +1017,51 @@ class _ConversationPaneState extends State<_ConversationPane> {
                             text: beat['text']! as String,
                             at: beat['at'] as String?,
                             showHeader: !grouped,
+                            replyQuote: replyQuote,
+                            replyQuoteKey: replyNum == null
+                                ? null
+                                : ValueKey(
+                                    'worldchat.quote.$threadId#$replyNum',
+                                  ),
+                            addressedChips: chips,
                           );
+                          // The beat's context affordance (1g): a
+                          // right-click / long-press opens Reply and
+                          // the durable-facts popover.
+                          final contextual = GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onSecondaryTapUp: (final details) => _onBeatContext(
+                              beat,
+                              details.globalPosition,
+                              displayNameOf,
+                            ),
+                            onLongPressEnd: (final details) => _onBeatContext(
+                              beat,
+                              details.globalPosition,
+                              displayNameOf,
+                            ),
+                            child: row,
+                          );
+                          // 1g — the "N new" divider: under the newest
+                          // beat the human had read at entry (unread
+                          // messages follow it downward), captured once
+                          // per visit; never for a never-read room (the
+                          // badge already says "all of it is new").
+                          final dividerBeat = _dividerBeat;
+                          if (dividerBeat != null &&
+                              dividerBeat > 0 &&
+                              _dividerUnread > 0 &&
+                              beat['beat'] == dividerBeat) {
+                            return Column(
+                              key: const ValueKey('worldchat.unreadDivider'),
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                contextual,
+                                _UnreadDivider(count: _dividerUnread),
+                              ],
+                            );
+                          }
+                          return contextual;
                         },
                       ),
                     ),
@@ -917,6 +1085,44 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 ),
         ),
         Divider(height: 1, color: theme.dividerColor),
+        // 1g — the reply anchor: a quiet strip naming the beat the
+        // next word answers (cancel returns to the plain say).
+        if (_replyBeat != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+            child: Container(
+              key: const ValueKey('worldchat.replying'),
+              padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+              decoration: BoxDecoration(
+                color: context.shellField,
+                borderRadius: BorderRadius.circular(ShellTokens.radius),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.reply, size: 14, color: context.shellMuted),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '${l10n.worldChatReplyingTo(displayNameOf(_replyBeat!['author']! as String))}: ${_oneLine('${_replyBeat!['text'] ?? ''}')}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: context.shellMuted,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    key: const ValueKey('worldchat.replying.close'),
+                    visualDensity: VisualDensity.compact,
+                    iconSize: 14,
+                    tooltip: l10n.worldChatCancelReply,
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(() => _replyBeat = null),
+                  ),
+                ],
+              ),
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
           child: Container(
@@ -939,9 +1145,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                       minLines: 1,
                       maxLines: 5,
                       textInputAction: TextInputAction.send,
-                      onSubmitted: (final value) => unawaited(
-                        service.say(value).then((_) => composer.clear()),
-                      ),
+                      onSubmitted: (final value) => unawaited(_send(value)),
                       decoration: InputDecoration(
                         hintText: composerHint,
                         border: InputBorder.none,
@@ -963,11 +1167,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                       : const Icon(Icons.arrow_upward, size: 18),
                   onPressed: service.sending
                       ? null
-                      : () => unawaited(
-                          service
-                              .say(composer.text)
-                              .then((_) => composer.clear()),
-                        ),
+                      : () => unawaited(_send(composer.text)),
                 ),
               ],
             ),
@@ -1040,7 +1240,6 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
           children: [
             Positioned.fill(
               child: ModalBarrier(
-                dismissible: true,
                 color: const Color(0x00000000),
                 onDismiss: () {
                   if (mounted) setState(_removeCard);
@@ -1419,7 +1618,10 @@ class _ActorCard extends StatelessWidget {
 /// One durable beat: gutter actor label + text on the shared grid.
 /// One beat as a message (Discord density, Tufte law): avatar gutter,
 /// name + time header on the first line of a group, plain text body —
-/// no bubbles; whitespace and the gutter do the grouping.
+/// no bubbles; whitespace and the gutter do the grouping. 1g adds the
+/// conversational facts the substrate already carries: the replyTo
+/// quote above the body and addressedTo chips beside the name (a
+/// proper subset only — addressing everyone is the default).
 class _MessageRow extends StatelessWidget {
   const _MessageRow({
     required this.profile,
@@ -1427,6 +1629,9 @@ class _MessageRow extends StatelessWidget {
     required this.text,
     required this.showHeader,
     this.at,
+    this.replyQuote,
+    this.replyQuoteKey,
+    this.addressedChips = const <({String id, String name})>[],
     super.key,
   });
 
@@ -1435,6 +1640,9 @@ class _MessageRow extends StatelessWidget {
   final String text;
   final String? at;
   final bool showHeader;
+  final String? replyQuote;
+  final Key? replyQuoteKey;
+  final List<({String id, String name})> addressedChips;
 
   String _timeLabel(final BuildContext context) {
     final raw = at;
@@ -1453,6 +1661,34 @@ class _MessageRow extends StatelessWidget {
     return sameDay ? clock : '${local.month}/${local.day} $clock';
   }
 
+  Widget? _quote(final BuildContext context) {
+    final quote = replyQuote;
+    if (quote == null) return null;
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: ShellTokens.messageGutter,
+        bottom: 3,
+      ),
+      child: Container(
+        key: replyQuoteKey,
+        padding: const EdgeInsets.only(left: 8),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(color: context.shellHairline, width: 2),
+          ),
+        ),
+        child: Text(
+          quote,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(
+            context,
+          ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -1465,7 +1701,10 @@ class _MessageRow extends StatelessWidget {
     if (!showHeader) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 1),
-        child: body,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [if (replyQuote != null) _quote(context)!, body],
+        ),
       );
     }
     final time = _timeLabel(context);
@@ -1492,11 +1731,147 @@ class _MessageRow extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(color: muted),
                 ),
               ],
+              for (final chip in addressedChips) ...[
+                const SizedBox(width: 6),
+                Text(
+                  '@${chip.name}',
+                  key: ValueKey('worldchat.addressed.${chip.id}'),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: actorColor(chip.id),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ],
           ),
           const SizedBox(height: 2),
+          if (replyQuote != null) _quote(context)!,
           body,
         ],
+      ),
+    );
+  }
+}
+
+/// The 1g "N new" divider: one quiet accent rule with the count — the
+/// boundary between the beats the human had read at entry and the ones
+/// that arrived while away. Calm chrome: no pill, no danger color; the
+/// accent says "this is new", nothing shouts.
+class _UnreadDivider extends StatelessWidget {
+  const _UnreadDivider({required this.count});
+  final int count;
+
+  @override
+  Widget build(final BuildContext context) {
+    final accent = context.la.accent;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Expanded(child: Container(height: 1, color: accent)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              context.l10n.worldChatUnreadDivider(count),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: accent,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Expanded(child: Container(height: 1, color: accent)),
+        ],
+      ),
+    );
+  }
+}
+
+/// The beat's durable facts (1g's per-beat detail popover): journal
+/// vocabulary in mono — field names, never localized, because every
+/// value is a durable fact (the actor-card law, one scale down).
+class _BeatDetailsDialog extends StatelessWidget {
+  const _BeatDetailsDialog({
+    required this.beat,
+    required this.displayNameOf,
+    required this.onClose,
+  });
+
+  final Map<String, Object?> beat;
+  final String Function(String actorId) displayNameOf;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(final BuildContext context) {
+    final addressed = (beat['addressedTo'] as List? ?? const <Object?>[])
+        .cast<String>()
+        .map(displayNameOf)
+        .join(', ');
+    final facts = <(String, String)>[
+      ('beat', '${beat['beat'] ?? ''}'),
+      (
+        'author',
+        '${displayNameOf('${beat['author'] ?? ''}')} · ${beat['author'] ?? ''}',
+      ),
+      ('at', '${beat['at'] ?? ''}'),
+      if (addressed.isNotEmpty) ('addressedTo', addressed),
+      if (beat['replyTo'] != null) ('replyTo', '#${beat['replyTo']}'),
+    ];
+    return Dialog(
+      key: const ValueKey('worldchat.beatDetails'),
+      backgroundColor: context.shellRaised,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        side: BorderSide(color: context.shellHairline),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                context.l10n.worldChatBeatDetails,
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 10),
+              for (final (label, value) in facts)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 84,
+                        child: Text(
+                          label,
+                          style: LaTokens.mono(10.5, context.la.inkMuted),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          value,
+                          style: LaTokens.mono(10.5, context.la.ink),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 6),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  key: const ValueKey('worldchat.beatDetails.close'),
+                  onPressed: onClose,
+                  child: Text(context.l10n.worldChatCloseTooltip),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

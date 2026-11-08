@@ -1128,6 +1128,31 @@ class SEn extends S {
   String get worldChatCloseTooltip => 'Close conversation';
 
   @override
+  String worldChatUnreadDivider(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count new',
+      one: '$count new',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get worldChatBeatReply => 'Reply';
+
+  @override
+  String get worldChatBeatDetails => 'Beat details';
+
+  @override
+  String worldChatReplyingTo(String name) {
+    return 'Replying to $name';
+  }
+
+  @override
+  String get worldChatCancelReply => 'Cancel reply';
+
+  @override
   String get worldChatPickHint => 'Pick a conversation, or start a new one.';
 
   @override

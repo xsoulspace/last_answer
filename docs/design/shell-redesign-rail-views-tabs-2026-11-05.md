@@ -199,6 +199,21 @@ window focus gain (fixes the `⌘T handled:false` class). Acceptance: a
 `semantic_snapshot` of the idle shell lists every rail entry, every open tab,
 the composer, and the status edge.
 
+> **v4 amendment (2026-11-08, DESIGN.md v2 implementation):** the key
+> grammar follows the group-scoped anatomy. `rail.view.<kindId>` now names
+> the ACTION BAR's kind buttons (the click-then-cycle law), `rail.search` /
+> `rail.settings` ride the bar; the persistent roster rows (`rail.actor.*`,
+> `rail.channel.*`, `rail.workspace.*`) retired with the room list — rooms
+> are picker rows (`newtab.entry.<surfaceId>`, plus `newtab.instance.<kind>`,
+> `newtab.create.<flow>`, `newtab.runway.<format>`). Strips are keyed per
+> PANE GROUP: `view.strip.<group>`, `view.group.{back,forward,split,fold}.<group>`,
+> `view.strip.add.<group>`; tab keys are unchanged (`view.tab.<id>`,
+> `view.tab.close.<id>`). The unread badge is kind-level
+> (`rail.unread.conversations`). `worldchat.typing` moved from header text
+> to the HUD pulse's Semantics label; `worldchat.close` lives in the actor
+> card (`worldchat.card`, `worldchat.actorCard`). `rail_sem_probe_test.dart`
+> and `command_palette_test.dart` own this contract.
+
 ## 3. Design language — light, Apple-inspired, UX-needs-first
 
 Principle: **materials and depth only where they carry a UX fact.** Apple is an

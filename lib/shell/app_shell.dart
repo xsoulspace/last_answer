@@ -36,6 +36,8 @@ import 'package:headless_core/headless_core.dart' as hc;
 
 import 'package:lastanswer/_library/widgets/widgets.dart';
 
+import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
+
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
@@ -218,6 +220,12 @@ class _AppShellState extends State<AppShell> {
     _service.resolveCastRung = _worldState.castDeclFor;
     _service.daemonLiveGetter = () => _worldState.daemonLive;
     unawaited(_service.ensureReady());
+    // 2e — the ACP agent detection runs ONCE per app run on desktop (the
+    // picker's bridge row renders the availability FACT; discovery never
+    // executes an agent, and the flow re-checks before it binds).
+    if (PlatformInfo.isNativeDesktop) {
+      unawaited(AcpBridgeRegistry.detectAgents());
+    }
     _service.addListener(_onServiceChanged);
     unawaited(_startLaWorld());
     // Phase 1d: the world's ambient poll (the doctor/journal/registry
@@ -1062,6 +1070,39 @@ class _AppShellState extends State<AppShell> {
             icon: Icons.create_new_folder_outlined,
             onTap: () => tap(() => unawaited(openNewWorkspaceFlow(context))),
           ),
+          // 2e — the ACP external-actor bridge (desktop only). The row
+          // NAMES its own absence when unavailable (never a crash,
+          // never a faked agent); a still-undetected desktop keeps the
+          // row open and the flow re-checks detection honestly.
+          () {
+            final detected = AcpBridgeRegistry.detectedAgents.value;
+            final availability =
+                detected == null && PlatformInfo.isNativeDesktop
+                ? AcpBridgeAvailability.available
+                : acpBridgeAvailability(
+                    AcpBridgeRegistry.detectedAgentIds(),
+                    Platform.operatingSystem,
+                  );
+            return NewTabRow(
+              key: 'newtab.create.acp',
+              label: switch (availability) {
+                AcpBridgeAvailability.available => 'acp · bridge an agent',
+                AcpBridgeAvailability.noAgentsDetected =>
+                  'acp · bridge — no agent detected',
+                AcpBridgeAvailability.unsupportedPlatform =>
+                  'acp · bridge — desktop only',
+              },
+              icon: Icons.hub_outlined,
+              enabled: availability == AcpBridgeAvailability.available,
+              onTap: availability == AcpBridgeAvailability.available
+                  ? () => tap(
+                      () => unawaited(
+                        openAcpBridgeFlow(context, service: _service),
+                      ),
+                    )
+                  : null,
+            );
+          }(),
           // 2a — the code format's creation flow: the registry's own
           // update lane, then the doc's tab (the documents view's twin).
           NewTabRow(

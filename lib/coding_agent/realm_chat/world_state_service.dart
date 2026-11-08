@@ -29,6 +29,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
@@ -463,9 +464,13 @@ final class WorldStateService extends ChangeNotifier {
   List<WorldVerdictRow>? debugVerdictsOverride;
 
   /// Open Lane-A permissions across the live sessions (reject-first
-  /// rows of the landing inbox).
-  List<InboxPermission> get permissions =>
-      debugPermissionsOverride ?? _permissions;
+  /// rows of the landing inbox), plus the ACP bridge rows (item 2e):
+  /// registry rows are session facts, bridge rows are device-local
+  /// facts of this app run — both honest, one shape, one list.
+  List<InboxPermission> get permissions => <InboxPermission>[
+    ...(debugPermissionsOverride ?? _permissions),
+    ...AcpBridgeRegistry.permissions.value,
+  ];
 
   /// Last verdicts: session verdict/spend lines plus the newest terminal
   /// durable tasks, most recent first.

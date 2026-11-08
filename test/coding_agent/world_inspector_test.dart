@@ -293,7 +293,7 @@ void main() {
         find.textContaining('needs you', findRichText: true),
         findsNothing,
       );
-      expect(find.textContaining('2 session(s)'), findsOneWidget);
+      expect(find.textContaining('2 actor loop(s)'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(milliseconds: 10));
     });
@@ -396,7 +396,7 @@ void main() {
         ),
       );
       await tester.pump(const Duration(milliseconds: 50));
-      expect(find.textContaining('no live sessions'), findsOneWidget);
+      expect(find.textContaining('no live actor work'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(milliseconds: 10));
     });
@@ -427,7 +427,7 @@ void main() {
       expect(projection.sessions.first.running, isTrue);
       // No attention need anywhere → the rule stays in counts form.
       expect(projection.needs, isEmpty);
-      expect(find.textContaining('session(s)'), findsOneWidget);
+      expect(find.textContaining('actor loop(s)'), findsOneWidget);
       expect(find.textContaining('1 running'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(milliseconds: 10));

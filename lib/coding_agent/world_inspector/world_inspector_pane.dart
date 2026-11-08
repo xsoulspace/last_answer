@@ -586,7 +586,9 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                           : '${needs.length} need you';
                       if (sessions.isEmpty) {
                         return Text(
-                          'no live sessions — delegate a task from the doc',
+                          // 1c vocabulary: the UX says ACTOR WORK —
+                          // 'sessions' stay an implementation detail.
+                          'no live actor work — delegate a task from the doc',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: quiet,
@@ -594,7 +596,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                       }
                       if (needs.isEmpty) {
                         return Text(
-                          '${sessions.length} session(s) · $running running',
+                          '${sessions.length} actor loop(s) · $running running',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: quiet,

@@ -40,6 +40,7 @@ import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/world_inspector/world_binding_store.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/settings.dart';
@@ -570,13 +571,18 @@ final class _QuietViewNote extends StatelessWidget {
 /// pane's), and it polls the ONE session registry by default
 /// ([HarnessSessionRegistry.instance], the same index the doc surfaces
 /// register under) — so the view owes it only what the doc composition
-/// owns elsewhere: a store for the picked world binding. The pane is
-/// stateless about the binding (its caller persists it — under the doc,
-/// into the doc payload); without a store the connect affordance would
-/// silently drop the pick. View-local state keeps the affordance honest
-/// for the view's lifetime. Named follow-up: persist the binding beyond
-/// the leaf swap (workspace-level state) if the inspector view grows a
-/// store of its own.
+/// owns elsewhere: a store for the picked world binding. The binding
+/// pick is an IMPLEMENTATION DETAIL (plan v5 1c): the view persists the
+/// user's last choice ([WorldBindingStore], keyed by the view's own
+/// surface identity — a doc composition would key by the doc's) and
+/// auto-resolves it on mount, so the user is never asked
+/// to re-pick. The resolution is honest: a persisted world re-attaches
+/// only when its facade answers; an explicit disconnect persists as
+/// embedded; an unreachable persisted world degrades to embedded WITH a
+/// quiet note in the pane's own vocabulary ("unreachable — arm
+/// `ecsaid --serve`"). The pane stays stateless about persistence —
+/// its [WorldInspectorPane.onBindingChanged] is the ONE choice surface
+/// and the view writes every explicit choice back to the store.
 final class _InspectorTabEmbed extends StatefulWidget {
   const _InspectorTabEmbed();
 
@@ -585,15 +591,97 @@ final class _InspectorTabEmbed extends StatefulWidget {
 }
 
 final class _InspectorTabEmbedState extends State<_InspectorTabEmbed> {
+  /// The store key owning this view's binding choice: the shell-level
+  /// inspector's own surface identity (the store law is doc-keyed; a
+  /// doc composition would pass the doc's id instead).
+  static const String _docKey = kInspectorSurfaceId;
+
   WorldBindingModel? _binding;
 
+  /// The quiet honest note when a persisted world was unreachable at
+  /// mount — the auto-resolution degraded to embedded and SAYS SO.
+  String? _degradedNote;
+
+  /// Bumped on every explicit user choice: an in-flight auto-resolution
+  /// never overrides a newer pick (stale-await guard).
+  int _choice = 0;
+
   @override
-  Widget build(final BuildContext context) => WorldInspectorPane(
-    binding: _binding,
-    // The view is a bounded surface: expanding fills the view, it does
-    // not open a fixed-height strip. Collapsed stays ONE status rule —
-    // the honest landing state (product DESIGN §10 attention dial).
-    expandedHeight: double.infinity,
-    onBindingChanged: (final binding) => setState(() => _binding = binding),
+  void initState() {
+    super.initState();
+    unawaited(_autoResolve());
+  }
+
+  /// The mount-time law: load the persisted choice and auto-attach —
+  /// the user already picked once, the pick survives the leaf swap.
+  Future<void> _autoResolve() async {
+    final choice = _choice;
+    final resolution = await resolvePersistedWorldBinding(docKey: _docKey);
+    if (!mounted || choice != _choice) return;
+    switch (resolution) {
+      case AttachWorldResolution(:final binding):
+        setState(() => _binding = binding);
+      case UnreachableWorldResolution(:final binding):
+        final label = binding.displayName.isNotEmpty
+            ? binding.displayName
+            : binding.worldId;
+        setState(
+          () => _degradedNote =
+              'last world $label unreachable — showing the embedded '
+              'world · arm `ecsaid --serve` at ${binding.endpoint}',
+        );
+      case EmbeddedWorldResolution():
+        break; // absence or explicit disconnect — embedded is the answer
+    }
+  }
+
+  @override
+  Widget build(final BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      // The degrade note: one quiet line in the existing vocabulary —
+      // honest absence, never a silent lie (the 1c law).
+      if (_degradedNote case final note?)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+          child: Text(
+            note,
+            key: const ValueKey('world_inspector.degraded'),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+          ),
+        ),
+      Expanded(
+        child: WorldInspectorPane(
+          binding: _binding,
+          // The view is a bounded surface: expanding fills the view, it
+          // does not open a fixed-height strip. Collapsed stays ONE
+          // status rule — the honest landing state (product DESIGN §10
+          // attention dial).
+          expandedHeight: double.infinity,
+          onBindingChanged: (final binding) {
+            // An explicit pick (connect OR disconnect) is the law from
+            // now on: it supersedes any in-flight resolution and
+            // persists — disconnect stores the explicit embedded state.
+            _choice++;
+            setState(() {
+              _binding = binding;
+              _degradedNote = null;
+            });
+            unawaited(
+              binding == null
+                  ? WorldBindingStore.saveEmbedded(docKey: _docKey)
+                  : WorldBindingStore.saveWorld(
+                      docKey: _docKey,
+                      binding: binding,
+                    ),
+            );
+          },
+        ),
+      ),
+    ],
   );
 }

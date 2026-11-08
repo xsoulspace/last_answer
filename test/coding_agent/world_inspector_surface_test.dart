@@ -58,7 +58,7 @@ void main() {
     final projection = WorldInspectorPane.lastProjection;
     expect(projection, isNotNull);
     expect(projection!.sessions, isEmpty);
-    expect(find.textContaining('no live sessions'), findsOneWidget);
+    expect(find.textContaining('no live actor work'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(milliseconds: 10));

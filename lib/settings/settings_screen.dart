@@ -1,5 +1,6 @@
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/settings/views/views.dart';
 
@@ -20,9 +21,14 @@ class SettingsScreen extends HookWidget {
   Widget build(final BuildContext context) {
     void onBack() => onClose != null ? onClose!() : Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
-    final isAccountViewVisible = context
-        .read<PurchasesNotifier>()
-        .isAdSupported;
+    // Plan v5 4a — the Pro entry, un-hidden: the Account/Pro tab shows
+    // when this build's store target declares products OR the
+    // entitlement dev-override is on. A missing purchase provider
+    // degrades honestly downstream (the paywall names the store's
+    // absence), never by dead-gating the entry.
+    final isAccountViewVisible =
+        context.read<PurchasesNotifier>().isProEntryVisible ||
+        context.watch<ProEntitlement?>()?.devOverride == true;
     final appFeaturesNotifier = context.watch<AppFeaturesNotifier>();
     final tabsViews = [
       const GeneralSettingsView(),

@@ -19,6 +19,7 @@ import 'dart:convert';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/entitlement/tier_gate.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/status_edge.dart' show HealthDot, healthColor;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
@@ -161,14 +162,22 @@ final class _DaemonHeader extends StatelessWidget {
           ),
         ],
         const SizedBox(width: 6),
-        _HeaderButton(
-          keyName: 'models.edit',
-          label: l10n.modelsEditPalette,
-          onTap: () => unawaited(
-            showDialog<void>(
-              context: context,
-              builder: (final dialogContext) =>
-                  PaletteEditorDialog(world: world),
+        // Plan v5 4b — the tier gate sits on the EDIT affordance only:
+        // the rungs/telemetry read model above stays FREE (reading the
+        // truth is never a paid feature). FREE renders the quiet named
+        // absence with the upgrade route; an unmounted entitlement
+        // layer fails open (hermetic surfaces are never locked out).
+        ProGate(
+          feature: TierFeature.paletteEditor,
+          child: _HeaderButton(
+            keyName: 'models.edit',
+            label: l10n.modelsEditPalette,
+            onTap: () => unawaited(
+              showDialog<void>(
+                context: context,
+                builder: (final dialogContext) =>
+                    PaletteEditorDialog(world: world),
+              ),
             ),
           ),
         ),

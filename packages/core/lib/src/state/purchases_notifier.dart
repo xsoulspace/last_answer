@@ -47,8 +47,22 @@ class PurchasesNotifier extends LoadableStateNotifier<PurchasesModel> {
       mobile: 'R-A-5804060-2',
     ),
   };
-  bool get isAdSupported => false; //
-  // adUnits.mobile.isNotEmpty || adUnits.desktop.isNotEmpty;
+  /// Plan v5 4a — the Pro entry un-hide. Old meaning: "is this build
+  /// ad-supported" (hardcoded `false`, which dead-gated the Account/Pro
+  /// settings tab). Honest meaning: this build's store target
+  /// ([monetizationStoreTarget]) declares subscription products — the
+  /// catalog below is that declaration. A missing purchase provider
+  /// (Noop) degrades honestly AT THE PURCHASE ATTEMPT: the paywall
+  /// renders the store's own `notAvailable` fact — never by hiding the
+  /// entry. The dev-override half of the entitlement law lives above
+  /// this notifier (`ProEntitlement`, lib/entitlement) and can only
+  /// widen access, so the entry never re-gates on it.
+  bool get isAdSupported => isProEntryVisible;
+
+  /// Whether the Account/Pro settings tab (the paywall entry) shows.
+  bool get isProEntryVisible =>
+      MonetizationProducts.subscriptionsForBuild.isNotEmpty;
+
   Future<void> watchAd(final BuildContext context) async {
     final toasts = Toasts.of(context);
     final l10n = context.l10n;

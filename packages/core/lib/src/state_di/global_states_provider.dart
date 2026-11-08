@@ -11,6 +11,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart' as acp_runtime;
 import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
 import 'package:lastanswer/doc/acp_doc_inference_port.dart';
+import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
@@ -194,6 +195,17 @@ class GlobalStatesProvider extends StatelessWidget {
           );
         },
         dispose: (final _, final foundation) => foundation.dispose(),
+      ),
+
+      /// Plan v5 4a — the entitlement seam (`isSubscribed OR
+      /// dev-override`), provided app-wide so every tier gate reads
+      /// ONE answer. It sits above the store resources (it listens to
+      /// [SubscriptionStatusResource]) and above the platform-fact
+      /// layer (it never replaces a capability check).
+      ChangeNotifierProvider<ProEntitlement>(
+        create: (final context) => ProEntitlement(
+          subscriptionStatus: context.read<SubscriptionStatusResource>(),
+        ),
       ),
     ],
     child: Builder(builder: builder),

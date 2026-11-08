@@ -174,7 +174,18 @@ Future<void> _paletteTo(final String vmUri, final String query) async {
 
 const _smokeThread = 'thread-smoke-endless';
 const _smokeChannel = 'channel-smoke-endless';
-const _roundtripThread = 'thread-smoke-roundtrip';
+
+/// The roundtrip room is FRESH per run (the header law: "its OWN fresh
+/// room, no echo tail"). A constant id would inherit the prior run's
+/// beats — and since the human identity is itself a registered realm
+/// actor, N≥8 accumulated human beats arm ADR 0137's throttle
+/// (`maxConsecutiveDaemonActorBeats`) and the addressed beat never
+/// dispatches (observed live: "beat 12 throttled — next dispatch at
+/// beat 20"). A per-run suffix keeps trailingInternal at 0, so the
+/// addressed beat drains immediately. The throttle-on-human-beats
+/// behavior is a harness fact LA surfaces, not edits.
+final _roundtripThread =
+    'thread-smoke-roundtrip-${DateTime.now().millisecondsSinceEpoch}';
 const _beatCount = 500;
 
 /// Varied seed sentences — a repetition chain would trip the ADR 0137

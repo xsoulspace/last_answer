@@ -1,4 +1,5 @@
 import 'package:headless_core/headless_core.dart' as hc;
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:uuid/uuid.dart';
 
@@ -375,6 +376,106 @@ class _DocViewState extends State<DocView> {
     );
   }
 
+  /// 2d — Select→Do completed: Expand/Summarise operate on the
+  /// SELECTION through the same inference port Ask AI rides (streamed
+  /// once, then one durable block replace). No port, no focused block,
+  /// or no selection = a named absence, never a silent no-op.
+  Future<void> _onTransformSelection({required final bool expand}) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final port = context.read<DocInferencePort?>();
+    if (port == null) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('No provider configured')),
+      );
+      return;
+    }
+    final index = _lastFocusedBlockIndex;
+    final controller = index == null ? null : _controllers[index];
+    if (controller == null) return;
+    final selection = controller.selection;
+    if (!selection.isValid || selection.isCollapsed) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            expand
+                ? 'Select the text to expand first'
+                : 'Select the text to summarise first',
+          ),
+        ),
+      );
+      return;
+    }
+    final selected = selection.textInside(controller.text);
+    final buffer = StringBuffer();
+    await for (final token in port.chat([
+      ChatMessage(
+        role: 'system',
+        content: expand
+            ? 'You expand and clarify a passage of a document. Keep its '
+                  'meaning, language and voice; add the missing detail, '
+                  'structure and precision. Output ONLY the replacement '
+                  'text, nothing else.'
+            : 'You summarise a passage of a document into its essential '
+                  'facts, keeping its language. Output ONLY the summary, '
+                  'nothing else.',
+      ),
+      ChatMessage(role: 'user', content: selected),
+    ])) {
+      buffer.write(token);
+    }
+    final replacement = buffer.toString().trim();
+    if (replacement.isEmpty) return;
+    final text = controller.text.replaceRange(
+      selection.start,
+      selection.end,
+      replacement,
+    );
+    controller
+      ..text = text
+      ..selection = TextSelection.collapsed(
+        offset: selection.start + replacement.length,
+      );
+    // index is non-null whenever the controller is (the pair registers
+    // together) — the Ask AI lane's own promotion logic.
+    await _replaceBlock(
+      index!,
+      _current.blocks[index].copyWith(content: text),
+    );
+  }
+
+  /// 2d — "discuss/fix this" routes to an ACTOR: the selection is sent
+  /// to the OPEN ROOM as one quoted beat (the native lane — the actors
+  /// in the room hear it and answer there). No open room = a named
+  /// absence; the room is picked in the shell, never invented here.
+  void _onSendSelectionToRoom() {
+    final messenger = ScaffoldMessenger.of(context);
+    final service = context.read<RealmChatService?>();
+    if (service == null || service.activeThreadId == null) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('No open room — pick a conversation first'),
+        ),
+      );
+      return;
+    }
+    final index = _lastFocusedBlockIndex;
+    final controller = index == null ? null : _controllers[index];
+    if (controller == null) return;
+    final selection = controller.selection;
+    if (!selection.isValid || selection.isCollapsed) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Select the text to send first')),
+      );
+      return;
+    }
+    var selected = selection.textInside(controller.text);
+    const cap = 600;
+    if (selected.length > cap) selected = '${selected.substring(0, cap)}…';
+    final source = widget.doc.title.isEmpty ? 'a document' : widget.doc.title;
+    unawaited(service.say('> $selected\n\n(from $source)'));
+    messenger.showSnackBar(const SnackBar(content: Text('Sent to the room')));
+  }
+
   List<ChatMessage> _buildPromptMessages() {
     final messages = <ChatMessage>[
       for (final block in _current.blocks)
@@ -478,8 +579,9 @@ class _DocViewState extends State<DocView> {
             onApplyConclusion: _path.length > 1
                 ? () => unawaited(_collapseCurrent(rewriteFromDiscussion: true))
                 : null,
-            onExpand: () {}, // placeholder
-            onSummarise: () {}, // placeholder
+            onExpand: () => unawaited(_onTransformSelection(expand: true)),
+            onSummarise: () => unawaited(_onTransformSelection(expand: false)),
+            onSendToRoom: _onSendSelectionToRoom,
           ),
           const SizedBox(height: 8),
         ],
@@ -571,12 +673,17 @@ class _SelectionToolbar extends StatelessWidget {
     required this.onAskAi,
     required this.onExpand,
     required this.onSummarise,
+    required this.onSendToRoom,
     this.onApplyConclusion,
   });
   final VoidCallback onDiscuss;
   final VoidCallback onAskAi;
   final VoidCallback onExpand;
   final VoidCallback onSummarise;
+
+  /// 2d — the selection's route to the open room (the native lane's
+  /// "discuss/fix this"): the room's actors hear the quoted span.
+  final VoidCallback onSendToRoom;
 
   /// "Apply conclusion" — rewrite the head span from this discussion and
   /// collapse (ADR 0001). Only available when inside a discussion child.
@@ -623,14 +730,25 @@ class _SelectionToolbar extends StatelessWidget {
                 ),
               ),
             TextButton.icon(
+              key: const ValueKey('doc.toolbar.expand'),
               onPressed: onExpand,
               icon: const Icon(Icons.unfold_more, size: 18),
               label: const Text('Expand'),
             ),
             TextButton.icon(
+              key: const ValueKey('doc.toolbar.summarise'),
               onPressed: onSummarise,
               icon: const Icon(Icons.summarize, size: 18),
               label: const Text('Summarise'),
+            ),
+            Tooltip(
+              message: 'Send the selection to the open room',
+              child: TextButton.icon(
+                key: const ValueKey('doc.toolbar.sendToRoom'),
+                onPressed: onSendToRoom,
+                icon: const Icon(Icons.forum_outlined, size: 18),
+                label: const Text('Send to room'),
+              ),
             ),
           ],
         ),

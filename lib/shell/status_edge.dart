@@ -13,7 +13,9 @@ library;
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/la_world/creatures.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
+import 'package:lastanswer/ui/creature_mark.dart';
 
 /// The edge's height — one compact line, quieter than a tab strip.
 const double kStatusEdgeHeight = 26;
@@ -191,7 +193,14 @@ final class _WorldSegment extends StatelessWidget {
     if (world.daemonLive) {
       return _EdgeSegment(
         keyName: 'edge.world',
-        dotColor: la.accent,
+        // 3d — the world creature: awake and calm while the daemon
+        // lives, asleep while it is down (DESIGN v2: it sleeps ONLY
+        // when the daemon is down). The label stays the state's word.
+        leading: const CreatureMark(
+          actorId: kWorldCreatureId,
+          mood: CreatureMood.calm,
+          size: 14,
+        ),
         label: world.daemonBinaryStale == true
             ? l10n.statusEdgeWorldLiveStale
             : l10n.statusEdgeWorldLive,
@@ -206,7 +215,11 @@ final class _WorldSegment extends StatelessWidget {
         Flexible(
           child: _EdgeSegment(
             keyName: 'edge.world',
-            dotColor: la.danger,
+            leading: const CreatureMark(
+              actorId: kWorldCreatureId,
+              mood: CreatureMood.asleep,
+              size: 14,
+            ),
             label: l10n.statusEdgeWorldDown,
             onTap: onOpenModels,
           ),
@@ -373,6 +386,7 @@ final class _EdgeSegment extends StatelessWidget {
   const _EdgeSegment({
     required this.keyName,
     required this.label,
+    this.leading,
     this.dotColor,
     this.tooltip,
     this.spinner = false,
@@ -381,6 +395,11 @@ final class _EdgeSegment extends StatelessWidget {
 
   final String keyName;
   final String label;
+
+  /// 3d — an optional creature mark before the dot/label (the world
+  /// segment's living state); the segment's contract key and Semantics
+  /// stay exactly as they were.
+  final Widget? leading;
   final Color? dotColor;
   final String? tooltip;
   final bool spinner;
@@ -391,6 +410,10 @@ final class _EdgeSegment extends StatelessWidget {
     Widget segment = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (leading case final lead?) ...[
+          lead,
+          const SizedBox(width: 5),
+        ],
         if (spinner)
           SizedBox(
             width: 9,

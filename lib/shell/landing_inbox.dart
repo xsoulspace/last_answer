@@ -13,8 +13,10 @@ library;
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/la_world/creatures.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/status_edge.dart' show HealthDot;
+import 'package:lastanswer/ui/creature_mark.dart';
 
 /// The inbox's readable column (the Tufte measure — the shell never
 /// stretches text edge-to-edge).
@@ -147,6 +149,15 @@ final class _ArmRow extends StatelessWidget {
       child: Row(
         key: const ValueKey('inbox.arm'),
         children: [
+          // 3d — the world sleeps when the daemon is down (DESIGN v2:
+          // it sleeps ONLY when the daemon is down); the honest health
+          // dot stays — the creature carries the state, never the fact.
+          const CreatureMark(
+            actorId: kWorldCreatureId,
+            mood: CreatureMood.asleep,
+            size: 18,
+          ),
+          const SizedBox(width: 6),
           HealthDot(status: arming ? 'loading' : 'failed', size: 8),
           const SizedBox(width: 8),
           Expanded(
@@ -174,7 +185,10 @@ final class _ArmRow extends StatelessWidget {
 }
 
 /// The all-quiet row: no decision waits — the inbox says so and stays
-/// out of the way.
+/// out of the way. 3d: the world creature is the greeter here (DESIGN
+/// v2's one larger creature moment on an empty state) — calm, awake,
+/// quietly blinking in place of the plain health dot; the words stay
+/// the state's carrier (never color/shape alone).
 final class _QuietRow extends StatelessWidget {
   const _QuietRow({required this.text});
 
@@ -186,7 +200,11 @@ final class _QuietRow extends StatelessWidget {
     child: Row(
       key: const ValueKey('inbox.quiet'),
       children: [
-        const HealthDot(status: 'ok', size: 8),
+        const CreatureMark(
+          actorId: kWorldCreatureId,
+          mood: CreatureMood.calm,
+          size: 20,
+        ),
         const SizedBox(width: 8),
         Text(
           text,

@@ -106,6 +106,21 @@ void main() {
         'generating reply to lab · 2m',
       );
 
+      // 3d — the creature layer: a bot's row grows the eyes overlay
+      // (`creature.<actorId>` key + Semantics contract), its mood
+      // derived from the narration fact (generating → focused); the
+      // human row stays a monogram — no creature, no invented state.
+      final creature = find.byKey(ValueKey('creature.${toby.actorId}'));
+      expect(creature, findsOneWidget);
+      expect(
+        tester.widget<Semantics>(creature).properties.hint,
+        'focused',
+      );
+      expect(
+        find.byKey(ValueKey('creature.${service.humanActorId}')),
+        findsNothing,
+      );
+
       // Thinking, idle, echo drop, failure: the one-line narration.
       service.debugNarrationOverride = <String, BotNarration>{
         toby.actorId: narrationOf(BotNarrationState.thinking),
@@ -140,6 +155,8 @@ void main() {
         tester.widget<Text>(statusLine).data,
         'failed: registration',
       );
+      // The creature's posture follows the same honest fact.
+      expect(tester.widget<Semantics>(creature).properties.hint, 'sad');
 
       // Listening is the quiet normal: no line at all.
       service.debugNarrationOverride = <String, BotNarration>{

@@ -28,7 +28,10 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/la_world/creatures.dart';
+import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/ui/creature_mark.dart';
 
 /// Which actor the people view focuses (session state, not persisted —
 /// the same lifetime the panel's focus had). Null = the conversation's
@@ -173,22 +176,74 @@ class _PeopleList extends StatelessWidget {
   Widget build(final BuildContext context) {
     final roster = service.roster;
     final bots = service.bots;
+    // 3d — the creature layer's UI fold: the narration and daemon
+    // facts live in memory (service/world), not in the journal, so the
+    // widget that reads them reports them to the projection on its own
+    // rebuild. refreshCreatures notifies NOTHING (LaWorld is not this
+    // widget's listenable; the rows rebuild on the service's tick) —
+    // the selector discipline stays intact.
+    final laWorld = context.read<LaWorld?>();
+    if (laWorld != null) {
+      final world = context.read<WorldStateService?>();
+      laWorld.refreshCreatures(
+        narrationStates: <String, String>{
+          for (final entry in service.botNarration.entries)
+            entry.key: entry.value.state.name,
+        },
+        daemonAsleep: world == null ? false : !world.daemonLive,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [for (final id in ids) _personRow(context, id, roster, bots)],
+      children: [
+        for (final id in ids) _personRow(context, id, roster, bots, laWorld),
+      ],
     );
   }
 
   /// One people row: avatar + name, and — Wave 3A — the bot's one-line
   /// activity narration underneath (humans and unknown ids stay quiet;
   /// a listening bot is silence). The whole row taps into the profile.
+  /// 3d: a bot's avatar grows EYES — the creature overlay carries the
+  /// mood the derive law folded (the avatar keeps its identicon, kind
+  /// badge, presence dot and keys untouched — a creature never becomes
+  /// the only carrier of type or presence).
   Widget _personRow(
     final BuildContext context,
     final String id,
     final ActorRoster? roster,
     final RealmBotHost? bots,
+    final LaWorld? laWorld,
   ) {
     final line = _statusLineOf(context, id);
+    final profile =
+        roster?.get(id) ??
+        ActorProfile(actorId: id, displayName: actorDisplayFallback(id));
+    Widget avatar = ActorAvatar(
+      profile: profile,
+      size: ShellTokens.rowAvatar,
+      showPresence: bots != null,
+      presenceOnline: bots?.statuses[id] == 'listening',
+    );
+    // Eyes grow only on a ROSTERED non-human identity: an unknown or
+    // legacy id never gets an invented creature (world truth, never
+    // decorative fiction).
+    final rostered = roster?.get(id);
+    if (rostered != null && rostered.kind != ActorKind.human) {
+      avatar = Stack(
+        children: [
+          avatar,
+          Positioned.fill(
+            child: CreatureMark(
+              actorId: id,
+              mood: _moodOf(id, laWorld),
+              size: ShellTokens.rowAvatar,
+              eyesOnly: true,
+            ),
+          ),
+        ],
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
@@ -199,17 +254,7 @@ class _PeopleList extends StatelessWidget {
           children: [
             Row(
               children: [
-                ActorAvatar(
-                  profile:
-                      roster?.get(id) ??
-                      ActorProfile(
-                        actorId: id,
-                        displayName: actorDisplayFallback(id),
-                      ),
-                  size: ShellTokens.rowAvatar,
-                  showPresence: bots != null,
-                  presenceOnline: bots?.statuses[id] == 'listening',
-                ),
+                avatar,
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -262,6 +307,19 @@ class _PeopleList extends StatelessWidget {
     if (running == 0) return narration;
     final work = running == 1 ? '1 task running' : '$running tasks running';
     return narration == null ? work : '$narration · $work';
+  }
+
+  /// The row creature's mood: the projection's derived state when
+  /// LaWorld knows the actor; otherwise (hermetic shells, an actor the
+  /// fold has not seen) the same pure derive law runs on the narration
+  /// fact alone — honest absence, never an invented mood.
+  CreatureMood _moodOf(final String id, final LaWorld? laWorld) {
+    if (laWorld != null && laWorld.moodCauseOf(id) != 'unknown') {
+      return laWorld.moodOf(id);
+    }
+    return deriveCreatureMood(
+      narrationState: service.botNarration[id]?.state.name,
+    ).mood;
   }
 }
 

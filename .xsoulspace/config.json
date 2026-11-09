@@ -7,7 +7,7 @@
         "command": [
           "/bin/zsh",
           "-lc",
-          "cd /Users/antonio/xs/storage_problem/last_answer && fvm flutter analyze 2>&1 | tail -1"
+          "cd /Users/antonio/xs/storage_problem/last_answer && fvm flutter analyze 2>&1 | tail -20; exit ${pipestatus[1]}"
         ]
       }
     ]

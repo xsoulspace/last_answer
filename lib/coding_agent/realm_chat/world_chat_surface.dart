@@ -1260,11 +1260,17 @@ class _ConversationPaneState extends State<_ConversationPane> {
         ),
         Divider(height: 1, color: theme.dividerColor),
         Expanded(
-          child: beats.isEmpty
-              ? _CenteredNote(text: l10n.worldChatFirstWord)
-              : Stack(
-                  children: [
-                    NotificationListener<ScrollNotification>(
+          // The strip (work cards, 0c interrupts, narration) renders
+          // EVEN in a beat-less room: a fresh general room whose first
+          // send auto-spawned a work thread has no parent beats yet —
+          // and the merged view (the owner's auto-spawn law) is exactly
+          // the card in that empty room. The first-word note sits
+          // BEHIND the list then, not instead of it.
+          child: Stack(
+            children: [
+              if (beats.isEmpty)
+                _CenteredNote(text: l10n.worldChatFirstWord),
+              NotificationListener<ScrollNotification>(
                       onNotification: (final notification) {
                         // Reversed list: OLDER beats live at larger
                         // offsets — nearing the top edge is the

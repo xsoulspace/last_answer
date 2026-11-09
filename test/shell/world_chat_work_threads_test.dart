@@ -54,7 +54,11 @@ final class _Room {
   }
 }
 
-Future<_Room> _openRoom(final WidgetTester tester, final String label) async {
+Future<_Room> _openRoom(
+  final WidgetTester tester,
+  final String label, {
+  final bool seed = true,
+}) async {
   late final _Room room;
   await tester.runAsync(() async {
     final temp = await Directory.systemTemp.createTemp('la_workui_$label');
@@ -75,7 +79,7 @@ Future<_Room> _openRoom(final WidgetTester tester, final String label) async {
       topic: 'Parent room',
       participants: <String>[worker.actorId],
     );
-    await service.say('kickoff');
+    if (seed) await service.say('kickoff');
     final repo = Directory('${temp.path}/repo');
     await repo.create();
     room = _Room(
@@ -447,4 +451,42 @@ void main() {
       expect(await room.world.store.scan('work_threads'), isEmpty);
     });
   }, timeout: const Timeout(Duration(minutes: 2)));
+
+  // (e) The day-one auto-spawn flow: a FRESH general room has no beats
+  // yet when its first send becomes a work order — and the merged view
+  // (the owner's auto-spawn law) is exactly the work card in that empty
+  // room. Paid for by the 2026-11-09 live pilot: the strip used to hide
+  // behind the first-word note, so the card was invisible until someone
+  // spoke in the parent. The note now sits BEHIND the list, not instead
+  // of it.
+  testWidgets(
+    'e — an empty parent room still shows the work card (the merged view)',
+    (final tester) async {
+      final room = await _openRoom(tester, 'empty', seed: false);
+      late final String workId;
+      await tester.runAsync(() async {
+        await room.service.grantAccess(room.humanId, room.repoPath);
+        final spawn = await room.service.spawnWorkThread(
+          parentThreadId: room.parentThreadId,
+          projectRoot: room.repoPath,
+          memberIds: <String>[room.worker.actorId],
+          orderText: 'audit the imports',
+        );
+        expect(spawn.isSpawned, isTrue, reason: spawn.message);
+        workId = spawn.workThread!.workThreadId;
+      });
+      await _pumpSurface(tester, room.service);
+
+      // The parent is still beat-less (the order lives in the child)…
+      expect(find.text('kickoff'), findsNothing);
+      // …yet the merged view shows both halves: the first-word note
+      // behind, the work card in front.
+      expect(find.textContaining('Say the first word'), findsOneWidget);
+      expect(
+        find.byKey(ValueKey('worldchat.workthread.$workId')),
+        findsOneWidget,
+      );
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
 }

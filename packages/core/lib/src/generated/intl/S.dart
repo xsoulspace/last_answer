@@ -3302,6 +3302,120 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Actor card'**
   String get worldChatActorCard;
+
+  /// Composer scope toggle (ADR 0129): arms one workspace root so the next send is a work order.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope to workspace'**
+  String get worldChatScopeArm;
+
+  /// Dismisses the armed scope chip; Send returns to the plain say.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the workspace scope'**
+  String get worldChatScopeDismiss;
+
+  /// The project scope picker's dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the work order to a workspace'**
+  String get worldChatScopePickTitle;
+
+  /// The scope picker's empty state: no grants and no workspace folders.
+  ///
+  /// In en, this message translates to:
+  /// **'No project scopes yet — add a workspace folder or grant access first.'**
+  String get worldChatScopeEmpty;
+
+  /// Composer hint while a workspace scope is armed.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the work order…'**
+  String get worldChatWorkOrderHint;
+
+  /// Transient status after a FRESH work thread spawned.
+  ///
+  /// In en, this message translates to:
+  /// **'Work thread opened · {name}'**
+  String worldChatWorkThreadOpened(String name);
+
+  /// Transient status after an order reused the existing work thread.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order sent · {name}'**
+  String worldChatWorkOrderSent(String name);
+
+  /// The work-thread card's kind word (never color/icon alone).
+  ///
+  /// In en, this message translates to:
+  /// **'work thread'**
+  String get worldChatWorkThreadKind;
+
+  /// Spawn-refusal card title for project_not_granted.
+  ///
+  /// In en, this message translates to:
+  /// **'Project access needed'**
+  String get worldChatGrantNeeded;
+
+  /// Spawn-refusal card title for every other named refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order refused'**
+  String get worldChatWorkOrderRefused;
+
+  /// The refusal card's one-tap grant action.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant access'**
+  String get worldChatGrantAction;
+
+  /// The one-tap grant's busy label.
+  ///
+  /// In en, this message translates to:
+  /// **'Granting…'**
+  String get worldChatGrantGranting;
+
+  /// People view: the project access section label.
+  ///
+  /// In en, this message translates to:
+  /// **'PROJECT ACCESS'**
+  String get contextProjectAccess;
+
+  /// People view: the actor holds no project grants.
+  ///
+  /// In en, this message translates to:
+  /// **'No project grants.'**
+  String get contextNoProjectGrants;
+
+  /// People view: the request-access affordance.
+  ///
+  /// In en, this message translates to:
+  /// **'Request access…'**
+  String get contextRequestAccess;
+
+  /// People view: the request-access picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Request access to a project'**
+  String get contextRequestAccessTitle;
+
+  /// People view: status after a request was durably recorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Request recorded — pending approval.'**
+  String get contextAccessRequested;
+
+  /// People view: the realm-wide pending requests sublabel (human card).
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING REQUESTS'**
+  String get contextPendingAccess;
+
+  /// People view: approves one pending project-access request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get contextApprove;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

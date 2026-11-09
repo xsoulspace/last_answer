@@ -1774,4 +1774,67 @@ class SEn extends S {
 
   @override
   String get worldChatActorCard => 'Actor card';
+
+  @override
+  String get worldChatScopeArm => 'Scope to workspace';
+
+  @override
+  String get worldChatScopeDismiss => 'Clear the workspace scope';
+
+  @override
+  String get worldChatScopePickTitle => 'Send the work order to a workspace';
+
+  @override
+  String get worldChatScopeEmpty =>
+      'No project scopes yet — add a workspace folder or grant access first.';
+
+  @override
+  String get worldChatWorkOrderHint => 'Write the work order…';
+
+  @override
+  String worldChatWorkThreadOpened(String name) {
+    return 'Work thread opened · $name';
+  }
+
+  @override
+  String worldChatWorkOrderSent(String name) {
+    return 'Work order sent · $name';
+  }
+
+  @override
+  String get worldChatWorkThreadKind => 'work thread';
+
+  @override
+  String get worldChatGrantNeeded => 'Project access needed';
+
+  @override
+  String get worldChatWorkOrderRefused => 'Work order refused';
+
+  @override
+  String get worldChatGrantAction => 'Grant access';
+
+  @override
+  String get worldChatGrantGranting => 'Granting…';
+
+  @override
+  String get contextProjectAccess => 'PROJECT ACCESS';
+
+  @override
+  String get contextNoProjectGrants => 'No project grants.';
+
+  @override
+  String get contextRequestAccess => 'Request access…';
+
+  @override
+  String get contextRequestAccessTitle => 'Request access to a project';
+
+  @override
+  String get contextAccessRequested =>
+      'Request recorded — pending approval.';
+
+  @override
+  String get contextPendingAccess => 'PENDING REQUESTS';
+
+  @override
+  String get contextApprove => 'Approve';
 }

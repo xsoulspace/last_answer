@@ -1786,4 +1786,68 @@ class SIt extends S {
 
   @override
   String get worldChatActorCard => 'Scheda attore';
+
+  @override
+  String get worldChatScopeArm => 'Aggancia a un\'area di lavoro';
+
+  @override
+  String get worldChatScopeDismiss => 'Rimuovi l\'area di lavoro';
+
+  @override
+  String get worldChatScopePickTitle =>
+      'Invia l\'ordine di lavoro a un\'area di lavoro';
+
+  @override
+  String get worldChatScopeEmpty =>
+      'Nessun progetto disponibile — aggiungi prima una cartella di lavoro o concedi l\'accesso.';
+
+  @override
+  String get worldChatWorkOrderHint => 'Scrivi l\'ordine di lavoro…';
+
+  @override
+  String worldChatWorkThreadOpened(String name) {
+    return 'Thread di lavoro aperto · $name';
+  }
+
+  @override
+  String worldChatWorkOrderSent(String name) {
+    return 'Ordine di lavoro inviato · $name';
+  }
+
+  @override
+  String get worldChatWorkThreadKind => 'thread di lavoro';
+
+  @override
+  String get worldChatGrantNeeded => 'Serve l\'accesso al progetto';
+
+  @override
+  String get worldChatWorkOrderRefused => 'Ordine di lavoro rifiutato';
+
+  @override
+  String get worldChatGrantAction => 'Concedi accesso';
+
+  @override
+  String get worldChatGrantGranting => 'Concessione…';
+
+  @override
+  String get contextProjectAccess => 'ACCESSO AI PROGETTI';
+
+  @override
+  String get contextNoProjectGrants => 'Nessun progetto concesso.';
+
+  @override
+  String get contextRequestAccess => 'Richiedi accesso…';
+
+  @override
+  String get contextRequestAccessTitle => 'Richiedi accesso a un progetto';
+
+  @override
+  String get contextAccessRequested =>
+      'Richiesta registrata — in attesa di approvazione.';
+
+  @override
+  String get contextPendingAccess => 'RICHIESTE IN SOSPESO';
+
+  @override
+  String get contextApprove => 'Approva';
 }

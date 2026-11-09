@@ -7,10 +7,12 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/landing_inbox.dart';
+import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
@@ -28,7 +30,11 @@ import 'package:lastanswer/shell/shell_theme.dart';
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6):
 /// `worldchat.composer`, `worldchat.send`, `worldchat.close`,
-/// `worldchat.context`, `worldchat.beat.<threadId>#<n>`.
+/// `worldchat.context`, `worldchat.beat.<threadId>#<n>`, and — with the
+/// ADR 0129 work-order seam — `worldchat.scope.*` (the composer's
+/// workspace arm), `worldchat.workthread.<workThreadId>` (the parent
+/// room's card of a project-sealed child) and `worldchat.spawnRefusal`
+/// (the typed refusal with its one-tap grant).
 final class WorldChatSurface extends StatefulWidget {
   const WorldChatSurface({this.service, super.key});
 
@@ -205,6 +211,34 @@ class _WorkStripState extends State<_WorkStrip> {
                     _expanded.add(task.taskId);
                   }
                 }),
+              ),
+            );
+          }
+        }
+
+        // 2t — ADR 0129 work-thread cards: the parent room's merged
+        // view of its project-SEALED children (the owner's auto-spawn
+        // decision — the human never manages threads). The card is a
+        // pure projection: the registry link plus the threads
+        // projection's own last-beat triple (author/text/instant —
+        // never invented here), kept live by the journal watch this
+        // strip already rides.
+        final activeId = service.activeThreadId;
+        if (activeId != null) {
+          for (final link in service.workThreadsOf(activeId)) {
+            Map<String, Object?>? preview;
+            for (final row in service.threads) {
+              if (row['threadId'] == link.workThreadId) {
+                preview = row;
+                break;
+              }
+            }
+            rows.add(
+              _WorkThreadCard(
+                key: ValueKey('worldchat.workthread.${link.workThreadId}'),
+                service: service,
+                link: link,
+                preview: preview,
               ),
             );
           }
@@ -861,6 +895,30 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// The beat the composer is replying to (1g: replyTo rides the say).
   Map<String, Object?>? _replyBeat;
 
+  // ---- ADR 0129: the work-order scope (the owner's auto-spawn
+  // decision — the human never manages threads; arming one workspace
+  // scope turns the NEXT send into a work order for it) ----
+
+  /// The armed workspace root, null = plain conversational sends.
+  String? _armedScope;
+
+  /// A scoped spawn is in flight (the send button's other spinner half
+  /// — `service.sending` covers the plain `say` only).
+  bool _spawning = false;
+
+  /// The transient honest status after a landed order (the spawn
+  /// result's own fact: fresh thread vs reused workstream).
+  String? _scopeStatus;
+  Timer? _scopeStatusTimer;
+
+  /// The pending spawn refusal plus the order text it refused (the
+  /// one-retry law resends EXACTLY this) and the grant flow's state.
+  WorkThreadSpawn? _refusal;
+  String? _refusalOrder;
+  bool _grantBusy = false;
+  bool _grantRetried = false;
+  String? _grantOutcome;
+
   RealmChatService get service => widget.service;
   TextEditingController get composer => widget.composer;
 
@@ -941,6 +999,15 @@ class _ConversationPaneState extends State<_ConversationPane> {
   }
 
   Future<void> _send(final String raw) async {
+    // ADR 0129 — the scoped send: with a workspace armed, the text is
+    // a WORK ORDER (auto-spawn/reuse the project-sealed thread and
+    // forward it there), never a beat of this room. Unarmed, the plain
+    // `say` is byte-for-byte today's behavior.
+    final scope = _armedScope;
+    if (scope != null) {
+      await _sendWorkOrder(raw, scope);
+      return;
+    }
     final replyTo = _replyBeat?['beat'] as int?;
     await service.say(raw, replyTo: replyTo);
     if (!mounted) return;
@@ -948,8 +1015,161 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (_replyBeat != null) setState(() => _replyBeat = null);
   }
 
+  /// The room's ACTOR members — the work order's addressees: the active
+  /// thread's participants minus the humans (the human authority's own
+  /// id and any rostered [ActorKind.human] participant). Unrostered ids
+  /// stay: they were invited as members, and the service remains the
+  /// authority on what the harness admits (it drops the human again on
+  /// its side).
+  List<String> _actorMembers() {
+    final human = service.humanActorId;
+    final participants =
+        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+            .cast<String>();
+    return <String>[
+      for (final id in participants)
+        if (id != human && service.roster?.get(id)?.kind != ActorKind.human)
+          id,
+    ];
+  }
+
+  /// The scoped send (ADR 0129's delegation seam, UI half): the spawn
+  /// serializes per reuse key inside the service, so a double-tap here
+  /// cannot mint two threads either. On success the composer clears and
+  /// the scope STAYS armed (a workstream continues — the owner's
+  /// decision); on refusal the typed result renders with its own
+  /// evidence and the composer KEEPS the order text (nothing is lost).
+  Future<void> _sendWorkOrder(final String raw, final String scope) async {
+    final parent = service.activeThreadId;
+    final order = raw.trim();
+    if (parent == null || order.isEmpty || _spawning) return;
+    setState(() {
+      _spawning = true;
+      _refusal = null;
+      _refusalOrder = null;
+      _grantOutcome = null;
+      _grantRetried = false;
+    });
+    final spawn = await service.spawnWorkThread(
+      parentThreadId: parent,
+      projectRoot: scope,
+      memberIds: _actorMembers(),
+      orderText: order,
+    );
+    if (!mounted) return;
+    if (spawn.refusal != null) {
+      setState(() {
+        _spawning = false;
+        _refusal = spawn;
+        _refusalOrder = order;
+      });
+      return;
+    }
+    composer.clear();
+    setState(() {
+      _spawning = false;
+      _replyBeat = null;
+    });
+    _announceScopeStatus(spawn);
+  }
+
+  /// The order's transient honest status: the spawn result's own fact
+  /// (fresh thread vs reused workstream) in the room's words, self-
+  /// clearing. A quiet text line, not a pulse — the chrome layer has no
+  /// attention-seeking animation (DESIGN v2 motion law), so the announce
+  /// IS the "new work card" signal and the card itself carries the live
+  /// preview from then on.
+  void _announceScopeStatus(final WorkThreadSpawn spawn) {
+    final l10n = context.l10n;
+    final name = spawn.workThread?.name ?? '';
+    _scopeStatusTimer?.cancel();
+    setState(() {
+      _scopeStatus = spawn.reused
+          ? l10n.worldChatWorkOrderSent(name)
+          : l10n.worldChatWorkThreadOpened(name);
+    });
+    _scopeStatusTimer = Timer(const Duration(seconds: 4), () {
+      if (mounted) setState(() => _scopeStatus = null);
+    });
+  }
+
+  /// Opens the ADR 0129 scope picker (the human's durable grants ∪ the
+  /// workspace folders — an ungranted folder stays selectable; the
+  /// refusal flow owns that honesty).
+  Future<void> _openScopePicker() async {
+    final title = context.l10n.worldChatScopePickTitle;
+    final picked = await pickProjectScope(
+      context,
+      service: service,
+      title: title,
+      optionKeyPrefix: 'worldchat.scope.option',
+      listKey: 'worldchat.scope.picker',
+    );
+    if (!mounted || picked == null) return;
+    setState(() {
+      _armedScope = picked;
+      _refusal = null;
+      _refusalOrder = null;
+      _grantOutcome = null;
+      _grantRetried = false;
+    });
+  }
+
+  /// The one-tap grant + ONE automatic retry (the owner's
+  /// everything-from-LA decision): [RealmChatService.grantAccess] runs
+  /// the host's canonical `grantProjectAccess` with the VERIFY re-read,
+  /// and only a VERIFIED grant retries the refused order — exactly
+  /// once. A refused grant or a refused retry renders the message
+  /// verbatim and stops; there is no second automatic attempt.
+  Future<void> _grantAndRetry() async {
+    final refusal = _refusal;
+    final human = service.humanActorId;
+    final parent = service.activeThreadId;
+    final project = refusal?.requestedProject;
+    if (refusal == null || human == null || parent == null || project == null) {
+      return;
+    }
+    setState(() => _grantBusy = true);
+    final grant = await service.grantAccess(human, project);
+    if (!mounted) return;
+    if (!grant.granted) {
+      setState(() {
+        _grantBusy = false;
+        _grantOutcome = grant.message;
+      });
+      return;
+    }
+    final spawn = await service.spawnWorkThread(
+      parentThreadId: parent,
+      projectRoot: project,
+      memberIds: _actorMembers(),
+      orderText: _refusalOrder,
+    );
+    if (!mounted) return;
+    if (spawn.refusal == null) {
+      composer.clear();
+      setState(() {
+        _spawning = false;
+        _grantBusy = false;
+        _refusal = null;
+        _refusalOrder = null;
+        _grantOutcome = null;
+        _replyBeat = null;
+      });
+      _announceScopeStatus(spawn);
+      return;
+    }
+    setState(() {
+      _grantBusy = false;
+      _grantRetried = true;
+      _refusal = spawn;
+      _grantOutcome = spawn.message;
+    });
+  }
+
   @override
   void dispose() {
+    _scopeStatusTimer?.cancel();
     _scroll
       ..removeListener(_onScroll)
       ..dispose();
@@ -1009,12 +1229,20 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 displayName: displayNameOf(dmOther),
               );
     final bots = service.bots;
-    final composerHint = channel != null
+    // ADR 0129 — with a scope armed the composer writes WORK ORDERS,
+    // and its hint says so (the chip names the scope; the hint names
+    // the mode).
+    final composerHint = _armedScope != null
+        ? l10n.worldChatWorkOrderHint
+        : channel != null
         ? l10n.worldChatMessageHint('#${channel.name}')
         : dmOther != null
         ? l10n.worldChatMessageHint(displayNameOf(dmOther))
         : l10n.worldChatComposerHint;
     final beats = service.beats;
+    // The send button's busy truth: a plain `say` in flight (the
+    // service's flag) or a scoped spawn (this pane's flag).
+    final sendBusy = service.sending || _spawning;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1249,6 +1477,50 @@ class _ConversationPaneState extends State<_ConversationPane> {
               ),
             ),
           ),
+        // ADR 0129 — the armed workspace scope: the visible,
+        // dismissible arm state of the auto-spawn decision. With it
+        // armed, Send routes the text as a work order through
+        // `spawnWorkThread`; one tap on the chip clears the arm and
+        // Send returns to the plain `say`.
+        if (_armedScope != null)
+          _ScopeChip(
+            scope: _armedScope!,
+            onClear: () => setState(() => _armedScope = null),
+          ),
+        // The spawn refusal IN the room (the 0c discipline): the typed
+        // result's own evidence, verbatim. `project_not_granted` offers
+        // the one-tap grant + ONE automatic retry; every other refusal
+        // renders name + message honestly, no retry.
+        if (_refusal != null)
+          _SpawnRefusalCard(
+            spawn: _refusal!,
+            busy: _grantBusy,
+            retried: _grantRetried,
+            outcome: _grantOutcome,
+            onGrant: () => unawaited(_grantAndRetry()),
+            onDismiss: () => setState(() {
+              _refusal = null;
+              _refusalOrder = null;
+              _grantOutcome = null;
+              _grantRetried = false;
+            }),
+          ),
+        // The landed order's transient honest status (fresh vs reused —
+        // the spawn result's own fact, never an invention).
+        if (_scopeStatus != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+            child: Text(
+              _scopeStatus!,
+              key: const ValueKey('worldchat.scope.status'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: context.shellMuted,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
           child: Container(
@@ -1262,6 +1534,24 @@ class _ConversationPaneState extends State<_ConversationPane> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                // ADR 0129 — the scope arm: one tap opens the project
+                // picker (the human's grants ∪ the workspace folders);
+                // the armed chip above the composer names the scope and
+                // dismisses it. The accent icon is a second carrier,
+                // never the only one (the chip is the visible state).
+                IconButton(
+                  key: const ValueKey('worldchat.scope.toggle'),
+                  tooltip: l10n.worldChatScopeArm,
+                  visualDensity: VisualDensity.compact,
+                  iconSize: 18,
+                  icon: Icon(
+                    Icons.folder_outlined,
+                    color: _armedScope != null
+                        ? context.la.accent
+                        : context.shellMuted,
+                  ),
+                  onPressed: () => unawaited(_openScopePicker()),
+                ),
                 Expanded(
                   child: Semantics(
                     label: 'worldchat.composer',
@@ -1281,17 +1571,19 @@ class _ConversationPaneState extends State<_ConversationPane> {
                     ),
                   ),
                 ),
+                // The send's other busy half: a scoped spawn in flight
+                // (the service's `sending` flag covers the plain say).
                 IconButton(
                   key: const ValueKey('worldchat.send'),
                   tooltip: l10n.worldChatSend,
-                  icon: service.sending
+                  icon: sendBusy
                       ? const SizedBox(
                           width: 14,
                           height: 14,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.arrow_upward, size: 18),
-                  onPressed: service.sending
+                  onPressed: sendBusy
                       ? null
                       : () => unawaited(_send(composer.text)),
                 ),
@@ -2090,6 +2382,361 @@ class _BeatDetailsDialog extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ADR 0129 — one work-thread card: the parent room's merged view of a
+/// project-sealed child (the owner's auto-spawn decision — the human
+/// never manages threads, LA renders the link). The name is the link's
+/// own (the project basename, the full root on the tooltip), the
+/// preview is the threads projection's last-beat triple (author · text ·
+/// instant — the projection carries it, and the journal watch the strip
+/// already rides keeps it live); OPEN selects the child through the
+/// existing room-selection route (`selectThread`, the landing inbox's
+/// own). No new rendering plane: the card is a pure projection of the
+/// durable link + the existing thread preview.
+class _WorkThreadCard extends StatelessWidget {
+  const _WorkThreadCard({
+    required this.service,
+    required this.link,
+    this.preview,
+    super.key,
+  });
+
+  final RealmChatService service;
+  final WorkThreadLink link;
+
+  /// The child's thread-projection row (`lastBeatAuthor`/`lastBeatText`/
+  /// `lastBeatAt`), null until the projection carries it — honest
+  /// absence; the card keeps the link facts either way.
+  final Map<String, Object?>? preview;
+
+  /// The last-beat instant in the message row's own time vocabulary
+  /// (HH:MM same day, M/D HH:MM otherwise).
+  static String _instant(final String raw) {
+    final moment = DateTime.tryParse(raw);
+    if (moment == null) return '';
+    final local = moment.toLocal();
+    final now = DateTime.now();
+    final clock =
+        '${local.hour.toString().padLeft(2, '0')}:'
+        '${local.minute.toString().padLeft(2, '0')}';
+    final sameDay =
+        local.year == now.year &&
+        local.month == now.month &&
+        local.day == now.day;
+    return sameDay ? clock : '${local.month}/${local.day} $clock';
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final id = link.workThreadId;
+    final author = preview?['lastBeatAuthor'] as String?;
+    final text = preview?['lastBeatText'] as String?;
+    final at = preview?['lastBeatAt'] as String?;
+    final hasPreview = author != null && text != null && text.isNotEmpty;
+    final authorName = author == null
+        ? ''
+        : service.roster?.get(author)?.displayName ??
+              actorDisplayFallback(author);
+    return Semantics(
+      label: 'worldchat.workthread.$id',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.shellField,
+            borderRadius: BorderRadius.circular(ShellTokens.radius),
+            border: Border.all(color: context.shellHairline),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.alt_route, size: 14, color: context.la.accent),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Tooltip(
+                        message: link.projectRoot,
+                        child: Text(
+                          link.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: context.la.ink,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // The kind word: the card's type never rides the
+                    // color or the icon alone (DESIGN a11y law).
+                    Text(
+                      l10n.worldChatWorkThreadKind,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: context.shellMuted,
+                      ),
+                    ),
+                    const Spacer(),
+                    _StripButton(
+                      keyName: 'worldchat.workthread.open.$id',
+                      label: l10n.worldChatOpen,
+                      onTap: () => service.selectThread(link.workThreadId),
+                    ),
+                  ],
+                ),
+                if (hasPreview)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '$authorName: $text',
+                            key: ValueKey(
+                              'worldchat.workthread.preview.$id',
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: context.shellMuted,
+                            ),
+                          ),
+                        ),
+                        if (at != null && _instant(at).isNotEmpty) ...[
+                          const SizedBox(width: 6),
+                          Text(
+                            _instant(at),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: context.la.inkQuiet,
+                              fontFeatures: const [
+                                FontFeature.tabularFigures(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ADR 0129 — the armed workspace scope above the composer: the visible
+/// half of the auto-spawn decision. The chip names the scope (basename +
+/// the durable root in mono) and is dismissible — one tap anywhere on it
+/// (or its ×) clears the arm and Send returns to the plain `say`. The
+/// reply-anchor strip's grammar, one fact swapped in.
+class _ScopeChip extends StatelessWidget {
+  const _ScopeChip({required this.scope, required this.onClear});
+
+  final String scope;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onClear,
+        child: Container(
+          key: const ValueKey('worldchat.scope.armed'),
+          padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+          decoration: BoxDecoration(
+            color: context.shellField,
+            borderRadius: BorderRadius.circular(ShellTokens.radius),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.folder_outlined, size: 14, color: context.la.accent),
+              const SizedBox(width: 8),
+              Text(
+                projectScopeDisplayName(scope),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: context.la.ink,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  scope,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: LaTokens.mono(10, context.shellMuted),
+                ),
+              ),
+              IconButton(
+                key: const ValueKey('worldchat.scope.clear'),
+                visualDensity: VisualDensity.compact,
+                iconSize: 14,
+                tooltip: l10n.worldChatScopeDismiss,
+                icon: const Icon(Icons.close),
+                onPressed: onClear,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ADR 0129 — the spawn refusal in the room, following the 0c
+/// permission-interrupt discipline (danger hairline on the shell field,
+/// the safe action leftmost): the typed result's OWN evidence renders
+/// verbatim — refusal name, requested project, the current grants, the
+/// message — never paraphrased friendlier. `project_not_granted` adds
+/// the one-tap grant (the owner's everything-from-LA decision): a
+/// VERIFIED grant retries the refused order exactly ONCE; a refused
+/// grant or a refused retry shows the honest message and stops.
+class _SpawnRefusalCard extends StatelessWidget {
+  const _SpawnRefusalCard({
+    required this.spawn,
+    required this.busy,
+    required this.retried,
+    required this.outcome,
+    required this.onGrant,
+    required this.onDismiss,
+  });
+
+  final WorkThreadSpawn spawn;
+  final bool busy;
+
+  /// The one-retry law: after the automatic retry refused, the grant
+  /// action does not render again — the message stands verbatim.
+  final bool retried;
+
+  /// The grant flow's own outcome line (the host's message, verbatim).
+  final String? outcome;
+  final VoidCallback onGrant;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final needsGrant = spawn.refusal == 'project_not_granted' && !retried;
+    final title = spawn.refusal == 'project_not_granted'
+        ? l10n.worldChatGrantNeeded
+        : l10n.worldChatWorkOrderRefused;
+    // Journal vocabulary in mono (the beat-details law): field names are
+    // never localized; every value is the typed result's own.
+    final facts = <(String, String)>[
+      ('refusal', spawn.refusal ?? ''),
+      if (spawn.requestedProject != null) ('project', spawn.requestedProject!),
+      ('grants', spawn.grants.isEmpty ? '—' : spawn.grants.join('\n')),
+      if (spawn.message != null) ('message', spawn.message!),
+      if (outcome != null) ('outcome', outcome!),
+    ];
+    return Semantics(
+      label: 'worldchat.spawnRefusal',
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.shellField,
+            borderRadius: BorderRadius.circular(ShellTokens.radius),
+            border: Border.all(color: context.la.danger),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: Column(
+              key: const ValueKey('worldchat.spawnRefusal'),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.lock_outline,
+                      size: 14,
+                      color: context.la.danger,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                for (final (label, value) in facts)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 1.5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 62,
+                          child: Text(
+                            label,
+                            style: LaTokens.mono(10.5, context.la.inkMuted),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            value,
+                            key: label == 'grants'
+                                ? const ValueKey(
+                                    'worldchat.spawnRefusal.grants',
+                                  )
+                                : null,
+                            style: LaTokens.mono(
+                              10.5,
+                              label == 'outcome'
+                                  ? context.la.danger
+                                  : context.la.ink,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _StripButton(
+                      keyName: 'worldchat.spawnRefusal.dismiss',
+                      label: l10n.worldChatCancel,
+                      onTap: onDismiss,
+                    ),
+                    if (needsGrant) ...[
+                      const SizedBox(width: 6),
+                      _StripButton(
+                        keyName: 'worldchat.spawnRefusal.grant',
+                        label: busy
+                            ? l10n.worldChatGrantGranting
+                            : l10n.worldChatGrantAction,
+                        onTap: busy ? () {} : onGrant,
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

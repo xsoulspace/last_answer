@@ -793,5 +793,57 @@
   "stripForward": "Forward",
   "stripSplit": "Split — two tabs at once",
   "stripFold": "Fold split — back to one pane",
-  "worldChatActorCard": "Actor card"
+  "worldChatActorCard": "Actor card",
+  "worldChatScopeArm": "Scope to workspace",
+  "@worldChatScopeArm": {"description": "Composer scope toggle (ADR 0129): arms one workspace root so the next send is a work order."},
+  "worldChatScopeDismiss": "Clear the workspace scope",
+  "@worldChatScopeDismiss": {"description": "Dismisses the armed scope chip; Send returns to the plain say."},
+  "worldChatScopePickTitle": "Send the work order to a workspace",
+  "@worldChatScopePickTitle": {"description": "The project scope picker's dialog title."},
+  "worldChatScopeEmpty": "No project scopes yet — add a workspace folder or grant access first.",
+  "@worldChatScopeEmpty": {"description": "The scope picker's empty state: no grants and no workspace folders."},
+  "worldChatWorkOrderHint": "Write the work order…",
+  "@worldChatWorkOrderHint": {"description": "Composer hint while a workspace scope is armed."},
+  "worldChatWorkThreadOpened": "Work thread opened · {name}",
+  "@worldChatWorkThreadOpened": {
+    "description": "Transient status after a FRESH work thread spawned.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatWorkOrderSent": "Work order sent · {name}",
+  "@worldChatWorkOrderSent": {
+    "description": "Transient status after an order reused the existing work thread.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatWorkThreadKind": "work thread",
+  "@worldChatWorkThreadKind": {"description": "The work-thread card's kind word (never color/icon alone)."},
+  "worldChatGrantNeeded": "Project access needed",
+  "@worldChatGrantNeeded": {"description": "Spawn-refusal card title for project_not_granted."},
+  "worldChatWorkOrderRefused": "Work order refused",
+  "@worldChatWorkOrderRefused": {"description": "Spawn-refusal card title for every other named refusal."},
+  "worldChatGrantAction": "Grant access",
+  "@worldChatGrantAction": {"description": "The refusal card's one-tap grant action."},
+  "worldChatGrantGranting": "Granting…",
+  "@worldChatGrantGranting": {"description": "The one-tap grant's busy label."},
+  "contextProjectAccess": "PROJECT ACCESS",
+  "@contextProjectAccess": {"description": "People view: the project access section label."},
+  "contextNoProjectGrants": "No project grants.",
+  "@contextNoProjectGrants": {"description": "People view: the actor holds no project grants."},
+  "contextRequestAccess": "Request access…",
+  "@contextRequestAccess": {"description": "People view: the request-access affordance."},
+  "contextRequestAccessTitle": "Request access to a project",
+  "@contextRequestAccessTitle": {"description": "People view: the request-access picker title."},
+  "contextAccessRequested": "Request recorded — pending approval.",
+  "@contextAccessRequested": {"description": "People view: status after a request was durably recorded."},
+  "contextPendingAccess": "PENDING REQUESTS",
+  "@contextPendingAccess": {"description": "People view: the realm-wide pending requests sublabel (human card)."},
+  "contextApprove": "Approve",
+  "@contextApprove": {"description": "People view: approves one pending project-access request."}
 }

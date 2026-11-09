@@ -30,6 +30,7 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/creatures.dart';
 import 'package:lastanswer/la_world/la_world.dart';
+import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/ui/creature_mark.dart';
 
@@ -531,6 +532,11 @@ class _ActorPanelState extends State<_ActorPanel> {
               ),
             ),
           ),
+          // ADR 0129 — project access: the actor's durable grants, the
+          // request affordance, and — on the human's own card, once for
+          // the realm — the pending access requests with the one-tap
+          // approve (the owner's everything-from-LA decision).
+          _ProjectAccessSection(service: service, actorId: widget.actorId),
         ],
       ),
     );
@@ -597,6 +603,245 @@ class _ViewNote extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// ADR 0129 — the actor's PROJECT ACCESS section (the owner's
+/// everything-from-LA decision): the durable grant set rendered
+/// verbatim (the host's own projection — ink is data, paths are facts),
+/// a request affordance over the scope picker's roots, and — on the
+/// human's own card only, once for the realm — the pending access
+/// requests with the one-tap approve ([RealmChatService.grantAccess],
+/// the in-process `ecsai --grant` twin whose VERIFY re-read is the
+/// honest outcome). Calm chrome: metadata rows in mono, no ceremony.
+class _ProjectAccessSection extends StatefulWidget {
+  const _ProjectAccessSection({required this.service, required this.actorId});
+
+  final RealmChatService service;
+  final String actorId;
+
+  @override
+  State<_ProjectAccessSection> createState() => _ProjectAccessSectionState();
+}
+
+class _ProjectAccessSectionState extends State<_ProjectAccessSection> {
+  List<String> _grants = const <String>[];
+  List<Map<String, Object?>> _pending = const <Map<String, Object?>>[];
+  var _loading = true;
+  var _busy = false;
+
+  /// The last action's honest outcome line (the host's own message,
+  /// verbatim — never a paraphrase, never a guess).
+  String? _outcome;
+
+  /// The realm-wide pending ledger renders ONCE, on the human's own
+  /// card (the operator seat — a design call the brief leaves open).
+  bool get _isHumanCard => widget.service.humanActorId == widget.actorId;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_reload());
+  }
+
+  @override
+  void didUpdateWidget(covariant final _ProjectAccessSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.actorId != widget.actorId) {
+      _outcome = null;
+      unawaited(_reload());
+    }
+  }
+
+  Future<void> _reload() async {
+    var grants = const <String>[];
+    var pending = const <Map<String, Object?>>[];
+    try {
+      grants = await widget.service.listGrants(widget.actorId);
+      if (_isHumanCard) {
+        pending = await widget.service.pendingAccessRequests();
+      }
+    } on Object catch (error) {
+      // An unreadable ledger keeps the quiet state; the outcome line
+      // names the failure honestly (never a silent guess, never a
+      // crash in the panel).
+      _outcome = '$error';
+    }
+    if (!mounted) return;
+    setState(() {
+      _grants = grants;
+      _pending = pending;
+      _loading = false;
+    });
+  }
+
+  Future<void> _request() async {
+    final l10n = context.l10n;
+    final picked = await pickProjectScope(
+      context,
+      service: widget.service,
+      title: l10n.contextRequestAccessTitle,
+      optionKeyPrefix: 'shell.people.access.option',
+      listKey: 'shell.people.access.picker',
+    );
+    if (!mounted || picked == null) return;
+    setState(() => _busy = true);
+    final result = await widget.service.requestAccess(widget.actorId, picked);
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = result['ok'] == true
+          ? l10n.contextAccessRequested
+          : '${result['error'] ?? result}';
+    });
+    await _reload();
+  }
+
+  Future<void> _approve(final Map<String, Object?> row) async {
+    final actor = '${row['actorId'] ?? ''}';
+    final project = '${row['projectId'] ?? ''}';
+    if (actor.isEmpty || project.isEmpty) return;
+    setState(() => _busy = true);
+    final grant = await widget.service.grantAccess(actor, project);
+    if (!mounted) return;
+    // The host's own message line, verbatim — the VERIFY re-read behind
+    // `granted` is what makes the row's disappearance honest.
+    setState(() {
+      _busy = false;
+      _outcome = grant.message;
+    });
+    await _reload();
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    return _Section(
+      sectionKey: const ValueKey('shell.people.access'),
+      label: l10n.contextProjectAccess,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (_loading)
+            Text(
+              l10n.loading,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: context.shellMuted,
+              ),
+            )
+          else if (_grants.isEmpty)
+            Text(
+              l10n.contextNoProjectGrants,
+              key: const ValueKey('shell.people.access.empty'),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: context.shellMuted,
+              ),
+            )
+          else
+            for (final path in _grants)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 1.5),
+                child: Text(
+                  path,
+                  key: ValueKey('shell.people.access.grant.$path'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: LaTokens.mono(10.5, context.la.ink),
+                ),
+              ),
+          const SizedBox(height: 6),
+          InkWell(
+            key: const ValueKey('shell.people.access.request'),
+            borderRadius: BorderRadius.circular(6),
+            onTap: _busy ? null : () => unawaited(_request()),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add, size: 13, color: context.shellMuted),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.contextRequestAccess,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: _busy ? context.shellMuted : context.la.accent,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_isHumanCard && _pending.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(l10n.contextPendingAccess, style: shellSectionLabel(context)),
+            const SizedBox(height: 4),
+            for (final row in _pending) _pendingRow(context, row),
+          ],
+          if (_outcome != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                _outcome!,
+                key: const ValueKey('shell.people.access.message'),
+                style: LaTokens.mono(10, context.la.inkMuted),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// One pending request row: WHO asks for WHICH root (the host's row
+  /// fields verbatim) + the one-tap approve.
+  Widget _pendingRow(
+    final BuildContext context,
+    final Map<String, Object?> row,
+  ) {
+    final theme = Theme.of(context);
+    final actor = '${row['actorId'] ?? ''}';
+    final project = '${row['projectId'] ?? ''}';
+    final name =
+        widget.service.roster?.get(actor)?.displayName ??
+        actorDisplayFallback(actor);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        key: ValueKey('shell.people.access.pending.$actor.$project'),
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$name · $actor',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelSmall,
+                ),
+                Text(
+                  project,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: LaTokens.mono(10, context.shellMuted),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 6),
+          TextButton(
+            key: ValueKey('shell.people.access.approve.$actor.$project'),
+            onPressed: _busy ? null : () => unawaited(_approve(row)),
+            style: TextButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+            ),
+            child: Text(context.l10n.contextApprove),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// ADR 0119 — the brain health dot moved to its shared home

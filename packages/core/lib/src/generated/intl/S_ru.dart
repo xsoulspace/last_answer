@@ -1790,4 +1790,67 @@ class SRu extends S {
 
   @override
   String get worldChatActorCard => 'Карточка актора';
+
+  @override
+  String get worldChatScopeArm => 'Привязать к рабочей области';
+
+  @override
+  String get worldChatScopeDismiss => 'Снять привязку к рабочей области';
+
+  @override
+  String get worldChatScopePickTitle =>
+      'Отправить задание в рабочую область';
+
+  @override
+  String get worldChatScopeEmpty =>
+      'Проектов пока нет — сначала добавьте папку рабочей области или выдайте доступ.';
+
+  @override
+  String get worldChatWorkOrderHint => 'Напишите задание…';
+
+  @override
+  String worldChatWorkThreadOpened(String name) {
+    return 'Рабочий тред открыт · $name';
+  }
+
+  @override
+  String worldChatWorkOrderSent(String name) {
+    return 'Задание отправлено · $name';
+  }
+
+  @override
+  String get worldChatWorkThreadKind => 'рабочий тред';
+
+  @override
+  String get worldChatGrantNeeded => 'Нужен доступ к проекту';
+
+  @override
+  String get worldChatWorkOrderRefused => 'Задание отклонено';
+
+  @override
+  String get worldChatGrantAction => 'Выдать доступ';
+
+  @override
+  String get worldChatGrantGranting => 'Выдача…';
+
+  @override
+  String get contextProjectAccess => 'ДОСТУП К ПРОЕКТАМ';
+
+  @override
+  String get contextNoProjectGrants => 'Нет выданных проектов.';
+
+  @override
+  String get contextRequestAccess => 'Запросить доступ…';
+
+  @override
+  String get contextRequestAccessTitle => 'Запрос доступа к проекту';
+
+  @override
+  String get contextAccessRequested => 'Запрос записан — ожидает одобрения.';
+
+  @override
+  String get contextPendingAccess => 'ОЖИДАЮЩИЕ ЗАПРОСЫ';
+
+  @override
+  String get contextApprove => 'Одобрить';
 }

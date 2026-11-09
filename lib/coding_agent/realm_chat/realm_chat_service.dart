@@ -1237,6 +1237,21 @@ final class RealmChatService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Post-dispose notifications are a quiet no-op, never a crash: the
+  /// journal watch's debounce timer checks [_disposed] when it FIRES,
+  /// but an in-flight refresh resumes across its awaits — under load a
+  /// teardown can land inside that window, and the trailing notify
+  /// would throw ChangeNotifier's debug assert (paid for live: the
+  /// acp_bridge load flake, 2026-11-09). The callback is the service's
+  /// own tail; nobody will read its state. The assert exists to catch
+  /// EXTERNAL misuse of a disposed notifier — our own late callbacks
+  /// fade instead.
+  @override
+  void notifyListeners() {
+    if (_disposed) return;
+    super.notifyListeners();
+  }
+
   @override
   void dispose() {
     debugInstances.remove(this);

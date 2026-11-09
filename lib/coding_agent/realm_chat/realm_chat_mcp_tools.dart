@@ -34,6 +34,8 @@ final class RealmChatMcpEntries {
         _openDm(),
         _createChannel(),
         _say(),
+        _spawnWork(),
+        _projectAccess(),
       };
 }
 
@@ -264,3 +266,183 @@ AgentCallEntry _say() => _entry(
 
 /// Compact JSON for logs.
 String encodeJson(final Object? value) => jsonEncode(value);
+
+AgentCallEntry _spawnWork() => _entry(
+      'realm_chat_spawn_work',
+      'Spawn (or reuse) the project-sealed work thread for a work order '
+      '(ADR 0129): one thread per (parent room × project root), the '
+      'order forwarded as ONE addressed human beat — the seal is the '
+      "daemon actor's sandbox. Refuses honestly with the current grant "
+      'list when the human lacks the project grant (realm_project_access '
+      '{action: grant} fixes that).',
+      const <String, dynamic>{
+        'type': 'object',
+        'properties': <String, dynamic>{
+          'project': <String, dynamic>{
+            'type': 'string',
+            'description': 'The workspace root path to seal to.',
+          },
+          'text': <String, dynamic>{
+            'type': 'string',
+            'description': 'The work order; one beat in the work thread.',
+          },
+          'members': <String, dynamic>{
+            'type': 'string',
+            'description': 'Comma-separated actor ids the order addresses.',
+          },
+          'parentThreadId': <String, dynamic>{
+            'type': 'string',
+            'description': 'Parent room (default: the active thread).',
+          },
+          'topic': <String, dynamic>{
+            'type': 'string',
+            'description':
+                'Work-thread name (default: the last path segment of '
+                'the project root).',
+          },
+        },
+        'required': <String>['project'],
+      },
+      (final args) async {
+        final service = _service;
+        if (service == null) {
+          return _fail('no_service', 'open a chat surface first');
+        }
+        await service.ensureReady();
+        final project = (args['project'] as String? ?? '').trim();
+        if (project.isEmpty) {
+          return _fail(
+            'missing_parameters',
+            'project (the workspace root path) is required',
+          );
+        }
+        final parentArg = (args['parentThreadId'] as String? ?? '').trim();
+        final parent =
+            parentArg.isNotEmpty ? parentArg : service.activeThreadId;
+        if (parent == null || parent.isEmpty) {
+          return _fail(
+            'no_parent_thread',
+            'open a room first or pass parentThreadId',
+          );
+        }
+        final members = (args['members'] as String? ?? '')
+            .split(',')
+            .map((final m) => m.trim())
+            .where((final m) => m.isNotEmpty)
+            .toList();
+        final spawn = await service.spawnWorkThread(
+          parentThreadId: parent,
+          projectRoot: project,
+          memberIds: members,
+          orderText: args['text'] as String?,
+          topic: args['topic'] as String?,
+        );
+        final link = spawn.workThread;
+        if (link == null) {
+          // The honest-refusal law: the named refusal and its evidence
+          // (the current grants) ride the result — never an exception,
+          // never a silent no-op.
+          return <String, Object?>{
+            'ok': false,
+            'error': spawn.refusal ?? 'spawn_refused',
+            'project': project,
+            'grants': spawn.grants,
+            'hint': spawn.refusal == 'project_not_granted'
+                ? 'grant access first: realm_project_access '
+                      '{action: grant, actor: <human>, project: <root>}'
+                : spawn.message ?? 'see error',
+          };
+        }
+        return _ok(<String, Object?>{
+          'workThreadId': link.workThreadId,
+          'reused': spawn.reused,
+          'project': link.projectRoot,
+          'parentThreadId': link.parentThreadId,
+          'name': link.name,
+          if (spawn.orderBeat != null) 'orderBeat': spawn.orderBeat,
+          if (spawn.refusal != null) 'orderRefusal': spawn.refusal,
+        });
+      },
+    );
+
+AgentCallEntry _projectAccess() => _entry(
+      'realm_project_access',
+      'Project-access management (ADR 0121/0129): list the durable '
+      "project grants of an actor, list the realm's pending access "
+      'requests, record a request, or grant access (the in-process twin '
+      'of `ecsai --grant` — the canonical host functions).',
+      const <String, dynamic>{
+        'type': 'object',
+        'properties': <String, dynamic>{
+          'action': <String, dynamic>{
+            'type': 'string',
+            'enum': <String>['list', 'pending', 'request', 'grant'],
+          },
+          'actor': <String, dynamic>{
+            'type': 'string',
+            'description': 'Actor id (default: the human).',
+          },
+          'project': <String, dynamic>{
+            'type': 'string',
+            'description':
+                'Project root path (required for request and grant).',
+          },
+        },
+        'required': <String>['action'],
+      },
+      (final args) async {
+        final service = _service;
+        if (service == null) {
+          return _fail('no_service', 'open a chat surface first');
+        }
+        await service.ensureReady();
+        if (service.world == null) {
+          return _fail(
+            'world_unavailable',
+            'this platform has no filesystem world',
+          );
+        }
+        final action = (args['action'] as String? ?? '').trim();
+        final actorArg = (args['actor'] as String? ?? '').trim();
+        final actor =
+            actorArg.isNotEmpty ? actorArg : service.humanActorId ?? '';
+        if (actor.isEmpty) {
+          return _fail('missing_parameters', 'actor (no human identity yet)');
+        }
+        final project = (args['project'] as String? ?? '').trim();
+        switch (action) {
+          case 'list':
+            return _ok(<String, Object?>{
+              'actor': actor,
+              'grants': await service.listGrants(actor),
+            });
+          case 'pending':
+            return _ok(<String, Object?>{
+              'requests': await service.pendingAccessRequests(),
+            });
+          case 'request':
+            if (project.isEmpty) {
+              return _fail('missing_parameters', 'project is required');
+            }
+            final requested = await service.requestAccess(actor, project);
+            return <String, Object?>{'actor': actor, ...requested};
+          case 'grant':
+            if (project.isEmpty) {
+              return _fail('missing_parameters', 'project is required');
+            }
+            final grant = await service.grantAccess(actor, project);
+            return <String, Object?>{
+              'ok': grant.granted,
+              'actor': actor,
+              'project': project,
+              'message': grant.message,
+              if (!grant.granted) 'error': 'grant_not_applied',
+            };
+        }
+        return _fail(
+          'unknown_action',
+          'action must be one of list, pending, request, grant '
+          "(got '$action')",
+        );
+      },
+    );

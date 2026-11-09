@@ -73,6 +73,14 @@ const List<AppIntentSpec> appIntentCatalog = [
     summary: 'Create a named channel with member actors and select it.'),
   AppIntentSpec(name: 'realm_chat_say', group: 'world',
     summary: 'Say one beat as the human in the active thread.'),
+  AppIntentSpec(name: 'realm_chat_spawn_work', group: 'world',
+    summary:
+        'Spawn or reuse the project-sealed work thread for a room and '
+        'forward a work order into it (ADR 0129).'),
+  AppIntentSpec(name: 'realm_project_access', group: 'world',
+    summary:
+        'List, request or grant project access; list the pending '
+        'access requests.'),
   AppIntentSpec(
     name: 'agent_product_local_pair',
     group: 'doc',

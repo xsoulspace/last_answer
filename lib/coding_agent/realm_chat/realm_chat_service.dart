@@ -23,6 +23,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -69,6 +70,7 @@ final class RealmChatService extends ChangeNotifier {
   ActorRoster? _roster;
   ProfileActorAuthority? _human;
   ChannelRegistry? _channelRegistry;
+  WorkThreadRegistry? _workRegistry;
   Future<void>? _starting;
   bool _ready = false;
   bool _disposed = false;
@@ -164,6 +166,20 @@ final class RealmChatService extends ChangeNotifier {
   /// [createChannel].
   List<ChannelInfo> get channels => List.unmodifiable(_channels);
 
+  /// ADR 0129 — the project-sealed work threads spawned from LA rooms
+  /// (oldest first), cached from [WorkThreadRegistry.list]; refreshed on
+  /// start and after each [spawnWorkThread]. The parent room's work card
+  /// renders from this link — the order text lives only in the work
+  /// thread, never in the parent.
+  List<WorkThreadLink> get workThreads => List.unmodifiable(_workThreads);
+
+  /// The work threads spawned from [parentThreadId] (oldest first) —
+  /// the parent room's children.
+  List<WorkThreadLink> workThreadsOf(final String parentThreadId) => [
+    for (final link in _workThreads)
+      if (link.parentThreadId == parentThreadId) link,
+  ];
+
   /// The channel registered over [threadId], null for plain threads
   /// (DMs, unregistered groups).
   ChannelInfo? channelByThreadId(final String threadId) {
@@ -220,10 +236,19 @@ final class RealmChatService extends ChangeNotifier {
   final List<Map<String, Object?>> _threads = <Map<String, Object?>>[];
   final List<Map<String, Object?>> _beats = <Map<String, Object?>>[];
   final List<ChannelInfo> _channels = <ChannelInfo>[];
+  final List<WorkThreadLink> _workThreads = <WorkThreadLink>[];
   final Map<String, String> _beatPreviews = <String, String>{};
   String _previewSignature = '';
   bool _sending = false;
   final Map<String, int> _pollCursor = <String, int>{};
+
+  /// ADR 0129 — per-reuse-key spawn serialization:
+  /// `'$parentThreadId|$projectRoot'` → the tail of the spawn chain. A
+  /// double-send chains behind the in-flight spawn instead of racing it,
+  /// so one work thread per scope is a law, not a hope. An entry drops
+  /// when its tail settles.
+  final Map<String, Future<WorkThreadSpawn>> _spawnChains =
+      <String, Future<WorkThreadSpawn>>{};
 
   /// The journal's append watch (live surfaces): every append — the
   /// human's own say, an in-app bot's reply, a daemon-owned actor's
@@ -337,7 +362,9 @@ final class RealmChatService extends ChangeNotifier {
       } on Object {
         // Heal is best-effort; the registry still lists.
       }
+      _workRegistry = WorkThreadRegistry(store: world.store);
       await _refreshChannels();
+      await _refreshWorkThreads();
       await refreshBrainCasts();
       await refreshThreads();
       _journalSub = world.watchJournal().listen((_) {
@@ -708,6 +735,314 @@ final class RealmChatService extends ChangeNotifier {
     }
   }
 
+  Future<void> _refreshWorkThreads() async {
+    final registry = _workRegistry;
+    if (registry == null) return;
+    try {
+      final links = await registry.list();
+      _workThreads
+        ..clear()
+        ..addAll(links);
+    } on Object catch (error) {
+      _error = error.toString();
+    }
+  }
+
+  // ---- work-thread verbs (ADR 0129: the delegation seam) ----
+
+  /// Spawns (or reuses) the project-sealed work thread for a work order
+  /// sent from [parentThreadId] targeting [projectRoot], and forwards
+  /// [orderText] into it as ONE addressed beat.
+  ///
+  /// The seal IS the sandbox: the daemon dispatch reads the work
+  /// thread's `projectId` as the actor's filesystem workRoot, so
+  /// delegated work lands in the repo the order named — never in the
+  /// daemon's own project (the projectless realm-sealed room's
+  /// wrong-repo fallback). ONE thread per (parentThreadId, projectRoot)
+  /// — the reuse key: later orders for the same scope forward into the
+  /// same thread, never a new thread per beat. Spawns serialize per
+  /// reuse key ([_spawnChains]), so a double-send cannot mint two.
+  ///
+  /// LA's human authority is scoped to the app-support world
+  /// ([RealmWorld.root]), so sealing to a real repo rides ADR 0129's
+  /// grant check: without the repo in the human's durable grant set the
+  /// harness refuses `project_not_granted`, and this method returns it
+  /// as a TYPED [WorkThreadSpawn] refusal carrying the current grants —
+  /// the honest-refusal law, never an escaping exception, so the UI can
+  /// offer a one-tap [grantAccess].
+  ///
+  /// The parent room does NOT receive the order text; the registry link
+  /// ([workThreadsOf]) is what its work card renders. The work thread is
+  /// never auto-selected: the human stays in the parent room.
+  Future<WorkThreadSpawn> spawnWorkThread({
+    required final String parentThreadId,
+    required final String projectRoot,
+    final List<String> memberIds = const <String>[],
+    final String? orderText,
+    final String? topic,
+  }) {
+    final root = projectRoot.trim();
+    final key = '$parentThreadId|$root';
+    final prior = _spawnChains[key];
+    final next = prior == null
+        ? _spawnWorkThread(
+            parentThreadId: parentThreadId,
+            projectRoot: root,
+            memberIds: memberIds,
+            orderText: orderText,
+            topic: topic,
+          )
+        : prior.then(
+            (_) => _spawnWorkThread(
+              parentThreadId: parentThreadId,
+              projectRoot: root,
+              memberIds: memberIds,
+              orderText: orderText,
+              topic: topic,
+            ),
+          );
+    _spawnChains[key] = next;
+    unawaited(
+      next.whenComplete(() {
+        if (identical(_spawnChains[key], next)) {
+          // Map.remove hands back the removed future — this is chain
+          // bookkeeping, not an awaitable step (and awaiting `next`
+          // from inside its own completion would deadlock).
+          final _ = _spawnChains.remove(key);
+        }
+      }),
+    );
+    return next;
+  }
+
+  Future<WorkThreadSpawn> _spawnWorkThread({
+    required final String parentThreadId,
+    required final String projectRoot,
+    required final List<String> memberIds,
+    final String? orderText,
+    final String? topic,
+  }) async {
+    final world = _world;
+    final human = _human;
+    final registry = _workRegistry;
+    if (world == null || human == null || registry == null) {
+      return WorkThreadSpawn(
+        refusal: 'realm_not_ready',
+        requestedProject: projectRoot,
+        message: 'the world chat service is not ready',
+      );
+    }
+    if (projectRoot.isEmpty) {
+      return const WorkThreadSpawn(
+        refusal: 'project_root_missing',
+        message: 'a work order names the workspace root it targets',
+      );
+    }
+    // The link points at the parent forever — an unknown parent is a
+    // named refusal, never a guess.
+    final parent = parentThreadId.trim();
+    final parentRow = await world.store.read('threads', parent);
+    if (parentRow == null) {
+      return WorkThreadSpawn(
+        refusal: 'parent_thread_missing',
+        requestedProject: projectRoot,
+        message: 'no thread named $parentThreadId',
+      );
+    }
+    final members = [
+      for (final id in memberIds)
+        if (id.trim().isNotEmpty && id.trim() != human.actor) id.trim(),
+    ];
+    var link = await registry.byKey(
+      parentThreadId: parent,
+      projectRoot: projectRoot,
+    );
+    final reused = link != null;
+    String? refusal;
+    var grants = const <String>[];
+    String? message;
+    if (link == null) {
+      final trimmedTopic = topic?.trim() ?? '';
+      final name = trimmedTopic.isEmpty
+          ? _defaultWorkThreadName(projectRoot)
+          : trimmedTopic;
+      try {
+        final opened = await world.conversation().open(
+          actor: human,
+          topic: name,
+          participants: members,
+          // ADR 0129 — project-sealed, NOT realm-sealed (the two are
+          // mutually exclusive): the seal is the daemon actor's sandbox
+          // and minting it requires the durable grant.
+          projectId: projectRoot,
+        );
+        link = await registry.create(
+          workThreadId: opened['threadId']! as String,
+          parentThreadId: parent,
+          projectRoot: projectRoot,
+          name: name,
+          createdBy: human.actor,
+        );
+      } on DurableRealmRefusal catch (refused) {
+        // The honest-refusal law: `project_not_granted` lands as a typed
+        // result carrying the current grants — never an escape, never a
+        // guess around the absence.
+        refusal = refused.code;
+        grants =
+            (refused.detail?['grants'] as List? ?? const <Object?>[])
+                .cast<String>();
+        message = 'the human authority lacks the durable grant for '
+            '$projectRoot (ADR 0129)';
+      } on Object catch (error) {
+        refusal = 'work_thread_open_failed';
+        message = error.toString();
+      }
+    }
+    // The forward: ONE human beat in the WORK thread, addressed to the
+    // members (the daemon groups a thread's pending addressed beats into
+    // one dispatch, so one order = one beat). Fresh AND reused threads
+    // forward — reuse changes where the thread comes from, never
+    // whether the order lands.
+    int? orderBeat;
+    final order = orderText?.trim() ?? '';
+    final workThread = link;
+    if (workThread != null && order.isNotEmpty) {
+      try {
+        final said = await world.conversation().say(
+          actor: human,
+          threadId: workThread.workThreadId,
+          text: order,
+          addressedTo: members,
+        );
+        orderBeat = said['beat']! as int;
+      } on DurableRealmRefusal catch (refused) {
+        refusal ??= refused.code;
+        message ??= 'the work thread exists; the order beat refused';
+      } on Object catch (error) {
+        refusal ??= 'order_forward_failed';
+        message ??= error.toString();
+      }
+    }
+    await _refreshWorkThreads();
+    // The granted seal makes the work thread visible to the human's own
+    // thread projection (ADR 0121 visibility law) — refresh so the
+    // parent room's work card has both halves immediately.
+    await refreshThreads();
+    return WorkThreadSpawn(
+      workThread: workThread,
+      reused: reused,
+      orderBeat: orderBeat,
+      refusal: refusal,
+      grants: grants,
+      requestedProject: refusal == null ? null : projectRoot,
+      message: message,
+    );
+  }
+
+  /// The work thread's default name: the project root's last path
+  /// segment (a mechanical derivation — this layer carries no l10n
+  /// strings; the UI owns presentation).
+  static String _defaultWorkThreadName(final String projectRoot) {
+    final segments = projectRoot
+        .replaceAll(r'\', '/')
+        .split('/')
+        .where((final segment) => segment.isNotEmpty)
+        .toList();
+    return segments.isEmpty ? projectRoot : segments.last;
+  }
+
+  // ---- project access (ADR 0121/0129: grantable, requestable,
+  // listable in-process) ----
+  //
+  // THIN by the module-reuse law: the grant set, the request rows and
+  // the refusal vocabulary are the harness's; these verbs call the host
+  // package's canonical functions (`agentProjectGrants`,
+  // `projectAccessRequest`, `grantProjectAccess` — the same one
+  // `ecsai --grant` runs) and never reimplement them.
+
+  /// The realm world home for the host's grant function: the parent of
+  /// the store's `coordination` directory (`grantProjectAccess` reopens
+  /// the SAME journal through it — the app-support scope is NOT the
+  /// world home in production).
+  String? get _worldHome => _world?.store.directory.parent.path;
+
+  /// One actor's durable project grant set (the host's projection read:
+  /// `realm_actors.projects` ∪ the actor's seat participant rows),
+  /// sorted. Empty when the world is not open (web / not ready) —
+  /// callers check [isReady] for the honest absence.
+  Future<List<String>> listGrants(final String actorId) async {
+    final world = _world;
+    if (world == null) return const <String>[];
+    final grants = await agentProjectGrants(world.store, actorId);
+    return grants.toList()..sort();
+  }
+
+  /// Every PENDING project-access request of the realm (all actors) —
+  /// the host-written `project_access_requests` rows verbatim, state ==
+  /// 'pending'. Empty when the world is not open.
+  Future<List<Map<String, Object?>>> pendingAccessRequests() async {
+    final world = _world;
+    if (world == null) return const <Map<String, Object?>>[];
+    final rows = await world.store.scan('project_access_requests');
+    return [
+      for (final row in rows.values)
+        if (row['state'] == 'pending') row,
+    ];
+  }
+
+  /// Records one durable access request (the host's
+  /// `projectAccessRequest`, action 'request'): idempotent per
+  /// (actor, project); the operator approves through [grantAccess].
+  /// Returns the host's result verbatim.
+  Future<Map<String, Object?>> requestAccess(
+    final String actorId,
+    final String projectRoot,
+  ) async {
+    final world = _world;
+    if (world == null) {
+      return const <String, Object?>{
+        'ok': false,
+        'error': 'realm_not_ready',
+      };
+    }
+    return projectAccessRequest(
+      store: world.store,
+      seat: world.authorityFor(actorId),
+      args: <String, Object?>{
+        'action': 'request',
+        'projectId': projectRoot,
+      },
+    );
+  }
+
+  /// The in-process twin of `ecsai --grant`: the host's
+  /// `grantProjectAccess` over the realm's world home, then a VERIFY
+  /// re-read of the durable grant set — the honest outcome rides the
+  /// journal, never message parsing.
+  Future<ProjectGrantResult> grantAccess(
+    final String actorId,
+    final String projectRoot,
+  ) async {
+    final world = _world;
+    final home = _worldHome;
+    if (world == null || home == null) {
+      return const ProjectGrantResult(
+        granted: false,
+        message: 'realm_not_ready',
+      );
+    }
+    final message = await grantProjectAccess(
+      worldHome: home,
+      actor: actorId,
+      projectRoot: projectRoot,
+    );
+    final grants = await agentProjectGrants(world.store, actorId);
+    return ProjectGrantResult(
+      granted: grants.contains(projectRoot),
+      message: message,
+    );
+  }
+
   /// Rebuilds the last-beat previews from the thread list itself
   /// (ADR 0025): each thread record now carries the preview triple
   /// (`lastBeatAuthor`/`lastBeatText`/`lastBeatAt`) from its journal
@@ -912,4 +1247,18 @@ final class RealmChatService extends ChangeNotifier {
     _bots?.stopAll();
     super.dispose();
   }
+}
+
+/// The verified outcome of one [RealmChatService.grantAccess]:
+/// [granted] rides the journal re-read (the actor's durable grant set
+/// now names the project), [message] is the host function's own human
+/// line (kept verbatim — the module-reuse law, no reinterpretation).
+final class ProjectGrantResult {
+  const ProjectGrantResult({required this.granted, required this.message});
+
+  final bool granted;
+  final String message;
+
+  @override
+  String toString() => 'ProjectGrantResult(granted: $granted, $message)';
 }

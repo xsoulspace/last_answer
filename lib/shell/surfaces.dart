@@ -23,8 +23,9 @@
 ///
 /// Conversation ids (`dm:<actorId>`, `channel:<channelId>`) are not in
 /// the static registry — they share the ONE conversation slot and map
-/// onto the same [WorldChatSurface] ([conversationSurfaceSpec] in
-/// app_shell.dart).
+/// onto [WorldChatSurface] ([conversationSurfaceSpec]); since Wave H
+/// each conversation tab binds its surface id into the pane, so it
+/// renders its OWN thread (the pane-instance law).
 ///
 /// `settings` is a surface like any other (phase 1e): [SettingsScreen]
 /// grew the embedding seam (`onClose` + `embedded`), so the rail's gear
@@ -288,6 +289,20 @@ SurfaceSpec? actorSurfaceSpec(
 /// the ONE conversation slot's [WorldChatSurface]. Null for anything
 /// that is neither a static surface nor a conversation slot id
 /// (honest unknown).
+///
+/// Wave H — the PANE-INSTANCE law: the returned spec binds the
+/// surface id into the pane, so EVERY conversation tab renders its
+/// OWN thread (resolved through the service's ONE
+/// [RealmChatService.threadIdForSurface] helper) — two visible panes
+/// holding two conversation tabs must never both render the service's
+/// global active thread (the 2026-11-10 defect: the strip's pill and
+/// the pane content disagreed across groups). The service and the
+/// actor-focus seam resolve through the widget's own DI /
+/// [ViewScope.onFocusActor] fallbacks: the shell provides both above
+/// every pane slot, and the fallback is the SAME closure the registry
+/// pins. The `conversations` world face keeps the registry's own
+/// builder (null surfaceId — it follows the active thread, the
+/// no-thread inbox face when nothing is selected).
 SurfaceSpec? conversationSurfaceSpec(
   final String surfaceId,
   final SurfaceRegistry surfaces,
@@ -297,7 +312,14 @@ SurfaceSpec? conversationSurfaceSpec(
       !surfaceId.startsWith('room:')) {
     return null;
   }
-  return surfaces[kConversationsSurfaceId];
+  final base = surfaces[kConversationsSurfaceId];
+  if (base == null) return null;
+  return SurfaceSpec(
+    id: surfaceId,
+    title: base.title,
+    icon: base.icon,
+    builder: (final _) => WorldChatSurface(surfaceId: surfaceId),
+  );
 }
 
 /// Builds the shell's surface registry against [context] (for l10n and

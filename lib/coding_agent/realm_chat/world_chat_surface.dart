@@ -44,7 +44,12 @@ import 'package:lastanswer/shell/shell_theme.dart';
 /// and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
 final class WorldChatSurface extends StatefulWidget {
-  const WorldChatSurface({this.service, this.onTapActor, super.key});
+  const WorldChatSurface({
+    this.service,
+    this.onTapActor,
+    this.surfaceId,
+    super.key,
+  });
 
   /// Test seam; production resolves through DI.
   final RealmChatService? service;
@@ -55,6 +60,20 @@ final class WorldChatSurface extends StatefulWidget {
   /// is hosted inside the shell; outside it a tap only closes the
   /// popover (honest absence, never a crash).
   final void Function(String actorId)? onTapActor;
+
+  /// Wave H — the PANE-INSTANCE law: the conversation surface id this
+  /// pane renders (`channel:<id>` / `dm:<actor>` / `room:<threadId>`),
+  /// resolved through [RealmChatService.threadIdForSurface] — the ONE
+  /// resolver, shared with the shell's activation lane. Null keeps
+  /// today's behavior byte-identical: the pane follows the service's
+  /// GLOBAL active thread. Non-null, the pane renders its OWN thread —
+  /// header, beats, composer target, meta row — even while another
+  /// pane's thread holds the service's focus (the 2026-11-10 defect:
+  /// two visible conversation tabs both rendered the active thread).
+  /// Selection still follows focus (the activation lane selects the
+  /// activated tab's thread — unread/receipts law unchanged); only the
+  /// RENDERING is per instance.
+  final String? surfaceId;
 
   @override
   State<WorldChatSurface> createState() => _WorldChatSurfaceState();
@@ -112,6 +131,7 @@ class _WorldChatSurfaceState extends State<WorldChatSurface> {
       service: service,
       composer: _composer,
       onTapActor: widget.onTapActor,
+      surfaceId: widget.surfaceId,
     );
   }
 }
@@ -143,9 +163,19 @@ class _CenteredNote extends StatelessWidget {
 /// share, spend, verdict line) — everything the journal already
 /// carries; nothing here invents a summary.
 class _WorkStrip extends StatefulWidget {
-  const _WorkStrip({required this.service, required this.participants});
+  const _WorkStrip({
+    required this.service,
+    required this.threadId,
+    required this.participants,
+  });
 
   final RealmChatService service;
+
+  /// Wave H — the PANE's thread (the surface id's own resolution, or
+  /// the service's active thread for a null-surfaceId pane): the work-
+  /// thread cards are the children of the room being RENDERED, never of
+  /// whichever room happens to hold the global focus.
+  final String threadId;
   final List<String> participants;
 
   @override
@@ -241,26 +271,24 @@ class _WorkStripState extends State<_WorkStrip> {
         // pure projection: the registry link plus the threads
         // projection's own last-beat triple (author/text/instant —
         // never invented here), kept live by the journal watch this
-        // strip already rides.
-        final activeId = service.activeThreadId;
-        if (activeId != null) {
-          for (final link in service.workThreadsOf(activeId)) {
-            Map<String, Object?>? preview;
-            for (final row in service.threads) {
-              if (row['threadId'] == link.workThreadId) {
-                preview = row;
-                break;
-              }
+        // strip already rides. Wave H: the parent is the PANE's thread.
+        final paneThreadId = widget.threadId;
+        for (final link in service.workThreadsOf(paneThreadId)) {
+          Map<String, Object?>? preview;
+          for (final row in service.threads) {
+            if (row['threadId'] == link.workThreadId) {
+              preview = row;
+              break;
             }
-            rows.add(
-              _WorkThreadCard(
-                key: ValueKey('worldchat.workthread.${link.workThreadId}'),
-                service: service,
-                link: link,
-                preview: preview,
-              ),
-            );
           }
+          rows.add(
+            _WorkThreadCard(
+              key: ValueKey('worldchat.workthread.${link.workThreadId}'),
+              service: service,
+              link: link,
+              preview: preview,
+            ),
+          );
         }
 
         // 3) 0f — honest absence: an actor bound in the daemon's
@@ -891,10 +919,17 @@ class _ConversationPane extends StatefulWidget {
     required this.service,
     required this.composer,
     this.onTapActor,
+    this.surfaceId,
   });
   final RealmChatService service;
   final TextEditingController composer;
   final void Function(String actorId)? onTapActor;
+
+  /// Wave H — the pane-instance law (see [WorldChatSurface.surfaceId]):
+  /// null = the service's global active thread (today's behavior);
+  /// non-null = this pane's OWN thread, resolved through the service's
+  /// ONE [RealmChatService.threadIdForSurface] helper.
+  final String? surfaceId;
 
   @override
   State<_ConversationPane> createState() => _ConversationPaneState();
@@ -903,7 +938,9 @@ class _ConversationPane extends StatefulWidget {
 class _ConversationPaneState extends State<_ConversationPane> {
   /// The reversed list's controller: offset 0 = the newest beat (the
   /// bottom). An endless room lives at its tail; scrolling UP walks
-  /// into history and triggers [RealmChatService.loadOlderBeats].
+  /// into history and triggers the window walk — the pane-local
+  /// [_loadOlderOwnBeats] for a pinned pane, the service's
+  /// [RealmChatService.loadOlderBeats] for the active-thread pane.
   final ScrollController _scroll = ScrollController();
   bool _showJumpToLatest = false;
 
@@ -960,8 +997,122 @@ class _ConversationPaneState extends State<_ConversationPane> {
   bool _grantRetried = false;
   String? _grantOutcome;
 
+  // ---- Wave H: the pane's OWN thread and its beats window ----
+  // A surfaceId-pinned pane renders its own thread: its beats come
+  // from the PURE `beatsFor` read (re-scheduled on every rebuild — the
+  // service notifies on journal refreshes, so the pane never goes
+  // stale), never from the active-thread `service.beats` cache. The
+  // tail-window/pagination arithmetic mirrors the service's cache
+  // ([RealmChatService.tailPageSize], prepend-only) per pane. A
+  // null-surfaceId pane keeps reading the service cache — byte-for-byte
+  // today's behavior.
+
+  /// The thread the own-beats cache belongs to (null = none loaded).
+  String? _ownThreadId;
+
+  /// The pane's thread's full folded beats (oldest → newest), from the
+  /// pure windowed read.
+  List<Map<String, Object?>> _ownAll = const <Map<String, Object?>>[];
+
+  /// The pane-local window start into [_ownAll] (null = not normalized
+  /// yet; the landing read normalizes it to the tail page, exactly like
+  /// the service's `_refreshBeats`).
+  int? _ownWindowStart;
+
+  /// The cheap content signature of [_ownAll] (count + first/last beat
+  /// numbers — the journal is append-only, so any change moves one of
+  /// them): an unchanged read skips the rebuild, so the build-scheduled
+  /// read never loops with its own setState.
+  String _ownSignature = '';
+
+  /// The stale-read guard: only the newest scheduled read may land.
+  int _ownReadGen = 0;
+
   RealmChatService get service => widget.service;
   TextEditingController get composer => widget.composer;
+
+  /// Whether this pane renders its OWN thread (Wave H) instead of the
+  /// service's global active thread (today's law).
+  bool get _ownThreadPane => widget.surfaceId != null;
+
+  /// The thread id this pane renders: the pinned surface id resolved
+  /// through the service's ONE resolver, or — null surfaceId — the
+  /// global active thread.
+  String? get _paneThreadId {
+    final surfaceId = widget.surfaceId;
+    if (surfaceId == null) return service.activeThreadId;
+    return service.threadIdForSurface(surfaceId);
+  }
+
+  /// The projection row of the pane's thread (the same lookup the
+  /// service's `activeThread` getter rides, for ANY thread id).
+  Map<String, Object?>? _threadRow(final String? threadId) {
+    if (threadId == null) return null;
+    for (final thread in service.threads) {
+      if (thread['threadId'] == threadId) return thread;
+    }
+    return null;
+  }
+
+  /// Schedules the pane's pure beats read (called from build — every
+  /// rebuild re-reads, so the journal-watch notify is the freshness
+  /// signal). The generation guard drops stale reads; an unchanged
+  /// signature skips the setState.
+  void _scheduleOwnBeatRead(final String threadId) {
+    final generation = ++_ownReadGen;
+    unawaited(() async {
+      final all = await service.beatsFor(threadId, windowStart: 0);
+      if (!mounted || generation != _ownReadGen) return;
+      if (_ownThreadId != threadId) return;
+      final signature = all.isEmpty
+          ? '0::'
+          : '${all.length}:${all.first['beat']}:${all.last['beat']}';
+      if (signature == _ownSignature) return;
+      setState(() {
+        _ownAll = all;
+        _ownSignature = signature;
+        final start = _ownWindowStart;
+        // The service cache's normalization, mirrored: the first read
+        // lands on the tail page; a kept window only clamps.
+        _ownWindowStart = start == null
+            ? (all.length > RealmChatService.tailPageSize
+                  ? all.length - RealmChatService.tailPageSize
+                  : 0)
+            : (start > all.length ? all.length : start);
+      });
+    }());
+  }
+
+  /// The loaded tail window of the pane's own beats (oldest → newest) —
+  /// the pane-local twin of the service's `beats` cache.
+  List<Map<String, Object?>> _ownBeats() {
+    final all = _ownAll;
+    final start = (_ownWindowStart ?? 0).clamp(0, all.length);
+    return start == 0 ? all : all.sublist(start);
+  }
+
+  /// Whether the pane's thread has older beats above the loaded window
+  /// (the twin of the service's `hasOlderBeats`).
+  bool get _ownHasOlderBeats => (_ownWindowStart ?? 0) > 0;
+
+  /// Walks the pane's window one [RealmChatService.tailPageSize] page
+  /// toward the thread's beginning — the twin of the service's
+  /// `loadOlderBeats`, a pure re-slice of the already-read fold
+  /// (prepend-only: the loaded tail never changes, so the reading
+  /// position survives).
+  void _loadOlderOwnBeats() {
+    final all = _ownAll;
+    final start =
+        _ownWindowStart ??
+        (all.length > RealmChatService.tailPageSize
+            ? all.length - RealmChatService.tailPageSize
+            : 0);
+    if (start <= 0) return;
+    setState(() {
+      final next = start - RealmChatService.tailPageSize;
+      _ownWindowStart = next < 0 ? 0 : next;
+    });
+  }
 
   /// LaWorld when the shell provides it; a hermetic surface without the
   /// projection keeps working (no divider — honest absence, never a
@@ -1092,20 +1243,23 @@ class _ConversationPaneState extends State<_ConversationPane> {
     final replyTo = _replyBeat?['beat'] as int?;
     // Wave E — the mention parse runs on every plain send; a non-empty
     // parse narrows the addressees (the mention grammar), null keeps
-    // the all-participants default inside the service.
+    // the all-participants default inside the service. Wave H: a
+    // pinned pane says into ITS OWN thread (null keeps the service's
+    // active-thread default byte-identical).
     final mentioned = _mentionedActors(raw);
     await service.say(
       raw,
       replyTo: replyTo,
       addressedTo: mentioned.isEmpty ? null : mentioned,
+      threadId: _ownThreadPane ? _paneThreadId : null,
     );
     if (!mounted) return;
     composer.clear();
     if (_replyBeat != null) setState(() => _replyBeat = null);
   }
 
-  /// The room's ACTOR members — the work order's addressees: the active
-  /// thread's participants minus the humans (the human authority's own
+  /// The room's ACTOR members — the work order's addressees: the PANE's
+  /// thread participants minus the humans (the human authority's own
   /// id and any rostered [ActorKind.human] participant). Unrostered ids
   /// stay: they were invited as members, and the service remains the
   /// authority on what the harness admits (it drops the human again on
@@ -1113,7 +1267,8 @@ class _ConversationPaneState extends State<_ConversationPane> {
   List<String> _actorMembers() {
     final human = service.humanActorId;
     final participants =
-        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+        (_threadRow(_paneThreadId)?['participants'] as List? ??
+                const <Object?>[])
             .cast<String>();
     return <String>[
       for (final id in participants)
@@ -1129,7 +1284,10 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// decision); on refusal the typed result renders with its own
   /// evidence and the composer KEEPS the order text (nothing is lost).
   Future<void> _sendWorkOrder(final String raw, final String scope) async {
-    final parent = service.activeThreadId;
+    // Wave H — the order's parent is the PANE's thread (a pinned pane
+    // delegates from the room it renders, not from whichever room
+    // holds the global focus).
+    final parent = _paneThreadId;
     final order = raw.trim();
     if (parent == null || order.isEmpty || _spawning) return;
     setState(() {
@@ -1279,7 +1437,8 @@ class _ConversationPaneState extends State<_ConversationPane> {
     }
 
     final participants =
-        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+        (_threadRow(_paneThreadId)?['participants'] as List? ??
+                const <Object?>[])
             .cast<String>();
     for (final id in <String>[
       ...participants,
@@ -1297,10 +1456,11 @@ class _ConversationPaneState extends State<_ConversationPane> {
         ),
       );
     }
-    final activeId = service.activeThreadId;
+    // Wave H — "never the room being viewed" is the PANE's room.
+    final paneThreadId = _paneThreadId;
     for (final room in service.roomThreads) {
       final id = '${room['threadId'] ?? ''}';
-      if (id.isEmpty || id == activeId) continue;
+      if (id.isEmpty || id == paneThreadId) continue;
       items.add(
         _Mentionable(
           kind: _MentionKind.room,
@@ -1399,16 +1559,16 @@ class _ConversationPaneState extends State<_ConversationPane> {
   }
 
   /// Wave E — the send-time mention parse: `@<displayName>` tokens map
-  /// to actor ids against the CURRENT thread's participants and the
+  /// to actor ids against the pane's thread participants and the
   /// roster (longest names match first, so '@Worker Alpha' never loses
   /// to '@Worker').
   ///
-  /// HONEST GAP (reported, steward-routed): [RealmChatService.say]
-  /// addresses ALL other participants and exposes no `addressedTo`
-  /// parameter, so the parsed set cannot ride the beat today — the
-  /// service is outside this wave's boundary and is NOT changed. The
-  /// no-mention default is byte-for-byte today's behavior, and the
-  /// addressed chips keep rendering from the journal's own projection.
+  /// Wave H — the parse follows the PANE's thread: a pinned pane
+  /// mentions the members of the room IT renders, and the parsed set
+  /// rides [RealmChatService.say]'s `addressedTo` into that same
+  /// thread (the earlier honest gap — no `addressedTo` parameter — is
+  /// closed; the no-mention default stays byte-for-byte today's
+  /// all-participants behavior).
   List<String> _mentionedActors(final String raw) {
     final human = service.humanActorId;
     final roster = service.roster;
@@ -1419,7 +1579,8 @@ class _ConversationPaneState extends State<_ConversationPane> {
     }
 
     final participants =
-        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+        (_threadRow(_paneThreadId)?['participants'] as List? ??
+                const <Object?>[])
             .cast<String>();
     for (final id in participants) {
       add(id, roster?.get(id)?.displayName ?? actorDisplayFallback(id));
@@ -1449,7 +1610,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// link becomes visible through [RealmChatService.workThreadsOf] after
   /// the next spawn or restart (the durable row lands immediately).
   Future<void> _startChildThread(final Map<String, Object?> beat) async {
-    final currentId = service.activeThreadId;
+    // Wave H — the child hangs off the PANE's thread (the room being
+    // rendered), never off whichever room holds the global focus.
+    final currentId = _paneThreadId;
     final world = service.world;
     final human = service.humanActorId;
     if (currentId == null || world == null || human == null) return;
@@ -1464,7 +1627,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     }
     final others = [
       for (final id
-          in (service.activeThread?['participants'] as List? ??
+          in (_threadRow(currentId)?['participants'] as List? ??
                   const <Object?>[])
               .cast<String>())
         if (id != human) id,
@@ -1497,7 +1660,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
   Future<void> _grantAndRetry() async {
     final refusal = _refusal;
     final human = service.humanActorId;
-    final parent = service.activeThreadId;
+    // Wave H — the retry's parent is the PANE's thread (the room the
+    // refused order was typed in).
+    final parent = _paneThreadId;
     final project = refusal?.requestedProject;
     if (refusal == null || human == null || parent == null || project == null) {
       return;
@@ -1574,8 +1739,24 @@ class _ConversationPaneState extends State<_ConversationPane> {
 
   @override
   Widget build(final BuildContext context) {
-    final threadId = service.activeThreadId;
-    final thread = service.activeThread;
+    // Wave H — the pane-instance law: a pinned pane renders ITS OWN
+    // thread (resolved through the service's ONE helper); a null-
+    // surfaceId pane keeps following the global active thread.
+    final threadId = _paneThreadId;
+    final thread = _threadRow(threadId);
+    if (_ownThreadPane) {
+      // Invalidate the own-beats cache when the resolved thread moved
+      // (a dm: pane whose thread was just minted, a tab re-routed),
+      // then re-read the pure fold on EVERY rebuild — the service's
+      // journal-refresh notify is the freshness signal.
+      if (threadId != _ownThreadId) {
+        _ownThreadId = threadId;
+        _ownAll = const <Map<String, Object?>>[];
+        _ownWindowStart = null;
+        _ownSignature = '';
+      }
+      if (threadId != null) _scheduleOwnBeatRead(threadId);
+    }
     final theme = Theme.of(context);
     final l10n = context.l10n;
     if (threadId == null || thread == null) {
@@ -1638,7 +1819,13 @@ class _ConversationPaneState extends State<_ConversationPane> {
         : dmOther != null
         ? l10n.worldChatMessageHint(displayNameOf(dmOther))
         : l10n.worldChatComposerHint;
-    final beats = service.beats;
+    // Wave H — a pinned pane renders its OWN pure beatsFor window; a
+    // null-surfaceId pane keeps the service's active-thread cache
+    // (byte-for-byte today's behavior, down to the read receipt the
+    // cache refresh advances for the SELECTED thread only).
+    final beats = _ownThreadPane ? _ownBeats() : service.beats;
+    final hasOlderBeats =
+        _ownThreadPane ? _ownHasOlderBeats : service.hasOlderBeats;
     // The send button's busy truth: a plain `say` in flight (the
     // service's flag) or a scoped spawn (this pane's flag).
     final sendBusy = service.sending || _spawning;
@@ -1678,9 +1865,13 @@ class _ConversationPaneState extends State<_ConversationPane> {
                         // (offsets anchor at the bottom), so the
                         // reading position survives the fetch.
                         final metrics = notification.metrics;
-                        if (service.hasOlderBeats &&
+                        if (hasOlderBeats &&
                             metrics.maxScrollExtent - metrics.pixels < 160) {
-                          unawaited(service.loadOlderBeats());
+                          if (_ownThreadPane) {
+                            _loadOlderOwnBeats();
+                          } else {
+                            unawaited(service.loadOlderBeats());
+                          }
                         }
                         return false;
                       },
@@ -1696,11 +1887,12 @@ class _ConversationPaneState extends State<_ConversationPane> {
                         // composer); beats follow newest-first; the
                         // load-older row sits at the visual top.
                         itemCount:
-                            1 + beats.length + (service.hasOlderBeats ? 1 : 0),
+                            1 + beats.length + (hasOlderBeats ? 1 : 0),
                         itemBuilder: (final context, final index) {
                           if (index == 0) {
                             return _WorkStrip(
                               service: service,
+                              threadId: threadId,
                               participants: participants,
                             );
                           }
@@ -1712,7 +1904,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
                             return _LoadOlderRow(
                               key: const ValueKey('worldchat.loadOlder'),
                               label: l10n.worldChatLoadOlder,
-                              onTap: () => unawaited(service.loadOlderBeats()),
+                              onTap: () => _ownThreadPane
+                                  ? _loadOlderOwnBeats()
+                                  : unawaited(service.loadOlderBeats()),
                             );
                           }
                           // Newest-first: index 1 = the newest beat at

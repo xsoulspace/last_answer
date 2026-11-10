@@ -191,6 +191,37 @@ final class RealmChatService extends ChangeNotifier {
     return null;
   }
 
+  /// Wave H — the ONE conversation-surface-id → thread-id resolver
+  /// (the pane-instance law's home): a conversation pane renders ITS
+  /// OWN thread, and the surface registry's spec plus any activation
+  /// lane resolve through this single helper — two visible panes
+  /// holding two conversation tabs must never both render the global
+  /// [activeThreadId] (the 2026-11-10 defect).
+  ///
+  /// `channel:<channelId>` resolves through the live channel list (the
+  /// inverse of [channelByThreadId]); `dm:<actorId>` resolves through
+  /// [dmThreadOf] (the same lookup [openDm] rides — null until the DM
+  /// thread exists); `room:<threadId>` is the thread id itself; the
+  /// `conversations` world face — and every non-conversation id —
+  /// resolves to null: the no-thread inbox face.
+  String? threadIdForSurface(final String surfaceId) {
+    if (surfaceId.startsWith('channel:')) {
+      final channelId = surfaceId.substring('channel:'.length);
+      for (final channel in _channels) {
+        if (channel.channelId == channelId) return channel.threadId;
+      }
+      return null;
+    }
+    if (surfaceId.startsWith('dm:')) {
+      return dmThreadOf(surfaceId.substring('dm:'.length));
+    }
+    if (surfaceId.startsWith('room:')) {
+      final threadId = surfaceId.substring('room:'.length);
+      return threadId.isEmpty ? null : threadId;
+    }
+    return null;
+  }
+
   /// threadId → one-line preview of the thread's last beat
   /// (`<author display name>: <text>`, truncated) for the thread pane.
   Map<String, String> beatPreviews() => Map.unmodifiable(_beatPreviews);
@@ -208,11 +239,27 @@ final class RealmChatService extends ChangeNotifier {
   /// no notify (a notifying read would loop its pollers). An unknown
   /// thread, a not-yet-ready service or any fold failure reads as an
   /// empty list: this never throws.
-  Future<List<Map<String, Object?>>> beatsFor(final String threadId) async {
+  ///
+  /// Wave H — [windowStart] is the PANE-INSTANCE read: non-null
+  /// returns the whole fold from that index (0 = the complete list),
+  /// bypassing the tail bound, so a conversation pane pinned to its
+  /// OWN thread slices the identical tail-window/pagination the
+  /// active-thread cache keeps ([tailPageSize] + [loadOlderBeats]
+  /// arithmetic, per pane). Null keeps today's bounded-tail behavior
+  /// byte-for-byte. Still pure: no receipt advance, no notify — a
+  /// pinned pane's read never marks its room seen (receipts follow
+  /// the service's selection, the focus law).
+  Future<List<Map<String, Object?>>> beatsFor(
+    final String threadId, {
+    final int? windowStart,
+  }) async {
     final world = _world;
     if (world == null) return const <Map<String, Object?>>[];
     try {
       final all = await world.projection.beatsOfThread(threadId);
+      if (windowStart != null) {
+        return all.sublist(windowStart.clamp(0, all.length));
+      }
       if (all.length <= beatsForLimit) return all;
       return all.sublist(all.length - beatsForLimit);
     } on Object {
@@ -228,9 +275,15 @@ final class RealmChatService extends ChangeNotifier {
   String? get activeThreadId => _activeThreadId;
 
   /// The active thread's projection, null when none selected.
-  Map<String, Object?>? get activeThread {
+  Map<String, Object?>? get activeThread => _threadRowById(_activeThreadId);
+
+  /// The projection row of ONE thread, null when the projection does
+  /// not carry it — the lookup [activeThread] and [say]'s
+  /// explicit-target lane share (Wave H).
+  Map<String, Object?>? _threadRowById(final String? threadId) {
+    if (threadId == null) return null;
     for (final thread in _threads) {
-      if (thread['threadId'] == _activeThreadId) return thread;
+      if (thread['threadId'] == threadId) return thread;
     }
     return null;
   }
@@ -1274,21 +1327,32 @@ final class RealmChatService extends ChangeNotifier {
   /// sentence still wakes the whole room. [replyTo] anchors the beat to
   /// an earlier beat number (the 1g quote law — the substrate carries
   /// it, ADR 0136's `replyingTo` vocabulary).
+  ///
+  /// Wave H — [threadId] is the PANE-INSTANCE target: a conversation
+  /// pane pinned to its own surface id says into ITS OWN thread even
+  /// while another thread holds the focus. Null keeps today's behavior
+  /// byte-identical (the beat rides [activeThreadId]). The addressing
+  /// default resolves against the TARGET thread's participants — never
+  /// another room's. The active-thread cache refreshes only when the
+  /// target IS the active thread; a non-active target's pane re-reads
+  /// its own beats through the trailing notify (pure [beatsFor]).
   Future<void> say(
     String text, {
     final int? replyTo,
     final List<String>? addressedTo,
+    final String? threadId,
   }) async {
     final world = _world;
     final human = _human;
-    final threadId = _activeThreadId;
+    final target = threadId ?? _activeThreadId;
     final trimmed = text.trim();
-    if (world == null || human == null || threadId == null || trimmed.isEmpty) {
+    if (world == null || human == null || target == null || trimmed.isEmpty) {
       return;
     }
     final others = [
       for (final participant
-          in (activeThread?['participants'] as List? ?? const <Object?>[])
+          in (_threadRowById(target)?['participants'] as List? ??
+                  const <Object?>[])
               .cast<String>())
         if (participant != human.actor) participant,
     ];
@@ -1297,7 +1361,7 @@ final class RealmChatService extends ChangeNotifier {
     try {
       await world.conversation().say(
         actor: human,
-        threadId: threadId,
+        threadId: target,
         text: trimmed,
         addressedTo: addressedTo ?? others,
         replyTo: replyTo,
@@ -1305,7 +1369,7 @@ final class RealmChatService extends ChangeNotifier {
       // The in-process shortcut: our own append dispatches immediately
       // (the journal watch covers everyone else's).
       _bots?.nudgeDispatcher();
-      await _refreshBeats();
+      if (target == _activeThreadId) await _refreshBeats();
     } on DurableRealmRefusal catch (refusal) {
       _error = refusal.code;
     } on Object catch (error) {

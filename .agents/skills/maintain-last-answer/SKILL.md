@@ -23,13 +23,30 @@ Operational guide for AI agents maintaining this Flutter app.
 
 ```bash
 just gen                  # build_runner codegen (run after model changes)
-fvm dart fix --apply      # or: just fix
+just fix                  # fvm dart fix --apply
 fvm flutter analyze
 fvm flutter test          # NOTE: test/parsers/hive_parser_test.dart may fail on clean HEAD (pre-existing)
-cd packages/core && fvm flutter gen-l10n   # after touching intl_*.arb
 ```
 
-Never hand-edit `*.g.dart` / `*.freezed.dart`. Update EN + IT + RU arb files together for user-facing strings (`packages/core/lib/src/l10n/intl_{en,it,ru}.arb`).
+Never hand-edit `*.g.dart` / `*.freezed.dart`. Update EN + IT + RU arb files together for user-facing strings (`packages/core/lib/src/l10n/intl_{en,it,ru}.arb`) AND the four hand-maintained mirrors `packages/core/lib/src/generated/intl/{S,S_en,S_it,S_ru}.dart` — every new key in all seven files, real IT/RU translations. NEVER run intl_utils/intl_utils:generate: it crashes on this repo's arb format at HEAD and rewrites `generated/l10n.dart` (+5k lines); if that file ever shows a diff, `git checkout --` it. Cross-check keys mechanically (script over arbs + mirrors) before committing.
+
+## Shell (realm chat) architecture
+
+- `lib/shell/app_shell.dart` owns ONE layout document: `ShellLayout` v4 (pane groups of tab strips, persisted `shell.views.v4`) + the `shell.rooms.docked` bool (default TRUE). Two projections of that one document: **chat-first** (docked rooms column; conversation ids `dm:`/`channel:`/`room:`/`conversations` route to group 0, view ids split right; closing group 0's last tab lands on the world face) and **workspace** (column hidden; byte-identical v4). The rail is THREE buttons: `rail.search` (⌘K palette), `rail.actors` (docks the column, carries the total unread badge), `rail.settings`.
+- `lib/shell/rooms_column.dart` — the docked column: DMs/Channels/Rooms sections over `RealmChatService` projections, per-row LaWorld unread badges, create/rename/close channel management, miniwindow context verb, macOS lights gutter when docked. It is chrome: never a tab, never a surface (DESIGN.md v3).
+- `lib/shell/surfaces.dart` — the surface registry (`conversations`, `browser`(+`:n` instances), `filesystem`, `people`, `boards`, `threads`, `terminal`, `inspector`, `documents`, `models`, `settings`); conversation and `doc:` ids resolve through it.
+- `lib/coding_agent/realm_chat/realm_chat_service.dart` — the verbs everything rides: `channels`/`createChannel`/`renameChannel`/`closeChannel` (close ARCHIVES, never destroys — the journal is authority), `ensureSeededChannel()` + `firstRunSeedEnabled` (first-entry `#general` seed, shell-called at boot, never inside `ensureReady`), work-thread spawn (ADR 0129 seals), grant verbs thin over host exports.
+- Widget keys ARE the agent's UI contract (DESIGN §6): `rail.*`, `rooms.*`, `view.tab.*`, `worldchat.*`, `board.*`; `test/shell/rail_sem_probe_test.dart` snapshots the semantics contract — update it with any chrome change.
+
+### Shell test lane (paid-for laws)
+
+- Hermetic worlds: `RealmWorld.open(rootOverride: tempDir)` + `RealmWorld.debugDeviceHome` pin in setUp, released in tearDown; services are REAL (final class — no fakes), injected into `AppShell(service:)`.
+- Real IO (registry/store) never completes under fake async: wrap drains in `tester.runAsync`, but NEVER with a live animation ticker (popup-menu exit, cursor blink) — settle (`pumpAndSettle`) before the runAsync window or the fake clock poisons (`elapsed < 0`).
+- Popup menus (`showMenu`) animate in: `pumpAndSettle` after the secondary tap before tapping menu items.
+- Dialogs own their controllers: a `TextEditingController` disposed when `showDialog` returns is used-after-dispose by the route's exit animation — the dialog's State must own it.
+- A focused composer holds a scheduler performance mode: unfocus + settle at the end of any test that leaves focus in a TextField.
+- `flutter_animate`'s mounted-then-disposed `Animate` leaves a zero-delay timer its dispose only ignores: tick the fake clock (`pump(1ms)`) after the mount frame.
+- The shell disposes ONLY the service it creates itself (DI-provided services belong to `GlobalStatesProvider`); an owned service's journal debounce timer must not outlive the tree.
 
 ## Architecture map
 

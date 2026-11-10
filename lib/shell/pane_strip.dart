@@ -13,6 +13,16 @@
 /// Safari compression on overflow, middle-click close, right-click for
 /// the window presentation (miniwindow), and the §2.3 contract: every
 /// control's Semantics name is its widget key.
+///
+/// Native drag (the workspace projection law, VSCode muscle memory):
+/// every tab is a `Draggable<String>` (its id) AND a `DragTarget<String>`
+/// — a drop on a tab inserts BEFORE it, a drop on the strip's trailing
+/// free space (`strip.drop.<group>`) appends, and a drop on the dragged
+/// tab itself is inert. Hover affordance is shape + accent (a 2px
+/// leading edge on the hovered tab, a dashed outline on the trailing
+/// zone), never color alone; the ghost chip (`drag.ghost.<id>`) is a
+/// floating layer — ONE soft shadow (DESIGN §3). The strip stays
+/// callback-driven: every drop leaves through [PaneStrip.onMoveTab].
 library;
 
 import 'package:flutter/gestures.dart' show kMiddleMouseButton;
@@ -36,6 +46,7 @@ final class PaneStrip extends StatelessWidget {
     required this.onFold,
     required this.onBack,
     required this.onForward,
+    required this.onMoveTab,
     required this.onTabContext,
     this.titleFor,
     this.leadingFor,
@@ -67,6 +78,11 @@ final class PaneStrip extends StatelessWidget {
 
   final VoidCallback onBack;
   final VoidCallback onForward;
+
+  /// A native drag landed: move [tabId] into [group] at [at] (null =
+  /// append to the strip's end). The shell translates it into
+  /// [ShellLayout.moveTabTo] — the strip never touches layout state.
+  final void Function(String tabId, int group, int? at) onMoveTab;
 
   /// Right-click (or long-press) on a tab: the shell's context menu.
   final void Function(String surfaceId, Offset globalPosition) onTabContext;
@@ -152,40 +168,53 @@ final class PaneStrip extends StatelessWidget {
                 ),
                 const SizedBox(width: 2),
                 Expanded(
-                  // A ListView, not a SingleChildScrollView: the SCV's
-                  // semantics subtree never assembles in a live desktop
-                  // app (measured: elements mounted, render objects
-                  // attached, `debugSemantics` null, full re-assembly
-                  // forced — still absent; ListView-backed lists keep
-                  // their nodes). Screen readers and agents need the
-                  // strip's tabs, so the strip rides the primitive whose
-                  // semantics provenly works.
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    children: [
-                      for (final id in tabs)
-                        _StripTab(
-                          key: ValueKey('view.tab.$id'),
-                          surfaceId: id,
-                          title: _titleOf(id),
-                          leading:
-                              leadingFor?.call(id) ??
-                              (surfaces[id]?.icon != null
-                                  ? Icon(
-                                      surfaces[id]!.icon,
-                                      size: 13,
-                                      color: context.shellMuted,
-                                    )
-                                  : null),
-                          focused: id == activeId,
-                          compact: compressed.contains(id),
-                          onTap: () => onSelect(id),
-                          onClose: () => onClose(id),
-                          onContext: onTabContext,
+                  // The strip's trailing free space is the APPEND drop
+                  // zone (`strip.drop.<group>`): the tabs ride their own
+                  // inner targets, and a tab dropped on ITSELF stays
+                  // inert (the tab's target swallows that drop, so a
+                  // grab in place never throws the tab to the end). A
+                  // hovered zone shows the dashed outline — shape +
+                  // accent, never color alone (the mockup law).
+                  child: DragTarget<String>(
+                    key: ValueKey('strip.drop.$group'),
+                    onWillAcceptWithDetails: (final details) =>
+                        layout.groupOf(details.data) >= 0,
+                    onAcceptWithDetails: (final details) =>
+                        onMoveTab(details.data, group, null),
+                    builder: (
+                      final context,
+                      final hovering,
+                      final rejected,
+                    ) =>
+                        CustomPaint(
+                          foregroundPainter: hovering.isEmpty
+                              ? null
+                              : _DashedOutline(context.la.accent),
+                          // A ListView, not a SingleChildScrollView:
+                          // the SCV's semantics subtree never assembles
+                          // in a live desktop app (measured: elements
+                          // mounted, render objects attached,
+                          // `debugSemantics` null, full re-assembly
+                          // forced — still absent; ListView-backed lists
+                          // keep their nodes). Screen readers and agents
+                          // need the strip's tabs, so the strip rides the
+                          // primitive whose semantics provenly works.
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            physics: const ClampingScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            children: [
+                              for (var i = 0; i < tabs.length; i++)
+                                _dragTab(
+                                  context,
+                                  tabs,
+                                  i,
+                                  activeId,
+                                  compressed,
+                                ),
+                            ],
+                          ),
                         ),
-                    ],
                   ),
                 ),
                 if (group == 0)
@@ -230,6 +259,180 @@ final class PaneStrip extends StatelessWidget {
     }
     return 0;
   }
+
+  /// ONE draggable tab (the native-drag law): the pill is the drag
+  /// source (its id) AND the insert-BEFORE drop target. The TARGET
+  /// rides OUTSIDE the draggable so it stays mounted mid-drag (the
+  /// draggable swaps its child for the dimmed pill): a drop back on the
+  /// tab's own slot is then swallowed inert, never falling through to
+  /// the strip's append zone. Will-accept is "an open tab, never a
+  /// ghost id"; the hover affordance is the 2px accent leading edge
+  /// (`drop.hover.<id>` is its testable state). The ghost chip rides
+  /// the overlay.
+  Widget _dragTab(
+    final BuildContext context,
+    final List<String> tabs,
+    final int index,
+    final String activeId,
+    final Set<String> compressed,
+  ) {
+    final id = tabs[index];
+    Widget pill() => _StripTab(
+      surfaceId: id,
+      title: _titleOf(id),
+      leading:
+          leadingFor?.call(id) ??
+          (surfaces[id]?.icon != null
+              ? Icon(surfaces[id]!.icon, size: 13, color: context.shellMuted)
+              : null),
+      focused: id == activeId,
+      compact: compressed.contains(id),
+      onTap: () => onSelect(id),
+      onClose: () => onClose(id),
+      onContext: onTabContext,
+    );
+    final leading =
+        leadingFor?.call(id) ??
+        (surfaces[id]?.icon != null
+            ? Icon(surfaces[id]!.icon, size: 13, color: context.shellMuted)
+            : null);
+    return DragTarget<String>(
+      onWillAcceptWithDetails: (final details) =>
+          layout.groupOf(details.data) >= 0,
+      onAcceptWithDetails: (final details) {
+        // The tab's own slot is inert: a grab released in place changes
+        // nothing (and must never throw the tab to the strip's end).
+        if (details.data == id) return;
+        onMoveTab(
+          details.data,
+          group,
+          _insertAt(tabs, details.data, index),
+        );
+      },
+      builder: (final context, final hovering, final rejected) => Stack(
+        children: [
+          Draggable<String>(
+            key: ValueKey('view.tab.$id'),
+            data: id,
+            dragAnchorStrategy: pointerDragAnchorStrategy,
+            feedback: _TabGhost(
+              key: ValueKey('drag.ghost.$id'),
+              title: _titleOf(id),
+              leading: leading,
+            ),
+            childWhenDragging: Opacity(opacity: 0.35, child: pill()),
+            child: pill(),
+          ),
+          if (hovering.isNotEmpty && hovering.first != id)
+            Positioned(
+              left: 0,
+              top: 5,
+              bottom: 5,
+              child: Container(
+                key: ValueKey('drop.hover.$id'),
+                width: 2,
+                decoration: BoxDecoration(
+                  color: context.la.accent,
+                  borderRadius: BorderRadius.circular(1),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// The index a drop BEFORE `tabs[hovered]` inserts at: a same-strip
+  /// drag counts the strip AFTER the dragged tab left its old slot, so
+  /// a drag from the left shifts the target down by one. A tab from
+  /// another group is not in [tabs] — the hovered index stands.
+  int _insertAt(
+    final List<String> tabs,
+    final String dragged,
+    final int hovered,
+  ) {
+    final from = tabs.indexOf(dragged);
+    return from >= 0 && from < hovered ? hovered - 1 : hovered;
+  }
+}
+
+/// The drag's ghost chip (the mockup's ghost tab): the tab's identity
+/// mark + title, styled like the strip's pills but elevated — a
+/// floating layer, so ONE soft shadow (DESIGN §3), never an elevation
+/// ladder.
+final class _TabGhost extends StatelessWidget {
+  const _TabGhost({required this.title, this.leading, super.key});
+
+  final String title;
+  final Widget? leading;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      height: ShellTokens.tabHeight,
+      constraints: const BoxConstraints(maxWidth: 176),
+      padding: const EdgeInsets.symmetric(horizontal: 9),
+      decoration: BoxDecoration(
+        color: context.la.surfaceRaised,
+        borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
+        boxShadow: shellFloatingShadow(context),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (leading != null) ...[leading!, const SizedBox(width: 6)],
+          Flexible(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelMedium?.copyWith(
+                fontSize: 12,
+                color: context.la.ink,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The trailing drop zone's hover affordance (the mockup's dashed
+/// edge): a dashed rounded outline in the accent — dashes carry the
+/// meaning by SHAPE, never by color alone.
+final class _DashedOutline extends CustomPainter {
+  const _DashedOutline(this.color);
+
+  final Color color;
+
+  @override
+  void paint(final Canvas canvas, final Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    final path = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTRB(2, 4, size.width - 2, size.height - 4),
+          const Radius.circular(ShellTokens.tabRadius),
+        ),
+      );
+    for (final metric in path.computeMetrics()) {
+      var distance = 0.0;
+      while (distance < metric.length) {
+        canvas.drawPath(metric.extractPath(distance, distance + 6), paint);
+        distance += 10;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(final _DashedOutline oldDelegate) =>
+      oldDelegate.color != color;
 }
 
 /// One tab pill (v2 law: 27px, radius 8, raised-pill active): identity
@@ -246,7 +449,6 @@ final class _StripTab extends StatefulWidget {
     required this.onClose,
     required this.onContext,
     this.leading,
-    super.key,
   });
 
   final String surfaceId;

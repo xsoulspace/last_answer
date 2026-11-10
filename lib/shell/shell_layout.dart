@@ -30,6 +30,11 @@
 /// - **Closing the last tab** of a group removes the group (when
 ///   another survives) or lands on the world face (the sole group —
 ///   conversation is the door).
+/// - **Dragging is native.** [moveTabTo] reorders a tab inside its
+///   strip or moves it into another group; [splitTabAt] drops a tab on
+///   a pane's dashed edge into a NEW group at that position. Both are
+///   pure and carry the emptied-source law above; a drag that lands on
+///   no target changes nothing (the view never invents a move).
 ///
 /// Persisted as `shell.views.v4`; [ShellLayout.fromJson] migrates the
 /// v3 per-view blob (the active view's strip first, then the rest in
@@ -414,6 +419,57 @@ final class ShellLayout {
     );
   }
 
+  /// The native-drag law (the workspace projection's muscle memory):
+  /// moves an open tab into [group] at index [at] (default: the end of
+  /// the strip), focus-preserving.
+  ///
+  /// - SAME group: a reorder — the existing [moveTab] law, so the
+  ///   focused id stays focused ([at] counts the strip AFTER the tab
+  ///   left its old slot, exactly like [moveTab]'s `to`).
+  /// - CROSS group: the tab LEAVES its source. An emptied source group
+  ///   is removed when another group survives (the active index shifts
+  ///   like [closeTab]); the sole group would refill with the world
+  ///   face, but the sole tab of the SOLE group has nowhere to go —
+  ///   every other index is out of range, so the move is a no-op
+  ///   (callers split with [splitTabAt] instead).
+  /// - The moved tab takes focus in the target and the target group
+  ///   becomes active; both MRUs stay coherent — the source forgets
+  ///   the id ([ViewState.without]), the target remembers it
+  ///   ([ViewState.inserted]).
+  /// - An unknown id or an out-of-range [group] changes nothing.
+  ShellLayout moveTabTo({
+    required final String tabId,
+    required final int group,
+    final int? at,
+  }) {
+    final source = groupOf(tabId);
+    if (source < 0 || group < 0 || group >= groups.length) return this;
+    if (group == source) {
+      final state = groups[source];
+      return moveTab(
+        source,
+        state.tabs.indexOf(tabId),
+        at ?? state.tabs.length,
+      );
+    }
+    final state = groups[source];
+    final next = List<ViewState>.of(groups);
+    var target = group;
+    if (state.tabs.length == 1) {
+      // The emptied-source law: another group survives (a cross-group
+      // move always has one), so the source is removed and every index
+      // after it shifts down.
+      next.removeAt(source);
+      if (target > source) target--;
+    } else {
+      next[source] = state.without(state.tabs.indexOf(tabId));
+    }
+    final into = next[target];
+    final insertAt = (at ?? into.tabs.length).clamp(0, into.tabs.length);
+    next[target] = into.inserted(tabId, insertAt);
+    return ShellLayout._(next, target);
+  }
+
   // ---- splits: pane groups (VS Code anatomy) ----
 
   /// The strip's split control: the active tab MOVES into a new group
@@ -439,6 +495,54 @@ final class ShellLayout {
       ..[g] = ViewState(tabs: rest, active: sourceActive)
       ..insert(g + 1, ViewState(tabs: <String>[tabId]));
     return ShellLayout._(next, g + 1);
+  }
+
+  /// The native-drag split law (the mockup's dashed pane edge): removes
+  /// [tabId] from its group and inserts a NEW group holding just that
+  /// tab at position [index] — at [index] + 1 when [after] — focused
+  /// and active.
+  ///
+  /// - The emptied source follows the [moveTabTo] law: removed when
+  ///   another group survives (later positions shift down), refilled
+  ///   with the conversations world face when it is the sole group.
+  /// - Refused — returns `this` — for the sole conversations tab of
+  ///   the sole group (the [split] refusal law: nothing honest to show
+  ///   beside itself), for an unknown [tabId], and for an [index]
+  ///   outside the group range.
+  ShellLayout splitTabAt({
+    required final String tabId,
+    required final int index,
+    required final bool after,
+  }) {
+    if (index < 0 || index >= groups.length) return this;
+    final source = groupOf(tabId);
+    if (source < 0) return this;
+    final state = groups[source];
+    if (groups.length == 1 &&
+        state.tabs.length == 1 &&
+        tabId == kConversationsSurfaceId) {
+      return this;
+    }
+    final rest = <String>[
+      for (final id in state.tabs)
+        if (id != tabId) id,
+    ];
+    final next = List<ViewState>.of(groups);
+    var at = after ? index + 1 : index;
+    if (rest.isEmpty) {
+      if (groups.length == 1) {
+        // The sole group never empties: the world face refills it (the
+        // front door), exactly like [split]'s lone-tab law.
+        next[source] = ViewState();
+      } else {
+        next.removeAt(source);
+        if (at > source) at--;
+      }
+    } else {
+      next[source] = state.without(state.tabs.indexOf(tabId));
+    }
+    next.insert(at, ViewState(tabs: <String>[tabId]));
+    return ShellLayout._(next, at);
   }
 
   /// The second pane's fold control: the group merges into its left

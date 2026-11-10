@@ -952,6 +952,22 @@ class _AppShellState extends State<AppShell> {
   /// new pane to the right (the mockup law).
   void _onSplit() => _onLayoutChanged(_layout.split());
 
+  /// A native drag landed on a strip: the tab reorders inside its group
+  /// or moves into another one ([ShellLayout.moveTabTo] decides — the
+  /// shell only commits). [at] null = append to the strip's end.
+  void _onMoveTab(final String tabId, final int group, final int? at) =>
+      _onLayoutChanged(
+        _layout.moveTabTo(tabId: tabId, group: group, at: at),
+      );
+
+  /// A native drag landed on a pane's dashed edge: the tab splits into
+  /// a NEW group at that position ([ShellLayout.splitTabAt] decides —
+  /// refusals are no-ops the commit swallows).
+  void _onSplitTab(final String tabId, final int index, final bool after) =>
+      _onLayoutChanged(
+        _layout.splitTabAt(tabId: tabId, index: index, after: after),
+      );
+
   /// A trailing pane's fold control: its tabs merge back left.
   void _onFold(final int group) => _onLayoutChanged(_layout.fold(group: group));
 
@@ -1431,21 +1447,58 @@ class _AppShellState extends State<AppShell> {
     ),
   );
 
-  /// The pane groups, left → right, hairline-separated (the split
-  /// anatomy: N groups = N strips, each owning its tabs).
+  /// The pane groups, left → right (the split anatomy: N groups = N
+  /// strips, each owning its tabs). The plain divider is retired: every
+  /// group column now carries its own 6px edge drop zones INSIDE its
+  /// left/right sides (the mockup's dashed edges), so a boundary is the
+  /// two adjacent zones' 12px seam — its hairline rides the right
+  /// zone's outer edge. A tab dropped on an edge splits into a NEW
+  /// group at that position; the outer window edges (left of group 0,
+  /// right of the last group) split before the first / after the last.
   Widget _panesRow(final SurfaceRegistry surfaces) {
     final groups = _layout.groups;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (var g = 0; g < groups.length; g++) ...[
-          if (g > 0)
-            VerticalDivider(width: 1, color: Theme.of(context).dividerColor),
-          Expanded(child: _paneColumn(g, surfaces)),
-        ],
+        for (var g = 0; g < groups.length; g++)
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _paneEdge(g, after: false),
+                Expanded(child: _paneColumn(g, surfaces)),
+                _paneEdge(g, after: true, rule: g < groups.length - 1),
+              ],
+            ),
+          ),
       ],
     );
   }
+
+  /// ONE pane edge's split drop zone (keys `pane.drop.<group>.left` /
+  /// `pane.drop.<group>.right`): accepts an open tab, splits it into a
+  /// new group beside this one, and shows the dashed accent line while
+  /// a drag hovers (shape + accent, never color alone). [rule] paints
+  /// the resting hairline seam between two groups (the right zone owns
+  /// it; outer window edges stay clean).
+  Widget _paneEdge(
+    final int group, {
+    required final bool after,
+    final bool rule = false,
+  }) => DragTarget<String>(
+    key: ValueKey('pane.drop.$group.${after ? 'right' : 'left'}'),
+    onWillAcceptWithDetails: (final details) =>
+        _layout.groupOf(details.data) >= 0,
+    onAcceptWithDetails: (final details) =>
+        _onSplitTab(details.data, group, after),
+    builder: (final context, final hovering, final rejected) => CustomPaint(
+      painter: _PaneEdgePainter(
+        accent: hovering.isEmpty ? null : context.la.accent,
+        rule: rule ? context.shellHairline : null,
+      ),
+      child: const SizedBox(width: 6),
+    ),
+  );
 
   /// ONE pane column (the chrome budget: one strip row, then content):
   /// the group's strip above its focused surface. The ACTIVE group's
@@ -1471,6 +1524,7 @@ class _AppShellState extends State<AppShell> {
           onFold: () => _onFold(group),
           onBack: () => _onBack(group),
           onForward: () => _onForward(group),
+          onMoveTab: _onMoveTab,
           onTabContext: _onTabContext,
           titleFor: (final id) =>
               conversationSurfaceTitle(
@@ -1524,6 +1578,50 @@ class _SplitIntent extends Intent {
 /// Phase 2 — the ⌘K command palette intent.
 class _PaletteIntent extends Intent {
   const _PaletteIntent();
+}
+
+/// The pane edge zone's paint: the resting hairline seam between two
+/// groups, and the DASHED accent line while a tab drag hovers (the
+/// mockup's split edge — dashes carry the meaning by shape, never by
+/// color alone).
+final class _PaneEdgePainter extends CustomPainter {
+  const _PaneEdgePainter({this.accent, this.rule});
+
+  /// Non-null while a drag hovers: the zone's dashed accent line.
+  final Color? accent;
+
+  /// Non-null on a group boundary: the 1px resting seam (the retired
+  /// divider's honest remains, centered in the 12px seam).
+  final Color? rule;
+
+  @override
+  void paint(final Canvas canvas, final Size size) {
+    if (rule != null) {
+      canvas.drawLine(
+        Offset(size.width, 0),
+        Offset(size.width, size.height),
+        Paint()
+          ..color = rule!
+          ..strokeWidth = 1,
+      );
+    }
+    if (accent != null) {
+      final paint = Paint()
+        ..color = accent!
+        ..strokeWidth = 2
+        ..strokeCap = StrokeCap.round;
+      final x = size.width / 2;
+      var y = 6.0;
+      while (y + 8 <= size.height - 6) {
+        canvas.drawLine(Offset(x, y), Offset(x, y + 8), paint);
+        y += 14;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(final _PaneEdgePainter oldDelegate) =>
+      oldDelegate.accent != accent || oldDelegate.rule != rule;
 }
 
 /// Re-selects the thread behind a conversation surface id through the

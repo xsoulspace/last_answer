@@ -70,6 +70,93 @@ void main() {
     });
   });
 
+  group('moveTabTo (the native-drag law)', () {
+    test('same-group reorder keeps the focused id focused; the default '
+        'at is the end of the strip', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('dm:weaver');
+      final reordered = layout.moveTabTo(tabId: 'dm:weaver', group: 0, at: 0);
+      expect(reordered.groups[0].tabs, [
+        'dm:weaver',
+        kConversationsSurfaceId,
+        'dm:scout',
+      ]);
+      expect(reordered.activeSurfaceId, 'dm:weaver');
+
+      final toEnd = layout.moveTabTo(tabId: kConversationsSurfaceId, group: 0);
+      expect(toEnd.groups[0].tabs, [
+        'dm:scout',
+        'dm:weaver',
+        kConversationsSurfaceId,
+      ]);
+      expect(toEnd.activeSurfaceId, 'dm:weaver');
+    });
+
+    test('a cross-group move: the tab LEAVES the source, takes focus in '
+        'the target and the target group becomes active', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('doc:42')
+          .split();
+      final moved = layout.moveTabTo(tabId: 'dm:scout', group: 1);
+      expect(moved.groups[0].tabs, [kConversationsSurfaceId]);
+      expect(moved.groups[1].tabs, ['doc:42', 'dm:scout']);
+      expect(moved.active, 1);
+      expect(moved.activeSurfaceId, 'dm:scout');
+    });
+
+    test('MRU coherence: the source forgets the moved tab, the target '
+        'remembers it', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('doc:42')
+          .split();
+      final moved = layout.moveTabTo(tabId: 'dm:scout', group: 1);
+      // The source's back can never resurrect the tab that left.
+      expect(moved.groups[0].canBack, isFalse);
+      // The target remembers: back from the landed tab steps to the
+      // group's previous focus.
+      expect(moved.back().activeSurfaceId, 'doc:42');
+    });
+
+    test('an emptied source is removed and the target index shifts down '
+        '(the closeTab law)', () {
+      final layout = ShellLayout(
+        groups: <ViewState>[
+          ViewState(tabs: const <String>['a']),
+          ViewState(tabs: const <String>['b']),
+          ViewState(tabs: const <String>['c']),
+        ],
+        active: 1,
+      );
+      final moved = layout.moveTabTo(tabId: 'a', group: 2);
+      expect(moved.groups, hasLength(2));
+      expect(moved.groups[0].tabs, <String>['b']);
+      expect(moved.groups[1].tabs, <String>['c', 'a']);
+      expect(moved.active, 1, reason: 'the target moved down with the '
+          'removed source');
+      expect(moved.activeSurfaceId, 'a');
+    });
+
+    test('the sole tab of the SOLE group has nowhere to go: every other '
+        'index is out of range (callers split instead)', () {
+      final sole = ShellLayout(
+        groups: <ViewState>[ViewState(tabs: const <String>['dm:scout'])],
+      );
+      expect(sole.moveTabTo(tabId: 'dm:scout', group: 1), sole);
+      final face = ShellLayout.defaultLayout();
+      expect(face.moveTabTo(tabId: kConversationsSurfaceId, group: 1), face);
+    });
+
+    test('an unknown id or an out-of-range group changes nothing', () {
+      final layout = ShellLayout.defaultLayout().openTab('dm:scout');
+      expect(layout.moveTabTo(tabId: 'ghost', group: 0), layout);
+      expect(layout.moveTabTo(tabId: 'dm:scout', group: 7), layout);
+      expect(layout.moveTabTo(tabId: 'dm:scout', group: -1), layout);
+    });
+  });
+
   group('splits: pane groups (VS Code anatomy)', () {
     test('split MOVES the active tab into a new group to the right', () {
       final layout = ShellLayout.defaultLayout()
@@ -130,6 +217,127 @@ void main() {
       expect(layout.groups, hasLength(2));
       expect(layout.active, 0);
       expect(layout.activeSurfaceId, 'dm:scout');
+    });
+  });
+
+  group('splitTabAt (the native-drag split law: the dashed pane edge)', () {
+    test('after: the new group lands to the RIGHT of index, focused and '
+        'active; the source keeps its rest with the neighbour focused', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('doc:42');
+      final split = layout.splitTabAt(
+        tabId: 'dm:scout',
+        index: 0,
+        after: true,
+      );
+      expect(split.groups, hasLength(2));
+      expect(split.groups[0].tabs, [kConversationsSurfaceId, 'doc:42']);
+      expect(split.groups[0].activeId, 'doc:42');
+      expect(split.groups[1].tabs, ['dm:scout']);
+      expect(split.active, 1);
+      expect(split.activeSurfaceId, 'dm:scout');
+      // The source's MRU forgot the tab that left (back skips it).
+      expect(split.groups[0].back().activeId, kConversationsSurfaceId);
+    });
+
+    test('before: index 0 puts the new group FIRST', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('doc:42');
+      final split = layout.splitTabAt(
+        tabId: 'doc:42',
+        index: 0,
+        after: false,
+      );
+      expect(split.groups[0].tabs, ['doc:42']);
+      expect(split.groups[1].tabs, [kConversationsSurfaceId, 'dm:scout']);
+      expect(split.groups[1].activeId, 'dm:scout');
+      expect(split.active, 0);
+    });
+
+    test('a middle drop: two groups become three, the dragged tab alone '
+        'in the middle', () {
+      final layout = ShellLayout(
+        groups: <ViewState>[
+          ViewState(tabs: const <String>['a', 'b']),
+          ViewState(tabs: const <String>['c']),
+        ],
+      );
+      final split = layout.splitTabAt(tabId: 'b', index: 0, after: true);
+      expect(split.groups, hasLength(3));
+      expect(split.groups[0].tabs, <String>['a']);
+      expect(split.groups[1].tabs, <String>['b']);
+      expect(split.groups[2].tabs, <String>['c']);
+      expect(split.active, 1);
+    });
+
+    test('the emptied SOLE group refills with the world face (the front '
+        'door, exactly like split)', () {
+      final layout = ShellLayout(
+        groups: <ViewState>[ViewState(tabs: const <String>['dm:scout'])],
+      );
+      final split = layout.splitTabAt(
+        tabId: 'dm:scout',
+        index: 0,
+        after: true,
+      );
+      expect(split.groups[0].tabs, [kConversationsSurfaceId]);
+      expect(split.groups[1].tabs, ['dm:scout']);
+      expect(split.active, 1);
+    });
+
+    test('an emptied source is REMOVED when another group survives, and '
+        'the insert position shifts down past the removal', () {
+      final layout = ShellLayout(
+        groups: <ViewState>[
+          ViewState(tabs: const <String>['a']),
+          ViewState(tabs: const <String>['b', 'c']),
+        ],
+      );
+      // The last group's RIGHT edge: the new group lands at the end.
+      final right = layout.splitTabAt(tabId: 'a', index: 1, after: true);
+      expect(right.groups, hasLength(2));
+      expect(right.groups[0].tabs, <String>['b', 'c']);
+      expect(right.groups[1].tabs, <String>['a']);
+      expect(right.active, 1);
+      // The last group's LEFT edge: the position shifts down with the
+      // removed source — the new group lands first.
+      final left = layout.splitTabAt(tabId: 'a', index: 1, after: false);
+      expect(left.groups, hasLength(2));
+      expect(left.groups[0].tabs, <String>['a']);
+      expect(left.groups[1].tabs, <String>['b', 'c']);
+      expect(left.active, 0);
+    });
+
+    test('the sole conversations tab of the sole group is refused '
+        '(nothing honest to show beside itself)', () {
+      final sole = ShellLayout.defaultLayout();
+      expect(
+        sole.splitTabAt(tabId: kConversationsSurfaceId, index: 0, after: true),
+        sole,
+      );
+      expect(
+        sole.splitTabAt(
+          tabId: kConversationsSurfaceId,
+          index: 0,
+          after: false,
+        ),
+        sole,
+      );
+    });
+
+    test('an out-of-range index or an unknown id is refused', () {
+      final layout = ShellLayout.defaultLayout().openTab('dm:scout');
+      expect(
+        layout.splitTabAt(tabId: 'dm:scout', index: 1, after: true),
+        layout,
+      );
+      expect(
+        layout.splitTabAt(tabId: 'dm:scout', index: -1, after: false),
+        layout,
+      );
+      expect(layout.splitTabAt(tabId: 'ghost', index: 0, after: true), layout);
     });
   });
 
@@ -271,7 +479,9 @@ void main() {
       expect(ShellLayout.fromJson('nope'), ShellLayout.defaultLayout());
       expect(ShellLayout.fromJson(null), ShellLayout.defaultLayout());
       expect(
-        ShellLayout.fromJson(const <String, Object?>{'v': 4, 'groups': <Object?>[]}),
+        ShellLayout.fromJson(
+          const <String, Object?>{'v': 4, 'groups': <Object?>[]},
+        ),
         ShellLayout.defaultLayout(),
       );
     });

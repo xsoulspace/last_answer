@@ -798,6 +798,39 @@ final class RealmChatService extends ChangeNotifier {
     }
   }
 
+  /// Sets (or clears, with null/blank) a channel's user-chosen icon
+  /// glyph — the registry row rides the journal like rename/archive,
+  /// and [channels] re-scans + notifies so rows and tab leadings follow.
+  /// False on an unknown [channelId] or a not-ready service.
+  Future<bool> setChannelIcon({
+    required final String channelId,
+    required final String? icon,
+  }) async {
+    final registry = _channelRegistry;
+    if (registry == null) return false;
+    final trimmed = icon?.trim();
+    try {
+      final set = await registry.setIcon(
+        channelId: channelId,
+        icon: (trimmed?.isEmpty ?? true) ? null : trimmed,
+      );
+      if (!set) return false;
+      await _refreshChannels();
+      notifyListeners();
+      return true;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Re-scans the durable work-thread links (the child-thread lane
+  /// writes them through the registry from the chat surface; the
+  /// projection follows here). Public so a widget-written link becomes
+  /// visible to [workThreadsOf] without waiting for the next spawn.
+  Future<void> refreshWorkThreads() => _refreshWorkThreads();
+
   /// The first-run seed channel name ([ensureSeededChannel]).
   static const String seededChannelName = 'general';
 
@@ -1235,11 +1268,17 @@ final class RealmChatService extends ChangeNotifier {
     unawaited(_refreshBeats());
   }
 
-  /// Says one beat as the human, addressed to the thread's other
-  /// participants (so every bot in the thread hears it). [replyTo]
-  /// anchors the beat to an earlier beat number (the 1g quote law —
-  /// the substrate carries it, ADR 0136's `replyingTo` vocabulary).
-  Future<void> say(String text, {final int? replyTo}) async {
+  /// Says one beat as the human. [addressedTo] narrows the addressees
+  /// (the mention grammar: `@name` tokens parsed by the composer); null
+  /// keeps the default — every other participant hears it, so a plain
+  /// sentence still wakes the whole room. [replyTo] anchors the beat to
+  /// an earlier beat number (the 1g quote law — the substrate carries
+  /// it, ADR 0136's `replyingTo` vocabulary).
+  Future<void> say(
+    String text, {
+    final int? replyTo,
+    final List<String>? addressedTo,
+  }) async {
     final world = _world;
     final human = _human;
     final threadId = _activeThreadId;
@@ -1260,7 +1299,7 @@ final class RealmChatService extends ChangeNotifier {
         actor: human,
         threadId: threadId,
         text: trimmed,
-        addressedTo: others,
+        addressedTo: addressedTo ?? others,
         replyTo: replyTo,
       );
       // The in-process shortcut: our own append dispatches immediately

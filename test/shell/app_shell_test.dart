@@ -19,6 +19,8 @@
 //   the service; the shell translates that into room tabs).
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -32,6 +34,7 @@ import 'package:lastanswer/settings/settings.dart';
 import 'package:lastanswer/shell/app_shell.dart';
 import 'package:lastanswer/shell/pane_strip.dart';
 import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/shell/window_drag.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
@@ -762,6 +765,82 @@ void main() {
       await _openViaPicker(tester, 'newtab.entry.threads', scroll: true);
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text('Shell threads lane'), findsOneWidget);
+    });
+  });
+
+  group('the lights gutter law v2 (the rail ALWAYS owns the macOS '
+      'gutter)', () {
+    testWidgets('macOS undocked: rail.lightsGutter rides the action bar '
+        'and no strip head reserves a lights zone', (final tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      // The reset rides a finally INSIDE the body: the binding's
+      // foundation-vars invariant runs before tearDowns.
+      try {
+        await _pumpShell(tester);
+        expect(
+          find.byKey(const ValueKey('rail.lightsGutter')),
+          findsOneWidget,
+        );
+        // The gutter rides INSIDE the rail (the leftmost chrome).
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey('shell.actionBar')),
+            matching: find.byKey(const ValueKey('rail.lightsGutter')),
+          ),
+          findsOneWidget,
+        );
+        // The retired v1 anatomy reserved a lights zone at the strip's
+        // head; the strip is gutter-free now.
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey('view.strip.0')),
+            matching: find.byKey(const ValueKey('rail.lightsGutter')),
+          ),
+          findsNothing,
+        );
+      } finally {
+        debugDefaultTargetPlatformOverride = null;
+      }
+    });
+
+    testWidgets('macOS docked: the rail STILL owns the gutter and the '
+        'rooms column head is gutter-free', (final tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      try {
+        SharedPreferences.setMockInitialValues({
+          'shell.rooms.docked': true,
+        });
+        await _pumpShell(tester);
+        expect(
+          find.byKey(const ValueKey('shell.roomsColumn')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const ValueKey('rail.lightsGutter')),
+          findsOneWidget,
+        );
+        // The column's head no longer carries the lights (the retired
+        // law's WindowDragRegion gutter is gone from the column).
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey('shell.roomsColumn')),
+            matching: find.byType(WindowDragRegion),
+          ),
+          findsNothing,
+        );
+      } finally {
+        debugDefaultTargetPlatformOverride = null;
+      }
+    });
+
+    testWidgets('off macOS the rail keeps its quiet 8px head (no '
+        'gutter)', (final tester) async {
+      await _pumpShell(tester);
+      expect(
+        find.byKey(const ValueKey('rail.lightsGutter')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('shell.actionBar')), findsOneWidget);
     });
   });
 }

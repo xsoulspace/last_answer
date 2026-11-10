@@ -31,15 +31,30 @@ import 'package:lastanswer/shell/shell_theme.dart';
 /// Widget keys are the agent's UI contract (DESIGN §6):
 /// `worldchat.composer`, `worldchat.send`, `worldchat.close`,
 /// `worldchat.context`, `worldchat.beat.<threadId>#<n>`, and — with the
-/// ADR 0129 work-order seam — `worldchat.scope.*` (the composer's
-/// workspace arm), `worldchat.workthread.<workThreadId>` (the parent
-/// room's card of a project-sealed child) and `worldchat.spawnRefusal`
-/// (the typed refusal with its one-tap grant).
+/// ADR 0129 work-order seam — `worldchat.scope.*` (the armed-scope chip;
+/// the arm itself rides the Wave E attach menu's Work order row),
+/// `worldchat.workthread.<workThreadId>` (the parent room's card of a
+/// project-sealed child) and `worldchat.spawnRefusal` (the typed refusal
+/// with its one-tap grant).
+///
+/// Wave E keys: `worldchat.attach` (the composer's ONE attach/mention
+/// menu — merged mentionables + the work-order lane + named absences),
+/// `worldchat.meta.{perms,members,info}` (the channel's meta row above
+/// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
+/// and the per-beat hover cluster
+/// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
 final class WorldChatSurface extends StatefulWidget {
-  const WorldChatSurface({this.service, super.key});
+  const WorldChatSurface({this.service, this.onTapActor, super.key});
 
   /// Test seam; production resolves through DI.
   final RealmChatService? service;
+
+  /// Wave E — where a tapped actor goes (the channel-members popover):
+  /// the host's decision (focus the people view, open the DM, …). Null
+  /// falls back to the shell's [ViewScope.onFocusActor] when the surface
+  /// is hosted inside the shell; outside it a tap only closes the
+  /// popover (honest absence, never a crash).
+  final void Function(String actorId)? onTapActor;
 
   @override
   State<WorldChatSurface> createState() => _WorldChatSurfaceState();
@@ -93,7 +108,11 @@ class _WorldChatSurfaceState extends State<WorldChatSurface> {
       }
       return const Center(child: UiCircularProgress());
     }
-    return _ConversationPane(service: service, composer: _composer);
+    return _ConversationPane(
+      service: service,
+      composer: _composer,
+      onTapActor: widget.onTapActor,
+    );
   }
 }
 
@@ -868,9 +887,14 @@ class _JumpToLatestPill extends StatelessWidget {
 }
 
 class _ConversationPane extends StatefulWidget {
-  const _ConversationPane({required this.service, required this.composer});
+  const _ConversationPane({
+    required this.service,
+    required this.composer,
+    this.onTapActor,
+  });
   final RealmChatService service;
   final TextEditingController composer;
+  final void Function(String actorId)? onTapActor;
 
   @override
   State<_ConversationPane> createState() => _ConversationPaneState();
@@ -901,6 +925,16 @@ class _ConversationPaneState extends State<_ConversationPane> {
 
   /// The beat the composer is replying to (1g: replyTo rides the say).
   Map<String, Object?>? _replyBeat;
+
+  // ---- Wave E: the `@` mention completion state ----
+  // Typing `@` at a word boundary opens the filtered overlay above the
+  // composer; [_mentionStart] is the index of the `@` the partial token
+  // began at, so picking a row replaces exactly `@partial` with the
+  // mention token. Null query = the overlay is closed.
+
+  /// The partial token after the live `@`, null = no completion open.
+  String? _mentionQuery;
+  int _mentionStart = -1;
 
   // ---- ADR 0129: the work-order scope (the owner's auto-spawn
   // decision — the human never manages threads; arming one workspace
@@ -944,6 +978,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
   void initState() {
     super.initState();
     _scroll.addListener(_onScroll);
+    // Wave E — the `@` completion rides the controller's own changes
+    // (typing, paste and programmatic inserts all flow through it).
+    widget.composer.addListener(_onComposerEdited);
   }
 
   void _onScroll() {
@@ -960,9 +997,13 @@ class _ConversationPaneState extends State<_ConversationPane> {
     return text.length <= max ? text : '${text.substring(0, max - 1)}…';
   }
 
-  /// A beat's right-click / long-press (1g): Reply anchors the
-  /// composer; Details opens the beat's durable facts (mono, journal
-  /// vocabulary — never localized, every value is a fact).
+  /// A beat's right-click / long-press (1g) — and the hover cluster's
+  /// menu button (Wave E): Reply anchors the composer; Details opens the
+  /// beat's durable facts (mono, journal vocabulary — never localized,
+  /// every value is a fact); New thread spawns the linked child. Edit
+  /// and Delete render as honest DISABLED rows: the journal is
+  /// append-only and both verbs are harness-owned — a named absence with
+  /// its gap tooltip, never a fake affordance.
   Future<void> _onBeatContext(
     final Map<String, Object?> beat,
     final Offset globalPosition,
@@ -971,6 +1012,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     final l10n = context.l10n;
     final overlay =
         Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final isOwn = beat['author'] == service.humanActorId;
     final choice = await showMenu<String>(
       context: context,
       position: RelativeRect.fromLTRB(
@@ -982,17 +1024,49 @@ class _ConversationPaneState extends State<_ConversationPane> {
       items: [
         PopupMenuItem<String>(
           value: 'reply',
+          key: const ValueKey('worldchat.ctx.reply'),
           child: Text(l10n.worldChatBeatReply),
         ),
+        // Edit exists only where it could ever apply (the human's own
+        // beat) — and stays disabled: the verb is the harness's.
+        if (isOwn)
+          PopupMenuItem<String>(
+            value: 'edit',
+            enabled: false,
+            key: const ValueKey('worldchat.ctx.edit'),
+            child: Tooltip(
+              message: l10n.worldChatEditGap,
+              child: Text(l10n.worldChatBeatEdit),
+            ),
+          ),
         PopupMenuItem<String>(
           value: 'details',
+          key: const ValueKey('worldchat.ctx.details'),
           child: Text(l10n.worldChatBeatDetails),
+        ),
+        PopupMenuItem<String>(
+          value: 'thread',
+          key: const ValueKey('worldchat.ctx.thread'),
+          child: Text(l10n.worldChatBeatNewThread),
+        ),
+        PopupMenuItem<String>(
+          value: 'delete',
+          enabled: false,
+          key: const ValueKey('worldchat.ctx.delete'),
+          child: Tooltip(
+            message: l10n.worldChatDeleteGap,
+            child: Text(l10n.worldChatBeatDelete),
+          ),
         ),
       ],
     );
     if (!mounted || choice == null) return;
     if (choice == 'reply') {
       setState(() => _replyBeat = beat);
+      return;
+    }
+    if (choice == 'thread') {
+      await _startChildThread(beat);
       return;
     }
     await showDialog<void>(
@@ -1016,7 +1090,15 @@ class _ConversationPaneState extends State<_ConversationPane> {
       return;
     }
     final replyTo = _replyBeat?['beat'] as int?;
-    await service.say(raw, replyTo: replyTo);
+    // Wave E — the mention parse runs on every plain send; a non-empty
+    // parse narrows the addressees (the mention grammar), null keeps
+    // the all-participants default inside the service.
+    final mentioned = _mentionedActors(raw);
+    await service.say(
+      raw,
+      replyTo: replyTo,
+      addressedTo: mentioned.isEmpty ? null : mentioned,
+    );
     if (!mounted) return;
     composer.clear();
     if (_replyBeat != null) setState(() => _replyBeat = null);
@@ -1122,6 +1204,290 @@ class _ConversationPaneState extends State<_ConversationPane> {
     });
   }
 
+  // ---- Wave E: mentions, the attach menu and the child-thread verb ----
+
+  /// The composer's caret (clamped; an invalid selection — a programmatic
+  /// edit or `enterText` — reads as the end of the text, the honest
+  /// fallback for "where the next word lands").
+  int _caretOffset(final String text) {
+    final selection = composer.selection;
+    if (selection.isValid && selection.extentOffset >= 0) {
+      return selection.extentOffset.clamp(0, text.length);
+    }
+    return text.length;
+  }
+
+  /// The `@` completion tracker: a word-boundary `@` with no space
+  /// between it and the caret opens the overlay with the partial token;
+  /// anything else closes it. Never invents a query the text does not
+  /// carry.
+  void _onComposerEdited() {
+    final text = composer.text;
+    final caret = _caretOffset(text);
+    final upto = text.substring(0, caret);
+    final at = upto.lastIndexOf('@');
+    if (at < 0) {
+      _closeMention();
+      return;
+    }
+    if (at > 0) {
+      final prev = upto[at - 1];
+      if (prev != ' ' && prev != '\n') {
+        _closeMention(); // an email-shaped token is not a mention
+        return;
+      }
+    }
+    final partial = upto.substring(at + 1);
+    if (partial.contains(' ') || partial.contains('\n')) {
+      _closeMention();
+      return;
+    }
+    if (_mentionQuery == partial && _mentionStart == at) return;
+    setState(() {
+      _mentionQuery = partial;
+      _mentionStart = at;
+    });
+  }
+
+  void _closeMention() {
+    if (_mentionQuery == null && _mentionStart == -1) return;
+    setState(() {
+      _mentionQuery = null;
+      _mentionStart = -1;
+    });
+  }
+
+  /// ONE merged list of everything this room can name (the attach menu
+  /// and the `@` overlay share it — one vocabulary, two doors): the
+  /// room's actors first, then the rest of the roster, the live
+  /// channels, the watchable rooms (never the room being viewed) and
+  /// the documents the registry page has ALREADY paged in. Documents are
+  /// a read-only projection here: the attach menu never triggers a
+  /// registry fetch, and a shell without [ProjectsNotifier] honestly
+  /// lists no docs (named absence, never a fake).
+  List<_Mentionable> _mentionables(final BuildContext context) {
+    final items = <_Mentionable>[];
+    final human = service.humanActorId;
+    final roster = service.roster;
+    final seenActors = <String>{};
+    void addActor(final String id) {
+      if (id == human || !seenActors.add(id)) return;
+      final name =
+          roster?.get(id)?.displayName ?? actorDisplayFallback(id);
+      if (name.isEmpty) return;
+      items.add(_Mentionable(kind: _MentionKind.actor, id: id, name: name));
+    }
+
+    final participants =
+        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+            .cast<String>();
+    for (final id in <String>[
+      ...participants,
+      for (final profile in roster?.all ?? const <ActorProfile>[])
+        profile.actorId,
+    ]) {
+      addActor(id);
+    }
+    for (final channel in service.channels) {
+      items.add(
+        _Mentionable(
+          kind: _MentionKind.channel,
+          id: channel.threadId,
+          name: channel.name,
+        ),
+      );
+    }
+    final activeId = service.activeThreadId;
+    for (final room in service.roomThreads) {
+      final id = '${room['threadId'] ?? ''}';
+      if (id.isEmpty || id == activeId) continue;
+      items.add(
+        _Mentionable(
+          kind: _MentionKind.room,
+          id: id,
+          name: '${room['topic'] ?? id}',
+        ),
+      );
+    }
+    ProjectsNotifier? projects;
+    try {
+      projects = context.read<ProjectsNotifier?>();
+    } on ProviderNotFoundException {
+      projects = null;
+    }
+    for (final project
+        in projects?.projectsPagedController.items ??
+            const <ProjectModel>[]) {
+      items.add(
+        _Mentionable(
+          kind: _MentionKind.doc,
+          id: project.id.value,
+          name: _docTitleOf(project),
+        ),
+      );
+    }
+    return items;
+  }
+
+  /// The registry project's human title (the Documents view's own
+  /// derivation, mirrored locally — importing view_documents.dart would
+  /// ride the project_view → world_chat_surface cycle).
+  String _docTitleOf(final ProjectModel project) => project.map(
+    idea: (final idea) => idea.title,
+    note: (final note) => note.note,
+    changelog: (final _) => 'changelog',
+    doc: (final doc) => doc.title,
+  );
+
+  List<_Mentionable> _filterMentionables(
+    final List<_Mentionable> items,
+    final String query,
+  ) {
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return items;
+    return [
+      for (final item in items)
+        if (item.name.toLowerCase().contains(q)) item,
+    ];
+  }
+
+  /// Inserts one mention token at the caret: a plain insertion for the
+  /// attach dialog's pick, or the replacement of the live `@partial`
+  /// token for the overlay's pick (the caret grammar of criterion 3 —
+  /// `@<displayName> ` with its trailing space).
+  void _insertToken(
+    final _Mentionable item, {
+    final bool replacePartial = false,
+  }) {
+    final text = composer.text;
+    final caret = _caretOffset(text);
+    final start = replacePartial && _mentionStart >= 0 && _mentionStart <= caret
+        ? _mentionStart
+        : caret;
+    final needsLeading =
+        start > 0 && text[start - 1] != ' ' && text[start - 1] != '\n';
+    final insert = '${needsLeading ? ' ' : ''}${item.token}';
+    composer.value = TextEditingValue(
+      text: text.replaceRange(start, caret, insert),
+      selection: TextSelection.collapsed(offset: start + insert.length),
+    );
+    setState(() {
+      _mentionQuery = null;
+      _mentionStart = -1;
+    });
+    _composerFocus.requestFocus();
+  }
+
+  /// Wave E — the attach button's ONE menu: a search dialog over the
+  /// merged mentionables plus the action rows. The ADR 0129 work-order
+  /// lane rides its own row and opens the EXISTING [_openScopePicker]
+  /// unchanged; Plugins and MCP servers are named-absent rows (the
+  /// honest disabled state, never a fake).
+  Future<void> _openAttachMenu() async {
+    final pick = await showDialog<_AttachPick>(
+      context: context,
+      builder: (final dialogContext) =>
+          _AttachDialog(items: _mentionables(dialogContext)),
+    );
+    if (!mounted || pick == null) return;
+    if (pick.workOrder) {
+      await _openScopePicker();
+      return;
+    }
+    final item = pick.item;
+    if (item != null) _insertToken(item);
+  }
+
+  /// Wave E — the send-time mention parse: `@<displayName>` tokens map
+  /// to actor ids against the CURRENT thread's participants and the
+  /// roster (longest names match first, so '@Worker Alpha' never loses
+  /// to '@Worker').
+  ///
+  /// HONEST GAP (reported, steward-routed): [RealmChatService.say]
+  /// addresses ALL other participants and exposes no `addressedTo`
+  /// parameter, so the parsed set cannot ride the beat today — the
+  /// service is outside this wave's boundary and is NOT changed. The
+  /// no-mention default is byte-for-byte today's behavior, and the
+  /// addressed chips keep rendering from the journal's own projection.
+  List<String> _mentionedActors(final String raw) {
+    final human = service.humanActorId;
+    final roster = service.roster;
+    final byName = <String, String>{};
+    void add(final String id, final String? name) {
+      if (id == human || name == null || name.isEmpty) return;
+      byName.putIfAbsent(name, () => id);
+    }
+
+    final participants =
+        (service.activeThread?['participants'] as List? ?? const <Object?>[])
+            .cast<String>();
+    for (final id in participants) {
+      add(id, roster?.get(id)?.displayName ?? actorDisplayFallback(id));
+    }
+    for (final profile in roster?.all ?? const <ActorProfile>[]) {
+      add(profile.actorId, profile.displayName);
+    }
+    final names = byName.keys.toList()
+      ..sort((final a, final b) => b.length.compareTo(a.length));
+    return [
+      for (final name in names)
+        if (raw.contains('@$name')) byName[name]!,
+    ];
+  }
+
+  /// Wave E — "new thread" from a beat: a realm-sealed child through the
+  /// EXISTING [RealmChatService.startThread] route (which selects the
+  /// child — the existing open path), durably linked in the LA-owned
+  /// `work_threads` registry under the ONE-LEVEL law: a child of a child
+  /// links to the ROOT, never a grandchild chain.
+  ///
+  /// HONEST GAPS (reported): the link's `projectRoot` is the empty
+  /// string — a conversational child carries no project seal and the
+  /// registry vocabulary has no "no project" value, so it is honestly
+  /// empty, never an invented root; and the service's `workThreads`
+  /// cache refreshes only inside its own spawn/start verbs, so the fresh
+  /// link becomes visible through [RealmChatService.workThreadsOf] after
+  /// the next spawn or restart (the durable row lands immediately).
+  Future<void> _startChildThread(final Map<String, Object?> beat) async {
+    final currentId = service.activeThreadId;
+    final world = service.world;
+    final human = service.humanActorId;
+    if (currentId == null || world == null || human == null) return;
+    // The ONE-LEVEL law: when the room being viewed is itself a linked
+    // child, the new link attaches to the ROOT parent.
+    var parentId = currentId;
+    for (final link in service.workThreads) {
+      if (link.workThreadId == currentId) {
+        parentId = link.parentThreadId;
+        break;
+      }
+    }
+    final others = [
+      for (final id
+          in (service.activeThread?['participants'] as List? ??
+                  const <Object?>[])
+              .cast<String>())
+        if (id != human) id,
+    ];
+    final text = _oneLine('${beat['text'] ?? ''}').trim();
+    final topic = text.isEmpty ? context.l10n.worldChatBeatNewThread : text;
+    await service.startThread(topic: topic, participants: others);
+    final childId = service.activeThreadId;
+    if (!mounted || childId == null || childId == currentId) return;
+    final registry = WorkThreadRegistry(store: world.store);
+    await registry.create(
+      workThreadId: childId,
+      parentThreadId: parentId,
+      // Conversational child — no project seal (honest empty, never an
+      // invented root).
+      projectRoot: '',
+      name: topic,
+      createdBy: human,
+    );
+    if (!mounted) return;
+    setState(() {});
+  }
+
   /// The one-tap grant + ONE automatic retry (the owner's
   /// everything-from-LA decision): [RealmChatService.grantAccess] runs
   /// the host's canonical `grantProjectAccess` with the VERIFY re-read,
@@ -1177,6 +1543,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
   @override
   void dispose() {
     _scopeStatusTimer?.cancel();
+    widget.composer.removeListener(_onComposerEdited);
     _scroll
       ..removeListener(_onScroll)
       ..dispose();
@@ -1416,6 +1783,19 @@ class _ConversationPaneState extends State<_ConversationPane> {
                                     'worldchat.quote.$threadId#$replyNum',
                                   ),
                             addressedChips: chips,
+                            beatSuffix: '$threadId#${beat['beat']}',
+                            // Wave F — the beat's display name is an
+                            // actor affordance too: same seam (and same
+                            // ViewScope fallback) as the members popover.
+                            onTapActor:
+                                widget.onTapActor ??
+                                ViewScope.of(context)?.onFocusActor,
+                            onReply: () => setState(() => _replyBeat = beat),
+                            onNewThread: () =>
+                                unawaited(_startChildThread(beat)),
+                            onMenu: (final position) => unawaited(
+                              _onBeatContext(beat, position, displayNameOf),
+                            ),
                           );
                           // The beat's context affordance (1g): a
                           // right-click / long-press opens Reply and
@@ -1559,6 +1939,29 @@ class _ConversationPaneState extends State<_ConversationPane> {
               ),
             ),
           ),
+        // Wave E — the channel's meta row: ONE quiet row of three icon
+        // buttons (permissions, members, info) above the composer,
+        // channel rooms ONLY (a DM's identity already lives in the
+        // header; a plain group thread has no registry facts to show).
+        if (channel != null)
+          _ChannelMetaRow(
+            service: service,
+            channel: channel,
+            participants: participants,
+            onTapActor:
+                widget.onTapActor ?? ViewScope.of(context)?.onFocusActor,
+          ),
+        // Wave E — the `@` completion overlay: anchored directly above
+        // the composer, filtered live by the partial token, one tap
+        // replaces `@partial` with the mention token.
+        if (_mentionQuery != null)
+          _MentionOverlay(
+            items: _filterMentionables(
+              _mentionables(context),
+              _mentionQuery!,
+            ),
+            onPick: (final item) => _insertToken(item, replacePartial: true),
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
           child: Container(
@@ -1572,23 +1975,25 @@ class _ConversationPaneState extends State<_ConversationPane> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // ADR 0129 — the scope arm: one tap opens the project
-                // picker (the human's grants ∪ the workspace folders);
-                // the armed chip above the composer names the scope and
-                // dismisses it. The accent icon is a second carrier,
-                // never the only one (the chip is the visible state).
+                // Wave E — the attach button REPLACES the bare scope
+                // toggle: ONE menu over the merged mentionables and the
+                // action rows (the ADR 0129 work-order lane keeps its
+                // own row and opens the unchanged picker; Plugins and
+                // MCP servers are named-absent rows). The armed scope
+                // still tints the icon as its second carrier — the chip
+                // above the composer remains the visible state.
                 IconButton(
-                  key: const ValueKey('worldchat.scope.toggle'),
-                  tooltip: l10n.worldChatScopeArm,
+                  key: const ValueKey('worldchat.attach'),
+                  tooltip: l10n.worldChatAttach,
                   visualDensity: VisualDensity.compact,
                   iconSize: 18,
                   icon: Icon(
-                    Icons.folder_outlined,
+                    Icons.add_circle_outline,
                     color: _armedScope != null
                         ? context.la.accent
                         : context.shellMuted,
                   ),
-                  onPressed: () => unawaited(_openScopePicker()),
+                  onPressed: () => unawaited(_openAttachMenu()),
                 ),
                 Expanded(
                   child: Semantics(
@@ -2173,16 +2578,28 @@ class _ActorCardState extends State<_ActorCard> {
 /// conversational facts the substrate already carries: the replyTo
 /// quote above the body and addressedTo chips beside the name (a
 /// proper subset only — addressing everyone is the default).
-class _MessageRow extends StatelessWidget {
+///
+/// Wave E — the hover texture (the _RoomsRow precedent): the pointer
+/// fills the row with [ShellColors.shellHover] and reveals the trailing
+/// action cluster: reply, edit (OWN beats only, and DISABLED — the
+/// journal is append-only and the verb is harness-owned; the tooltip
+/// names the gap, never a fake), new thread, and the menu button that
+/// opens the beat's extended context menu.
+class _MessageRow extends StatefulWidget {
   const _MessageRow({
     required this.profile,
     required this.isHuman,
     required this.text,
     required this.showHeader,
+    required this.beatSuffix,
     this.at,
     this.replyQuote,
     this.replyQuoteKey,
     this.addressedChips = const <({String id, String name})>[],
+    this.onTapActor,
+    this.onReply,
+    this.onNewThread,
+    this.onMenu,
     super.key,
   });
 
@@ -2194,6 +2611,34 @@ class _MessageRow extends StatelessWidget {
   final String? replyQuote;
   final Key? replyQuoteKey;
   final List<({String id, String name})> addressedChips;
+
+  /// `<threadId>#<beat>` — the hover cluster's key family (the beat
+  /// row's own suffix, so every action key is as unique as the beat).
+  final String beatSuffix;
+
+  /// Wave F — where a tapped display name goes (the actor's info
+  /// surface); null keeps the name inert (honest absence).
+  final void Function(String actorId)? onTapActor;
+  final VoidCallback? onReply;
+  final VoidCallback? onNewThread;
+  final void Function(Offset globalPosition)? onMenu;
+
+  @override
+  State<_MessageRow> createState() => _MessageRowState();
+}
+
+class _MessageRowState extends State<_MessageRow> {
+  bool _hovering = false;
+
+  ActorProfile get profile => widget.profile;
+  bool get isHuman => widget.isHuman;
+  String get text => widget.text;
+  bool get showHeader => widget.showHeader;
+  String? get at => widget.at;
+  String? get replyQuote => widget.replyQuote;
+  Key? get replyQuoteKey => widget.replyQuoteKey;
+  List<({String id, String name})> get addressedChips =>
+      widget.addressedChips;
 
   String _timeLabel(final BuildContext context) {
     final raw = at;
@@ -2240,6 +2685,70 @@ class _MessageRow extends StatelessWidget {
     );
   }
 
+  /// The hover-revealed trailing cluster: quiet compact icons on the
+  /// shell grammar. Edit renders ONLY for own beats and stays disabled
+  /// (the gap tooltip is the honesty); delete lives in the menu.
+  Widget _cluster(final BuildContext context) {
+    final l10n = context.l10n;
+    final suffix = widget.beatSuffix;
+    final muted = context.shellMuted;
+    Widget button({
+      required final Key key,
+      required final IconData icon,
+      required final String tooltip,
+      required final VoidCallback? onPressed,
+    }) => IconButton(
+      key: key,
+      visualDensity: VisualDensity.compact,
+      iconSize: 14,
+      constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+      padding: const EdgeInsets.all(4),
+      tooltip: tooltip,
+      icon: Icon(icon, color: muted),
+      onPressed: onPressed,
+    );
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          button(
+            key: ValueKey('worldchat.beat.reply.$suffix'),
+            icon: Icons.reply,
+            tooltip: l10n.worldChatBeatReply,
+            onPressed: widget.onReply,
+          ),
+          if (isHuman)
+            button(
+              key: ValueKey('worldchat.beat.edit.$suffix'),
+              icon: Icons.edit_outlined,
+              tooltip: l10n.worldChatEditGap,
+              onPressed: null,
+            ),
+          button(
+            key: ValueKey('worldchat.beat.thread.$suffix'),
+            icon: Icons.alt_route,
+            tooltip: l10n.worldChatBeatNewThread,
+            onPressed: widget.onNewThread,
+          ),
+          Builder(
+            builder: (final buttonContext) => button(
+              key: ValueKey('worldchat.beat.menu.$suffix'),
+              icon: Icons.more_horiz,
+              tooltip: l10n.worldChatBeatMenu,
+              onPressed: () {
+                final box = buttonContext.findRenderObject()! as RenderBox;
+                widget.onMenu?.call(
+                  box.localToGlobal(box.size.bottomRight(Offset.zero)),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
@@ -2249,56 +2758,89 @@ class _MessageRow extends StatelessWidget {
       padding: const EdgeInsets.only(left: ShellTokens.messageGutter),
       child: Text(text, style: theme.textTheme.bodyMedium),
     );
+    final Widget content;
     if (!showHeader) {
-      return Padding(
+      content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [if (replyQuote != null) _quote(context)!, body],
         ),
       );
-    }
-    final time = _timeLabel(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              ActorAvatar(profile: profile, size: ShellTokens.messageAvatar),
-              const SizedBox(width: 10),
-              Text(
-                profile.displayName,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: isHuman ? theme.colorScheme.primary : accent,
-                  fontWeight: FontWeight.w600,
+    } else {
+      final time = _timeLabel(context);
+      content = Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                ActorAvatar(
+                  profile: profile,
+                  size: ShellTokens.messageAvatar,
                 ),
-              ),
-              if (time.isNotEmpty) ...[
-                const SizedBox(width: 8),
-                Text(
-                  time,
-                  style: theme.textTheme.labelSmall?.copyWith(color: muted),
-                ),
-              ],
-              for (final chip in addressedChips) ...[
-                const SizedBox(width: 6),
-                Text(
-                  '@${chip.name}',
-                  key: ValueKey('worldchat.addressed.${chip.id}'),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: actorColor(chip.id),
-                    fontWeight: FontWeight.w500,
+                const SizedBox(width: 10),
+                // Wave F — the display name is an actor affordance: a
+                // tap opens the actor (info surface via the host's
+                // onTapActor seam; inert when the host gives none).
+                GestureDetector(
+                  key: ValueKey('worldchat.beat.actor.${profile.actorId}'),
+                  onTap: widget.onTapActor == null
+                      ? null
+                      : () => widget.onTapActor!.call(profile.actorId),
+                  child: Text(
+                    profile.displayName,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: isHuman ? theme.colorScheme.primary : accent,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
+                if (time.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  Text(
+                    time,
+                    style: theme.textTheme.labelSmall?.copyWith(color: muted),
+                  ),
+                ],
+                for (final chip in addressedChips) ...[
+                  const SizedBox(width: 6),
+                  Text(
+                    '@${chip.name}',
+                    key: ValueKey('worldchat.addressed.${chip.id}'),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: actorColor(chip.id),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ],
-            ],
-          ),
-          const SizedBox(height: 2),
-          if (replyQuote != null) _quote(context)!,
-          body,
-        ],
+            ),
+            const SizedBox(height: 2),
+            if (replyQuote != null) _quote(context)!,
+            body,
+          ],
+        ),
+      );
+    }
+    return MouseRegion(
+      onEnter: (final _) => setState(() => _hovering = true),
+      onExit: (final _) => setState(() => _hovering = false),
+      child: DecoratedBox(
+        decoration: _hovering
+            ? BoxDecoration(
+                color: context.shellHover,
+                borderRadius: BorderRadius.circular(ShellTokens.radius),
+              )
+            : const BoxDecoration(),
+        child: Stack(
+          children: [
+            content,
+            if (_hovering)
+              Positioned(right: 6, top: 0, child: _cluster(context)),
+          ],
+        ),
       ),
     );
   }
@@ -2519,9 +3061,13 @@ class _WorkThreadCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     // The kind word: the card's type never rides the
-                    // color or the icon alone (DESIGN a11y law).
+                    // color or the icon alone (DESIGN a11y law). A
+                    // conversational child thread carries no project
+                    // seal, so it says "thread", not "work thread".
                     Text(
-                      l10n.worldChatWorkThreadKind,
+                      link.projectRoot.isEmpty
+                          ? l10n.worldChatThreadKind
+                          : l10n.worldChatWorkThreadKind,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: context.shellMuted,
                       ),
@@ -2776,6 +3322,922 @@ class _SpawnRefusalCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---- Wave E: the attach/mention vocabulary and the channel meta row ----
+
+/// The merged mentionable list's kinds (the trailing kind word rides
+/// mono, journal vocabulary — never localized, every value is a fact).
+enum _MentionKind { actor, channel, room, doc }
+
+/// ONE nameable target of the attach menu and the `@` overlay (one
+/// vocabulary, two doors).
+final class _Mentionable {
+  const _Mentionable({
+    required this.kind,
+    required this.id,
+    required this.name,
+  });
+
+  final _MentionKind kind;
+  final String id;
+  final String name;
+
+  IconData get icon => switch (kind) {
+    _MentionKind.actor => Icons.person_outline,
+    _MentionKind.channel => Icons.tag,
+    _MentionKind.room => Icons.forum_outlined,
+    _MentionKind.doc => Icons.description_outlined,
+  };
+
+  /// What the row displays (channels keep the `#` grammar).
+  String get display => kind == _MentionKind.channel ? '#$name' : name;
+
+  /// The inserted token: criterion 3's `@<name> ` shape with its
+  /// trailing space; channels ride `#<name> `.
+  String get token => kind == _MentionKind.channel ? '#$name ' : '@$name ';
+}
+
+/// The attach dialog's answer: ONE picked mentionable, or the ADR 0129
+/// work-order lane (which opens the EXISTING scope picker unchanged).
+final class _AttachPick {
+  const _AttachPick.item(this.item) : workOrder = false;
+  const _AttachPick.workOrder() : item = null, workOrder = true;
+
+  final _Mentionable? item;
+  final bool workOrder;
+}
+
+/// One attach-menu row shared by the dialog and the overlay.
+class _MentionRow extends StatelessWidget {
+  const _MentionRow({required this.item, required this.onTap, super.key});
+
+  final _Mentionable item;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    child: InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(ShellTokens.radius),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        child: Row(
+          children: [
+            Icon(item.icon, size: 15, color: context.shellMuted),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                item.display,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: context.la.ink,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              item.kind.name,
+              style: LaTokens.mono(9.5, context.la.inkQuiet),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+/// The attach button's ONE menu (Wave E): a keyboard-friendly search
+/// dialog — autofocus field, one keystroke filters — over the merged
+/// mentionables, plus the action rows. The work-order row pops with the
+/// [_AttachPick.workOrder] answer and the pane opens the EXISTING scope
+/// picker (the ADR 0129 lane, unchanged). Plugins and MCP servers are
+/// honest DISABLED rows with the named absence trailing — never a fake.
+class _AttachDialog extends StatefulWidget {
+  const _AttachDialog({required this.items});
+
+  final List<_Mentionable> items;
+
+  @override
+  State<_AttachDialog> createState() => _AttachDialogState();
+}
+
+class _AttachDialogState extends State<_AttachDialog> {
+  // The dialog owns its controller (the shell test-lane law: a
+  // controller disposed when showDialog returns is used-after-dispose
+  // by the route's exit animation).
+  final TextEditingController _search = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final query = _query.trim().toLowerCase();
+    final filtered = query.isEmpty
+        ? widget.items
+        : [
+            for (final item in widget.items)
+              if (item.name.toLowerCase().contains(query)) item,
+          ];
+    return Dialog(
+      key: const ValueKey('worldchat.attach.dialog'),
+      backgroundColor: context.shellRaised,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        side: BorderSide(color: context.shellHairline),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420, maxHeight: 520),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                l10n.worldChatAttach,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                key: const ValueKey('worldchat.attach.search'),
+                controller: _search,
+                autofocus: true,
+                onChanged: (final value) => setState(() => _query = value),
+                style: theme.textTheme.bodySmall,
+                decoration: InputDecoration(
+                  hintText: l10n.worldChatAttachSearchHint,
+                  isDense: true,
+                  prefixIcon: const Icon(Icons.search, size: 16),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(ShellTokens.radius),
+                    borderSide: BorderSide(color: context.shellHairline),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Flexible(
+                child: filtered.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          l10n.worldChatNoMatches,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: context.shellMuted,
+                          ),
+                        ),
+                      )
+                    : ListView(
+                        key: const ValueKey('worldchat.attach.list'),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        children: [
+                          for (final item in filtered)
+                            _MentionRow(
+                              key: ValueKey(
+                                'worldchat.attach.${item.kind.name}.${item.id}',
+                              ),
+                              item: item,
+                              onTap: () => Navigator.of(
+                                context,
+                              ).pop(_AttachPick.item(item)),
+                            ),
+                        ],
+                      ),
+              ),
+              const SizedBox(height: 4),
+              Divider(height: 1, color: context.shellHairline),
+              _AttachActionRow(
+                key: const ValueKey('worldchat.attach.workOrder'),
+                icon: Icons.folder_outlined,
+                label: l10n.worldChatAttachWorkOrder,
+                onTap: () =>
+                    Navigator.of(context).pop(const _AttachPick.workOrder()),
+              ),
+              _AttachActionRow(
+                key: const ValueKey('worldchat.attach.plugins'),
+                icon: Icons.extension_outlined,
+                label: l10n.worldChatAttachPlugins,
+                note: l10n.worldChatAttachNoneYet,
+              ),
+              _AttachActionRow(
+                key: const ValueKey('worldchat.attach.mcp'),
+                icon: Icons.hub_outlined,
+                label: l10n.worldChatAttachMcpServers,
+                note: l10n.worldChatAttachNoneYet,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One attach-menu ACTION row: enabled rows pop an answer; the disabled
+/// rows carry the named absence as their trailing note (the honest
+/// disabled state — a row that says "none yet" is a fact, a row that
+/// hides is a lie).
+class _AttachActionRow extends StatelessWidget {
+  const _AttachActionRow({
+    required this.icon,
+    required this.label,
+    this.note,
+    this.onTap,
+    super.key,
+  });
+
+  final IconData icon;
+  final String label;
+  final String? note;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(final BuildContext context) {
+    final enabled = onTap != null;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(ShellTokens.radius),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 16,
+                color: enabled ? context.shellMuted : context.la.inkQuiet,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: enabled ? context.la.ink : context.la.inkQuiet,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              if (note != null)
+                Text(note!, style: LaTokens.mono(10, context.la.inkQuiet)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The `@` completion panel: anchored directly above the composer in
+/// the pane's own Column (no route, no animation — settle-clean in
+/// tests), filtered live by the partial token.
+class _MentionOverlay extends StatelessWidget {
+  const _MentionOverlay({required this.items, required this.onPick});
+
+  final List<_Mentionable> items;
+  final ValueChanged<_Mentionable> onPick;
+
+  @override
+  Widget build(final BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+    child: Container(
+      key: const ValueKey('worldchat.mentionOverlay'),
+      constraints: const BoxConstraints(maxHeight: 220),
+      decoration: BoxDecoration(
+        color: context.shellRaised,
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: Border.all(color: context.shellHairline),
+        boxShadow: shellFloatingShadow(context),
+      ),
+      child: items.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                context.l10n.worldChatNoMatches,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: context.shellMuted,
+                ),
+              ),
+            )
+          : ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              children: [
+                for (final item in items)
+                  _MentionRow(
+                    key: ValueKey(
+                      'worldchat.mention.${item.kind.name}.${item.id}',
+                    ),
+                    item: item,
+                    onTap: () => onPick(item),
+                  ),
+              ],
+            ),
+    ),
+  );
+}
+
+/// Wave E — the channel's meta row above the composer (channel rooms
+/// ONLY): permissions, members, info — three quiet icon buttons on the
+/// shell grammar, each opening its own durable-fact surface.
+class _ChannelMetaRow extends StatelessWidget {
+  const _ChannelMetaRow({
+    required this.service,
+    required this.channel,
+    required this.participants,
+    this.onTapActor,
+  });
+
+  final RealmChatService service;
+  final ChannelInfo channel;
+  final List<String> participants;
+  final void Function(String actorId)? onTapActor;
+
+  Future<void> _openPermissions(final BuildContext context) =>
+      showDialog<void>(
+        context: context,
+        builder: (final _) => _ChannelPermissionsDialog(
+          service: service,
+          memberIds: participants,
+        ),
+      );
+
+  Future<void> _openMembers(final BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (final dialogContext) => _ChannelMembersDialog(
+      service: service,
+      memberIds: participants,
+      onTapMember: (final actorId) {
+        Navigator.of(dialogContext).pop();
+        onTapActor?.call(actorId);
+      },
+    ),
+  );
+
+  Future<void> _openInfo(final BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (final _) =>
+        _ChannelInfoDialog(service: service, channel: channel),
+  );
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 6, 10, 0),
+      child: Row(
+        children: [
+          IconButton(
+            key: const ValueKey('worldchat.meta.perms'),
+            tooltip: l10n.worldChatPermsTooltip,
+            visualDensity: VisualDensity.compact,
+            iconSize: 15,
+            icon: Icon(Icons.lock_outline, color: context.shellMuted),
+            onPressed: () => unawaited(_openPermissions(context)),
+          ),
+          IconButton(
+            key: const ValueKey('worldchat.meta.members'),
+            tooltip: l10n.worldChatMembersTooltip,
+            visualDensity: VisualDensity.compact,
+            iconSize: 15,
+            icon: Icon(Icons.group_outlined, color: context.shellMuted),
+            onPressed: () => unawaited(_openMembers(context)),
+          ),
+          IconButton(
+            key: const ValueKey('worldchat.meta.info'),
+            tooltip: l10n.worldChatInfoTooltip,
+            visualDensity: VisualDensity.compact,
+            iconSize: 15,
+            icon: Icon(Icons.info_outline, color: context.shellMuted),
+            onPressed: () => unawaited(_openInfo(context)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The channel's permissions dialog (the view_people grant-row pattern
+/// over the service's own verbs): every member's durable grant set
+/// rendered verbatim (the host's projection — ink is data, paths are
+/// facts), plus the realm's pending access requests with the one-tap
+/// approve ([RealmChatService.grantAccess], whose VERIFY re-read is the
+/// honest outcome). Calm chrome: mono rows, no ceremony.
+class _ChannelPermissionsDialog extends StatefulWidget {
+  const _ChannelPermissionsDialog({
+    required this.service,
+    required this.memberIds,
+  });
+
+  final RealmChatService service;
+  final List<String> memberIds;
+
+  @override
+  State<_ChannelPermissionsDialog> createState() =>
+      _ChannelPermissionsDialogState();
+}
+
+class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
+  Map<String, List<String>> _grants = const <String, List<String>>{};
+  List<Map<String, Object?>> _pending = const <Map<String, Object?>>[];
+  var _loading = true;
+  var _busy = false;
+
+  /// The last action's honest outcome line (the host's own message,
+  /// verbatim — never a paraphrase, never a guess).
+  String? _outcome;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_reload());
+  }
+
+  Future<void> _reload() async {
+    final grants = <String, List<String>>{};
+    var pending = const <Map<String, Object?>>[];
+    try {
+      for (final id in widget.memberIds) {
+        grants[id] = await widget.service.listGrants(id);
+      }
+      pending = await widget.service.pendingAccessRequests();
+    } on Object catch (error) {
+      // An unreadable ledger keeps the quiet state; the outcome line
+      // names the failure honestly.
+      _outcome = '$error';
+    }
+    if (!mounted) return;
+    setState(() {
+      _grants = grants;
+      _pending = pending;
+      _loading = false;
+    });
+  }
+
+  Future<void> _approve(final Map<String, Object?> row) async {
+    final actor = '${row['actorId'] ?? ''}';
+    final project = '${row['projectId'] ?? ''}';
+    if (actor.isEmpty || project.isEmpty) return;
+    setState(() => _busy = true);
+    final grant = await widget.service.grantAccess(actor, project);
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = grant.message;
+    });
+    await _reload();
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final service = widget.service;
+    String nameOf(final String id) =>
+        service.roster?.get(id)?.displayName ?? actorDisplayFallback(id);
+    return Dialog(
+      key: const ValueKey('worldchat.meta.perms.dialog'),
+      backgroundColor: context.shellRaised,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        side: BorderSide(color: context.shellHairline),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 460, maxHeight: 520),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          child: _loading
+              ? const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Center(child: UiCircularProgress()),
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      l10n.worldChatPermsTitle,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Flexible(
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        children: [
+                          for (final id in widget.memberIds)
+                            Padding(
+                              key: ValueKey('worldchat.meta.perms.grants.$id'),
+                              padding: const EdgeInsets.symmetric(vertical: 3),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    child: Text(
+                                      nameOf(id),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.textTheme.bodySmall,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      (_grants[id] ?? const <String>[])
+                                          .isEmpty
+                                          ? '—'
+                                          : (_grants[id]!).join('\n'),
+                                      style: LaTokens.mono(
+                                        10.5,
+                                        context.la.ink,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (_pending.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              'pending',
+                              style: LaTokens.mono(10.5, context.la.inkMuted),
+                            ),
+                            for (var i = 0; i < _pending.length; i++)
+                              Padding(
+                                key: ValueKey(
+                                  'worldchat.meta.perms.pending.$i',
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 3,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        '${nameOf(
+                                          '${_pending[i]['actorId'] ?? ''}',
+                                        )} → ${_pending[i]['projectId'] ?? ''}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: LaTokens.mono(
+                                          10.5,
+                                          context.la.ink,
+                                        ),
+                                      ),
+                                    ),
+                                    _StripButton(
+                                      keyName:
+                                          'worldchat.meta.perms.approve.$i',
+                                      label: l10n.contextApprove,
+                                      onTap: _busy
+                                          ? () {}
+                                          : () => unawaited(
+                                              _approve(_pending[i]),
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    if (_outcome != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          _outcome!,
+                          key: const ValueKey('worldchat.meta.perms.outcome'),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: LaTokens.mono(10, context.la.danger),
+                        ),
+                      ),
+                    const SizedBox(height: 6),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        key: const ValueKey('worldchat.meta.perms.close'),
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(l10n.worldChatCancel),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The channel's members popover: the participant list as a small
+/// top-right panel; one tap closes it and hands the actor id to the
+/// host's [WorldChatSurface.onTapActor] callback.
+class _ChannelMembersDialog extends StatelessWidget {
+  const _ChannelMembersDialog({
+    required this.service,
+    required this.memberIds,
+    required this.onTapMember,
+  });
+
+  final RealmChatService service;
+  final List<String> memberIds;
+  final ValueChanged<String> onTapMember;
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = Theme.of(context);
+    return Dialog(
+      key: const ValueKey('worldchat.meta.members.popover'),
+      backgroundColor: context.shellRaised,
+      alignment: Alignment.topRight,
+      insetPadding: const EdgeInsets.fromLTRB(24, 110, 24, 24),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        side: BorderSide(color: context.shellHairline),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 260, maxHeight: 360),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            children: [
+              for (final id in memberIds)
+                InkWell(
+                  key: ValueKey('worldchat.meta.member.$id'),
+                  onTap: () => onTapMember(id),
+                  borderRadius: BorderRadius.circular(ShellTokens.radius),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
+                    child: Row(
+                      children: [
+                        ActorAvatar(
+                          profile:
+                              service.roster?.get(id) ??
+                              ActorProfile(
+                                actorId: id,
+                                displayName: actorDisplayFallback(id),
+                              ),
+                          size: 18,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            service.roster?.get(id)?.displayName ??
+                                actorDisplayFallback(id),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The channel's info dialog: the registry's durable facts (name,
+/// member count, thread id — mono, journal vocabulary) plus the two
+/// channel-management verbs the service ALREADY exposes
+/// ([RealmChatService.renameChannel], [RealmChatService.closeChannel] —
+/// closing ARCHIVES, never destroys). The change-icon row is honest-
+/// disabled: the verb arrives with Wave D's rooms-column menu, and the
+/// tooltip names that gap instead of faking the affordance.
+class _ChannelInfoDialog extends StatefulWidget {
+  const _ChannelInfoDialog({required this.service, required this.channel});
+
+  final RealmChatService service;
+  final ChannelInfo channel;
+
+  @override
+  State<_ChannelInfoDialog> createState() => _ChannelInfoDialogState();
+}
+
+class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
+  // The dialog owns its controller (the shell test-lane law).
+  late final TextEditingController _rename = TextEditingController(
+    text: widget.channel.name,
+  );
+  var _busy = false;
+  String? _outcome;
+
+  @override
+  void dispose() {
+    _rename.dispose();
+    super.dispose();
+  }
+
+  Future<void> _applyRename() async {
+    setState(() => _busy = true);
+    final renamed = await widget.service.renameChannel(
+      widget.channel.channelId,
+      _rename.text,
+    );
+    if (!mounted) return;
+    if (renamed) {
+      Navigator.of(context).pop();
+      return;
+    }
+    // The service's own named refusal, verbatim (channel_name_empty,
+    // channel_name_taken, …) — never a paraphrase.
+    setState(() {
+      _busy = false;
+      _outcome = widget.service.error ?? 'rename_refused';
+    });
+  }
+
+  Future<void> _archive() async {
+    setState(() => _busy = true);
+    final closed = await widget.service.closeChannel(
+      widget.channel.channelId,
+    );
+    if (!mounted) return;
+    if (closed) {
+      Navigator.of(context).pop();
+      return;
+    }
+    setState(() {
+      _busy = false;
+      _outcome = widget.service.error ?? 'close_refused';
+    });
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final channel = widget.channel;
+    final facts = <(String, String)>[
+      ('name', channel.name),
+      ('members', l10n.worldChatMembers(channel.memberIds.length)),
+      ('thread', channel.threadId),
+    ];
+    return Dialog(
+      key: const ValueKey('worldchat.meta.info.dialog'),
+      backgroundColor: context.shellRaised,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+        side: BorderSide(color: context.shellHairline),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                '#${channel.name}',
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 10),
+              for (final (label, value) in facts)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 76,
+                        child: Text(
+                          label,
+                          style: LaTokens.mono(10.5, context.la.inkMuted),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          value,
+                          style: LaTokens.mono(10.5, context.la.ink),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      key: const ValueKey('worldchat.meta.info.rename.field'),
+                      controller: _rename,
+                      enabled: !_busy,
+                      style: theme.textTheme.bodySmall,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        hintText: l10n.worldChatChannelNameHint,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            ShellTokens.radius,
+                          ),
+                          borderSide: BorderSide(color: context.shellHairline),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  _StripButton(
+                    keyName: 'worldchat.meta.info.rename',
+                    label: l10n.roomsRenameAction,
+                    onTap: _busy ? () {} : () => unawaited(_applyRename()),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              // The honest-disabled icon row: the gap tooltip names
+              // WHERE the verb arrives (Wave D's column menu).
+              Tooltip(
+                message: l10n.worldChatIconViaColumn,
+                child: Semantics(
+                  enabled: false,
+                  child: Container(
+                    key: const ValueKey('worldchat.meta.info.icon'),
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.image_outlined,
+                          size: 15,
+                          color: context.la.inkQuiet,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.worldChatChangeIcon,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: context.la.inkQuiet,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (_outcome != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    _outcome!,
+                    key: const ValueKey('worldchat.meta.info.outcome'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: LaTokens.mono(10, context.la.danger),
+                  ),
+                ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _StripButton(
+                    keyName: 'worldchat.meta.info.archive',
+                    label: l10n.roomsCloseChannel,
+                    danger: true,
+                    onTap: _busy ? () {} : () => unawaited(_archive()),
+                  ),
+                  const SizedBox(width: 6),
+                  TextButton(
+                    key: const ValueKey('worldchat.meta.info.close'),
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.worldChatCancel),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

@@ -26,6 +26,7 @@ final class ChannelInfo {
     required this.memberIds,
     required this.createdAt,
     this.archived = false,
+    this.icon,
   });
 
   factory ChannelInfo.fromRecord(final Map<String, Object?> record) =>
@@ -39,6 +40,10 @@ final class ChannelInfo {
         // no `archived` key, and a non-bool value is not a truth — both
         // read as the live default.
         archived: record['archived'] == true,
+        // Tolerant decode (the `archived` pattern): rows from before the
+        // field existed carry no `icon` key, and a non-string value is
+        // not an icon — both read as null (the default '#' mark).
+        icon: record['icon'] is String ? record['icon']! as String : null,
       );
 
   /// `channel-` + 12 hex chars (Random.secure) — the same minting style
@@ -63,6 +68,12 @@ final class ChannelInfo {
   /// journal is authority); the channel just leaves the live lists.
   final bool archived;
 
+  /// The user-settable identity mark: a curated glyph name ('star',
+  /// 'bug', …) or a single character/emoji. Null (or a legacy row
+  /// without the key) renders the default '#' mark — the registry is
+  /// dumb, the curation lives in the shell's glyph vocabulary.
+  final String? icon;
+
   Map<String, Object?> toRecord() => <String, Object?>{
     'channelId': channelId,
     'name': name,
@@ -70,6 +81,7 @@ final class ChannelInfo {
     'memberIds': List<String>.of(memberIds),
     'createdAt': createdAt,
     'archived': archived,
+    'icon': icon,
   };
 
   @override
@@ -104,6 +116,7 @@ final class ChannelRegistry {
         ..sort(),
       'createdAt': DateTime.now().toUtc().toIso8601String(),
       'archived': false,
+      'icon': null,
     };
     await _store.transact(
       (final tx) => tx.put(_collection, record['channelId']! as String, record),
@@ -151,6 +164,24 @@ final class ChannelRegistry {
     final record = await _store.read(_collection, channelId);
     if (record == null) return false;
     final next = <String, Object?>{...record, 'archived': true};
+    await _store.transact(
+      (final tx) => tx.put(_collection, channelId, next),
+    );
+    return true;
+  }
+
+  /// Rewrites one channel's icon, preserving every other field
+  /// verbatim (the [rename]/[archive] read→spread→put pattern). A null
+  /// [icon] clears it — the row renders the default '#' mark again.
+  /// False on an unknown [channelId]. The registry is dumb: the glyph
+  /// vocabulary and any validation live above it.
+  Future<bool> setIcon({
+    required final String channelId,
+    required final String? icon,
+  }) async {
+    final record = await _store.read(_collection, channelId);
+    if (record == null) return false;
+    final next = <String, Object?>{...record, 'icon': icon};
     await _store.transact(
       (final tx) => tx.put(_collection, channelId, next),
     );

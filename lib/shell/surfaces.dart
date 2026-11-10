@@ -44,6 +44,7 @@ import 'package:lastanswer/coding_agent/world_inspector/world_binding_store.dart
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/settings.dart';
+import 'package:lastanswer/shell/actor_info_surface.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_documents.dart';
@@ -247,6 +248,42 @@ SurfaceSpec? documentSurfaceSpec(final String surfaceId) {
   );
 }
 
+/// Whether [surfaceId] stands for an ACTOR-INFO tab (Wave F): an
+/// actor's identity, grants and memberships as a readable/writable
+/// surface. Actor info is INFORMATION, not a conversation — it routes
+/// like a view id, never into the conversation group.
+bool isActorSurfaceId(final String surfaceId) =>
+    surfaceId.startsWith('actor:');
+
+/// The surface id of one actor's info tab (the `actor:` family's mint).
+String actorSurfaceId(final String actorId) => 'actor:$actorId';
+
+/// The spec for an `actor:<id>` tab (Wave F) — the [documentSurfaceSpec]
+/// shape exactly: the title reads the roster's displayName (falling back
+/// to [actorDisplayFallback] — honest absence, never a blank tab), the
+/// body is the actor-info surface over the live service. [service] is
+/// the tab's state source; [onOpenConversation] routes a membership-row
+/// tap back into the shell's conversation grammar (`channel:<id>`).
+SurfaceSpec? actorSurfaceSpec(
+  final String surfaceId, {
+  required final RealmChatService service,
+  final void Function(String surfaceId)? onOpenConversation,
+}) {
+  if (!isActorSurfaceId(surfaceId)) return null;
+  final actorId = surfaceId.substring('actor:'.length);
+  final profile = service.roster?.get(actorId);
+  return SurfaceSpec(
+    id: surfaceId,
+    title: profile?.displayName ?? actorDisplayFallback(actorId),
+    builder: (final _) => ActorInfoSurface(
+      service: service,
+      actorId: actorId,
+      onOpenConversation: onOpenConversation,
+    ),
+    icon: Icons.person_outline,
+  );
+}
+
 /// The spec for a conversation surface id (`dm:`/`channel:`/`room:`):
 /// the ONE conversation slot's [WorldChatSurface]. Null for anything
 /// that is neither a static surface nor a conversation slot id
@@ -265,16 +302,22 @@ SurfaceSpec? conversationSurfaceSpec(
 
 /// Builds the shell's surface registry against [context] (for l10n and
 /// DI). Pass [service] to pin the conversation service (tests); when
-/// null the registry resolves it through the provider tree.
+/// null the registry resolves it through the provider tree. [onTapActor]
+/// is the shell's "show me this actor" seam (Wave F): the conversation
+/// surface's beat names / members popover and the people view's rows
+/// route through it — the shell decides where the actor lands (its own
+/// `actor:<id>` info tab), never the surfaces themselves.
 SurfaceRegistry buildShellSurfaces(
   final BuildContext context, {
   final RealmChatService? service,
+  final void Function(String actorId)? onTapActor,
 }) => {
   kConversationsSurfaceId: SurfaceSpec(
     id: kConversationsSurfaceId,
     title: context.l10n.worldChatConversations,
     builder: (final tabContext) => WorldChatSurface(
       service: service ?? tabContext.read<RealmChatService?>(),
+      onTapActor: onTapActor,
     ),
     icon: Icons.forum_outlined,
   ),
@@ -317,6 +360,10 @@ SurfaceRegistry buildShellSurfaces(
       return PeopleView(
         service: peopleService,
         focus: tabContext.read<PeopleFocus?>(),
+        // Wave F owner law: a row tap opens the actor's INFO tab in a
+        // split (the shell's routing), not the in-view focus swap; the
+        // PeopleFocus seam stays for hermetic/other callers.
+        onOpenActor: onTapActor,
       );
     },
     icon: Icons.people_outline,

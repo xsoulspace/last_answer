@@ -2643,6 +2643,151 @@ abstract class S {
   /// **'Rename'**
   String get roomsRenameAction;
 
+  /// No description provided for @roomsExplainDms.
+  ///
+  /// In en, this message translates to:
+  /// **Direct messages — private threads with one actor**
+  String get roomsExplainDms;
+  /// No description provided for @roomsExplainChannels.
+  ///
+  /// In en, this message translates to:
+  /// **Channels — named group rooms with shared history**
+  String get roomsExplainChannels;
+  /// No description provided for @roomsExplainRooms.
+  ///
+  /// In en, this message translates to:
+  /// **Rooms — watchable actor threads; join by addressing**
+  String get roomsExplainRooms;
+  /// No description provided for @roomsKindChannel.
+  ///
+  /// In en, this message translates to:
+  /// **Channel**
+  String get roomsKindChannel;
+  /// No description provided for @roomsKindRoom.
+  ///
+  /// In en, this message translates to:
+  /// **Room**
+  String get roomsKindRoom;
+  /// No description provided for @roomsSetIconAction.
+  ///
+  /// In en, this message translates to:
+  /// **Change icon…**
+  String get roomsSetIconAction;
+  /// No description provided for @roomsSetIconTitle.
+  ///
+  /// In en, this message translates to:
+  /// **Change channel icon**
+  String get roomsSetIconTitle;
+  /// No description provided for @roomsIconClear.
+  ///
+  /// In en, this message translates to:
+  /// **Clear icon**
+  String get roomsIconClear;
+  /// No description provided for @roomsIconCustomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **Or one character / emoji**
+  String get roomsIconCustomLabel;
+  /// No description provided for @worldChatAttach.
+  ///
+  /// In en, this message translates to:
+  /// **Attach or mention**
+  String get worldChatAttach;
+  /// No description provided for @worldChatAttachSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **Search people, channels, rooms, docs…**
+  String get worldChatAttachSearchHint;
+  /// No description provided for @worldChatAttachWorkOrder.
+  ///
+  /// In en, this message translates to:
+  /// **Work order…**
+  String get worldChatAttachWorkOrder;
+  /// No description provided for @worldChatAttachPlugins.
+  ///
+  /// In en, this message translates to:
+  /// **Plugins**
+  String get worldChatAttachPlugins;
+  /// No description provided for @worldChatAttachMcpServers.
+  ///
+  /// In en, this message translates to:
+  /// **MCP servers**
+  String get worldChatAttachMcpServers;
+  /// No description provided for @worldChatAttachNoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **none yet**
+  String get worldChatAttachNoneYet;
+  /// No description provided for @worldChatNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **No matches**
+  String get worldChatNoMatches;
+  /// No description provided for @worldChatPermsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **Permissions**
+  String get worldChatPermsTooltip;
+  /// No description provided for @worldChatPermsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **Channel permissions**
+  String get worldChatPermsTitle;
+  /// No description provided for @worldChatMembersTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **Members**
+  String get worldChatMembersTooltip;
+  /// No description provided for @worldChatInfoTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **Channel info**
+  String get worldChatInfoTooltip;
+  /// No description provided for @worldChatChangeIcon.
+  ///
+  /// In en, this message translates to:
+  /// **Change icon**
+  String get worldChatChangeIcon;
+  /// No description provided for @worldChatIconViaColumn.
+  ///
+  /// In en, this message translates to:
+  /// **The channel icon changes with the rooms column menu (Wave D).**
+  String get worldChatIconViaColumn;
+  /// No description provided for @worldChatBeatEdit.
+  ///
+  /// In en, this message translates to:
+  /// **Edit**
+  String get worldChatBeatEdit;
+  /// No description provided for @worldChatBeatNewThread.
+  ///
+  /// In en, this message translates to:
+  /// **New thread**
+  String get worldChatBeatNewThread;
+  /// No description provided for @worldChatBeatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **Delete**
+  String get worldChatBeatDelete;
+  /// No description provided for @worldChatBeatMenu.
+  ///
+  /// In en, this message translates to:
+  /// **Message actions**
+  String get worldChatBeatMenu;
+  /// No description provided for @worldChatEditGap.
+  ///
+  /// In en, this message translates to:
+  /// **Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.**
+  String get worldChatEditGap;
+  /// No description provided for @worldChatDeleteGap.
+  ///
+  /// In en, this message translates to:
+  /// **The journal is append-only; the delete verb is harness-owned and not exposed yet.**
+  String get worldChatDeleteGap;
+  /// No description provided for @worldChatThreadKind.
+  ///
+  /// In en, this message translates to:
+  /// **Thread**
+  String get worldChatThreadKind;
   /// No description provided for @roomsCloseChannel.
   ///
   /// In en, this message translates to:

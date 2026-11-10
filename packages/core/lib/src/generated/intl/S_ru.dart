@@ -1438,6 +1438,64 @@ class SRu extends S {
 
   @override
   String get roomsRenameAction => 'Переименовать';
+  @override
+  String get roomsExplainDms => 'Личные сообщения — приватные ветки с одним актёром';
+  @override
+  String get roomsExplainChannels => 'Каналы — именованные групповые комнаты с общей историей';
+  @override
+  String get roomsExplainRooms => 'Комнаты — наблюдаемые ветки актёров; присоединяйтесь, обращаясь к ним';
+  @override
+  String get roomsKindChannel => 'Канал';
+  @override
+  String get roomsKindRoom => 'Комната';
+  @override
+  String get roomsSetIconAction => 'Сменить значок…';
+  @override
+  String get roomsSetIconTitle => 'Сменить значок канала';
+  @override
+  String get roomsIconClear => 'Сбросить значок';
+  @override
+  String get roomsIconCustomLabel => 'Или один символ / эмодзи';
+  @override
+  String get worldChatAttach => 'Прикрепить или упомянуть';
+  @override
+  String get worldChatAttachSearchHint => 'Поиск людей, каналов, комнат, документов…';
+  @override
+  String get worldChatAttachWorkOrder => 'Рабочее задание…';
+  @override
+  String get worldChatAttachPlugins => 'Плагины';
+  @override
+  String get worldChatAttachMcpServers => 'Серверы MCP';
+  @override
+  String get worldChatAttachNoneYet => 'пока нет';
+  @override
+  String get worldChatNoMatches => 'Нет совпадений';
+  @override
+  String get worldChatPermsTooltip => 'Разрешения';
+  @override
+  String get worldChatPermsTitle => 'Разрешения канала';
+  @override
+  String get worldChatMembersTooltip => 'Участники';
+  @override
+  String get worldChatInfoTooltip => 'О канале';
+  @override
+  String get worldChatChangeIcon => 'Сменить значок';
+  @override
+  String get worldChatIconViaColumn => 'Значок канала меняется в меню колонки комнат (Wave D).';
+  @override
+  String get worldChatBeatEdit => 'Изменить';
+  @override
+  String get worldChatBeatNewThread => 'Новая ветка';
+  @override
+  String get worldChatBeatDelete => 'Удалить';
+  @override
+  String get worldChatBeatMenu => 'Действия с сообщением';
+  @override
+  String get worldChatEditGap => 'Биты в журнале только добавляются; глагол редактирования принадлежит harness и пока не предоставлен.';
+  @override
+  String get worldChatDeleteGap => 'Журнал доступен только для добавления; глагол удаления принадлежит harness и пока не предоставлен.';
+  @override
+  String get worldChatThreadKind => 'Ветка';
 
   @override
   String get roomsCloseChannel => 'Закрыть канал';

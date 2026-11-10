@@ -9,10 +9,15 @@
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6), kept on the
 /// rail's grammar: `rail.search`, `rail.actors`, `rail.settings`,
-/// `rail.unread.actors`.
+/// `rail.unread.actors`. Lights gutter law v2 (Wave D): the rail is
+/// ALWAYS the window's leftmost chrome, so on macOS it ALWAYS owns the
+/// traffic-light gutter (`rail.lightsGutter`) — docked or not; the
+/// rooms column's head and the strips' heads are gutter-free.
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
+
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 import 'package:lastanswer/common_imports.dart';
 
@@ -23,6 +28,8 @@ import 'package:lastanswer/shell/shell_layout.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
 import 'package:lastanswer/shell/surfaces.dart';
+
+import 'package:lastanswer/shell/window_drag.dart';
 
 /// The shell's left edge: search first, the actors (rooms-column)
 /// toggle beside it, the settings gear last (the cut bar's anatomy).
@@ -65,7 +72,21 @@ final class ActionBar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 8),
+          // The lights gutter law v2 (owner law 2026-11-10, Wave D): the
+          // rail is ALWAYS the window's leftmost chrome — docked or not
+          // — so on macOS the rail ALWAYS owns the traffic lights: an
+          // inert, draggable gutter at its head, never interactive
+          // chrome. Off macOS the quiet 8px head stays.
+            if (defaultTargetPlatform == TargetPlatform.macOS)
+              const WindowDragRegion(
+                child: SizedBox(
+                  key: ValueKey('rail.lightsGutter'),
+                  height: ShellTokens.stripHeight,
+                  width: double.infinity,
+                ),
+            )
+          else
+            const SizedBox(height: 8),
           _BarButton(
             key: const ValueKey('rail.search'),
             semanticsLabel: 'rail.search',

@@ -587,6 +587,180 @@ void main() {
     });
   });
 
+  group('channel icons (Wave D) and the kind tooltips', () {
+    testWidgets('the change-icon dialog applies a curated glyph through '
+        'onSetIcon and clears back to the # mark', (final tester) async {
+      final service = await _hermeticService(tester);
+      final channelId = service.channels.first.channelId;
+      await _pumpShell(tester, service: service);
+
+      // The default mark: the '#' text on the channel row.
+      final row = find.byKey(ValueKey('rooms.row.channel.$channelId'));
+      expect(row, findsOneWidget);
+      expect(
+        find.descendant(of: row, matching: find.text('#')),
+        findsOneWidget,
+      );
+
+      await tester.tap(row, buttons: kSecondaryMouseButton);
+      // The popup route animates in: settle before tapping its items.
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey('rooms.menu.setIcon.$channelId')));
+      await tester.pumpAndSettle();
+      // The dialog: the curated grid (hash + glyphs), the clear button
+      // and the single-character/emoji field.
+      expect(find.byKey(const ValueKey('rooms.icon.hash')), findsOneWidget);
+      expect(find.byKey(const ValueKey('rooms.icon.star')), findsOneWidget);
+      expect(find.byKey(const ValueKey('rooms.icon.clear')), findsOneWidget);
+      expect(find.byKey(const ValueKey('rooms.icon.custom')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.star')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.confirm')));
+      // The dialog's exit animation must FINISH before the real-IO
+      // window (the rename lane's fake-clock law).
+      await tester.pumpAndSettle();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 300)),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // The glyph swap landed: the registry fact AND the row's mark.
+      expect(service.channels.single.icon, 'star');
+      expect(
+        find.descendant(of: row, matching: find.byIcon(Icons.star_outline)),
+        findsOneWidget,
+      );
+
+      // Clear back to the '#' mark through the same dialog.
+      await tester.tap(row, buttons: kSecondaryMouseButton);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey('rooms.menu.setIcon.$channelId')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.clear')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.confirm')));
+      await tester.pumpAndSettle();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 300)),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(service.channels.single.icon, isNull);
+      expect(
+        find.descendant(of: row, matching: find.text('#')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('onSetIcon receives the channel id and the chosen icon '
+        '(curated name and raw emoji)', (final tester) async {
+      final service = await _hermeticService(tester);
+      final channelId = service.channels.first.channelId;
+      final calls = <List<Object?>>[];
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: ListenableBuilder(
+              listenable: service,
+              builder: (final context, final _) => RoomsColumn(
+                service: service,
+                onSelect: (_) {},
+                onCreateChannel: () {},
+                onMessageActor: () {},
+                onMiniWindow: (_) {},
+                onSetIcon: (final id, final icon) async {
+                  calls.add(<Object?>[id, icon]);
+                  return true;
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      final row = find.byKey(ValueKey('rooms.row.channel.$channelId'));
+      await tester.tap(row, buttons: kSecondaryMouseButton);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey('rooms.menu.setIcon.$channelId')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.bug')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.confirm')));
+      await tester.pumpAndSettle();
+      expect(calls, <List<Object?>>[
+        <Object?>[channelId, 'bug'],
+      ]);
+      // The honest success popped the dialog.
+      expect(find.byKey(const ValueKey('rooms.icon.confirm')), findsNothing);
+
+      // The emoji path: the raw field value IS the icon.
+      await tester.tap(row, buttons: kSecondaryMouseButton);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey('rooms.menu.setIcon.$channelId')));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const ValueKey('rooms.icon.custom')),
+        '🦊',
+      );
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('rooms.icon.confirm')));
+      await tester.pumpAndSettle();
+      expect(calls.last, <Object?>[channelId, '🦊']);
+
+      // The field took focus; release it (the teardown invariant).
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('section heads and channel/room marks carry their kind '
+        'tooltips', (final tester) async {
+      final service = await _hermeticService(tester);
+      final channelId = service.channels.first.channelId;
+      final roomThreadId = service.roomThreads.first['threadId']! as String;
+      await _pumpShell(tester, service: service);
+
+      // The three section heads explain their kind on hover. The
+      // channels head also carries the create-action tooltip, so the
+      // explain tip is matched by its EXACT message, not by type.
+      final l10n = S.of(
+        tester.element(find.byKey(const ValueKey('shell.roomsColumn'))),
+      );
+      final explain = <String, String>{
+        'rooms.section.dms': l10n.roomsExplainDms,
+        'rooms.section.channels': l10n.roomsExplainChannels,
+        'rooms.section.rooms': l10n.roomsExplainRooms,
+      };
+      for (final entry in explain.entries) {
+        final tip = find.descendant(
+          of: find.byKey(ValueKey(entry.key)),
+          matching: find.byWidgetPredicate(
+            (final w) => w is Tooltip && w.message == entry.value,
+          ),
+        );
+        expect(tip, findsOneWidget, reason: entry.key);
+      }
+      // The channel and room row marks carry the kind word.
+      final channelTip = find.descendant(
+        of: find.byKey(ValueKey('rooms.row.channel.$channelId')),
+        matching: find.byType(Tooltip),
+      );
+      expect(channelTip, findsOneWidget);
+      expect(tester.widget<Tooltip>(channelTip).message, isNotEmpty);
+      final roomTip = find.descendant(
+        of: find.byKey(ValueKey('rooms.row.room.$roomThreadId')),
+        matching: find.byType(Tooltip),
+      );
+      expect(roomTip, findsOneWidget);
+      expect(tester.widget<Tooltip>(roomTip).message, isNotEmpty);
+    });
+  });
+
   group('first entry (the seeded boot)', () {
     testWidgets('a fresh world seeds #general ONCE at boot and lands in it', (
       final tester,

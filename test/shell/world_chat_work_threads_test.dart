@@ -128,7 +128,9 @@ Future<void> _pumpSurface(
 /// option list is real IO — it settles in a runAsync window) → row tap
 /// → the armed chip shows.
 Future<void> _armScope(final WidgetTester tester, final String path) async {
-  await tester.tap(find.byKey(const ValueKey('worldchat.scope.toggle')));
+  await tester.tap(find.byKey(const ValueKey('worldchat.attach')));
+  await tester.pumpAndSettle();
+  await tester.tap(find.byKey(const ValueKey('worldchat.attach.workOrder')));
   await tester.pump();
   await tester.runAsync(
     () => Future<void>.delayed(const Duration(milliseconds: 400)),

@@ -218,6 +218,100 @@ void main() {
     expect(raw?['archived'], false);
   }, timeout: const Timeout(Duration(minutes: 2)));
 
+  test('icon round-trips through setIcon; legacy rows read null', () async {
+    final temp = await Directory.systemTemp.createTemp('la_channel_reg_');
+    addTearDown(() => temp.delete(recursive: true));
+    final world = await RealmWorld.open(rootOverride: temp.path);
+    if (world == null) fail('realm world unsupported on this platform');
+    final registry = ChannelRegistry(store: world.store);
+
+    final created = await registry.create(
+      name: 'design-crit',
+      threadId: 'thread-aaaaaaaaaaaa',
+      memberIds: const <String>['human-test-device'],
+    );
+    // create writes the key with its default (null) — a freshly created
+    // row always carries `icon`.
+    expect(created.icon, isNull);
+    final rawFresh = await world.store.read('channels', created.channelId);
+    expect(rawFresh?.containsKey('icon'), isTrue);
+    expect(rawFresh?['icon'], isNull);
+
+    // setIcon rewrites EXACTLY one field, preserving the rest verbatim
+    // (the rename/archive pattern).
+    expect(
+      await registry.setIcon(channelId: created.channelId, icon: 'star'),
+      isTrue,
+    );
+    final starred = await registry.byId(created.channelId);
+    expect(starred?.icon, 'star');
+    expect(starred?.name, 'design-crit');
+    expect(starred?.threadId, 'thread-aaaaaaaaaaaa');
+    expect(starred?.memberIds, created.memberIds);
+    expect(starred?.createdAt, created.createdAt);
+    expect(starred?.archived, isFalse);
+    expect(starred?.toRecord()['icon'], 'star');
+    final raw = await world.store.read('channels', created.channelId);
+    expect(raw?['icon'], 'star');
+    expect(raw?['name'], 'design-crit');
+
+    // A null icon clears back to the default '#' mark.
+    expect(
+      await registry.setIcon(channelId: created.channelId, icon: null),
+      isTrue,
+    );
+    expect((await registry.byId(created.channelId))?.icon, isNull);
+    // An unknown id answers false — never a silent success.
+    expect(
+      await registry.setIcon(channelId: 'channel-000000000000', icon: 'bug'),
+      isFalse,
+    );
+
+    // Tolerant decode (the `archived` pattern): a row from before the
+    // field existed carries no `icon` key, and a non-string value is
+    // not an icon — both read null.
+    await world.store.transact((final tx) {
+      tx
+        ..put('channels', 'channel-legacy000003', <String, Object?>{
+          'channelId': 'channel-legacy000003',
+          'name': 'legacy',
+          'threadId': 'thread-legacy000003',
+          'memberIds': <String>['human-test-device'],
+          'createdAt': '2026-01-03T00:00:00.000Z',
+          'archived': false,
+        })
+        ..put('channels', 'channel-legacy000004', <String, Object?>{
+          'channelId': 'channel-legacy000004',
+          'name': 'weird',
+          'threadId': 'thread-legacy000004',
+          'memberIds': <String>['human-test-device'],
+          'createdAt': '2026-01-04T00:00:00.000Z',
+          'archived': false,
+          'icon': 42,
+        });
+    });
+    expect((await registry.byId('channel-legacy000003'))?.icon, isNull);
+    expect((await registry.byId('channel-legacy000004'))?.icon, isNull);
+
+    // The const constructor defaults the icon (old callers keep
+    // compiling) and toRecord ALWAYS writes the key.
+    const info = ChannelInfo(
+      channelId: 'channel-x',
+      name: 'x',
+      threadId: 'thread-x',
+      memberIds: <String>[],
+      createdAt: '2026-01-01T00:00:00.000Z',
+    );
+    expect(info.icon, isNull);
+    expect(info.toRecord().containsKey('icon'), isTrue);
+
+    // Durable: a raw character/emoji icon survives a reopen of the
+    // same store.
+    await registry.setIcon(channelId: created.channelId, icon: '🦊');
+    final reopened = ChannelRegistry(store: world.store);
+    expect((await reopened.byId(created.channelId))?.icon, '🦊');
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
   test('rename and archive survive a reopen of the same store', () async {
     final temp = await Directory.systemTemp.createTemp('la_channel_reg_');
     addTearDown(() => temp.delete(recursive: true));

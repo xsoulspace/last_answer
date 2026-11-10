@@ -1433,6 +1433,64 @@ class SIt extends S {
 
   @override
   String get roomsRenameAction => 'Rinomina';
+  @override
+  String get roomsExplainDms => 'Messaggi diretti — thread privati con un attore';
+  @override
+  String get roomsExplainChannels => 'Canali — stanze di gruppo con nome e cronologia condivisa';
+  @override
+  String get roomsExplainRooms => 'Stanze — thread osservabili tra attori; partecipi menzionandoli';
+  @override
+  String get roomsKindChannel => 'Canale';
+  @override
+  String get roomsKindRoom => 'Stanza';
+  @override
+  String get roomsSetIconAction => 'Cambia icona…';
+  @override
+  String get roomsSetIconTitle => 'Cambia l\'icona del canale';
+  @override
+  String get roomsIconClear => 'Azzera icona';
+  @override
+  String get roomsIconCustomLabel => 'Oppure un carattere / emoji';
+  @override
+  String get worldChatAttach => 'Allega o menziona';
+  @override
+  String get worldChatAttachSearchHint => 'Cerca persone, canali, stanze, documenti…';
+  @override
+  String get worldChatAttachWorkOrder => 'Ordine di lavoro…';
+  @override
+  String get worldChatAttachPlugins => 'Plugin';
+  @override
+  String get worldChatAttachMcpServers => 'Server MCP';
+  @override
+  String get worldChatAttachNoneYet => 'non ancora';
+  @override
+  String get worldChatNoMatches => 'Nessun risultato';
+  @override
+  String get worldChatPermsTooltip => 'Permessi';
+  @override
+  String get worldChatPermsTitle => 'Permessi del canale';
+  @override
+  String get worldChatMembersTooltip => 'Membri';
+  @override
+  String get worldChatInfoTooltip => 'Informazioni sul canale';
+  @override
+  String get worldChatChangeIcon => 'Cambia icona';
+  @override
+  String get worldChatIconViaColumn => 'L\'icona del canale si cambia dal menu della colonna stanze (Wave D).';
+  @override
+  String get worldChatBeatEdit => 'Modifica';
+  @override
+  String get worldChatBeatNewThread => 'Nuovo thread';
+  @override
+  String get worldChatBeatDelete => 'Elimina';
+  @override
+  String get worldChatBeatMenu => 'Azioni sul messaggio';
+  @override
+  String get worldChatEditGap => 'I beat sono append-only nel journal; il verbo di modifica è dell\'harness e non è ancora esposto.';
+  @override
+  String get worldChatDeleteGap => 'Il journal è append-only; il verbo di eliminazione è dell\'harness e non è ancora esposto.';
+  @override
+  String get worldChatThreadKind => 'Thread';
 
   @override
   String get roomsCloseChannel => 'Chiudi canale';

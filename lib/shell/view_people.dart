@@ -63,7 +63,12 @@ final class PeopleFocus extends ChangeNotifier {
 /// service (state) and the [PeopleFocus] (focus); a null focus keeps
 /// the rows inert (hermetic shells without a shell above).
 final class PeopleView extends StatelessWidget {
-  const PeopleView({required this.service, this.focus, super.key});
+  const PeopleView({
+    required this.service,
+    this.focus,
+    this.onOpenActor,
+    super.key,
+  });
 
   /// The world conversation service — the view's state source.
   final RealmChatService service;
@@ -71,6 +76,12 @@ final class PeopleView extends StatelessWidget {
   /// The view's focus; null renders the plain people list with inert
   /// rows.
   final PeopleFocus? focus;
+
+  /// Wave F owner law: a row tap opens the actor's INFO surface (the
+  /// shell routes `actor:<id>` into a split). Takes precedence over the
+  /// in-view [focus] swap; the focus seam stays for hermetic hosts and
+  /// other callers.
+  final void Function(String actorId)? onOpenActor;
 
   @override
   Widget build(final BuildContext context) {
@@ -88,8 +99,11 @@ final class PeopleView extends StatelessWidget {
         }
         return ListenableBuilder(
           listenable: service,
-          builder: (final context, final _) =>
-              _PeopleListBody(service: service, onFocus: focus?.focus),
+          builder: (final context, final _) => _PeopleListBody(
+            service: service,
+            onFocus: focus?.focus,
+            onOpenActor: onOpenActor,
+          ),
         );
       },
     );
@@ -99,13 +113,20 @@ final class PeopleView extends StatelessWidget {
 /// The conversation's people: the thread topic (when it says something
 /// the people section does not) + one row per person.
 class _PeopleListBody extends StatelessWidget {
-  const _PeopleListBody({required this.service, this.onFocus});
+  const _PeopleListBody({
+    required this.service,
+    this.onFocus,
+    this.onOpenActor,
+  });
 
   final RealmChatService service;
 
   /// Focuses an actor (its profile rides the view); null keeps rows
   /// inert.
   final void Function(String actorId)? onFocus;
+
+  /// Wave F: opens the actor's info surface; wins over [onFocus].
+  final void Function(String actorId)? onOpenActor;
 
   @override
   Widget build(final BuildContext context) {
@@ -150,6 +171,7 @@ class _PeopleListBody extends StatelessWidget {
                 ids: people,
                 service: service,
                 onFocus: onFocus,
+                onOpenActor: onOpenActor,
               ),
             ),
         ],
@@ -162,7 +184,12 @@ class _PeopleListBody extends StatelessWidget {
 /// row, presence folded from the bot host (the rail's derivation). A
 /// row taps into the actor's profile (the header identity does too).
 class _PeopleList extends StatelessWidget {
-  const _PeopleList({required this.ids, required this.service, this.onFocus});
+  const _PeopleList({
+    required this.ids,
+    required this.service,
+    this.onFocus,
+    this.onOpenActor,
+  });
 
   final List<String> ids;
 
@@ -172,6 +199,10 @@ class _PeopleList extends StatelessWidget {
   /// Focuses an actor (its profile rides the view); null keeps rows
   /// inert.
   final void Function(String actorId)? onFocus;
+
+  /// Wave F: opens the actor's info surface; wins over [onFocus] (the
+  /// shell's owner law: click an actor name → its info in a split).
+  final void Function(String actorId)? onOpenActor;
 
   @override
   Widget build(final BuildContext context) {
@@ -245,11 +276,14 @@ class _PeopleList extends StatelessWidget {
         ],
       );
     }
+    // Wave F: the shell's info-surface routing wins; the in-view focus
+    // swap stays for hermetic hosts (no onOpenActor above the view).
+    final open = onOpenActor ?? onFocus;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         key: ValueKey('shell.context.person.$id'),
-        onTap: onFocus == null ? null : () => onFocus!(id),
+        onTap: open == null ? null : () => open(id),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -536,7 +570,7 @@ class _ActorPanelState extends State<_ActorPanel> {
           // request affordance, and — on the human's own card, once for
           // the realm — the pending access requests with the one-tap
           // approve (the owner's everything-from-LA decision).
-          _ProjectAccessSection(service: service, actorId: widget.actorId),
+          ProjectAccessSection(service: service, actorId: widget.actorId),
         ],
       ),
     );
@@ -613,17 +647,23 @@ class _ViewNote extends StatelessWidget {
 /// requests with the one-tap approve ([RealmChatService.grantAccess],
 /// the in-process `ecsai --grant` twin whose VERIFY re-read is the
 /// honest outcome). Calm chrome: metadata rows in mono, no ceremony.
-class _ProjectAccessSection extends StatefulWidget {
-  const _ProjectAccessSection({required this.service, required this.actorId});
+/// Wave F: PUBLIC — the `actor:<id>` info surface renders the SAME
+/// section (one grants row pattern, one key family: `shell.people.*`).
+class ProjectAccessSection extends StatefulWidget {
+  const ProjectAccessSection({
+    required this.service,
+    required this.actorId,
+    super.key,
+  });
 
   final RealmChatService service;
   final String actorId;
 
   @override
-  State<_ProjectAccessSection> createState() => _ProjectAccessSectionState();
+  State<ProjectAccessSection> createState() => _ProjectAccessSectionState();
 }
 
-class _ProjectAccessSectionState extends State<_ProjectAccessSection> {
+class _ProjectAccessSectionState extends State<ProjectAccessSection> {
   List<String> _grants = const <String>[];
   List<Map<String, Object?>> _pending = const <Map<String, Object?>>[];
   var _loading = true;
@@ -644,7 +684,7 @@ class _ProjectAccessSectionState extends State<_ProjectAccessSection> {
   }
 
   @override
-  void didUpdateWidget(covariant final _ProjectAccessSection oldWidget) {
+  void didUpdateWidget(covariant final ProjectAccessSection oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.actorId != widget.actorId) {
       _outcome = null;

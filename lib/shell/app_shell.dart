@@ -38,7 +38,8 @@ library;
 
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kDebugMode;
 
 import 'package:headless_core/headless_core.dart' as hc;
 
@@ -281,6 +282,26 @@ class _AppShellState extends State<AppShell> {
     );
     _miniWindowPersistence.bind(_miniWindows);
     FocusManager.instance.addListener(_onPrimaryFocusChanged);
+    // Wave F — the shell's debug bridge (the `shell_*` fmtk lane): the
+    // mounted shell assigns the ONE instance; kDebugMode-guarded so a
+    // release tree carries nothing, and the tools refuse honestly
+    // (`shell_bridge_absent`) while no shell is mounted.
+    if (kDebugMode) {
+      // Block bodies, NOT arrows: a multi-line arrow body swallows the
+      // cascade sections that follow it into its own expression.
+      ShellDebugBridge.instance = ShellDebugBridge()
+        ..docked = () {
+          return _roomsDocked;
+        }
+        ..state = _debugShellState
+        ..toggleDock = () async {
+          _toggleRoomsDock();
+        }
+        ..openTab = _debugOpenTab
+        ..closeTab = _debugCloseTab
+        ..splitActive = _onSplit
+        ..selectRoom = _debugSelectRoom;
+    }
   }
 
   /// Focus fell to nothing (a click on non-focusable chrome): the
@@ -319,6 +340,9 @@ class _AppShellState extends State<AppShell> {
 
   @override
   void dispose() {
+    // The bridge dies WITH the shell — never a stale static seam
+    // pointing at a disposed state (Wave F).
+    if (kDebugMode) ShellDebugBridge.instance = null;
     FocusManager.instance.removeListener(_onPrimaryFocusChanged);
     _shellFocus.dispose();
     _service.removeListener(_onServiceChanged);
@@ -589,11 +613,13 @@ class _AppShellState extends State<AppShell> {
 
   // ---- actions -------------------------------------------------------------
 
-  /// The conversation header's intent: show me this actor. The dock
-  /// retired, so the people view appears as its own tab.
+  /// The conversation header's intent: show me this actor. Wave F
+  /// owner law: the actor's INFO opens as its own `actor:<id>` tab
+  /// through the ONE router (a split beside the conversation), never
+  /// as an in-view face swap. [ViewScope.onFocusActor] stays the seam
+  /// other callers ride.
   void _onFocusActorIntent(final String actorId) {
-    _peopleFocus.focus(actorId);
-    _onLayoutChanged(_routeOpen(_layout, kPeopleSurfaceId));
+    _onLayoutChanged(_routeOpen(_layout, actorSurfaceId(actorId)));
   }
 
   /// ADR 0027 — a tab's context-menu affordance: a conversation in its
@@ -715,6 +741,90 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  /// The rooms column's "Change icon…" apply lane (Wave D): one service
+  /// verb — the registry write AND the projection refresh live in
+  /// [RealmChatService.setChannelIcon] (the steward verb that collapsed
+  /// this lane's original store-plus-rename workaround).
+  Future<bool> _setChannelIcon(
+    final String channelId,
+    final String? icon,
+  ) =>
+      _service.setChannelIcon(channelId: channelId, icon: icon);
+
+  // ---- Wave F: the `shell_*` debug bridge's implementations -----------
+  //
+  // Thin verbs over the shell's OWN paths (the ONE router, the dock
+  // law, the close law) — the bridge never grows a second layout
+  // grammar. They exist so live fmtk iteration is deterministic (the
+  // semantics walker's rail-drop is a known framework gap).
+
+  /// The layout document's projection for `shell_state`: the dock bool,
+  /// the pane groups with their tab ids, the active group and tab.
+  Map<String, Object?> _debugShellState() => <String, Object?>{
+    'docked': _roomsDocked,
+    'activeGroup': _layout.active,
+    'activeTab': _layout.activeSurfaceId,
+    'groups': <Object?>[
+      for (final group in _layout.groups)
+        <String, Object?>{
+          'tabs': List<String>.of(group.tabs),
+          'active': group.active,
+          'activeTab': group.activeId,
+        },
+    ],
+  };
+
+  /// `shell_open_tab`: opens [id] through the shell's own routing (a
+  /// conversation id re-selects its thread, exactly like a strip tap).
+  /// [group] forces a pane group; [split] composes the pure v4 ops
+  /// (openTab then split) so the tab lands in its own new right group.
+  Future<bool> _debugOpenTab(
+    final String id, {
+    final int? group,
+    final bool split = false,
+  }) async {
+    if (id.isEmpty) return false;
+    activateConversationSurface(_service, id);
+    final ShellLayout layout;
+    if (group != null && group >= 0 && group < _layout.groups.length) {
+      layout = _layout.openTab(id, group: group);
+    } else if (split) {
+      layout = _layout.openTab(id).split();
+    } else {
+      layout = _routeOpen(_layout, id);
+    }
+    _onLayoutChanged(layout);
+    return true;
+  }
+
+  /// `shell_close_tab`: closes an open tab (the docked close law
+  /// applies); false for an id that is not open — honest refusal.
+  bool _debugCloseTab(final String id) {
+    if (_layout.groupOf(id) < 0) return false;
+    _onCloseTab(id);
+    return true;
+  }
+
+  /// `shell_select_room`: a rooms-column row key
+  /// (`rooms.row.{dm,channel,room}.<id>`) → its conversation surface
+  /// id, selected through the shell's own row-tap path. False for any
+  /// other key shape (the CTA rows are not rooms).
+  bool _debugSelectRoom(final String rowKey) {
+    const prefixes = <String, String>{
+      'rooms.row.dm.': 'dm:',
+      'rooms.row.channel.': 'channel:',
+      'rooms.row.room.': 'room:',
+    };
+    for (final entry in prefixes.entries) {
+      if (!rowKey.startsWith(entry.key)) continue;
+      final tail = rowKey.substring(entry.key.length);
+      if (tail.isEmpty) return false;
+      _onSelectTab('${entry.value}$tail');
+      return true;
+    }
+    return false;
+  }
+
   /// The ONE tab router (the chat-first projection law): every open
   /// path rides it, so the two projections can never drift apart.
   /// UNDOCKED: byte-identical to the legacy `openTab` — the active
@@ -724,6 +834,9 @@ class _AppShellState extends State<AppShell> {
   /// group, the pure v4 ops compose (`openTab` then `split`) into a new
   /// right-hand group; with several, the active view group hosts it
   /// (never group 0 — the conversation group stays the conversation's).
+  /// `actor:<id>` info tabs (Wave F) ARE view ids: an actor's
+  /// information is not a conversation, so it splits right exactly
+  /// like `people` or `boards`.
   ShellLayout _routeOpen(final ShellLayout layout, final String surfaceId) {
     if (!_roomsDocked) return layout.openTab(surfaceId);
     if (isConversationSurfaceId(surfaceId)) {
@@ -977,28 +1090,28 @@ class _AppShellState extends State<AppShell> {
       _onLayoutChanged(_layout.forward(group: group));
 
   /// Identity marks for conversation tabs (the strip's pills): the
-  /// actor's avatar for `dm:`, the channel's `#` disc for `channel:`;
-  /// static views carry their registry icon.
+  /// actor's avatar for `dm:` AND `actor:` (Wave F — the info tab wears
+  /// the same identity mark), the channel's user-settable icon mark
+  /// (default '#') for `channel:`; static views carry their registry
+  /// icon.
   Widget? _leadingFor(final String surfaceId) {
-    if (surfaceId.startsWith('dm:')) {
-      final actorId = surfaceId.substring('dm:'.length);
+    if (surfaceId.startsWith('dm:') || isActorSurfaceId(surfaceId)) {
+      final actorId = surfaceId.substring(surfaceId.indexOf(':') + 1);
       final profile = _service.roster?.get(actorId);
       if (profile == null) return null;
       return ActorAvatar(profile: profile, size: _kIdentityMarkSize);
     }
     if (surfaceId.startsWith('channel:')) {
-      return SizedBox(
-        width: _kIdentityMarkSize,
-        height: _kIdentityMarkSize,
-        child: Center(
-          child: Text(
-            '#',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: context.shellMuted,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+      // The channel's user-settable icon (Wave D): the strip pill
+      // renders through the SAME mark widget as the rooms column's
+      // row — curated glyph, raw emoji, or the default '#' mark.
+      final channelId = surfaceId.substring('channel:'.length);
+      final channel = _service.channels.firstWhereOrNull(
+        (final candidate) => candidate.channelId == channelId,
+      );
+      return ChannelIconMark(
+        icon: channel?.icon,
+        size: _kIdentityMarkSize,
       );
     }
     if (surfaceId.startsWith('room:')) {
@@ -1044,6 +1157,17 @@ class _AppShellState extends State<AppShell> {
     if (item == null) return null;
     final title = projectTitleOf(item);
     return title.isEmpty ? null : title;
+  }
+
+  /// The `actor:<id>` tab's title (Wave F): the roster's live
+  /// displayName, falling back to [actorDisplayFallback] — recomputed
+  /// per build inside the strip's ListenableBuilder, never cached (the
+  /// title-stuck bug law: a renamed actor retitles its open tab).
+  String? _actorTitle(final String id) {
+    if (!isActorSurfaceId(id)) return null;
+    final actorId = id.substring('actor:'.length);
+    return _service.roster?.get(actorId)?.displayName ??
+        actorDisplayFallback(actorId);
   }
 
   /// The kind list's ordered registry slice (the action bar's grammar):
@@ -1249,7 +1373,26 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(final BuildContext context) {
     AppShell.debugRootContext = context;
-    final surfaces = buildShellSurfaces(context, service: _service);
+    final surfaces = buildShellSurfaces(
+      context,
+      service: _service,
+      // Wave F: "show me this actor" (beat names, the members popover,
+      // the people rows) routes into the actor's `actor:<id>` info tab.
+      onTapActor: _onFocusActorIntent,
+    );
+    // Wave F — `actor:<id>` specs are runtime facts: the shell projects
+    // the OPEN actor tabs into the registry per build (exact-id keys,
+    // resolved ahead of the prefix-generic kinds; never cached — the
+    // title-stuck bug law).
+    for (final id in _layout.allTabs) {
+      if (!isActorSurfaceId(id)) continue;
+      final spec = actorSurfaceSpec(
+        id,
+        service: _service,
+        onOpenConversation: _onSelectTab,
+      );
+      if (spec != null) surfaces[id] = spec;
+    }
     _projects = context.read<ProjectsNotifier?>();
     final screenLayout = ScreenLayout.of(context);
     // The small-screen branch keeps today's anatomy EXACTLY: neither
@@ -1278,7 +1421,8 @@ class _AppShellState extends State<AppShell> {
                     actors: _service.roster?.all ?? const <ActorProfile>[],
                     topicOf: _service.topicOf,
                   ) ??
-                  _documentTitle(id),
+                  _documentTitle(id) ??
+                  _actorTitle(id),
               leadingFor: _leadingFor,
               child: Shortcuts(
                 shortcuts: _viewTabShortcuts(),
@@ -1334,15 +1478,14 @@ class _AppShellState extends State<AppShell> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // DESIGN.md v2 — the title bar is gone:
-                                // on macOS the window's LEFTMOST chrome
-                                // is its top row — the docked rooms
-                                // column's head when the chat-first
-                                // projection is on, else the first
-                                // group's strip (the traffic lights ride
-                                // there), so no gutter is reserved here;
-                                // other platforms keep their system
-                                // inset.
+                                // DESIGN.md v2 — the title bar is gone.
+                                // Lights gutter law v2 (Wave D): on
+                                // macOS the RAIL always owns the
+                                // traffic-light gutter — the rail is
+                                // always the window's leftmost chrome,
+                                // docked or not — so no gutter is
+                                // reserved here; other platforms keep
+                                // their system inset.
                                 SizedBox(
                                   height: MediaQuery.of(
                                     context,
@@ -1443,7 +1586,7 @@ class _AppShellState extends State<AppShell> {
         ),
       ),
       onMiniWindow: _openMiniWindow,
-      lightsGutter: defaultTargetPlatform == TargetPlatform.macOS,
+      onSetIcon: _setChannelIcon,
     ),
   );
 
@@ -1533,18 +1676,11 @@ class _AppShellState extends State<AppShell> {
                 actors: _service.roster?.all ?? const <ActorProfile>[],
                 topicOf: _service.topicOf,
               ) ??
-              _documentTitle(id),
+              _documentTitle(id) ??
+              _actorTitle(id),
           leadingFor: _leadingFor,
           pickerLink: _pickerLink,
           pickerOwner: _pickerOpen && _pickerGroup == group,
-          // The title-bar-is-gone law (macOS): the window's leftmost
-          // chrome carries the traffic lights — the docked rooms
-          // column's head when the chat-first projection is on, else
-          // group 0's strip (today's anatomy, unchanged).
-          lightsGutter:
-              group == 0 &&
-              defaultTargetPlatform == TargetPlatform.macOS &&
-              !(_roomsDocked && !ScreenLayout.of(context).small),
         ),
       ),
       Expanded(
@@ -1642,6 +1778,45 @@ void activateConversationSurface(
     // from the same surface and speaks by addressing.
     service.selectThread(surfaceId.substring('room:'.length));
   }
+}
+
+/// Wave F — the shell's debug bridge: the ONE seam the `shell_*` fmtk
+/// tools (`lib/mcp/shell_mcp_tools.dart`) ride. The mounted [AppShell]
+/// assigns [instance] in `initState` under a kDebugMode guard and nulls
+/// it in `dispose`, so a release tree carries nothing and the tools
+/// refuse honestly (`shell_bridge_absent`) while no shell is mounted.
+/// Static-by-contract — the same debug-seam shape as
+/// `AgentDocSurface.debugSurface` and `RealmChatService.debugInstances`.
+final class ShellDebugBridge {
+  /// The live bridge; null when no app shell is mounted.
+  static ShellDebugBridge? instance;
+
+  /// The projection switch: true = chat-first (docked rooms column).
+  late final bool Function() docked;
+
+  /// The layout document's projection: docked bool, pane groups with
+  /// their tab ids, the active group and tab.
+  late final Map<String, Object?> Function() state;
+
+  /// Flips + persists the rooms-column dock (the rail's actors button).
+  late final Future<void> Function() toggleDock;
+
+  /// Opens a tab id through the shell's ONE router; [group] forces a
+  /// pane group, [split] lands the tab in its own new right group.
+  late final Future<bool> Function(String id, {int? group, bool split})
+  openTab;
+
+  /// Closes an open tab (the docked close law applies); false when the
+  /// id is not open.
+  late final bool Function(String id) closeTab;
+
+  /// The strip's split control: the active tab moves into a new pane
+  /// to the right.
+  late final void Function() splitActive;
+
+  /// Selects a rooms-column row by its contract key
+  /// (`rooms.row.{dm,channel,room}.<id>`); false for unknown keys.
+  late final bool Function(String rowKey) selectRoom;
 }
 
 /// The `/home` route body: the ACTIVE group's ACTIVE tab host. The

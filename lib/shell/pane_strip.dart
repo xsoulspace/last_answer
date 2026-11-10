@@ -52,7 +52,6 @@ final class PaneStrip extends StatelessWidget {
     this.leadingFor,
     this.pickerLink,
     this.pickerOwner = false,
-    this.lightsGutter = false,
     super.key,
   });
 
@@ -95,11 +94,6 @@ final class PaneStrip extends StatelessWidget {
   final LayerLink? pickerLink;
   final bool pickerOwner;
 
-  /// The title-bar-is-gone law (DESIGN.md v2): on macOS the FIRST
-  /// group's strip is the window's top row — the traffic lights ride
-  /// at its head, so it keeps an inert, draggable lights zone there.
-  final bool lightsGutter;
-
   String _titleOf(final String surfaceId) =>
       titleFor?.call(surfaceId) ?? surfaces[surfaceId]?.title ?? surfaceId;
 
@@ -135,20 +129,13 @@ final class PaneStrip extends StatelessWidget {
             // controls; full pills first, then compress rightmost-first
             // until they fit; the focused tab keeps its title longest.
             const controlsWidth = 132.0;
-            const fullWidth = 150.0;
-            const compactWidth = 34.0;
-            final usable =
-                constraints.maxWidth - controlsWidth - (lightsGutter ? 72 : 0);
+            final usable = constraints.maxWidth - controlsWidth;
             final fullCount = _fullCount(tabs.length, usable);
             final compressed = <String>{
               for (var i = tabs.length - 1; i >= fullCount; i--) tabs[i],
             }..remove(activeId);
             return Row(
               children: [
-                if (lightsGutter)
-                  // The traffic lights' zone (Safari anatomy): inert,
-                  // draggable, never interactive chrome.
-                  const SizedBox(width: 72, height: ShellTokens.stripHeight),
                 const SizedBox(width: 4),
                 _StripControl(
                   key: ValueKey('view.group.back.$group'),

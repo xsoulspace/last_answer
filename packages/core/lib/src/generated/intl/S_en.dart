@@ -1423,6 +1423,64 @@ class SEn extends S {
 
   @override
   String get roomsRenameAction => 'Rename';
+  @override
+  String get roomsExplainDms => 'Direct messages — private threads with one actor';
+  @override
+  String get roomsExplainChannels => 'Channels — named group rooms with shared history';
+  @override
+  String get roomsExplainRooms => 'Rooms — watchable actor threads; join by addressing';
+  @override
+  String get roomsKindChannel => 'Channel';
+  @override
+  String get roomsKindRoom => 'Room';
+  @override
+  String get roomsSetIconAction => 'Change icon…';
+  @override
+  String get roomsSetIconTitle => 'Change channel icon';
+  @override
+  String get roomsIconClear => 'Clear icon';
+  @override
+  String get roomsIconCustomLabel => 'Or one character / emoji';
+  @override
+  String get worldChatAttach => 'Attach or mention';
+  @override
+  String get worldChatAttachSearchHint => 'Search people, channels, rooms, docs…';
+  @override
+  String get worldChatAttachWorkOrder => 'Work order…';
+  @override
+  String get worldChatAttachPlugins => 'Plugins';
+  @override
+  String get worldChatAttachMcpServers => 'MCP servers';
+  @override
+  String get worldChatAttachNoneYet => 'none yet';
+  @override
+  String get worldChatNoMatches => 'No matches';
+  @override
+  String get worldChatPermsTooltip => 'Permissions';
+  @override
+  String get worldChatPermsTitle => 'Channel permissions';
+  @override
+  String get worldChatMembersTooltip => 'Members';
+  @override
+  String get worldChatInfoTooltip => 'Channel info';
+  @override
+  String get worldChatChangeIcon => 'Change icon';
+  @override
+  String get worldChatIconViaColumn => 'The channel icon changes with the rooms column menu (Wave D).';
+  @override
+  String get worldChatBeatEdit => 'Edit';
+  @override
+  String get worldChatBeatNewThread => 'New thread';
+  @override
+  String get worldChatBeatDelete => 'Delete';
+  @override
+  String get worldChatBeatMenu => 'Message actions';
+  @override
+  String get worldChatEditGap => 'Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.';
+  @override
+  String get worldChatDeleteGap => 'The journal is append-only; the delete verb is harness-owned and not exposed yet.';
+  @override
+  String get worldChatThreadKind => 'Thread';
 
   @override
   String get roomsCloseChannel => 'Close channel';

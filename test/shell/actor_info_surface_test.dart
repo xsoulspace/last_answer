@@ -1,0 +1,291 @@
+// Wave F — the `actor:<id>` info-surface lane, pumped hermetically
+// through the REAL shell (the repo's lane: a final-class service is
+// never faked). The laws under test:
+// - the people view's row tap rides the shell's onFocus wiring into an
+//   `actor:<id>` tab (owner law: info in a split, never a face swap);
+// - the surface renders the profile facts, the EXISTING editor and the
+//   grants section (named absence in a hermetic world);
+// - an edit persists through the EXISTING `service.updateActor` verb
+//   (the roster get reflects it);
+// - a channel-membership row routes back into the shell's
+//   conversation grammar (`channel:<id>` in group 0, docked).
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/settings/settings.dart';
+import 'package:lastanswer/shell/app_shell.dart';
+import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/workspaces/workspace_notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'hermetic_world_state.dart';
+
+/// A ready hermetic service: one actor (Toby, rostered with role and
+/// persona) and one registered channel listing him — the channel keeps
+/// the shell's boot seed a no-op AND gives the people view a
+/// conversation whose member rows render.
+Future<RealmChatService> _hermeticService(final WidgetTester tester) async {
+  late RealmChatService service;
+  await tester.runAsync(() async {
+    final temp = await Directory.systemTemp.createTemp('la_actor_info_');
+    addTearDown(() => temp.delete(recursive: true));
+    final world = (await RealmWorld.open(rootOverride: temp.path))!;
+    service = RealmChatService(
+      debugWorldOverride: world,
+      debugRosterOverride: ActorRoster(replicaId: 'tester'),
+      debugStartBotDispatcher: false,
+    );
+    addTearDown(service.dispose);
+    await service.ensureReady();
+    final toby = (await service.createActor(
+      displayName: 'Toby Researcher',
+      kind: ActorKind.model,
+      brainRef: '',
+      role: 'researcher',
+      systemPrompt: 'You are Toby, a careful researcher.',
+    ))!;
+    await service.createChannel(
+      'guild',
+      memberIds: <String>[toby.actorId],
+    );
+  });
+  return service;
+}
+
+Future<void> _pumpShell(
+  final WidgetTester tester, {
+  required RealmChatService service,
+}) async {
+  final worldState = hermeticWorldState();
+  await worldState.refresh();
+  // Split panes need width headroom (the info surface is designed for
+  // the 240px column, but three chrome regions share the window here).
+  await tester.binding.setSurfaceSize(const Size(1440, 900));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
+  await tester.pumpWidget(
+    GlobalStatesProvider(
+      builder: (final _) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider<WorkspaceNotifier>.value(
+            value: WorkspaceNotifier(storeLoader: () async => null),
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: AppShell(
+              service: service,
+              worldState: worldState,
+              child: const CenterTabsArea(),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  await tester.pump();
+  // flutter_animate's mounted-then-disposed timer law: tick the fake
+  // clock once after the mount frame, then settle the boot animations.
+  await tester.pump(const Duration(milliseconds: 1));
+  await tester.pump(const Duration(milliseconds: 100));
+  await tester.pump(const Duration(milliseconds: 400));
+  addTearDown(worldState.dispose);
+}
+
+/// Opens the people tab through the strip's `+` picker (the lazy-list
+/// scroll materializes rows past the fold).
+Future<void> _openPeopleTab(final WidgetTester tester) async {
+  await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 200));
+  final target = find.byKey(const ValueKey('newtab.entry.people'));
+  final panel = find.byKey(const ValueKey('newtab.page'));
+  for (var i = 0; i < 15 && target.evaluate().isEmpty; i++) {
+    await tester.drag(panel, const Offset(0, -140), warnIfMissed: false);
+    await tester.pump();
+  }
+  await tester.pump();
+  await tester.tap(target);
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 200));
+}
+
+/// Drains the real IO the grants section / conversation selects start
+/// (the settle-then-runAsync law: no live ticker is inside).
+Future<void> _drain(final WidgetTester tester) async {
+  await tester.runAsync(
+    () => Future<void>.delayed(const Duration(milliseconds: 200)),
+  );
+  await tester.pump();
+}
+
+void main() {
+  late Directory devicePin;
+  setUp(() {
+    // The chat-first projection is the default (docked, no pref).
+    SharedPreferences.setMockInitialValues({});
+    devicePin = Directory.systemTemp.createTempSync('la_actor_home_');
+    RealmWorld.debugDeviceHome = devicePin.path;
+  });
+
+  tearDown(() {
+    // The shell installs the home face's seams on mount; release them.
+    AgentDocSurface.createMeaningExperimentHook = null;
+    AgentDocSurface.createAgentProjectHook = null;
+    AgentDocSurface.meshWiring = null;
+    StorageBackendsNotifier.onSyncCycle = null;
+    RealmWorld.debugDeviceHome = null;
+    devicePin.deleteSync(recursive: true);
+  });
+
+  testWidgets('a people row tap opens the actor:<id> info tab in a '
+      'split: facts, editor and grants render', (final tester) async {
+    final service = await _hermeticService(tester);
+    final actorId = service
+        .roster!
+        .all
+        .firstWhere((final actor) => actor.kind != ActorKind.human)
+        .actorId;
+    await _pumpShell(tester, service: service);
+    await _openPeopleTab(tester);
+
+    // The people view lists the channel's members; the row tap rides
+    // the shell's onFocus wiring into the actor's OWN info tab.
+    final row = find.byKey(ValueKey('shell.context.person.$actorId'));
+    expect(row, findsOneWidget);
+    await tester.tap(row);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+
+    final surfaceId = actorSurfaceId(actorId);
+    expect(find.byKey(ValueKey('view.tab.$surfaceId')), findsOneWidget);
+    expect(find.byKey(ValueKey('pane.leaf.$surfaceId')), findsOneWidget);
+    expect(find.byKey(const ValueKey('actor.info')), findsOneWidget);
+
+    // The read-only facts block: journal field names, verbatim values.
+    expect(find.byKey(const ValueKey('actor.info.facts')), findsOneWidget);
+    expect(
+      tester.widget<Text>(
+        find.byKey(const ValueKey('actor.info.fact.kind')),
+      ).data,
+      'model',
+    );
+    expect(
+      tester.widget<Text>(
+        find.byKey(const ValueKey('actor.info.fact.actorId')),
+      ).data,
+      actorId,
+    );
+
+    // The EXISTING editor renders seeded with the live profile.
+    final nameField = find.byKey(const ValueKey(actorEditorNameKey));
+    expect(nameField, findsOneWidget);
+    expect(
+      tester.widget<TextField>(nameField).controller!.text,
+      'Toby Researcher',
+    );
+    expect(
+      find.byKey(const ValueKey(actorEditorPersonaKey)),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('actor.info.save')), findsOneWidget);
+
+    // The channel membership computed from service.channels.
+    final channelId = service.channels.first.channelId;
+    expect(
+      find.byKey(ValueKey('actor.info.channel.$channelId')),
+      findsOneWidget,
+    );
+
+    // The grants section renders the hermetic world's named absence
+    // (or rows, once a grant exists) — after its real-IO reload drains.
+    expect(
+      find.byKey(const ValueKey('shell.people.access')),
+      findsOneWidget,
+    );
+    await _drain(tester);
+    final settled =
+        find
+            .byKey(const ValueKey('shell.people.access.empty'))
+            .evaluate()
+            .isNotEmpty ||
+        find
+            .byKey(const ValueKey('shell.people.access.message'))
+            .evaluate()
+            .isNotEmpty ||
+        find
+            .byWidgetPredicate(
+              (final widget) =>
+                  widget.key is ValueKey &&
+                  (widget.key! as ValueKey).value
+                      .toString()
+                      .startsWith('shell.people.access.grant.'),
+            )
+            .evaluate()
+            .isNotEmpty;
+    expect(settled, isTrue);
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('an edit persists through updateActor and a membership '
+      'row routes to its channel tab', (final tester) async {
+    final service = await _hermeticService(tester);
+    final actorId = service
+        .roster!
+        .all
+        .firstWhere((final actor) => actor.kind != ActorKind.human)
+        .actorId;
+    await _pumpShell(tester, service: service);
+    // The people row tap rides the shell's registry routing into the
+    // actor's info tab (the ONE router places it in the view group).
+    await _openPeopleTab(tester);
+    await tester.tap(find.byKey(ValueKey('shell.context.person.$actorId')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+
+    // Edit the name; Save rides the EXISTING service verb.
+    await tester.enterText(
+      find.byKey(const ValueKey(actorEditorNameKey)),
+      'Toby Renamed',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('actor.info.save')));
+    await tester.pump();
+    // updateActor writes the durable world record — real IO, drained
+    // inside the test (an unresolved store future poisons the next).
+    await _drain(tester);
+    expect(
+      service.roster!.get(actorId)!.displayName,
+      'Toby Renamed',
+    );
+    // The tab title is a live projection (never cached): the renamed
+    // actor retitles its open tab.
+    expect(find.text('Toby Renamed'), findsWidgets);
+
+    // The membership row routes into the conversation grammar: the
+    // channel opens in GROUP 0 (docked law — conversations own it).
+    final channelId = service.channels.first.channelId;
+    await tester.tap(find.byKey(ValueKey('actor.info.channel.$channelId')));
+    await tester.pump();
+    await _drain(tester);
+    expect(
+      find.byKey(ValueKey('view.tab.channel:$channelId')),
+      findsOneWidget,
+    );
+    expect(service.activeThreadId, isNotNull);
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+    await tester.pumpAndSettle();
+  });
+}

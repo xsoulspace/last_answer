@@ -8,6 +8,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';
+import 'package:lastanswer/mcp/shell_mcp_tools.dart';
 import 'package:lastanswer/mcp/storage_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
@@ -31,6 +32,7 @@ void main() {
             ...docMcpEntries(),
             ...agentMcpEntries(),
             ...realmChatMcpEntries(),
+            ...shellMcpEntries(),
             ...worldInspectorMcpEntries(),
           },
         ),

@@ -162,8 +162,10 @@ final class RealmChatService extends ChangeNotifier {
   List<Map<String, Object?>> get threads => List.unmodifiable(_threads);
 
   /// ADR 0024 — registered channels (oldest first), cached from
-  /// [ChannelRegistry.list]; refreshed on start and after each
-  /// [createChannel].
+  /// [ChannelRegistry.list]; LIVE channels only — an archived channel
+  /// leaves this list (its durable thread survives; the journal is
+  /// authority). Refreshed on start and after each [createChannel],
+  /// [renameChannel] and [closeChannel].
   List<ChannelInfo> get channels => List.unmodifiable(_channels);
 
   /// ADR 0129 — the project-sealed work threads spawned from LA rooms
@@ -236,6 +238,14 @@ final class RealmChatService extends ChangeNotifier {
   final List<Map<String, Object?>> _threads = <Map<String, Object?>>[];
   final List<Map<String, Object?>> _beats = <Map<String, Object?>>[];
   final List<ChannelInfo> _channels = <ChannelInfo>[];
+
+  /// The thread ids of ARCHIVED channels, refreshed alongside
+  /// [_channels] from the same registry scan. An archived channel's
+  /// thread stays open in the journal (closing never destroys), so
+  /// without this set [roomThreads] would resurrect it as a plain
+  /// "room" the moment it leaves the live channel list. Sync getter
+  /// law: [roomThreads] does no IO, so the knowledge must be cached.
+  final Set<String> _archivedChannelThreadIds = <String>{};
   final List<WorkThreadLink> _workThreads = <WorkThreadLink>[];
   final Map<String, String> _beatPreviews = <String, String>{};
   String _previewSignature = '';
@@ -615,7 +625,9 @@ final class RealmChatService extends ChangeNotifier {
       _threads.any((thread) => thread['threadId'] == threadId);
 
   /// The WATCHABLE ROOMS (1d): open threads that are neither a DM slot
-  /// nor a channel — actor↔actor rooms and plain group threads. The
+  /// nor a channel — actor↔actor rooms and plain group threads. An
+  /// ARCHIVED channel's thread never resurfaces here as a room (the
+  /// channel left the lists; its thread stays in the journal). The
   /// human watches them like any room and joins by addressing (the
   /// mention grammar already exists); the picker and palette list them.
   List<Map<String, Object?>> get roomThreads {
@@ -628,6 +640,10 @@ final class RealmChatService extends ChangeNotifier {
 
   bool _isDmOrChannel(final Map<String, Object?> thread, final String? human) {
     final threadId = '${thread['threadId'] ?? ''}';
+    // An ARCHIVED channel's thread is still a channel thread — it must
+    // not leak back into [roomThreads] as a plain room (closing never
+    // destroys the journal thread, it only leaves the lists).
+    if (_archivedChannelThreadIds.contains(threadId)) return true;
     if (channelByThreadId(threadId) != null) return true;
     if (human == null) return false;
     final participants = (thread['participants'] as List? ?? const <Object?>[])
@@ -712,6 +728,109 @@ final class RealmChatService extends ChangeNotifier {
     }
   }
 
+  /// Renames one channel — the SAME policy lane as [createChannel]:
+  /// an empty trimmed name refuses with `channel_name_empty`, a name
+  /// duplicating any OTHER live channel (case-insensitive) refuses with
+  /// `channel_name_taken`, and success refreshes the projections and
+  /// notifies. False on refusal, an unknown [channelId] or a not-ready
+  /// service — the honest-refusal law, never a throw. The channel's
+  /// durable thread keeps its original topic (the journal is authority;
+  /// LA never rewrites journal rows).
+  Future<bool> renameChannel(final String channelId, final String name) async {
+    final registry = _channelRegistry;
+    if (registry == null) return false;
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) {
+      _error = 'channel_name_empty';
+      notifyListeners();
+      return false;
+    }
+    final taken = _channels.any(
+      (final channel) =>
+          channel.channelId != channelId &&
+          channel.name.toLowerCase() == trimmed.toLowerCase(),
+    );
+    if (taken) {
+      _error = 'channel_name_taken';
+      notifyListeners();
+      return false;
+    }
+    try {
+      final renamed = await registry.rename(
+        channelId: channelId,
+        name: trimmed,
+      );
+      if (renamed == null) return false;
+      await _refreshChannels();
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Closes one channel: the registry row is ARCHIVED and the channel
+  /// leaves [channels] (and [roomThreads]); when its thread is the
+  /// active one, the selection is cleared. LAW: closing never destroys
+  /// anything — the journal is authority, so the durable thread and
+  /// every beat in it survive untouched. False on an unknown
+  /// [channelId] or a not-ready service.
+  Future<bool> closeChannel(final String channelId) async {
+    final registry = _channelRegistry;
+    if (registry == null) return false;
+    try {
+      final channel = await registry.byId(channelId);
+      if (channel == null) return false;
+      final archived = await registry.archive(channelId: channelId);
+      if (!archived) return false;
+      if (_activeThreadId == channel.threadId) clearActiveThread();
+      await _refreshChannels();
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// The first-run seed channel name ([ensureSeededChannel]).
+  static const String seededChannelName = 'general';
+
+  /// The seed's policy input: the shell boots with the seed ON (a fresh
+  /// world lands in [#seededChannelName] — the owner's first-entry law),
+  /// and hermetic surfaces that want the EMPTY-world face (tests of the
+  /// landing inbox, kiosk lanes) turn it off before the shell boots.
+  /// A policy input like [resolveCastRung], never a debug back door.
+  bool firstRunSeedEnabled = true;
+
+  /// The shell's once-at-boot seed: when the registry has NEVER had a
+  /// channel (`list(includeArchived: true)` is empty), create
+  /// [seededChannelName] through the ordinary [createChannel] lane
+  /// (human member only; the channel is selected on success). LAW: an
+  /// archived seed is NEVER resurrected — a world whose only channel
+  /// was closed stays empty. Idempotent, and never throws into the
+  /// shell (a failed seed is an honest absence, not a boot crash).
+  /// Deliberately NOT part of [ensureReady]: hermetic fixtures must
+  /// never seed implicitly.
+  Future<void> ensureSeededChannel() async {
+    if (!firstRunSeedEnabled) return;
+    try {
+      await ensureReady();
+      final registry = _channelRegistry;
+      if (registry == null) return;
+      final all = await registry.list(includeArchived: true);
+      if (all.isNotEmpty) return;
+      await createChannel(seededChannelName);
+    } on Object {
+      // Boot seed law: never throw into the shell.
+    }
+  }
+
   /// Selects the thread the named channel talks in (no-op when unknown).
   void selectChannel(final String channelId) {
     for (final channel in _channels) {
@@ -726,10 +845,21 @@ final class RealmChatService extends ChangeNotifier {
     final registry = _channelRegistry;
     if (registry == null) return;
     try {
-      final channels = await registry.list();
+      // ONE scan feeds both views: the live list and the archived
+      // thread-id set [roomThreads] needs (sync getter — no IO there).
+      final all = await registry.list(includeArchived: true);
       _channels
         ..clear()
-        ..addAll(channels);
+        ..addAll([
+          for (final channel in all)
+            if (!channel.archived) channel,
+        ]);
+      _archivedChannelThreadIds
+        ..clear()
+        ..addAll([
+          for (final channel in all)
+            if (channel.archived) channel.threadId,
+        ]);
     } on Object catch (error) {
       _error = error.toString();
     }

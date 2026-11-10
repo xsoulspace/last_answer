@@ -25,6 +25,7 @@ final class ChannelInfo {
     required this.threadId,
     required this.memberIds,
     required this.createdAt,
+    this.archived = false,
   });
 
   factory ChannelInfo.fromRecord(final Map<String, Object?> record) =>
@@ -34,6 +35,10 @@ final class ChannelInfo {
         threadId: record['threadId']! as String,
         memberIds: (record['memberIds']! as List).cast<String>(),
         createdAt: record['createdAt']! as String,
+        // Tolerant decode: rows written before the field existed carry
+        // no `archived` key, and a non-bool value is not a truth — both
+        // read as the live default.
+        archived: record['archived'] == true,
       );
 
   /// `channel-` + 12 hex chars (Random.secure) — the same minting style
@@ -53,12 +58,18 @@ final class ChannelInfo {
   /// ISO-8601 UTC instant; `list()` orders by it, oldest first.
   final String createdAt;
 
+  /// Whether the channel was closed (archived). LAW: archiving never
+  /// destroys anything — the row and its durable thread survive (the
+  /// journal is authority); the channel just leaves the live lists.
+  final bool archived;
+
   Map<String, Object?> toRecord() => <String, Object?>{
     'channelId': channelId,
     'name': name,
     'threadId': threadId,
     'memberIds': List<String>.of(memberIds),
     'createdAt': createdAt,
+    'archived': archived,
   };
 
   @override
@@ -92,6 +103,7 @@ final class ChannelRegistry {
       }.toList()
         ..sort(),
       'createdAt': DateTime.now().toUtc().toIso8601String(),
+      'archived': false,
     };
     await _store.transact(
       (final tx) => tx.put(_collection, record['channelId']! as String, record),
@@ -99,13 +111,50 @@ final class ChannelRegistry {
     return ChannelInfo.fromRecord(record);
   }
 
-  /// All registered channels, oldest first.
-  Future<List<ChannelInfo>> list() async {
+  /// All registered channels, oldest first. Archived rows are EXCLUDED
+  /// by default (the live list); `includeArchived: true` reads the full
+  /// history — a channel that was ever registered, closed or not.
+  Future<List<ChannelInfo>> list({final bool includeArchived = false}) async {
     final records = await _store.scan(_collection);
     final channels = [
       for (final record in records.values) ChannelInfo.fromRecord(record),
     ]..sort((final a, final b) => a.createdAt.compareTo(b.createdAt));
-    return channels;
+    return includeArchived
+        ? channels
+        : [
+            for (final channel in channels)
+              if (!channel.archived) channel,
+          ];
+  }
+
+  /// Rewrites one channel's name (stored trimmed), preserving every
+  /// other field verbatim. Null on an unknown [channelId]. The registry
+  /// is dumb: empty/duplicate-name policy lives in `RealmChatService`.
+  Future<ChannelInfo?> rename({
+    required final String channelId,
+    required final String name,
+  }) async {
+    final record = await _store.read(_collection, channelId);
+    if (record == null) return null;
+    final next = <String, Object?>{...record, 'name': name.trim()};
+    await _store.transact(
+      (final tx) => tx.put(_collection, channelId, next),
+    );
+    return ChannelInfo.fromRecord(next);
+  }
+
+  /// Marks one channel archived — the row and its durable thread
+  /// survive (the journal is authority; closing never destroys
+  /// anything), the channel just leaves the live [list]. False on an
+  /// unknown [channelId].
+  Future<bool> archive({required final String channelId}) async {
+    final record = await _store.read(_collection, channelId);
+    if (record == null) return false;
+    final next = <String, Object?>{...record, 'archived': true};
+    await _store.transact(
+      (final tx) => tx.put(_collection, channelId, next),
+    );
+    return true;
   }
 
   /// One-device-one-human migration: every member id matching the
@@ -134,8 +183,9 @@ final class ChannelRegistry {
     return healed;
   }
 
-  /// The channel registered over [threadId], null when it is a plain
-  /// thread (a DM or an unregistered group).
+  /// The LIVE channel registered over [threadId], null when no live
+  /// channel carries it (a DM, an unregistered group, or a channel that
+  /// was archived).
   Future<ChannelInfo?> byThreadId(final String threadId) async {
     for (final channel in await list()) {
       if (channel.threadId == threadId) return channel;

@@ -1259,6 +1259,105 @@ final class RealmChatService extends ChangeNotifier {
     );
   }
 
+  // ---- palette revision verbs (Wave J — the provider editor's seam) ----
+  //
+  // THIN by the module-reuse law: the propose/apply lane IS the host's
+  // own durable participation dispatcher (`DurableRealmTools.invoke` →
+  // the `palette_propose` / `palette_apply` ops →
+  // `proposePaletteRevision` / `applyPaletteRevision` in
+  // `palette_admin.dart`, xsoulspace_agentic_host). The host owns the
+  // OWNER-ONLY apply gate (`palette_apply_not_owner`, carrying
+  // actor/grantId/recovery), the validation gate (the daemon boot's own
+  // `parsePaletteConfig` — a structural problem answers with its
+  // `PaletteConfigError.code` VERBATIM), the `.bak`-protected write, the
+  // `expectedBeforeSha256` race guard (`palette_revision_conflict`) and
+  // the `palette_revisions` journal receipt. These verbs add exactly one
+  // law of their own: they NEVER throw into the UI (the honest-refusal
+  // law) — every lane lands as a structured envelope.
+
+  /// Test seam: pins the palette-health file the revision receipts read
+  /// (hermetic tests never touch the device file). Never set from
+  /// product.
+  @visibleForTesting
+  String? debugPaletteHealthPath;
+
+  /// Test seam: overrides the configuration root the palette chain
+  /// resolves from (product derives the realm world home — the same
+  /// chain the daemon reads). Never set from product.
+  @visibleForTesting
+  String? debugPaletteConfigRoot;
+
+  /// Validates one candidate `model_palette` object (the host's wire
+  /// shape: `providers` + `cast`) against the effective config and
+  /// returns the host's proposal receipt VERBATIM — `ok: true` with
+  /// `beforeSha256`/`afterSha256`/`diff`/`warnings`, or `ok: false` with
+  /// the `PaletteConfigError.code` as the bounce and its message as the
+  /// refusal. Open to every seat; read-only (writes nothing).
+  Future<Map<String, Object?>> proposePalette(
+    final Map<String, Object?> candidate,
+  ) => _paletteVerb('palette_propose', candidate);
+
+  /// The OWNER-ONLY palette apply: revalidates, writes the winning
+  /// config file with a `.bak` sibling and appends one
+  /// `palette_revisions` journal row — the host's receipt verbatim. A
+  /// seat without the owner grant answers `ok: false` with the bounce
+  /// `palette_apply_not_owner` whose refusal detail carries the
+  /// `recovery` text (rendered verbatim by the UI, never a bare error).
+  /// [expectedBeforeSha256] is the proposal receipt's race guard.
+  Future<Map<String, Object?>> applyPalette(
+    final Map<String, Object?> candidate, {
+    final String? expectedBeforeSha256,
+  }) => _paletteVerb(
+    'palette_apply',
+    candidate,
+    expectedBeforeSha256: expectedBeforeSha256,
+  );
+
+  Future<Map<String, Object?>> _paletteVerb(
+    final String op,
+    final Map<String, Object?> candidate, {
+    final String? expectedBeforeSha256,
+  }) async {
+    final world = _world;
+    final seat = _human;
+    if (world == null || seat == null) {
+      return const <String, Object?>{
+        'ok': false,
+        'bounce': 'realm_not_ready',
+      };
+    }
+    try {
+      final tools = DurableRealmTools(
+        store: world.store,
+        queue: DurableTaskQueue(store: world.store),
+        // The palette ops read neither (only the `actions` wire and the
+        // task admission do) — the dispatcher takes the honest absence.
+        palette: null,
+        verification: null,
+        modelConfigurationRoot: debugPaletteConfigRoot ?? _worldHome,
+        paletteHealthPath: debugPaletteHealthPath,
+      );
+      return await tools.invoke(
+        seat,
+        'agent_participation',
+        <String, Object?>{
+          'op': op,
+          'modelPalette': candidate,
+          if (expectedBeforeSha256 != null)
+            'expectedBeforeSha256': expectedBeforeSha256,
+        },
+      );
+    } on Object catch (error) {
+      // A transport surprise lands as a named outcome, never as an
+      // exception in the UI (the honest-refusal law).
+      return <String, Object?>{
+        'ok': false,
+        'bounce': 'palette_verb_failed',
+        'refusal': '$error',
+      };
+    }
+  }
+
   /// Rebuilds the last-beat previews from the thread list itself
   /// (ADR 0025): each thread record now carries the preview triple
   /// (`lastBeatAuthor`/`lastBeatText`/`lastBeatAt`) from its journal

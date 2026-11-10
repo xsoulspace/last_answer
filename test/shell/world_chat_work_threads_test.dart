@@ -20,8 +20,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/shell/shell_layout.dart';
+import 'package:lastanswer/shell/shell_scope.dart';
+import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
 
 /// One hermetic room (realm_work_thread_test's `_Room` fixture,
@@ -488,6 +492,69 @@ void main() {
         find.byKey(ValueKey('worldchat.workthread.$workId')),
         findsOneWidget,
       );
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  testWidgets(
+    'f — the work card\'s Open routes through ViewScope.onOpenThread '
+    '(the Wave H regression pin: a bare selectThread moves no pane '
+    'anymore, so the shell router must open the room tab)',
+    (final tester) async {
+      final room = await _openRoom(tester, 'openlane');
+      late final String workId;
+      await tester.runAsync(() async {
+        // A conversational child: startThread + the registry link with
+        // an honest-empty seal (the spawnWorkThread gate refuses an
+        // unsealed root — the surface's own _startChildThread pattern).
+        await room.service.startThread(
+          topic: 'child lane',
+          participants: <String>[room.worker.actorId],
+        );
+        final childId = room.service.activeThreadId;
+        expect(childId, isNotNull);
+        workId = childId!;
+        await WorkThreadRegistry(store: room.world.store).create(
+          workThreadId: workId,
+          parentThreadId: room.parentThreadId,
+          projectRoot: '',
+          name: 'child lane',
+          createdBy: room.humanId,
+        );
+        await room.service.refreshWorkThreads();
+        room.service.selectThread(room.parentThreadId);
+      });
+      final opened = <String>[];
+      await tester.pumpWidget(
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: room.service,
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: S.localizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: Builder(
+                builder: (final context) => ViewScope(
+                  layout: ShellLayout.defaultLayout(),
+                  surfaces: buildShellSurfaces(context),
+                  onChanged: (final _) {},
+                  onOpenThread: opened.add,
+                  child: WorldChatSurface(service: room.service),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.tap(
+        find.byKey(ValueKey('worldchat.workthread.open.$workId')),
+      );
+      await tester.pump();
+      expect(opened, <String>[workId]);
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );

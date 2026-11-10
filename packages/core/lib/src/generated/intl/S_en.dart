@@ -1424,6 +1424,74 @@ class SEn extends S {
   @override
   String get roomsRenameAction => 'Rename';
   @override
+  String get stripOverflowHint => 'Hidden tabs — open the list';
+  @override
+  String get modelsProviders => 'Providers';
+  @override
+  String get modelsEditProviders => 'Edit providers';
+  @override
+  String get modelsNoProviders => 'no providers declared';
+  @override
+  String get modelsCountSuffix => 'models';
+  @override
+  String get modelsContextTier => 'ctx';
+  @override
+  String get modelsNoModels => 'no models declared';
+  @override
+  String get modelsAddProvider => 'Add provider';
+  @override
+  String get modelsEditProvider => 'Edit provider';
+  @override
+  String get modelsAddModel => 'Add model';
+  @override
+  String get modelsRenameModel => 'Rename model';
+  @override
+  String get modelsEditAction => 'edit';
+  @override
+  String get modelsRemoveAction => 'remove';
+  @override
+  String get modelsRenameAction => 'rename';
+  @override
+  String get modelsConfirm => 'Confirm';
+  @override
+  String get modelsCancel => 'Cancel';
+  @override
+  String get modelsPropose => 'Propose';
+  @override
+  String get modelsApply => 'Apply';
+  @override
+  String get modelsUnsavedChanges => 'unsaved changes';
+  @override
+  String get modelsInSync => 'in sync with the live palette';
+  @override
+  String get modelsRestartRequired => 'restart required';
+  @override
+  String get modelsTransportLabel => 'transport';
+  @override
+  String get modelsEnvPrefix => 'env:';
+  @override
+  String get modelsProviderIdHint => 'provider id';
+  @override
+  String get modelsModelIdHint => 'model id';
+  @override
+  String get modelsBaseUrlHint => 'base_url (https, or http loopback)';
+  @override
+  String get modelsCredentialEnvHint => 'credential_env (an env NAME)';
+  @override
+  String get modelsRefusalEmptyId => 'the id must not be empty';
+  @override
+  String get modelsRefusalDuplicateProvider => 'a provider already exists with id';
+  @override
+  String get modelsRefusalDuplicateModel => 'the provider already declares model';
+  @override
+  String get modelsRefusalIdImmutable => 'provider id is immutable — referenced by cast:';
+  @override
+  String get modelsRefusalProviderInUse => 'cannot remove provider — referenced by cast:';
+  @override
+  String get modelsRefusalModelInUse => 'cannot remove model — referenced by cast:';
+  @override
+  String get modelsRefusalNoSeat => 'the realm seat is not ready — the palette verbs need it';
+  @override
   String get roomsExplainDms => 'Direct messages — private threads with one actor';
   @override
   String get roomsExplainChannels => 'Channels — named group rooms with shared history';

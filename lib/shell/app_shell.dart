@@ -1414,6 +1414,8 @@ class _AppShellState extends State<AppShell> {
               surfaces: surfaces,
               onChanged: _onLayoutChanged,
               onFocusActor: _onFocusActorIntent,
+              onOpenThread: (final threadId) =>
+                  _onSelectTab('room:$threadId'),
               titleFor: (final id) =>
                   conversationSurfaceTitle(
                     id,

@@ -1434,6 +1434,74 @@ class SIt extends S {
   @override
   String get roomsRenameAction => 'Rinomina';
   @override
+  String get stripOverflowHint => 'Schede nascoste — apri l\'elenco';
+  @override
+  String get modelsProviders => 'Provider';
+  @override
+  String get modelsEditProviders => 'Modifica provider';
+  @override
+  String get modelsNoProviders => 'nessun provider dichiarato';
+  @override
+  String get modelsCountSuffix => 'modelli';
+  @override
+  String get modelsContextTier => 'ctx';
+  @override
+  String get modelsNoModels => 'nessun modello dichiarato';
+  @override
+  String get modelsAddProvider => 'Aggiungi provider';
+  @override
+  String get modelsEditProvider => 'Modifica provider';
+  @override
+  String get modelsAddModel => 'Aggiungi modello';
+  @override
+  String get modelsRenameModel => 'Rinomina modello';
+  @override
+  String get modelsEditAction => 'modifica';
+  @override
+  String get modelsRemoveAction => 'rimuovi';
+  @override
+  String get modelsRenameAction => 'rinomina';
+  @override
+  String get modelsConfirm => 'Conferma';
+  @override
+  String get modelsCancel => 'Annulla';
+  @override
+  String get modelsPropose => 'Proponi';
+  @override
+  String get modelsApply => 'Applica';
+  @override
+  String get modelsUnsavedChanges => 'modifiche non salvate';
+  @override
+  String get modelsInSync => 'sincronizzato con la palette attiva';
+  @override
+  String get modelsRestartRequired => 'riavvio necessario';
+  @override
+  String get modelsTransportLabel => 'trasporto';
+  @override
+  String get modelsEnvPrefix => 'env:';
+  @override
+  String get modelsProviderIdHint => 'id provider';
+  @override
+  String get modelsModelIdHint => 'id modello';
+  @override
+  String get modelsBaseUrlHint => 'base_url (https o http loopback)';
+  @override
+  String get modelsCredentialEnvHint => 'credential_env (NOME di variabile d\'ambiente)';
+  @override
+  String get modelsRefusalEmptyId => 'l\'id non può essere vuoto';
+  @override
+  String get modelsRefusalDuplicateProvider => 'esiste già un provider con id';
+  @override
+  String get modelsRefusalDuplicateModel => 'il provider dichiara già il modello';
+  @override
+  String get modelsRefusalIdImmutable => 'l\'id del provider è immutabile — referenziato dal cast:';
+  @override
+  String get modelsRefusalProviderInUse => 'impossibile rimuovere il provider — referenziato dal cast:';
+  @override
+  String get modelsRefusalModelInUse => 'impossibile rimuovere il modello — referenziato dal cast:';
+  @override
+  String get modelsRefusalNoSeat => 'il seat del realm non è pronto — i verbi della palette lo richiedono';
+  @override
   String get roomsExplainDms => 'Messaggi diretti — thread privati con un attore';
   @override
   String get roomsExplainChannels => 'Canali — stanze di gruppo con nome e cronologia condivisa';

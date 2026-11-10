@@ -1439,6 +1439,74 @@ class SRu extends S {
   @override
   String get roomsRenameAction => 'Переименовать';
   @override
+  String get stripOverflowHint => 'Скрытые вкладки — открыть список';
+  @override
+  String get modelsProviders => 'Провайдеры';
+  @override
+  String get modelsEditProviders => 'Редактировать провайдеров';
+  @override
+  String get modelsNoProviders => 'провайдеры не объявлены';
+  @override
+  String get modelsCountSuffix => 'моделей';
+  @override
+  String get modelsContextTier => 'контекст';
+  @override
+  String get modelsNoModels => 'модели не объявлены';
+  @override
+  String get modelsAddProvider => 'Добавить провайдера';
+  @override
+  String get modelsEditProvider => 'Изменить провайдера';
+  @override
+  String get modelsAddModel => 'Добавить модель';
+  @override
+  String get modelsRenameModel => 'Переименовать модель';
+  @override
+  String get modelsEditAction => 'изменить';
+  @override
+  String get modelsRemoveAction => 'удалить';
+  @override
+  String get modelsRenameAction => 'переименовать';
+  @override
+  String get modelsConfirm => 'Подтвердить';
+  @override
+  String get modelsCancel => 'Отмена';
+  @override
+  String get modelsPropose => 'Предложить';
+  @override
+  String get modelsApply => 'Применить';
+  @override
+  String get modelsUnsavedChanges => 'несохранённые изменения';
+  @override
+  String get modelsInSync => 'синхронизировано с активной палитрой';
+  @override
+  String get modelsRestartRequired => 'требуется перезапуск';
+  @override
+  String get modelsTransportLabel => 'транспорт';
+  @override
+  String get modelsEnvPrefix => 'env:';
+  @override
+  String get modelsProviderIdHint => 'id провайдера';
+  @override
+  String get modelsModelIdHint => 'id модели';
+  @override
+  String get modelsBaseUrlHint => 'base_url (https или http loopback)';
+  @override
+  String get modelsCredentialEnvHint => 'credential_env (ИМЯ переменной окружения)';
+  @override
+  String get modelsRefusalEmptyId => 'id не может быть пустым';
+  @override
+  String get modelsRefusalDuplicateProvider => 'провайдер с таким id уже существует';
+  @override
+  String get modelsRefusalDuplicateModel => 'провайдер уже объявляет модель';
+  @override
+  String get modelsRefusalIdImmutable => 'id провайдера неизменяем — на него ссылается каст:';
+  @override
+  String get modelsRefusalProviderInUse => 'нельзя удалить провайдера — на него ссылается каст:';
+  @override
+  String get modelsRefusalModelInUse => 'нельзя удалить модель — на неё ссылается каст:';
+  @override
+  String get modelsRefusalNoSeat => 'seat realm не готов — он нужен глаголам палитры';
+  @override
   String get roomsExplainDms => 'Личные сообщения — приватные ветки с одним актёром';
   @override
   String get roomsExplainChannels => 'Каналы — именованные групповые комнаты с общей историей';

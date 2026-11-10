@@ -2643,6 +2643,176 @@ abstract class S {
   /// **'Rename'**
   String get roomsRenameAction;
 
+  /// No description provided for @stripOverflowHint.
+  ///
+  /// In en, this message translates to:
+  /// **Hidden tabs — open the list**
+  String get stripOverflowHint;
+  /// No description provided for @modelsProviders.
+  ///
+  /// In en, this message translates to:
+  /// **Providers**
+  String get modelsProviders;
+  /// No description provided for @modelsEditProviders.
+  ///
+  /// In en, this message translates to:
+  /// **Edit providers**
+  String get modelsEditProviders;
+  /// No description provided for @modelsNoProviders.
+  ///
+  /// In en, this message translates to:
+  /// **no providers declared**
+  String get modelsNoProviders;
+  /// No description provided for @modelsCountSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **models**
+  String get modelsCountSuffix;
+  /// No description provided for @modelsContextTier.
+  ///
+  /// In en, this message translates to:
+  /// **ctx**
+  String get modelsContextTier;
+  /// No description provided for @modelsNoModels.
+  ///
+  /// In en, this message translates to:
+  /// **no models declared**
+  String get modelsNoModels;
+  /// No description provided for @modelsAddProvider.
+  ///
+  /// In en, this message translates to:
+  /// **Add provider**
+  String get modelsAddProvider;
+  /// No description provided for @modelsEditProvider.
+  ///
+  /// In en, this message translates to:
+  /// **Edit provider**
+  String get modelsEditProvider;
+  /// No description provided for @modelsAddModel.
+  ///
+  /// In en, this message translates to:
+  /// **Add model**
+  String get modelsAddModel;
+  /// No description provided for @modelsRenameModel.
+  ///
+  /// In en, this message translates to:
+  /// **Rename model**
+  String get modelsRenameModel;
+  /// No description provided for @modelsEditAction.
+  ///
+  /// In en, this message translates to:
+  /// **edit**
+  String get modelsEditAction;
+  /// No description provided for @modelsRemoveAction.
+  ///
+  /// In en, this message translates to:
+  /// **remove**
+  String get modelsRemoveAction;
+  /// No description provided for @modelsRenameAction.
+  ///
+  /// In en, this message translates to:
+  /// **rename**
+  String get modelsRenameAction;
+  /// No description provided for @modelsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **Confirm**
+  String get modelsConfirm;
+  /// No description provided for @modelsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **Cancel**
+  String get modelsCancel;
+  /// No description provided for @modelsPropose.
+  ///
+  /// In en, this message translates to:
+  /// **Propose**
+  String get modelsPropose;
+  /// No description provided for @modelsApply.
+  ///
+  /// In en, this message translates to:
+  /// **Apply**
+  String get modelsApply;
+  /// No description provided for @modelsUnsavedChanges.
+  ///
+  /// In en, this message translates to:
+  /// **unsaved changes**
+  String get modelsUnsavedChanges;
+  /// No description provided for @modelsInSync.
+  ///
+  /// In en, this message translates to:
+  /// **in sync with the live palette**
+  String get modelsInSync;
+  /// No description provided for @modelsRestartRequired.
+  ///
+  /// In en, this message translates to:
+  /// **restart required**
+  String get modelsRestartRequired;
+  /// No description provided for @modelsTransportLabel.
+  ///
+  /// In en, this message translates to:
+  /// **transport**
+  String get modelsTransportLabel;
+  /// No description provided for @modelsEnvPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **env:**
+  String get modelsEnvPrefix;
+  /// No description provided for @modelsProviderIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **provider id**
+  String get modelsProviderIdHint;
+  /// No description provided for @modelsModelIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **model id**
+  String get modelsModelIdHint;
+  /// No description provided for @modelsBaseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **base_url (https, or http loopback)**
+  String get modelsBaseUrlHint;
+  /// No description provided for @modelsCredentialEnvHint.
+  ///
+  /// In en, this message translates to:
+  /// **credential_env (an env NAME)**
+  String get modelsCredentialEnvHint;
+  /// No description provided for @modelsRefusalEmptyId.
+  ///
+  /// In en, this message translates to:
+  /// **the id must not be empty**
+  String get modelsRefusalEmptyId;
+  /// No description provided for @modelsRefusalDuplicateProvider.
+  ///
+  /// In en, this message translates to:
+  /// **a provider already exists with id**
+  String get modelsRefusalDuplicateProvider;
+  /// No description provided for @modelsRefusalDuplicateModel.
+  ///
+  /// In en, this message translates to:
+  /// **the provider already declares model**
+  String get modelsRefusalDuplicateModel;
+  /// No description provided for @modelsRefusalIdImmutable.
+  ///
+  /// In en, this message translates to:
+  /// **provider id is immutable — referenced by cast:**
+  String get modelsRefusalIdImmutable;
+  /// No description provided for @modelsRefusalProviderInUse.
+  ///
+  /// In en, this message translates to:
+  /// **cannot remove provider — referenced by cast:**
+  String get modelsRefusalProviderInUse;
+  /// No description provided for @modelsRefusalModelInUse.
+  ///
+  /// In en, this message translates to:
+  /// **cannot remove model — referenced by cast:**
+  String get modelsRefusalModelInUse;
+  /// No description provided for @modelsRefusalNoSeat.
+  ///
+  /// In en, this message translates to:
+  /// **the realm seat is not ready — the palette verbs need it**
+  String get modelsRefusalNoSeat;
   /// No description provided for @roomsExplainDms.
   ///
   /// In en, this message translates to:

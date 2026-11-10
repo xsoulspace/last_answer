@@ -43,6 +43,26 @@ import 'package:lastanswer/shell/shell_theme.dart';
 /// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
 /// and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
+/// The thread-open lane (the Wave H regression pin, 2026-11-10):
+/// inside the shell, opening a thread ROUTES its `room:<id>` tab —
+/// a bare `selectThread` moves no pane anymore, because panes render
+/// their OWN thread (the pane-instance law); the landing inbox's
+/// rows and the work-thread cards' Open button both ride here.
+/// Single-pane hosts (no [ViewScope]) fall back to selecting the
+/// global active thread — today's behavior for them.
+void openThreadLane(
+  final BuildContext context,
+  final RealmChatService service,
+  final String threadId,
+) {
+  final routed = ViewScope.of(context)?.onOpenThread;
+  if (routed != null) {
+    routed(threadId);
+    return;
+  }
+  service.selectThread(threadId);
+}
+
 final class WorldChatSurface extends StatefulWidget {
   const WorldChatSurface({
     this.service,
@@ -1258,6 +1278,16 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (_replyBeat != null) setState(() => _replyBeat = null);
   }
 
+  /// The thread-open lane (the Wave H regression pin, 2026-11-10):
+  /// inside the shell, opening a thread ROUTES its `room:<id>` tab —
+  /// a bare `selectThread` moves no pane anymore, because panes render
+  /// their OWN thread (the pane-instance law); the landing inbox's
+  /// rows and the work-thread cards' Open button both ride here.
+  /// Single-pane hosts (no [ViewScope]) fall back to selecting the
+  /// global active thread — today's behavior for them.
+  void _openThreadLane(final BuildContext context, final String threadId) =>
+      openThreadLane(context, service, threadId);
+
   /// The room's ACTOR members — the work order's addressees: the PANE's
   /// thread participants minus the humans (the human authority's own
   /// id and any rostered [ActorKind.human] participant). Unrostered ids
@@ -1769,7 +1799,8 @@ class _ConversationPaneState extends State<_ConversationPane> {
         return LandingInbox(
           world: world,
           service: service,
-          onOpenThread: service.selectThread,
+          onOpenThread: (final threadId) =>
+              _openThreadLane(context, threadId),
         );
       }
       return _CenteredNote(text: l10n.worldChatSelectFromRail);
@@ -3270,7 +3301,11 @@ class _WorkThreadCard extends StatelessWidget {
                     _StripButton(
                       keyName: 'worldchat.workthread.open.$id',
                       label: l10n.worldChatOpen,
-                      onTap: () => service.selectThread(link.workThreadId),
+                      onTap: () => openThreadLane(
+                        context,
+                        service,
+                        link.workThreadId,
+                      ),
                     ),
                   ],
                 ),

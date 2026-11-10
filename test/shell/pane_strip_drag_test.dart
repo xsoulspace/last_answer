@@ -314,5 +314,47 @@ void main() {
         kConversationsSurfaceId,
       ]);
     });
+
+    testWidgets('the Wave I cap never eats the edge-split law: with 20 '
+        'tabs the tail hides behind the overflow control, and a visible '
+        'tab still splits on a pane’s right edge', (final tester) async {
+      // 20 tabs at the default 800px surface: the strip is ~732px, so
+      // the cap is floor((732 - 132 - 40) / 34) = 16 — four tabs hide.
+      _seedWorkspace(<List<String>>[
+        <String>[
+          kBoardsSurfaceId,
+          for (var i = 0; i < 19; i++) 'filler.tab.$i',
+        ],
+      ]);
+      final service = await _hermeticService(tester);
+      await _pumpShell(tester, service: service);
+
+      // The cap is live: the overflow control is up and the tail is
+      // not in the tree.
+      expect(
+        find.byKey(const ValueKey('view.strip.overflow.0')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('view.tab.filler.tab.18')),
+        findsNothing,
+      );
+
+      final from = tester.getCenter(
+        find.byKey(const ValueKey('view.tab.filler.tab.1')),
+      );
+      final to = tester.getCenter(
+        find.byKey(const ValueKey('pane.drop.0.right')),
+      );
+      await tester.dragFrom(from, to - from);
+      await tester.pump();
+
+      expect(find.byType(PaneStrip), findsNWidgets(2));
+      final decoded = await _persistedV4();
+      expect(decoded['groups']! as List, hasLength(2));
+      expect(_groupTabs(decoded, 0).contains('filler.tab.1'), isFalse);
+      expect(_groupTabs(decoded, 1), <String>['filler.tab.1']);
+      expect(decoded['active'], 1, reason: 'the new pane takes focus');
+    });
   });
 }

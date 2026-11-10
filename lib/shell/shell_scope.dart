@@ -16,7 +16,9 @@ final class ViewScope extends InheritedWidget {
     required this.layout,
     required this.surfaces,
     required this.onChanged,
-    required super.child, this.onFocusActor,
+    required super.child,
+    this.onFocusActor,
+    this.onOpenThread,
     this.titleFor,
     this.leadingFor,
     super.key,
@@ -35,6 +37,13 @@ final class ViewScope extends InheritedWidget {
   /// decides where the people view appears (a tab, since the dock
   /// retired). Null in hermetic shells.
   final ValueChanged<String>? onFocusActor;
+
+  /// The "open this thread as a room" intent (work-thread cards, the
+  /// landing inbox's rows): the shell routes it through the ONE router
+  /// (select + tab), because a bare service select no longer moves any
+  /// pane — panes render their OWN thread (the pane-instance law).
+  /// Null outside the shell: hosts fall back to selectThread.
+  final ValueChanged<String>? onOpenThread;
 
   /// Human title for ids the registry does not name (conversation ids);
   /// null falls back to the registry title, then the raw id.

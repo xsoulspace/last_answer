@@ -1413,6 +1413,21 @@ class SEn extends S {
   String get railNoMatches => 'No matches.';
 
   @override
+  String get roomsSectionDms => 'Direct messages';
+
+  @override
+  String get roomsSectionRooms => 'Rooms';
+
+  @override
+  String get roomsRenameChannelTitle => 'Rename channel';
+
+  @override
+  String get roomsRenameAction => 'Rename';
+
+  @override
+  String get roomsCloseChannel => 'Close channel';
+
+  @override
   String get worldChatSelectFromRail => 'Select a conversation from the rail.';
 
   @override

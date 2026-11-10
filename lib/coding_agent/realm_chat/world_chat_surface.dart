@@ -883,6 +883,13 @@ class _ConversationPaneState extends State<_ConversationPane> {
   final ScrollController _scroll = ScrollController();
   bool _showJumpToLatest = false;
 
+  /// The composer's focus node (the first-entry law): landing in a room
+  /// — boot-restored, seeded or clicked — puts the caret in the
+  /// composer without a click. Focus is requested post-frame and NEVER
+  /// stolen from another EditableText mid-edit (the shell anchor's
+  /// `_reclaimFocusUnlessEditing` law, mirrored).
+  final FocusNode _composerFocus = FocusNode(debugLabel: 'worldchat.composer');
+
   // ---- 1g: the unread divider's capture-at-entry state ----
   // Reading IS the receipt (ADR 0124): the projection's lastReadBeat
   // advances the moment the tail loads, so the pane snapshots the
@@ -1173,7 +1180,29 @@ class _ConversationPaneState extends State<_ConversationPane> {
     _scroll
       ..removeListener(_onScroll)
       ..dispose();
+    _composerFocus.dispose();
     super.dispose();
+  }
+
+  /// The room-entry focus law: once the frame settles, the caret lands
+  /// in the composer — unless ANOTHER editable holds focus (typing is
+  /// never stolen; the shell anchor is not a text field, so it yields).
+  /// The request rides a post-frame callback because focus never moves
+  /// mid-build.
+  void _focusComposerOnEntry() {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
+      if (!mounted) return;
+      final current = FocusManager.instance.primaryFocus;
+      if (current == _composerFocus) return;
+      final focusedContext = current?.context;
+      if (focusedContext != null &&
+          (focusedContext.widget is EditableText ||
+              focusedContext.findAncestorWidgetOfExactType<EditableText>() !=
+                  null)) {
+        return;
+      }
+      _composerFocus.requestFocus();
+    });
   }
 
   @override
@@ -1206,6 +1235,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
       _dividerBeat = receipt?.lastReadBeat ?? 0;
       _dividerUnread = receipt?.unread ?? 0;
       _replyBeat = null;
+      // Room entry IS the focus entry (the first-entry law): boot,
+      // seed or click — the composer takes the caret.
+      _focusComposerOnEntry();
     }
     final roster = service.roster;
     String displayNameOf(String actorId) =>
@@ -1564,6 +1596,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                     child: TextField(
                       key: const ValueKey('worldchat.composer'),
                       controller: composer,
+                      focusNode: _composerFocus,
                       minLines: 1,
                       maxLines: 5,
                       textInputAction: TextInputAction.send,

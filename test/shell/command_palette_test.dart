@@ -89,6 +89,10 @@ void main() {
       // The pick ran: the Models surface hosts as a tab, palette closed.
       expect(find.byKey(const ValueKey('view.tab.models')), findsOneWidget);
       expect(find.byKey(const ValueKey('shell.commandPalette')), findsNothing);
+      // The mount frame's fade-in (flutter_animate) schedules a
+      // zero-delay timer its dispose only `ignore`s, never cancels;
+      // tick the fake clock past it so teardown sees an idle timer.
+      await tester.pump(const Duration(milliseconds: 1));
     });
 
     testWidgets('a hardware Enter runs the selected pick', (
@@ -105,6 +109,10 @@ void main() {
       await tester.pump();
       expect(find.byKey(const ValueKey('view.tab.models')), findsOneWidget);
       expect(find.byKey(const ValueKey('shell.commandPalette')), findsNothing);
+      // The mount frame's fade-in (flutter_animate) schedules a
+      // zero-delay timer its dispose only `ignore`s, never cancels;
+      // tick the fake clock past it so teardown sees an idle timer.
+      await tester.pump(const Duration(milliseconds: 1));
     });
 
     testWidgets('escape closes without running anything', (final tester) async {
@@ -188,18 +196,16 @@ void main() {
       // Semantics nodes merge a label with its hint, so the snapshot
       // is matched as one document, key-name by key-name.
       final snapshot = labels.join('\n');
-      // Every rail entry (the activity bar)…
-      for (final id in const [
-        kConversationsSurfaceId,
-        kBoardsSurfaceId,
-        kFilesystemSurfaceId,
-        kBrowserSurfaceId,
-        kInspectorSurfaceId,
-        kThreadsSurfaceId,
-        kTerminalSurfaceId,
-        kPeopleSurfaceId,
+      // The cut bar's three buttons (the kind buttons retired) and the
+      // docked rooms column's sections (the first-entry projection)…
+      for (final key in const [
+        'rail.actors',
+        'rail.settings',
+        'rooms.section.dms',
+        'rooms.section.channels',
+        'rooms.section.rooms',
       ]) {
-        expect(snapshot, contains('rail.view.$id'));
+        expect(snapshot, contains(key));
       }
       // …the open tab…
       expect(snapshot, contains('view.tab.$kConversationsSurfaceId'));

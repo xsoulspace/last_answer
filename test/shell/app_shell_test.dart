@@ -1,9 +1,14 @@
 // ADR 0024 — the app shell widget tests. DESIGN.md v2 anatomy (owner law
-// 2026-11-08): the rail is a Discord-style ACTION BAR of kind buttons,
-// tabs are owned by PANE GROUPS ([ShellLayout] v4, persisted as
-// `shell.views.v4`; retired v3/v2/v1/pane-tree blobs migrate once), the
-// picker is an anchored MENU (never a tab), and splits move the active
-// tab into a second pane.
+// 2026-11-08, cut to the bone 2026-11-10): the rail is the three-button
+// action bar [search, actors, gear], tabs are owned by PANE GROUPS
+// ([ShellLayout] v4, persisted as `shell.views.v4`; retired v3/v2/v1/
+// pane-tree blobs migrate once), the picker is an anchored MENU (never a
+// tab), and splits move the active tab into a second pane.
+//
+// This suite runs the WORKSPACE projection lane (`shell.rooms.docked`
+// false — the legacy, byte-identical behavior); the chat-first
+// projection (docked rooms column, group-0 routing, the close law) has
+// its own suite in rooms_column_test.dart.
 //
 // The injected RealmChatService is a REAL service. Two lanes:
 // - the default lane, whose world start fails honestly in the test
@@ -129,10 +134,35 @@ Future<void> _pumpShell(
   await tester.pump(const Duration(milliseconds: 400));
 }
 
+/// Opens a picker entry on group 0's `+` (the kind buttons retired —
+/// the picker and the palette are the view-opening paths now).
+Future<void> _openViaPicker(
+  final WidgetTester tester,
+  final String entryKey, {
+  final bool scroll = false,
+}) async {
+  await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
+  await tester.pump();
+  if (scroll) {
+    final target = find.byKey(ValueKey(entryKey));
+    final panel = find.byKey(const ValueKey('newtab.page'));
+    for (var i = 0; i < 15 && target.evaluate().isEmpty; i++) {
+      await tester.drag(panel, const Offset(0, -140), warnIfMissed: false);
+      await tester.pump();
+    }
+    await tester.pump();
+  }
+  await tester.tap(find.byKey(ValueKey(entryKey)));
+  await tester.pump();
+}
+
 void main() {
   late Directory devicePin;
   setUp(() {
-    SharedPreferences.setMockInitialValues({});
+    // The workspace-projection lane: undocked keeps every assertion
+    // here on the legacy behavior (the docked projection is covered by
+    // rooms_column_test.dart).
+    SharedPreferences.setMockInitialValues({'shell.rooms.docked': false});
     // Pin the realm device root so the palette/health walk never reads
     // the real machine's ~/.xsoulspace.
     devicePin = Directory.systemTemp.createTempSync('la_shell_home_');
@@ -150,21 +180,26 @@ void main() {
     devicePin.deleteSync(recursive: true);
   });
 
-  testWidgets('launching lands in the shell: the action bar lists the kinds '
-      'and the one pane group hosts the world face with its strip', (
+  testWidgets('launching lands in the shell: the cut bar lists its THREE '
+      'buttons and the one pane group hosts the world face with its strip', (
     final tester,
   ) async {
     await _pumpShell(tester);
-    // The action bar (the rail's v2 form): kind buttons on the
-    // rail.view.* vocabulary.
-    expect(
-      find.byKey(const ValueKey('rail.view.conversations')),
-      findsOneWidget,
-    );
-    expect(find.byKey(const ValueKey('rail.view.boards')), findsOneWidget);
-    expect(find.byKey(const ValueKey('rail.view.inspector')), findsOneWidget);
+    // The action bar (cut to the bone): search, the actors dock toggle,
+    // the gear — and NO kind buttons (the vocabulary retired).
     expect(find.byKey(const ValueKey('rail.search')), findsOneWidget);
+    expect(find.byKey(const ValueKey('rail.actors')), findsOneWidget);
     expect(find.byKey(const ValueKey('rail.settings')), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (final widget) =>
+            widget.key is ValueKey &&
+            (widget.key! as ValueKey).value.toString().startsWith('rail.view.'),
+      ),
+      findsNothing,
+    );
+    // This lane is undocked: the rooms column stays closed.
+    expect(find.byKey(const ValueKey('shell.roomsColumn')), findsNothing);
     // ONE pane group, its strip, its world-face tab focused.
     expect(find.byType(PaneStrip), findsOneWidget);
     expect(find.byKey(const ValueKey('view.strip.0')), findsOneWidget);
@@ -186,14 +221,29 @@ void main() {
     expect(find.byKey(const ValueKey('view.dock')), findsNothing);
   });
 
-  testWidgets('an action bar kind opens its face as a TAB and persists v4', (
+  testWidgets('the actors button docks and undocks the rooms column and '
+      'persists the projection choice', (final tester) async {
+    await _pumpShell(tester);
+    expect(find.byKey(const ValueKey('shell.roomsColumn')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('rail.actors')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('shell.roomsColumn')), findsOneWidget);
+    var prefs = await SharedPreferences.getInstance();
+    expect(prefs.getBool('shell.rooms.docked'), isTrue);
+    await tester.tap(find.byKey(const ValueKey('rail.actors')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('shell.roomsColumn')), findsNothing);
+    prefs = await SharedPreferences.getInstance();
+    expect(prefs.getBool('shell.rooms.docked'), isFalse);
+  });
+
+  testWidgets('the picker opens a view as a TAB and persists v4', (
     final tester,
   ) async {
     await _pumpShell(tester);
-    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-    await tester.pump();
+    await _openViaPicker(tester, 'newtab.entry.boards');
     // The tab opens in the ONE group — beside the world face, not
-    // replacing a hosted "view" (v4: groups own tabs, kinds cycle them).
+    // replacing a hosted "view" (v4: groups own tabs).
     expect(find.byKey(const ValueKey('view.tab.boards')), findsOneWidget);
     expect(
       find.byKey(const ValueKey('view.tab.conversations')),
@@ -279,8 +329,9 @@ void main() {
     expect(find.byKey(const ValueKey('newtab.runway.audio')), findsOneWidget);
   });
 
-  testWidgets("the action bar CYCLES a kind's open tabs (the Discord "
-      'law, hermetic world lane)', (final tester) async {
+  testWidgets('strip tabs re-focus their rooms and the rooms survive '
+      'navigation (hermetic world lane; the kind cycling retired with '
+      'the kind buttons)', (final tester) async {
     late RealmChatService service;
     late ActorProfile first;
     late ActorProfile second;
@@ -332,30 +383,22 @@ void main() {
       findsOneWidget,
     );
 
-    // The kind button of the ACTIVE kind cycles: two → world face →
-    // one → two … (wrapping through every open conversations tab).
-    await tester.tap(find.byKey(const ValueKey('rail.view.conversations')));
-    await tester.pump();
-    expect(
-      find.byKey(const ValueKey('pane.leaf.conversations')),
-      findsOneWidget,
-    );
-    await tester.tap(find.byKey(const ValueKey('rail.view.conversations')));
+    // The strip tabs are the navigation now: a tap focuses its room.
+    await tester.tap(find.byKey(ValueKey('view.tab.dm:${first.actorId}')));
     await tester.pump();
     expect(
       find.byKey(ValueKey('pane.leaf.dm:${first.actorId}')),
       findsOneWidget,
     );
-    await tester.tap(find.byKey(const ValueKey('rail.view.conversations')));
+    await tester.tap(find.byKey(const ValueKey('view.tab.conversations')));
     await tester.pump();
     expect(
-      find.byKey(ValueKey('pane.leaf.dm:${second.actorId}')),
+      find.byKey(const ValueKey('pane.leaf.conversations')),
       findsOneWidget,
     );
 
-    // A DIFFERENT kind's button opens (focuses) its first tab.
-    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-    await tester.pump();
+    // A view tab opens through the picker and focuses where it lives…
+    await _openViaPicker(tester, 'newtab.entry.boards', scroll: true);
     expect(find.byKey(const ValueKey('pane.leaf.boards')), findsOneWidget);
     // …and the rooms survive the navigation (tabs are never destroyed).
     expect(
@@ -375,8 +418,7 @@ void main() {
   testWidgets('closing the focused tab lands the sole group on the world '
       'face (the front door — a strip never empties)', (final tester) async {
     await _pumpShell(tester);
-    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-    await tester.pump();
+    await _openViaPicker(tester, 'newtab.entry.boards');
     // The focused tab carries its close glyph.
     await tester.tap(find.byKey(const ValueKey('view.tab.close.boards')));
     await tester.pump();
@@ -390,8 +432,7 @@ void main() {
   testWidgets('split moves the active tab into a second pane; fold merges '
       'it back (VS Code anatomy)', (final tester) async {
     await _pumpShell(tester);
-    await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-    await tester.pump();
+    await _openViaPicker(tester, 'newtab.entry.boards');
     await tester.tap(find.byKey(const ValueKey('view.group.split.0')));
     await tester.pump();
     // TWO strips now — each group owns its own (the group-scoped law).
@@ -419,6 +460,7 @@ void main() {
     final tester,
   ) async {
     SharedPreferences.setMockInitialValues({
+      'shell.rooms.docked': false,
       'shell.views.v3': jsonEncode(<String, Object?>{
         'v': 3,
         'activeView': kBoardsSurfaceId,
@@ -453,6 +495,7 @@ void main() {
     final tester,
   ) async {
     SharedPreferences.setMockInitialValues({
+      'shell.rooms.docked': false,
       'shell.views.v2': jsonEncode(<String, Object?>{
         'tabs': <String>[kConversationsSurfaceId, kBoardsSurfaceId],
         'active': 1,
@@ -561,8 +604,7 @@ void main() {
       final world = hermeticWorldState(daemonLive: true);
       await world.refresh();
       await _pumpShell(tester, worldState: world);
-      await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-      await tester.pump();
+      await _openViaPicker(tester, 'newtab.entry.boards');
       expect(find.byKey(const ValueKey('view.tab.boards')), findsOneWidget);
 
       await tester.tap(find.byKey(const ValueKey('edge.attention')));
@@ -591,6 +633,10 @@ void main() {
           debugStartBotDispatcher: false,
         );
         addTearDown(service.dispose);
+        // These two tests assert the EMPTY-world face (the landing
+        // inbox); the shell's first-run seed would land a fresh world
+        // in #general instead — the policy input turns it off here.
+        service.firstRunSeedEnabled = false;
         await service.ensureReady();
         actor = (await service.createActor(
           displayName: 'Inbox Checker',
@@ -634,6 +680,8 @@ void main() {
           debugStartBotDispatcher: false,
         );
         addTearDown(service.dispose);
+        // The void-face law under test: no seed, no thread, the inbox.
+        service.firstRunSeedEnabled = false;
         await service.ensureReady();
       });
       final worldState = hermeticWorldState();
@@ -676,8 +724,7 @@ void main() {
       final world = hermeticWorldState();
       await world.refresh();
       await _pumpShell(tester, worldState: world);
-      await tester.tap(find.byKey(const ValueKey('rail.view.terminal')));
-      await tester.pump();
+      await _openViaPicker(tester, 'newtab.entry.terminal', scroll: true);
       expect(find.byKey(const ValueKey('terminal.arm')), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('terminal.arm')));
       await tester.pump();
@@ -690,8 +737,7 @@ void main() {
       final tester,
     ) async {
       await _pumpShell(tester);
-      await tester.tap(find.byKey(const ValueKey('rail.view.boards')));
-      await tester.pump();
+      await _openViaPicker(tester, 'newtab.entry.boards');
       expect(find.byType(BoardView), findsOneWidget);
       expect(find.byKey(const ValueKey('boards.meshTasks')), findsNothing);
     });
@@ -713,8 +759,7 @@ void main() {
         await service.startThread(topic: 'Shell threads lane');
       });
       await _pumpShell(tester, service: service);
-      await tester.tap(find.byKey(const ValueKey('rail.view.threads')));
-      await tester.pump();
+      await _openViaPicker(tester, 'newtab.entry.threads', scroll: true);
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text('Shell threads lane'), findsOneWidget);
     });

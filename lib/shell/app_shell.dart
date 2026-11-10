@@ -1,11 +1,19 @@
 /// ADR 0024 — the app shell. DESIGN.md v2 (owner law 2026-11-08, the
-/// approved mockup's anatomy): the shell is an ACTION BAR + PANE GROUPS.
+/// approved mockup's anatomy; cut to the bone 2026-11-10): the shell is
+/// an ACTION BAR + PANE GROUPS, and it carries TWO projections of the
+/// ONE layout document — never two shells:
 ///
-/// - The rail is a Discord-style action bar (56px): rounded-square kind
-///   icons with unread badges and an active pip; one click opens the
-///   kind's first tab, further clicks CYCLE its open tabs. The
-///   persistent room list is retired — opening lives in the strip's `+`
-///   picker and the ⌘K palette.
+/// - CHAT-FIRST (the first-entry projection, grok/Discord lens): the
+///   three-button rail [search, actors, gear], the docked ROOMS COLUMN
+///   (navigation chrome like VSCode's sidebar — never a tab, never a
+///   surface), conversations in group 0 and view tabs splitting right.
+/// - WORKSPACE: the rail undocked (`rail.actors` toggles + persists)
+///   and the free pane groups, byte-identical to the legacy behavior.
+///
+/// - The rail is cut to the bone: `rail.search` (palette), `rail.actors`
+///   (the rooms-column dock toggle, wearing the total-unread badge) and
+///   `rail.settings`. The kind buttons retired — opening lives in the
+///   strip's `+` picker, the ⌘K palette and the rooms column.
 /// - Tabs are the universal content surface, owned by PANE GROUPS
 ///   ([ShellLayout] v4, persisted as `shell.views.v4`, migrated in one
 ///   pass from `shell.views.v3` / `shell.views.v2` / `shell.tabs.v1` /
@@ -80,6 +88,8 @@ import 'package:lastanswer/shell/pane_strip.dart';
 
 import 'package:lastanswer/shell/pinned_conversation_peek.dart';
 
+import 'package:lastanswer/shell/rooms_column.dart';
+
 import 'package:lastanswer/shell/shell_layout.dart';
 
 import 'package:lastanswer/shell/shell_scope.dart';
@@ -116,6 +126,11 @@ const String kCenterTabsPrefsKey = 'shell.tabs.v1';
 /// The RETIRED pane-tree key, read only when v2 and v1 are absent.
 const String kLegacyPaneTreePrefsKey = 'shell.paneTree.v1';
 
+/// The SharedPreferences key holding the rooms-column dock state (the
+/// chat-first projection's bool). DEFAULT TRUE: a first entry lands in
+/// the chat-first projection — rail + rooms column + conversation.
+const String kRoomsDockedPrefsKey = 'shell.rooms.docked';
+
 /// The shell chrome: the action bar, the pane groups (each with its own
 /// strip), the picker overlay, the status edge. Inject [service] in
 /// tests; production resolves it internally.
@@ -146,15 +161,12 @@ final class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  late final RealmChatService _service =
-      widget.service ??
-      // The root DI owns the app-run singleton (one bot host per world);
-      // construct only when no DI ancestor exists (hermetic tests). The
-      // nullable read answers null when no provider is above the shell.
-      context.read<RealmChatService?>() ??
-      RealmChatService(
-        providerConfiguration: context.read<ProviderConfigurationStore?>(),
-      );
+  /// The chat service: injected (tests, a future root DI) or OWNED by
+  /// the shell. An owned service is disposed WITH the shell — its
+  /// journal watch's debounce timer must not outlive the widget tree
+  /// (the teardown invariant), and the world it opened closes with it.
+  late final RealmChatService _service;
+  late final bool _ownsService;
 
   /// The world's read model behind the status edge, the landing inbox
   /// and the Models surface (phase 1d). Injected in tests (or resolved
@@ -168,6 +180,12 @@ class _AppShellState extends State<AppShell> {
   ShellLayout _layout = ShellLayout.defaultLayout();
   final PeopleFocus _peopleFocus = PeopleFocus();
   var _seamsInstalled = false;
+
+  /// The rooms-column dock (the projection switch): true = chat-first
+  /// (rail + rooms column + conversations in group 0), false = the
+  /// workspace projection (free pane groups). Persisted as
+  /// [kRoomsDockedPrefsKey]; the default is the first-entry projection.
+  var _roomsDocked = true;
 
   /// 1a — LaWorld: the reactive ecsly projection over the realm
   /// journal (cursor-fed, never polling). Null until the chat service
@@ -215,11 +233,35 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    // The root DI owns the app-run singleton (one bot host per world);
+    // the shell constructs its own only when no DI ancestor and no
+    // injected service exist (hermetic tests) — and then owns its
+    // disposal too.
+    final injected = widget.service ?? context.read<RealmChatService?>();
+    if (injected != null) {
+      _service = injected;
+      _ownsService = false;
+    } else {
+      _service = RealmChatService(
+        providerConfiguration: context.read<ProviderConfigurationStore?>(),
+      );
+      _ownsService = true;
+    }
     // G6 — the world's discovered palette becomes the chat bots' brain
     // source, and the daemon's liveness becomes the defer law's input.
     _service.resolveCastRung = _worldState.castDeclFor;
     _service.daemonLiveGetter = () => _worldState.daemonLive;
     unawaited(_service.ensureReady());
+    // First entry (the chat-first projection): the shell asks the
+    // service to seed the world's first channel ONCE at boot — a fresh
+    // world then lands in the seeded #general through the existing
+    // boot-restore/sync laws, never in a blank void. Fire-and-forget:
+    // the chrome never waits on seeding.
+    unawaited(
+      _service.ensureReady().then((final _) {
+        if (mounted) return _service.ensureSeededChannel();
+      }),
+    );
     // 2e — the ACP agent detection runs ONCE per app run on desktop (the
     // picker's bridge row renders the availability FACT; discovery never
     // executes an agent, and the flow re-checks before it binds).
@@ -283,6 +325,9 @@ class _AppShellState extends State<AppShell> {
     _laWorldFeed?.stop();
     _laWorld?.dispose();
     if (_ownsWorldState) _worldState.dispose();
+    // The owned service LAST: the LaWorld fold rides its world, and its
+    // journal-watch debounce timer dies with it (teardown invariant).
+    if (_ownsService) _service.dispose();
     _peopleFocus.dispose();
     _miniWindowPersistence.dispose();
     _miniWindows.dispose();
@@ -419,6 +464,12 @@ class _AppShellState extends State<AppShell> {
   /// legacy keys stay on disk but are never read again.
   Future<void> _restoreLayout() async {
     final prefs = await SharedPreferences.getInstance();
+    // The projection switch restores beside the layout: an explicit
+    // undock survives the restart; absence keeps the chat-first default.
+    final docked = prefs.getBool(kRoomsDockedPrefsKey);
+    if (docked != null && docked != _roomsDocked && mounted) {
+      setState(() => _roomsDocked = docked);
+    }
     final raw = prefs.getString(kViewLayoutPrefsKey);
     if (raw != null && raw.isNotEmpty) {
       try {
@@ -498,7 +549,7 @@ class _AppShellState extends State<AppShell> {
       return;
     }
     if (_layout.groupOf(surfaceId) < 0) {
-      _onLayoutChanged(_layout.openTab(surfaceId));
+      _onLayoutChanged(_routeOpen(_layout, surfaceId));
     }
   }
 
@@ -542,7 +593,7 @@ class _AppShellState extends State<AppShell> {
   /// retired, so the people view appears as its own tab.
   void _onFocusActorIntent(final String actorId) {
     _peopleFocus.focus(actorId);
-    _onLayoutChanged(_layout.openTab(kPeopleSurfaceId));
+    _onLayoutChanged(_routeOpen(_layout, kPeopleSurfaceId));
   }
 
   /// ADR 0027 — a tab's context-menu affordance: a conversation in its
@@ -635,39 +686,75 @@ class _AppShellState extends State<AppShell> {
   /// as a TAB of the active group (the embedded seam closes through
   /// the view scope). The shell grammar keeps zero exceptions: no
   /// route push, no `Navigator.pop` from inside a view.
-  void _openSettings() => _onLayoutChanged(_layout.openTab(kSettingsSurfaceId));
+  void _openSettings() =>
+      _onLayoutChanged(_routeOpen(_layout, kSettingsSurfaceId));
 
   /// The status edge's backend click (phase 1d): the Models surface
   /// opens as a tab of the ACTIVE group (any pane may host any surface).
-  void _openModelsTab() => _onLayoutChanged(_layout.openTab(kModelsSurfaceId));
+  void _openModelsTab() =>
+      _onLayoutChanged(_routeOpen(_layout, kModelsSurfaceId));
 
   /// The status edge's attention click: the conversations world face,
   /// whose landing state is the inbox (open permissions reject-first,
   /// running tasks, last verdicts).
   void _openInbox() {
     _service.clearActiveThread();
-    _onLayoutChanged(_layout.openTab(kConversationsSurfaceId));
+    _onLayoutChanged(_routeOpen(_layout, kConversationsSurfaceId));
   }
 
-  /// The action bar's kind click (the Discord cycle law): no open tab
-  /// of the kind → open its face; the active tab IS the kind → cycle to
-  /// the kind's next open tab (wrapping); else focus the kind's first.
-  void _onKindTap(final String kind) {
-    final tabs = <String>[
-      for (final id in _layout.allTabs)
-        if (kindOfSurfaceId(id) == kind) id,
-    ];
-    if (tabs.isEmpty) {
-      _onLayoutChanged(_layout.openTab(kind));
-      return;
+  /// The action bar's actors button: toggles the rooms-column dock and
+  /// persists the projection choice (chat-first is the first-entry
+  /// default). The layout document is untouched — the column is chrome,
+  /// never a tab.
+  void _toggleRoomsDock() {
+    setState(() => _roomsDocked = !_roomsDocked);
+    unawaited(
+      SharedPreferences.getInstance().then(
+        (final prefs) => prefs.setBool(kRoomsDockedPrefsKey, _roomsDocked),
+      ),
+    );
+  }
+
+  /// The ONE tab router (the chat-first projection law): every open
+  /// path rides it, so the two projections can never drift apart.
+  /// UNDOCKED: byte-identical to the legacy `openTab` — the active
+  /// group hosts, an open id focuses where it lives. DOCKED:
+  /// conversation-family ids (`dm:`, `channel:`, `room:`, the world
+  /// face) belong to group 0; any other id is a VIEW tab — with one
+  /// group, the pure v4 ops compose (`openTab` then `split`) into a new
+  /// right-hand group; with several, the active view group hosts it
+  /// (never group 0 — the conversation group stays the conversation's).
+  ShellLayout _routeOpen(final ShellLayout layout, final String surfaceId) {
+    if (!_roomsDocked) return layout.openTab(surfaceId);
+    if (isConversationSurfaceId(surfaceId)) {
+      return layout.openTab(surfaceId, group: 0);
     }
-    final activeId = _layout.activeSurfaceId;
-    if (kindOfSurfaceId(activeId) == kind) {
-      final i = tabs.indexOf(activeId);
-      _onSelectTab(tabs[(i + 1) % tabs.length]);
-    } else {
-      _onSelectTab(tabs.first);
+    // An open id never duplicates — it focuses where it lives.
+    if (layout.groupOf(surfaceId) >= 0) return layout.openTab(surfaceId);
+    if (layout.groups.length == 1) {
+      return layout.openTab(surfaceId).split();
     }
+    return layout.openTab(
+      surfaceId,
+      group: layout.active > 0 ? layout.active : 1,
+    );
+  }
+
+  /// The docked close law: group 0 is the front door — closing its LAST
+  /// tab never removes the group, it lands on the conversations world
+  /// face. View groups fold/remove exactly as the pure v4 op does, and
+  /// undocked [ShellLayout.closeTab] runs unchanged (the sole-group
+  /// front-door floor already lives in the model).
+  ShellLayout _routeClose(final ShellLayout layout, final String surfaceId) {
+    if (!_roomsDocked ||
+        layout.groups.length < 2 ||
+        layout.groupOf(surfaceId) != 0 ||
+        layout.groups[0].tabs.length != 1) {
+      return layout.closeTab(surfaceId);
+    }
+    final groups = List<ViewState>.of(layout.groups)
+      ..[0] = ViewState(tabs: const <String>[kConversationsSurfaceId]);
+    return ShellLayout(groups: groups, active: layout.active);
   }
 
   // ---- the strips' keyboard (the browser map) -----------------------------
@@ -753,8 +840,8 @@ class _AppShellState extends State<AppShell> {
           group: 'views',
           icon: spec.icon,
           // The palette is DETERMINISTIC: picking a view opens (or
-          // focuses) the view's OWN face tab.
-          run: () => _onLayoutChanged(_layout.openTab(spec.id)),
+          // focuses) the view's OWN face tab — through the ONE router.
+          run: () => _onLayoutChanged(_routeOpen(_layout, spec.id)),
         ),
       CommandEntry(
         id: 'view.$kModelsSurfaceId',
@@ -847,17 +934,18 @@ class _AppShellState extends State<AppShell> {
       );
       if (mapped == surfaceId) _service.clearActiveThread();
     }
-    _onLayoutChanged(_layout.closeTab(surfaceId));
+    _onLayoutChanged(_routeClose(_layout, surfaceId));
   }
 
-  /// A strip tab tap: conversation tabs re-select their thread (the
-  /// service is the source of truth for WHAT the room shows;
-  /// openDm/selectChannel are idempotent — the reverse mapping in
-  /// [_onServiceChanged] then re-enters as a no-op); every tab focuses
-  /// where it lives.
+  /// A strip tab tap (and the rooms column's row tap — one path):
+  /// conversation tabs re-select their thread (the service is the
+  /// source of truth for WHAT the room shows; openDm/selectChannel are
+  /// idempotent — the reverse mapping in [_onServiceChanged] then
+  /// re-enters as a no-op); every tab focuses where it lives through
+  /// the ONE router.
   void _onSelectTab(final String surfaceId) {
     activateConversationSurface(_service, surfaceId);
-    _onLayoutChanged(_layout.openTab(surfaceId));
+    _onLayoutChanged(_routeOpen(_layout, surfaceId));
   }
 
   /// The strip's split control (group 0): the active tab moves into a
@@ -925,7 +1013,7 @@ class _AppShellState extends State<AppShell> {
     await projects.updateProject(doc);
     projects.onReset();
     if (!mounted) return;
-    _onLayoutChanged(_layout.openTab('doc:${doc.id}'));
+    _onLayoutChanged(_routeOpen(_layout, 'doc:${doc.id}'));
   }
 
   /// The `doc:<id>` tab's title: the registry's loaded projection of the
@@ -1009,7 +1097,7 @@ class _AppShellState extends State<AppShell> {
               label: spec.title,
               icon: spec.icon,
               onTap: () =>
-                  tap(() => _onLayoutChanged(_layout.openTab(spec.id))),
+                  tap(() => _onLayoutChanged(_routeOpen(_layout, spec.id))),
             ),
           NewTabRow(
             key: 'newtab.entry.$kModelsSurfaceId',
@@ -1034,7 +1122,7 @@ class _AppShellState extends State<AppShell> {
             icon: Icons.web,
             onTap: () => tap(() {
               final id = _layout.nextInstanceId(kBrowserSurfaceId);
-              _onLayoutChanged(_layout.openTab(id));
+              _onLayoutChanged(_routeOpen(_layout, id));
             }),
           ),
         ],
@@ -1148,14 +1236,10 @@ class _AppShellState extends State<AppShell> {
     final surfaces = buildShellSurfaces(context, service: _service);
     _projects = context.read<ProjectsNotifier?>();
     final screenLayout = ScreenLayout.of(context);
-    final kinds = <ActionBarKind>[
-      for (final spec in _viewSpecs(surfaces))
-        ActionBarKind(
-          id: spec.id,
-          icon: spec.icon ?? Icons.crop_square,
-          tooltip: spec.title,
-        ),
-    ];
+    // The small-screen branch keeps today's anatomy EXACTLY: neither
+    // the bar nor the column renders — the projection switch is chrome
+    // the small screen never had.
+    final roomsDocked = _roomsDocked && !screenLayout.small;
     return ChangeNotifierProvider<RealmChatService>.value(
       value: _service,
       child: ChangeNotifierProvider<WorldStateService>.value(
@@ -1235,11 +1319,14 @@ class _AppShellState extends State<AppShell> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 // DESIGN.md v2 — the title bar is gone:
-                                // on macOS the first group's strip is the
-                                // window's top row (the traffic lights
-                                // ride at its head), so no gutter is
-                                // reserved there; other platforms keep
-                                // their system inset.
+                                // on macOS the window's LEFTMOST chrome
+                                // is its top row — the docked rooms
+                                // column's head when the chat-first
+                                // projection is on, else the first
+                                // group's strip (the traffic lights ride
+                                // there), so no gutter is reserved here;
+                                // other platforms keep their system
+                                // inset.
                                 SizedBox(
                                   height: MediaQuery.of(
                                     context,
@@ -1254,11 +1341,16 @@ class _AppShellState extends State<AppShell> {
                                           children: [
                                             ActionBar(
                                               layout: _layout,
-                                              kinds: kinds,
-                                              onKindTap: _onKindTap,
+                                              actorsDocked: roomsDocked,
+                                              onToggleActors: _toggleRoomsDock,
                                               onOpenSettings: _openSettings,
                                               onOpenPalette: _openPalette,
                                             ),
+                                            // The chat-first projection:
+                                            // the docked rooms column
+                                            // (navigation chrome, never
+                                            // a tab).
+                                            if (roomsDocked) _roomsColumn(),
                                             Expanded(
                                               child: _panesRow(surfaces),
                                             ),
@@ -1315,6 +1407,30 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  /// The docked rooms column (chat-first projection): navigation
+  /// chrome, never a tab. It rebuilds on every service notify — rooms
+  /// arrive async and the column is never cached (the title-stuck bug
+  /// law).
+  Widget _roomsColumn() => ListenableBuilder(
+    listenable: _service,
+    builder: (final context, final _) => RoomsColumn(
+      service: _service,
+      onSelect: _onSelectTab,
+      onCreateChannel: () => unawaited(
+        openNewChannelFlow(context, service: _service),
+      ),
+      onMessageActor: () => unawaited(
+        openMessageActorFlow(
+          context,
+          service: _service,
+          onOpenSettings: _openSettings,
+        ),
+      ),
+      onMiniWindow: _openMiniWindow,
+      lightsGutter: defaultTargetPlatform == TargetPlatform.macOS,
+    ),
+  );
+
   /// The pane groups, left → right, hairline-separated (the split
   /// anatomy: N groups = N strips, each owning its tabs).
   Widget _panesRow(final SurfaceRegistry surfaces) {
@@ -1367,8 +1483,14 @@ class _AppShellState extends State<AppShell> {
           leadingFor: _leadingFor,
           pickerLink: _pickerLink,
           pickerOwner: _pickerOpen && _pickerGroup == group,
+          // The title-bar-is-gone law (macOS): the window's leftmost
+          // chrome carries the traffic lights — the docked rooms
+          // column's head when the chat-first projection is on, else
+          // group 0's strip (today's anatomy, unchanged).
           lightsGutter:
-              group == 0 && defaultTargetPlatform == TargetPlatform.macOS,
+              group == 0 &&
+              defaultTargetPlatform == TargetPlatform.macOS &&
+              !(_roomsDocked && !ScreenLayout.of(context).small),
         ),
       ),
       Expanded(

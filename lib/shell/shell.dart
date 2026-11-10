@@ -11,6 +11,7 @@ export 'create_flows.dart';
 export 'landing_inbox.dart';
 export 'new_tab_menu.dart';
 export 'pane_strip.dart';
+export 'rooms_column.dart';
 export 'shell_layout.dart';
 export 'shell_scope.dart';
 export 'shell_theme.dart';

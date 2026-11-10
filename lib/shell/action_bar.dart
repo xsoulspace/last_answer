@@ -1,14 +1,15 @@
-/// DESIGN.md v2 — the rail, rethought as a Discord-style ACTION BAR:
-/// "mostly unnecessary by design". Rounded-square kind icons with
-/// unread badges and an active pip; ONE click opens the kind's first
-/// tab, FURTHER clicks cycle its open tabs (fast navigation among
-/// similar tabs). The persistent 216px room list is retired — opening
-/// lives in the strip's + picker and the ⌘K palette; creation flows
-/// live in the picker too.
+/// DESIGN.md v2, cut to the bone (owner law 2026-11-10, the chat-first
+/// projection): the action bar is THREE buttons — `rail.search` (the
+/// ⌘K palette), `rail.actors` (toggles the docked ROOMS COLUMN and
+/// wears the total-unread badge) and `rail.settings` (the gear). The
+/// nine kind buttons retired with their cycling law: views open from
+/// the strip's + picker and the palette, and room navigation lives in
+/// the rooms column — which is chrome like VSCode's sidebar, never a
+/// tab and never a surface (the tabs+views law, shell.views.v4).
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6), kept on the
-/// rail's grammar: `rail.view.<kindId>` per kind button, `rail.search`
-/// (the palette trigger), `rail.settings`, `rail.unread.<kindId>`.
+/// rail's grammar: `rail.search`, `rail.actors`, `rail.settings`,
+/// `rail.unread.actors`.
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
@@ -23,41 +24,34 @@ import 'package:lastanswer/shell/shell_theme.dart';
 
 import 'package:lastanswer/shell/surfaces.dart';
 
-/// One action-bar kind: the registry face it opens and the tabs it
-/// cycles ([kindOfSurfaceId] folds content ids into kinds).
-final class ActionBarKind {
-  const ActionBarKind({
-    required this.id,
-    required this.icon,
-    required this.tooltip,
-  });
-
-  final String id;
-  final IconData icon;
-  final String tooltip;
-}
-
-/// The shell's left edge: kind buttons top-down, search first, the
-/// settings gear last (the mockup's anatomy).
+/// The shell's left edge: search first, the actors (rooms-column)
+/// toggle beside it, the settings gear last (the cut bar's anatomy).
 final class ActionBar extends StatelessWidget {
   const ActionBar({
     required this.layout,
-    required this.kinds,
-    required this.onKindTap,
+    required this.actorsDocked,
+    required this.onToggleActors,
     required this.onOpenSettings,
     required this.onOpenPalette,
     super.key,
   });
 
+  /// The live layout — the settings button's active pip follows the
+  /// focused tab, exactly as the retired kind buttons' did.
   final ShellLayout layout;
-  final List<ActionBarKind> kinds;
-  final ValueChanged<String> onKindTap;
+
+  /// Whether the rooms column is docked (the actors toggle's selected
+  /// state — the projection fact, never a guess).
+  final bool actorsDocked;
+
+  final VoidCallback onToggleActors;
   final VoidCallback onOpenSettings;
   final VoidCallback onOpenPalette;
 
   @override
   Widget build(final BuildContext context) {
-    final activeKind = kindOfSurfaceId(layout.activeSurfaceId);
+    final settingsActive =
+        kindOfSurfaceId(layout.activeSurfaceId) == kSettingsSurfaceId;
     return Container(
       key: const ValueKey('shell.actionBar'),
       width: ShellTokens.actionBarWidth,
@@ -81,31 +75,24 @@ final class ActionBar extends StatelessWidget {
             onTap: onOpenPalette,
           ),
           const SizedBox(height: 8),
-          Expanded(
-            // A ListView, not a SingleChildScrollView: the SCV's
-            // semantics subtree never assembles in a live desktop app
-            // (measured — the rail-drop framework gap); ListView-backed
-            // lists keep their nodes, and the bar is the agent's kind
-            // index.
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                for (final kind in kinds)
-                  _KindButton(
-                    key: ValueKey('rail.view.${kind.id}'),
-                    kind: kind,
-                    active: kind.id == activeKind,
-                    onTap: () => onKindTap(kind.id),
-                  ),
-              ],
-            ),
+          _BarButton(
+            key: const ValueKey('rail.actors'),
+            semanticsLabel: 'rail.actors',
+            tooltip: context.l10n.railActors,
+            icon: Icons.forum_outlined,
+            // Selected WHILE docked: the button states the projection,
+            // it never lies about a column that is not there.
+            active: actorsDocked,
+            onTap: onToggleActors,
+            badge: const _TotalUnreadBadge(),
           ),
+          const Spacer(),
           _BarButton(
             key: const ValueKey('rail.settings'),
             semanticsLabel: 'rail.settings',
             tooltip: context.l10n.settings,
             icon: Icons.settings_outlined,
-            active: activeKind == 'settings',
+            active: settingsActive,
             onTap: onOpenSettings,
           ),
           const SizedBox(height: 10),
@@ -115,46 +102,15 @@ final class ActionBar extends StatelessWidget {
   }
 }
 
-/// One kind button: the rounded square (14 → 12 radius on hover/active,
-/// the Discord settle), the active pip at the bar's left edge, and —
-/// for the conversations kind — the unread badge fed by LaWorld.
-final class _KindButton extends StatelessWidget {
-  const _KindButton({
-    required this.kind,
-    required this.active,
-    required this.onTap,
-    super.key,
-  });
-
-  final ActionBarKind kind;
-  final bool active;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(final BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: _BarButton(
-      semanticsLabel: 'rail.view.${kind.id}',
-      tooltip: kind.tooltip,
-      icon: kind.icon,
-      active: active,
-      onTap: onTap,
-      badge: kind.id == kConversationsSurfaceId
-          ? const _KindUnreadBadge()
-          : null,
-    ),
-  );
-}
-
-/// The conversations kind's unread total (1g law, kind level): a
-/// compact status token (the one place DESIGN.md allows a pill) fed by
-/// an [EcsWorldSelector] over the journal projection — the count
-/// arrives reactively from the cursor fold, never from a poll. The
-/// member gate lives in [LaWorld.unreadByThread]; the open room's own
-/// count falls away through its receipt. No LaWorld yet = honest
-/// absence, no badge.
-final class _KindUnreadBadge extends StatelessWidget {
-  const _KindUnreadBadge();
+/// The actors button's unread total (1g law, carried over from the
+/// retired conversations kind button): a compact status token (the one
+/// place DESIGN.md allows a pill) fed by an [EcsWorldSelector] over the
+/// journal projection — the count arrives reactively from the cursor
+/// fold, never from a poll. The member gate lives in
+/// [LaWorld.unreadByThread]; the open room's own count falls away
+/// through its receipt. No LaWorld yet = honest absence, no badge.
+final class _TotalUnreadBadge extends StatelessWidget {
+  const _TotalUnreadBadge();
 
   @override
   Widget build(final BuildContext context) {
@@ -174,8 +130,8 @@ final class _KindUnreadBadge extends StatelessWidget {
         if (unread <= 0) return const SizedBox.shrink();
         final label = unread > 99 ? '99+' : '$unread';
         return Semantics(
-          key: const ValueKey('rail.unread.conversations'),
-          label: 'rail.unread.conversations',
+          key: const ValueKey('rail.unread.actors'),
+          label: 'rail.unread.actors',
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
             decoration: BoxDecoration(

@@ -2619,6 +2619,36 @@ abstract class S {
   /// **'No matches.'**
   String get railNoMatches;
 
+  /// No description provided for @roomsSectionDms.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messages'**
+  String get roomsSectionDms;
+
+  /// No description provided for @roomsSectionRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get roomsSectionRooms;
+
+  /// No description provided for @roomsRenameChannelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename channel'**
+  String get roomsRenameChannelTitle;
+
+  /// No description provided for @roomsRenameAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get roomsRenameAction;
+
+  /// No description provided for @roomsCloseChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close channel'**
+  String get roomsCloseChannel;
+
   /// No description provided for @worldChatSelectFromRail.
   ///
   /// In en, this message translates to:

@@ -70,33 +70,34 @@ void main() {
     }
 
     visit(tester.binding.pipelineOwner.semanticsOwner!.rootSemanticsNode!);
-    // §2.3 on the v2 anatomy (DESIGN.md 2026-11-08): the action bar's
-    // kind buttons keep the rail.view.* vocabulary, the group-scoped
+    // §2.3 on the cut anatomy (DESIGN.md, owner law 2026-11-10): the
+    // action bar is THREE buttons (rail.search, rail.actors, the gear),
+    // the docked rooms column names its sections, the group-scoped
     // strip keeps view.tab.*/view.strip.add.<group>, and the edge keeps
     // its segment names — all in Flutter's own semantics tree (the live
     // fmtk walker's rail-drop is a framework gap, not an app absence —
-    // commit 06017111). The persistent roster rows (rail.actor.*)
-    // retired with the room list: rooms live in the picker and the
-    // palette now.
+    // commit 06017111). The kind buttons (rail.view.*) retired with the
+    // persistent roster rows (rail.actor.*).
     final snapshot = labels.join('\n');
-    for (final id in const [
-      'conversations',
-      'documents',
-      'boards',
-      'filesystem',
-      'browser',
-      'inspector',
-      'threads',
-      'terminal',
-      'people',
+    for (final key in const [
+      'rail.search',
+      'rail.actors',
+      'rail.settings',
     ]) {
-      expect(snapshot, contains('rail.view.$id'));
+      expect(snapshot, contains(key));
+    }
+    // The chat-first projection is the first-entry default: the docked
+    // rooms column is part of the snapshot contract.
+    for (final key in const [
+      'rooms.section.dms',
+      'rooms.section.channels',
+      'rooms.section.rooms',
+    ]) {
+      expect(snapshot, contains(key));
     }
     expect(snapshot, contains('view.tab.conversations'));
     expect(snapshot, contains('view.strip.add.0'));
     expect(snapshot, contains('edge.world'));
-    expect(snapshot, contains('rail.search'));
-    expect(snapshot, contains('rail.settings'));
     handle.dispose();
   });
 }

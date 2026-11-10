@@ -93,7 +93,9 @@ Future<void> _pumpShell(
 void main() {
   late Directory devicePin;
   setUp(() {
-    SharedPreferences.setMockInitialValues({});
+    // The workspace-projection lane: this suite tests the Documents
+    // view, not the docked rooms column (rooms_column_test owns that).
+    SharedPreferences.setMockInitialValues({'shell.rooms.docked': false});
     devicePin = Directory.systemTemp.createTempSync('la_docs_home_');
     RealmWorld.debugDeviceHome = devicePin.path;
   });
@@ -112,7 +114,11 @@ void main() {
       ),
     );
     await _pumpShell(tester, projects: projects);
-    await tester.tap(find.byKey(const ValueKey('rail.view.documents')));
+    // The kind buttons retired: the view opens through the strip's `+`
+    // picker (the palette is its twin).
+    await tester.tap(find.byKey(const ValueKey('view.strip.add.0')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('newtab.entry.documents')));
     await tester.pump();
     // The page fetch is real-async (the repository seam): let the event
     // loop turn land inside runAsync, then rebuild.

@@ -139,45 +139,60 @@ final class _DaemonHeader extends StatelessWidget {
             ],
           ),
         ),
-        if (!world.daemonLive)
-          _HeaderButton(
-            keyName: 'models.arm',
-            label: world.armState == WorldArmState.arming
-                ? l10n.edgeArming
-                : l10n.edgeArmWorld,
-            busy: world.armState == WorldArmState.arming,
-            onTap: () => unawaited(world.armWorld()),
-          )
-        else ...[
-          _HeaderButton(
-            keyName: 'models.restart',
-            label: l10n.edgeRestartWorld,
-            onTap: () => unawaited(world.restartWorld()),
-          ),
-          const SizedBox(width: 6),
-          _HeaderButton(
-            keyName: 'models.stop',
-            label: l10n.edgeStopWorld,
-            onTap: () => unawaited(world.stopWorld()),
-          ),
-        ],
-        const SizedBox(width: 6),
-        // Plan v5 4b — the tier gate sits on the EDIT affordance only:
-        // the rungs/telemetry read model above stays FREE (reading the
-        // truth is never a paid feature). FREE renders the quiet named
-        // absence with the upgrade route; an unmounted entitlement
-        // layer fails open (hermetic surfaces are never locked out).
-        ProGate(
-          feature: TierFeature.paletteEditor,
-          child: _HeaderButton(
-            keyName: 'models.edit',
-            label: l10n.modelsEditPalette,
-            onTap: () => unawaited(
-              showDialog<void>(
-                context: context,
-                builder: (final dialogContext) =>
-                    PaletteEditorDialog(world: world),
-              ),
+        Flexible(
+          // A split group can be arbitrarily narrow: the daemon's verb
+          // cluster scales down as a whole instead of overflowing (a
+          // RenderFlex overflow is an error, never a layout).
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!world.daemonLive)
+                  _HeaderButton(
+                    keyName: 'models.arm',
+                    label: world.armState == WorldArmState.arming
+                        ? l10n.edgeArming
+                        : l10n.edgeArmWorld,
+                    busy: world.armState == WorldArmState.arming,
+                    onTap: () => unawaited(world.armWorld()),
+                  )
+                else ...[
+                  _HeaderButton(
+                    keyName: 'models.restart',
+                    label: l10n.edgeRestartWorld,
+                    onTap: () => unawaited(world.restartWorld()),
+                  ),
+                  const SizedBox(width: 6),
+                  _HeaderButton(
+                    keyName: 'models.stop',
+                    label: l10n.edgeStopWorld,
+                    onTap: () => unawaited(world.stopWorld()),
+                  ),
+                ],
+                const SizedBox(width: 6),
+                // Plan v5 4b — the tier gate sits on the EDIT affordance
+                // only: the rungs/telemetry read model above stays FREE
+                // (reading the truth is never a paid feature). FREE
+                // renders the quiet named absence with the upgrade
+                // route; an unmounted entitlement layer fails open
+                // (hermetic surfaces are never locked out).
+                ProGate(
+                  feature: TierFeature.paletteEditor,
+                  child: _HeaderButton(
+                    keyName: 'models.edit',
+                    label: l10n.modelsEditPalette,
+                    onTap: () => unawaited(
+                      showDialog<void>(
+                        context: context,
+                        builder: (final dialogContext) =>
+                            PaletteEditorDialog(world: world),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

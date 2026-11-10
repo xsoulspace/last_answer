@@ -1428,6 +1428,21 @@ class SRu extends S {
   String get railNoMatches => 'Ничего не найдено.';
 
   @override
+  String get roomsSectionDms => 'Личные сообщения';
+
+  @override
+  String get roomsSectionRooms => 'Комнаты';
+
+  @override
+  String get roomsRenameChannelTitle => 'Переименовать канал';
+
+  @override
+  String get roomsRenameAction => 'Переименовать';
+
+  @override
+  String get roomsCloseChannel => 'Закрыть канал';
+
+  @override
   String get worldChatSelectFromRail => 'Выберите разговор на панели слева.';
 
   @override

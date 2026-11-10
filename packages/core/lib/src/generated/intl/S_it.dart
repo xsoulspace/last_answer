@@ -1423,6 +1423,21 @@ class SIt extends S {
   String get railNoMatches => 'Nessun risultato.';
 
   @override
+  String get roomsSectionDms => 'Messaggi diretti';
+
+  @override
+  String get roomsSectionRooms => 'Stanze';
+
+  @override
+  String get roomsRenameChannelTitle => 'Rinomina canale';
+
+  @override
+  String get roomsRenameAction => 'Rinomina';
+
+  @override
+  String get roomsCloseChannel => 'Chiudi canale';
+
+  @override
   String get worldChatSelectFromRail =>
       'Seleziona una conversazione dalla barra laterale.';
 

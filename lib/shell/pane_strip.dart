@@ -282,7 +282,7 @@ final class PaneStrip extends StatelessWidget {
                   key: ValueKey('view.group.back.$group'),
                   label: 'view.group.back.$group',
                   tooltip: l10n.stripBack,
-                  icon: Icons.arrow_back,
+                  icon: Icons.arrow_back_outlined,
                   enabled: state.canBack,
                   onTap: onBack,
                 ),
@@ -290,7 +290,7 @@ final class PaneStrip extends StatelessWidget {
                   key: ValueKey('view.group.forward.$group'),
                   label: 'view.group.forward.$group',
                   tooltip: l10n.stripForward,
-                  icon: Icons.arrow_forward,
+                  icon: Icons.arrow_forward_outlined,
                   enabled: state.canForward,
                   onTap: onForward,
                 ),
@@ -368,7 +368,7 @@ final class PaneStrip extends StatelessWidget {
                     key: ValueKey('view.group.split.$group'),
                     label: 'view.group.split.$group',
                     tooltip: l10n.stripSplit,
-                    icon: Icons.vertical_split,
+                    icon: Icons.vertical_split_outlined,
                     enabled: true,
                     onTap: onSplit,
                   )
@@ -377,7 +377,7 @@ final class PaneStrip extends StatelessWidget {
                     key: ValueKey('view.group.fold.$group'),
                     label: 'view.group.fold.$group',
                     tooltip: l10n.stripFold,
-                    icon: Icons.close_fullscreen,
+                    icon: Icons.close_fullscreen_outlined,
                     enabled: true,
                     onTap: onFold,
                   ),
@@ -928,15 +928,9 @@ final class _StripTabState extends State<_StripTab> {
                     ? context.shellHover
                     : null,
                 borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
-                boxShadow: widget.focused
-                    ? [
-                        const BoxShadow(
-                          color: Color(0x2E000000),
-                          offset: Offset(0, 1),
-                          blurRadius: 2,
-                        ),
-                      ]
-                    : null,
+                // Wave K ONE-shadow law: the focused pill states itself
+                // through the raised fill only — shadows belong to
+                // floating layers (the ghost chip keeps the token).
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -981,7 +975,7 @@ final class _StripTabState extends State<_StripTab> {
                       child: MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: Icon(
-                          Icons.close,
+                          Icons.close_outlined,
                           size: 12,
                           color: context.shellMuted,
                         ),
@@ -1082,7 +1076,11 @@ final class _AddTabButton extends StatelessWidget {
         child: SizedBox(
           width: 26,
           height: ShellTokens.tabHeight + 4,
-          child: Icon(Icons.add, size: 16, color: context.shellMuted),
+          child: Icon(
+            Icons.add_outlined,
+            size: 16,
+            color: context.shellMuted,
+          ),
         ),
       ),
     ),

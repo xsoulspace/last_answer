@@ -15,6 +15,7 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/creatures.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
+import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/ui/creature_mark.dart';
 
 /// The edge's height — one compact line, quieter than a tab strip.
@@ -82,7 +83,10 @@ final class StatusEdge extends StatelessWidget {
       decoration: BoxDecoration(
         color: la.surface,
         border: Border(
-          top: BorderSide(color: la.rule),
+          top: BorderSide(
+            color: context.shellHairline,
+            width: ShellTokens.hairline,
+          ),
         ),
       ),
       child: ListenableBuilder(
@@ -93,7 +97,7 @@ final class StatusEdge extends StatelessWidget {
         builder: (final context, final _) => DefaultTextStyle.merge(
           style: style,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             // ONE honest line — and it DEGRADES honestly (the owner's
             // half-screen desktop is a first-class width): the world
             // and backend segments ellipsize before anything drops;
@@ -224,7 +228,7 @@ final class _WorldSegment extends StatelessWidget {
             onTap: onOpenModels,
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 4),
         _ArmButton(world: world),
       ],
     );
@@ -252,10 +256,10 @@ final class _ArmButton extends StatelessWidget {
           onTap: () => unawaited(world.armWorld()),
           child: Container(
             height: 18,
-            padding: const EdgeInsets.symmetric(horizontal: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               color: la.accent.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Center(
               child: Text(
@@ -412,7 +416,7 @@ final class _EdgeSegment extends StatelessWidget {
       children: [
         if (leading case final lead?) ...[
           lead,
-          const SizedBox(width: 5),
+          const SizedBox(width: 8),
         ],
         if (spinner)
           SizedBox(
@@ -424,12 +428,13 @@ final class _EdgeSegment extends StatelessWidget {
             ),
           )
         else if (dotColor case final color?)
+          // Wave K: the edge's status dots are 6px with 8px gaps.
           Container(
-            width: 7,
-            height: 7,
+            width: 6,
+            height: 6,
             decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
-        if (dotColor != null || spinner) const SizedBox(width: 5),
+        if (dotColor != null || spinner) const SizedBox(width: 8),
         Flexible(
           child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
         ),

@@ -91,7 +91,7 @@ final class ActionBar extends StatelessWidget {
             key: const ValueKey('rail.search'),
             semanticsLabel: 'rail.search',
             tooltip: context.l10n.railSearchHint,
-            icon: Icons.search,
+            icon: Icons.search_outlined,
             active: false,
             onTap: onOpenPalette,
           ),
@@ -116,7 +116,7 @@ final class ActionBar extends StatelessWidget {
             active: settingsActive,
             onTap: onOpenSettings,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -175,11 +175,13 @@ final class _TotalUnreadBadge extends StatelessWidget {
   }
 }
 
-/// The one bar button shape: 40px rounded square, tinted fill, 18px
-/// outline icon, the active pip hanging at the bar's left edge, the
-/// optional badge at the bottom-right corner. Semantics: a named
-/// button — the label IS the widget key (the §2.3 contract), the human
-/// word rides the hint.
+/// The one bar button shape: 40px rounded square, 18px outline icon,
+/// the active pip hanging at the bar's left edge, the optional badge at
+/// the bottom-right corner. Flat at rest (shadcn discipline): the hover
+/// fill is [ShellColors.shellHover], the selected fill
+/// [ShellColors.shellSelected] — the resting button carries no tint.
+/// Semantics: a named button — the label IS the widget key (the §2.3
+/// contract), the human word rides the hint.
 final class _BarButton extends StatefulWidget {
   const _BarButton({
     required this.icon,
@@ -250,7 +252,15 @@ final class _BarButtonState extends State<_BarButton> {
                     width: ShellTokens.actionButtonSize,
                     height: ShellTokens.actionButtonSize,
                     decoration: BoxDecoration(
-                      color: lit ? context.shellSelected : context.shellHover,
+                      // Wave K: flat at rest — hover = shellHover,
+                      // selected = shellSelected (the ShellRow grammar;
+                      // the old resting tint made every button look
+                      // permanently hovered).
+                      color: widget.active
+                          ? context.shellSelected
+                          : _hovering
+                          ? context.shellHover
+                          : null,
                       borderRadius: BorderRadius.circular(
                         lit
                             ? ShellTokens.actionButtonRadiusActive

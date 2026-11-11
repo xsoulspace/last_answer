@@ -48,6 +48,9 @@ import 'package:lastanswer/shell/surfaces.dart';
 /// '#' mark; any other non-empty string renders AS TEXT (the emoji
 /// path). The map lives here, beside the marks it feeds — the strip
 /// pill's leading (app_shell) renders through the same [ChannelIconMark].
+/// Stroke-family exception note: `favorite_outline`/`star_outline` are
+/// the legacy-named OUTLINED twins (no `*_outlined` constant exists for
+/// them) — same stroke family, older name.
 const Map<String, IconData> kChannelIconGlyphs = <String, IconData>{
   'beaker': Icons.science_outlined,
   'book': Icons.menu_book_outlined,
@@ -150,9 +153,19 @@ final class RoomsColumn extends StatelessWidget {
             _RoomsRow(
               rowKey: 'rooms.cta.dm',
               title: l10n.worldChatMenuMessageActor,
-              leading: const Icon(
-                Icons.person_search_outlined,
-                size: 15,
+              // The 18px leading box: every row mark (avatar, '#',
+              // glyph, forum) rides ONE vertical axis (Wave K optical
+              // alignment).
+              leading: SizedBox(
+                width: 18,
+                height: 18,
+                child: Center(
+                  child: Icon(
+                    Icons.person_search_outlined,
+                    size: 15,
+                    color: context.shellMuted,
+                  ),
+                ),
               ),
               onTap: onMessageActor,
             )
@@ -177,7 +190,7 @@ final class RoomsColumn extends StatelessWidget {
             trailing: _HeaderAction(
               actionKey: 'rooms.create.channel',
               tooltip: l10n.worldChatMenuNewChannel,
-              icon: Icons.add,
+              icon: Icons.add_outlined,
               onTap: onCreateChannel,
             ),
           ),
@@ -516,8 +529,8 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Wrap(
-              spacing: 6,
-              runSpacing: 6,
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 for (final name in <String>[
                   kChannelHashIcon,
@@ -696,7 +709,9 @@ final class _RoomsRowState extends State<_RoomsRow> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontSize: 12.5,
+                      // DESIGN type scale: Compact 12 (the off-scale
+                      // 12.5 was chrome drift).
+                      fontSize: 12,
                       color: widget.selected
                           ? context.la.ink
                           : context.shellMuted,
@@ -707,7 +722,7 @@ final class _RoomsRowState extends State<_RoomsRow> {
                   ),
                 ),
                 if (widget.trailing != null) ...[
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   widget.trailing!,
                 ],
               ],
@@ -750,7 +765,7 @@ final class _RowUnreadBadge extends StatelessWidget {
           key: ValueKey(badgeKey),
           label: badgeKey,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
             decoration: BoxDecoration(
               color: context.la.accent,
               borderRadius: BorderRadius.circular(8),
@@ -887,7 +902,15 @@ final class ChannelIconMark extends StatelessWidget {
     }
     final glyph = kChannelIconGlyphs[value];
     if (glyph != null) {
-      return Icon(glyph, size: size, color: context.shellMuted);
+      // The same 18px leading box as the '#' mark: curated glyphs and
+      // the hash ride ONE vertical axis in the rows and the strip pills.
+      return SizedBox(
+        width: size + 3,
+        height: size + 3,
+        child: Center(
+          child: Icon(glyph, size: size, color: context.shellMuted),
+        ),
+      );
     }
     // The emoji path: the raw string IS the mark.
     return SizedBox(
@@ -908,14 +931,21 @@ final class ChannelIconMark extends StatelessWidget {
   }
 }
 
-/// The watchable room's forum mark (the strip pill's twin).
+/// The watchable room's forum mark (the strip pill's twin) — riding the
+/// same 18px leading box as every other row mark (one vertical axis).
 final class _RoomMark extends StatelessWidget {
   const _RoomMark();
 
   @override
-  Widget build(final BuildContext context) => Icon(
-    Icons.forum_outlined,
-    size: 15,
-    color: context.shellMuted,
+  Widget build(final BuildContext context) => SizedBox(
+    width: 18,
+    height: 18,
+    child: Center(
+      child: Icon(
+        Icons.forum_outlined,
+        size: 15,
+        color: context.shellMuted,
+      ),
+    ),
   );
 }

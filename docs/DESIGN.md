@@ -74,6 +74,32 @@
 
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 
+## Room vocabulary (v4 glossary, owner question 2026-11-10)
+
+One journal, four names by shape — the rooms column's sections ARE this
+glossary, and the section tooltips carry it in-product:
+
+- **Thread / room** — the durable append-only conversation in the realm
+  journal (ADR 0138): any participants, endless, watchable. "Room" is
+  the human word; "thread" is the journal's.
+- **Channel** — a room with a REGISTRY ROW: named, persistent,
+  human-managed (create / rename / icon / archive). Channels never
+  die — closing archives the row, the journal keeps every beat.
+- **DM** — a two-participant thread (you + one actor), deduped:
+  opening a DM with an actor who shares a two-member channel resolves
+  to THAT thread (a two-participant thread IS its DM).
+- **Rooms section** — every other thread: actor↔actor rooms, work
+  threads, task threads. You watch; you join by addressing.
+- **Work thread** — a child thread spawned by a work order (ADR 0129),
+  project-SEALED (only granted actors see it), rendered as a card in
+  its parent room and as a Rooms row; conversational children (no
+  seal) ride the same card with the kind word "thread". ONE level: a
+  thread off a thread links to the ROOT.
+- **Actor memory** — NOT a room: the actor's private experience log +
+  persona + brain binding + grants (the `actor:<id>` info surface).
+  Rooms are shared conversation; memory is per-actor standing. A room
+  never contains an actor's memory and memory never contains a room.
+
 ## Direction
 
 Last Answer is a calm, precise workroom for people and the actors they invite into their work. **Conversation is the primary interaction mode** (v2): rooms with actors are the front door — every other pane (documents, inspector, browser, terminal, settings) is a companion to the rooms, not a competing destination. Work starts from a sentence to an actor; tasks are tools that emerge from conversation, never the door. The shell is present but quiet; the work in each pane carries the attention.

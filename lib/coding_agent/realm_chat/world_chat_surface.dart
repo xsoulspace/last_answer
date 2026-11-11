@@ -63,6 +63,21 @@ void openThreadLane(
   service.selectThread(threadId);
 }
 
+/// Wave K — the ONE hover/press treatment for the chat chrome's icon
+/// buttons (composer, meta row, hover cluster, chip cancels): the shell
+/// hover fill on the shell radius (the ShellRow grammar), never the
+/// Material default overlay. Style-only; keys and callbacks ride the
+/// IconButton as before.
+ButtonStyle chromeIconButtonStyle(final BuildContext context) =>
+    IconButton.styleFrom(
+      hoverColor: context.shellHover,
+      focusColor: context.shellHover,
+      highlightColor: context.shellHover,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ShellTokens.radius),
+      ),
+    );
+
 final class WorldChatSurface extends StatefulWidget {
   const WorldChatSurface({
     this.service,
@@ -406,7 +421,7 @@ class _NarrationRow extends StatelessWidget {
     return Semantics(
       label: 'worldchat.narration.$actorId',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: [
             ActorAvatar(
@@ -476,7 +491,7 @@ class _WorkCard extends StatelessWidget {
     return Semantics(
       label: 'worldchat.work.${task.taskId}',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: context.shellField,
@@ -493,16 +508,16 @@ class _WorkCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
-                    vertical: 7,
+                    vertical: 8,
                   ),
                   child: Row(
                     children: [
                       Container(
-                        width: 7,
-                        height: 7,
+                        width: 6,
+                        height: 6,
                         decoration: BoxDecoration(
                           color: stateColor,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(3),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -525,7 +540,9 @@ class _WorkCard extends StatelessWidget {
                         ),
                       ),
                       Icon(
-                        expanded ? Icons.expand_less : Icons.expand_more,
+                        expanded
+                            ? Icons.expand_less_outlined
+                            : Icons.expand_more_outlined,
                         size: 15,
                         color: context.shellMuted,
                       ),
@@ -578,9 +595,13 @@ class _WorkCard extends StatelessWidget {
     final BuildContext context,
     final String text,
   ) => Padding(
-    padding: const EdgeInsets.only(top: 3),
+    padding: const EdgeInsets.only(top: 4),
     child: Text(
       text,
+      // Wave K: the card's preview/fact lines stay ONE line, ellipsized
+      // in the muted tone — the expanded card never grows a text wall.
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: theme.textTheme.labelSmall?.copyWith(
         color: context.shellMuted,
         fontFeatures: const [FontFeature.tabularFigures()],
@@ -624,7 +645,7 @@ class _PermissionInterruptState extends State<_PermissionInterrupt> {
     return Semantics(
       label: 'worldchat.perm.${permission.sessionId}',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: context.shellField,
@@ -632,7 +653,7 @@ class _PermissionInterruptState extends State<_PermissionInterrupt> {
             border: Border.all(color: context.la.danger),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -672,7 +693,7 @@ class _PermissionInterruptState extends State<_PermissionInterrupt> {
                       danger: true,
                       onTap: () => unawaited(permission.answer(false)),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 4),
                     _StripButton(
                       keyName: 'worldchat.perm.allow.${permission.sessionId}',
                       label: l10n.inboxAllow,
@@ -779,7 +800,7 @@ class _StripButton extends StatelessWidget {
         key: ValueKey(keyName),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
@@ -817,10 +838,14 @@ class _DaemonAbsentRow extends StatelessWidget {
     return Semantics(
       label: 'worldchat.daemonAbsent',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: [
-            Icon(Icons.power_settings_new, size: 13, color: context.la.caution),
+            Icon(
+              Icons.power_settings_new_outlined,
+              size: 13,
+              color: context.la.caution,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -876,14 +901,14 @@ class _LoadOlderRow extends StatelessWidget {
     label: 'worldchat.loadOlder',
     child: Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: TextButton(
           onPressed: onTap,
           child: Text(
             label,
-            style: TextStyle(
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
               fontSize: 12,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              color: context.shellMuted,
             ),
           ),
         ),
@@ -924,7 +949,7 @@ class _JumpToLatestPill extends StatelessWidget {
             boxShadow: shellFloatingShadow(context),
           ),
           child: Icon(
-            Icons.arrow_downward,
+            Icons.arrow_downward_outlined,
             size: 16,
             color: context.shellMuted,
           ),
@@ -1875,7 +1900,11 @@ class _ConversationPaneState extends State<_ConversationPane> {
               otherProfile != null &&
               (bots?.isRunning(otherProfile.actorId) ?? false),
         ),
-        Divider(height: 1, color: theme.dividerColor),
+        Divider(
+          height: ShellTokens.hairline,
+          thickness: ShellTokens.hairline,
+          color: context.shellHairline,
+        ),
         Expanded(
           // The strip (work cards, 0c interrupts, narration) renders
           // EVEN in a beat-less room: a fresh general room whose first
@@ -2081,22 +2110,31 @@ class _ConversationPaneState extends State<_ConversationPane> {
                   ],
                 ),
         ),
-        Divider(height: 1, color: theme.dividerColor),
+        Divider(
+          height: ShellTokens.hairline,
+          thickness: ShellTokens.hairline,
+          color: context.shellHairline,
+        ),
         // 1g — the reply anchor: a quiet strip naming the beat the
         // next word answers (cancel returns to the plain say).
         if (_replyBeat != null)
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
             child: Container(
               key: const ValueKey('worldchat.replying'),
-              padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+              padding: const EdgeInsets.fromLTRB(8, 4, 4, 4),
               decoration: BoxDecoration(
                 color: context.shellField,
                 borderRadius: BorderRadius.circular(ShellTokens.radius),
+                border: Border.all(color: context.shellHairline),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.reply, size: 14, color: context.shellMuted),
+                  Icon(
+                    Icons.reply_outlined,
+                    size: 14,
+                    color: context.shellMuted,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -2112,8 +2150,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
                     key: const ValueKey('worldchat.replying.close'),
                     visualDensity: VisualDensity.compact,
                     iconSize: 14,
+                    style: chromeIconButtonStyle(context),
                     tooltip: l10n.worldChatCancelReply,
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close_outlined),
                     onPressed: () => setState(() => _replyBeat = null),
                   ),
                 ],
@@ -2194,7 +2233,10 @@ class _ConversationPaneState extends State<_ConversationPane> {
             // border+fill together is the Material double declaration.
             decoration: BoxDecoration(
               color: context.shellField,
-              borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
+              // Wave K: the field rides the shell radius token — the
+              // ad-hoc `radius + 2` was chrome drift (floating layers
+              // keep their 10–12; controls ride 8).
+              borderRadius: BorderRadius.circular(ShellTokens.radius),
             ),
             padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
             child: Row(
@@ -2212,6 +2254,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                   tooltip: l10n.worldChatAttach,
                   visualDensity: VisualDensity.compact,
                   iconSize: 18,
+                  style: chromeIconButtonStyle(context),
                   icon: Icon(
                     Icons.add_circle_outline,
                     color: _armedScope != null
@@ -2242,16 +2285,21 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 ),
                 // The send's other busy half: a scoped spawn in flight
                 // (the service's `sending` flag covers the plain say).
+                // Wave K: SAME density + icon size as the attach button
+                // — the two share one optical size and baseline.
                 IconButton(
                   key: const ValueKey('worldchat.send'),
                   tooltip: l10n.worldChatSend,
+                  visualDensity: VisualDensity.compact,
+                  iconSize: 18,
+                  style: chromeIconButtonStyle(context),
                   icon: sendBusy
                       ? const SizedBox(
                           width: 14,
                           height: 14,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.arrow_upward, size: 18),
+                      : const Icon(Icons.arrow_upward_outlined, size: 18),
                   onPressed: sendBusy
                       ? null
                       : () => unawaited(_send(composer.text)),
@@ -2888,7 +2936,7 @@ class _MessageRowState extends State<_MessageRow> {
     return Padding(
       padding: const EdgeInsets.only(
         left: ShellTokens.messageGutter,
-        bottom: 3,
+        bottom: 4,
       ),
       child: Container(
         key: replyQuoteKey,
@@ -2928,6 +2976,7 @@ class _MessageRowState extends State<_MessageRow> {
       iconSize: 14,
       constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
       padding: const EdgeInsets.all(4),
+      style: chromeIconButtonStyle(context),
       tooltip: tooltip,
       icon: Icon(icon, color: muted),
       onPressed: onPressed,
@@ -2939,7 +2988,7 @@ class _MessageRowState extends State<_MessageRow> {
         children: [
           button(
             key: ValueKey('worldchat.beat.reply.$suffix'),
-            icon: Icons.reply,
+            icon: Icons.reply_outlined,
             tooltip: l10n.worldChatBeatReply,
             onPressed: widget.onReply,
           ),
@@ -2952,14 +3001,14 @@ class _MessageRowState extends State<_MessageRow> {
             ),
           button(
             key: ValueKey('worldchat.beat.thread.$suffix'),
-            icon: Icons.alt_route,
+            icon: Icons.alt_route_outlined,
             tooltip: l10n.worldChatBeatNewThread,
             onPressed: widget.onNewThread,
           ),
           Builder(
             builder: (final buttonContext) => button(
               key: ValueKey('worldchat.beat.menu.$suffix'),
-              icon: Icons.more_horiz,
+              icon: Icons.more_horiz_outlined,
               tooltip: l10n.worldChatBeatMenu,
               onPressed: () {
                 final box = buttonContext.findRenderObject()! as RenderBox;
@@ -2995,7 +3044,7 @@ class _MessageRowState extends State<_MessageRow> {
     } else {
       final time = _timeLabel(context);
       content = Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -3005,7 +3054,7 @@ class _MessageRowState extends State<_MessageRow> {
                   profile: profile,
                   size: ShellTokens.messageAvatar,
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 8),
                 // Wave F — the display name is an actor affordance: a
                 // tap opens the actor (info surface via the host's
                 // onTapActor seam; inert when the host gives none).
@@ -3030,7 +3079,7 @@ class _MessageRowState extends State<_MessageRow> {
                   ),
                 ],
                 for (final chip in addressedChips) ...[
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   Text(
                     '@${chip.name}',
                     key: ValueKey('worldchat.addressed.${chip.id}'),
@@ -3063,7 +3112,7 @@ class _MessageRowState extends State<_MessageRow> {
           children: [
             content,
             if (_hovering)
-              Positioned(right: 6, top: 0, child: _cluster(context)),
+              Positioned(right: 8, top: 0, child: _cluster(context)),
           ],
         ),
       ),
@@ -3144,7 +3193,7 @@ class _BeatDetailsDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -3155,7 +3204,7 @@ class _BeatDetailsDialog extends StatelessWidget {
                   context,
                 ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               for (final (label, value) in facts)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.5),
@@ -3178,7 +3227,7 @@ class _BeatDetailsDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -3254,7 +3303,7 @@ class _WorkThreadCard extends StatelessWidget {
     return Semantics(
       label: 'worldchat.workthread.$id',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: context.shellField,
@@ -3262,13 +3311,17 @@ class _WorkThreadCard extends StatelessWidget {
             border: Border.all(color: context.shellHairline),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
-                    Icon(Icons.alt_route, size: 14, color: context.la.accent),
+                    Icon(
+                      Icons.alt_route_outlined,
+                      size: 14,
+                      color: context.la.accent,
+                    ),
                     const SizedBox(width: 8),
                     Flexible(
                       child: Tooltip(
@@ -3311,7 +3364,7 @@ class _WorkThreadCard extends StatelessWidget {
                 ),
                 if (hasPreview)
                   Padding(
-                    padding: const EdgeInsets.only(top: 3),
+                    padding: const EdgeInsets.only(top: 4),
                     child: Row(
                       children: [
                         Expanded(
@@ -3328,7 +3381,7 @@ class _WorkThreadCard extends StatelessWidget {
                           ),
                         ),
                         if (at != null && _instant(at).isNotEmpty) ...[
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 4),
                           Text(
                             _instant(at),
                             style: theme.textTheme.labelSmall?.copyWith(
@@ -3367,16 +3420,17 @@ class _ScopeChip extends StatelessWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onClear,
         child: Container(
           key: const ValueKey('worldchat.scope.armed'),
-          padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+          padding: const EdgeInsets.fromLTRB(8, 4, 4, 4),
           decoration: BoxDecoration(
             color: context.shellField,
             borderRadius: BorderRadius.circular(ShellTokens.radius),
+            border: Border.all(color: context.shellHairline),
           ),
           child: Row(
             children: [
@@ -3402,8 +3456,9 @@ class _ScopeChip extends StatelessWidget {
                 key: const ValueKey('worldchat.scope.clear'),
                 visualDensity: VisualDensity.compact,
                 iconSize: 14,
+                style: chromeIconButtonStyle(context),
                 tooltip: l10n.worldChatScopeDismiss,
-                icon: const Icon(Icons.close),
+                icon: const Icon(Icons.close_outlined),
                 onPressed: onClear,
               ),
             ],
@@ -3464,7 +3519,7 @@ class _SpawnRefusalCard extends StatelessWidget {
     return Semantics(
       label: 'worldchat.spawnRefusal',
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
+        padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: context.shellField,
@@ -3472,7 +3527,7 @@ class _SpawnRefusalCard extends StatelessWidget {
             border: Border.all(color: context.la.danger),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Column(
               key: const ValueKey('worldchat.spawnRefusal'),
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -3528,7 +3583,7 @@ class _SpawnRefusalCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -3538,7 +3593,7 @@ class _SpawnRefusalCard extends StatelessWidget {
                       onTap: onDismiss,
                     ),
                     if (needsGrant) ...[
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 4),
                       _StripButton(
                         keyName: 'worldchat.spawnRefusal.grant',
                         label: busy
@@ -3577,9 +3632,12 @@ final class _Mentionable {
   final String id;
   final String name;
 
+  // Stroke-family note: `person_outline` is the legacy-named OUTLINED
+  // twin (no `person_outlined` constant) — same stroke family as the
+  // `*_outlined` glyphs beside it.
   IconData get icon => switch (kind) {
     _MentionKind.actor => Icons.person_outline,
-    _MentionKind.channel => Icons.tag,
+    _MentionKind.channel => Icons.tag_outlined,
     _MentionKind.room => Icons.forum_outlined,
     _MentionKind.doc => Icons.description_outlined,
   };
@@ -3616,11 +3674,11 @@ class _MentionRow extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(ShellTokens.radius),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Row(
           children: [
             Icon(item.icon, size: 15, color: context.shellMuted),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 item.display,
@@ -3692,7 +3750,7 @@ class _AttachDialogState extends State<_AttachDialog> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420, maxHeight: 520),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -3703,7 +3761,7 @@ class _AttachDialogState extends State<_AttachDialog> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               TextField(
                 key: const ValueKey('worldchat.attach.search'),
                 controller: _search,
@@ -3713,14 +3771,14 @@ class _AttachDialogState extends State<_AttachDialog> {
                 decoration: InputDecoration(
                   hintText: l10n.worldChatAttachSearchHint,
                   isDense: true,
-                  prefixIcon: const Icon(Icons.search, size: 16),
+                  prefixIcon: const Icon(Icons.search_outlined, size: 16),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(ShellTokens.radius),
                     borderSide: BorderSide(color: context.shellHairline),
                   ),
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Flexible(
                 child: filtered.isEmpty
                     ? Padding(
@@ -3808,7 +3866,7 @@ class _AttachActionRow extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(ShellTokens.radius),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(
             children: [
               Icon(
@@ -3816,7 +3874,7 @@ class _AttachActionRow extends StatelessWidget {
                 size: 16,
                 color: enabled ? context.shellMuted : context.la.inkQuiet,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   label,
@@ -3849,7 +3907,7 @@ class _MentionOverlay extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+    padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
     child: Container(
       key: const ValueKey('worldchat.mentionOverlay'),
       constraints: const BoxConstraints(maxHeight: 220),
@@ -3934,7 +3992,10 @@ class _ChannelMetaRow extends StatelessWidget {
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 6, 10, 0),
+      // Wave K optical alignment: the meta row's left inset equals the
+      // composer field's (12 outer + 12 inner = 24), so the meta icons
+      // ride the attach button's vertical axis.
+      padding: const EdgeInsets.fromLTRB(24, 4, 12, 0),
       child: Row(
         children: [
           IconButton(
@@ -3942,6 +4003,7 @@ class _ChannelMetaRow extends StatelessWidget {
             tooltip: l10n.worldChatPermsTooltip,
             visualDensity: VisualDensity.compact,
             iconSize: 15,
+            style: chromeIconButtonStyle(context),
             icon: Icon(Icons.lock_outline, color: context.shellMuted),
             onPressed: () => unawaited(_openPermissions(context)),
           ),
@@ -3950,6 +4012,7 @@ class _ChannelMetaRow extends StatelessWidget {
             tooltip: l10n.worldChatMembersTooltip,
             visualDensity: VisualDensity.compact,
             iconSize: 15,
+            style: chromeIconButtonStyle(context),
             icon: Icon(Icons.group_outlined, color: context.shellMuted),
             onPressed: () => unawaited(_openMembers(context)),
           ),
@@ -3958,6 +4021,7 @@ class _ChannelMetaRow extends StatelessWidget {
             tooltip: l10n.worldChatInfoTooltip,
             visualDensity: VisualDensity.compact,
             iconSize: 15,
+            style: chromeIconButtonStyle(context),
             icon: Icon(Icons.info_outline, color: context.shellMuted),
             onPressed: () => unawaited(_openInfo(context)),
           ),
@@ -4055,7 +4119,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 460, maxHeight: 520),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: _loading
               ? const Padding(
                   padding: EdgeInsets.all(24),
@@ -4071,7 +4135,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     Flexible(
                       child: ListView(
                         shrinkWrap: true,
@@ -4080,7 +4144,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                           for (final id in widget.memberIds)
                             Padding(
                               key: ValueKey('worldchat.meta.perms.grants.$id'),
-                              padding: const EdgeInsets.symmetric(vertical: 3),
+                              padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -4165,7 +4229,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                           style: LaTokens.mono(10, context.la.danger),
                         ),
                       ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -4345,7 +4409,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 12, 12),
+          padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -4356,7 +4420,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               for (final (label, value) in facts)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.5),
@@ -4417,7 +4481,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                   enabled: false,
                   child: Container(
                     key: const ValueKey('worldchat.meta.info.icon'),
-                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Row(
                       children: [
                         Icon(
@@ -4448,7 +4512,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                     style: LaTokens.mono(10, context.la.danger),
                   ),
                 ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -4458,7 +4522,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                     danger: true,
                     onTap: _busy ? () {} : () => unawaited(_archive()),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   TextButton(
                     key: const ValueKey('worldchat.meta.info.close'),
                     onPressed: () => Navigator.of(context).pop(),

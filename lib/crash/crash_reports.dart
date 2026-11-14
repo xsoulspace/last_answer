@@ -26,6 +26,7 @@ final class CrashReport {
     required this.error,
     required this.stack,
     required this.platform,
+    this.context = '',
   });
 
   factory CrashReport.fromJson(final Map<String, Object?> json) => CrashReport(
@@ -33,6 +34,7 @@ final class CrashReport {
     error: '${json['error'] ?? ''}',
     stack: '${json['stack'] ?? ''}',
     platform: '${json['platform'] ?? ''}',
+    context: '${json['context'] ?? ''}',
   );
 
   final String at;
@@ -40,11 +42,18 @@ final class CrashReport {
   final String stack;
   final String platform;
 
+  /// The framework's own diagnostic text when the error carries it
+  /// (a FlutterError's context + informationCollector: the widget
+  /// chain behind an overflow, the creator of a dirty semantics node).
+  /// Empty for raw platform errors. Older stored reports read empty.
+  final String context;
+
   Map<String, Object?> toJson() => <String, Object?>{
     'at': at,
     'error': error,
     'stack': stack,
     'platform': platform,
+    'context': context,
   };
 }
 
@@ -56,6 +65,10 @@ abstract final class CrashReports {
 
   /// The stack's bound (characters) — a diagnostic, not a dump.
   static const int maxStackChars = 8000;
+
+  /// The framework context's bound (characters) — the widget chain,
+  /// not a widget-tree dump.
+  static const int maxContextChars = 4000;
 
   /// Test seam: where the store lives (default: the app-support dir).
   static Future<Directory> Function()? debugDirectoryOverride;
@@ -69,22 +82,32 @@ abstract final class CrashReports {
   }
 
   /// Captures one crash. Never throws — a failing capture is a lost
-  /// report, never a second crash.
+  /// report, never a second crash. [context] carries the framework's
+  /// own diagnostic text when there is any (a `FlutterError`'s widget
+  /// chain); a RenderFlex overflow without a named widget taught us
+  /// why this field exists (2026-11-14: 21 reports, zero widget
+  /// names).
   static Future<void> capture(
     final Object error,
-    final StackTrace stack,
-  ) async {
+    final StackTrace stack, {
+    final String? context,
+  }) async {
     try {
       final dir = await _store();
       var stackText = '$stack';
       if (stackText.length > maxStackChars) {
         stackText = stackText.substring(0, maxStackChars);
       }
+      var contextText = context ?? '';
+      if (contextText.length > maxContextChars) {
+        contextText = contextText.substring(0, maxContextChars);
+      }
       final report = CrashReport(
         at: DateTime.now().toUtc().toIso8601String(),
         error: '$error',
         stack: stackText,
         platform: Platform.operatingSystem,
+        context: contextText,
       );
       final name =
           'crash-${DateTime.now().microsecondsSinceEpoch}-${identityHashCode(report)}.json';
@@ -156,8 +179,18 @@ abstract final class CrashReports {
   static void install() {
     FlutterError.onError = (final details) {
       FlutterError.presentError(details);
+      final contextText = <String>[
+        if (details.context != null) details.context!.toDescription(),
+        ...?details.informationCollector?.call().map(
+          (final node) => node.toDescription(),
+        ),
+      ].where((final line) => line.isNotEmpty).join('\n');
       unawaited(
-        capture(details.exception, details.stack ?? StackTrace.current),
+        capture(
+          details.exception,
+          details.stack ?? StackTrace.current,
+          context: contextText,
+        ),
       );
     };
     PlatformDispatcher.instance.onError = (final error, final stack) {

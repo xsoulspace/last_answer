@@ -737,6 +737,13 @@ final class BrainEngineServer {
   final _queue = <Map<String, Object?>>[];
   var _draining = false;
 
+  /// The treadmill bound (2026-11-14): a local model decodes 100x
+  /// slower than a remote one; unbounded port queues kept the machine
+  /// generating forever while new beats kept arriving. At most this
+  /// many requests WAIT (the running job is not counted); a deeper
+  /// arrival gets the named busy refusal immediately.
+  static const int _maxQueued = 8;
+
   static void serve({
     required SendPort replies,
     required InferenceClient Function(String cast) newClient,
@@ -748,6 +755,22 @@ final class BrainEngineServer {
 
   void _onMessage(Object? message) {
     if (message is! Map) return;
+    final id = message['id'];
+    if (_queue.length >= _maxQueued) {
+      // Refuse at the door: retrying NOW cannot help (the lane is
+      // saturated), so this rides the non-retryable branch and the
+      // caller surfaces `engine_busy` instead of waiting forever.
+      _replies.send(
+        _engineReply(
+          id: id is int ? id : null,
+          code: 'engine_busy',
+          message: 'the local engine lane is saturated '
+          '(${_queue.length} queued); back off and retry',
+          retryable: false,
+        ),
+      );
+      return;
+    }
     _queue.add(Map<String, Object?>.from(message));
     if (!_draining) {
       _draining = true;

@@ -727,5 +727,49 @@
   "modelsRefusalModelInUse": "нельзя удалить модель — на неё ссылается каст:",
   "@modelsRefusalModelInUse": {"description": "Provider editor: model-in-use refusal."},
   "modelsRefusalNoSeat": "seat realm не готов — он нужен глаголам палитры",
-  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."}
+  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
+  "modelsLensCatalog": "Каталог",
+  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensBindings": "Биндинги",
+  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensObserve": "Наблюдение",
+  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonToggle": "JSON",
+  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonInvalid": "невалидный JSON — кандидат сохраняет последнюю валидную форму",
+  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxTokens": "max_tokens",
+  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxOutputTokens": "max_output_tokens",
+  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldReasoningEffort": "reasoning_effort",
+  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldIncludeReasoning": "include_reasoning",
+  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldCapabilities": "capabilities",
+  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsEditModel": "Изменить модель",
+  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveUp": "поднять по лестнице эскалации",
+  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveDown": "опустить по лестнице эскалации",
+  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSetPrimary": "сделать основным mover realm",
+  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionPrefix": "сессия:",
+  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionClear": "очистить",
+  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartPending": "палитра применена — daemon подхватит её после перезапуска",
+  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartNow": "Перезапустить сейчас",
+  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsHealthSection": "Здоровье",
+  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLedgerSection": "Журнал диспетчеризаций",
+  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsUnbound": "непривязанные актёры",
+  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRefusalBadNumber": "не число — поле сохраняет последнее значение",
+  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
 }

@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/landing_inbox.dart';
+import 'package:lastanswer/shell/models/models_view.dart';
 import 'package:lastanswer/shell/status_edge.dart';
-import 'package:lastanswer/shell/view_models.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 
 import 'hermetic_world_state.dart';
@@ -308,6 +307,11 @@ void main() {
     ) async {
       await mountModels(tester);
 
+      // The refactor's IA: the ladder lives in the BINDINGS lens, the
+      // health detail and the daemon verbs in OBSERVE.
+      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
+      await tester.pump();
+
       expect(
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
         findsOneWidget,
@@ -323,19 +327,27 @@ void main() {
       expect(find.text('local'), findsNWidgets(2));
       // The ladder's next rung rides the row.
       expect(find.text('→ openrouter_deepseek'), findsOneWidget);
+
+      // The OBSERVE lens carries the health ledger (verbatim detail)
+      // and the daemon's process verbs.
+      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      await tester.pump();
       // The failed primary's health detail is visible BEFORE any send.
       expect(find.textContaining('transport_http_403'), findsOneWidget);
       // The local lane's honesty: the weights fact, never a dead toggle.
       expect(find.textContaining('never downloads'), findsOneWidget);
-      // A live daemon offers restart/stop, and the editor.
+      // A live daemon offers restart/stop; the Pro-gated editor entry
+      // is RETIRED (the harness's owner-only apply is the single gate).
       expect(find.byKey(const ValueKey('models.restart')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsOneWidget);
-      expect(find.byKey(const ValueKey('models.edit')), findsOneWidget);
     });
 
     testWidgets('the header carries the honest scheduler row in both '
         'states (G1)', (final tester) async {
       await mountModels(tester);
+
+      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      await tester.pump();
 
       // No supervisor record for this hermetic world home: the row is
       // honestly DOWN — a delegated task would sit `queued`.
@@ -379,6 +391,8 @@ void main() {
     ) async {
       await mountModels(tester);
 
+      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
+      await tester.pump();
       await tester.tap(
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
       );
@@ -389,60 +403,6 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('models.rung.laya')));
       await tester.pump();
       expect(world.selectedRungId, 'modelscope_qwen38max');
-    });
-
-    testWidgets('the editor validates with the harness parser and saves the '
-        'real document with a .bak', (final tester) async {
-      await mountModels(tester);
-
-      await tester.tap(find.byKey(const ValueKey('models.edit')));
-      await tester.pumpAndSettle();
-      expect(find.byKey(const ValueKey('models.editor')), findsOneWidget);
-
-      // A malformed document is refused by name, before any write.
-      await tester.enterText(
-        find.byKey(const ValueKey('models.editor.field')),
-        '{not json',
-      );
-      await tester.tap(find.byKey(const ValueKey('models.editor.validate')));
-      await tester.pump();
-      expect(find.textContaining('json_malformed'), findsOneWidget);
-
-      // A valid edit saves into the REAL file, with the previous bytes
-      // kept as a .bak sibling, and the rungs re-read.
-      final edited = _paletteDoc();
-      final cast = (edited['model_palette']! as Map)['cast']! as List;
-      cast.add({
-        'id': 'modelscope_qwen38flash',
-        'provider': 'modelscope',
-        'model': 'Qwen3.8-Max-Preview',
-        'role': 'generative',
-      });
-      await tester.enterText(
-        find.byKey(const ValueKey('models.editor.field')),
-        jsonEncode(edited['model_palette']),
-      );
-      await tester.tap(find.byKey(const ValueKey('models.editor.save')));
-      await tester.pump();
-      expect(find.text('saved'), findsOneWidget);
-      expect(
-        File('$worldHome/.xsoulspace/config.json.bak').existsSync(),
-        isTrue,
-      );
-      expect(
-        world.rungs.map((final rung) => rung.id),
-        contains('modelscope_qwen38flash'),
-      );
-      // The save offers the supervised restart (never tapped here: the
-      // stop ladder is real IO).
-      expect(
-        find.byKey(const ValueKey('models.editor.restart')),
-        findsOneWidget,
-      );
-
-      await tester.tap(find.byKey(const ValueKey('models.editor.close')));
-      await tester.pumpAndSettle();
-      expect(find.byKey(const ValueKey('models.editor')), findsNothing);
     });
 
     testWidgets('a malformed declared palette renders the harness refusal', (
@@ -485,6 +445,8 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('palette_unknown_transport'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      await tester.pump();
       // A dead daemon offers the arm, never the stop.
       expect(find.byKey(const ValueKey('models.arm')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsNothing);

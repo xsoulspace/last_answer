@@ -724,5 +724,49 @@
   "modelsRefusalModelInUse": "impossibile rimuovere il modello — referenziato dal cast:",
   "@modelsRefusalModelInUse": {"description": "Provider editor: model-in-use refusal."},
   "modelsRefusalNoSeat": "il seat del realm non è pronto — i verbi della palette lo richiedono",
-  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."}
+  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
+  "modelsLensCatalog": "Catalogo",
+  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensBindings": "Associazioni",
+  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensObserve": "Osserva",
+  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonToggle": "JSON",
+  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonInvalid": "JSON non valido — il candidato mantiene l'ultima forma valida",
+  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxTokens": "max_tokens",
+  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxOutputTokens": "max_output_tokens",
+  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldReasoningEffort": "reasoning_effort",
+  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldIncludeReasoning": "include_reasoning",
+  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldCapabilities": "capabilities",
+  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsEditModel": "Modifica modello",
+  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveUp": "sali nella scala di escalation",
+  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveDown": "scendi nella scala di escalation",
+  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSetPrimary": "imposta come mover primario del realm",
+  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionPrefix": "sessione:",
+  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionClear": "svuota",
+  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartPending": "palette applicata — il daemon la associa al riavvio",
+  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartNow": "Riavvia ora",
+  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsHealthSection": "Salute",
+  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLedgerSection": "Registro dispatch",
+  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsUnbound": "attori non associati",
+  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRefusalBadNumber": "non è un numero — il campo mantiene l'ultimo valore",
+  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
 }

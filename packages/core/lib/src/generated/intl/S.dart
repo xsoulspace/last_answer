@@ -2813,6 +2813,50 @@ abstract class S {
   /// In en, this message translates to:
   /// **the realm seat is not ready — the palette verbs need it**
   String get modelsRefusalNoSeat;
+  /// No description provided for @modelsLensCatalog.
+  String get modelsLensCatalog;
+  /// No description provided for @modelsLensBindings.
+  String get modelsLensBindings;
+  /// No description provided for @modelsLensObserve.
+  String get modelsLensObserve;
+  /// No description provided for @modelsJsonToggle.
+  String get modelsJsonToggle;
+  /// No description provided for @modelsJsonInvalid.
+  String get modelsJsonInvalid;
+  /// No description provided for @modelsFieldMaxTokens.
+  String get modelsFieldMaxTokens;
+  /// No description provided for @modelsFieldMaxOutputTokens.
+  String get modelsFieldMaxOutputTokens;
+  /// No description provided for @modelsFieldReasoningEffort.
+  String get modelsFieldReasoningEffort;
+  /// No description provided for @modelsFieldIncludeReasoning.
+  String get modelsFieldIncludeReasoning;
+  /// No description provided for @modelsFieldCapabilities.
+  String get modelsFieldCapabilities;
+  /// No description provided for @modelsEditModel.
+  String get modelsEditModel;
+  /// No description provided for @modelsMoveUp.
+  String get modelsMoveUp;
+  /// No description provided for @modelsMoveDown.
+  String get modelsMoveDown;
+  /// No description provided for @modelsSetPrimary.
+  String get modelsSetPrimary;
+  /// No description provided for @modelsSessionPrefix.
+  String get modelsSessionPrefix;
+  /// No description provided for @modelsSessionClear.
+  String get modelsSessionClear;
+  /// No description provided for @modelsRestartPending.
+  String get modelsRestartPending;
+  /// No description provided for @modelsRestartNow.
+  String get modelsRestartNow;
+  /// No description provided for @modelsHealthSection.
+  String get modelsHealthSection;
+  /// No description provided for @modelsLedgerSection.
+  String get modelsLedgerSection;
+  /// No description provided for @modelsUnbound.
+  String get modelsUnbound;
+  /// No description provided for @modelsRefusalBadNumber.
+  String get modelsRefusalBadNumber;
   /// No description provided for @roomsExplainDms.
   ///
   /// In en, this message translates to:

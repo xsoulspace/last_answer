@@ -1507,6 +1507,50 @@ class SRu extends S {
   @override
   String get modelsRefusalNoSeat => 'seat realm не готов — он нужен глаголам палитры';
   @override
+  String get modelsLensCatalog => 'Каталог';
+  @override
+  String get modelsLensBindings => 'Биндинги';
+  @override
+  String get modelsLensObserve => 'Наблюдение';
+  @override
+  String get modelsJsonToggle => 'JSON';
+  @override
+  String get modelsJsonInvalid => 'невалидный JSON — кандидат сохраняет последнюю валидную форму';
+  @override
+  String get modelsFieldMaxTokens => 'max_tokens';
+  @override
+  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
+  @override
+  String get modelsFieldReasoningEffort => 'reasoning_effort';
+  @override
+  String get modelsFieldIncludeReasoning => 'include_reasoning';
+  @override
+  String get modelsFieldCapabilities => 'capabilities';
+  @override
+  String get modelsEditModel => 'Изменить модель';
+  @override
+  String get modelsMoveUp => 'поднять по лестнице эскалации';
+  @override
+  String get modelsMoveDown => 'опустить по лестнице эскалации';
+  @override
+  String get modelsSetPrimary => 'сделать основным mover realm';
+  @override
+  String get modelsSessionPrefix => 'сессия:';
+  @override
+  String get modelsSessionClear => 'очистить';
+  @override
+  String get modelsRestartPending => 'палитра применена — daemon подхватит её после перезапуска';
+  @override
+  String get modelsRestartNow => 'Перезапустить сейчас';
+  @override
+  String get modelsHealthSection => 'Здоровье';
+  @override
+  String get modelsLedgerSection => 'Журнал диспетчеризаций';
+  @override
+  String get modelsUnbound => 'непривязанные актёры';
+  @override
+  String get modelsRefusalBadNumber => 'не число — поле сохраняет последнее значение';
+  @override
   String get roomsExplainDms => 'Личные сообщения — приватные ветки с одним актёром';
   @override
   String get roomsExplainChannels => 'Каналы — именованные групповые комнаты с общей историей';

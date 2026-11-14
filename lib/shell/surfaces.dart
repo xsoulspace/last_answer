@@ -46,10 +46,10 @@ import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dar
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/settings.dart';
 import 'package:lastanswer/shell/actor_info_surface.dart';
+import 'package:lastanswer/shell/models/models_view.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_documents.dart';
-import 'package:lastanswer/shell/view_models.dart';
 import 'package:lastanswer/shell/view_people.dart';
 import 'package:lastanswer/shell/view_threads.dart';
 import 'package:lastanswer/workspaces/workspace_files_tab.dart';

@@ -1502,6 +1502,50 @@ class SIt extends S {
   @override
   String get modelsRefusalNoSeat => 'il seat del realm non è pronto — i verbi della palette lo richiedono';
   @override
+  String get modelsLensCatalog => 'Catalogo';
+  @override
+  String get modelsLensBindings => 'Associazioni';
+  @override
+  String get modelsLensObserve => 'Osserva';
+  @override
+  String get modelsJsonToggle => 'JSON';
+  @override
+  String get modelsJsonInvalid => 'JSON non valido — il candidato mantiene l\'ultima forma valida';
+  @override
+  String get modelsFieldMaxTokens => 'max_tokens';
+  @override
+  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
+  @override
+  String get modelsFieldReasoningEffort => 'reasoning_effort';
+  @override
+  String get modelsFieldIncludeReasoning => 'include_reasoning';
+  @override
+  String get modelsFieldCapabilities => 'capabilities';
+  @override
+  String get modelsEditModel => 'Modifica modello';
+  @override
+  String get modelsMoveUp => 'sali nella scala di escalation';
+  @override
+  String get modelsMoveDown => 'scendi nella scala di escalation';
+  @override
+  String get modelsSetPrimary => 'imposta come mover primario del realm';
+  @override
+  String get modelsSessionPrefix => 'sessione:';
+  @override
+  String get modelsSessionClear => 'svuota';
+  @override
+  String get modelsRestartPending => 'palette applicata — il daemon la associa al riavvio';
+  @override
+  String get modelsRestartNow => 'Riavvia ora';
+  @override
+  String get modelsHealthSection => 'Salute';
+  @override
+  String get modelsLedgerSection => 'Registro dispatch';
+  @override
+  String get modelsUnbound => 'attori non associati';
+  @override
+  String get modelsRefusalBadNumber => 'non è un numero — il campo mantiene l\'ultimo valore';
+  @override
   String get roomsExplainDms => 'Messaggi diretti — thread privati con un attore';
   @override
   String get roomsExplainChannels => 'Canali — stanze di gruppo con nome e cronologia condivisa';

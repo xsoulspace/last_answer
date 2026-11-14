@@ -79,7 +79,7 @@ Future<void> _pumpStrip(
               onForward: () {},
               onMoveTab: (final id, final g, final at) =>
                   moves?.add((id, g, at)),
-              onTabContext: (final _, final __) {},
+              onTabContext: (final _, final _) {},
               unreadFor: unreadFor,
             ),
           ),
@@ -103,7 +103,7 @@ void main() {
         'the tail hides, and the overflow button names the exact '
         'hidden count (+9)', (final tester) async {
       final tabs = _tabs(30);
-      await _pumpStrip(tester, tabs: tabs, width: 900);
+      await _pumpStrip(tester, tabs: tabs);
 
       // The cap: floor((900 - 132 - 40) / 34) = floor(21.4) = 21.
       expect(
@@ -145,7 +145,7 @@ void main() {
         'onSelect', (final tester) async {
       final tabs = _tabs(30);
       final selected = <String>[];
-      await _pumpStrip(tester, tabs: tabs, width: 900, selected: selected);
+      await _pumpStrip(tester, tabs: tabs, selected: selected);
 
       await tester.tap(
         find.byKey(const ValueKey('view.strip.overflow.0')),
@@ -181,7 +181,7 @@ void main() {
       final tester,
     ) async {
       final tabs = _tabs(30);
-      await _pumpStrip(tester, tabs: tabs, active: 25, width: 900);
+      await _pumpStrip(tester, tabs: tabs, active: 25);
 
       // Slots 0..19 keep the head; slot 20 carries the active tab.25.
       expect(find.byKey(const ValueKey('view.tab.tab.25')), findsOneWidget);
@@ -213,7 +213,7 @@ void main() {
       final tester,
     ) async {
       final tabs = _tabs(30);
-      await _pumpStrip(tester, tabs: tabs, width: 900);
+      await _pumpStrip(tester, tabs: tabs);
       expect(find.byKey(const ValueKey('view.tab.tab.29')), findsNothing);
       expect(
         find.byKey(const ValueKey('drag.ghost.tab.29')),
@@ -229,7 +229,6 @@ void main() {
       await _pumpStrip(
         tester,
         tabs: tabs,
-        width: 900,
         unreadFor: (final id) => switch (id) {
           'tab.0' => 12,
           'tab.1' => 3,
@@ -261,7 +260,6 @@ void main() {
       await _pumpStrip(
         tester,
         tabs: tabs,
-        width: 900,
         unreadFor: (final id) => id == 'tab.5' ? 7 : 0,
       );
 
@@ -351,7 +349,7 @@ void main() {
     ) async {
       final tabs = _tabs(30);
       final moves = <(String, int, int?)>[];
-      await _pumpStrip(tester, tabs: tabs, width: 900, moves: moves);
+      await _pumpStrip(tester, tabs: tabs, moves: moves);
 
       final from = tester.getCenter(
         find.byKey(const ValueKey('view.tab.tab.2')),

@@ -1492,6 +1492,50 @@ class SEn extends S {
   @override
   String get modelsRefusalNoSeat => 'the realm seat is not ready — the palette verbs need it';
   @override
+  String get modelsLensCatalog => 'Catalog';
+  @override
+  String get modelsLensBindings => 'Bindings';
+  @override
+  String get modelsLensObserve => 'Observe';
+  @override
+  String get modelsJsonToggle => 'JSON';
+  @override
+  String get modelsJsonInvalid => 'invalid JSON — the candidate keeps its last valid shape';
+  @override
+  String get modelsFieldMaxTokens => 'max_tokens';
+  @override
+  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
+  @override
+  String get modelsFieldReasoningEffort => 'reasoning_effort';
+  @override
+  String get modelsFieldIncludeReasoning => 'include_reasoning';
+  @override
+  String get modelsFieldCapabilities => 'capabilities';
+  @override
+  String get modelsEditModel => 'Edit model';
+  @override
+  String get modelsMoveUp => 'move up the escalation ladder';
+  @override
+  String get modelsMoveDown => 'move down the escalation ladder';
+  @override
+  String get modelsSetPrimary => 'set as the realm\'s primary mover';
+  @override
+  String get modelsSessionPrefix => 'session:';
+  @override
+  String get modelsSessionClear => 'clear';
+  @override
+  String get modelsRestartPending => 'palette landed — the daemon binds it at restart';
+  @override
+  String get modelsRestartNow => 'Restart now';
+  @override
+  String get modelsHealthSection => 'Health';
+  @override
+  String get modelsLedgerSection => 'Dispatch ledger';
+  @override
+  String get modelsUnbound => 'unbound actors';
+  @override
+  String get modelsRefusalBadNumber => 'not a number — the field keeps its last value';
+  @override
   String get roomsExplainDms => 'Direct messages — private threads with one actor';
   @override
   String get roomsExplainChannels => 'Channels — named group rooms with shared history';

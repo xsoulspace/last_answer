@@ -111,6 +111,10 @@ final class RealmChatService extends ChangeNotifier {
   /// vocabulary, written by `actor_bind`): the defer law's second half.
   final Map<String, String> _realmBrainCasts = {};
 
+  /// The binding map as a read model (the Models surface's Bindings and
+  /// Observe lenses join actors to their cast rows through it).
+  Map<String, String> get brainCasts => Map.unmodifiable(_realmBrainCasts);
+
   /// The defer predicate's BINDING half: whether this actor is bound in
   /// the daemon's own vocabulary (`cast:` brainRefs and durable
   /// `brainCast` rows) — independent of the daemon being live right
@@ -1343,8 +1347,7 @@ final class RealmChatService extends ChangeNotifier {
         <String, Object?>{
           'op': op,
           'modelPalette': candidate,
-          if (expectedBeforeSha256 != null)
-            'expectedBeforeSha256': expectedBeforeSha256,
+          'expectedBeforeSha256': ?expectedBeforeSha256,
         },
       );
     } on Object catch (error) {

@@ -290,6 +290,7 @@ class _AppShellState extends State<AppShell> {
       // Block bodies, NOT arrows: a multi-line arrow body swallows the
       // cascade sections that follow it into its own expression.
       ShellDebugBridge.instance = ShellDebugBridge()
+        // ignore: prefer_expression_function_bodies
         ..docked = () {
           return _roomsDocked;
         }

@@ -976,5 +976,49 @@
   "modelsRefusalModelInUse": "cannot remove model — referenced by cast:",
   "@modelsRefusalModelInUse": {"description": "Provider editor: model-in-use refusal."},
   "modelsRefusalNoSeat": "the realm seat is not ready — the palette verbs need it",
-  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."}
+  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
+  "modelsLensCatalog": "Catalog",
+  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensBindings": "Bindings",
+  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLensObserve": "Observe",
+  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonToggle": "JSON",
+  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsJsonInvalid": "invalid JSON — the candidate keeps its last valid shape",
+  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxTokens": "max_tokens",
+  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldMaxOutputTokens": "max_output_tokens",
+  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldReasoningEffort": "reasoning_effort",
+  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldIncludeReasoning": "include_reasoning",
+  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsFieldCapabilities": "capabilities",
+  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsEditModel": "Edit model",
+  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveUp": "move up the escalation ladder",
+  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsMoveDown": "move down the escalation ladder",
+  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSetPrimary": "set as the realm's primary mover",
+  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionPrefix": "session:",
+  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsSessionClear": "clear",
+  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartPending": "palette landed — the daemon binds it at restart",
+  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRestartNow": "Restart now",
+  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsHealthSection": "Health",
+  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsLedgerSection": "Dispatch ledger",
+  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsUnbound": "unbound actors",
+  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "modelsRefusalBadNumber": "not a number — the field keeps its last value",
+  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
 }

@@ -28,23 +28,23 @@ final class ModelsChip extends StatelessWidget {
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.only(left: 6),
     child: Container(
-      height: 16,
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      // Padding, NOT a Center child: inside the model row's Wrap a
+      // Center expands every chip to the wrap's full width (the same
+      // bounded-loose law the lens pills hit, live-caught).
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Center(
-        child: Text(
-          label,
-          style: mono
-              ? LaTokens.mono(9, color)
-              : Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                  color: color,
-                ),
-        ),
+      child: Text(
+        label,
+        style: mono
+            ? LaTokens.mono(9, color)
+            : Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontSize: 9,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
       ),
     ),
   );
@@ -80,31 +80,32 @@ final class ModelsButton extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: busy ? null : onTap,
           child: Container(
-            height: 24,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            // Padding, NOT a Center child: Align/Center expand to the
+            // incoming max width under bounded-loose constraints (a
+            // Wrap or a Row), which stretches every pill to the pane
+            // (live-caught via the widget inspector, 2026-11-15).
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: la.ink.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Center(
-              child: busy
-                  ? SizedBox(
-                      width: 11,
-                      height: 11,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1.5,
-                        color: la.inkMuted,
-                      ),
-                    )
-                  : Text(
-                      label,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: la.inkMuted,
-                      ),
+            child: busy
+                ? SizedBox(
+                    width: 11,
+                    height: 11,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                      color: la.inkMuted,
                     ),
-            ),
+                  )
+                : Text(
+                    label,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: la.inkMuted,
+                    ),
+                  ),
           ),
         ),
       ),

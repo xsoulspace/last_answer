@@ -316,22 +316,23 @@ final class _LensButton extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onTap,
           child: Container(
-            height: 26,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             decoration: BoxDecoration(
               color: selected
                   ? la.ink.withValues(alpha: 0.10)
                   : la.ink.withValues(alpha: 0.04),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Center(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontSize: 11,
-                  fontWeight: selected ? FontWeight.w600 : null,
-                  color: selected ? la.ink : la.inkMuted,
-                ),
+            // Padding, NOT Center/alignment: both expand to the
+            // incoming max width under bounded-loose constraints (the
+            // Wrap), stretching every pill to the pane (live-caught
+            // via the widget inspector, 2026-11-15).
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontSize: 11,
+                fontWeight: selected ? FontWeight.w600 : null,
+                color: selected ? la.ink : la.inkMuted,
               ),
             ),
           ),

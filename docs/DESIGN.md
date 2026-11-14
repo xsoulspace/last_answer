@@ -71,6 +71,35 @@
 > `shell_*` fmtk tools over a mounted-shell bridge; evidence law =
 > flutter-native fmtk screenshots only (OS-AX driving retired after it
 > crashed the app, 2026-11-10).
+>
+> **v5 amendment (2026-11-14, owner's models-management ask):** the
+> Models surface is THREE LENSES over ONE palette document — Catalog
+> (the nested provider → model table), Bindings (the editable cast
+> ladder), Observe (daemon controls + health + per-model dispatch
+> ledger) — in the hierarchy the owner named (providers first, then
+> models), as ONE spreadsheet-style tree that reads on phone, tablet
+> and desktop. Five laws. **(1) Nested-table law:** a row per parent,
+> children indented one level, verbs on the row that owns them; no
+> modal editor, no parallel card list — the table IS the editor, with
+> a raw-JSON lane as the advanced view (the Zed rule: named parser
+> refusals, never a silent half-parse). **(2) Pane-width law:** rows
+> compress by their OWN width (a narrow split pane on a wide window
+> reads like a phone), window width (<640 px) only sets the default;
+> compressed rows keep identity + count + chevron and move the chip
+> run into the expanded block. **(3) Single-gate law:** no tier gate
+> on the surface — reading, drafting and Propose are free for every
+> seat; the ONE authority gate is the harness's owner-only
+> `palette_apply`, whose refusal + recovery render verbatim in the
+> dirty bar. **(4) Candidate law:** every lens edits ONE in-memory
+> deep copy of the live wire document through a widget-free state
+> machine; nothing touches the config file until Apply lands, a
+> receipt validates one previous byte-set (stale receipts drop on any
+> mutation), and a clean candidate re-bases onto external truth while
+> a dirty one keeps its edits. **(5) Bounded-loose law:** content-
+> sized chrome (pills, chips, verb buttons) sizes through PADDING,
+> never through Center/Align — those expand to the incoming max width
+> under bounded-loose constraints (a Wrap or a Row) and stretch every
+> pill to the pane; live-caught via the widget inspector, 2026-11-15.
 
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 

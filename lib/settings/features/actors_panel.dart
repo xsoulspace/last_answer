@@ -98,13 +98,15 @@ class _ActorsPanelState extends State<ActorsPanel> {
               )
             else
               for (final actor in actors)
-                if (actor.kind != ActorKind.human)
-                  _ActorRow(
-                    key: ValueKey('actors.row.${actor.actorId}'),
-                    actor: actor,
-                    service: service,
-                    defaultOpenRouterModel: _defaultOpenRouterModel(context),
-                  ),
+                // Wave N3: the human rides the list too (labelled
+                // "you") — one human actor on this machine, manageable
+                // like every other actor.
+                _ActorRow(
+                  key: ValueKey('actors.row.${actor.actorId}'),
+                  actor: actor,
+                  service: service,
+                  defaultOpenRouterModel: _defaultOpenRouterModel(context),
+                ),
             const _CreateActorForm(),
           ],
         ],
@@ -183,7 +185,9 @@ class _ActorRowState extends State<_ActorRow> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${actor.displayName} · ${actor.brainRef.isEmpty ? 'no brain' : actor.brainRef}',
+                      actor.kind == ActorKind.human
+                          ? '${actor.displayName} · ${context.l10n.actorsYou}'
+                          : '${actor.displayName} · ${actor.brainRef.isEmpty ? 'no brain' : actor.brainRef}',
                       style: theme.textTheme.bodyMedium,
                     ),
                     if (status != null && status != 'listening')

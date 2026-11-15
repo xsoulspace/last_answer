@@ -1542,6 +1542,8 @@ class SRu extends S {
   String get actorsReasoning => 'уровень reasoning';
   String get actorsReasoningNoLane => 'дорожка этого brain не объявляет уровни effort';
   String get actorsReasoningDaemonNote => 'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
+  String get actorsYourProfile => 'Твой профиль';
+  String get actorsYou => 'ты';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

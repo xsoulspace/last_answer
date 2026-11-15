@@ -5,6 +5,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
@@ -2699,6 +2700,10 @@ class _ActorCardState extends State<_ActorCard> {
               defaultOpenRouterModel: _defaultOpenRouterModel(context),
               paletteRungs: worldState?.generativeDecls ?? const [],
             ),
+            tiersForBrain: (final ref) => reasoningTiersForBrainRef(
+              ref,
+              transportOfRung: (final id) => worldState?.transportOfRung(id),
+            ),
             saveKey: const ValueKey('worldchat.card.save'),
             onCancel: () => setState(() => _editing = false),
             onSave:
@@ -2707,6 +2712,7 @@ class _ActorCardState extends State<_ActorCard> {
                   required final String role,
                   required final String systemPrompt,
                   required final String brainRef,
+                  required final String? avatar,
                 }) {
                   unawaited(
                     service
@@ -2716,6 +2722,7 @@ class _ActorCardState extends State<_ActorCard> {
                           role: role,
                           systemPrompt: systemPrompt,
                           brainRef: brainRef,
+                          avatar: avatar,
                         )
                         .then((final _) => onClose()),
                   );

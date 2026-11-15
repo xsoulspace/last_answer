@@ -1527,6 +1527,8 @@ class SEn extends S {
   String get actorsReasoning => 'reasoning level';
   String get actorsReasoningNoLane => 'this brain lane declares no effort tiers';
   String get actorsReasoningDaemonNote => 'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
+  String get actorsYourProfile => 'Your profile';
+  String get actorsYou => 'you';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

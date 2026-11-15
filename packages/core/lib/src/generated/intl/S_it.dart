@@ -1537,6 +1537,8 @@ class SIt extends S {
   String get actorsReasoning => 'livello di reasoning';
   String get actorsReasoningNoLane => 'questa corsia del brain non dichiara livelli di effort';
   String get actorsReasoningDaemonNote => 'il dispatch in-app rispetta questo livello; il dispatch del daemon legge il reasoning per modello finché la richiesta harness non arriva';
+  String get actorsYourProfile => 'Il tuo profilo';
+  String get actorsYou => 'tu';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

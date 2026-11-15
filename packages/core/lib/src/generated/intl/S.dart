@@ -2867,6 +2867,10 @@ abstract class S {
   String get actorsReasoningNoLane;
   /// No description provided for @actorsReasoningDaemonNote.
   String get actorsReasoningDaemonNote;
+  /// No description provided for @actorsYourProfile.
+  String get actorsYourProfile;
+  /// No description provided for @actorsYou.
+  String get actorsYou;
   /// No description provided for @modelsFieldCapabilities.
   String get modelsFieldCapabilities;
   /// No description provided for @modelsEditModel.

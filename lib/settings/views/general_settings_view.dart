@@ -1,7 +1,11 @@
+import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/widgets/widgets.dart';
 import 'package:lastanswer/settings/settings.dart';
 import 'package:lastanswer/settings/views/general_settings_bloc.dart';
+import 'package:lastanswer/shell/shell_scope.dart';
 
 class GeneralSettingsProvider extends StatelessWidget {
   const GeneralSettingsProvider({required this.builder, super.key});
@@ -38,6 +42,14 @@ class GeneralSettingsViewBody extends StatelessWidget {
     return SettingsListContainer(
       padding: padding,
       builder: (final context, final leftColumnWidth) => [
+        // Wave N3 — one human actor on this machine: the discoverable
+        // entry to their own profile (the actor:<id> surface, avatar
+        // and name included).
+        SettingsListTile(
+          titleText: context.l10n.actorsYourProfile,
+          leftColumnWidth: leftColumnWidth,
+          child: const _YourProfileButton(),
+        ),
         // Glue the SettingsController to the theme selection
         // DropdownButton.
         //
@@ -135,6 +147,33 @@ class _RestrictionUnblocker extends HookWidget {
         if (counter.value > 10) userNotifier.disableRestrictions();
       },
       child: child,
+    );
+  }
+}
+
+/// Wave N3 — the human's own profile entry: avatar + name, one tap
+/// into their `actor:<id>` surface through the shell's ONE tab router
+/// (ViewScope layout showView — the same lane every surface opens by).
+class _YourProfileButton extends StatelessWidget {
+  const _YourProfileButton();
+
+  @override
+  Widget build(final BuildContext context) {
+    final service = context.read<RealmChatService?>();
+    final human = service?.roster?.all.firstWhereOrNull(
+      (final actor) => actor.kind == ActorKind.human,
+    );
+    return TextButton.icon(
+      key: const ValueKey('settings.yourProfile'),
+      onPressed: () {
+        final scope = ViewScope.of(context);
+        if (scope == null || human == null) return;
+        scope.onChanged(scope.layout.showView('actor:${human.actorId}'));
+      },
+      icon: human == null
+          ? const Icon(Icons.person_outline, size: 18)
+          : ActorAvatar(profile: human, size: 20),
+      label: Text(human?.displayName ?? context.l10n.actorsNoneYet),
     );
   }
 }

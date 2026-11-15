@@ -3,6 +3,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -225,6 +226,11 @@ class _ActorRowState extends State<_ActorRow> {
                       const [],
                   defaultOpenRouterModel: widget.defaultOpenRouterModel,
                 ),
+                tiersForBrain: (final ref) => reasoningTiersForBrainRef(
+                  ref,
+                  transportOfRung: (final id) =>
+                      context.read<WorldStateService?>()?.transportOfRung(id),
+                ),
                 onCancel: () => setState(() => _editing = false),
                 onSave:
                     ({
@@ -232,6 +238,7 @@ class _ActorRowState extends State<_ActorRow> {
                       required role,
                       required systemPrompt,
                       required brainRef,
+                      required avatar,
                     }) {
                       unawaited(
                         widget.service
@@ -241,6 +248,7 @@ class _ActorRowState extends State<_ActorRow> {
                               role: role,
                               systemPrompt: systemPrompt,
                               brainRef: brainRef,
+                              avatar: avatar,
                             )
                             .then((final ok) {
                               if (mounted && ok) {

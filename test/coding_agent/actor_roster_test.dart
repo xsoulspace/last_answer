@@ -11,6 +11,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -283,6 +284,70 @@ void main() {
 
       controller.detachActor(view, 'afm-coder');
       expect(view.actorIds, isEmpty);
+    });
+  });
+
+  // Wave N2 — the grammar's parameter helpers: the per-actor
+  // reasoning level rides ANY brain base, and an edit never drops a
+  // sibling param (the lora law).
+  group('brainRef params (wave N2)', () {
+    test('brainParam reads, withBrainParam writes and removes', () {
+      expect(brainParam('local:qwen', 'reasoning'), isNull);
+      final withLevel = withBrainParam('local:qwen', 'reasoning', 'low');
+      expect(withLevel, 'local:qwen?reasoning=low');
+      expect(brainParam(withLevel, 'reasoning'), 'low');
+      // Siblings survive; a null value removes the key.
+      final both = withBrainParam(withLevel, 'temperature', '0.7');
+      expect(brainParam(both, 'temperature'), '0.7');
+      expect(brainParam(both, 'reasoning'), 'low');
+      final cleared = withBrainParam(both, 'reasoning', null);
+      expect(cleared, 'local:qwen?temperature=0.7');
+      // Openrouter and cast bases ride the same grammar.
+      expect(
+        brainParam('openrouter:a/b?reasoning=xhigh', 'reasoning'),
+        'xhigh',
+      );
+      expect(
+        withBrainParam('cast:rung', 'reasoning', 'medium'),
+        'cast:rung?reasoning=medium',
+      );
+    });
+
+    test('buildLocalBrainRef carries the lora binding through edits', () {
+      final ref = buildLocalBrainRef(
+        'qwen3-1.7b',
+        lora: 'scout-lora',
+        loraScale: 0.8,
+      );
+      final parsed = parseLocalBrainRef(ref);
+      expect(parsed?.lora, 'scout-lora');
+      expect(parsed?.loraScale, 0.8);
+      // A temperature-only rebuild keeps the adapter.
+      final rebuilt = buildLocalBrainRef(
+        'qwen3-1.7b',
+        temperature: 0.5,
+        lora: parsed?.lora,
+        loraScale: parsed?.loraScale,
+      );
+      expect(parseLocalBrainRef(rebuilt)?.lora, 'scout-lora');
+      expect(parseLocalBrainRef(rebuilt)?.temperature, 0.5);
+    });
+
+    test('the avatar mark round-trips; absent reads null', () {
+      const profile = ActorProfile(
+        actorId: 'scout',
+        displayName: 'Scout',
+        avatar: 'spark',
+      );
+      final restored = ActorProfile.fromJson(
+        Map<String, dynamic>.from(profile.toJson()),
+      );
+      expect(restored.avatar, 'spark');
+      final legacy = ActorProfile.fromJson(const <String, dynamic>{
+        'actorId': 'old',
+        'displayName': 'Old',
+      });
+      expect(legacy.avatar, isNull);
     });
   });
 }

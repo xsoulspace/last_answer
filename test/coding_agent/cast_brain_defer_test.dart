@@ -207,4 +207,3 @@ final class _ScriptedBrain implements ActorBrain {
 
   @override
   String get ref => 'scripted:brain';
-}

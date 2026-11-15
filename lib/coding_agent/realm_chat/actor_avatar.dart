@@ -24,6 +24,20 @@ import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
 
+/// The curated avatar glyph vocabulary (the channel-icon law, wave
+/// N2): a named glyph renders as its Icon; any other non-empty value
+/// is a raw emoji/character; null/empty keeps the derived identity.
+const Map<String, IconData> kActorAvatarGlyphs = <String, IconData>{
+  'spark': Icons.auto_awesome_outlined,
+  'compass': Icons.explore_outlined,
+  'quill': Icons.edit_note_outlined,
+  'lens': Icons.search_outlined,
+  'anvil': Icons.build_outlined,
+  'leaf': Icons.spa_outlined,
+  'bolt': Icons.bolt_outlined,
+  'book': Icons.menu_book_outlined,
+};
+
 /// FNV-1a, 32-bit — NOT [String.hashCode], which Dart randomizes per
 /// process; identity must be byte-stable across devices and sessions.
 int _fnv1a(final String s) {
@@ -320,10 +334,14 @@ final class ActorAvatar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
-    final identity = switch (profile.kind) {
-      ActorKind.human => _monogram(theme),
-      _ => actorIdenticon(profile.actorId, size: size),
-    };
+    // The owner-set mark wins over the derived identity (wave N2);
+    // absent, the kind's own species renders (monogram / identicon).
+    final identity =
+        _avatarMark(theme) ??
+        switch (profile.kind) {
+          ActorKind.human => _monogram(theme),
+          _ => actorIdenticon(profile.actorId, size: size),
+        };
     final badgeSize = (size * 0.38).clamp(10.0, 16.0);
     final dotSize = (size * 0.30).clamp(6.0, 12.0);
     return SizedBox.square(
@@ -360,6 +378,31 @@ final class ActorAvatar extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+
+  /// The owner-set mark (the channel-icon grammar): a curated glyph
+  /// name renders as its Icon, any other non-empty value as the raw
+  /// emoji/character — both on the identity tint, in the identity ink.
+  /// Null when no mark is set (the derived identity rides).
+  Widget? _avatarMark(final ThemeData theme) {
+    final avatar = profile.avatar;
+    if (avatar == null || avatar.isEmpty) return null;
+    final glyph = kActorAvatarGlyphs[avatar];
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: actorTint(profile.actorId),
+        shape: BoxShape.circle,
+      ),
+      child: glyph != null
+          ? Icon(glyph, size: size * 0.52, color: actorColor(profile.actorId))
+          : Text(
+              avatar,
+              style: TextStyle(fontSize: size * 0.52, height: 1),
+            ),
     );
   }
 

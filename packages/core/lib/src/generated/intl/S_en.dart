@@ -1521,6 +1521,12 @@ class SEn extends S {
   String get actorsRemoveConfirm => 'Retire the durable row and delete the roster profile of';
   String get actorsNewActor => 'New actor';
   String get actorsCreate => 'Create';
+  String get actorsAvatar => 'Avatar';
+  String get actorsAvatarHint => 'emoji or character';
+  String get actorsAvatarClear => 'Clear';
+  String get actorsReasoning => 'reasoning level';
+  String get actorsReasoningNoLane => 'this brain lane declares no effort tiers';
+  String get actorsReasoningDaemonNote => 'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

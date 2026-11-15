@@ -63,6 +63,7 @@ final class ActorProfile {
     this.brainRef = '',
     this.role = '',
     this.systemPrompt = '',
+    this.avatar,
   }) : assert(actorId.length > 0, 'actorId is required'),
        assert(displayName.length > 0, 'displayName is required');
 
@@ -74,6 +75,9 @@ final class ActorProfile {
         brainRef: json['brainRef'] as String? ?? '',
         role: json['role'] as String? ?? '',
         systemPrompt: json['systemPrompt'] as String? ?? '',
+        // Tolerant read (the channel-icon law): an old replica payload
+        // without the field reads as absent, never as a fake glyph.
+        avatar: json['avatar'] as String?,
       );
 
   /// Stable across devices and sessions (ADR 0007 §1) — the roster key
@@ -99,6 +103,11 @@ final class ActorProfile {
   /// panel and the Settings actors pane.
   final String systemPrompt;
 
+  /// The owner-set mark (the channel-icon law, wave N2): a curated
+  /// glyph name or a raw emoji/character; null = the derived identity
+  /// (identicon / monogram). Models, agents AND the human wear it.
+  final String? avatar;
+
   Map<String, Object?> toJson() => {
     'actorId': actorId,
     'displayName': displayName,
@@ -106,6 +115,7 @@ final class ActorProfile {
     'brainRef': brainRef,
     'role': role,
     'systemPrompt': systemPrompt,
+    if (avatar != null) 'avatar': avatar,
   };
 
   /// DESIGN §9 — this actor's role-gutter label: the small-caps
@@ -153,12 +163,58 @@ String buildLocalBrainRef(
   final String cast, {
   final double? temperature,
   final double? repetitionPenalty,
+  final String? lora,
+  final double? loraScale,
 }) {
   final params = <String>[
     if (temperature != null) 'temperature=$temperature',
     if (repetitionPenalty != null) 'repetitionPenalty=$repetitionPenalty',
+    // Wave N2: an edit never drops a sibling param — the lora binding
+    // survives a temperature-only save (the old seed lost it).
+    if (lora != null && lora.isNotEmpty) 'lora=$lora',
+    if (loraScale != null) 'loraScale=$loraScale',
   ];
   return params.isEmpty ? 'local:$cast' : 'local:$cast?${params.join('&')}';
+}
+
+/// The grammar's parameter readers/writers for ANY brain base (wave
+/// N2): `reasoning=` rides local, openrouter and cast refs alike — the
+/// per-actor reasoning level the owner edits is a binding fact, not a
+/// second registry. Unknown/absent params read null; a null value
+/// REMOVES the key (the declaration's default returns).
+String? brainParam(final String brainRef, final String key) {
+  final query = brainRef.indexOf('?');
+  if (query < 0) return null;
+  for (final pair in brainRef.substring(query + 1).split('&')) {
+    final eq = pair.indexOf('=');
+    if (eq <= 0) continue;
+    if (pair.substring(0, eq).trim() == key) {
+      return pair.substring(eq + 1).trim();
+    }
+  }
+  return null;
+}
+
+/// [brainRef] with [key] set to [value] (or removed when null), every
+/// other param preserved in order — an edit never drops a sibling.
+String withBrainParam(
+  final String brainRef,
+  final String key,
+  final String? value,
+) {
+  final query = brainRef.indexOf('?');
+  final base = query < 0 ? brainRef : brainRef.substring(0, query);
+  final pairs = <String>[
+    if (query >= 0)
+      for (final pair in brainRef.substring(query + 1).split('&'))
+        if (pair.isNotEmpty && pair.indexOf('=') > 0) pair,
+  ];
+  final kept = <String>[
+    for (final pair in pairs)
+      if (pair.substring(0, pair.indexOf('=')).trim() != key) pair,
+    if (value != null) '$key=$value',
+  ];
+  return kept.isEmpty ? base : '$base?${kept.join('&')}';
 }
 
 /// Display name for an id with no roster profile: legacy human ids minted

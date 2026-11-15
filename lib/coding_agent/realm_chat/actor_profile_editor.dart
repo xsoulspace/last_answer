@@ -15,7 +15,9 @@ library;
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/avatar_picker.dart';
 import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/common_imports.dart';
 
 /// The editor's agent-contract widget keys (DESIGN §6) — shared by both
@@ -37,6 +39,7 @@ final class ActorProfileEditor extends StatefulWidget {
     required this.onSave,
     this.onCancel,
     this.saveKey,
+    this.tiersForBrain,
     super.key,
   });
 
@@ -47,14 +50,22 @@ final class ActorProfileEditor extends StatefulWidget {
   final List<({String ref, String label})> brainOptions;
 
   /// Applied on Save: the trimmed name/role, the persona VERBATIM (the
-  /// actor speaks through it) and the rebuilt brainRef.
+  /// actor speaks through it), the rebuilt brainRef (the per-actor
+  /// reasoning level rides its grammar) and the avatar mark (null =
+  /// untouched, `''` = cleared back to the derived identity).
   final void Function({
     required String displayName,
     required String role,
     required String systemPrompt,
     required String brainRef,
+    required String? avatar,
   })
   onSave;
+
+  /// The reasoning tiers the SELECTED brain's lane declares (the Zed
+  /// capability law); null hides the reasoning block entirely (hosts
+  /// without a palette read model).
+  final List<String> Function(String brainRef)? tiersForBrain;
 
   /// The surface owns the edit mode; Cancel hands the decision back.
   final VoidCallback? onCancel;
@@ -76,6 +87,8 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
   late TextEditingController _temperature;
   late TextEditingController _repetition;
   late String? _brainBase;
+  late String? _avatar;
+  late String? _reasoning;
   var _seeded = false;
 
   @override
@@ -112,10 +125,18 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
       text: parsed?.repetitionPenalty?.toString() ?? '',
     );
     _brainBase = parsed != null
-        ? buildLocalBrainRef(parsed.cast)
+        ? buildLocalBrainRef(
+            parsed.cast,
+            // The seed carries EVERY parsed param: a temperature-only
+            // save must not drop the lora binding (wave N2).
+            lora: parsed.lora,
+            loraScale: parsed.loraScale,
+          )
         : (widget.profile.brainRef.isEmpty
               ? null
               : brainRefBase(widget.profile.brainRef));
+    _avatar = widget.profile.avatar;
+    _reasoning = brainParam(widget.profile.brainRef, 'reasoning');
   }
 
   @override
@@ -132,23 +153,31 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
 
   void _save() {
     final base = _brainBase;
-    final String brainRef;
+    String brainRef;
     if (base == null || base.isEmpty) {
       brainRef = widget.profile.brainRef; // no brain picked: no change
     } else if (_isLocalBinding) {
+      final parsed = parseLocalBrainRef(base);
       brainRef = buildLocalBrainRef(
         base.substring('local:'.length),
         temperature: double.tryParse(_temperature.text.trim()),
         repetitionPenalty: double.tryParse(_repetition.text.trim()),
+        lora: parsed?.lora,
+        loraScale: parsed?.loraScale,
       );
     } else {
       brainRef = base;
     }
+    // The per-actor reasoning level rides the grammar on ANY base
+    // (wave N2): null removes the param, the declaration's default
+    // returns.
+    brainRef = withBrainParam(brainRef, 'reasoning', _reasoning);
     widget.onSave(
       displayName: _name.text.trim(),
       role: _role.text.trim(),
       systemPrompt: _persona.text,
       brainRef: brainRef,
+      avatar: _avatar,
     );
   }
 
@@ -282,6 +311,71 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
               ),
             ),
           ),
+        ],
+        const SizedBox(height: 8),
+        // Wave N2 — the owner-set mark: the picker dialog (the
+        // channel-icon law), the current mark previewed beside it.
+        Row(
+          children: [
+            TextButton(
+              key: const ValueKey('actor.edit.avatar'),
+              onPressed: () async {
+                final picked = await pickActorAvatar(
+                  context,
+                  current: _avatar,
+                );
+                if (picked != null) setState(() => _avatar = picked);
+              },
+              child: Text(l10n.actorsAvatar),
+            ),
+            const SizedBox(width: 8),
+            if (_avatar != null && _avatar!.isNotEmpty)
+              Text(_avatar!, style: const TextStyle(fontSize: 18)),
+          ],
+        ),
+        if (widget.tiersForBrain case final tiersFor?) ...[
+          const SizedBox(height: 8),
+          Text(l10n.actorsReasoning, style: theme.textTheme.bodySmall),
+          const SizedBox(height: 4),
+          if (tiersFor(_brainBase ?? '').isEmpty)
+            Text(
+              l10n.actorsReasoningNoLane,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            )
+          else ...[
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (final tier in <String>{
+                  ...tiersFor(_brainBase ?? ''),
+                  ?_reasoning,
+                })
+                  TextButton(
+                    key: ValueKey('actor.edit.reasoning.$tier'),
+                    onPressed: () => setState(
+                      () => _reasoning = _reasoning == tier ? null : tier,
+                    ),
+                    child: Text(
+                      _reasoning == tier
+                          ? '✓ ${reasoningEffortTitle(tier)}'
+                          : reasoningEffortTitle(tier),
+                    ),
+                  ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                l10n.actorsReasoningDaemonNote,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
         ],
         const SizedBox(height: 8),
         // The panel is narrow: the pair WRAPS instead of overflowing.

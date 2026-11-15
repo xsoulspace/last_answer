@@ -411,10 +411,13 @@ final class RealmWorld {
     String brainRef = '',
     String role = '',
     String? systemPrompt,
+    String? avatar,
   }) async {
     await store.transact((tx) {
       final existing = tx.get('realm_actors', actorId);
-      tx.put('realm_actors', actorId, <String, Object?>{
+      // The owner-set mark (wave N2): null preserves, '' clears.
+      final mark = avatar ?? existing?['avatar'] as String?;
+      final row = <String, Object?>{
         'actorId': actorId,
         'kind': 'realm_actor',
         'docId': 'lastanswer',
@@ -457,8 +460,10 @@ final class RealmWorld {
             systemPrompt ?? existing?['systemPrompt'] as String? ?? '',
         if (existing?['projects'] != null) 'projects': existing!['projects'],
         if (existing?['lastThreadId'] != null)
-          'lastThreadId': existing?['lastThreadId'],
-      });
+          'lastThreadId': existing!['lastThreadId'],
+      };
+      if (mark != null) row['avatar'] = mark;
+      tx.put('realm_actors', actorId, row);
     });
   }
 }

@@ -417,7 +417,22 @@ final class WorldStateService extends ChangeNotifier {
       credentialEnv: provider?.credentialEnv,
       maxOutputTokens: model?.maxOutputTokens,
       reasoningEffort: model?.reasoningEffort,
+      includeReasoning: model?.includeReasoning,
     );
+  }
+
+  /// The transport wire name a cast rung rides (wave N2): null for a
+  /// composition-root builtin (the lane mirror names its family) or an
+  /// unknown rung — the editor's reasoning tiers resolve through this,
+  /// keeping the brain lane host-import-free.
+  String? transportOfRung(final String rungId) {
+    final config = _palette;
+    if (config == null) return null;
+    final entry = config.entry(rungId);
+    if (entry == null || entry.builtin || entry.provider == null) {
+      return null;
+    }
+    return config.provider(entry.provider!)?.transport.wireName;
   }
 
   /// The generative rungs as brain declarations (the actor picker's

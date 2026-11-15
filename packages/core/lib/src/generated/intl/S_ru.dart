@@ -1536,6 +1536,12 @@ class SRu extends S {
   String get actorsRemoveConfirm => 'Отозвать durable-строку и удалить профиль ростера:';
   String get actorsNewActor => 'Новый актёр';
   String get actorsCreate => 'Создать';
+  String get actorsAvatar => 'Аватар';
+  String get actorsAvatarHint => 'эмодзи или символ';
+  String get actorsAvatarClear => 'Очистить';
+  String get actorsReasoning => 'уровень reasoning';
+  String get actorsReasoningNoLane => 'дорожка этого brain не объявляет уровни effort';
+  String get actorsReasoningDaemonNote => 'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

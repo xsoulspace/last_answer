@@ -32,6 +32,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -277,6 +278,11 @@ final class ActorInfoSurface extends StatelessWidget {
                 const [],
             defaultOpenRouterModel: _defaultOpenRouterModel(context),
           ),
+          tiersForBrain: (final ref) => reasoningTiersForBrainRef(
+            ref,
+            transportOfRung: (final id) =>
+                context.read<WorldStateService?>()?.transportOfRung(id),
+          ),
           saveKey: const ValueKey('actor.info.save'),
           onSave:
               ({
@@ -284,6 +290,7 @@ final class ActorInfoSurface extends StatelessWidget {
                 required role,
                 required systemPrompt,
                 required brainRef,
+                required avatar,
               }) {
                 unawaited(
                   service.updateActor(
@@ -292,6 +299,7 @@ final class ActorInfoSurface extends StatelessWidget {
                     role: role,
                     systemPrompt: systemPrompt,
                     brainRef: brainRef,
+                    avatar: avatar,
                   ),
                 );
               },

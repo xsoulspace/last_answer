@@ -80,6 +80,7 @@ Future<ActorProfile> updateActorIdentity({
   String? role,
   String? systemPrompt,
   String? brainRef,
+  String? avatar,
 }) async {
   final current = roster.get(actorId);
   if (current == null) {
@@ -93,6 +94,9 @@ Future<ActorProfile> updateActorIdentity({
     brainRef: brainRef?.trim() ?? current.brainRef,
     role: role?.trim() ?? current.role,
     systemPrompt: systemPrompt ?? current.systemPrompt,
+    // null keeps today's mark; '' clears it back to the derived
+    // identity (the channel-icon clear law).
+    avatar: avatar ?? current.avatar,
   );
   roster.upsert(updated);
   await world.registerActor(
@@ -102,6 +106,7 @@ Future<ActorProfile> updateActorIdentity({
     brainRef: updated.brainRef,
     role: updated.role,
     systemPrompt: updated.systemPrompt,
+    avatar: avatar,
   );
   return updated;
 }

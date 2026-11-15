@@ -243,4 +243,70 @@ void main() {
       expect(decoration.color, isNot(kActorPresenceOnline));
     });
   });
+  // Wave N2 — the owner-set mark wins over the derived identity: a
+  // curated glyph renders its Icon, a raw emoji renders verbatim, and
+  // an absent mark keeps the derivation (the channel-icon law).
+  group('the owner-set mark (wave N2)', () {
+    testWidgets('a curated glyph renders its Icon', (final tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ActorAvatar(
+              profile: const ActorProfile(
+                actorId: 'scout',
+                displayName: 'Scout',
+                avatar: 'spark',
+              ),
+              size: 40,
+            ),
+          ),
+        ),
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('actor.avatar.scout')),
+          matching: find.byIcon(kActorAvatarGlyphs['spark']!),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a raw emoji renders verbatim; absent keeps the '
+        'derivation', (final tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Column(
+              children: [
+                ActorAvatar(
+                  profile: const ActorProfile(
+                    actorId: 'owl',
+                    displayName: 'Owl',
+                    avatar: '🦉',
+                  ),
+                  size: 40,
+                ),
+                ActorAvatar(
+                  profile: const ActorProfile(
+                    actorId: 'bare',
+                    displayName: 'Bare',
+                  ),
+                  size: 40,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      expect(find.text('🦉'), findsOneWidget);
+      // The derived identicon paints; no emoji text for the bare one.
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('actor.avatar.bare')),
+          matching: find.byType(CustomPaint),
+        ),
+        findsWidgets,
+      );
+    });
+  });
 }

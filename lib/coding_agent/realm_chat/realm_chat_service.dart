@@ -391,6 +391,7 @@ final class RealmChatService extends ChangeNotifier {
             brainRef: brainRef,
             role: record['role'] as String? ?? '',
             systemPrompt: record['systemPrompt'] as String? ?? '',
+            avatar: record['avatar'] as String?,
           ),
         );
       }
@@ -525,6 +526,7 @@ final class RealmChatService extends ChangeNotifier {
     String? role,
     String? systemPrompt,
     String? brainRef,
+    String? avatar,
   }) async {
     final world = _world;
     final roster = _roster;
@@ -542,6 +544,7 @@ final class RealmChatService extends ChangeNotifier {
         role: role,
         systemPrompt: systemPrompt,
         brainRef: brainRef,
+        avatar: avatar,
       );
     } on UnknownActorException {
       _error = 'unknown_actor:$actorId';

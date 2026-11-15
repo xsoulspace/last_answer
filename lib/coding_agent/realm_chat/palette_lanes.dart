@@ -22,6 +22,8 @@
 /// must not inherit a false lane claim).
 library;
 
+import 'package:lastanswer/coding_agent/actor_roster.dart';
+
 /// The family of a composition-root built-in lane.
 enum BuiltinLaneFamily {
   /// The local MLX native-engine casts (`lfm`, `qwen`).
@@ -102,3 +104,31 @@ const Map<String, String> kReasoningEffortTitles = <String, String>{
 /// The readable title of a declared (or picked) effort wire value.
 String reasoningEffortTitle(final String wire) =>
     kReasoningEffortTitles[wire] ?? wire;
+
+/// The reasoning tiers a BRAIN REF can carry (wave N2, the per-actor
+/// half of the Zed law): local brains declare none; an `openrouter:`
+/// brain rides the openrouter tiers; a `cast:` rung rides its
+/// provider's transport wire name through [transportOfRung] (null =
+/// the composition root's builtin: the hosted open_router lane has
+/// tiers, on-device lanes none). This mirror stays host-import-free so
+/// the brain lane never couples to the harness package.
+List<String> reasoningTiersForBrainRef(
+  final String brainRef, {
+  required final String? Function(String rungId) transportOfRung,
+}) {
+  final base = brainRefBase(brainRef);
+  if (base.startsWith('openrouter:')) {
+    return kReasoningEffortTiers['openrouter'] ?? const <String>[];
+  }
+  if (base.startsWith('cast:')) {
+    final rungId = base.substring('cast:'.length);
+    final transport = transportOfRung(rungId);
+    if (transport == null) {
+      return builtinLaneFamily(rungId) == BuiltinLaneFamily.hostedOpenRouter
+          ? (kReasoningEffortTiers['openrouter'] ?? const <String>[])
+          : const <String>[];
+    }
+    return kReasoningEffortTiers[transport] ?? const <String>[];
+  }
+  return const <String>[];
+}

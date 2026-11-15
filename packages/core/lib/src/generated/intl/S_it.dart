@@ -1531,6 +1531,12 @@ class SIt extends S {
   String get actorsRemoveConfirm => 'Ritira la riga durevole ed elimina il profilo roster di';
   String get actorsNewActor => 'Nuovo actor';
   String get actorsCreate => 'Crea';
+  String get actorsAvatar => 'Avatar';
+  String get actorsAvatarHint => 'emoji o carattere';
+  String get actorsAvatarClear => 'Pulisci';
+  String get actorsReasoning => 'livello di reasoning';
+  String get actorsReasoningNoLane => 'questa corsia del brain non dichiara livelli di effort';
+  String get actorsReasoningDaemonNote => 'il dispatch in-app rispetta questo livello; il dispatch del daemon legge il reasoning per modello finché la richiesta harness non arriva';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

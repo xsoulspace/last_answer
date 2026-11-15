@@ -2855,6 +2855,18 @@ abstract class S {
   String get actorsNewActor;
   /// No description provided for @actorsCreate.
   String get actorsCreate;
+  /// No description provided for @actorsAvatar.
+  String get actorsAvatar;
+  /// No description provided for @actorsAvatarHint.
+  String get actorsAvatarHint;
+  /// No description provided for @actorsAvatarClear.
+  String get actorsAvatarClear;
+  /// No description provided for @actorsReasoning.
+  String get actorsReasoning;
+  /// No description provided for @actorsReasoningNoLane.
+  String get actorsReasoningNoLane;
+  /// No description provided for @actorsReasoningDaemonNote.
+  String get actorsReasoningDaemonNote;
   /// No description provided for @modelsFieldCapabilities.
   String get modelsFieldCapabilities;
   /// No description provided for @modelsEditModel.

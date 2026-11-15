@@ -43,6 +43,8 @@ import 'dart:isolate';
 
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:http/http.dart' as http;
+import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
@@ -225,6 +227,7 @@ final class CastBrainDecl {
     this.credentialEnv,
     this.maxOutputTokens,
     this.reasoningEffort,
+    this.includeReasoning,
   });
 
   final String id;
@@ -241,9 +244,12 @@ final class CastBrainDecl {
   final int? maxOutputTokens;
   final String? reasoningEffort;
 
+  /// The declaration's include_reasoning flag (wave N2: the wire
+  /// carries it; the old render dropped it).
+  final bool? includeReasoning;
+
   bool get isBuiltinLocal =>
-      transport == 'builtin' ||
-      const {'qwen', 'lfm', 'apple_foundation_afm', 'laya', 'jev'}.contains(id);
+      transport == 'builtin' && builtinLaneIsLocal(builtinLaneFamily(id));
 }
 
 /// Reads a credential the way a GUI-spawned process must: the process
@@ -309,9 +315,16 @@ ActorBrain? resolveBrain(
         loraRoot: loraRoot,
       );
     }
+    if (decl.transport == 'builtin') {
+      // The other builtins (afm, laya, the hosted jev/open_router) are
+      // DAEMON-SERVED lanes: in-app silence while the daemon sleeps,
+      // never a fake client (the unknown_local_cast black hole, N2).
+      return null;
+    }
     final credentialEnv = decl.credentialEnv;
     return PaletteCastBrain(
       decl: decl,
+      reasoningOverride: brainParam(ref, 'reasoning'),
       resolveApiKey: () => credentialEnv == null
           ? null
           : (resolveCredential ?? readInferenceCredential)(credentialEnv),
@@ -344,12 +357,15 @@ ActorBrain? resolveBrain(
     );
   }
   if (ref.startsWith('openrouter:')) {
-    final model = ref.substring('openrouter:'.length).trim();
+    // The grammar's params ride the ref (wave N2): the model id is the
+    // BASE, the reasoning level is an override on the brain.
+    final model = brainRefBase(ref).substring('openrouter:'.length).trim();
     if (model.isEmpty) {
       return null;
     }
     return OpenRouterBrain(
       model: model,
+      reasoningOverride: brainParam(ref, 'reasoning'),
       resolveApiKey: resolveOpenRouterApiKey,
     );
   }
@@ -490,7 +506,11 @@ final class _LocalCastBrain implements ActorBrain {
 }
 
 final class OpenRouterBrain implements ActorBrain {
-  OpenRouterBrain({required this.model, required this._resolveApiKey});
+  OpenRouterBrain({
+    required this.model,
+    required this._resolveApiKey,
+    this.reasoningOverride,
+  });
 
   @override
   String get ref => 'openrouter:$model';
@@ -500,6 +520,9 @@ final class OpenRouterBrain implements ActorBrain {
 
   /// OpenRouter model id (the part after the `openrouter:` prefix).
   final String model;
+
+  /// The per-actor level from the brainRef grammar (wave N2).
+  final String? reasoningOverride;
   final String? Function() _resolveApiKey;
   OpenRouterInferenceClient? _client;
 
@@ -529,6 +552,8 @@ final class OpenRouterBrain implements ActorBrain {
         // a local-cast fact).
         temperature: defaultChatTemperature,
         repetitionPenalty: null,
+        // Wave N2: the per-actor level rides the ref grammar.
+        reasoningEffort: reasoningOverride,
       ),
     );
     return _checkedResult(result);
@@ -546,10 +571,15 @@ final class PaletteCastBrain implements ActorBrain {
     required this.decl,
     required this.resolveApiKey,
     this.httpClient,
+    this.reasoningOverride,
   });
 
   final CastBrainDecl decl;
   final String? Function() resolveApiKey;
+
+  /// The per-actor level from the brainRef grammar (wave N2): it
+  /// overrides the model's declaration for THIS actor only.
+  final String? reasoningOverride;
 
   /// Test seam: the wire client under the OpenAI-compatible lane.
   final Object? httpClient;
@@ -587,6 +617,10 @@ final class PaletteCastBrain implements ActorBrain {
         turns: turns,
         temperature: defaultChatTemperature,
         repetitionPenalty: null,
+        // The per-actor level (brainRef grammar) overrides the model's
+        // declaration; the declaration is the default (the Zed law).
+        reasoningEffort: reasoningOverride ?? decl.reasoningEffort,
+        includeReasoning: decl.includeReasoning,
       ),
     );
     return _checkedResult(result);
@@ -603,6 +637,8 @@ InferenceRequest _renderRequest({
   required List<BrainTurn> turns,
   required double? temperature,
   required double? repetitionPenalty,
+  String? reasoningEffort,
+  bool? includeReasoning,
 }) {
   final transcript = [
     for (final turn in turns)
@@ -615,6 +651,11 @@ InferenceRequest _renderRequest({
     systemPrompt: system,
     temperature: temperature,
     repetitionPenalty: repetitionPenalty,
+    // Wave N2 — the declared/per-actor reasoning rides the wire: the
+    // old render dropped both fields, so a palette declaration never
+    // reached the provider through the in-app brains.
+    reasoningEffort: reasoningEffort,
+    includeReasoning: includeReasoning,
     messages: [
       ChatMessage.system(system),
       for (final turn in turns)
@@ -888,6 +929,8 @@ final class BrainEngineServer {
             final num value => value.toDouble(),
             _ => null,
           },
+          reasoningEffort: request['reasoningEffort'] as String?,
+          includeReasoning: request['includeReasoning'] as bool?,
         ),
       );
       if (!result.success) {

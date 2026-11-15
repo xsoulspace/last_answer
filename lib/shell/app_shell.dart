@@ -1380,6 +1380,8 @@ class _AppShellState extends State<AppShell> {
       // Wave F: "show me this actor" (beat names, the members popover,
       // the people rows) routes into the actor's `actor:<id>` info tab.
       onTapActor: _onFocusActorIntent,
+      // Wave N: the people row's Message verb routes the DM tab.
+      onOpenConversation: _onSelectTab,
     );
     // Wave F — `actor:<id>` specs are runtime facts: the shell projects
     // the OPEN actor tabs into the registry per build (exact-id keys,

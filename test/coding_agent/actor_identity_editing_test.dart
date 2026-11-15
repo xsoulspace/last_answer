@@ -429,4 +429,83 @@ void main() {
       expect(record['role'], 'researcher');
     },
   );
+  // ACTOR EQUALITY (owner law, 2026-11-16): a model-based actor is
+  // still an actor — daemon-minted rows (brainCast only, no brainRef)
+  // are adopted, editable, DM-able, and their cast brain binds BOTH
+  // dispatch planes (LA writes brainCast alongside brainRef).
+  group('actor equality (wave N1)', () {
+    test('a brainCast-only row is adopted: editable, DM-able, '
+        'retireable', () async {
+      final world = await _hermeticWorld();
+      await world.store.transact(
+        (tx) => tx.put('realm_actors', 'minted', <String, Object?>{
+          'actorId': 'minted',
+          'kind': 'realm_actor',
+          'brainCast': 'modelscope_qwen38max',
+          'displayName': 'Minted',
+          'actorKind': 'model',
+        }),
+      );
+      final roster = ActorRoster(replicaId: 'tester');
+      final service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+
+      final adopted = roster.get('minted');
+      expect(adopted, isNotNull, reason: 'brainCast-only rows are actors');
+      expect(adopted!.brainRef, 'cast:modelscope_qwen38max');
+
+      // Editable through the ONE mechanism.
+      expect(
+        await service.updateActor(
+          actorId: 'minted',
+          displayName: 'Minted Prime',
+        ),
+        isTrue,
+      );
+      expect(roster.get('minted')?.displayName, 'Minted Prime');
+
+      // The cast brain binds both planes: brainCast rides the edit.
+      final edited = await world.store.read('realm_actors', 'minted');
+      expect(edited!['brainCast'], 'modelscope_qwen38max');
+
+      // DM-able: the reuse-or-create two-member thread.
+      await service.openDm('minted');
+      expect(service.dmThreadOf('minted'), isNotNull);
+
+      // Retire keeps the durable history; the roster tombstone is the
+      // projection half.
+      final receipt = await service.retireActor('minted');
+      expect(receipt['ok'], true);
+      final retired = await world.store.read('realm_actors', 'minted');
+      expect(retired!['retiredAt'], isA<String>());
+      service.removeActor('minted');
+      expect(roster.get('minted'), isNull);
+    });
+
+    test('a row with neither brainRef nor brainCast stays unadopted '
+        '(nothing to bind is honest absence)', () async {
+      final world = await _hermeticWorld();
+      await world.store.transact(
+        (tx) => tx.put('realm_actors', 'ghost', <String, Object?>{
+          'actorId': 'ghost',
+          'kind': 'realm_actor',
+          'displayName': 'Ghost',
+        }),
+      );
+      final roster = ActorRoster(replicaId: 'tester');
+      final service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      expect(roster.get('ghost'), isNull);
+    });
+  });
 }

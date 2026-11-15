@@ -333,6 +333,7 @@ SurfaceRegistry buildShellSurfaces(
   final BuildContext context, {
   final RealmChatService? service,
   final void Function(String actorId)? onTapActor,
+  final void Function(String surfaceId)? onOpenConversation,
 }) => {
   kConversationsSurfaceId: SurfaceSpec(
     id: kConversationsSurfaceId,
@@ -386,6 +387,8 @@ SurfaceRegistry buildShellSurfaces(
         // split (the shell's routing), not the in-view focus swap; the
         // PeopleFocus seam stays for hermetic/other callers.
         onOpenActor: onTapActor,
+        // Wave N: the row's Message verb routes the DM tab.
+        onOpenConversation: onOpenConversation,
       );
     },
     icon: Icons.people_outline,

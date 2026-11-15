@@ -1531,6 +1531,11 @@ class SRu extends S {
   String get modelsBuiltinLaneUnknown => 'встроенная дорожка (composition root)';
   String get modelsReasoningNoLane => 'нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·';
   String get modelsReasoningTitle => 'уровень reasoning';
+  String get actorsMessage => 'Написать';
+  String get actorsRemove => 'Удалить актёра';
+  String get actorsRemoveConfirm => 'Отозвать durable-строку и удалить профиль ростера:';
+  String get actorsNewActor => 'Новый актёр';
+  String get actorsCreate => 'Создать';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

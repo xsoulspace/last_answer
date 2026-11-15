@@ -1526,6 +1526,11 @@ class SIt extends S {
   String get modelsBuiltinLaneUnknown => 'corsia integrata (del composition root)';
   String get modelsReasoningNoLane => 'nessuna corsia di reasoning - il trasporto non dichiara livelli di effort (una dichiarazione verrebbe rifiutata come reasoning_effort_unsupported) ·';
   String get modelsReasoningTitle => 'sforzo di reasoning';
+  String get actorsMessage => 'Messaggio';
+  String get actorsRemove => 'Rimuovi actor';
+  String get actorsRemoveConfirm => 'Ritira la riga durevole ed elimina il profilo roster di';
+  String get actorsNewActor => 'Nuovo actor';
+  String get actorsCreate => 'Crea';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

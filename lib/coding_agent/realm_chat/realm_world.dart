@@ -441,6 +441,14 @@ final class RealmWorld {
         'brainRef': brainRef.isNotEmpty
             ? brainRef
             : existing?['brainRef'] as String? ?? '',
+        // The daemon plane binds on `brainCast` (daemon_actor_loops),
+        // while LA edits `brainRef`: a `cast:` brain therefore writes
+        // BOTH, so what the owner edited in LA is what the daemon
+        // drives (the black-hole law, 2026-11-16). Other brains keep
+        // the durable cast untouched.
+        'brainCast': brainRef.startsWith('cast:')
+            ? brainRef.substring('cast:'.length)
+            : existing?['brainCast'] as String? ?? '',
         'role': role.isNotEmpty ? role : existing?['role'] as String? ?? '',
         // The persona is nullable ON PURPOSE: null = untouched (a plain
         // re-register preserves), '' = cleared by an owner-approved

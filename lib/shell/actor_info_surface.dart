@@ -141,9 +141,80 @@ final class ActorInfoSurface extends StatelessWidget {
               ],
             ),
           ),
+          // ACTOR EQUALITY verbs (owner law, 2026-11-16): every
+          // non-human actor is messageable and removable from their
+          // own surface — the DM is the reuse-or-create thread, the
+          // removal retires the durable row AND tombstones the roster
+          // behind one confirm.
+          if (display.kind != ActorKind.human) ...[
+            IconButton(
+              key: const ValueKey('actor.info.message'),
+              tooltip: context.l10n.actorsMessage,
+              icon: const Icon(Icons.chat_bubble_outline, size: 16),
+              visualDensity: VisualDensity.compact,
+              onPressed: () {
+                unawaited(service.openDm(actorId));
+                onOpenConversation?.call('dm:$actorId');
+              },
+            ),
+            IconButton(
+              key: const ValueKey('actor.info.remove'),
+              tooltip: context.l10n.actorsRemove,
+              icon: const Icon(Icons.delete_outlined, size: 16),
+              visualDensity: VisualDensity.compact,
+              onPressed: () => unawaited(_confirmRemove(context)),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  /// Removal is deliberate: one confirm names the actor, then the
+  /// host's retire verb runs FIRST (the durable row is the identity);
+  /// a bounce renders VERBATIM and the roster stays untouched.
+  Future<void> _confirmRemove(final BuildContext context) async {
+    final l10n = context.l10n;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => AlertDialog(
+        title: Text(l10n.actorsRemove),
+        content: Text('${l10n.actorsRemoveConfirm} $actorId'),
+        actions: [
+          TextButton(
+            key: const ValueKey('actor.info.remove.cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.modelsCancel),
+          ),
+          TextButton(
+            key: const ValueKey('actor.info.remove.confirm'),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.actorsRemove),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    final receipt = await service.retireActor(actorId);
+    if (receipt['ok'] != true) {
+      if (!context.mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (final dialogContext) => AlertDialog(
+          key: const ValueKey('actor.info.remove.bounce'),
+          content: Text('${receipt['bounce'] ?? 'retire_refused'}'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.modelsCancel),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    service.removeActor(actorId);
+    onOpenConversation?.call('conversations');
   }
 
   /// The read-only facts block: journal field names in mono, verbatim

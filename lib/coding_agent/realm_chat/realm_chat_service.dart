@@ -366,9 +366,19 @@ final class RealmChatService extends ChangeNotifier {
       // roster, so bots survive an app restart without a mesh.
       final records = await world.store.scan('realm_actors');
       for (final record in records.values) {
+        final actorId = record['actorId'];
+        if (actorId is! String || actorId.isEmpty) continue;
         final brain = record['brainRef'] as String?;
-        if (brain == null || brain.isEmpty) continue;
-        final actorId = record['actorId']! as String;
+        final cast = record['brainCast'] as String?;
+        // ACTOR EQUALITY (owner law, 2026-11-16): a model-based actor is
+        // still an actor. Daemon-minted rows (`actor_ensure`) carry only
+        // `brainCast`; adopting them with a synthesized `cast:` ref keeps
+        // EVERY actor editable and DM-able. A row with neither brain nor
+        // cast still skips — there is nothing to bind.
+        final brainRef = (brain != null && brain.isNotEmpty)
+            ? brain
+            : (cast != null && cast.isNotEmpty ? 'cast:$cast' : '');
+        if (brainRef.isEmpty) continue;
         if (_roster!.get(actorId) != null) continue;
         _roster!.upsert(
           ActorProfile(
@@ -378,7 +388,7 @@ final class RealmChatService extends ChangeNotifier {
               (kind) => kind.name == record['actorKind'],
               orElse: () => ActorKind.model,
             ),
-            brainRef: brain,
+            brainRef: brainRef,
             role: record['role'] as String? ?? '',
             systemPrompt: record['systemPrompt'] as String? ?? '',
           ),
@@ -553,6 +563,23 @@ final class RealmChatService extends ChangeNotifier {
     removeActorIdentity(roster, actorId);
     _bots?.stopBot(actorId);
     syncBots();
+  }
+
+  /// Retires the DURABLE world row through the host's own verb
+  /// (ADR 0120: the row keeps its history and stops being driven; a
+  /// fresh ensure revives it). [removeActor] is the roster projection
+  /// half; the actor surface calls both behind one confirm. A bounce
+  /// renders verbatim — the retire refusal names its input.
+  Future<Map<String, Object?>> retireActor(final String actorId) async {
+    final world = _world;
+    if (world == null) {
+      return const <String, Object?>{'ok': false, 'bounce': 'realm_not_ready'};
+    }
+    try {
+      return await retireRealmActor(world.store, actorId: actorId);
+    } on Object catch (error) {
+      return <String, Object?>{'ok': false, 'bounce': '$error'};
+    }
   }
 
   // ---- thread verbs (the human's words) ----

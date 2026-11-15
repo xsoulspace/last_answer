@@ -1516,6 +1516,11 @@ class SEn extends S {
   String get modelsBuiltinLaneUnknown => 'built-in lane (composition-root owned)';
   String get modelsReasoningNoLane => 'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·';
   String get modelsReasoningTitle => 'reasoning effort';
+  String get actorsMessage => 'Message';
+  String get actorsRemove => 'Remove actor';
+  String get actorsRemoveConfirm => 'Retire the durable row and delete the roster profile of';
+  String get actorsNewActor => 'New actor';
+  String get actorsCreate => 'Create';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

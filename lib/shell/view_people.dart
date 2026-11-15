@@ -67,6 +67,7 @@ final class PeopleView extends StatelessWidget {
     required this.service,
     this.focus,
     this.onOpenActor,
+    this.onOpenConversation,
     super.key,
   });
 
@@ -82,6 +83,10 @@ final class PeopleView extends StatelessWidget {
   /// in-view [focus] swap; the focus seam stays for hermetic hosts and
   /// other callers.
   final void Function(String actorId)? onOpenActor;
+
+  /// Routes a row's Message verb into the shell's conversation grammar
+  /// (`dm:<id>`); null keeps the verb absent (hermetic hosts).
+  final void Function(String surfaceId)? onOpenConversation;
 
   @override
   Widget build(final BuildContext context) {
@@ -103,6 +108,7 @@ final class PeopleView extends StatelessWidget {
             service: service,
             onFocus: focus?.focus,
             onOpenActor: onOpenActor,
+            onOpenConversation: onOpenConversation,
           ),
         );
       },
@@ -117,6 +123,7 @@ class _PeopleListBody extends StatelessWidget {
     required this.service,
     this.onFocus,
     this.onOpenActor,
+    this.onOpenConversation,
   });
 
   final RealmChatService service;
@@ -127,6 +134,10 @@ class _PeopleListBody extends StatelessWidget {
 
   /// Wave F: opens the actor's info surface; wins over [onFocus].
   final void Function(String actorId)? onOpenActor;
+
+  /// Routes the Message verb / post-mint routing into the shell's
+  /// conversation grammar.
+  final void Function(String surfaceId)? onOpenConversation;
 
   @override
   Widget build(final BuildContext context) {
@@ -152,6 +163,22 @@ class _PeopleListBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ACTOR EQUALITY (owner law, 2026-11-16): minting lives where
+          // the people are — one verb, the shared create verb, then the
+          // new actor's own surface opens.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+            child: Row(
+              children: [
+                const Spacer(),
+                TextButton(
+                  key: const ValueKey('shell.people.newActor'),
+                  onPressed: () => unawaited(_newActor(context)),
+                  child: Text(context.l10n.actorsNewActor),
+                ),
+              ],
+            ),
+          ),
           if (showTopic)
             _Section(
               sectionKey: const ValueKey('shell.context.topic'),
@@ -172,11 +199,121 @@ class _PeopleListBody extends StatelessWidget {
                 service: service,
                 onFocus: onFocus,
                 onOpenActor: onOpenActor,
+                onOpenConversation: onOpenConversation,
               ),
             ),
         ],
       ),
     );
+  }
+
+  /// Mint one model actor through the SHARED create verb: name + role
+  /// + a brain from the discovered options (the picker's vocabulary is
+  /// the world's, never a hardcoded model list), then the new actor's
+  /// own surface opens (actor equality: minted = editable at once).
+  Future<void> _newActor(final BuildContext context) async {
+    final l10n = context.l10n;
+    final options = availableBrainOptions(
+      defaultOpenRouterModel: _defaultOpenRouterModel(context),
+      paletteRungs:
+          context.read<WorldStateService?>()?.generativeDecls ?? const [],
+    );
+    final name = TextEditingController();
+    final role = TextEditingController();
+    var brain = options.isEmpty ? '' : options.first.ref;
+    final created = await showDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => StatefulBuilder(
+        builder: (final dialogContext, final setDialogState) => AlertDialog(
+          key: const ValueKey('shell.people.newActor.dialog'),
+          title: Text(l10n.actorsNewActor),
+          content: SizedBox(
+            width: 320,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  key: const ValueKey('shell.people.newActor.name'),
+                  controller: name,
+                  decoration: InputDecoration(
+                    hintText: l10n.actorsNameHint,
+                    isDense: true,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  key: const ValueKey('shell.people.newActor.role'),
+                  controller: role,
+                  decoration: InputDecoration(
+                    hintText: l10n.actorsRoleHint,
+                    isDense: true,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  key: const ValueKey('shell.people.newActor.brain'),
+                  initialValue: brain,
+                  isExpanded: true,
+                  items: [
+                    for (final option in options)
+                      DropdownMenuItem(
+                        value: option.ref,
+                        child: Text(
+                          option.label,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                  ],
+                  onChanged: (final value) =>
+                      setDialogState(() => brain = value ?? brain),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(l10n.worldChatCancel),
+            ),
+            TextButton(
+              key: const ValueKey('shell.people.newActor.create'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(l10n.actorsCreate),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (created != true || name.text.trim().isEmpty || brain.isEmpty) {
+      name.dispose();
+      role.dispose();
+      return;
+    }
+    final profile = await service.createActor(
+      displayName: name.text.trim(),
+      kind: ActorKind.model,
+      brainRef: brain,
+      role: role.text.trim(),
+    );
+    name.dispose();
+    role.dispose();
+    if (profile != null) onOpenActor?.call(profile.actorId);
+  }
+
+  /// The chat default's OpenRouter model (the picker's hosted option),
+  /// read from the agent config the same way the actor surface does.
+  String _defaultOpenRouterModel(final BuildContext context) {
+    try {
+      final config = context.read<AgentConfigStore>().config;
+      return config.chat.defaultModel.isNotEmpty
+          ? config.chat.defaultModel
+          : (config
+                  .providers[AgentPlatformConfig.openRouterId]
+                  ?.defaultModel ??
+              '');
+    } on Object {
+      return '';
+    }
   }
 }
 
@@ -189,6 +326,7 @@ class _PeopleList extends StatelessWidget {
     required this.service,
     this.onFocus,
     this.onOpenActor,
+    this.onOpenConversation,
   });
 
   final List<String> ids;
@@ -203,6 +341,10 @@ class _PeopleList extends StatelessWidget {
   /// Wave F: opens the actor's info surface; wins over [onFocus] (the
   /// shell's owner law: click an actor name → its info in a split).
   final void Function(String actorId)? onOpenActor;
+
+  /// Routes a row's Message verb into the shell's conversation grammar
+  /// (`dm:<id>`); null keeps the verb absent (hermetic hosts).
+  final void Function(String surfaceId)? onOpenConversation;
 
   @override
   Widget build(final BuildContext context) {
@@ -228,7 +370,8 @@ class _PeopleList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final id in ids) _personRow(context, id, roster, bots, laWorld),
+        for (final id in ids)
+          _personRow(context, id, roster, bots, laWorld),
       ],
     );
   }
@@ -299,6 +442,23 @@ class _PeopleList extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
+                // ACTOR EQUALITY (owner law, 2026-11-16): the DM verb
+                // rides the row — the human writes any model actor in
+                // one tap, and the actor answers in the same thread
+                // (the dispatch plane is addressedTo-only, both planes).
+                if (rostered != null &&
+                    rostered.kind != ActorKind.human &&
+                    onOpenConversation != null)
+                  IconButton(
+                    key: ValueKey('shell.people.message.$id'),
+                    tooltip: context.l10n.actorsMessage,
+                    icon: const Icon(Icons.chat_bubble_outline, size: 14),
+                    visualDensity: VisualDensity.compact,
+                    onPressed: () {
+                      unawaited(service.openDm(id));
+                      onOpenConversation!('dm:$id');
+                    },
+                  ),
               ],
             ),
             if (line != null)

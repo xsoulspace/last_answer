@@ -2845,6 +2845,16 @@ abstract class S {
   String get modelsReasoningNoLane;
   /// No description provided for @modelsReasoningTitle.
   String get modelsReasoningTitle;
+  /// No description provided for @actorsMessage.
+  String get actorsMessage;
+  /// No description provided for @actorsRemove.
+  String get actorsRemove;
+  /// No description provided for @actorsRemoveConfirm.
+  String get actorsRemoveConfirm;
+  /// No description provided for @actorsNewActor.
+  String get actorsNewActor;
+  /// No description provided for @actorsCreate.
+  String get actorsCreate;
   /// No description provided for @modelsFieldCapabilities.
   String get modelsFieldCapabilities;
   /// No description provided for @modelsEditModel.

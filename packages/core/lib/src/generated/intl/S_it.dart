@@ -1519,6 +1519,13 @@ class SIt extends S {
   String get modelsFieldReasoningEffort => 'reasoning_effort';
   @override
   String get modelsFieldIncludeReasoning => 'include_reasoning';
+  String get modelsBuiltinLaneLocal => 'corsia MLX locale integrata (on-device)';
+  String get modelsBuiltinLaneDecision => 'corsia decisionale locale integrata (loopback)';
+  String get modelsBuiltinLaneAfm => 'corsia Apple Foundation integrata (on-device, specifica Apple)';
+  String get modelsBuiltinLaneOpenRouter => 'corsia OpenRouter integrata (hosted)';
+  String get modelsBuiltinLaneUnknown => 'corsia integrata (del composition root)';
+  String get modelsReasoningNoLane => 'nessuna corsia di reasoning - il trasporto non dichiara livelli di effort (una dichiarazione verrebbe rifiutata come reasoning_effort_unsupported) ·';
+  String get modelsReasoningTitle => 'sforzo di reasoning';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

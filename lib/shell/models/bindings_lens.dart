@@ -10,6 +10,7 @@
 /// `brainCast` rows), linking the binding layer to the actor surface.
 library;
 
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -149,10 +150,26 @@ final class BindingsLens extends StatelessWidget {
                           fontWeight: primary ? FontWeight.w600 : null,
                         ),
                       ),
+                      // The subtitle is the row's ENGINE truth: a
+                      // declared row names provider/model; a builtin
+                      // row names its composition-root lane family
+                      // (the old silence made `jev` read as a local
+                      // model while it rides the hosted OpenRouter
+                      // lane — the lane mirror law, 2026-11-15).
                       if (!tight)
                         if (entry['model'] case final modelName?)
                           Text(
                             '${entry['provider'] ?? ''}/$modelName',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              fontSize: 10,
+                              color: la.inkQuiet,
+                            ),
+                          )
+                        else if (entry['builtin'] == true)
+                          Text(
+                            _builtinLaneSentence(context, id),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelSmall?.copyWith(
@@ -168,10 +185,15 @@ final class BindingsLens extends StatelessWidget {
                     label: context.l10n.modelsChipPrimary,
                     color: la.accent,
                   ),
+                // The lane chip is the FAMILY truth, never `builtin`:
+                // local for the on-device native/loopback lanes, `afm`
+                // for the Apple-specific one, `open_router` for the
+                // hosted lane (`jev`), `builtin` for an unknown family.
                 if (entry['builtin'] == true)
                   ModelsChip(
-                    label: context.l10n.modelsChipLocal,
+                    label: builtinLaneChipLabel(builtinLaneFamily(id)),
                     color: la.inkQuiet,
+                    mono: true,
                   ),
                 if (!tight)
                   if (rung?.ladderNext case final next?)
@@ -217,6 +239,20 @@ final class BindingsLens extends StatelessWidget {
     );
   }
 }
+
+/// The builtin row's subtitle: its composition-root lane family as one
+/// honest sentence (the mirror in `palette_lanes.dart`; an unknown
+/// family says builtin-owned, never a guessed lane).
+String _builtinLaneSentence(final BuildContext context, final String id) =>
+    switch (builtinLaneFamily(id)) {
+      BuiltinLaneFamily.localMlx => context.l10n.modelsBuiltinLaneLocal,
+      BuiltinLaneFamily.localDecision =>
+        context.l10n.modelsBuiltinLaneDecision,
+      BuiltinLaneFamily.appleFoundation => context.l10n.modelsBuiltinLaneAfm,
+      BuiltinLaneFamily.hostedOpenRouter =>
+        context.l10n.modelsBuiltinLaneOpenRouter,
+      BuiltinLaneFamily.unknown => context.l10n.modelsBuiltinLaneUnknown,
+    };
 
 /// A ladder verb (up / down / primary): dimmed when the move is a
 /// no-op at the list's edge, never hidden — the table stays scannable.

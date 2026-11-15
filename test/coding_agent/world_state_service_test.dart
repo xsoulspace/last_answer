@@ -81,6 +81,12 @@ void main() {
         },
         {'id': 'qwen', 'builtin': true, 'role': 'generative'},
         {'id': 'laya', 'builtin': true, 'role': 'decision'},
+        {'id': 'jev', 'builtin': true, 'role': 'decision'},
+        {
+          'id': 'apple_foundation_afm',
+          'builtin': true,
+          'role': 'generative',
+        },
       ],
     },
   };
@@ -375,6 +381,8 @@ void main() {
         'openrouter_deepseek',
         'qwen',
         'laya',
+        'jev',
+        'apple_foundation_afm',
       ]);
     });
 
@@ -394,7 +402,7 @@ void main() {
       await service.refresh();
 
       expect(service.paletteConfigPath, '$worldHome/.xsoulspace/config.json');
-      expect(service.rungs, hasLength(4));
+      expect(service.rungs, hasLength(6));
     });
 
     test('health and ladder merge onto the declaration', () async {
@@ -423,6 +431,18 @@ void main() {
       expect(local.isLocal, isTrue);
       expect(local.healthStatus, 'not_downloaded');
       expect(local.health?.detail, contains('never downloads'));
+
+      // The lane-truth law (2026-11-15): builtin is NOT local — jev
+      // rides the composition root's HOSTED OpenRouter lane, afm the
+      // Apple-specific on-device one.
+      final jev = service.rungs.firstWhere((final rung) => rung.id == 'jev');
+      expect(jev.builtin, isTrue);
+      expect(jev.isLocal, isFalse, reason: 'the hosted OpenRouter lane');
+      final afm = service.rungs.firstWhere(
+        (final rung) => rung.id == 'apple_foundation_afm',
+      );
+      expect(afm.builtin, isTrue);
+      expect(afm.isLocal, isTrue, reason: 'on-device, Apple-specific');
     });
 
     test('no config declares a palette: an honest empty, no default', () async {

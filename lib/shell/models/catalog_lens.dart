@@ -16,6 +16,7 @@ library;
 
 import 'dart:convert';
 
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
@@ -107,9 +108,14 @@ final class _CatalogLensState extends State<CatalogLens> {
   final TextEditingController _credCtrl = TextEditingController();
   final TextEditingController _maxTokensCtrl = TextEditingController();
   final TextEditingController _maxOutCtrl = TextEditingController();
-  final TextEditingController _reasoningCtrl = TextEditingController();
   final TextEditingController _jsonCtrl = TextEditingController();
   bool _includeReasoning = false;
+
+  /// The picked reasoning-effort wire value, null = undeclared (the
+  /// model's provider default). A picker, never a free string: the
+  /// tiers are the lane's declared vocabulary (the Zed law), and a
+  /// value outside the mirror rides the edit as its own button.
+  String? _reasoningEffort;
   Set<String> _caps = <String>{};
   Timer? _jsonDebounce;
 
@@ -123,7 +129,6 @@ final class _CatalogLensState extends State<CatalogLens> {
     _credCtrl.dispose();
     _maxTokensCtrl.dispose();
     _maxOutCtrl.dispose();
-    _reasoningCtrl.dispose();
     _jsonCtrl.dispose();
     super.dispose();
   }
@@ -163,16 +168,24 @@ final class _CatalogLensState extends State<CatalogLens> {
     final declaredCaps = declared['capabilities'] is Map
         ? (declared['capabilities']! as Map)
         : const <Object?, Object?>{};
+    final providerRaw = _model.providers[providerId];
+    final provider = providerRaw is Map
+        ? providerRaw
+        : const <String, Object?>{};
     setState(() {
       _form = _FormState(
         kind: _FormKind.model,
         providerId: providerId,
         modelId: editId,
+        // The model form rides the provider's transport: the reasoning
+        // tiers are a LANE fact (the mirror's per-transport map).
+        transport: '${provider['transport'] ?? ''}',
       );
       _idCtrl.text = editId ?? '';
       _maxTokensCtrl.text = declared['max_tokens']?.toString() ?? '';
       _maxOutCtrl.text = declared['max_output_tokens']?.toString() ?? '';
-      _reasoningCtrl.text = '${declared['reasoning_effort'] ?? ''}';
+      final declaredEffort = declared['reasoning_effort'];
+      _reasoningEffort = declaredEffort is String ? declaredEffort : null;
       _includeReasoning = declared['include_reasoning'] == true;
       // Every declared-true capability rides the edit, offered or not,
       // so a save never silently drops a declaration.
@@ -228,7 +241,7 @@ final class _CatalogLensState extends State<CatalogLens> {
           id: id,
           maxTokens: maxTokens,
           maxOutputTokens: maxOut,
-          reasoningEffort: _reasoningCtrl.text,
+          reasoningEffort: _reasoningEffort,
           includeReasoning: _includeReasoning,
           capabilities: <String, bool>{for (final key in _caps) key: true},
         );
@@ -527,6 +540,18 @@ final class _CatalogLensState extends State<CatalogLens> {
                   ),
                 for (final cap in caps)
                   ModelsChip(label: cap, color: la.inkQuiet, mono: true),
+                // The reasoning fact rides the row: the declared tier
+                // by its display title (never the bare wire value),
+                // `· incl` when the reasoning content joins context.
+                if (model['reasoning_effort'] case final effort?)
+                  ModelsChip(
+                    label: 'reasoning ${reasoningEffortTitle('$effort')}'
+                        '${model['include_reasoning'] == true
+                            ? ' · incl'
+                            : ''}',
+                    color: la.inkQuiet,
+                    mono: true,
+                  ),
                 for (final ref in castRefs)
                   ModelsChip(label: ref, color: la.accent, mono: true),
               ],
@@ -651,25 +676,62 @@ final class _CatalogLensState extends State<CatalogLens> {
                     controller: _maxOutCtrl,
                   ),
                 ),
-                SizedBox(
-                  width: 120,
-                  child: _formField(
-                    keyName: 'models.form.reasoningEffort',
-                    hint: context.l10n.modelsFieldReasoningEffort,
-                    controller: _reasoningCtrl,
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 8),
-            ModelsButton(
-              keyName: 'models.form.includeReasoning',
-              label: '${context.l10n.modelsFieldIncludeReasoning}: '
-                  '${_includeReasoning ? 'true' : 'false'}',
-              onTap: () => setState(
-                () => _includeReasoning = !_includeReasoning,
+            // The Zed law: reasoning controls are a CAPABILITY fact of
+            // the lane. A transport whose client declares no effort
+            // tiers gets an honest absence note — not a disabled
+            // picker — because a declaration on such a lane refuses at
+            // dispatch as `reasoning_effort_unsupported` anyway.
+            if ((kReasoningEffortTiers[form.transport] ??
+                    const <String>[])
+                .isEmpty)
+              ModelsNote(
+                keyName: 'models.reasoning.noLane',
+                text: '${context.l10n.modelsReasoningNoLane} '
+                    '${form.transport}',
+                color: la.inkQuiet,
+              )
+            else ...[
+              Text(
+                context.l10n.modelsReasoningTitle,
+                style: LaTokens.mono(10, la.inkQuiet),
               ),
-            ),
+              const SizedBox(height: 4),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  // A declared value outside the mirror rides the edit
+                  // as its own button (the capabilities law); a second
+                  // tap on the selected tier clears the declaration.
+                  for (final tier in <String>{
+                    ...kReasoningEffortTiers[form.transport]!,
+                    ?_reasoningEffort,
+                  })
+                    ModelsButton(
+                      keyName: 'models.form.reasoning.$tier',
+                      label: _reasoningEffort == tier
+                          ? '✓ ${reasoningEffortTitle(tier)}'
+                          : reasoningEffortTitle(tier),
+                      onTap: () => setState(
+                        () => _reasoningEffort =
+                            _reasoningEffort == tier ? null : tier,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ModelsButton(
+                keyName: 'models.form.includeReasoning',
+                label: '${context.l10n.modelsFieldIncludeReasoning}: '
+                    '${_includeReasoning ? 'true' : 'false'}',
+                onTap: () => setState(
+                  () => _includeReasoning = !_includeReasoning,
+                ),
+              ),
+            ],
             const SizedBox(height: 8),
             Text(
               context.l10n.modelsFieldCapabilities,

@@ -72,6 +72,8 @@ Map<String, Object?> _paletteDoc() => {
         'role': 'generative',
       },
       {'id': 'qwen', 'builtin': true, 'role': 'generative'},
+      {'id': 'jev', 'builtin': true, 'role': 'decision'},
+      {'id': 'apple_foundation_afm', 'builtin': true, 'role': 'generative'},
     ],
   },
 };
@@ -225,6 +227,50 @@ void main() {
   }
 
   group('the catalog lens', () {
+    testWidgets('the reasoning controls are a LANE capability (the Zed '
+        'law): tiers for openrouter, an honest absence note for a '
+        'transport that declares none', (final tester) async {
+      await mount(tester);
+
+      // The openrouter model: the tier picker, titled (never the bare
+      // wire value), and the declaration lands on the candidate.
+      await settleTap(tester, 'models.provider.openrouter');
+      await settleTap(
+        tester,
+        'models.model.openrouter.deepseek/deepseek-v4.1-flash.edit',
+      );
+      expect(
+        find.byKey(const ValueKey('models.form.reasoning.high')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.reasoning.noLane')),
+        findsNothing,
+      );
+      await settleTap(tester, 'models.form.reasoning.high');
+      await settleTap(tester, 'models.form.confirm');
+      // The row chip titles the declared tier.
+      expect(find.text('reasoning High'), findsOneWidget);
+
+      // The openai_compatible lane declares no tiers today: the form
+      // names the absence instead of offering a disabled picker.
+      await settleTap(tester, 'models.provider.modelscope');
+      await settleTap(
+        tester,
+        'models.model.modelscope.Qwen3.8-Max-Preview.edit',
+      );
+      expect(
+        find.byKey(const ValueKey('models.reasoning.noLane')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.form.reasoning.high')),
+        findsNothing,
+      );
+
+      await endClean(tester);
+    });
+
     testWidgets('the nested table: provider rows expand into their '
         'models with the verbs on the owning row', (final tester) async {
       await mount(tester);
@@ -382,6 +428,47 @@ void main() {
   });
 
   group('the bindings lens', () {
+    testWidgets('the lane chip is the FAMILY truth: builtin never means '
+        'local by default (jev rides the hosted OpenRouter lane, afm '
+        'the Apple-specific one, qwen the local MLX one)', (
+      final tester,
+    ) async {
+      await mount(tester);
+
+      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
+      await tester.pump();
+
+      final jev = find.byKey(const ValueKey('models.rung.jev'));
+      expect(
+        find.descendant(of: jev, matching: find.text('open_router')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: jev, matching: find.text('local')),
+        findsNothing,
+        reason: 'the hosted lane is not local',
+      );
+      // The subtitle names the lane, never silence.
+      expect(
+        find.descendant(of: jev, matching: find.textContaining('OpenRouter')),
+        findsOneWidget,
+      );
+      final afm = find.byKey(
+        const ValueKey('models.rung.apple_foundation_afm'),
+      );
+      expect(
+        find.descendant(of: afm, matching: find.text('afm')),
+        findsOneWidget,
+      );
+      final qwen = find.byKey(const ValueKey('models.rung.qwen'));
+      expect(
+        find.descendant(of: qwen, matching: find.text('local')),
+        findsOneWidget,
+      );
+
+      await endClean(tester);
+    });
+
     testWidgets('the ladder order and the primary mark are candidate '
         'verbs over the cast list', (final tester) async {
       await mount(tester);

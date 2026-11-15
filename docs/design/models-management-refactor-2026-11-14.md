@@ -252,3 +252,55 @@ config verb whose authority is settled one layer down. This is an owner decision
   surface_gaps asks filed.
 Each wave: named tests green, `fvm flutter analyze` clean on touched files, l10n
 7-file cross-check, live proof via flutter-native fmtk screenshots only.
+
+---
+
+## 8. Wave M (2026-11-15) — the lane-truth law + the Zed reasoning law
+
+Owner review of the landed lenses named two untruths and one missing
+configuration, both now fixed at the read-model layer:
+
+### 8.1 `builtin` is NOT `local` (the lane-truth law)
+
+The old chip law (`entry['builtin'] == true` → "local", and
+`WorldRung.isLocal => builtin`) mislabelled every composition-root
+builtin. The harness binding map (`ecsai.dart` `generationResourceKeys`,
+`model_palette.dart` entry docs) resolves builtins to DIFFERENT lanes:
+`lfm`/`qwen` = local MLX, `laya` = local System-One decision loopback,
+`apple_foundation_afm` = Apple Foundation (on-device but Apple-specific),
+`jev`/`open_router` = the HOSTED OpenRouter lane — `jev` is a remote
+DeepSeek brain wearing a "local" chip. The fix:
+`lib/coding_agent/realm_chat/palette_lanes.dart` mirrors the closed
+builtin-name → lane-family map READ-ONLY (the same law as
+`kTransportWireNames` mirroring `PaletteTransport`); the bindings lens
+renders the family chip (`local` / `afm` / `open_router` / `builtin`) and
+a subtitle sentence naming the lane; an UNKNOWN builtin name renders
+`builtin` — no guessed lane. `WorldRung.isLocal` now means "on-device
+family", hosted and unknown builtins are not local.
+
+### 8.2 Reasoning is a lane capability (the Zed law)
+
+Zed (crates/agent_ui `render_thinking_control`, settings
+`LanguageModelSelection{enable_thinking, effort}`) hides reasoning
+controls ENTIRELY when the model declares no thinking capability, titles
+the tiers per provider family (Low/Medium/High/Extra High/Max), and keeps
+separate selections per use case. LA's mirror:
+`kReasoningEffortTiers` per transport (mirrored from the production
+clients' `supportedReasoningEfforts`: openrouter = minimal…xhigh; the
+openai_compatible chat-completions client and the local/AFM lanes declare
+NONE today, so a declaration there refuses at dispatch as
+`reasoning_effort_unsupported`) drives the catalog model form: a titled
+tier picker (second tap clears the declaration) + the include toggle for
+tier-carrying lanes; an honest absence note naming the transport
+otherwise. Model rows chip the declared tier by title (`reasoning High ·
+incl`). Per-use-case levels ("chat on low, delegation on high") have no
+declarative lane in the harness today — filed as a surface_gaps ask
+(2026-11-15) instead of faked in config.
+
+### 8.3 Paid law: the arb trio was invalid JSON since 11-14
+
+The 11-14 l10n insertion wrote `@key` description lines WITHOUT trailing
+commas; arbs are JSON, and every key cross-check since was
+substring-based, so the breakage survived. Repaired mechanically (comma
+normalization) and the cross-check is now `json.load`-based. Law: the l10n
+cross-check parses, never greps.

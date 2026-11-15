@@ -32,6 +32,7 @@ import 'package:flutter/foundation.dart';
 import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/supervised_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
@@ -76,10 +77,13 @@ final class WorldRung {
 
   String get healthStatus => health?.status ?? 'unknown';
 
-  /// A local (native-engine) lane: builtin AND not the AFM-only names
-  /// the composition root downloads nothing for either — the weights
-  /// fact rides the health detail (`not_downloaded`).
-  bool get isLocal => builtin;
+  /// An on-device lane (native engine, loopback decision or Apple
+  /// Foundation): builtin AND a family the composition root serves
+  /// locally. `builtin` alone is NOT the local fact — the composition
+  /// root's `jev`/`open_router` builtins ride the HOSTED OpenRouter
+  /// lane, and an unknown builtin claims nothing (the lane mirror in
+  /// `palette_lanes.dart`, 2026-11-15).
+  bool get isLocal => builtin && builtinLaneIsLocal(builtinLaneFamily(id));
 }
 
 /// One durable-task row, projected from the realm journal's

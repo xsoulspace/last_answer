@@ -978,47 +978,61 @@
   "modelsRefusalNoSeat": "the realm seat is not ready — the palette verbs need it",
   "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
   "modelsLensCatalog": "Catalog",
-  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsLensBindings": "Bindings",
-  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsLensObserve": "Observe",
-  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsJsonToggle": "JSON",
-  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsJsonInvalid": "invalid JSON — the candidate keeps its last valid shape",
-  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsFieldMaxTokens": "max_tokens",
-  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsFieldMaxOutputTokens": "max_output_tokens",
-  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsFieldReasoningEffort": "reasoning_effort",
-  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsFieldIncludeReasoning": "include_reasoning",
-  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "modelsBuiltinLaneLocal": "built-in local MLX lane (on-device)",
+  "@modelsBuiltinLaneLocal": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsBuiltinLaneDecision": "built-in local decision lane (loopback)",
+  "@modelsBuiltinLaneDecision": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsBuiltinLaneAfm": "built-in Apple Foundation lane (on-device, Apple-specific)",
+  "@modelsBuiltinLaneAfm": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsBuiltinLaneOpenRouter": "built-in OpenRouter lane (hosted)",
+  "@modelsBuiltinLaneOpenRouter": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsBuiltinLaneUnknown": "built-in lane (composition-root owned)",
+  "@modelsBuiltinLaneUnknown": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsReasoningNoLane": "no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·",
+  "@modelsReasoningNoLane": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "modelsReasoningTitle": "reasoning effort",
+  "@modelsReasoningTitle": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
   "modelsFieldCapabilities": "capabilities",
-  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsEditModel": "Edit model",
-  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsMoveUp": "move up the escalation ladder",
-  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsMoveDown": "move down the escalation ladder",
-  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsSetPrimary": "set as the realm's primary mover",
-  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsSessionPrefix": "session:",
-  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsSessionClear": "clear",
-  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsRestartPending": "palette landed — the daemon binds it at restart",
-  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsRestartNow": "Restart now",
-  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsHealthSection": "Health",
-  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsLedgerSection": "Dispatch ledger",
-  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsUnbound": "unbound actors",
-  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsRefusalBadNumber": "not a number — the field keeps its last value",
   "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
 }

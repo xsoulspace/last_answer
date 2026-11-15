@@ -1509,6 +1509,13 @@ class SEn extends S {
   String get modelsFieldReasoningEffort => 'reasoning_effort';
   @override
   String get modelsFieldIncludeReasoning => 'include_reasoning';
+  String get modelsBuiltinLaneLocal => 'built-in local MLX lane (on-device)';
+  String get modelsBuiltinLaneDecision => 'built-in local decision lane (loopback)';
+  String get modelsBuiltinLaneAfm => 'built-in Apple Foundation lane (on-device, Apple-specific)';
+  String get modelsBuiltinLaneOpenRouter => 'built-in OpenRouter lane (hosted)';
+  String get modelsBuiltinLaneUnknown => 'built-in lane (composition-root owned)';
+  String get modelsReasoningNoLane => 'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·';
+  String get modelsReasoningTitle => 'reasoning effort';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

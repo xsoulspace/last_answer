@@ -1524,6 +1524,13 @@ class SRu extends S {
   String get modelsFieldReasoningEffort => 'reasoning_effort';
   @override
   String get modelsFieldIncludeReasoning => 'include_reasoning';
+  String get modelsBuiltinLaneLocal => 'встроенная локальная дорожка MLX (на устройстве)';
+  String get modelsBuiltinLaneDecision => 'встроенная локальная дорожка решений (loopback)';
+  String get modelsBuiltinLaneAfm => 'встроенная дорожка Apple Foundation (на устройстве, специфична для Apple)';
+  String get modelsBuiltinLaneOpenRouter => 'встроенная дорожка OpenRouter (внешний хостинг)';
+  String get modelsBuiltinLaneUnknown => 'встроенная дорожка (composition root)';
+  String get modelsReasoningNoLane => 'нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·';
+  String get modelsReasoningTitle => 'уровень reasoning';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

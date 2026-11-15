@@ -2831,6 +2831,20 @@ abstract class S {
   String get modelsFieldReasoningEffort;
   /// No description provided for @modelsFieldIncludeReasoning.
   String get modelsFieldIncludeReasoning;
+  /// No description provided for @modelsBuiltinLaneLocal.
+  String get modelsBuiltinLaneLocal;
+  /// No description provided for @modelsBuiltinLaneDecision.
+  String get modelsBuiltinLaneDecision;
+  /// No description provided for @modelsBuiltinLaneAfm.
+  String get modelsBuiltinLaneAfm;
+  /// No description provided for @modelsBuiltinLaneOpenRouter.
+  String get modelsBuiltinLaneOpenRouter;
+  /// No description provided for @modelsBuiltinLaneUnknown.
+  String get modelsBuiltinLaneUnknown;
+  /// No description provided for @modelsReasoningNoLane.
+  String get modelsReasoningNoLane;
+  /// No description provided for @modelsReasoningTitle.
+  String get modelsReasoningTitle;
   /// No description provided for @modelsFieldCapabilities.
   String get modelsFieldCapabilities;
   /// No description provided for @modelsEditModel.

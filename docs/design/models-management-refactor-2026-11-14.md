@@ -304,3 +304,63 @@ commas; arbs are JSON, and every key cross-check since was
 substring-based, so the breakage survived. Repaired mechanically (comma
 normalization) and the cross-check is now `json.load`-based. Law: the l10n
 cross-check parses, never greps.
+
+---
+
+## 9. Wave N (2026-11-16) — actor equality, four lane classes, task honesty
+
+The owner's six-point review of the live shell became five LA waves
+(N1–N5, commits 2b79bca4 / ec0e9ba8 / fb32704f / b5744b55) plus three
+harness asks (harness e2ed92a9). The laws it established:
+
+1. **Actor equality.** A model-based actor is still an actor: roster
+   adoption now takes `brainCast`-only rows (daemon-minted) with a
+   synthesized `cast:` ref, so every actor is editable and DM-able;
+   `registerActor` writes `brainCast` back for `cast:` brains so the
+   daemon plane binds what LA edited (the black-hole law); Message and
+   Remove (host retire verb first, roster tombstone second, one
+   confirm, bounce verbatim) ride the actor surface and the people
+   rows; minting lives where the people are.
+2. **The owner's four lane classes** replace every picker vocabulary:
+   remote providers / local server (loopback endpoints — the
+   ollama-class lanes ride openai_compatible over 127.0.0.1 by the
+   parser's own loopback allowance) / direct subscription (the ChatGPT
+   plan; qwen/grok direct lanes named absent) / on-device services
+   (AFM, laya, MLX — read-only facts, the composition root owns those
+   bindings). `jev` reads remote; the word "builtin" never reaches the
+   UI except as the unclassified fallback for a name the mirror does
+   not know.
+3. **The dynamic config editor (ZCode/ComfyUI law).** The model form is
+   a settings-row list over the model map: typed controls from the
+   per-transport schema mirror, an add-setting row (schema keys + free
+   key), per-row remove, and unconsumed markers for keys no lane reads
+   (the parser tolerates them; the UI names that instead of faking a
+   control). The config list grows and differs per model and per
+   provider — the editor follows the document, never a fixed field set.
+4. **Reasoning is three layers, honestly split:** per-model declaration
+   (dynamic editor), per-actor level (brainRef grammar `?reasoning=`,
+   honored by the in-app brains — which previously DROPPED the declared
+   effort entirely, a real wire bug this wave fixed), and the daemon
+   lane (harness ask: per-actor generationOptions on realm_actors).
+5. **Task honesty.** Queued is not running: rows tap open the durable
+   detail (journal row verbatim + raw control events), carry the
+   owner's Cancel through the queue's own verb, and a queued row under
+   a sleeping daemon names why it waits. Boards cross-links the
+   durable queue with its count instead of pretending the ADR 0140
+   feed (landed, unwired) already projects it.
+6. **One human, manageable.** Settings "Your profile" routes through
+   the shell's ONE tab router to the human's actor surface; the actors
+   pane lists the human labelled "you"; the avatar mark (glyph/emoji,
+   the channel-icon law) applies to models, agents and the human
+   alike.
+
+### 9.1 Wave N5b addendum — retirement is world truth
+
+Live proof caught the third adoption case: `akio-steward`'s durable row
+carries neither brainRef nor brainCast AND is retired (2026-11-04
+hygiene sweep). The owner law splits it: a brainless non-retired row is
+adopted with an EMPTY brainRef (identity editable; the editor is how it
+gets a brain; only its bot stays unbound), while a RETIRED row is never
+re-adopted — the actor surface names the retirement verbatim
+(`retiredAt · retireReason`) and hides Message/Remove, because verbs on
+a retired actor would lie (commit b933d732).

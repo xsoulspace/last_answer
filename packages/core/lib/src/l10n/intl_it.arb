@@ -649,6 +649,8 @@
   "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
   "worldChatThreadsEmpty": "Ancora nessun thread.",
   "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
+  "worldChatSessionKindMark": "sessione",
+  "@worldChatSessionKindMark": {"description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."},
   "worldChatPermsTooltip": "Permessi",
   "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
   "worldChatPermsTitle": "Permessi del canale",

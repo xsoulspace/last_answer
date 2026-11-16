@@ -1968,6 +1968,9 @@ class SIt extends S {
   String get worldChatThreadsEmpty => 'Ancora nessun thread.';
 
   @override
+  String get worldChatSessionKindMark => 'sessione';
+
+  @override
   String get worldChatPermsTooltip => 'Permessi';
 
   @override

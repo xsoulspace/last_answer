@@ -71,6 +71,10 @@ const List<AppIntentSpec> appIntentCatalog = [
     summary: 'Open or reuse the DM thread with an actor and select it.'),
   AppIntentSpec(name: 'realm_chat_create_channel', group: 'world',
     summary: 'Create a named channel with member actors and select it.'),
+  AppIntentSpec(name: 'realm_chat_open_session', group: 'world',
+    summary:
+        'Open a declared session thread (machine-life room, ADR 0145) '
+        'with member actors and select it.'),
   AppIntentSpec(name: 'realm_chat_say', group: 'world',
     summary: 'Say one beat as the human in the active thread.'),
   AppIntentSpec(name: 'realm_chat_spawn_work', group: 'world',

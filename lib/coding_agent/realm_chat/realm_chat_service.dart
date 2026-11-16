@@ -218,8 +218,9 @@ final class RealmChatService extends ChangeNotifier {
   /// Thread projections from `thread.list` (newest activity first).
   List<Map<String, Object?>> get threads => List.unmodifiable(_threads);
 
-  /// ADR 0024 — registered channels (oldest first), cached from
-  /// [ChannelRegistry.list]; LIVE channels only — an archived channel
+  /// ADR 0024 — registered channels (oldest first), cached from the
+  /// registry's ONE-scan [ChannelRegistry.scanIndex] projection (the
+  /// index's live list); LIVE channels only — an archived channel
   /// leaves this list (its durable thread survives; the journal is
   /// authority). Refreshed on start and after each [createChannel],
   /// [renameChannel] and [closeChannel].
@@ -348,6 +349,13 @@ final class RealmChatService extends ChangeNotifier {
   final List<Map<String, Object?>> _threads = <Map<String, Object?>>[];
   final List<Map<String, Object?>> _beats = <Map<String, Object?>>[];
   final List<ChannelInfo> _channels = <ChannelInfo>[];
+
+  /// The thread ids of LIVE channels, refreshed alongside [_channels]
+  /// from the same registry scan (the index's live-only `byThreadId`
+  /// keys — oldest-wins per thread). The classifier's channel-wins-over-
+  /// dm-shape input. Sync getter law: [roomThreads] and [dmThreadOf]
+  /// do no IO, so the knowledge must be cached.
+  final Set<String> _liveChannelThreadIds = <String>{};
 
   /// The thread ids of ARCHIVED channels, refreshed alongside
   /// [_channels] from the same registry scan. An archived channel's
@@ -710,9 +718,16 @@ final class RealmChatService extends ChangeNotifier {
   }
 
   /// Opens a thread with the human plus the named participants.
+  ///
+  /// ADR 0145 — [kind] DECLARES the row's kind when non-null (exactly
+  /// `dm` | `channel` | `session` — the host validates and refuses
+  /// `kind_work_is_derived` / `kind_unknown`); null opens an UNTYPED
+  /// thread: the row carries no `kind` key (absent means infer,
+  /// forever) and ad-hoc human threads stay organic rooms by shape.
   Future<void> startThread({
     required String topic,
     List<String> participants = const <String>[],
+    String? kind,
   }) async {
     final world = _world;
     final human = _human;
@@ -726,6 +741,7 @@ final class RealmChatService extends ChangeNotifier {
         // to LA's project scope — daemon-owned actors, external seats
         // and in-app loops all see and answer in it.
         realmSealed: true,
+        kind: kind,
       );
       _activeThreadId = result['threadId']! as String;
       _beats.clear();
@@ -754,6 +770,15 @@ final class RealmChatService extends ChangeNotifier {
   /// dogfood-leg channel). Archiving alone cannot fix the class — an
   /// archived channel's thread stays open in the journal, so the skip
   /// must ride [_archivedChannelThreadIds] exactly like [classifyThread].
+  ///
+  /// ADR 0145 — DECLARED beats inference: a row carrying `kind: 'dm'`
+  /// IS the dm — the fast path skips the channel/work/archive skips
+  /// entirely (the classifier never touches the sets for a declared
+  /// kind either). Any OTHER declared kind (`channel` / `session`) is
+  /// by law that surface, never a dm slot. Untyped rows keep today's
+  /// exact skip behavior (the absorption law: absent means infer,
+  /// forever). The exact participant pair and `!closed` hold on EVERY
+  /// path.
   String? dmThreadOf(final String actorId) {
     final human = humanActorId;
     if (human == null || actorId == human) return null;
@@ -761,10 +786,17 @@ final class RealmChatService extends ChangeNotifier {
     for (final thread in _threads) {
       if (thread['closed'] == true) continue;
       final threadId = '${thread['threadId'] ?? ''}';
-      if (channelByThreadId(threadId) != null ||
-          _archivedChannelThreadIds.contains(threadId) ||
-          workThreadIds.contains(threadId)) {
-        continue;
+      final declared = thread['kind'];
+      final isDeclaredDm = declared == 'dm';
+      if (!isDeclaredDm) {
+        // A declared non-dm row is that other surface; an untyped row
+        // keeps the exact pre-ADR 0145 skips.
+        if (declared != null) continue;
+        if (channelByThreadId(threadId) != null ||
+            _archivedChannelThreadIds.contains(threadId) ||
+            workThreadIds.contains(threadId)) {
+          continue;
+        }
       }
       final participants =
           (thread['participants'] as List? ?? const <Object?>[])
@@ -801,15 +833,22 @@ final class RealmChatService extends ChangeNotifier {
   /// human watches them like any room and joins by addressing (the
   /// mention grammar already exists); the picker and palette list them.
   ///
+  /// ADR 0145 — DECLARED `session` threads (machine-life rooms, the
+  /// smokes and dogfood runs) are watchable too: owner decision
+  /// 2026-11-16, a session is a room with advanced placement, never a
+  /// dm and never hidden. Project-SEALED threads (the DERIVED `work`)
+  /// leave the watchable set — their projection is the parent's work
+  /// card, not this list.
+  ///
   /// The kind derivation is the harness spaces layer's [classifyThread]
-  /// (harness ADR 0144) — LA classifies with the same words the agents
-  /// do; this getter is only the projection over it.
+  /// (harness ADR 0144/0145) — LA classifies with the same words the
+  /// agents do; this getter is only the projection over it. The row's
+  /// declared `kind` and its project seal ride in verbatim; the channel
+  /// sets come from the cached one-scan projections (sync getter law:
+  /// no IO here).
   List<Map<String, Object?>> get roomThreads {
     final human = humanActorId;
-    final liveChannelThreadIds = <String>{
-      for (final channel in _channels) channel.threadId,
-    };
-    bool isRoom(final Map<String, Object?> thread) =>
+    ConversationKind kindOf(final Map<String, Object?> thread) =>
         classifyThread(
           threadId: '${thread['threadId'] ?? ''}',
           participants: (thread['participants'] as List? ?? const <Object?>[])
@@ -817,14 +856,21 @@ final class RealmChatService extends ChangeNotifier {
               .toSet(),
           closed: thread['closed'] == true,
           humanActorId: human,
-          liveChannelThreadIds: liveChannelThreadIds,
+          kind: thread['kind'] as String?,
+          projectId: thread['projectId'] as String?,
+          liveChannelThreadIds: _liveChannelThreadIds,
           archivedChannelThreadIds: _archivedChannelThreadIds,
-        ) ==
-        ConversationKind.room;
-    return [
-      for (final thread in _threads)
-        if (thread['closed'] != true && isRoom(thread)) thread,
-    ];
+        );
+    final rooms = <Map<String, Object?>>[];
+    for (final thread in _threads) {
+      if (thread['closed'] == true) continue;
+      final kind = kindOf(thread);
+      if (kind == ConversationKind.room ||
+          kind == ConversationKind.session) {
+        rooms.add(thread);
+      }
+    }
+    return rooms;
   }
 
   /// Opens the DM with [actorId]: the existing two-member thread with
@@ -842,7 +888,13 @@ final class RealmChatService extends ChangeNotifier {
     if (world == null || human == null) return;
     final displayName =
         _roster?.get(actorId)?.displayName ?? actorDisplayFallback(actorId);
-    await startThread(topic: displayName, participants: <String>[actorId]);
+    // ADR 0145 — the DM declares itself: the fresh thread opens with
+    // kind 'dm' on its row (reused threads already carry theirs).
+    await startThread(
+      topic: displayName,
+      participants: <String>[actorId],
+      kind: 'dm',
+    );
   }
 
   /// Opens a named channel: a durable thread (existing before anyone
@@ -876,6 +928,7 @@ final class RealmChatService extends ChangeNotifier {
       for (final id in memberIds)
         if (id.trim().isNotEmpty) id.trim(),
     }.toList()..sort();
+    String? openedThreadId;
     try {
       final opened = await world.conversation().open(
         actor: human,
@@ -883,8 +936,14 @@ final class RealmChatService extends ChangeNotifier {
         participants: members,
         // Realm-sealed like every LA room (see startThread).
         realmSealed: true,
+        // ADR 0145 — the pairing invariant: the thread row carries the
+        // declared kind in the SAME call that (below) writes the
+        // registry row — the harness openChannel's ordering, open then
+        // registry write.
+        kind: 'channel',
       );
       final threadId = opened['threadId']! as String;
+      openedThreadId = threadId;
       final channel = await registry.create(
         name: trimmed,
         threadId: threadId,
@@ -896,6 +955,61 @@ final class RealmChatService extends ChangeNotifier {
       _windowStart = null;
       await refreshThreads();
       return channel;
+    } on Object catch (error) {
+      // The pairing invariant's honest half: once the thread OPENED,
+      // its row already carries kind 'channel' — the classifier reads
+      // the row, so the thread stays an honestly-classified channel
+      // even with no registry row yet. Surface that exact state
+      // verbatim instead of pretending the channel exists.
+      _error = openedThreadId == null
+          ? error.toString()
+          : 'channel_registry_write_failed:$openedThreadId ($error)';
+      notifyListeners();
+      return null;
+    }
+  }
+
+  /// ADR 0145 — opens a DECLARED session thread (machine-life room:
+  /// the smokes and dogfood runs, actor-experiments tooling): realm-
+  /// sealed, `kind: 'session'` on the row, the label in the topic.
+  /// Sessions are watchable rooms with advanced placement (owner
+  /// decision 2026-11-16) — never dms, never channels, no registry row.
+  /// Returns the open result verbatim (its `threadId` is the smoke's
+  /// handle); null on a not-ready service or a refusal, with the named
+  /// error surfaced.
+  Future<Map<String, Object?>?> openSession(
+    final String label, {
+    final List<String> memberIds = const <String>[],
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return null;
+    final trimmed = label.trim();
+    if (trimmed.isEmpty) {
+      _error = 'session_label_missing';
+      notifyListeners();
+      return null;
+    }
+    final members = <String>{
+      human.actor,
+      for (final id in memberIds)
+        if (id.trim().isNotEmpty) id.trim(),
+    }.toList()..sort();
+    try {
+      final opened = await world.conversation().open(
+        actor: human,
+        topic: trimmed,
+        participants: members,
+        // Realm-sealed like every LA room (see startThread) — a session
+        // is conversation, never a project sandbox.
+        realmSealed: true,
+        kind: 'session',
+      );
+      _activeThreadId = opened['threadId']! as String;
+      _beats.clear();
+      _windowStart = null;
+      await refreshThreads();
+      return opened;
     } on Object catch (error) {
       _error = error.toString();
       notifyListeners();
@@ -1053,21 +1167,21 @@ final class RealmChatService extends ChangeNotifier {
     final registry = _channelRegistry;
     if (registry == null) return;
     try {
-      // ONE scan feeds both views: the live list and the archived
-      // thread-id set [roomThreads] needs (sync getter — no IO there).
-      final all = await registry.list(includeArchived: true);
+      // ADR 0145 — ONE [ChannelRegistry.scanIndex] feeds every channel
+      // view at once: the live list ([channels]), the live thread-id
+      // set (the classifier's channel-wins input) and the archived
+      // thread-id set ([roomThreads]'s resurrection guard). Sync
+      // getters — no IO there — so all three cache from this scan.
+      final index = await registry.scanIndex();
       _channels
         ..clear()
-        ..addAll([
-          for (final channel in all)
-            if (!channel.archived) channel,
-        ]);
+        ..addAll(index.live);
+      _liveChannelThreadIds
+        ..clear()
+        ..addAll(index.byThreadId.keys);
       _archivedChannelThreadIds
         ..clear()
-        ..addAll([
-          for (final channel in all)
-            if (channel.archived) channel.threadId,
-        ]);
+        ..addAll(index.archivedThreadIds);
     } on Object catch (error) {
       _error = error.toString();
     }

@@ -214,6 +214,11 @@ void main() {
     expect(nameField, findsOneWidget);
 
     await tester.enterText(nameField, 'Tuned Bot');
+    // The editor scrolls inside the bounded card (the N2 fields grew
+    // past a 600px window): reach Save the way a user does.
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('worldchat.card.save')),
+    );
     await tester.tap(find.byKey(const ValueKey('worldchat.card.save')));
     await tester.pump();
     await tester.runAsync(

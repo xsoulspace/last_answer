@@ -357,4 +357,151 @@ void main() {
     await chat.service.openDm(toby.actorId);
     expect(chat.service.dmThreadOf(toby.actorId), dmId);
   }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0145 declared beats inference: openDm writes kind dm on the '
+      'row and a DECLARED dm is the reuse key even over a registry '
+      'skip; createChannel writes kind channel in the same call', () async {
+    final chat = await _openChat('declare');
+    addTearDown(chat.dispose);
+    final toby = await createActorIdentity(
+      roster: chat.roster,
+      world: chat.world,
+      displayName: 'Toby Researcher',
+      kind: ActorKind.model,
+      brainRef: 'local:qwen',
+      role: 'research assistant',
+    );
+
+    // openDm DECLARES: the fresh thread's journal row carries kind dm.
+    await chat.service.openDm(toby.actorId);
+    final dmId = chat.service.activeThreadId!;
+    final dmRow = await chat.world.store.read('threads', dmId);
+    expect(dmRow?['kind'], 'dm');
+    expect(chat.service.dmThreadOf(toby.actorId), dmId);
+
+    // The pairing invariant: createChannel writes the declared kind on
+    // the thread row AND the registry row in the same call (open then
+    // registry write — the harness openChannel ordering).
+    final design = (await chat.service.createChannel('design'))!;
+    final channelThreadRow = await chat.world.store.read(
+      'threads',
+      design.threadId,
+    );
+    expect(channelThreadRow?['kind'], 'channel');
+    final channelRow = await chat.world.store.read(
+      'channels',
+      design.channelId,
+    );
+    expect(channelRow?['threadId'], design.threadId);
+
+    // The FAST PATH: a declared dm row is the DM even when its id ALSO
+    // sits in the live channel registry — declared beats inference
+    // (classifyThread answers dm before any set is touched; the
+    // pre-kind skip would have hidden it). The registry write is the
+    // honest-failure scenario's shape: a thread that opened kind dm
+    // with a stray channel row over it.
+    await ChannelRegistry(store: chat.world.store).create(
+      name: 'stray-over-dm',
+      threadId: dmId,
+      memberIds: <String>[chat.humanId, toby.actorId],
+    );
+    // Rebuild the projections over the mutated registry (a fresh
+    // service — the restart is also the honest projection path).
+    final restarted = await _restartService(chat);
+    expect(
+      restarted.channels.map((final c) => c.threadId),
+      contains(dmId),
+      reason: 'the stray channel row is real in the projection',
+    );
+    expect(restarted.dmThreadOf(toby.actorId), dmId);
+    // Reuse stays: a second open does not mint a duplicate.
+    await restarted.openDm(toby.actorId);
+    expect(restarted.activeThreadId, dmId);
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0145 projections: a declared session is watchable with its '
+      'label, a sealed thread is DERIVED work (never a room), and the '
+      'session verb refuses an empty label', () async {
+    final chat = await _openChat('kinds');
+    addTearDown(chat.dispose);
+    final ada = await createActorIdentity(
+      roster: chat.roster,
+      world: chat.world,
+      displayName: 'Ada',
+      kind: ActorKind.model,
+      brainRef: '',
+    );
+    final grace = await createActorIdentity(
+      roster: chat.roster,
+      world: chat.world,
+      displayName: 'Grace',
+      kind: ActorKind.model,
+      brainRef: '',
+    );
+    final human = chat.world.authorityFor(chat.humanId);
+
+    // The untyped actor↔actor room: absorption law, today's shape
+    // (opened BY an actor — the human merely watches, so no dm shape).
+    final opened = await chat.world.conversation().open(
+          actor: chat.world.authorityFor(ada.actorId),
+          topic: 'Ada ⇄ Grace',
+          participants: <String>[grace.actorId],
+          realmSealed: true,
+        );
+    final actorRoom = opened['threadId']! as String;
+
+    // The empty label refuses with the named error — nothing opened.
+    expect(await chat.service.openSession('   '), isNull);
+    expect(chat.service.error, 'session_label_missing');
+
+    // The declared session: realm-sealed (no project seal), kind on
+    // the row, the human plus the normalized members.
+    final session = await chat.service.openSession(
+      '  smoke-run-1  ',
+      memberIds: <String>[ada.actorId, '  '],
+    );
+    expect(session, isNotNull);
+    final sessionId = session!['threadId']! as String;
+    expect(session['kind'], 'session');
+    final sessionRow = await chat.world.store.read('threads', sessionId);
+    expect(sessionRow?['kind'], 'session');
+    expect(sessionRow?['projectId'], isNull);
+    expect(sessionRow?['topic'], 'smoke-run-1');
+    final sessionMembers =
+        (sessionRow?['participants'] as List? ?? const <Object?>[])
+            .cast<String>()
+            .toList()
+          ..sort();
+    expect(sessionMembers, <String>[ada.actorId, chat.humanId]..sort());
+
+    // The DERIVED work row: project-sealed, UNTYPED — work is never
+    // declared; the seal alone decides (here the human's own scope, so
+    // the row is visible to the human's projection).
+    final sealed = await chat.world.conversation().open(
+          actor: human,
+          topic: 'sealed work',
+          participants: <String>[ada.actorId, grace.actorId],
+          projectId: human.projectId,
+        );
+    final sealedId = sealed['threadId']! as String;
+    final sealedRow = await chat.world.store.read('threads', sealedId);
+    expect(sealedRow?['kind'], isNull);
+    expect(sealedRow?['projectId'], human.projectId);
+
+    await chat.service.refreshThreads();
+    final roomIds = chat.service.roomThreads
+        .map((final t) => t['threadId'])
+        .toList();
+    expect(roomIds, contains(actorRoom), reason: 'absorption: untyped room');
+    expect(
+      roomIds,
+      contains(sessionId),
+      reason: 'a declared session is a watchable machine-life room',
+    );
+    expect(
+      roomIds,
+      isNot(contains(sealedId)),
+      reason: 'the seal derives work — its projection is the work card',
+    );
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

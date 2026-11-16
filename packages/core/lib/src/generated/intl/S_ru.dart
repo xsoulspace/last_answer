@@ -1970,6 +1970,9 @@ class SRu extends S {
   String get worldChatThreadsEmpty => 'Веток пока нет.';
 
   @override
+  String get worldChatSessionKindMark => 'сессия';
+
+  @override
   String get worldChatPermsTooltip => 'Разрешения';
 
   @override

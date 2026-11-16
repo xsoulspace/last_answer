@@ -1954,6 +1954,9 @@ class SEn extends S {
   String get worldChatThreadsEmpty => 'No threads yet.';
 
   @override
+  String get worldChatSessionKindMark => 'session';
+
+  @override
   String get worldChatPermsTooltip => 'Permissions';
 
   @override

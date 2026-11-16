@@ -986,14 +986,9 @@ class _AppShellState extends State<AppShell> {
           group: 'channels',
           run: () => _onSelectTab('channel:${channel.channelId}'),
         ),
-      for (final thread in _service.roomThreads)
-        CommandEntry(
-          id: 'room.${thread['threadId']}',
-          label: '${thread['topic'] ?? thread['threadId']}',
-          group: 'rooms',
-          icon: Icons.forum_outlined,
-          run: () => _onSelectTab('room:${thread['threadId']}'),
-        ),
+      // No `rooms` group (the projection law): rooms and sessions
+      // surface in the panes' threads browser and via linkified
+      // references, never as top-level commands.
       CommandEntry(
         id: 'action.newTab',
         label: l10n.newTabPageTitle,
@@ -1217,17 +1212,10 @@ class _AppShellState extends State<AppShell> {
               onTap: () =>
                   tap(() => _onSelectTab('channel:${channel.channelId}')),
             ),
-          // 1d — the WATCHABLE ROOMS: actor↔actor threads and group
-          // threads are rooms like any other; the human watches and
-          // joins by addressing.
-          for (final thread in _service.roomThreads)
-            NewTabRow(
-              key: 'newtab.entry.room:${thread['threadId']}',
-              label: '${thread['topic'] ?? thread['threadId']}',
-              icon: Icons.forum_outlined,
-              onTap: () =>
-                  tap(() => _onSelectTab('room:${thread['threadId']}')),
-            ),
+          // The watchable rooms have NO top-level row (the projection
+          // law): they surface inside the conversation panes' threads
+          // browser and through linkified references — opening one is
+          // still `room:<threadId>` through the ONE router.
         ],
       ),
       NewTabSection(

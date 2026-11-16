@@ -3627,6 +3627,12 @@ abstract class S {
   /// **'No threads yet.'**
   String get worldChatThreadsEmpty;
 
+  /// Threads browser: the quiet kind mark on a declared session row (ADR 0145).
+  ///
+  /// In en, this message translates to:
+  /// **'session'**
+  String get worldChatSessionKindMark;
+
   /// Composer meta row: permissions button tooltip.
   ///
   /// In en, this message translates to:

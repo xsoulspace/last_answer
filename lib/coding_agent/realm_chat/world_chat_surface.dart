@@ -4,15 +4,15 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/beat_linkify.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -51,9 +51,11 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
 /// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
 /// and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
-/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
-/// left the rooms column and surface Discord-threads-style INSIDE the
-/// channel view): `worldchat.threads.toggle` (the header affordance),
+/// The CHANNEL and DM panes' THREADS BROWSER (owner law 2026-11-16:
+/// rooms left the rooms column and surface Discord-threads-style INSIDE
+/// the channel view; owner decision 2026-11-16: people (dms) too —
+/// just talking with one actor can do some work too):
+/// `worldchat.threads.toggle` (the header affordance),
 /// `worldchat.threads.panel` (the compact drawer with its labelled
 /// groups) and the rows `worldchat.threads.row.work.<workThreadId>` /
 /// `worldchat.threads.row.room.<threadId>` — every row opens its
@@ -1990,18 +1992,22 @@ class _ConversationPaneState extends State<_ConversationPane> {
           presenceOnline:
               otherProfile != null &&
               (bots?.isRunning(otherProfile.actorId) ?? false),
-          // The threads browser rides CHANNEL panes only (owner law
-          // 2026-11-16): a DM's identity already lives in the header,
-          // a plain group thread carries no registry facts.
-          threadsToggle: channel == null
+          // The threads browser rides CHANNEL and DM panes (owner law
+          // 2026-11-16: rooms left the rooms column and surface
+          // Discord-threads-style INSIDE the channel view; owner
+          // decision 2026-11-16: people (dms) get it too — just talking
+          // with one actor can do some work too). A plain group thread
+          // carries no registry facts and keeps the quiet header.
+          threadsToggle: (channel == null && dmOther == null)
               ? null
               : () => setState(() => _threadsOpen = !_threadsOpen),
           threadsOpen: _threadsOpen,
         ),
-        // The channel view's THREADS BROWSER (owner law 2026-11-16):
-        // the watchable rooms left the rooms column; a channel pane
-        // lists its work threads and the realm's rooms one panel away.
-        if (channel != null && _threadsOpen)
+        // The CHANNEL and DM panes' THREADS BROWSER (owner law
+        // 2026-11-16): the watchable rooms left the rooms column; a
+        // channel or dm pane lists its work threads and the realm's
+        // rooms one panel away.
+        if ((channel != null || dmOther != null) && _threadsOpen)
           _ThreadsBrowserPanel(
             service: service,
             parentThreadId: threadId,
@@ -2836,18 +2842,22 @@ class _ThreadsToggle extends StatelessWidget {
   );
 }
 
-/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
-/// left the rooms column; they surface Discord-threads-style INSIDE
-/// the channel view). One compact panel under the conversation header,
-/// two labelled groups over the service's LIVE getters — no caching,
-/// no polling (the service's notify is the freshness signal):
-/// "Threads" — the work threads spawned from THIS channel
-/// ([RealmChatService.workThreadsOf]); "Rooms" — the watchable
-/// actor↔actor and plain group threads ([RealmChatService.roomThreads],
-/// the topic or the honest raw id). Every row opens its `room:<id>` tab
-/// through the shell's ONE router (the work cards' lane). No work
-/// threads and no rooms renders one quiet line — honest absence, never
-/// a fake list.
+/// The channel and DM panes' THREADS BROWSER (owner law 2026-11-16:
+/// rooms left the rooms column; they surface Discord-threads-style
+/// INSIDE the channel view; owner decision 2026-11-16: dms get it too
+/// — just talking with one actor can do some work too). One compact
+/// panel under the conversation header, two labelled groups over the
+/// service's LIVE getters — no caching, no polling (the service's
+/// notify is the freshness signal):
+/// "Threads" — the work threads spawned from THIS pane's thread (a dm
+/// parent is a valid work-order parent, [RealmChatService.workThreadsOf]);
+/// "Rooms" — the watchable actor↔actor and plain group threads
+/// ([RealmChatService.roomThreads], the topic or the honest raw id).
+/// ADR 0145 — declared session rows (machine-life rooms) sort AFTER
+/// the organic rooms and carry a quiet kind mark (ink is data, no
+/// icons). Every row opens its `room:<id>` tab through the shell's ONE
+/// router (the work cards' lane). No work threads and no rooms renders
+/// one quiet line — honest absence, never a fake list.
 class _ThreadsBrowserPanel extends StatelessWidget {
   const _ThreadsBrowserPanel({
     required this.service,
@@ -2864,6 +2874,16 @@ class _ThreadsBrowserPanel extends StatelessWidget {
     final l10n = context.l10n;
     final workThreads = service.workThreadsOf(parentThreadId);
     final rooms = service.roomThreads;
+    // ADR 0145 — organic rooms first, declared sessions after (both
+    // keep the projection's own newest-activity order).
+    final organicRooms = [
+      for (final thread in rooms)
+        if (thread['kind'] != 'session') thread,
+    ];
+    final sessionRooms = [
+      for (final thread in rooms)
+        if (thread['kind'] == 'session') thread,
+    ];
     return Container(
       key: const ValueKey('worldchat.threads.panel'),
       decoration: BoxDecoration(
@@ -2910,11 +2930,19 @@ class _ThreadsBrowserPanel extends StatelessWidget {
                   style: shellSectionLabel(context),
                 ),
               ),
-              for (final thread in rooms)
+              for (final thread in organicRooms)
                 _ThreadsRow(
                   rowKey: 'worldchat.threads.row.room.${thread['threadId']}',
                   title: _roomTitle(service, thread),
                   icon: Icons.forum_outlined,
+                  onTap: () => onOpenThread('${thread['threadId']}'),
+                ),
+              for (final thread in sessionRooms)
+                _ThreadsRow(
+                  rowKey: 'worldchat.threads.row.room.${thread['threadId']}',
+                  title: _roomTitle(service, thread),
+                  icon: Icons.forum_outlined,
+                  mark: l10n.worldChatSessionKindMark,
                   onTap: () => onOpenThread('${thread['threadId']}'),
                 ),
             ],
@@ -2939,20 +2967,27 @@ String _roomTitle(
 }
 
 /// One browser row: the mark, the title, the hover fill — the
-/// [_RoomsRow] grammar at compact height. The Semantics name IS the
-/// widget key (DESIGN §6); the human title rides the hint.
+/// [_RoomsRow] grammar at compact height. An optional [mark] renders a
+/// quiet kind word at the row's end (ADR 0145's session rows — labels,
+/// not icons, DESIGN §2). The Semantics name IS the widget key
+/// (DESIGN §6); the human title rides the hint.
 class _ThreadsRow extends StatefulWidget {
   const _ThreadsRow({
     required this.rowKey,
     required this.title,
     required this.icon,
     required this.onTap,
+    this.mark,
   });
 
   final String rowKey;
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+
+  /// The quiet kind word (e.g. the localized 'session'), null for the
+  /// organic rows.
+  final String? mark;
 
   @override
   State<_ThreadsRow> createState() => _ThreadsRowState();
@@ -2998,6 +3033,16 @@ class _ThreadsRowState extends State<_ThreadsRow> {
                     ),
                   ),
                 ),
+                if (widget.mark != null) ...[
+                  const SizedBox(width: 6),
+                  Text(
+                    widget.mark!,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 10,
+                      color: context.shellMuted,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -3064,7 +3109,17 @@ class _ActorCardState extends State<_ActorCard> {
         // card's decoration stays the visible surface).
         child: Material(
           type: MaterialType.transparency,
-          child: ActorProfileEditor(
+          // The card bounds the editor's height (≤ 90% of the window):
+          // the body SCROLLS to reach Save, never overflows past the
+          // card's edge or the window's bottom (the other embeddings
+          // own their scroll — view_people and the actor info pane
+          // wrap the editor themselves).
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+            ),
+            child: SingleChildScrollView(
+              child: ActorProfileEditor(
             profile: other,
             brainOptions: availableBrainOptions(
               defaultOpenRouterModel: _defaultOpenRouterModel(context),
@@ -3105,6 +3160,8 @@ class _ActorCardState extends State<_ActorCard> {
                         .then((final _) => onClose()),
                   );
                 },
+              ),
+            ),
           ),
         ),
       );

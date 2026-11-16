@@ -401,6 +401,12 @@ void main() {
         find.byKey(const ValueKey(actorEditorPersonaKey)),
         'You are Toby Prime, sharper.',
       );
+      // The editor scrolls inside the people view (the N4 brain-set
+      // fields grew past a 600px window): reach Save the way a user
+      // does.
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('shell.context.actor.save')),
+      );
       await tester.tap(find.byKey(const ValueKey('shell.context.actor.save')));
       // The save rides real IO (kernel store): poll inside runAsync until
       // the roster reflects it (the UI flips back on the same future).

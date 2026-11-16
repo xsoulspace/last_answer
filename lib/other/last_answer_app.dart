@@ -89,6 +89,15 @@ class _AppScaffoldState extends State<_AppScaffold> {
       /// running in the background.
       restorationScopeId: 'app',
       debugShowCheckedModeBanner: false,
+      // The kit's token carrier (DESIGN.md v6 component-carrier law):
+      // ONE LaUiThemeProvider above the Navigator, fed by the ambient
+      // zinc palette so the kit follows themeMode automatically.
+      builder: (final context, final child) => LaUiThemeProvider(
+        theme: laUiThemeFromPalette(
+          LaPalette.of(Theme.of(context).brightness),
+        ),
+        child: child ?? const SizedBox.shrink(),
+      ),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

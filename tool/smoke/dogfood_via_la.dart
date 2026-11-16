@@ -179,24 +179,29 @@ Future<void> main(final List<String> args) async {
     }, interval: const Duration(seconds: 1));
     row('PASS', 'shell', 'edge.world present — the chat surface can bind');
 
-    // ---- OPEN A FRESH ROOM with the native actor, THROUGH LA's own
-    // intent. A FRESH channel (not open_dm) so the work order is never
-    // batched with a prior unanswered beat in a reused thread (the daemon
-    // groups all pending addressed beats into ONE turn — a stale complex
-    // beat would poison the simple one). create_channel is a published
-    // realm_chat intent, so this is still LA-as-seat.
+    // ---- OPEN A FRESH SESSION ROOM with the native actor, THROUGH LA's
+    // own intent. The FRESH room per run law STAYS (the daemon groups all
+    // pending addressed beats into ONE turn — a stale complex beat in a
+    // reused thread would poison the simple work order). What changed
+    // (2026-11-16): the room is now a DECLARED session (kind: session,
+    // ADR 0145) — never a channel, never DM-shaped (two-member machine
+    // rooms once silently joined the DM class: the 2026-11-16 dogfood
+    // redirect bug the registry-skip fix papered over). open_session is
+    // a published realm_chat intent, so this is still LA-as-seat.
     final roomName = 'dogfood-${DateTime.now().millisecondsSinceEpoch}';
-    final opened = await _laTool(vmUri, 'realm_chat_create_channel', {
-      'name': roomName,
+    final opened = await _laTool(vmUri, 'realm_chat_open_session', {
+      'label': roomName,
+      // The intent's members contract is a comma-separated string (the
+      // create_channel convention), not a JSON list.
       'members': actor,
     });
     final threadId = '${_deepFind(opened, 'threadId') ?? ''}';
     if (threadId.isEmpty || opened.containsKey('_refused') || opened.containsKey('_err')) {
       failures++;
-      row('FAIL', 'open-room', 'realm_chat_create_channel($actor) → ${jsonEncode(opened)}');
-      throw StateError('create_channel refused');
+      row('FAIL', 'open-room', 'realm_chat_open_session($actor) → ${jsonEncode(opened)}');
+      throw StateError('open_session refused');
     }
-    row('PASS', 'open-room', 'LA opened a fresh room "$roomName" with $actor → $threadId');
+    row('PASS', 'open-room', 'LA opened a fresh session "$roomName" with $actor → $threadId');
 
     // ---- the work order: ONE human sentence, addressed by LA's own say ----
     final before = await projection.beatsOfThread(threadId);

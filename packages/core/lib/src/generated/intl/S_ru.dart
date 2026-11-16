@@ -1294,6 +1294,24 @@ class SRu extends S {
   String get actorsBrainLabel => 'Мозг';
 
   @override
+  String get actorsBrainSet => 'Набор мозгов';
+
+  @override
+  String get actorsBrainSetOwn => 'Свой набор';
+
+  @override
+  String get actorsBrainSetAuto => 'Автоматически — следует политике мира';
+
+  @override
+  String get actorsBrainSetAdd => 'Добавить модель';
+
+  @override
+  String get actorsSelfBind => 'Может менять свой мозг сам';
+
+  @override
+  String get actorsSelfBindHint => 'В пределах своего набора, самостоятельно';
+
+  @override
   String get actorsRoleLabel => 'Роль (необязательно)';
 
   @override

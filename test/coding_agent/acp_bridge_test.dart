@@ -199,7 +199,7 @@ Future<List<Map<String, Object?>>> _beatsUntil(
 }
 
 void main() {
-  tearDown(() => AcpBridgeRegistry.debugReset());
+  tearDown(AcpBridgeRegistry.debugReset);
 
   // (a) An addressed beat becomes exactly ONE prompt; the streamed deltas
   // land as ONE attributed beat (author = the bridge actor, addressedTo =

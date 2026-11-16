@@ -176,7 +176,7 @@ Future<void> main(final List<String> args) async {
       final nodes = (snap['nodes'] as List? ?? const []).cast<Map<String, Object?>>();
       final blob = nodes.map((n) => '${n['label'] ?? ''}${n['identifier'] ?? ''}').join('\n');
       return blob.contains('edge.world') ? true : null;
-    }, attempts: 60, interval: const Duration(seconds: 1));
+    }, interval: const Duration(seconds: 1));
     row('PASS', 'shell', 'edge.world present — the chat surface can bind');
 
     // ---- OPEN A FRESH ROOM with the native actor, THROUGH LA's own
@@ -232,7 +232,7 @@ Future<void> main(final List<String> args) async {
           if ('${b['author']}' == actor) return b;
         }
         return null;
-      }, attempts: 300, interval: const Duration(seconds: 3)); // 900s: the
+      }, attempts: 300); // 900s: the
       // daemon's drain cycle can lag the post by minutes (observed ~8min)
       // before the actor's local brain even starts; a short window misreads
       // drain latency as a no-post.

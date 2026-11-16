@@ -31,7 +31,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
@@ -256,6 +256,11 @@ final class ActorInfoSurface extends StatelessWidget {
             _factRow(context, 'actorId', display.actorId, 'actorId'),
             if (display.brainRef.isNotEmpty)
               _factRow(context, 'brainRef', display.brainRef, 'brainRef'),
+            // ADR 0143 — the actor's own set, as the durable fact it
+            // is (empty = the world policy whole).
+            if (service.brainSets[actorId] case final set?
+                when set.isNotEmpty)
+              _factRow(context, 'brainSet', set.join(', '), 'brainSet'),
           ],
         ),
       );
@@ -308,6 +313,8 @@ final class ActorInfoSurface extends StatelessWidget {
                 context.read<WorldStateService?>()?.transportOfRung(id),
           ),
           saveKey: const ValueKey('actor.info.save'),
+          initialBrainSet: service.brainSets[actorId] ?? const <String>[],
+          initialSelfBind: (service.selfBinds[actorId] ?? 'allow') != 'deny',
           onSave:
               ({
                 required displayName,
@@ -315,6 +322,8 @@ final class ActorInfoSurface extends StatelessWidget {
                 required systemPrompt,
                 required brainRef,
                 required avatar,
+                required brainSet,
+                required selfBind,
               }) {
                 unawaited(
                   service.updateActor(
@@ -324,6 +333,8 @@ final class ActorInfoSurface extends StatelessWidget {
                     systemPrompt: systemPrompt,
                     brainRef: brainRef,
                     avatar: avatar,
+                    brainSet: brainSet,
+                    selfBind: selfBind ? 'allow' : 'deny',
                   ),
                 );
               },

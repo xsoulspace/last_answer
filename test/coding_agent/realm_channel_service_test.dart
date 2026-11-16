@@ -22,7 +22,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 
@@ -30,11 +31,17 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 /// and a READY service bound through the debug seams (bot dispatcher
 /// off — no wake timers in tests).
 final class _Chat {
-  _Chat({required this.temp, required this.world, required this.service});
+  _Chat({
+    required this.temp,
+    required this.world,
+    required this.service,
+    required this.roster,
+  });
 
   final Directory temp;
   final RealmWorld world;
   final RealmChatService service;
+  final ActorRoster roster;
 
   String get humanId => service.humanActorId!;
 
@@ -53,14 +60,15 @@ Future<_Chat> _openChat(final String label) async {
     await temp.delete(recursive: true);
     fail('realm world unsupported on this platform');
   }
+  final roster = ActorRoster(replicaId: 'tester');
   final service = RealmChatService(
     debugWorldOverride: world,
-    debugRosterOverride: ActorRoster(replicaId: 'tester'),
+    debugRosterOverride: roster,
     debugStartBotDispatcher: false,
   );
   await service.ensureReady();
   expect(service.isReady, isTrue, reason: service.error);
-  return _Chat(temp: temp, world: world, service: service);
+  return _Chat(temp: temp, world: world, service: service, roster: roster);
 }
 
 /// A fresh service over the SAME world (an app restart without a store
@@ -290,5 +298,63 @@ void main() {
       await chat.registry.list(includeArchived: true),
       hasLength(1),
     );
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test("dmThreadOf: another surface's two-member thread is never a DM "
+      'reuse key; a plain DM still reuses', () async {
+    final chat = await _openChat('dmreuse');
+    addTearDown(chat.dispose);
+    final toby = await createActorIdentity(
+      roster: chat.roster,
+      world: chat.world,
+      displayName: 'Toby Researcher',
+      kind: ActorKind.model,
+      brainRef: 'local:qwen',
+      role: 'research assistant',
+    );
+
+    // A machine-minted 1-member channel over {human, toby} — the
+    // dogfood-leg shape (seen live: DM on cache-probe landed in
+    // `dogfood-1794173922369`). It must never resolve as the DM.
+    final channel = await chat.service.createChannel(
+      'dogfood-1',
+      memberIds: [toby.actorId],
+    );
+    expect(channel, isNotNull);
+    expect(chat.service.dmThreadOf(toby.actorId), isNull);
+
+    // Archiving does not resurrect the thread as a DM either — the
+    // journal row survives, so the skip rides the archived set too.
+    expect(await chat.service.closeChannel(channel!.channelId), isTrue);
+    expect(chat.service.dmThreadOf(toby.actorId), isNull);
+
+    // A project-sealed work thread (ADR 0129) over the same pair is
+    // likewise never a DM reuse key.
+    final human = chat.world.authorityFor(chat.humanId);
+    final opened = await chat.world.conversation().open(
+          actor: human,
+          topic: 'workorder-1',
+          participants: [toby.actorId],
+        );
+    final workThreadId = opened['threadId']! as String;
+    await WorkThreadRegistry(store: chat.world.store).create(
+      workThreadId: workThreadId,
+      parentThreadId: workThreadId,
+      projectRoot: '/tmp/la_dm_reuse',
+      name: 'w',
+      createdBy: chat.humanId,
+    );
+    await chat.service.refreshWorkThreads();
+    expect(chat.service.dmThreadOf(toby.actorId), isNull);
+
+    // With no plain DM, openDm CREATES one titled with the actor — and
+    // a second open reuses it (the reuse law holds for plain DMs).
+    await chat.service.openDm(toby.actorId);
+    final dmId = chat.service.dmThreadOf(toby.actorId);
+    expect(dmId, isNotNull);
+    expect(dmId, isNot(workThreadId));
+    expect(chat.service.activeThread?['topic'], 'Toby Researcher');
+    await chat.service.openDm(toby.actorId);
+    expect(chat.service.dmThreadOf(toby.actorId), dmId);
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

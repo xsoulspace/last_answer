@@ -57,7 +57,7 @@ void main() {
       }
     });
 
-    test('the plan\'s PRO list is exactly the gated surface set', () {
+    test("the plan's PRO list is exactly the gated surface set", () {
       expect(
         TierFeature.values.map((final e) => e.name).toSet(),
         {

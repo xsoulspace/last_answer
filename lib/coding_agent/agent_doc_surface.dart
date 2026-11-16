@@ -19,6 +19,7 @@ import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_preparation.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
+import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/mesh_board_bridge.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
@@ -2686,6 +2687,7 @@ class _Conversation extends StatelessWidget {
               foldHarness: foldHarness,
               onOpenLadder: onOpenLadder,
               backend: backend,
+              docWorkspace: docWorkspace,
               expandedBeats: expandedBeats,
               onToggleBeat: onToggleBeat,
               editing: editingTurnKey == turn.startedAt.microsecondsSinceEpoch,
@@ -2840,6 +2842,7 @@ class _TurnView extends StatelessWidget {
     required this.foldHarness,
     required this.onOpenLadder,
     required this.backend,
+    required this.docWorkspace,
     required this.expandedBeats,
     required this.onToggleBeat,
     required this.editing,
@@ -2855,6 +2858,10 @@ class _TurnView extends StatelessWidget {
   final bool foldHarness;
   final VoidCallback onOpenLadder;
   final String backend;
+
+  /// The doc's workspace root — the sandbox `file:` addresses in
+  /// asset-media beats resolve against (native-image-assets Wave D2).
+  final String docWorkspace;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
   final bool editing;
@@ -2966,6 +2973,7 @@ class _TurnView extends StatelessWidget {
             onOpenLadder: onOpenLadder,
             expandedBeats: expandedBeats,
             onToggleBeat: onToggleBeat,
+            docWorkspace: docWorkspace,
           ),
         ),
         if (turn.guidance != null)
@@ -2996,6 +3004,7 @@ class _TurnBody extends StatelessWidget {
     required this.onOpenLadder,
     required this.expandedBeats,
     required this.onToggleBeat,
+    required this.docWorkspace,
   });
 
   final HarnessTurn turn;
@@ -3004,6 +3013,7 @@ class _TurnBody extends StatelessWidget {
   final VoidCallback onOpenLadder;
   final Set<int> expandedBeats;
   final void Function(int id) onToggleBeat;
+  final String docWorkspace;
 
   @override
   Widget build(final BuildContext context) {
@@ -3028,10 +3038,35 @@ class _TurnBody extends StatelessWidget {
       prose.clear();
     }
 
-    for (final raw in turn.displayedText.split('\n')) {
-      final line = raw.trimRight();
+    // The media branch (native-image-assets Wave D2): a line that IS
+    // an `asset-media v1` header renders as the media card (alt body
+    // consumed with it), breaking the prose run before it. The
+    // sandbox root resolves relative `file:` paths; the placeholder is
+    // honest when it cannot.
+    final displayedLines = turn.displayedText.split('\n');
+    for (var i = 0; i < displayedLines.length; i++) {
+      final line = displayedLines[i].trimRight();
       if (line.isEmpty) continue;
-      prose.writeln(line);
+      final mediaBeat = MediaBeat.tryParse(line);
+      if (mediaBeat == null) {
+        prose.writeln(line);
+        continue;
+      }
+      var beat = mediaBeat;
+      final takesBody = beat.provenance.alt &&
+          beat.altText == null &&
+          i + 1 < displayedLines.length;
+      if (takesBody) {
+        final body = displayedLines[i + 1].trim();
+        if (body.isNotEmpty) {
+          beat = MediaBeat(provenance: beat.provenance, altText: body);
+          i++;
+        }
+      }
+      flushProse();
+      children.add(
+        MediaAssetCard.fromBeat(beat, rootOverride: docWorkspace),
+      );
     }
     flushProse();
 

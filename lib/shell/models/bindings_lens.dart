@@ -27,6 +27,7 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
+import 'package:lastanswer/shell/models/policy_components.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/status_edge.dart' show HealthDot;
 
@@ -207,12 +208,11 @@ final class BindingsLens extends StatelessWidget {
                 ),
                 // The behavior sentence IS the "when to use" authoring:
                 // position 1 thinks first; every later row names the one
-                // it falls back FROM.
+                // it falls back FROM (the shared component — the actor
+                // card can speak the same sentence).
                 if (!tight)
                   Text(
-                    index == 0
-                        ? context.l10n.modelsPolicyFirst
-                        : context.l10n.modelsPolicyFallback(labels[index - 1]),
+                    policySentenceFor(context, index, labels),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.labelSmall?.copyWith(

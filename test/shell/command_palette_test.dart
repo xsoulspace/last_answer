@@ -197,13 +197,13 @@ void main() {
       // is matched as one document, key-name by key-name.
       final snapshot = labels.join('\n');
       // The cut bar's three buttons (the kind buttons retired) and the
-      // docked rooms column's sections (the first-entry projection)…
+      // docked rooms column's sections (the first-entry projection;
+      // the rooms section left the column — owner law 2026-11-16)…
       for (final key in const [
         'rail.actors',
         'rail.settings',
         'rooms.section.dms',
         'rooms.section.channels',
-        'rooms.section.rooms',
       ]) {
         expect(snapshot, contains(key));
       }

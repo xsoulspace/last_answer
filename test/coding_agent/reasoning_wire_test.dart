@@ -3,6 +3,7 @@
 /// param overrides it for ONE actor (the Zed per-selection law), and
 /// the daemon-served builtin lanes resolve to in-app silence instead
 /// of a fake client.
+library;
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -80,7 +81,7 @@ void main() {
     test('a hosted builtin cast resolves to in-app silence — the '
         'daemon serves that lane; the MLX builtins stay in-process',
         () {
-      final jev = CastBrainDecl(
+      const jev = CastBrainDecl(
         id: 'jev',
         model: 'jev',
         transport: 'builtin',
@@ -93,7 +94,7 @@ void main() {
         ),
         isNull,
       );
-      final qwen = CastBrainDecl(
+      const qwen = CastBrainDecl(
         id: 'qwen',
         model: 'qwen',
         transport: 'builtin',

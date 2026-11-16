@@ -795,10 +795,10 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
   Widget _chatDock() {
     final service = context.read<RealmChatService?>();
     if (service == null) {
-      return Center(
+      return const Center(
         child: Text(
           'the room dock needs the shell',
-          key: const ValueKey('workbench.dock.absent'),
+          key: ValueKey('workbench.dock.absent'),
           textAlign: TextAlign.center,
         ),
       );
@@ -823,10 +823,10 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
       children: [
         Expanded(
           child: notifier == null
-              ? Center(
+              ? const Center(
                   child: Text(
                     'no workspace registry — the file tree rides the shell',
-                    key: const ValueKey('workbench.files.absent'),
+                    key: ValueKey('workbench.files.absent'),
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -1422,11 +1422,11 @@ class _PreviewRowState extends State<_PreviewRow> {
   Widget build(BuildContext context) {
     final path = widget.folders.isEmpty ? null : widget.folders.first;
     if (path == null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Text(
           'no workspace folder — preview needs one',
-          key: const ValueKey('workbench.preview.absent'),
+          key: ValueKey('workbench.preview.absent'),
         ),
       );
     }

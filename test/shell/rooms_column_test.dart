@@ -179,7 +179,10 @@ void main() {
         find.byKey(const ValueKey('rooms.section.channels')),
         findsOneWidget,
       );
-      expect(find.byKey(const ValueKey('rooms.section.rooms')), findsOneWidget);
+      // The rooms section LEFT the column (owner law 2026-11-16): the
+      // watchable room renders inside the channel view's threads
+      // browser, never as a column row.
+      expect(find.byKey(const ValueKey('rooms.section.rooms')), findsNothing);
       expect(
         find.byKey(ValueKey('rooms.row.dm.$actorId')),
         findsOneWidget,
@@ -190,7 +193,7 @@ void main() {
       );
       expect(
         find.byKey(ValueKey('rooms.row.room.$roomThreadId')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const ValueKey('rooms.create.channel')),
@@ -722,19 +725,17 @@ void main() {
         'tooltips', (final tester) async {
       final service = await _hermeticService(tester);
       final channelId = service.channels.first.channelId;
-      final roomThreadId = service.roomThreads.first['threadId']! as String;
       await _pumpShell(tester, service: service);
 
-      // The three section heads explain their kind on hover. The
-      // channels head also carries the create-action tooltip, so the
-      // explain tip is matched by its EXACT message, not by type.
+      // The section heads explain their kind on hover. The channels
+      // head also carries the create-action tooltip, so the explain
+      // tip is matched by its EXACT message, not by type.
       final l10n = S.of(
         tester.element(find.byKey(const ValueKey('shell.roomsColumn'))),
       );
       final explain = <String, String>{
         'rooms.section.dms': l10n.roomsExplainDms,
         'rooms.section.channels': l10n.roomsExplainChannels,
-        'rooms.section.rooms': l10n.roomsExplainRooms,
       };
       for (final entry in explain.entries) {
         final tip = find.descendant(
@@ -745,19 +746,13 @@ void main() {
         );
         expect(tip, findsOneWidget, reason: entry.key);
       }
-      // The channel and room row marks carry the kind word.
+      // The channel row mark carries the kind word.
       final channelTip = find.descendant(
         of: find.byKey(ValueKey('rooms.row.channel.$channelId')),
         matching: find.byType(Tooltip),
       );
       expect(channelTip, findsOneWidget);
       expect(tester.widget<Tooltip>(channelTip).message, isNotEmpty);
-      final roomTip = find.descendant(
-        of: find.byKey(ValueKey('rooms.row.room.$roomThreadId')),
-        matching: find.byType(Tooltip),
-      );
-      expect(roomTip, findsOneWidget);
-      expect(tester.widget<Tooltip>(roomTip).message, isNotEmpty);
     });
   });
 

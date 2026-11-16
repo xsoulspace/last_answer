@@ -807,14 +807,15 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// `shell_select_room`: a rooms-column row key
-  /// (`rooms.row.{dm,channel,room}.<id>`) → its conversation surface
-  /// id, selected through the shell's own row-tap path. False for any
-  /// other key shape (the CTA rows are not rooms).
+  /// (`rooms.row.{dm,channel}.<id>`) → its conversation surface id,
+  /// selected through the shell's own row-tap path. False for any
+  /// other key shape (the CTA rows are not rooms; the retired
+  /// `rooms.row.room.` keys honestly refuse — rooms live in the
+  /// channel view's threads browser now).
   bool _debugSelectRoom(final String rowKey) {
     const prefixes = <String, String>{
       'rooms.row.dm.': 'dm:',
       'rooms.row.channel.': 'channel:',
-      'rooms.row.room.': 'room:',
     };
     for (final entry in prefixes.entries) {
       if (!rowKey.startsWith(entry.key)) continue;
@@ -1419,6 +1420,12 @@ class _AppShellState extends State<AppShell> {
               onFocusActor: _onFocusActorIntent,
               onOpenThread: (final threadId) =>
                   _onSelectTab('room:$threadId'),
+              // The channel view's threads browser and the beat text's
+              // linkified references ride the SAME router at full
+              // surface-id breadth (dm:/channel:/room: — the ONE
+              // `_onSelectTab`; the registry and the actor-info surface
+              // pin the same closure).
+              onOpenConversation: _onSelectTab,
               titleFor: (final id) =>
                   conversationSurfaceTitle(
                     id,

@@ -109,13 +109,28 @@ LA: the Brain override card (Automatic | own set + self-switch state),
 reading and writing through `actor_ensure`/`actor_bind` — no new
 mechanism, a product surface over existing verbs.
 
-## Stage C — structural (only what A/B leave confusing)
+## Stage C — components (landed) and the selector migration (deliberately not taken)
 
-The three lenses become pure projections over ecsly selectors (world
-truth, no candidate-file dance in the read path), plus the new
-components: `ProviderGroup`, `ModelRow`, `PolicySentenceList`,
-`BrainOverrideCard`, `EscalationBeat`. The shell, tab anatomy and the
-widget-key contract stay.
+**Landed**: the policy surface's reusable atoms extracted into
+[lib/shell/models/policy_components.dart](../../../lib/shell/models/policy_components.dart)
+— `policySentenceFor` (the behavior sentence the actor card can speak
+too) and `EscalationNarration` (the promotion chip); both lenses use
+them. `BrainOverrideCard` exists as the Brain-set section of the shared
+actor editor (stage B). `ProviderGroup`/`ModelRow` stay inline in the
+Catalog lens for now — extracting them churns a just-stabilized file
+for no behavior change; they are a mechanical follow-up when the
+Catalog grows again.
+
+**Deliberately NOT taken — the ecsly-selector read model.** The
+original stage-C premise ("no candidate-file dance in the read path")
+turned out already satisfied: the lenses read WORLD TRUTH through
+`WorldStateService` (the durable realm store); the candidate model is
+edit-state by design. The ecsly selectors (`EcsWorldSelector`) select
+from the ECS world — mirroring realm rows into ECS components would
+create a SECOND source of truth, the duplication class ADR 0013
+forbids. The migration becomes right only if/when the durable store
+and the ECS world converge on one plane; revisiting then is a
+one-ADR decision, not a lens rewrite.
 
 ## Non-goals
 

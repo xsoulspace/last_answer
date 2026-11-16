@@ -2373,6 +2373,42 @@ abstract class S {
   /// **'Brain'**
   String get actorsBrainLabel;
 
+  /// No description provided for @actorsBrainSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain set'**
+  String get actorsBrainSet;
+
+  /// No description provided for @actorsBrainSetOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Own set'**
+  String get actorsBrainSetOwn;
+
+  /// No description provided for @actorsBrainSetAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic — follows the world policy'**
+  String get actorsBrainSetAuto;
+
+  /// No description provided for @actorsBrainSetAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get actorsBrainSetAdd;
+
+  /// No description provided for @actorsSelfBind.
+  ///
+  /// In en, this message translates to:
+  /// **'May switch its own brain'**
+  String get actorsSelfBind;
+
+  /// No description provided for @actorsSelfBindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Within its set, on its own'**
+  String get actorsSelfBindHint;
+
   /// No description provided for @actorsRoleLabel.
   ///
   /// In en, this message translates to:

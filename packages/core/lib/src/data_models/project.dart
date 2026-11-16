@@ -117,6 +117,37 @@ abstract class AnchorSpanModel with _$AnchorSpanModel {
       _$AnchorSpanModelFromJson(json);
 }
 
+/// One image attached to a note (native-image-assets Wave D, LA ADR
+/// 0029). The FILE is the durable asset — sibling files under the app
+/// documents dir keyed by note id (`note-assets/<noteId>/<assetId>.<ext>`)
+/// — and this row carries compact metadata only: the same
+/// pixels-never-enter-the-record law the harness journal keeps
+/// (ADR 0142). [path] is documents-RELATIVE so backup zips, device
+/// moves and restores keep meaning. [alt] is honest absence as an
+/// empty string (the header's `alt=none`), filled by a human caption
+/// or a vision describe pass; [width]/[height] are 0 when unknown;
+/// [bytes] sizes the asset for honest budgeting.
+@freezed
+sealed class NoteAssetModel with _$NoteAssetModel {
+  const factory NoteAssetModel({
+    required String id,
+    required String path,
+    @Default('image/png') String mime,
+    @Default('') String alt,
+    @Default(0) int width,
+    @Default(0) int height,
+    @Default(0) int bytes,
+    DateTime? createdAt,
+  }) = _NoteAssetModel;
+  const NoteAssetModel._();
+  factory NoteAssetModel.fromJson(Map<String, dynamic> json) =>
+      _$NoteAssetModelFromJson(json);
+
+  /// The file name inside the note's asset dir (the path's last
+  /// segment) — the zip/restore key.
+  String get fileName => path.split('/').last;
+}
+
 @freezed
 sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
   factory ProjectModel.emptyChat() => ProjectModel.doc(
@@ -181,6 +212,11 @@ sealed class ProjectModel with _$ProjectModel implements Sharable, Archivable {
     @Default(0) int charactersLimit,
     DateTime? archivedAt,
     @Default([]) List<ProjectTagModelId> tagsIds,
+
+    /// Attached images (metadata rows; the bytes live in files under
+    /// `note-assets/<noteId>/` in the app documents dir). Additive and
+    /// default-empty: old JSON restores keep working unchanged.
+    @Default([]) List<NoteAssetModel> assets,
   }) = ProjectModelNote;
 
   /// keeps only position of system changelog whithout any content

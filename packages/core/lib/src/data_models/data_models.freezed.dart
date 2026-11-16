@@ -1449,6 +1449,284 @@ as String?,
 
 }
 
+
+/// @nodoc
+mixin _$NoteAssetModel {
+
+ String get id; String get path; String get mime; String get alt; int get width; int get height; int get bytes; DateTime? get createdAt;
+/// Create a copy of NoteAssetModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$NoteAssetModelCopyWith<NoteAssetModel> get copyWith => _$NoteAssetModelCopyWithImpl<NoteAssetModel>(this as NoteAssetModel, _$identity);
+
+  /// Serializes this NoteAssetModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NoteAssetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.alt, alt) || other.alt == alt)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.bytes, bytes) || other.bytes == bytes)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,path,mime,alt,width,height,bytes,createdAt);
+
+@override
+String toString() {
+  return 'NoteAssetModel(id: $id, path: $path, mime: $mime, alt: $alt, width: $width, height: $height, bytes: $bytes, createdAt: $createdAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $NoteAssetModelCopyWith<$Res>  {
+  factory $NoteAssetModelCopyWith(NoteAssetModel value, $Res Function(NoteAssetModel) _then) = _$NoteAssetModelCopyWithImpl;
+@useResult
+$Res call({
+ String id, String path, String mime, String alt, int width, int height, int bytes, DateTime? createdAt
+});
+
+
+
+
+}
+/// @nodoc
+class _$NoteAssetModelCopyWithImpl<$Res>
+    implements $NoteAssetModelCopyWith<$Res> {
+  _$NoteAssetModelCopyWithImpl(this._self, this._then);
+
+  final NoteAssetModel _self;
+  final $Res Function(NoteAssetModel) _then;
+
+/// Create a copy of NoteAssetModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? path = null,Object? mime = null,Object? alt = null,Object? width = null,Object? height = null,Object? bytes = null,Object? createdAt = freezed,}) {
+  return _then(NoteAssetModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,mime: null == mime ? _self.mime : mime // ignore: cast_nullable_to_non_nullable
+as String,alt: null == alt ? _self.alt : alt // ignore: cast_nullable_to_non_nullable
+as String,width: null == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
+as int,height: null == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int,bytes: null == bytes ? _self.bytes : bytes // ignore: cast_nullable_to_non_nullable
+as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [NoteAssetModel].
+extension NoteAssetModelPatterns on NoteAssetModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _NoteAssetModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _NoteAssetModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _NoteAssetModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _NoteAssetModel():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _NoteAssetModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _NoteAssetModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String path,  String mime,  String alt,  int width,  int height,  int bytes,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _NoteAssetModel() when $default != null:
+return $default(_that.id,_that.path,_that.mime,_that.alt,_that.width,_that.height,_that.bytes,_that.createdAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String path,  String mime,  String alt,  int width,  int height,  int bytes,  DateTime? createdAt)  $default,) {final _that = this;
+switch (_that) {
+case _NoteAssetModel():
+return $default(_that.id,_that.path,_that.mime,_that.alt,_that.width,_that.height,_that.bytes,_that.createdAt);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String path,  String mime,  String alt,  int width,  int height,  int bytes,  DateTime? createdAt)?  $default,) {final _that = this;
+switch (_that) {
+case _NoteAssetModel() when $default != null:
+return $default(_that.id,_that.path,_that.mime,_that.alt,_that.width,_that.height,_that.bytes,_that.createdAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _NoteAssetModel extends NoteAssetModel {
+  const _NoteAssetModel({required this.id, required this.path, this.mime = 'image/png', this.alt = '', this.width = 0, this.height = 0, this.bytes = 0, this.createdAt}): super._();
+  factory _NoteAssetModel.fromJson(Map<String, dynamic> json) => _$NoteAssetModelFromJson(json);
+
+@override final  String id;
+@override final  String path;
+@override@JsonKey() final  String mime;
+@override@JsonKey() final  String alt;
+@override@JsonKey() final  int width;
+@override@JsonKey() final  int height;
+@override@JsonKey() final  int bytes;
+@override final  DateTime? createdAt;
+
+/// Create a copy of NoteAssetModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$NoteAssetModelCopyWith<_NoteAssetModel> get copyWith => __$NoteAssetModelCopyWithImpl<_NoteAssetModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$NoteAssetModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NoteAssetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.path, path) || other.path == path)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.alt, alt) || other.alt == alt)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.bytes, bytes) || other.bytes == bytes)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,path,mime,alt,width,height,bytes,createdAt);
+
+@override
+String toString() {
+  return 'NoteAssetModel(id: $id, path: $path, mime: $mime, alt: $alt, width: $width, height: $height, bytes: $bytes, createdAt: $createdAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$NoteAssetModelCopyWith<$Res> implements $NoteAssetModelCopyWith<$Res> {
+  factory _$NoteAssetModelCopyWith(_NoteAssetModel value, $Res Function(_NoteAssetModel) _then) = __$NoteAssetModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String path, String mime, String alt, int width, int height, int bytes, DateTime? createdAt
+});
+
+
+
+
+}
+/// @nodoc
+class __$NoteAssetModelCopyWithImpl<$Res>
+    implements _$NoteAssetModelCopyWith<$Res> {
+  __$NoteAssetModelCopyWithImpl(this._self, this._then);
+
+  final _NoteAssetModel _self;
+  final $Res Function(_NoteAssetModel) _then;
+
+/// Create a copy of NoteAssetModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? path = null,Object? mime = null,Object? alt = null,Object? width = null,Object? height = null,Object? bytes = null,Object? createdAt = freezed,}) {
+  return _then(_NoteAssetModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,mime: null == mime ? _self.mime : mime // ignore: cast_nullable_to_non_nullable
+as String,alt: null == alt ? _self.alt : alt // ignore: cast_nullable_to_non_nullable
+as String,width: null == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
+as int,height: null == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int,bytes: null == bytes ? _self.bytes : bytes // ignore: cast_nullable_to_non_nullable
+as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+
+}
+
 ProjectModel _$ProjectModelFromJson(
   Map<String, dynamic> json
 ) {
@@ -1633,11 +1911,11 @@ return doc(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds,  List<NoteAssetModel> assets)?  note,TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
-return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
+return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds,_that.assets);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
 return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);case _:
   return orElse();
@@ -1657,11 +1935,11 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)  doc,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)  idea,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds,  List<NoteAssetModel> assets)  note,required TResult Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)  changelog,required TResult Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea():
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote():
-return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog():
+return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds,_that.assets);case ProjectModelChangelog():
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc():
 return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);}
 }
@@ -1677,11 +1955,11 @@ return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String title,  ProjectTypes type,  DateTime? archivedAt,  List<IdeaProjectAnswerModel> answers,  IdeaProjectAnswerModel? draftAnswer,  List<ProjectTagModelId> tagsIds)?  idea,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String note,  ProjectTypes type,  int charactersLimit,  DateTime? archivedAt,  List<ProjectTagModelId> tagsIds,  List<NoteAssetModel> assets)?  note,TResult? Function( DateTime createdAt,  DateTime updatedAt,  LocalizedTextModel title,  ProjectModelId id,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt)?  changelog,TResult? Function( ProjectModelId id,  DateTime createdAt,  DateTime updatedAt,  String formatId,  String title,  ProjectTypes type,  List<ProjectTagModelId> tagsIds,  DateTime? archivedAt,  List<DocBlockModel> blocks,  ProjectModelId? parentDocId,  AnchorSpanModel? anchorSpan,  String spanSnapshot,  AgentDocModel? agent,  DocStatus status)?  doc,}) {final _that = this;
 switch (_that) {
 case ProjectModelIdea() when idea != null:
 return idea(_that.id,_that.createdAt,_that.updatedAt,_that.title,_that.type,_that.archivedAt,_that.answers,_that.draftAnswer,_that.tagsIds);case ProjectModelNote() when note != null:
-return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds);case ProjectModelChangelog() when changelog != null:
+return note(_that.id,_that.createdAt,_that.updatedAt,_that.note,_that.type,_that.charactersLimit,_that.archivedAt,_that.tagsIds,_that.assets);case ProjectModelChangelog() when changelog != null:
 return changelog(_that.createdAt,_that.updatedAt,_that.title,_that.id,_that.type,_that.tagsIds,_that.archivedAt);case ProjectModelDoc() when doc != null:
 return doc(_that.id,_that.createdAt,_that.updatedAt,_that.formatId,_that.title,_that.type,_that.tagsIds,_that.archivedAt,_that.blocks,_that.parentDocId,_that.anchorSpan,_that.spanSnapshot,_that.agent,_that.status);case _:
   return null;
@@ -1808,7 +2086,7 @@ $IdeaProjectAnswerModelCopyWith<$Res>? get draftAnswer {
 @JsonSerializable()
 
 class ProjectModelNote extends ProjectModel implements Archivable, Sharable {
-  const ProjectModelNote({required this.id, required this.createdAt, required this.updatedAt, this.note = '', this.type = ProjectTypes.note, this.charactersLimit = 0, this.archivedAt,  List<ProjectTagModelId> tagsIds = const [],  String? $type}): _tagsIds = tagsIds,$type = $type ?? 'note',super._();
+  const ProjectModelNote({required this.id, required this.createdAt, required this.updatedAt, this.note = '', this.type = ProjectTypes.note, this.charactersLimit = 0, this.archivedAt,  List<ProjectTagModelId> tagsIds = const [],  List<NoteAssetModel> assets = const [],  String? $type}): _tagsIds = tagsIds,_assets = assets,$type = $type ?? 'note',super._();
   factory ProjectModelNote.fromJson(Map<String, dynamic> json) => _$ProjectModelNoteFromJson(json);
 
 @override final  ProjectModelId id;
@@ -1823,6 +2101,19 @@ class ProjectModelNote extends ProjectModel implements Archivable, Sharable {
   if (_tagsIds is EqualUnmodifiableListView) return _tagsIds;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_tagsIds);
+}
+
+/// Attached images (metadata rows; the bytes live in files under
+/// `note-assets/<noteId>/` in the app documents dir). Additive and
+/// default-empty: old JSON restores keep working unchanged.
+ final  List<NoteAssetModel> _assets;
+/// Attached images (metadata rows; the bytes live in files under
+/// `note-assets/<noteId>/` in the app documents dir). Additive and
+/// default-empty: old JSON restores keep working unchanged.
+@JsonKey() List<NoteAssetModel> get assets {
+  if (_assets is EqualUnmodifiableListView) return _assets;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_assets);
 }
 
 
@@ -1843,16 +2134,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelNote&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.type, type) || other.type == type)&&(identical(other.charactersLimit, charactersLimit) || other.charactersLimit == charactersLimit)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModelNote&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.type, type) || other.type == type)&&(identical(other.charactersLimit, charactersLimit) || other.charactersLimit == charactersLimit)&&(identical(other.archivedAt, archivedAt) || other.archivedAt == archivedAt)&&const DeepCollectionEquality().equals(other._tagsIds, _tagsIds)&&const DeepCollectionEquality().equals(other._assets, _assets));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,note,type,charactersLimit,archivedAt,const DeepCollectionEquality().hash(_tagsIds));
+int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,note,type,charactersLimit,archivedAt,const DeepCollectionEquality().hash(_tagsIds),const DeepCollectionEquality().hash(_assets));
 
 @override
 String toString() {
-  return 'ProjectModel.note(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, note: $note, type: $type, charactersLimit: $charactersLimit, archivedAt: $archivedAt, tagsIds: $tagsIds)';
+  return 'ProjectModel.note(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, note: $note, type: $type, charactersLimit: $charactersLimit, archivedAt: $archivedAt, tagsIds: $tagsIds, assets: $assets)';
 }
 
 
@@ -1863,7 +2154,7 @@ abstract mixin class $ProjectModelNoteCopyWith<$Res> implements $ProjectModelCop
   factory $ProjectModelNoteCopyWith(ProjectModelNote value, $Res Function(ProjectModelNote) _then) = _$ProjectModelNoteCopyWithImpl;
 @override @useResult
 $Res call({
- ProjectModelId id, DateTime createdAt, DateTime updatedAt, String note, ProjectTypes type, int charactersLimit, DateTime? archivedAt, List<ProjectTagModelId> tagsIds
+ ProjectModelId id, DateTime createdAt, DateTime updatedAt, String note, ProjectTypes type, int charactersLimit, DateTime? archivedAt, List<ProjectTagModelId> tagsIds, List<NoteAssetModel> assets
 });
 
 
@@ -1880,7 +2171,7 @@ class _$ProjectModelNoteCopyWithImpl<$Res>
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? note = null,Object? type = null,Object? charactersLimit = null,Object? archivedAt = freezed,Object? tagsIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? note = null,Object? type = null,Object? charactersLimit = null,Object? archivedAt = freezed,Object? tagsIds = null,Object? assets = null,}) {
   return _then(ProjectModelNote(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as ProjectModelId,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1890,7 +2181,8 @@ as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non
 as ProjectTypes,charactersLimit: null == charactersLimit ? _self.charactersLimit : charactersLimit // ignore: cast_nullable_to_non_nullable
 as int,archivedAt: freezed == archivedAt ? _self.archivedAt : archivedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,tagsIds: null == tagsIds ? _self._tagsIds : tagsIds // ignore: cast_nullable_to_non_nullable
-as List<ProjectTagModelId>,
+as List<ProjectTagModelId>,assets: null == assets ? _self._assets : assets // ignore: cast_nullable_to_non_nullable
+as List<NoteAssetModel>,
   ));
 }
 

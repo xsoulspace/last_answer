@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data' show Uint8List;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
@@ -37,5 +38,30 @@ class FileService implements FileServiceI {
     );
     await textFile.saveTo(result.path);
     return true;
+  }
+
+  @override
+  Future<bool> saveFileBytes({
+    required final List<int> bytes,
+    required final String filename,
+  }) async {
+    final result = await getSaveLocation(suggestedName: filename);
+    // Operation was canceled by the user.
+    if (result == null) return false;
+    const String mimeType = 'application/zip';
+    final XFile zipFile = XFile.fromData(
+      Uint8List.fromList(bytes),
+      mimeType: mimeType,
+      name: filename,
+    );
+    await zipFile.saveTo(result.path);
+    return true;
+  }
+
+  @override
+  Future<List<int>?> openFileBytes() async {
+    final result = await FilePicker.pickFiles();
+    if (result == null || result.files.isEmpty) return null;
+    return result.files.first.readAsBytes();
   }
 }

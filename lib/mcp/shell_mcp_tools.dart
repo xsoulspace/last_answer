@@ -135,7 +135,7 @@ AgentCallEntry _openTab() => _entry(
         if (bridge == null) return _bridgeAbsent();
         final id = (args['id'] as String? ?? '').trim();
         if (id.isEmpty) return _fail('missing_parameters', 'id is required');
-        final group = args['group'] is int ? args['group'] as int : null;
+        final group = args['group'] is int ? args['group']! as int : null;
         final split = args['split'] == true;
         final opened = await bridge.openTab(id, group: group, split: split);
         if (!opened) {
@@ -174,7 +174,7 @@ AgentCallEntry _closeTab() => _entry(
 
 AgentCallEntry _splitActive() => _entry(
       'shell_split_active',
-      'The strip split control: move the active group\'s focused tab '
+      "The strip split control: move the active group's focused tab "
       'into a new pane group to the right (the mockup law; splitting '
       'the lone world face is refused by the layout model).',
       const <String, dynamic>{
@@ -192,9 +192,11 @@ AgentCallEntry _splitActive() => _entry(
 AgentCallEntry _selectRoom() => _entry(
       'shell_select_room',
       'Select a rooms-column row by its contract key: '
-      'rooms.row.dm.<actorId> | rooms.row.channel.<channelId> | '
-      'rooms.row.room.<threadId>. Opens + focuses the conversation '
-      'tab exactly like a row tap. Refuses unknown key shapes.',
+      'rooms.row.dm.<actorId> | rooms.row.channel.<channelId>. '
+      'Opens + focuses the conversation tab exactly like a row tap. '
+      'Refuses unknown key shapes (the retired rooms.row.room.<threadId> '
+      "keys refuse too — rooms live in the channel view's threads "
+      'browser now).',
       const <String, dynamic>{
         'type': 'object',
         'properties': <String, dynamic>{

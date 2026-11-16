@@ -45,7 +45,9 @@ class OpenedProjectNotifier
         dto.projectsNotifier.deleteProject(idea);
       },
       note: (final note) {
-        if (note.note.isNotEmpty) return;
+        // An attachment-bearing note is NOT empty — its asset files
+        // outlive the text field (native-image-assets Wave D1).
+        if (note.note.isNotEmpty || note.assets.isNotEmpty) return;
         dto.projectsNotifier.deleteProject(note);
       },
       changelog: (final value) {

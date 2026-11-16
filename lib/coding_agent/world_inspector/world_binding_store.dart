@@ -25,13 +25,12 @@ library;
 
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
-
 import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as external_worlds;
 import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
+import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// What [WorldBindingStore.load] found for one scope key.

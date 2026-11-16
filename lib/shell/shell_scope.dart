@@ -19,6 +19,7 @@ final class ViewScope extends InheritedWidget {
     required super.child,
     this.onFocusActor,
     this.onOpenThread,
+    this.onOpenConversation,
     this.titleFor,
     this.leadingFor,
     super.key,
@@ -45,6 +46,15 @@ final class ViewScope extends InheritedWidget {
   /// Null outside the shell: hosts fall back to selectThread.
   final ValueChanged<String>? onOpenThread;
 
+  /// The "open this conversation surface" intent (`dm:<actorId>` /
+  /// `channel:<channelId>` / `room:<threadId>` — the channel view's
+  /// threads browser rows and the beat text's linkified references):
+  /// the shell's own [onOpenThread] vocabulary at full surface-id
+  /// breadth — the ONE `_onSelectTab` router the registry and the
+  /// actor-info surface already ride. Null outside the shell: hosts
+  /// fall back to the service verbs.
+  final ValueChanged<String>? onOpenConversation;
+
   /// Human title for ids the registry does not name (conversation ids);
   /// null falls back to the registry title, then the raw id.
   final String? Function(String surfaceId)? titleFor;
@@ -62,6 +72,8 @@ final class ViewScope extends InheritedWidget {
       surfaces != old.surfaces ||
       onChanged != old.onChanged ||
       onFocusActor != old.onFocusActor ||
+      onOpenThread != old.onOpenThread ||
+      onOpenConversation != old.onOpenConversation ||
       titleFor != old.titleFor ||
       leadingFor != old.leadingFor;
 }

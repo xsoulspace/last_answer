@@ -204,7 +204,7 @@ Future<void> main(final List<String> args) async {
       final nodes = (snap['nodes'] as List? ?? const []).cast<Map<String, Object?>>();
       final blob = nodes.map((n) => '${n['label'] ?? ''}${n['identifier'] ?? ''}').join('\n');
       return blob.contains('edge.world') ? true : null;
-    }, attempts: 60, interval: const Duration(seconds: 1));
+    }, interval: const Duration(seconds: 1));
     row('PASS', 'shell', 'edge.world present — the chat surface can bind');
 
     // ---- the GENERAL room: realm-sealed, conversational, no project ----
@@ -237,8 +237,8 @@ Future<void> main(final List<String> args) async {
       throw StateError('no human id');
     }
     final grants = await _laTool(vmUri, 'realm_project_access', {'action': 'list'});
-    final grantList = ((_deepFind(grants, 'grants') as List? ?? const [])
-        .cast<Object?>()).map((e) => '$e').toList();
+    final grantList = (_deepFind(grants, 'grants') as List? ?? const [])
+        .cast<Object?>().map((e) => '$e').toList();
     if (!grantList.contains(_targetRepo)) {
       final heal = await _laTool(vmUri, 'realm_project_access', {
         'action': 'grant',
@@ -260,8 +260,8 @@ Future<void> main(final List<String> args) async {
       'action': 'list',
       'actor': actor,
     });
-    final actorGrantList = ((_deepFind(actorGrants, 'grants') as List? ?? const [])
-        .cast<Object?>()).map((e) => '$e').toList();
+    final actorGrantList = (_deepFind(actorGrants, 'grants') as List? ?? const [])
+        .cast<Object?>().map((e) => '$e').toList();
     if (!actorGrantList.contains(_targetRepo)) {
       final heal = await _laTool(vmUri, 'realm_project_access', {
         'action': 'grant',
@@ -346,7 +346,7 @@ Future<void> main(final List<String> args) async {
           if ('${b['author']}' == actor) return b;
         }
         return null;
-      }, attempts: 300, interval: const Duration(seconds: 3));
+      }, attempts: 300);
     } on TimeoutException {
       failures++;
       row('FAIL', 'actor-reply', 'no $actor beat within 900s — read the loop '

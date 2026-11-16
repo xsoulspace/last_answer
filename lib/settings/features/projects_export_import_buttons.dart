@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/note/note_asset_store.dart';
 
 class ProjectsExportImportButtons extends StatelessWidget {
   const ProjectsExportImportButtons({super.key});
@@ -24,9 +26,16 @@ class ProjectsExportImportButtons extends StatelessWidget {
             ).animate().fadeIn(),
           HoverableButton(
             isLoading: isFileLoading,
-            onPressed: () async => projectsNotifier.saveToFile(
+            onPressed: () => projectsNotifier.saveToFile(
               context,
               useTimestampForBackupFilename: useTimestampForBackupFilename,
+              // Wave D1 — the asset files ride the backup zip; the
+              // sink is the only holder of the documents root. Web has
+              // no local file plane: a JSON-only backup there.
+              collectAssets: kIsWeb
+                  ? null
+                  : (final dbSave) async => (await NoteAssetStore.instance())
+                      .collectForBackup(dbSave.projects),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -38,7 +47,13 @@ class ProjectsExportImportButtons extends StatelessWidget {
           ),
           HoverableButton(
             isLoading: isFileLoading,
-            onPressed: () async => projectsNotifier.loadFromFile(context),
+            onPressed: () => projectsNotifier.loadFromFile(
+              context,
+              restoreAssets: kIsWeb
+                  ? null
+                  : (final files) async =>
+                        (await NoteAssetStore.instance()).restoreFiles(files),
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

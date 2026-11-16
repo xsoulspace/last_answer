@@ -374,7 +374,8 @@ void main() {
       });
 
       final answers = <bool>[];
-      const diff = '''--- a/notes.md
+      const diff = '''
+--- a/notes.md
 +++ b/notes.md
 @@ -1,2 +1,3 @@
  kept line

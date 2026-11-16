@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 
 import 'package:lastanswer/shell/surfaces.dart';
 

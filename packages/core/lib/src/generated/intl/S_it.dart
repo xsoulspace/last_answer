@@ -1288,6 +1288,24 @@ class SIt extends S {
   String get actorsBrainLabel => 'Cervello';
 
   @override
+  String get actorsBrainSet => 'Set di brain';
+
+  @override
+  String get actorsBrainSetOwn => 'Set proprio';
+
+  @override
+  String get actorsBrainSetAuto => 'Automatico — segue la politica del mondo';
+
+  @override
+  String get actorsBrainSetAdd => 'Aggiungi modello';
+
+  @override
+  String get actorsSelfBind => 'Può cambiare il proprio brain';
+
+  @override
+  String get actorsSelfBindHint => 'Entro il proprio set, da solo';
+
+  @override
   String get actorsRoleLabel => 'Ruolo (opzionale)';
 
   @override

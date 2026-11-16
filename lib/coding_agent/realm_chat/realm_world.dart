@@ -412,6 +412,8 @@ final class RealmWorld {
     String role = '',
     String? systemPrompt,
     String? avatar,
+    List<String>? brainSet,
+    String? selfBind,
   }) async {
     await store.transact((tx) {
       final existing = tx.get('realm_actors', actorId);
@@ -458,6 +460,16 @@ final class RealmWorld {
         // profile edit. The other fields keep their isNotEmpty convention.
         'systemPrompt':
             systemPrompt ?? existing?['systemPrompt'] as String? ?? '',
+        // ADR 0143 — the actor's own ordered model subset (its
+        // self-bind scope and policy): null preserves, a list (possibly
+        // empty = back to the world policy) replaces whole. The
+        // selfBind override keeps the isNotEmpty convention.
+        if (brainSet != null)
+          'brainSet': [
+            for (final entry in brainSet)
+              if (entry.trim().isNotEmpty) entry.trim(),
+          ],
+        if (selfBind != null && selfBind.isNotEmpty) 'selfBind': selfBind,
         if (existing?['projects'] != null) 'projects': existing!['projects'],
         if (existing?['lastThreadId'] != null)
           'lastThreadId': existing!['lastThreadId'],

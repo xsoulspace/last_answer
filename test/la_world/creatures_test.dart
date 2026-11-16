@@ -208,7 +208,7 @@ void main() {
       laWorld.putTelemetry(
         TelemetryRow(
           actorId: 'scout',
-          telemetry: ActorTelemetry(
+          telemetry: const ActorTelemetry(
             actorId: 'scout',
             rounds: 2,
             promptTokens: 10,
@@ -306,8 +306,8 @@ void main() {
       final tester,
     ) async {
       await tester.pumpWidget(
-        MediaQuery(
-          data: const MediaQueryData(disableAnimations: true),
+        const MediaQuery(
+          data: MediaQueryData(disableAnimations: true),
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: Center(

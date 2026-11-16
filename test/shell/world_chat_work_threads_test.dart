@@ -20,7 +20,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_layout.dart';
@@ -497,7 +497,7 @@ void main() {
   );
 
   testWidgets(
-    'f — the work card\'s Open routes through ViewScope.onOpenThread '
+    "f — the work card's Open routes through ViewScope.onOpenThread "
     '(the Wave H regression pin: a bare selectThread moves no pane '
     'anymore, so the shell router must open the room tab)',
     (final tester) async {

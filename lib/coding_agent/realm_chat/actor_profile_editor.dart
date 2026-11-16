@@ -26,6 +26,9 @@ const actorEditorNameKey = 'actor.edit.name';
 const actorEditorRoleKey = 'actor.edit.role';
 const actorEditorPersonaKey = 'actor.edit.persona';
 const actorEditorBrainKey = 'actor.edit.brain';
+const actorEditorBrainSetOwnKey = 'actor.edit.brainSet.own';
+const actorEditorBrainSetAddKey = 'actor.edit.brainSet.add';
+const actorEditorSelfBindKey = 'actor.edit.selfBind';
 const actorEditorTemperatureKey = 'actor.edit.temperature';
 const actorEditorRepetitionKey = 'actor.edit.repetitionPenalty';
 const actorEditorSaveKey = 'actor.edit.save';
@@ -40,6 +43,8 @@ final class ActorProfileEditor extends StatefulWidget {
     this.onCancel,
     this.saveKey,
     this.tiersForBrain,
+    this.initialBrainSet = const <String>[],
+    this.initialSelfBind = true,
     super.key,
   });
 
@@ -52,15 +57,27 @@ final class ActorProfileEditor extends StatefulWidget {
   /// Applied on Save: the trimmed name/role, the persona VERBATIM (the
   /// actor speaks through it), the rebuilt brainRef (the per-actor
   /// reasoning level rides its grammar) and the avatar mark (null =
-  /// untouched, `''` = cleared back to the derived identity).
+  /// untouched, `''` = cleared back to the derived identity). ADR 0143
+  /// adds the ordered brain set (EMPTY = the world policy whole) and
+  /// the self-rebind permission.
   final void Function({
     required String displayName,
     required String role,
     required String systemPrompt,
     required String brainRef,
     required String? avatar,
+    required List<String> brainSet,
+    required bool selfBind,
   })
   onSave;
+
+  /// ADR 0143 — the durable row's ordered brain set seed (empty =
+  /// Automatic, the world policy whole).
+  final List<String> initialBrainSet;
+
+  /// ADR 0143 — the durable row's self-rebind seed (the row's
+  /// `selfBind` is `allow`/`deny`; absent = the global default, ON).
+  final bool initialSelfBind;
 
   /// The reasoning tiers the SELECTED brain's lane declares (the Zed
   /// capability law); null hides the reasoning block entirely (hosts
@@ -89,6 +106,12 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
   late String? _brainBase;
   late String? _avatar;
   late String? _reasoning;
+  // ADR 0143 — the brain-set section: on = the actor's own ordered set;
+  // off = Automatic (the world policy whole). An empty list always
+  // seeds Automatic, whatever the row once carried.
+  late bool _ownSetOn;
+  late List<String> _brainSet;
+  late bool _selfBind;
   var _seeded = false;
 
   @override
@@ -137,7 +160,23 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
               : brainRefBase(widget.profile.brainRef));
     _avatar = widget.profile.avatar;
     _reasoning = brainParam(widget.profile.brainRef, 'reasoning');
+    _ownSetOn = widget.initialBrainSet.isNotEmpty;
+    _brainSet = [...widget.initialBrainSet];
+    _selfBind = widget.initialSelfBind;
   }
+
+  /// The cast-entry id a brain option names (`cast:<id>` — the options
+  /// outside the palette namespace, `local:`/`openrouter:`, are device
+  /// facts and never enter a world-set).
+  String? _castIdOf(final String ref) =>
+      ref.startsWith('cast:') && ref.length > 'cast:'.length
+          ? ref.substring('cast:'.length)
+          : null;
+
+  String _labelOf(final String castId) => widget.brainOptions
+      .where((final option) => _castIdOf(option.ref) == castId)
+      .map((final option) => option.label)
+      .firstOrNull ?? castId;
 
   @override
   void dispose() {
@@ -178,6 +217,8 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
       systemPrompt: _persona.text,
       brainRef: brainRef,
       avatar: _avatar,
+      brainSet: _ownSetOn ? _brainSet : const <String>[],
+      selfBind: _selfBind,
     );
   }
 
@@ -268,6 +309,112 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
               ),
           ],
           onChanged: (final value) => setState(() => _brainBase = value),
+        ),
+        // ADR 0143 — the brain set: Automatic (the world policy whole)
+        // or the actor's OWN ordered set, plus the self-rebind switch
+        // (the row's `selfBind`; the global toggle governs the default).
+        const SizedBox(height: 8),
+        Text(l10n.actorsBrainSet, style: theme.textTheme.bodySmall),
+        const SizedBox(height: 2),
+        SwitchListTile(
+          key: const ValueKey(actorEditorBrainSetOwnKey),
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          title: Text(
+            _ownSetOn ? l10n.actorsBrainSetOwn : l10n.actorsBrainSetAuto,
+            style: theme.textTheme.bodySmall,
+          ),
+          value: _ownSetOn,
+          onChanged: (final on) => setState(() {
+            _ownSetOn = on;
+            if (!on) _brainSet = <String>[];
+          }),
+        ),
+        if (_ownSetOn) ...[
+          for (var i = 0; i < _brainSet.length; i++)
+            Row(
+              key: ValueKey('actor.edit.brainSet.row.${_brainSet[i]}'),
+              children: [
+                Expanded(
+                  child: Text(
+                    '${i + 1}. ${_labelOf(_brainSet[i])}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+                IconButton(
+                  key: ValueKey('actor.edit.brainSet.up.${_brainSet[i]}'),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.arrow_upward_outlined, size: 16),
+                  onPressed: i == 0
+                      ? null
+                      : () => setState(() {
+                          final moved = _brainSet.removeAt(i);
+                          _brainSet.insert(i - 1, moved);
+                        }),
+                ),
+                IconButton(
+                  key: ValueKey('actor.edit.brainSet.down.${_brainSet[i]}'),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.arrow_downward_outlined, size: 16),
+                  onPressed: i == _brainSet.length - 1
+                      ? null
+                      : () => setState(() {
+                          final moved = _brainSet.removeAt(i);
+                          _brainSet.insert(i + 1, moved);
+                        }),
+                ),
+                IconButton(
+                  key: ValueKey(
+                    'actor.edit.brainSet.remove.${_brainSet[i]}',
+                  ),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.close_outlined, size: 16),
+                  onPressed: () =>
+                      setState(() => _brainSet.removeAt(i)),
+                ),
+              ],
+            ),
+          if (widget.brainOptions.any(
+            (final option) =>
+                _castIdOf(option.ref) != null &&
+                !_brainSet.contains(_castIdOf(option.ref)),
+          ))
+            DropdownButtonFormField<String>(
+              key: const ValueKey(actorEditorBrainSetAddKey),
+              isExpanded: true,
+              hint: Text(l10n.actorsBrainSetAdd),
+              items: [
+                for (final option in widget.brainOptions)
+                  if (_castIdOf(option.ref) case final castId?)
+                    if (!_brainSet.contains(castId))
+                      DropdownMenuItem(
+                        value: castId,
+                        child: Text(
+                          option.label,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+              ],
+              onChanged: (final id) => setState(() {
+                if (id != null) _brainSet = [..._brainSet, id];
+              }),
+            ),
+        ],
+        SwitchListTile(
+          key: const ValueKey(actorEditorSelfBindKey),
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          title: Text(l10n.actorsSelfBind, style: theme.textTheme.bodySmall),
+          subtitle: Text(
+            l10n.actorsSelfBindHint,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          value: _selfBind,
+          onChanged: (final on) => setState(() => _selfBind = on),
         ),
         if (_isLocalBinding) ...[
           const SizedBox(height: 8),

@@ -365,7 +365,7 @@ class _PeopleList extends StatelessWidget {
           for (final entry in service.botNarration.entries)
             entry.key: entry.value.state.name,
         },
-        daemonAsleep: world == null ? false : !world.daemonLive,
+        daemonAsleep: !(world == null) && !world.daemonLive,
       );
     }
     return Column(
@@ -413,7 +413,6 @@ class _PeopleList extends StatelessWidget {
             child: CreatureMark(
               actorId: id,
               mood: _moodOf(id, laWorld),
-              size: ShellTokens.rowAvatar,
               eyesOnly: true,
             ),
           ),
@@ -573,6 +572,10 @@ class _ActorPanelState extends State<_ActorPanel> {
             ),
             saveKey: const ValueKey('shell.context.actor.save'),
             onCancel: () => setState(() => _editing = false),
+            initialBrainSet:
+                service.brainSets[widget.actorId] ?? const <String>[],
+            initialSelfBind:
+                (service.selfBinds[widget.actorId] ?? 'allow') != 'deny',
             onSave:
                 ({
                   required displayName,
@@ -580,6 +583,8 @@ class _ActorPanelState extends State<_ActorPanel> {
                   required systemPrompt,
                   required brainRef,
                   required avatar,
+                  required brainSet,
+                  required selfBind,
                 }) {
                   unawaited(
                     service
@@ -590,6 +595,8 @@ class _ActorPanelState extends State<_ActorPanel> {
                           systemPrompt: systemPrompt,
                           brainRef: brainRef,
                           avatar: avatar,
+                          brainSet: brainSet,
+                          selfBind: selfBind ? 'allow' : 'deny',
                         )
                         .then((final ok) {
                           if (mounted && ok) setState(() => _editing = false);

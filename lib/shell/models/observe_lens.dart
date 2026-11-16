@@ -17,6 +17,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
+import 'package:lastanswer/shell/models/policy_components.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/status_edge.dart' show HealthDot, healthColor;
 
@@ -301,21 +302,17 @@ final class ObserveLens extends StatelessWidget {
                       // recorded on this run reads as a sentence, not a
                       // code. A bare stall (no ladder target) keeps the
                       // honest one-word chip.
-                      if (row.escalatedFrom case final from?)
-                        ModelsChip(
-                          label: context.l10n.modelsEscalatedTo(
-                            brainModelLabel(
-                              id: from,
-                              model: world.rungs
-                                  .where((final r) => r.id == from)
-                                  .firstOrNull
-                                  ?.model,
-                            ),
-                          ),
-                          color: la.caution,
-                        )
-                      else if (row.stalled)
-                        ModelsChip(label: 'stalled', color: la.caution),
+                      EscalationNarration(
+                        escalatedFrom: row.escalatedFrom,
+                        escalatedToLabel: brainModelLabel(
+                          id: row.escalatedFrom ?? '',
+                          model: world.rungs
+                              .where((final r) => r.id == row.escalatedFrom)
+                              .firstOrNull
+                              ?.model,
+                        ),
+                        stalled: row.stalled,
+                      ),
                       if (!compact)
                       if (row.at case final at?) ...[
                         const SizedBox(width: 8),

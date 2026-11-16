@@ -7,18 +7,20 @@
 /// column's business (the lights gutter law v2): the rail is always
 /// the window's leftmost chrome and always owns the gutter.
 ///
-/// Anatomy: three sections — DMs (the roster's non-human actors),
-/// channels (the registry's named threads, user-settable icon mark)
-/// and rooms (the watchable threads, forum mark). The selected row
-/// mirrors the service's active thread through [conversationSurfaceId];
-/// per-row unread badges ride LaWorld reactively ([EcsWorldSelector]
-/// over the cursor fold — no LaWorld, no badges: honest absence, never
-/// a poll).
+/// Anatomy: two sections — DMs (the roster's non-human actors) and
+/// channels (the registry's named threads, user-settable icon mark).
+/// The watchable rooms left the column (owner law 2026-11-16): they
+/// surface INSIDE the channel view's threads browser (the Discord-
+/// threads model) and their `room:<threadId>` tabs still open through
+/// the shell's ONE router. The selected row mirrors the service's
+/// active thread through [conversationSurfaceId]; per-row unread badges
+/// ride LaWorld reactively ([EcsWorldSelector] over the cursor fold —
+/// no LaWorld, no badges: honest absence, never a poll).
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6):
-/// `shell.roomsColumn`, `rooms.section.dms|channels|rooms`,
+/// `shell.roomsColumn`, `rooms.section.dms|channels`,
 /// `rooms.row.dm.<actorId>`, `rooms.row.channel.<channelId>`,
-/// `rooms.row.room.<threadId>`, `rooms.unread.<surfaceId>`,
+/// `rooms.unread.<surfaceId>`,
 /// `rooms.create.channel`, `rooms.cta.dm`, the context-menu rows
 /// `rooms.menu.rename|close|setIcon|miniwindow.*` and the change-icon
 /// dialog's `rooms.icon.<glyph>|clear|custom|confirm`.
@@ -30,7 +32,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
@@ -215,28 +217,6 @@ final class RoomsColumn extends StatelessWidget {
               onSelect: onSelect,
               onMiniWindow: onMiniWindow,
               onSetIcon: onSetIcon,
-            ),
-          _SectionHead(
-            sectionKey: 'rooms.section.rooms',
-            label: l10n.roomsSectionRooms,
-            tooltip: l10n.roomsExplainRooms,
-          ),
-          for (final thread in service.roomThreads)
-            _ConversationRow(
-              rowKey: 'rooms.row.room.${thread['threadId']}',
-              surfaceId: 'room:${thread['threadId']}',
-              title: '${thread['topic'] ?? thread['threadId']}',
-              leading: Tooltip(
-                message: l10n.roomsKindRoom,
-                waitDuration: const Duration(milliseconds: 600),
-                child: const _RoomMark(),
-              ),
-              threadId: '${thread['threadId']}',
-              selected: activeSurfaceId == 'room:${thread['threadId']}',
-              laWorld: laWorld,
-              service: service,
-              onSelect: onSelect,
-              onMiniWindow: onMiniWindow,
             ),
         ],
       ),
@@ -929,23 +909,4 @@ final class ChannelIconMark extends StatelessWidget {
       ),
     );
   }
-}
-
-/// The watchable room's forum mark (the strip pill's twin) — riding the
-/// same 18px leading box as every other row mark (one vertical axis).
-final class _RoomMark extends StatelessWidget {
-  const _RoomMark();
-
-  @override
-  Widget build(final BuildContext context) => SizedBox(
-    width: 18,
-    height: 18,
-    child: Center(
-      child: Icon(
-        Icons.forum_outlined,
-        size: 15,
-        color: context.shellMuted,
-      ),
-    ),
-  );
 }

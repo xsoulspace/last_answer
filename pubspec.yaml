@@ -41,6 +41,7 @@ dependencies:
   universal_storage_live_apply:
     path: ../../universal_storage/pkgs/universal_storage_live_apply
   animations: ^2.2.0
+  archive: ^4.1.2
   blur: ^4.0.2
   collection: ^1.19.1
   core:
@@ -70,6 +71,8 @@ dependencies:
   google_fonts: ^8.2.0
   infinite_scroll_pagination: ^5.1.1
   json_annotation: ^4.12.0
+  image: ^4.2.0
+  image_picker: ^1.1.2
   life_hooks: ^0.3.0
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6
@@ -168,6 +171,11 @@ dependencies:
   # docs/design/ecsly-boards-extraction.md).
   ecsly_boards:
     path: ../../ecsai_harness/pkgs/ecsly_boards
+  # Same cascade (harness ADR 0144): xsoulspace_agentic_host depends on
+  # the conversation spaces layer (channels / work-thread registries,
+  # moved verbatim from this repo); path source until it publishes.
+  ecsly_conversation:
+    path: ../../ecsai_harness/pkgs/ecsly_conversation
   headless_core:
     path: packages/headless_core
   universal_io: ^2.3.1
@@ -190,6 +198,7 @@ dependencies:
   # ADR 0026 — the workspace model normalizes user-selected folder
   # paths (absolute + normal form) through package:path.
   path: any
+  file_picker: any
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

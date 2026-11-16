@@ -1279,6 +1279,24 @@ class SEn extends S {
   String get actorsBrainLabel => 'Brain';
 
   @override
+  String get actorsBrainSet => 'Brain set';
+
+  @override
+  String get actorsBrainSetOwn => 'Own set';
+
+  @override
+  String get actorsBrainSetAuto => 'Automatic — follows the world policy';
+
+  @override
+  String get actorsBrainSetAdd => 'Add model';
+
+  @override
+  String get actorsSelfBind => 'May switch its own brain';
+
+  @override
+  String get actorsSelfBindHint => 'Within its set, on its own';
+
+  @override
   String get actorsRoleLabel => 'Role (optional)';
 
   @override

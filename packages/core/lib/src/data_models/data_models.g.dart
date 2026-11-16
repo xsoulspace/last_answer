@@ -106,6 +106,32 @@ Map<String, dynamic> _$AnchorSpanModelToJson(_AnchorSpanModel instance) =>
       'suffixHash': instance.suffixHash,
     };
 
+_NoteAssetModel _$NoteAssetModelFromJson(Map<String, dynamic> json) =>
+    _NoteAssetModel(
+      id: json['id'] as String,
+      path: json['path'] as String,
+      mime: json['mime'] as String? ?? 'image/png',
+      alt: json['alt'] as String? ?? '',
+      width: (json['width'] as num?)?.toInt() ?? 0,
+      height: (json['height'] as num?)?.toInt() ?? 0,
+      bytes: (json['bytes'] as num?)?.toInt() ?? 0,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+    );
+
+Map<String, dynamic> _$NoteAssetModelToJson(_NoteAssetModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'path': instance.path,
+      'mime': instance.mime,
+      'alt': instance.alt,
+      'width': instance.width,
+      'height': instance.height,
+      'bytes': instance.bytes,
+      'createdAt': instance.createdAt?.toIso8601String(),
+    };
+
 ProjectModelIdea _$ProjectModelIdeaFromJson(Map<String, dynamic> json) =>
     ProjectModelIdea(
       id: ProjectModelId.fromJson(json['id'] as String),
@@ -178,6 +204,11 @@ ProjectModelNote _$ProjectModelNoteFromJson(Map<String, dynamic> json) =>
               ?.map((e) => ProjectTagModelId.fromJson(e as String))
               .toList() ??
           const [],
+      assets:
+          (json['assets'] as List<dynamic>?)
+              ?.map((e) => NoteAssetModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       $type: json['runtimeType'] as String?,
     );
 
@@ -191,6 +222,7 @@ Map<String, dynamic> _$ProjectModelNoteToJson(ProjectModelNote instance) =>
       'charactersLimit': instance.charactersLimit,
       'archivedAt': instance.archivedAt?.toIso8601String(),
       'tagsIds': instance.tagsIds,
+      'assets': instance.assets,
       'runtimeType': instance.$type,
     };
 

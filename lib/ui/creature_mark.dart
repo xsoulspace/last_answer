@@ -315,7 +315,7 @@ final class _CreaturePainter extends CustomPainter {
     final Paint sclera,
     final Paint pupil,
   ) {
-    final closed = lid.clamp(0.0, 1.0).toDouble();
+    final closed = lid.clamp(0.0, 1.0);
     if (closed < 0.99) {
       canvas
         ..save()
@@ -334,7 +334,7 @@ final class _CreaturePainter extends CustomPainter {
         Offset(c.dx + r, y),
         Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = math.max(1.0, r * 0.28)
+          ..strokeWidth = math.max(1, r * 0.28)
           ..strokeCap = StrokeCap.round
           ..color = pupil.color,
       );

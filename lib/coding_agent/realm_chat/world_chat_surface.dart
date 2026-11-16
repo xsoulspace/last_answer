@@ -1,14 +1,19 @@
+import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/beat_linkify.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
@@ -16,6 +21,8 @@ import 'package:lastanswer/shell/landing_inbox.dart';
 import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show mediaAttachmentOf;
 
 /// ADR 0024 — the world chat surface: the human-facing projection of the
 /// realm's durable threads. Text-native, one grid: ONE focused
@@ -44,11 +51,19 @@ import 'package:lastanswer/shell/shell_theme.dart';
 /// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
 /// and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
+/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
+/// left the rooms column and surface Discord-threads-style INSIDE the
+/// channel view): `worldchat.threads.toggle` (the header affordance),
+/// `worldchat.threads.panel` (the compact drawer with its labelled
+/// groups) and the rows `worldchat.threads.row.work.<workThreadId>` /
+/// `worldchat.threads.row.room.<threadId>` — every row opens its
+/// `room:<id>` tab through the shell's ONE router.
 /// The thread-open lane (the Wave H regression pin, 2026-11-10):
 /// inside the shell, opening a thread ROUTES its `room:<id>` tab —
 /// a bare `selectThread` moves no pane anymore, because panes render
 /// their OWN thread (the pane-instance law); the landing inbox's
-/// rows and the work-thread cards' Open button both ride here.
+/// rows, the work-thread cards' Open button and the threads browser's
+/// rows all ride here.
 /// Single-pane hosts (no [ViewScope]) fall back to selecting the
 /// global active thread — today's behavior for them.
 void openThreadLane(
@@ -990,6 +1005,12 @@ class _ConversationPaneState extends State<_ConversationPane> {
   final ScrollController _scroll = ScrollController();
   bool _showJumpToLatest = false;
 
+  /// The channel view's threads browser (owner law 2026-11-16): the
+  /// panel's open/closed is the ONLY state this affordance keeps — the
+  /// rows inside read the service's live getters on every rebuild (the
+  /// service's notify is the freshness signal; no caching, no polling).
+  bool _threadsOpen = false;
+
   /// The composer's focus node (the first-entry law): landing in a room
   /// — boot-restored, seeded or clicked — puts the caret in the
   /// composer without a click. Focus is requested post-frame and NEVER
@@ -1008,6 +1029,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
 
   /// The beat the composer is replying to (1g: replyTo rides the say).
   Map<String, Object?>? _replyBeat;
+
+  /// The last human-share refusal (named; rendered beside the composer).
+  String? _shareError;
 
   // ---- Wave E: the `@` mention completion state ----
   // Typing `@` at a word boundary opens the filtered overlay above the
@@ -1276,6 +1300,34 @@ class _ConversationPaneState extends State<_ConversationPane> {
     );
   }
 
+  /// The HUMAN image share (native-image-assets DMs/channels wave):
+  /// pick → copy into the world asset dir → one `say` with the media
+  /// v1 attachment (the composer text rides along when non-empty).
+  /// The structured entry is the truth; the header projection lands
+  /// host-side inside `say`.
+  Future<void> _shareImage() async {
+    final world = service.world;
+    final target = _ownThreadPane ? _paneThreadId : service.activeThreadId;
+    if (world == null || target == null) return;
+    try {
+      final share = RealmChatMediaShare(
+        worldHome: Directory(RealmWorld.realmControlStorePath()).parent,
+      );
+      final entry = await share.pickAndBuild(threadId: target);
+      if (entry == null) return;
+      final raw = composer.text.trim();
+      await service.say(
+        raw,
+        threadId: _ownThreadPane ? _paneThreadId : null,
+        attachments: [entry],
+      );
+      if (!mounted) return;
+      composer.clear();
+    } on RealmMediaShareException catch (error) {
+      if (mounted) setState(() => _shareError = error.code);
+    }
+  }
+
   Future<void> _send(final String raw) async {
     // ADR 0129 — the scoped send: with a workspace armed, the text is
     // a WORK ORDER (auto-spawn/reuse the project-sealed thread and
@@ -1313,6 +1365,44 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// global active thread — today's behavior for them.
   void _openThreadLane(final BuildContext context, final String threadId) =>
       openThreadLane(context, service, threadId);
+
+  /// The linkifier v1's resolvability oracle (the beat text's tappable
+  /// references): a reference names a LIVE object — a known thread, a
+  /// registered channel's id, a rostered actor. Everything else stays
+  /// plain text (honest absence, never a dead link).
+  bool _beatRefResolves(final BeatRefKind kind, final String id) =>
+      switch (kind) {
+        BeatRefKind.room ||
+        BeatRefKind.thread => service.knowsThread(id),
+        BeatRefKind.channel => service.channels.any(
+          (final channel) => channel.channelId == id,
+        ),
+        BeatRefKind.dm => service.roster?.get(id) != null,
+      };
+
+  /// The conversation-surface lane (`dm:<actorId>` / `channel:<id>` /
+  /// `room:<threadId>` — the beat text's linkified references): the
+  /// shell's ONE router through [ViewScope.onOpenConversation] (the
+  /// same `_onSelectTab` the registry and the actor-info surface ride).
+  /// Hosts without the scope fall back to the service verbs — the
+  /// [openThreadLane] fallback law.
+  void _openConversationLane(
+    final BuildContext context,
+    final String surfaceId,
+  ) {
+    final routed = ViewScope.of(context)?.onOpenConversation;
+    if (routed != null) {
+      routed(surfaceId);
+      return;
+    }
+    if (surfaceId.startsWith('dm:')) {
+      unawaited(service.openDm(surfaceId.substring('dm:'.length)));
+    } else if (surfaceId.startsWith('channel:')) {
+      service.selectChannel(surfaceId.substring('channel:'.length));
+    } else if (surfaceId.startsWith('room:')) {
+      service.selectThread(surfaceId.substring('room:'.length));
+    }
+  }
 
   /// The room's ACTOR members — the work order's addressees: the PANE's
   /// thread participants minus the humans (the human authority's own
@@ -1900,7 +1990,23 @@ class _ConversationPaneState extends State<_ConversationPane> {
           presenceOnline:
               otherProfile != null &&
               (bots?.isRunning(otherProfile.actorId) ?? false),
+          // The threads browser rides CHANNEL panes only (owner law
+          // 2026-11-16): a DM's identity already lives in the header,
+          // a plain group thread carries no registry facts.
+          threadsToggle: channel == null
+              ? null
+              : () => setState(() => _threadsOpen = !_threadsOpen),
+          threadsOpen: _threadsOpen,
         ),
+        // The channel view's THREADS BROWSER (owner law 2026-11-16):
+        // the watchable rooms left the rooms column; a channel pane
+        // lists its work threads and the realm's rooms one panel away.
+        if (channel != null && _threadsOpen)
+          _ThreadsBrowserPanel(
+            service: service,
+            parentThreadId: threadId,
+            onOpenThread: (final id) => _openThreadLane(context, id),
+          ),
         Divider(
           height: ShellTokens.hairline,
           thickness: ShellTokens.hairline,
@@ -2038,7 +2144,17 @@ class _ConversationPaneState extends State<_ConversationPane> {
                                     'worldchat.quote.$threadId#$replyNum',
                                   ),
                             addressedChips: chips,
+                            attachments:
+                                (beat['attachments'] as List? ?? const [])
+                                    .cast<Map>(),
                             beatSuffix: '$threadId#${beat['beat']}',
+                            // The linkifier v1: the pane's service
+                            // facts decide resolvability; a tap rides
+                            // the shell's ONE router (the
+                            // conversation-surface lane).
+                            refResolves: _beatRefResolves,
+                            onOpenSurface: (final surfaceId) =>
+                                _openConversationLane(context, surfaceId),
                             // Wave F — the beat's display name is an
                             // actor affordance too: same seam (and same
                             // ViewScope fallback) as the members popover.
@@ -2264,6 +2380,17 @@ class _ConversationPaneState extends State<_ConversationPane> {
                   ),
                   onPressed: () => unawaited(_openAttachMenu()),
                 ),
+                // The image share (native-image-assets): pick → world
+                // assets → one media-attachment beat.
+                IconButton(
+                  key: const ValueKey('worldchat.shareImage'),
+                  tooltip: context.l10n.attachImage,
+                  visualDensity: VisualDensity.compact,
+                  iconSize: 18,
+                  style: chromeIconButtonStyle(context),
+                  icon: const Icon(Icons.image_outlined),
+                  onPressed: () => unawaited(_shareImage()),
+                ),
                 Expanded(
                   child: Semantics(
                     label: 'worldchat.composer',
@@ -2333,6 +2460,8 @@ class _ConversationHeader extends StatefulWidget {
     required this.participants,
     required this.showPresence,
     required this.presenceOnline,
+    this.threadsToggle,
+    this.threadsOpen = false,
   });
 
   final RealmChatService service;
@@ -2345,6 +2474,13 @@ class _ConversationHeader extends StatefulWidget {
   final List<String> participants;
   final bool showPresence;
   final bool presenceOnline;
+
+  /// The threads browser's toggle (channel panes only; null keeps the
+  /// affordance honestly absent — the pane owns the panel's state).
+  final VoidCallback? threadsToggle;
+
+  /// The browser's visible state (the toggle's open tint).
+  final bool threadsOpen;
 
   @override
   State<_ConversationHeader> createState() => _ConversationHeaderState();
@@ -2390,7 +2526,6 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
                 // (the right-anchored recipe belongs to the picker on
                 // the strip's right edge — one law, two edges).
                 targetAnchor: Alignment.bottomLeft,
-                followerAnchor: Alignment.topLeft,
                 offset: const Offset(0, 6),
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -2441,6 +2576,7 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
     // the mark or name hosts the people view on that actor. Channels
     // and group topics are not one identity — they stay inert.
     final onFocusActor = ViewScope.of(context)?.onFocusActor;
+    final threadsToggle = widget.threadsToggle;
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 5, 8, 5),
       child: Row(
@@ -2492,6 +2628,17 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
             ),
           ],
           const Spacer(),
+          // The threads browser's affordance (channel panes only — the
+          // pane passes null elsewhere): the quiet text mark beside the
+          // card button, the same 22px grammar.
+          if (threadsToggle != null) ...[
+            _ThreadsToggle(
+              open: widget.threadsOpen,
+              label: context.l10n.worldChatThreadsToggle,
+              onTap: threadsToggle,
+            ),
+            const SizedBox(width: 6),
+          ],
           _CardButton(
             key: const ValueKey('worldchat.card'),
             open: _cardEntry != null,
@@ -2637,6 +2784,229 @@ class _CardButton extends StatelessWidget {
   );
 }
 
+/// The threads browser's header affordance (the _CardButton grammar at
+/// text width): a quiet label on the shell's hairline — muted ink at
+/// rest, the accent only while the panel is open (DESIGN: chrome never
+/// shouts, no attention-seeking animation). The Semantics name IS the
+/// widget key (DESIGN §6).
+class _ThreadsToggle extends StatelessWidget {
+  const _ThreadsToggle({
+    required this.open,
+    required this.label,
+    required this.onTap,
+  });
+
+  final bool open;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    label: 'worldchat.threads.toggle',
+    hint: label,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        key: const ValueKey('worldchat.threads.toggle'),
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          height: 22,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: open ? context.la.accent : context.shellHairline,
+            ),
+            borderRadius: BorderRadius.circular(6),
+            color: open ? context.shellSelected : null,
+          ),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              fontSize: 11,
+              color: open ? context.la.accent : context.shellMuted,
+              fontWeight: open ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
+/// left the rooms column; they surface Discord-threads-style INSIDE
+/// the channel view). One compact panel under the conversation header,
+/// two labelled groups over the service's LIVE getters — no caching,
+/// no polling (the service's notify is the freshness signal):
+/// "Threads" — the work threads spawned from THIS channel
+/// ([RealmChatService.workThreadsOf]); "Rooms" — the watchable
+/// actor↔actor and plain group threads ([RealmChatService.roomThreads],
+/// the topic or the honest raw id). Every row opens its `room:<id>` tab
+/// through the shell's ONE router (the work cards' lane). No work
+/// threads and no rooms renders one quiet line — honest absence, never
+/// a fake list.
+class _ThreadsBrowserPanel extends StatelessWidget {
+  const _ThreadsBrowserPanel({
+    required this.service,
+    required this.parentThreadId,
+    required this.onOpenThread,
+  });
+
+  final RealmChatService service;
+  final String parentThreadId;
+  final ValueChanged<String> onOpenThread;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final workThreads = service.workThreadsOf(parentThreadId);
+    final rooms = service.roomThreads;
+    return Container(
+      key: const ValueKey('worldchat.threads.panel'),
+      decoration: BoxDecoration(
+        color: context.shellField,
+        border: Border(bottom: BorderSide(color: context.shellHairline)),
+      ),
+      padding: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (workThreads.isEmpty && rooms.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(left: 8, top: 2),
+              child: Text(
+                l10n.worldChatThreadsEmpty,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: context.shellMuted,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            )
+          else ...[
+            if (workThreads.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(left: 8, bottom: 2),
+                child: Text(
+                  l10n.worldChatThreadsGroup,
+                  style: shellSectionLabel(context),
+                ),
+              ),
+              for (final link in workThreads)
+                _ThreadsRow(
+                  rowKey: 'worldchat.threads.row.work.${link.workThreadId}',
+                  title: link.name,
+                  icon: Icons.alt_route_outlined,
+                  onTap: () => onOpenThread(link.workThreadId),
+                ),
+            ],
+            if (rooms.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(left: 8, bottom: 2),
+                child: Text(
+                  l10n.worldChatRoomsGroup,
+                  style: shellSectionLabel(context),
+                ),
+              ),
+              for (final thread in rooms)
+                _ThreadsRow(
+                  rowKey: 'worldchat.threads.row.room.${thread['threadId']}',
+                  title: _roomTitle(service, thread),
+                  icon: Icons.forum_outlined,
+                  onTap: () => onOpenThread('${thread['threadId']}'),
+                ),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// One room row's title: the projection's topic, else the honest raw
+/// thread id (the rooms-column row's grammar — the service's own
+/// [RealmChatService.topicOf] is the fallback lookup).
+String _roomTitle(
+  final RealmChatService service,
+  final Map<String, Object?> thread,
+) {
+  final topic = thread['topic'] as String?;
+  if (topic != null && topic.isNotEmpty) return topic;
+  final threadId = '${thread['threadId']}';
+  return service.topicOf(threadId) ?? threadId;
+}
+
+/// One browser row: the mark, the title, the hover fill — the
+/// [_RoomsRow] grammar at compact height. The Semantics name IS the
+/// widget key (DESIGN §6); the human title rides the hint.
+class _ThreadsRow extends StatefulWidget {
+  const _ThreadsRow({
+    required this.rowKey,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String rowKey;
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  State<_ThreadsRow> createState() => _ThreadsRowState();
+}
+
+class _ThreadsRowState extends State<_ThreadsRow> {
+  var _hovering = false;
+
+  @override
+  Widget build(final BuildContext context) {
+    final fill = _hovering ? context.shellHover : null;
+    return Semantics(
+      button: true,
+      label: widget.rowKey,
+      hint: widget.title,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (final _) => setState(() => _hovering = true),
+        onExit: (final _) => setState(() => _hovering = false),
+        child: GestureDetector(
+          key: ValueKey(widget.rowKey),
+          behavior: HitTestBehavior.opaque,
+          onTap: widget.onTap,
+          child: Container(
+            height: 26,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: fill,
+              borderRadius: BorderRadius.circular(ShellTokens.radius),
+            ),
+            child: Row(
+              children: [
+                Icon(widget.icon, size: 13, color: context.shellMuted),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontSize: 12,
+                      color: context.shellMuted,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// The actor-card popover (the HUD law's other half): the facts a
 /// debugger needs, mono 10.5px, one tap away — brain, kind·role,
 /// health (the palette rung's own verdict), seat (who owns the loop),
@@ -2706,13 +3076,19 @@ class _ActorCardState extends State<_ActorCard> {
             ),
             saveKey: const ValueKey('worldchat.card.save'),
             onCancel: () => setState(() => _editing = false),
+            initialBrainSet:
+                service.brainSets[other.actorId] ?? const <String>[],
+            initialSelfBind:
+                (service.selfBinds[other.actorId] ?? 'allow') != 'deny',
             onSave:
                 ({
-                  required final String displayName,
-                  required final String role,
-                  required final String systemPrompt,
-                  required final String brainRef,
-                  required final String? avatar,
+                  required final displayName,
+                  required final role,
+                  required final systemPrompt,
+                  required final brainRef,
+                  required final avatar,
+                  required final brainSet,
+                  required final selfBind,
                 }) {
                   unawaited(
                     service
@@ -2723,6 +3099,8 @@ class _ActorCardState extends State<_ActorCard> {
                           systemPrompt: systemPrompt,
                           brainRef: brainRef,
                           avatar: avatar,
+                          brainSet: brainSet,
+                          selfBind: selfBind ? 'allow' : 'deny',
                         )
                         .then((final _) => onClose()),
                   );
@@ -2872,10 +3250,13 @@ class _MessageRow extends StatefulWidget {
     required this.text,
     required this.showHeader,
     required this.beatSuffix,
+    required this.refResolves,
+    required this.onOpenSurface,
     this.at,
     this.replyQuote,
     this.replyQuoteKey,
     this.addressedChips = const <({String id, String name})>[],
+    this.attachments = const <Map>[],
     this.onTapActor,
     this.onReply,
     this.onNewThread,
@@ -2892,9 +3273,23 @@ class _MessageRow extends StatefulWidget {
   final Key? replyQuoteKey;
   final List<({String id, String name})> addressedChips;
 
+  /// The beat's raw `media v1` attachments (native-image-assets
+  /// conversation wave): rendered as media cards ABOVE the text, the
+  /// alt text as semantics, the honest placeholder when the file is
+  /// not resolvable here.
+  final List<Map> attachments;
+
   /// `<threadId>#<beat>` — the hover cluster's key family (the beat
   /// row's own suffix, so every action key is as unique as the beat).
   final String beatSuffix;
+
+  /// The linkifier v1's resolvability oracle (the pane's service
+  /// facts): a reference naming no live object stays plain text.
+  final bool Function(BeatRefKind kind, String id) refResolves;
+
+  /// Where a tapped reference goes (the shell's ONE router through the
+  /// pane's conversation-surface lane).
+  final void Function(String surfaceId) onOpenSurface;
 
   /// Wave F — where a tapped display name goes (the actor's info
   /// surface); null keeps the name inert (honest absence).
@@ -3030,14 +3425,74 @@ class _MessageRowState extends State<_MessageRow> {
     );
   }
 
+  /// The beat's body text (the linkifier v1, owner law 2026-11-16):
+  /// resolvable references — `room:`/`channel:`/`dm:` tokens, bare
+  /// minted `thread-` ids — render as tappable spans on the app's link
+  /// ink and open their surface through the shell's ONE router; every
+  /// non-resolvable token stays plain text (honest absence, never a
+  /// dead link). A beat with no resolvable reference renders the plain
+  /// Text, byte-identical to before.
+  Widget _beatText(final BuildContext context) {
+    final theme = Theme.of(context);
+    final segments = linkifyBeatText(text, resolves: widget.refResolves);
+    if (segments.length == 1 && segments.single.link == null) {
+      return Text(text, style: theme.textTheme.bodyMedium);
+    }
+    return Text.rich(
+      TextSpan(
+        style: theme.textTheme.bodyMedium,
+        children: [
+          for (final segment in segments)
+            if (segment.link == null)
+              TextSpan(text: segment.text)
+            else
+              TextSpan(
+                text: segment.text,
+                style: TextStyle(color: theme.colorScheme.primary),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () =>
+                      widget.onOpenSurface(segment.link!.surfaceId),
+              ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(final BuildContext context) {
     final theme = Theme.of(context);
     final muted = context.shellMuted;
     final accent = actorColor(profile.actorId);
+    // The media branch (native-image-assets Wave D2): a beat whose
+    // text IS an `asset-media v1` header renders as the media card —
+    // pixels from the file, alt as semantics, honest placeholder when
+    // the sandbox root is unknown here. Every other beat is text,
+    // linkified (the linkifier v1) over the same bodyMedium style.
+    final mediaBeat = MediaBeat.tryParse(text);
+    // The STRUCTURED attachments (the media v1 vocabulary) render
+    // first — one honest card per entry; the header-in-text parse
+    // stays the fallback for beats that only carry the projection.
+    final mediaCards = [
+      for (final entry in widget.attachments)
+        if (mediaAttachmentOf(entry) != null)
+          MediaAssetCard.fromAttachment(
+            Map<String, Object?>.from(entry),
+          ),
+    ];
     final body = Padding(
       padding: const EdgeInsets.only(left: ShellTokens.messageGutter),
-      child: Text(text, style: theme.textTheme.bodyMedium),
+      child: mediaCards.isEmpty
+          ? mediaBeat == null
+                ? _beatText(context)
+                : MediaAssetCard.fromBeat(mediaBeat)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...mediaCards,
+                if (mediaBeat == null && text.trim().isNotEmpty)
+                  _beatText(context),
+              ],
+            ),
     );
     final Widget content;
     if (!showHeader) {

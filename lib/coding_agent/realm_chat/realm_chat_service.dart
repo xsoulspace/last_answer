@@ -20,10 +20,10 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/work_thread_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -122,9 +122,25 @@ final class RealmChatService extends ChangeNotifier {
   /// vocabulary, written by `actor_bind`): the defer law's second half.
   final Map<String, String> _realmBrainCasts = {};
 
+  /// ADR 0143 — actorId → the row's ordered `brainSet` (its own model
+  /// subset and self-bind scope; empty = the world policy whole).
+  final Map<String, List<String>> _realmBrainSets = {};
+
+  /// ADR 0143 — actorId → the row's `selfBind` override
+  /// (`allow` | `deny`; absent = the global toggle decides).
+  final Map<String, String> _realmSelfBinds = {};
+
   /// The binding map as a read model (the Models surface's Bindings and
   /// Observe lenses join actors to their cast rows through it).
   Map<String, String> get brainCasts => Map.unmodifiable(_realmBrainCasts);
+
+  /// The ordered brain-set read model (the actor card's Brain section
+  /// seeds from it — ADR 0143).
+  Map<String, List<String>> get brainSets =>
+      Map.unmodifiable(_realmBrainSets);
+
+  /// The per-actor self-rebind override read model (ADR 0143).
+  Map<String, String> get selfBinds => Map.unmodifiable(_realmSelfBinds);
 
   /// The defer predicate's BINDING half: whether this actor is bound in
   /// the daemon's own vocabulary (`cast:` brainRefs and durable
@@ -165,6 +181,32 @@ final class RealmChatService extends ChangeNotifier {
                 (final record) => MapEntry(
                   '${record['actorId']}',
                   record['brainCast']! as String,
+                ),
+              ),
+        );
+      _realmBrainSets
+        ..clear()
+        ..addAll(<String, List<String>>{
+          for (final record in records.values)
+            '${record['actorId']}': <String>[
+              if (record['brainSet'] is List)
+                for (final entry in record['brainSet']! as List)
+                  if (entry is String && entry.isNotEmpty) entry,
+            ],
+        });
+      _realmSelfBinds
+        ..clear()
+        ..addEntries(
+          records.values
+              .where(
+                (final record) =>
+                    record['selfBind'] is String &&
+                    (record['selfBind']! as String).isNotEmpty,
+              )
+              .map(
+                (final record) => MapEntry(
+                  '${record['actorId']}',
+                  record['selfBind']! as String,
                 ),
               ),
         );
@@ -546,6 +588,8 @@ final class RealmChatService extends ChangeNotifier {
     String? systemPrompt,
     String? brainRef,
     String? avatar,
+    List<String>? brainSet,
+    String? selfBind,
   }) async {
     final world = _world;
     final roster = _roster;
@@ -564,6 +608,8 @@ final class RealmChatService extends ChangeNotifier {
         systemPrompt: systemPrompt,
         brainRef: brainRef,
         avatar: avatar,
+        brainSet: brainSet,
+        selfBind: selfBind,
       );
     } on UnknownActorException {
       _error = 'unknown_actor:$actorId';
@@ -697,11 +743,29 @@ final class RealmChatService extends ChangeNotifier {
   /// The open two-member thread {human, [actorId]}, null when no DM
   /// exists yet. Closed threads are not reused (says refuse there), so
   /// a re-opened DM gets a fresh thread.
+  ///
+  /// A DM is a PLAIN two-member thread. A thread that belongs to another
+  /// surface is never a DM-reuse key, even when it carries the same two
+  /// participants: a channel-backed room (live or archived — the same
+  /// skip [classifyThread] makes) or a project-sealed work thread (ADR
+  /// 0129). Without this, a leftover machine-minted room shadows the DM
+  /// lookup and the People panel DM button lands in it (seen live
+  /// 2026-11-16: DM on cache-probe opened `dogfood-1794173922369`, a
+  /// dogfood-leg channel). Archiving alone cannot fix the class — an
+  /// archived channel's thread stays open in the journal, so the skip
+  /// must ride [_archivedChannelThreadIds] exactly like [classifyThread].
   String? dmThreadOf(final String actorId) {
     final human = humanActorId;
     if (human == null || actorId == human) return null;
+    final workThreadIds = {for (final link in _workThreads) link.workThreadId};
     for (final thread in _threads) {
       if (thread['closed'] == true) continue;
+      final threadId = '${thread['threadId'] ?? ''}';
+      if (channelByThreadId(threadId) != null ||
+          _archivedChannelThreadIds.contains(threadId) ||
+          workThreadIds.contains(threadId)) {
+        continue;
+      }
       final participants =
           (thread['participants'] as List? ?? const <Object?>[])
               .cast<String>()
@@ -736,26 +800,31 @@ final class RealmChatService extends ChangeNotifier {
   /// channel left the lists; its thread stays in the journal). The
   /// human watches them like any room and joins by addressing (the
   /// mention grammar already exists); the picker and palette list them.
+  ///
+  /// The kind derivation is the harness spaces layer's [classifyThread]
+  /// (harness ADR 0144) — LA classifies with the same words the agents
+  /// do; this getter is only the projection over it.
   List<Map<String, Object?>> get roomThreads {
     final human = humanActorId;
+    final liveChannelThreadIds = <String>{
+      for (final channel in _channels) channel.threadId,
+    };
+    bool isRoom(final Map<String, Object?> thread) =>
+        classifyThread(
+          threadId: '${thread['threadId'] ?? ''}',
+          participants: (thread['participants'] as List? ?? const <Object?>[])
+              .cast<String>()
+              .toSet(),
+          closed: thread['closed'] == true,
+          humanActorId: human,
+          liveChannelThreadIds: liveChannelThreadIds,
+          archivedChannelThreadIds: _archivedChannelThreadIds,
+        ) ==
+        ConversationKind.room;
     return [
       for (final thread in _threads)
-        if (thread['closed'] != true && !_isDmOrChannel(thread, human)) thread,
+        if (thread['closed'] != true && isRoom(thread)) thread,
     ];
-  }
-
-  bool _isDmOrChannel(final Map<String, Object?> thread, final String? human) {
-    final threadId = '${thread['threadId'] ?? ''}';
-    // An ARCHIVED channel's thread is still a channel thread — it must
-    // not leak back into [roomThreads] as a plain room (closing never
-    // destroys the journal thread, it only leaves the lists).
-    if (_archivedChannelThreadIds.contains(threadId)) return true;
-    if (channelByThreadId(threadId) != null) return true;
-    if (human == null) return false;
-    final participants = (thread['participants'] as List? ?? const <Object?>[])
-        .cast<String>()
-        .toSet();
-    return participants.length == 2 && participants.contains(human);
   }
 
   /// Opens the DM with [actorId]: the existing two-member thread with
@@ -1492,6 +1561,7 @@ final class RealmChatService extends ChangeNotifier {
     final int? replyTo,
     final List<String>? addressedTo,
     final String? threadId,
+    final List<Map<String, Object?>> attachments = const [],
   }) async {
     final world = _world;
     final human = _human;
@@ -1516,6 +1586,7 @@ final class RealmChatService extends ChangeNotifier {
         text: trimmed,
         addressedTo: addressedTo ?? others,
         replyTo: replyTo,
+        attachments: attachments,
       );
       // The in-process shortcut: our own append dispatches immediately
       // (the journal watch covers everyone else's).

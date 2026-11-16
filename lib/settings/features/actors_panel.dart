@@ -236,6 +236,12 @@ class _ActorRowState extends State<_ActorRow> {
                       context.read<WorldStateService?>()?.transportOfRung(id),
                 ),
                 onCancel: () => setState(() => _editing = false),
+                initialBrainSet:
+                    widget.service.brainSets[actor.actorId] ??
+                    const <String>[],
+                initialSelfBind:
+                    (widget.service.selfBinds[actor.actorId] ?? 'allow') !=
+                    'deny',
                 onSave:
                     ({
                       required displayName,
@@ -243,6 +249,8 @@ class _ActorRowState extends State<_ActorRow> {
                       required systemPrompt,
                       required brainRef,
                       required avatar,
+                      required brainSet,
+                      required selfBind,
                     }) {
                       unawaited(
                         widget.service
@@ -253,6 +261,8 @@ class _ActorRowState extends State<_ActorRow> {
                               systemPrompt: systemPrompt,
                               brainRef: brainRef,
                               avatar: avatar,
+                              brainSet: brainSet,
+                              selfBind: selfBind ? 'allow' : 'deny',
                             )
                             .then((final ok) {
                               if (mounted && ok) {

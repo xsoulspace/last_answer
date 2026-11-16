@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core.dart';
-import 'file_service/file_service_i.dart';
 
 @immutable
 class ProjectSharer {

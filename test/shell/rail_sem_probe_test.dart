@@ -87,11 +87,12 @@ void main() {
       expect(snapshot, contains(key));
     }
     // The chat-first projection is the first-entry default: the docked
-    // rooms column is part of the snapshot contract.
+    // rooms column is part of the snapshot contract (the rooms section
+    // left the column — owner law 2026-11-16; rooms live in the
+    // channel view's threads browser).
     for (final key in const [
       'rooms.section.dms',
       'rooms.section.channels',
-      'rooms.section.rooms',
     ]) {
       expect(snapshot, contains(key));
     }

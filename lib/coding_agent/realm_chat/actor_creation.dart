@@ -81,6 +81,8 @@ Future<ActorProfile> updateActorIdentity({
   String? systemPrompt,
   String? brainRef,
   String? avatar,
+  List<String>? brainSet,
+  String? selfBind,
 }) async {
   final current = roster.get(actorId);
   if (current == null) {
@@ -107,6 +109,10 @@ Future<ActorProfile> updateActorIdentity({
     role: updated.role,
     systemPrompt: updated.systemPrompt,
     avatar: avatar,
+    // ADR 0143 — the actor's own model set and self-rebind override
+    // ride the same one edit mechanism (null preserves, empty clears).
+    brainSet: brainSet,
+    selfBind: selfBind,
   );
   return updated;
 }

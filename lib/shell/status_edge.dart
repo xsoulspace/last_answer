@@ -85,7 +85,6 @@ final class StatusEdge extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: context.shellHairline,
-            width: ShellTokens.hairline,
           ),
         ),
       ),

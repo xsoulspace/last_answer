@@ -169,6 +169,8 @@ extension ProjectsNotifierX on ProjectsNotifier {
   Future<void> saveToFile(
     final BuildContext context, {
     required final bool useTimestampForBackupFilename,
+    final Future<List<BackupAssetFile>> Function(DbSaveModel dbSave)?
+    collectAssets,
   }) async {
     _setFileLoading(true);
 
@@ -176,13 +178,29 @@ extension ProjectsNotifierX on ProjectsNotifier {
       final toasts = Toasts.of(context);
       final l10n = context.l10n;
       final dbSave = await _getDbSave();
-      final filename = useTimestampForBackupFilename
+      final jsonName = useTimestampForBackupFilename
           ? FileServiceI.filenameWithTimestamp
           : FileServiceI.filename;
-      final wasSaved = await _fileService.saveFile(
-        data: dbSave.toJson(),
-        filename: filename,
+      // The asset-carrying backup is a ZIP (dbSave.json + assets/ —
+      // native-image-assets Wave D1); a collectAssets sink that finds
+      // no files keeps the legacy JSON path byte-identical.
+      final files = await collectAssets?.call(dbSave) ?? const [];
+      final zipBytes = BackupZip.encode(
+        dbSaveJson: dbSave.toJson(),
+        files: files,
       );
+      final bool wasSaved;
+      if (zipBytes == null) {
+        wasSaved = await _fileService.saveFile(
+          data: dbSave.toJson(),
+          filename: jsonName,
+        );
+      } else {
+        wasSaved = await _fileService.saveFileBytes(
+          bytes: zipBytes,
+          filename: jsonName.replaceFirst('.json', '.zip'),
+        );
+      }
       if (!wasSaved) return;
       await toasts.showBottomToast(message: l10n.fileSaved);
     } finally {
@@ -190,7 +208,10 @@ extension ProjectsNotifierX on ProjectsNotifier {
     }
   }
 
-  Future<void> loadFromFile(final BuildContext context) async {
+  Future<void> loadFromFile(
+    final BuildContext context, {
+    final Future<int> Function(List<BackupAssetFile> files)? restoreAssets,
+  }) async {
     _setFileLoading(true);
     final appNotifier = context.read<AppNotifier>();
     final modals = Modals.of(context);
@@ -203,8 +224,13 @@ extension ProjectsNotifierX on ProjectsNotifier {
         description: l10n.byLoadingFileWarning,
       );
       if (!shouldContinue) return;
-      final dbJson = await _fileService.openFile();
-      if (dbJson.isEmpty) return;
+      final backupBytes = await _fileService.openFileBytes();
+      if (backupBytes == null || backupBytes.isEmpty) return;
+      final isZip = backupBytes.length >= 4 &&
+          backupBytes[0] == 0x50 &&
+          backupBytes[1] == 0x4b &&
+          backupBytes[2] == 0x03 &&
+          backupBytes[3] == 0x04;
 
       shouldContinue = await modals.showWarningDialog(
         title: l10n.confirmProjectsOwerwrite,
@@ -213,9 +239,30 @@ extension ProjectsNotifierX on ProjectsNotifier {
         description: l10n.beCarefulItsInreversableAction,
       );
       if (!shouldContinue) return;
-      final dbSave = DbSaveModel.fromJson(dbJson);
+      // The zip magic (`PK\x03\x04`) separates the asset-carrying
+      // backup from the legacy JSON one — both stay loadable forever.
+      // Zip asset files restore through the app-side sink; a JSON
+      // backup (or an absent sink) restores rows only, and rows whose
+      // files are missing keep the honest placeholder.
+      List<BackupAssetFile> assetFiles = const [];
+      final DbSaveModel dbSave;
+      if (isZip) {
+        final bundle = BackupZip.decode(backupBytes);
+        dbSave = DbSaveModel.fromJson(bundle.dbSaveJson);
+        assetFiles = bundle.files;
+      } else {
+        dbSave = DbSaveModel.fromJson(
+          const JsonDecoder().convert(
+                const Utf8Decoder().convert(backupBytes.toList()),
+              )
+              as Map<String, dynamic>,
+        );
+      }
       if (dbSave.isEmpty) return;
       await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
+      if (restoreAssets != null && assetFiles.isNotEmpty) {
+        await restoreAssets(assetFiles);
+      }
     } finally {
       _setFileLoading(false);
     }

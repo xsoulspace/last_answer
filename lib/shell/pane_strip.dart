@@ -51,7 +51,7 @@ library;
 import 'package:ecsly_flutter/ecsly_flutter.dart';
 import 'package:flutter/gestures.dart' show kMiddleMouseButton;
 
-import 'package:lastanswer/coding_agent/realm_chat/channel_registry.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
@@ -505,7 +505,7 @@ final class PaneStrip extends StatelessWidget {
 /// The overflow control's reserved slot (px, the Wave I cap formula):
 /// ONE compressed-width slot at the strip's tail. The pill inside is
 /// constrained to fit it (max 36 + 2×2 margin).
-const double _kOverflowSlot = 40.0;
+const double _kOverflowSlot = 40;
 
 /// The strip's overflow control (the Wave I law): a trailing pill
 /// naming the hidden count ("+N") whose tap opens the hidden tabs'
@@ -938,8 +938,7 @@ final class _StripTabState extends State<_StripTab> {
                   if (widget.compact) ...[
                     if (glyph != null)
                       glyph
-                    else if (badge != null)
-                      badge,
+                    else ?badge,
                   ] else ...[
                     if (widget.leading != null) ...[
                       widget.leading!,

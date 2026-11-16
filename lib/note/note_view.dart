@@ -2,6 +2,7 @@ import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
+import 'package:lastanswer/note/widgets/note_asset_strip.dart';
 import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
 
 class NoteView extends StatefulWidget {
@@ -68,6 +69,12 @@ class NoteViewBody extends StatelessWidget {
                   ),
                 ),
                 if (PlatformInfo.isNativeWebDesktop) const Gap(48),
+                // Wave D1 — the note's attachments: thumbnails above
+                // the safe area, actions on tap (edit/caption/remove).
+                NoteAssetStrip(
+                  note: bloc.note,
+                  onAssetsChanged: bloc.setAssets,
+                ),
                 if (!isSpecialEmojiKeyboardOpen) const BottomSafeArea(),
               ],
             ),

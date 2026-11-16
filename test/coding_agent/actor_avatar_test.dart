@@ -249,10 +249,10 @@ void main() {
   group('the owner-set mark (wave N2)', () {
     testWidgets('a curated glyph renders its Icon', (final tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: ActorAvatar(
-              profile: const ActorProfile(
+              profile: ActorProfile(
                 actorId: 'scout',
                 displayName: 'Scout',
                 avatar: 'spark',
@@ -274,12 +274,12 @@ void main() {
     testWidgets('a raw emoji renders verbatim; absent keeps the '
         'derivation', (final tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: Column(
               children: [
                 ActorAvatar(
-                  profile: const ActorProfile(
+                  profile: ActorProfile(
                     actorId: 'owl',
                     displayName: 'Owl',
                     avatar: '🦉',
@@ -287,7 +287,7 @@ void main() {
                   size: 40,
                 ),
                 ActorAvatar(
-                  profile: const ActorProfile(
+                  profile: ActorProfile(
                     actorId: 'bare',
                     displayName: 'Bare',
                   ),

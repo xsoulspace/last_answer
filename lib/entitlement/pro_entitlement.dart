@@ -27,10 +27,9 @@ import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_found
 /// The Pro entitlement: `isSubscribed OR devOverride`.
 class ProEntitlement extends ChangeNotifier {
   ProEntitlement({
-    final SubscriptionStatusResource? subscriptionStatus,
+    this._subscriptionStatus,
     final Future<SharedPreferences> Function()? preferences,
-  }) : _subscriptionStatus = subscriptionStatus,
-       _preferences = preferences ?? SharedPreferences.getInstance {
+  }) : _preferences = preferences ?? SharedPreferences.getInstance {
     _subscriptionStatus?.addListener(_onSubscriptionChanged);
     unawaited(load());
   }

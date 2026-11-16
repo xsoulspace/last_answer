@@ -58,15 +58,13 @@ void main() {
         find.byKey(const Key('agent_config.chat.provider')),
         findsOneWidget,
       );
-      expect(
-        find.byKey(const Key('agent_config.chat.model')),
-        findsOneWidget,
-      );
+      expect(find.byKey(const Key('agent_config.chat.model')), findsOneWidget);
     },
   );
 
-  testWidgets('editing a server row and saving persists to the store',
-      (tester) async {
+  testWidgets('editing a server row and saving persists to the store', (
+    tester,
+  ) async {
     final store = AgentConfigStore(
       persistence: InMemoryAgentConfigPersistence(),
     );

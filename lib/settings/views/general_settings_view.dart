@@ -34,7 +34,6 @@ class GeneralSettingsViewBody extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     final projectsNotifier = context.watch<ProjectsNotifier>();
     final bloc = context.watch<GeneralSettingsBloc>();
     final userNotifier = context.watch<UserNotifier>();
@@ -75,22 +74,18 @@ class GeneralSettingsViewBody extends StatelessWidget {
           leftColumnWidth: leftColumnWidth,
           child: const StorageBackendsButton(),
         ),
-        Divider(
-          color: theme.highlightColor,
-          height: 24,
-          endIndent: 10,
-          indent: 10,
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: LaHairline(indent: 10, endIndent: 10),
         ),
         SettingsListTile(
           titleText: context.l10n.githubSync,
           leftColumnWidth: leftColumnWidth,
           child: const GithubSyncButton(),
         ),
-        Divider(
-          color: theme.highlightColor,
-          height: 24,
-          endIndent: 10,
-          indent: 10,
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: LaHairline(indent: 10, endIndent: 10),
         ),
         SettingsListTile(
           titleText: context.l10n.exportImportData,
@@ -98,11 +93,9 @@ class GeneralSettingsViewBody extends StatelessWidget {
           child: const ProjectsExportImportButtons(),
         ),
 
-        Divider(
-          color: theme.highlightColor,
-          height: 24,
-          endIndent: 10,
-          indent: 10,
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: LaHairline(indent: 10, endIndent: 10),
         ),
         Text(context.l10n.note),
 
@@ -163,8 +156,9 @@ class _YourProfileButton extends StatelessWidget {
     final human = service?.roster?.all.firstWhereOrNull(
       (final actor) => actor.kind == ActorKind.human,
     );
-    return TextButton.icon(
+    return LaButton(
       key: const ValueKey('settings.yourProfile'),
+      variant: LaButtonVariant.ghost,
       onPressed: () {
         final scope = ViewScope.of(context);
         if (scope == null || human == null) return;
@@ -173,7 +167,7 @@ class _YourProfileButton extends StatelessWidget {
       icon: human == null
           ? const Icon(Icons.person_outline, size: 18)
           : ActorAvatar(profile: human, size: 20),
-      label: Text(human?.displayName ?? context.l10n.actorsNoneYet),
+      label: human?.displayName ?? context.l10n.actorsNoneYet,
     );
   }
 }

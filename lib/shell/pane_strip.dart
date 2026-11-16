@@ -513,7 +513,7 @@ const double _kOverflowSlot = 40;
 /// count. A row OPENS its tab through [onOpen] (the strip's ordinary
 /// select path); rows never drag — hidden tabs are simply not in the
 /// tree, so the wave-C drag law belongs to the visible pills alone.
-/// The menu is the rooms-column context menu's twin (`showMenu`, the
+/// The menu is the rooms-column context menu's twin (`showLaMenuAt`, the
 /// §2.3 Semantics-name-is-key contract on the control).
 final class _OverflowControl extends StatefulWidget {
   const _OverflowControl({
@@ -543,33 +543,23 @@ final class _OverflowControl extends StatefulWidget {
 }
 
 final class _OverflowControlState extends State<_OverflowControl> {
-  var _hovering = false;
-
-  Future<void> _openMenu() async {
-    final overlay =
-        Overlay.of(context).context.findRenderObject()! as RenderBox;
-    final box = context.findRenderObject()! as RenderBox;
-    final origin = box.localToGlobal(Offset(0, box.size.height));
-    final choice = await showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        origin.dx,
-        origin.dy,
-        overlay.size.width - origin.dx - box.size.width,
-        overlay.size.height - origin.dy,
+  // NOTE (test-pass sweep 2026-11-16): the first conversion used
+  // imperative showLaMenuAt, whose edge-flip estimates width from
+  // `minWidth` — wide row children (title + glyph + count) then painted
+  // past the window's right edge and the menu was untappable. The
+  // trigger sits at the strip's right tail, so the kit grammar for it
+  // is the declarative LaMenuAnchor with `alignRight` (the menu's right
+  // edge pins to the trigger's right edge and opens leftward). The
+  // frozen `view.strip.overflow.item.<id>` keys, the open-on-choice
+  // close and the hidden-list facts are unchanged.
+  List<LaMenuEntry> get _entries => [
+    for (final id in widget.hidden)
+      LaMenuItem(
+        key: ValueKey('view.strip.overflow.item.$id'),
+        child: _menuRow(id),
+        onPressed: () => widget.onOpen(id),
       ),
-      items: [
-        for (final id in widget.hidden)
-          PopupMenuItem<String>(
-            value: id,
-            key: ValueKey('view.strip.overflow.item.$id'),
-            height: 40,
-            child: _menuRow(id),
-          ),
-      ],
-    );
-    if (choice != null) widget.onOpen(choice);
-  }
+  ];
 
   /// ONE menu row: the kind glyph, the title (ellipsized), and the
   /// unread count — the numeric badge the compressed pill gave up
@@ -591,10 +581,7 @@ final class _OverflowControlState extends State<_OverflowControl> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             softWrap: false,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontSize: 12,
-              color: context.la.ink,
-            ),
+            style: context.laUi.compact.copyWith(color: context.laUi.ink),
           ),
         ),
         if (unread > 0) ...[
@@ -620,8 +607,8 @@ final class _OverflowControlState extends State<_OverflowControl> {
                 softWrap: false,
                 overflow: TextOverflow.clip,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: context.la.onAccent,
+                style: context.laUi.micro.copyWith(
+                  color: context.laUi.onAccent,
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                   height: 1.2,
@@ -639,32 +626,29 @@ final class _OverflowControlState extends State<_OverflowControl> {
     button: true,
     label: widget.label,
     hint: widget.tooltip,
-    child: Tooltip(
+    child: LaTooltip(
       message: widget.tooltip,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => setState(() => _hovering = true),
-        onExit: (final _) => setState(() => _hovering = false),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => unawaited(_openMenu()),
+      // The anchor owns the menu; the pill stays the trigger.
+      child: LaMenuAnchor.builder(
+        entries: _entries,
+        alignRight: true,
+        childBuilder: (final context, final anchor) => LaPressable(
+          onTap: anchor.toggle,
+          radius: BorderRadius.circular(ShellTokens.tabRadius),
+          margin: const EdgeInsets.symmetric(vertical: 3.5, horizontal: 2),
+          // The outer Semantics carries the §2.3 contract — frozen.
+          semanticsButton: false,
           child: Container(
             height: ShellTokens.tabHeight,
             constraints: const BoxConstraints(minWidth: 34, maxWidth: 36),
-            margin: const EdgeInsets.symmetric(vertical: 3.5, horizontal: 2),
             padding: const EdgeInsets.symmetric(horizontal: 6),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: _hovering ? context.shellHover : null,
-              borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
-            ),
             child: Text(
               '+${widget.count}',
               maxLines: 1,
               softWrap: false,
               overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontSize: 11,
+              style: context.laUi.micro.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.shellMuted,
               ),
@@ -687,37 +671,33 @@ final class _TabGhost extends StatelessWidget {
   final Widget? leading;
 
   @override
-  Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      height: ShellTokens.tabHeight,
-      constraints: const BoxConstraints(maxWidth: 176),
-      padding: const EdgeInsets.symmetric(horizontal: 9),
-      decoration: BoxDecoration(
-        color: context.la.surfaceRaised,
-        borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
-        boxShadow: shellFloatingShadow(context),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (leading != null) ...[leading!, const SizedBox(width: 6)],
-          Flexible(
-            child: Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontSize: 12,
-                color: context.la.ink,
-                fontWeight: FontWeight.w600,
-              ),
+  Widget build(final BuildContext context) => Container(
+    height: ShellTokens.tabHeight,
+    constraints: const BoxConstraints(maxWidth: 176),
+    padding: const EdgeInsets.symmetric(horizontal: 9),
+    decoration: BoxDecoration(
+      color: context.laUi.surfaceRaised,
+      borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
+      boxShadow: shellFloatingShadow(context),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (leading != null) ...[leading!, const SizedBox(width: 6)],
+        Flexible(
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.laUi.compact.copyWith(
+              color: context.laUi.ink,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }
 
 /// The trailing drop zone's hover affordance (the mockup's dashed
@@ -797,8 +777,6 @@ final class _StripTab extends StatefulWidget {
 }
 
 final class _StripTabState extends State<_StripTab> {
-  var _hovering = false;
-
   /// The badge SHAPE (the Wave I law): compressed → the fixed 6px dot
   /// (never text, so it can never stack); full → the numeric badge on
   /// fixed 14px height, one line, minWidth 14 — the squeeze that
@@ -840,8 +818,8 @@ final class _StripTabState extends State<_StripTab> {
           softWrap: false,
           overflow: TextOverflow.clip,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: context.la.onAccent,
+          style: context.laUi.micro.copyWith(
+            color: context.laUi.onAccent,
             fontSize: 9,
             fontWeight: FontWeight.w700,
             height: 1.2,
@@ -876,8 +854,6 @@ final class _StripTabState extends State<_StripTab> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final showClose = widget.focused || _hovering;
     final badge = _badgeSlot(context);
     // The compressed pill's glyph carries the dot on its corner (a
     // zero-extra-width Stack, so the 34px budget stands); a glyph-less
@@ -899,91 +875,93 @@ final class _StripTabState extends State<_StripTab> {
       // human title rides the hint.
       label: 'view.tab.${widget.surfaceId}',
       hint: 'tab ${widget.title}',
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => setState(() => _hovering = true),
-        onExit: (final _) => setState(() => _hovering = false),
-        child: Listener(
-          // Middle-click closes (the browser law), without disturbing
-          // the primary tap path.
-          onPointerDown: (final event) {
-            if (event.buttons == kMiddleMouseButton) widget.onClose();
-          },
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
+      child: Listener(
+        // Middle-click closes (the browser law), without disturbing
+        // the primary tap path.
+        onPointerDown: (final event) {
+          if (event.buttons == kMiddleMouseButton) widget.onClose();
+        },
+        // The context-menu gestures ride OUTSIDE the pressable: they
+        // need the event's globalPosition, which LaPressable's
+        // position-less callbacks do not carry (kit gap). The
+        // pressable's own detector never registers these, so the
+        // arena has exactly one claimant each.
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onSecondaryTapUp: (final details) =>
+              widget.onContext(widget.surfaceId, details.globalPosition),
+          onLongPressStart: (final details) =>
+              widget.onContext(widget.surfaceId, details.globalPosition),
+          child: LaPressable.builder(
             onTap: widget.onTap,
-            onSecondaryTapUp: (final details) =>
-                widget.onContext(widget.surfaceId, details.globalPosition),
-            onLongPressStart: (final details) =>
-                widget.onContext(widget.surfaceId, details.globalPosition),
-            child: Container(
-              height: ShellTokens.tabHeight,
-              constraints: BoxConstraints(maxWidth: widget.compact ? 42 : 176),
-              margin: const EdgeInsets.symmetric(vertical: 3.5),
-              padding: const EdgeInsets.symmetric(horizontal: 9),
-              decoration: BoxDecoration(
-                color: widget.focused
-                    ? context.la.surfaceRaised
-                    : _hovering
-                    ? context.shellHover
-                    : null,
-                borderRadius: BorderRadius.circular(ShellTokens.tabRadius),
-                // Wave K ONE-shadow law: the focused pill states itself
-                // through the raised fill only — shadows belong to
-                // floating layers (the ghost chip keeps the token).
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.compact) ...[
-                    if (glyph != null)
-                      glyph
-                    else ?badge,
-                  ] else ...[
-                    if (widget.leading != null) ...[
-                      widget.leading!,
-                      const SizedBox(width: 6),
-                    ],
-                    Flexible(
-                      child: Text(
-                        widget.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          fontSize: 12,
-                          color: widget.focused
-                              ? context.la.ink
-                              : context.shellMuted,
-                          fontWeight: widget.focused
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+            selected: widget.focused,
+            // The focused pill states itself through the RAISED fill
+            // (Wave K one-shadow law), not the ink-alpha selected wash.
+            selectedFill: context.laUi.surfaceRaised,
+            radius: BorderRadius.circular(ShellTokens.tabRadius),
+            margin: const EdgeInsets.symmetric(vertical: 3.5),
+            // The outer Semantics carries the §2.3 contract — frozen.
+            semanticsButton: false,
+            childBuilder: (final context, final state) {
+              final closeVisible = widget.focused || state.hovered;
+              return Container(
+                height: ShellTokens.tabHeight,
+                constraints: BoxConstraints(
+                  maxWidth: widget.compact ? 42 : 176,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 9),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.compact) ...[
+                      if (glyph != null)
+                        glyph
+                      else ?badge,
+                    ] else ...[
+                      if (widget.leading != null) ...[
+                        widget.leading!,
+                        const SizedBox(width: 6),
+                      ],
+                      Flexible(
+                        child: Text(
+                          widget.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.laUi.compact.copyWith(
+                            color: widget.focused
+                                ? context.laUi.ink
+                                : context.shellMuted,
+                            fontWeight: widget.focused
+                                ? FontWeight.w600
+                                : FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    if (badge != null) ...[
+                      if (badge != null) ...[
+                        const SizedBox(width: 5),
+                        badge,
+                      ],
+                    ],
+                    if (closeVisible) ...[
                       const SizedBox(width: 5),
-                      badge,
-                    ],
-                  ],
-                  if (showClose) ...[
-                    const SizedBox(width: 5),
-                    GestureDetector(
-                      key: ValueKey('view.tab.close.${widget.surfaceId}'),
-                      behavior: HitTestBehavior.opaque,
-                      onTap: widget.onClose,
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: Icon(
-                          Icons.close_outlined,
-                          size: 12,
-                          color: context.shellMuted,
+                      GestureDetector(
+                        key: ValueKey('view.tab.close.${widget.surfaceId}'),
+                        behavior: HitTestBehavior.opaque,
+                        onTap: widget.onClose,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: Icon(
+                            Icons.close_outlined,
+                            size: 12,
+                            color: context.shellMuted,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -993,7 +971,8 @@ final class _StripTabState extends State<_StripTab> {
 
 /// A strip control: the per-group chrome buttons (back/forward, split,
 /// fold) — 24px quiet glyphs, the §2.3 Semantics-name-is-key contract.
-final class _StripControl extends StatefulWidget {
+/// The hover fill rides the kit's ONE state layer ([LaPressable], v6).
+final class _StripControl extends StatelessWidget {
   const _StripControl({
     required this.icon,
     required this.label,
@@ -1010,42 +989,30 @@ final class _StripControl extends StatefulWidget {
   final VoidCallback onTap;
 
   @override
-  State<_StripControl> createState() => _StripControlState();
-}
-
-final class _StripControlState extends State<_StripControl> {
-  var _hovering = false;
-
-  @override
   Widget build(final BuildContext context) => Semantics(
     button: true,
-    enabled: widget.enabled,
-    label: widget.label,
-    hint: widget.tooltip,
-    child: Tooltip(
-      message: widget.tooltip,
-      child: MouseRegion(
-        cursor: widget.enabled ? SystemMouseCursors.click : MouseCursor.defer,
-        onEnter: (final _) => setState(() => _hovering = true),
-        onExit: (final _) => setState(() => _hovering = false),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: widget.enabled ? widget.onTap : null,
-          child: Container(
-            width: 24,
-            height: 24,
-            margin: const EdgeInsets.symmetric(horizontal: 1),
-            decoration: BoxDecoration(
-              color: _hovering && widget.enabled ? context.shellHover : null,
-              borderRadius: BorderRadius.circular(7),
-            ),
-            child: Icon(
-              widget.icon,
-              size: 14,
-              color: widget.enabled
-                  ? context.shellMuted
-                  : context.la.inkQuiet.withValues(alpha: 0.4),
-            ),
+    enabled: enabled,
+    label: label,
+    hint: tooltip,
+    child: LaTooltip(
+      message: tooltip,
+      child: LaPressable(
+        onTap: enabled ? onTap : null,
+        enabled: enabled,
+        radius: BorderRadius.circular(7),
+        margin: const EdgeInsets.symmetric(horizontal: 1),
+        scaleOnPress: false,
+        // The outer Semantics carries the §2.3 contract — frozen.
+        semanticsButton: false,
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: Icon(
+            icon,
+            size: 14,
+            color: enabled
+                ? context.shellMuted
+                : context.laUi.inkQuiet.withValues(alpha: 0.4),
           ),
         ),
       ),

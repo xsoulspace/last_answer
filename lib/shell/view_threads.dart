@@ -113,7 +113,7 @@ final class _ThreadRow extends StatelessWidget {
                     topic,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    style: context.laUi.compact?.copyWith(
                       color: closed ? la.inkQuiet : null,
                     ),
                   ),
@@ -122,7 +122,7 @@ final class _ThreadRow extends StatelessWidget {
                       preview!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      style: context.laUi.micro?.copyWith(
                         fontSize: 10,
                         color: la.inkQuiet,
                       ),
@@ -177,7 +177,7 @@ final class _SessionRow extends StatelessWidget {
               sessionId,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall,
+              style: context.laUi.micro,
             ),
           ),
           if (snapshot.verdict case final verdict?)
@@ -185,7 +185,7 @@ final class _SessionRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             state,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: context.laUi.micro?.copyWith(
               fontSize: 10,
               color: snapshot.running ? la.accent : la.inkQuiet,
             ),
@@ -208,9 +208,7 @@ final class _QuietNote extends StatelessWidget {
     child: Text(
       text,
       key: const ValueKey('threads.empty'),
-      style: Theme.of(
-        context,
-      ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+      style: context.laUi.micro.copyWith(color: context.shellMuted),
     ),
   );
 }

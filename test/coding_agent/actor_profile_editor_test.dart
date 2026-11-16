@@ -1,5 +1,6 @@
 import 'package:core/src/generated/intl/S.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
@@ -26,6 +27,10 @@ void main() {
   }) async {
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+        // even while closed (the house pattern of world_chat_composer_test).
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         home: Scaffold(

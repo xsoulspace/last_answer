@@ -131,7 +131,7 @@ final class ActorInfoSurface extends StatelessWidget {
     final ActorProfile display,
     final bool live,
   ) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Padding(
       padding: ShellTokens.sectionPadding,
       child: Row(
@@ -146,9 +146,7 @@ final class ActorInfoSurface extends StatelessWidget {
                   display.displayName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: laUi.body.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -158,9 +156,7 @@ final class ActorInfoSurface extends StatelessWidget {
                   ].join(' · '),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: context.shellMuted,
-                  ),
+                  style: laUi.micro.copyWith(color: context.shellMuted),
                 ),
               ],
             ),
@@ -172,21 +168,21 @@ final class ActorInfoSurface extends StatelessWidget {
           // roster behind one confirm. A retired row names its
           // retirement instead (verbs there would lie).
           if (display.kind != ActorKind.human && live) ...[
-            IconButton(
+            LaButton.icon(
               key: const ValueKey('actor.info.message'),
               tooltip: context.l10n.actorsMessage,
               icon: const Icon(Icons.chat_bubble_outline, size: 16),
-              visualDensity: VisualDensity.compact,
+              size: LaButtonSize.sm,
               onPressed: () {
                 unawaited(service.openDm(actorId));
                 onOpenConversation?.call('dm:$actorId');
               },
             ),
-            IconButton(
+            LaButton.icon(
               key: const ValueKey('actor.info.remove'),
               tooltip: context.l10n.actorsRemove,
               icon: const Icon(Icons.delete_outlined, size: 16),
-              visualDensity: VisualDensity.compact,
+              size: LaButtonSize.sm,
               onPressed: () => unawaited(_confirmRemove(context)),
             ),
           ],
@@ -200,21 +196,29 @@ final class ActorInfoSurface extends StatelessWidget {
   /// a bounce renders VERBATIM and the roster stays untouched.
   Future<void> _confirmRemove(final BuildContext context) async {
     final l10n = context.l10n;
-    final ok = await showDialog<bool>(
+    // Not showLaConfirm: the action buttons' keys are the frozen agent
+    // contract (`actor.info.remove.cancel/confirm`), so the confirm
+    // rides showLaDialog+LaDialog with keyed kit buttons.
+    final ok = await showLaDialog<bool>(
       context: context,
-      builder: (final dialogContext) => AlertDialog(
-        title: Text(l10n.actorsRemove),
-        content: Text('${l10n.actorsRemoveConfirm} $actorId'),
+      builder: (final dialogContext) => LaDialog(
+        titleText: l10n.actorsRemove,
+        content: Text(
+          '${l10n.actorsRemoveConfirm} $actorId',
+          style: dialogContext.laUi.body.copyWith(fontSize: 13),
+        ),
         actions: [
-          TextButton(
+          LaButton(
             key: const ValueKey('actor.info.remove.cancel'),
+            variant: LaButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.modelsCancel),
+            label: l10n.modelsCancel,
           ),
-          TextButton(
+          LaButton(
             key: const ValueKey('actor.info.remove.confirm'),
+            variant: LaButtonVariant.destructive,
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l10n.actorsRemove),
+            label: l10n.actorsRemove,
           ),
         ],
       ),
@@ -223,15 +227,19 @@ final class ActorInfoSurface extends StatelessWidget {
     final receipt = await service.retireActor(actorId);
     if (receipt['ok'] != true) {
       if (!context.mounted) return;
-      await showDialog<void>(
+      await showLaDialog<void>(
         context: context,
-        builder: (final dialogContext) => AlertDialog(
+        builder: (final dialogContext) => LaDialog(
           key: const ValueKey('actor.info.remove.bounce'),
-          content: Text('${receipt['bounce'] ?? 'retire_refused'}'),
+          content: Text(
+            '${receipt['bounce'] ?? 'retire_refused'}',
+            style: dialogContext.laUi.body.copyWith(fontSize: 13),
+          ),
           actions: [
-            TextButton(
+            LaButton(
+              variant: LaButtonVariant.ghost,
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(l10n.modelsCancel),
+              label: l10n.modelsCancel,
             ),
           ],
         ),
@@ -347,53 +355,50 @@ final class ActorInfoSurface extends StatelessWidget {
   Widget _channels(
     final BuildContext context,
     final List<ChannelInfo> memberships,
-  ) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: ShellTokens.sectionPadding,
-      child: Column(
-        key: const ValueKey('actor.info.channels'),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(context.l10n.railChannels, style: shellSectionLabel(context)),
-          const SizedBox(height: 6),
-          if (memberships.isEmpty)
-            Text(
-              '—',
-              key: const ValueKey('actor.info.channels.empty'),
-              style: LaTokens.mono(10.5, context.shellMuted),
-            )
-          else
-            for (final channel in memberships)
-              InkWell(
-                key: ValueKey('actor.info.channel.${channel.channelId}'),
-                borderRadius: BorderRadius.circular(6),
-                hoverColor: context.shellHover,
-                onTap: onOpenConversation == null
-                    ? null
-                    : () => onOpenConversation!('channel:${channel.channelId}'),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3),
-                  child: Row(
-                    children: [
-                      Icon(Icons.tag, size: 13, color: context.shellMuted),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          '#${channel.name}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.labelSmall,
-                        ),
+  ) => Padding(
+    padding: ShellTokens.sectionPadding,
+    child: Column(
+      key: const ValueKey('actor.info.channels'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(context.l10n.railChannels, style: shellSectionLabel(context)),
+        const SizedBox(height: 6),
+        if (memberships.isEmpty)
+          Text(
+            '—',
+            key: const ValueKey('actor.info.channels.empty'),
+            style: LaTokens.mono(10.5, context.shellMuted),
+          )
+        else
+          for (final channel in memberships)
+            LaPressable(
+              key: ValueKey('actor.info.channel.${channel.channelId}'),
+              radius: BorderRadius.circular(6),
+              scaleOnPress: false,
+              onTap: onOpenConversation == null
+                  ? null
+                  : () => onOpenConversation!('channel:${channel.channelId}'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Row(
+                  children: [
+                    Icon(Icons.tag, size: 13, color: context.shellMuted),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        '#${channel.name}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.laUi.micro,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-        ],
-      ),
-    );
-  }
+            ),
+      ],
+    ),
+  );
 
   /// The hosted-model option the brain picker offers (the people
   /// panel's derivation; absence keeps the local casts).

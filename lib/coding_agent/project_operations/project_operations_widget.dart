@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/browser/browser_entry.dart';
 import 'package:lastanswer/coding_agent/project_operations/project_operations.dart'
     show ProjectOperationKind;
@@ -53,8 +54,8 @@ final class _ProjectOperationsWidgetState
     listenable: widget.session,
     builder: (context, _) {
       final session = widget.session;
-      final theme = Theme.of(context);
-      final mono = theme.textTheme.bodySmall?.copyWith(fontFamily: 'monospace');
+      final laUi = context.laUi;
+      final mono = laUi.mono;
       final text = _OpsText(Localizations.localeOf(context).languageCode);
       final endpoint = session.endpoint;
       final ownership = session.ownership?.name ?? 'unknown';
@@ -75,14 +76,15 @@ final class _ProjectOperationsWidgetState
               Row(
                 children: [
                   Expanded(
-                    child: Text(text.title, style: theme.textTheme.titleSmall),
+                    child: Text(text.title, style: laUi.emphasis),
                   ),
-                  TextButton(
+                  LaButton(
                     key: const Key('project_operations.reload'),
+                    variant: LaButtonVariant.ghost,
                     onPressed: session.closing || session.closed
                         ? null
                         : session.load,
-                    child: Text(text.reload),
+                    label: text.reload,
                   ),
                 ],
               ),
@@ -90,15 +92,13 @@ final class _ProjectOperationsWidgetState
                 Text(
                   text.absent,
                   key: const Key('project_operations.absent'),
-                  style: theme.textTheme.bodySmall,
+                  style: laUi.compact,
                 ),
               if (session.loadState == ProjectOperationsLoadState.invalid) ...[
                 Text(
                   session.declarationError ?? text.invalid,
                   key: const Key('project_operations.error'),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.error,
-                  ),
+                  style: laUi.compact.copyWith(color: laUi.danger),
                 ),
                 if (session.declarationDetail != null)
                   Text(
@@ -122,7 +122,7 @@ final class _ProjectOperationsWidgetState
                       children: [
                         Text(
                           '${operation.kind.name} · ${operation.id}',
-                          style: theme.textTheme.labelSmall,
+                          style: laUi.micro,
                         ),
                         // The declared argv, never the environment values.
                         Text(
@@ -140,52 +140,57 @@ final class _ProjectOperationsWidgetState
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    TextButton(
+                    LaButton(
                       key: const Key('project_operations.check'),
+                      variant: LaButtonVariant.ghost,
                       onPressed:
                           !session.canStartOperation ||
                               !session.supports(ProjectOperationKind.check)
                           ? null
                           : session.runCheck,
-                      child: Text(text.workingTreeCheck),
+                      label: text.workingTreeCheck,
                     ),
-                    TextButton(
+                    LaButton(
                       key: const Key('project_operations.build'),
+                      variant: LaButtonVariant.ghost,
                       onPressed:
                           !session.canStartOperation ||
                               !session.supports(ProjectOperationKind.build)
                           ? null
                           : session.runBuild,
-                      child: Text(text.build),
+                      label: text.build,
                     ),
-                    TextButton(
+                    LaButton(
                       key: const Key('project_operations.serve'),
+                      variant: LaButtonVariant.ghost,
                       onPressed:
                           !session.canStartOperation ||
                               !session.supports(ProjectOperationKind.serve)
                           ? null
                           : () => _serveAndOpen(context),
-                      child: Text(text.serve),
+                      label: text.serve,
                     ),
-                    TextButton(
+                    LaButton(
                       key: const Key('project_operations.stop'),
+                      variant: LaButtonVariant.ghost,
                       onPressed:
                           session.busy || session.closing || !session.hasTarget
                           ? null
                           : session.stop,
-                      child: Text(text.stop),
+                      label: text.stop,
                     ),
-                    TextButton(
+                    LaButton(
                       key: const Key('project_operations.cancel'),
+                      variant: LaButtonVariant.ghost,
                       onPressed: session.busy ? session.cancel : null,
-                      child: Text(text.cancel),
+                      label: text.cancel,
                     ),
                   ],
                 ),
                 Text(
                   text.workingTreeNote,
                   key: const Key('project_operations.working_tree_note'),
-                  style: theme.textTheme.labelSmall,
+                  style: laUi.micro,
                 ),
                 Text(
                   _status(session, text),
@@ -199,7 +204,7 @@ final class _ProjectOperationsWidgetState
                     style: mono,
                   ),
                 if (session.logs.isNotEmpty)
-                  SelectableText(
+                  LaSelectableText(
                     session.logs,
                     key: const Key('project_operations.logs'),
                     style: mono,
@@ -207,7 +212,7 @@ final class _ProjectOperationsWidgetState
                   ),
               ],
               if (session.errorDetail != null)
-                SelectableText(
+                LaSelectableText(
                   session.errorDetail!,
                   key: const Key('project_operations.failure_detail'),
                   style: mono,

@@ -89,7 +89,7 @@ final class LandingInbox extends StatelessWidget {
                 task: task,
                 daemonLive: world.daemonLive,
                 onOpen: () => unawaited(
-                  showDialog<void>(
+                  showLaDialog<void>(
                     context: context,
                     builder: (final _) =>
                         _TaskDetailDialog(world: world, taskId: task.taskId),
@@ -180,16 +180,15 @@ final class _ArmRow extends StatelessWidget {
                   : world.armState == WorldArmState.error
                   ? '${l10n.inboxWorldArmFailed}: ${world.armError ?? ''}'
                   : l10n.inboxWorldDown,
-              style: Theme.of(
-                context,
-              ).textTheme.labelMedium?.copyWith(color: la.inkMuted),
+              style: context.laUi.compact.copyWith(color: la.inkMuted),
             ),
           ),
           if (!arming)
-            TextButton(
+            LaButton(
               key: const ValueKey('inbox.arm.button'),
+              variant: LaButtonVariant.ghost,
               onPressed: () => unawaited(world.armWorld()),
-              child: Text(l10n.edgeArmWorld),
+              label: l10n.edgeArmWorld,
             ),
         ],
       ),
@@ -221,9 +220,7 @@ final class _QuietRow extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           text,
-          style: Theme.of(
-            context,
-          ).textTheme.labelMedium?.copyWith(color: context.la.inkMuted),
+          style: context.laUi.compact.copyWith(color: context.la.inkMuted),
         ),
       ],
     ),
@@ -294,7 +291,7 @@ final class _PermissionRow extends StatelessWidget {
                   permission.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: context.laUi.compact,
                 ),
                 if (permission.kind != null || permission.since != null)
                   Text(
@@ -302,7 +299,7 @@ final class _PermissionRow extends StatelessWidget {
                       if (permission.kind != null) '${permission.kind}',
                       if (permission.since != null) '${permission.since}',
                     ].join(' · '),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    style: context.laUi.micro.copyWith(
                       color: la.inkQuiet,
                       fontSize: 10,
                     ),
@@ -363,21 +360,14 @@ final class _TaskRow extends StatelessWidget {
           children: [
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 1.5,
-                    color: la.inkQuiet,
-                  ),
-                ),
+                LaSpinner(size: 10, strokeWidth: 1.5, color: la.inkQuiet),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     task.task.isEmpty ? task.taskId : task.task,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium,
+                    style: context.laUi.compact,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -386,7 +376,7 @@ final class _TaskRow extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   task.state,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  style: context.laUi.micro.copyWith(
                     color: la.caution,
                     fontSize: 10,
                   ),
@@ -470,12 +460,13 @@ final class _TaskDetailDialogState extends State<_TaskDetailDialog> {
     final la = context.la;
     final row = _row;
     final terminal = row?['terminal'];
-    return AlertDialog(
+    return LaDialog(
       key: ValueKey('inbox.task.${widget.taskId}.detail'),
       title: Text(
         l10n.inboxTaskDetail,
-        style: Theme.of(context).textTheme.titleSmall,
+        style: context.laUi.body.copyWith(fontWeight: FontWeight.w600),
       ),
+      width: 500,
       content: SizedBox(
         width: 460,
         child: SingleChildScrollView(
@@ -483,10 +474,7 @@ final class _TaskDetailDialogState extends State<_TaskDetailDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                _sentenceOf(row),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text(_sentenceOf(row), style: context.laUi.body),
               const SizedBox(height: 8),
               for (final key in const [
                 'state',
@@ -532,14 +520,16 @@ final class _TaskDetailDialogState extends State<_TaskDetailDialog> {
       ),
       actions: [
         if (row != null && terminal == null)
-          TextButton(
+          LaButton(
             key: ValueKey('inbox.task.${widget.taskId}.cancel'),
+            variant: LaButtonVariant.ghost,
             onPressed: () => unawaited(_cancel()),
-            child: Text(l10n.inboxTaskCancel),
+            label: l10n.inboxTaskCancel,
           ),
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.modelsCancel),
+          label: l10n.modelsCancel,
         ),
       ],
     );
@@ -582,7 +572,7 @@ final class _VerdictRow extends StatelessWidget {
                 verdict.line,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelMedium,
+                style: context.laUi.compact,
               ),
             ),
             const SizedBox(width: 8),
@@ -591,9 +581,7 @@ final class _VerdictRow extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               verdict.state,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: color, fontSize: 10),
+              style: context.laUi.micro.copyWith(color: color, fontSize: 10),
             ),
           ],
         ),
@@ -635,9 +623,7 @@ final class _ThreadRow extends StatelessWidget {
                 preview,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(
-                  context,
-                ).textTheme.labelMedium?.copyWith(color: la.inkMuted),
+                style: context.laUi.compact.copyWith(color: la.inkMuted),
               ),
             ),
           ],
@@ -685,8 +671,7 @@ final class _InboxButton extends StatelessWidget {
             child: Center(
               child: Text(
                 label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontSize: 11,
+                style: context.laUi.micro.copyWith(
                   fontWeight: FontWeight.w600,
                   color: color,
                 ),

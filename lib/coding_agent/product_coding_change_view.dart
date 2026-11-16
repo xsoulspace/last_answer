@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
 import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
@@ -31,12 +33,13 @@ final class ProductCodingChangeView extends StatelessWidget {
       if (observation == null) {
         return onAction == null
             ? const SizedBox.shrink()
-            : TextButton(
+            : LaButton(
                 key: const Key('coding_agent.change.refresh'),
+                variant: LaButtonVariant.ghost,
                 onPressed: busy ? null : () => onAction!('status', const {}),
-                child: Text(
-                  _CodeText(Localizations.localeOf(context).languageCode).saved,
-                ),
+                label: _CodeText(
+                  Localizations.localeOf(context).languageCode,
+                ).saved,
               );
       }
       final result = observation['result']! as Map;
@@ -62,8 +65,8 @@ final class ProductCodingChangeView extends StatelessWidget {
         }
       }
 
-      final theme = Theme.of(context);
-      final mono = theme.textTheme.bodySmall?.copyWith(fontFamily: 'monospace');
+      final laUi = context.laUi;
+      final mono = laUi.mono;
       return Semantics(
         identifier: 'coding_agent.change',
         container: true,
@@ -82,7 +85,7 @@ final class ProductCodingChangeView extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).agentCodeChange,
-                      style: theme.textTheme.titleSmall,
+                      style: laUi.emphasis,
                     ),
                     Text(
                       '${observation['taskId']} · ${observation['action']} · '
@@ -91,7 +94,7 @@ final class ProductCodingChangeView extends StatelessWidget {
                       style: mono,
                     ),
                     if (result['ok'] != true)
-                      SelectableText(
+                      LaSelectableText(
                         '${result['error'] ?? result['check'] ?? ''}',
                         key: const Key('coding_agent.change.refusal'),
                       ),
@@ -99,7 +102,7 @@ final class ProductCodingChangeView extends StatelessWidget {
                     // Receipts remain under the existing details fold.
                     if (candidate != null &&
                         binding.standingAuthority == null) ...[
-                      Text(text.scope, style: theme.textTheme.labelSmall),
+                      Text(text.scope, style: laUi.micro),
                       for (final entry in footprint.entries)
                         Text(
                           '${entry.value}  ${entry.key}',
@@ -110,87 +113,84 @@ final class ProductCodingChangeView extends StatelessWidget {
                         ),
                       Text(
                         candidate['files'] is Map ? text.sources : text.regions,
-                        style: theme.textTheme.bodySmall,
+                        style: laUi.compact,
                       ),
                       for (final file
                           in _sourceFiles(candidate) ?? _changedRegions(diff))
                         _FileRegions(file: file, text: text),
                       if (candidate['check'] case final check?) ...[
-                        Text(text.check, style: theme.textTheme.labelSmall),
-                        SelectableText(
+                        Text(text.check, style: laUi.micro),
+                        LaSelectableText(
                           _checkSummary(check, text),
                           key: const Key('coding_agent.change.check'),
                           style: mono,
                         ),
                       ],
-                      Text(text.limit, style: theme.textTheme.bodySmall),
+                      Text(text.limit, style: laUi.compact),
                       if (ready)
                         Wrap(
                           children: [
-                            TextButton(
+                            LaButton(
                               key: const Key('coding_agent.change.reject'),
+                              variant: LaButtonVariant.ghost,
                               onPressed: () => answer(allow: false),
-                              child: Text(text.reject),
+                              label: text.reject,
                             ),
-                            TextButton(
+                            LaButton(
                               key: const Key('coding_agent.change.apply'),
+                              variant: LaButtonVariant.primary,
                               onPressed: () => answer(allow: true),
-                              child: Text(text.apply),
+                              label: text.apply,
                             ),
                           ],
                         ),
                     ],
                     if (onAction != null) ...[
-                      TextButton(
+                      LaButton(
                         key: const Key('coding_agent.change.refresh'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: busy
                             ? null
                             : () => onAction!('status', const {}),
-                        child: Text(text.saved),
+                        label: text.saved,
                       ),
                       for (final saved in binding.savedCandidates)
-                        ExpansionTile(
+                        _SavedCandidateTile(
                           key: ValueKey(
                             'coding_agent.change.saved.${saved['candidateId']}',
                           ),
-                          title: Text('${saved['originTaskId']}'),
-                          children: [
-                            for (final file
-                                in _sourceFiles(saved) ?? <_Regions>[])
-                              _FileRegions(file: file, text: text),
-                            TextButton(
-                              onPressed: busy || ready
-                                  ? null
-                                  : () => onAction!('reviewSaved', {
-                                      'candidateId': saved['candidateId'],
-                                    }),
-                              child: Text(text.reviewSaved),
-                            ),
-                          ],
+                          saved: saved,
+                          text: text,
+                          reviewEnabled: !(busy || ready),
+                          onReviewSaved: () => onAction!('reviewSaved', {
+                            'candidateId': saved['candidateId'],
+                          }),
                         ),
                     ],
                     if (onAction != null && !ready)
                       Wrap(
                         children: [
                           if (candidate?['candidateId'] case final String id)
-                            TextButton(
+                            LaButton(
                               key: const Key('coding_agent.change.reviewSaved'),
+                              variant: LaButtonVariant.ghost,
                               onPressed: busy || controller?.isRunning == true
                                   ? null
                                   : () => onAction!('reviewSaved', {
                                       'candidateId': id,
                                     }),
-                              child: Text(text.reviewSaved),
+                              label: text.reviewSaved,
                             ),
                           if (binding.undoRunId case final id?)
-                            TextButton(
+                            LaButton(
                               key: const Key('coding_agent.change.undo'),
+                              variant: LaButtonVariant.ghost,
                               onPressed: busy || controller?.isRunning == true
                                   ? null
                                   : () => onAction!('recoverRollback', {
                                       'runId': id,
                                     }),
-                              child: Text(text.undo),
+                              label: text.undo,
                             ),
                         ],
                       ),
@@ -328,6 +328,58 @@ List<_Regions> _changedRegions(String diff) {
   return files;
 }
 
+/// The saved-candidate disclosure (was ExpansionTile): a quiet LaRow with
+/// a chevron and conditional content — the brief's ExpansionTile grammar
+/// composed from kit parts. The caller keeps the established
+/// `coding_agent.change.saved.<candidateId>` widget-key contract.
+final class _SavedCandidateTile extends StatefulWidget {
+  const _SavedCandidateTile({
+    required this.saved,
+    required this.text,
+    required this.reviewEnabled,
+    required this.onReviewSaved,
+    super.key,
+  });
+
+  final Map<String, Object?> saved;
+  final _CodeText text;
+  final bool reviewEnabled;
+  final VoidCallback onReviewSaved;
+
+  @override
+  State<_SavedCandidateTile> createState() => _SavedCandidateTileState();
+}
+
+class _SavedCandidateTileState extends State<_SavedCandidateTile> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      LaRow(
+        titleText: '${widget.saved['originTaskId']}',
+        trailing: LaChevron(
+          direction: _expanded
+              ? LaChevronDirection.down
+              : LaChevronDirection.right,
+        ),
+        onTap: () => setState(() => _expanded = !_expanded),
+      ),
+      if (_expanded) ...[
+        for (final file in _sourceFiles(widget.saved) ?? <_Regions>[])
+          _FileRegions(file: file, text: widget.text),
+        LaButton(
+          variant: LaButtonVariant.ghost,
+          onPressed: widget.reviewEnabled ? widget.onReviewSaved : null,
+          label: widget.text.reviewSaved,
+        ),
+      ],
+    ],
+  );
+}
+
 class _FileRegions extends StatelessWidget {
   const _FileRegions({required this.file, required this.text});
   final _Regions file;
@@ -335,9 +387,7 @@ class _FileRegions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mono = Theme.of(
-      context,
-    ).textTheme.bodySmall?.copyWith(fontFamily: 'monospace');
+    final mono = context.laUi.mono;
     Widget side(
       String label,
       List<String> lines,
@@ -346,10 +396,10 @@ class _FileRegions extends StatelessWidget {
     }) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.labelSmall),
+        Text(label, style: context.laUi.micro),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: SelectableText(
+          child: LaSelectableText(
             absent ? text.absent : lines.join('\n'),
             style: mono,
             key: ValueKey('coding_agent.change.file.${file.path}.$suffix'),

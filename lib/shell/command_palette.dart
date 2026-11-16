@@ -172,54 +172,48 @@ final class _CommandPaletteState extends State<CommandPalette> {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {},
-              child: Material(
+              // The kit surface (v6): a squircle floating LaBox — the
+              // Material ink host retired; depth is the ONE floating
+              // shadow, the edge a hairline.
+              child: LaBox(
+                key: const ValueKey('shell.commandPalette'),
                 color: la.surfaceOverlay,
-                borderRadius: BorderRadius.circular(LaTokens.radiusFloating),
-                child: Container(
-                  key: const ValueKey('shell.commandPalette'),
-                  width: 560,
-                  constraints: const BoxConstraints(maxHeight: 420),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: la.rule),
-                    borderRadius: BorderRadius.circular(
-                      LaTokens.radiusFloating,
+                border: BorderSide(color: la.rule),
+                radius: BorderRadius.circular(LaTokens.radiusFloating),
+                floating: true,
+                width: 560,
+                constraints: const BoxConstraints(maxHeight: 420),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Semantics(
+                      // The agent contract: the snapshot's identifier
+                      // is the palette's address (widget keys are not
+                      // semantics identifiers).
+                      identifier: 'palette.query',
+                      child: LaField(
+                        key: const ValueKey('palette.query'),
+                        controller: _query,
+                        autofocus: true,
+                        height: 40,
+                        showFocusHairline: false,
+                        onChanged: (_) => setState(() => _selected = 0),
+                        onSubmitted: (_) => _runSelected(),
+                        style: context.laUi.body,
+                        placeholder: l10n.commandPaletteHint,
+                        prefix: const Icon(Icons.search, size: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                      ),
                     ),
-                    // The ONE floating-layer depth declaration.
-                    boxShadow: shellFloatingShadow(context),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Semantics(
-                        // The agent contract: the snapshot's identifier
-                        // is the palette's address (widget keys are not
-                        // semantics identifiers).
-                        identifier: 'palette.query',
-                        child: TextField(
-                          key: const ValueKey('palette.query'),
-                          controller: _query,
-                          autofocus: true,
-                          onChanged: (_) => setState(() => _selected = 0),
-                          onSubmitted: (_) => _runSelected(),
-                          style: LaTokens.body.copyWith(color: la.ink),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: l10n.commandPaletteHint,
-                            prefixIcon: const Icon(Icons.search, size: 16),
-                          ),
-                        ),
+                    const LaHairline(),
+                    Flexible(
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        children: rows,
                       ),
-                      Container(height: 1, color: la.rule),
-                      Flexible(
-                        child: ListView(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          children: rows,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -272,7 +266,7 @@ final class _PaletteRow extends StatelessWidget {
               entry.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: context.laUi.compact,
             ),
           ),
         ],

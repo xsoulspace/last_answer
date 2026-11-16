@@ -86,9 +86,9 @@ final class _DocumentsViewState extends State<DocumentsView> {
                     l10n.documentsEmpty,
                     key: const ValueKey('documents.empty'),
                     textAlign: TextAlign.center,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+                    style: context.laUi.micro.copyWith(
+                      color: context.shellMuted,
+                    ),
                   ),
                 )
               : ListView(
@@ -149,7 +149,7 @@ final class _DocumentRow extends StatelessWidget {
                 projectTitleOf(project).isEmpty ? id : projectTitleOf(project),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelMedium,
+                style: context.laUi.compact,
               ),
             ),
           ],
@@ -174,8 +174,9 @@ final class _NewCodeFileButton extends StatelessWidget {
       button: true,
       label: 'documents.newCode',
       hint: l10n.documentsNewCodeFile,
-      child: TextButton.icon(
+      child: LaButton(
         key: const ValueKey('documents.newCode'),
+        variant: LaButtonVariant.ghost,
         onPressed: projects == null
             ? null
             : () async {
@@ -188,7 +189,7 @@ final class _NewCodeFileButton extends StatelessWidget {
                 scope.onChanged(scope.layout.openTab('doc:${doc.id}'));
               },
         icon: const Icon(Icons.code, size: 15),
-        label: Text(l10n.documentsNewCodeFile),
+        label: l10n.documentsNewCodeFile,
       ),
     );
   }
@@ -208,8 +209,9 @@ final class _NewAgentDocButton extends StatelessWidget {  const _NewAgentDocButt
       button: true,
       label: 'documents.new',
       hint: l10n.documentsNewAgentDoc,
-      child: TextButton(
+      child: LaButton(
         key: const ValueKey('documents.new'),
+        variant: LaButtonVariant.ghost,
         onPressed: projects == null
             ? null
             : () async {
@@ -221,7 +223,7 @@ final class _NewAgentDocButton extends StatelessWidget {  const _NewAgentDocButt
                 if (scope == null) return;
                 scope.onChanged(scope.layout.openTab('doc:${doc.id}'));
               },
-        child: Text(l10n.documentsNewAgentDoc),
+        label: l10n.documentsNewAgentDoc,
       ),
     );
   }
@@ -247,9 +249,7 @@ final class DocumentsTabHost extends StatelessWidget {
         child: Text(
           context.l10n.documentsMissing,
           key: const ValueKey('documents.missing'),
-          style: Theme.of(
-            context,
-          ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+          style: context.laUi.micro.copyWith(color: context.shellMuted),
         ),
       );
     }

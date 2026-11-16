@@ -10,7 +10,8 @@ import 'package:lastanswer/coding_agent/mesh_task_board.dart';
 import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
 import 'package:lastanswer/settings/features/mesh_relay_host_stub.dart'
-    if (dart.library.io) 'mesh_relay_host_io.dart' as relay_host;
+    if (dart.library.io) 'mesh_relay_host_io.dart'
+    as relay_host;
 import 'package:lastanswer/settings/features/mesh_sync_participants.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_mesh/universal_storage_mesh.dart';
@@ -138,8 +139,10 @@ final class MeshStorageService {
       try {
         // Bounded like [connectTo]: a stale/unreachable persisted relay
         // must not block startup on the OS TCP timeout.
-        transport = await _openClient(selfId: peerId, endpoint: relayEndpoint)
-            .timeout(const Duration(seconds: 5));
+        transport = await _openClient(
+          selfId: peerId,
+          endpoint: relayEndpoint,
+        ).timeout(const Duration(seconds: 5));
         service._transport = transport;
         provider.attachTransport(transport);
         service._session.attachRelayPresenceLink(transport);
@@ -195,8 +198,10 @@ final class MeshStorageService {
       // address blocked by macOS Local Network TCC for terminal-launched
       // apps) must not wedge callers for the ~75 s OS TCP timeout — it
       // degrades to the documented deferred-connect path instead.
-      final client = await _openClient(selfId: selfId, endpoint: endpoint)
-          .timeout(const Duration(seconds: 5));
+      final client = await _openClient(
+        selfId: selfId,
+        endpoint: endpoint,
+      ).timeout(const Duration(seconds: 5));
       _transport = client;
       final provider = storage.provider;
       if (provider is MeshStorageProvider) provider.attachTransport(client);
@@ -244,9 +249,7 @@ final class MeshStorageService {
       if (data != null) {
         final decoded = jsonDecode(data);
         if (decoded is Map && decoded['worlds'] is List) {
-          await PairedWorlds.storeAnnouncement(
-            decoded['worlds'] as List?,
-          );
+          await PairedWorlds.storeAnnouncement(decoded['worlds'] as List?);
         }
       }
     } on Object catch (_) {
@@ -354,15 +357,12 @@ final class MeshStorageService {
 
   /// Live presence for [docId] — the tracker fold over unexpired
   /// ephemeral ops (ADR 0029 §1, ADR 0031 §2). Agent-queryable state.
-  List<MeshPresenceEntry> presence(
-    final String docId, {
-    final DateTime? now,
-  }) => _session.presence(docId, now: now);
+  List<MeshPresenceEntry> presence(final String docId, {final DateTime? now}) =>
+      _session.presence(docId, now: now);
 
   /// How many inbound presence frames were dropped as named data
   /// (ADR 0031 §3).
-  int get rejectedPresenceFrameCount =>
-      _session.rejectedPresenceFrameCount;
+  int get rejectedPresenceFrameCount => _session.rejectedPresenceFrameCount;
 
   /// Every dropped presence frame with its rejection reason, oldest
   /// first.
@@ -373,9 +373,8 @@ final class MeshStorageService {
   /// participant seam. Wrapped in a timeout because an addressed relay
   /// silently drops frames addressed to offline peers; without it
   /// "Sync now" hangs.
-  Future<void> sync({
-    final Duration timeout = const Duration(minutes: 1),
-  }) => _session.sync(timeout: timeout);
+  Future<void> sync({final Duration timeout = const Duration(minutes: 1)}) =>
+      _session.sync(timeout: timeout);
 
   /// Publishes what this replica wants DELIVERED (ADR 0048 §2): the
   /// interest policy is resolved immediately and re-published every
@@ -441,8 +440,9 @@ final class MeshStorageService {
   Future<SimpleKeyPair> _ensureIdentity() {
     final existing = _identityKeyPair;
     if (existing != null) return Future<SimpleKeyPair>.value(existing);
-    return _identityFuture ??= PairingService.newIdentityKeyPair()
-        .then((final keyPair) {
+    return _identityFuture ??= PairingService.newIdentityKeyPair().then((
+      final keyPair,
+    ) {
       _identityKeyPair = keyPair;
       return keyPair;
     });

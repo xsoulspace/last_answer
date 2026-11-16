@@ -100,6 +100,35 @@
 > never through Center/Align — those expand to the incoming max width
 > under bounded-loose constraints (a Wrap or a Row) and stretch every
 > pill to the pane; live-caught via the widget inspector, 2026-11-15.
+>
+> **v6 amendment (2026-11-16, owner-directed "squircle + amend"):**
+> two law changes and one enforcement layer, landing with the
+> `packages/la_ui` kit rewrite (docs/design/ui-kit-rewrite-2026-11-16.md).
+> **(1) Squircle law:** every rounded fill, control and floating
+> surface in the kit draws CONTINUOUS-curvature superellipse corners
+> (the Discord/iOS grammar) through the kit's `SquircleShape`;
+> circular-arc `BorderRadius` retires for kit-drawn surfaces. Radii
+> values are unchanged (6–8 px controls, 10–12 px floating). **(2)
+> Chrome event-motion amendment:** v2's "chrome never animates for
+> its own sake" is amended to: chrome MAY carry event-driven motion
+> that answers a user or world action — 120–150 ms press/hover
+> settles, overlay scale-and-fade entry, toast slides, a confirm hop.
+> Ambient loops, pulsing and attention-seeking idle animation remain
+> BANNED in chrome; reduced-motion disables chrome motion too (the
+> creature layer keeps its own event budgets, unchanged). The gamified
+> dial stays two-layered: chrome motion is feedback, creatures are
+> life. **(3) Component-carrier law:** `packages/la_ui` is the ONE
+> component carrier of this design law. Product surfaces compose kit
+> primitives (LaButton, LaField, LaMenu, LaSelect, LaDialog, LaToast,
+> LaTooltip, LaRow, LaSwitch/LaCheckbox, LaSpinner, LaPill, LaScaffold)
+> and never Material component widgets (the button family,
+> TextField+InputDecoration, AlertDialog/showDialog, popup menus and
+> DropdownButtons, SnackBar, Tooltip, ListTile, Scaffold/AppBar,
+> Switch/Checkbox/Radio/Slider). Material remains ONLY as the engine
+> host (MaterialApp, Theme plumbing) behind a CI-enforced allowlist;
+> the kit itself is widgets-layer-only (flutter/widgets + painting +
+> flutter_portal), squircle-painted, and reads its colors from the
+> `LaUiTheme` extension fed by the existing zinc palette.
 
 This document defines durable visual and interaction rules for Last Answer product UI. The main desktop shell is the reference; each surface inherits its tokens and can add only the controls its job needs. Product truth belongs in [PRODUCT.md](../PRODUCT.md); this file is the visual system, not a claim that every planned capability is implemented.
 
@@ -214,14 +243,14 @@ Sentence case is the default. Establish hierarchy through size, weight, and spac
 - Base spacing unit: 4 px. Common steps: 4, 8, 12, 16, 24, 32.
 - Navigator rows: 34–38 px, with a 28–32 px minimum interactive target only where density requires it; touch layouts use at least 44 px targets.
 - Region separators: one-pixel hairline. Use whitespace within a region and lines only between meaningful regions.
-- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. Avoid pill shapes except for compact status tokens whose shape conveys a real state (v2: the rail's unread badge and the chat's jump-to-latest control are exactly such tokens — the exception, not a new freedom).
+- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. **v6: corners are continuous-curvature superellipses (squircles), drawn by the `la_ui` kit — not circular-arc radii.** Avoid pill shapes except for compact status tokens whose shape conveys a real state (v2: the rail's unread badge and the chat's jump-to-latest control are exactly such tokens — the exception, not a new freedom).
 - Pane edges align to one grid. Do not add nested cards to represent hierarchy; use indentation, typography, spacing, and selection.
 
 ### Elevation and motion
 
 The pane canvas is flat. Menus, popovers, and miniwindows use one quiet raised surface with a thin edge and a soft shadow offset down by 4–6 px. Do not stack multiple shadows or use glass blur as decoration.
 
-Hover and selection settle in 100–150 ms. Split, tab, and panel transitions are brief and reversible. Motion explains where a pane went or what selection changed; **the chrome layer has no ambient loops, pulsing, or attention-seeking animation** (v2 wording: the ban binds chrome; the creature layer's motion law follows). Respect reduced-motion settings.
+Hover and selection settle in 100–150 ms. Split, tab, and panel transitions are brief and reversible. Motion explains where a pane went or what selection changed; **the chrome layer has no ambient loops, pulsing, or attention-seeking animation** (v2 wording: the ban binds chrome; the creature layer's motion law follows). **v6 amendment: chrome MAY carry event-driven motion that answers an action** — press/hover settles (120–150 ms), overlay scale-and-fade entry, toast slides, a confirm hop; ambient loops and idle attention-seeking remain banned, and reduced-motion disables chrome motion too. Respect reduced-motion settings.
 
 **Creature-layer motion (v2).** Creatures animate ONLY on events, never idly: a blink when their beat lands, a squish-and-return on identity tap (≤250 ms), mood transitions with the narration state (150–250 ms), and ONE settlement celebration — a hop plus a small confetti burst (≤400 ms, once per settled PASS). No creature motion while the human is typing or reading mid-scroll; no loops; no sound. Under reduced-motion, creatures are static — state renders through posture alone (the motion-free truth of the same facts). Chrome motion budgets are unchanged by this layer.
 

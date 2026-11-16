@@ -1,5 +1,6 @@
 import 'package:flutter/semantics.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+import 'package:flutter/material.dart';import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
@@ -45,7 +46,10 @@ void main() {
     await tester.pumpWidget(
       GlobalStatesProvider(
         builder: (_) => MaterialApp(
-          locale: const Locale('en'),
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(

@@ -1954,6 +1954,9 @@ class SEn extends S {
   String get worldChatThreadsEmpty => 'No threads yet.';
 
   @override
+  String get worldChatSessionKindMark => 'session';
+
+  @override
   String get worldChatPermsTooltip => 'Permissions';
 
   @override
@@ -2361,4 +2364,16 @@ class SEn extends S {
 
   @override
   String get cropSquare => 'Crop square';
+  @override
+  String get selectionCut => 'Cut';
+
+  @override
+  String get selectionCopy => 'Copy';
+
+  @override
+  String get selectionPaste => 'Paste';
+
+  @override
+  String get selectionSelectAll => 'Select all';
+
 }

@@ -12,7 +12,8 @@
 /// `ValueKey('actor.presence.<actorId>')`.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 
 /// The online color — one restrained green across light and dark
 /// surfaces, so a live actor reads the same everywhere. Deep, not
@@ -35,7 +36,7 @@ final class PresenceDot extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final color =
-        online ? kActorPresenceOnline : Theme.of(context).colorScheme.outline;
+        online ? kActorPresenceOnline : context.laUi.inkQuiet;
     return Container(
       width: size,
       height: size,

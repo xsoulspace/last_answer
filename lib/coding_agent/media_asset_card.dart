@@ -15,8 +15,12 @@
 /// screen reader) gets the meaning, not silence.
 library;
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:universal_io/io.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show AssetMediaProvenance;
@@ -155,10 +159,8 @@ class MediaAssetCard extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final border = Border.all(
-      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
-    );
+    final laUi = context.laUi;
+    final border = BorderSide(color: laUi.rule);
     final path = absPath;
     final hasFile = path != null && File(path).existsSync();
     final Widget visual;
@@ -185,14 +187,12 @@ class MediaAssetCard extends StatelessWidget {
       label: altText ?? '$_metaLine (image)',
       container: true,
       explicitChildNodes: true,
-      child: Container(
+      child: LaBox(
         key: ValueKey('media.asset.$revision'),
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          border: border,
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: border,
+        radius: BorderRadius.circular(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -201,21 +201,11 @@ class MediaAssetCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               altText ?? _metaLine,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: laUi.compact,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
-            if (altText != null)
-              Text(
-                _metaLine,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(
-                    alpha: 0.6,
-                  ),
-                ),
-              ),
+            if (altText != null) Text(_metaLine, style: laUi.micro),
           ],
         ),
       ),
@@ -235,14 +225,14 @@ class _Placeholder extends StatelessWidget {
   final bool missingFile;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Container(
       width: 240,
       height: 120,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        color: laUi.surfaceRaised,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -251,9 +241,7 @@ class _Placeholder extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             missingFile ? metaLine : '$metaLine · file not resolved',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: laUi.micro,
             textAlign: TextAlign.center,
           ),
         ],

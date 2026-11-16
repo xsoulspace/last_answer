@@ -1,6 +1,6 @@
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:life_hooks/life_hooks.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 part 'tags_screen_state.freezed.dart';
@@ -39,7 +39,10 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
     : dto = TagsScreenNotifierDto.of(context),
       super(const TagsScreenState());
   final TagsScreenNotifierDto dto;
-  final folderFieldFormHelper = FormHelper();
+
+  /// Manual validation state for the folder-name field (the ui-kit sweep
+  /// dropped the Material `Form`; the validator logic is unchanged).
+  final ValueNotifier<String?> folderTitleError = ValueNotifier(null);
   final _removedProjects = <ProjectModel>{};
   late final addProjectsPagedController = ProjectsPagedController(
     requestBuilder: ProjectsPagedDataRequestsBuilder.getAll(
@@ -48,7 +51,7 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
     ),
   )..onLoad();
   late final _addProjectsSearchUpdatesController = StreamController<String?>()
-    ..stream.debounceTime(150.milliseconds).listen(_updateAddProjectsSearch);
+    ..stream.debounceTime(const Duration(milliseconds: 150)).listen(_updateAddProjectsSearch);
   void onSearchAddProjects(final String? search) =>
       _addProjectsSearchUpdatesController.add(search);
   ProjectTagModel get selectedTag => value.selectedTag.value;
@@ -59,7 +62,7 @@ class TagsScreenNotifier extends ValueNotifier<TagsScreenState> {
   @override
   void dispose() {
     unawaited(_addProjectsSearchUpdatesController.close());
-    folderFieldFormHelper.dispose();
+    folderTitleError.dispose();
     addProjectsPagedController.dispose();
     super.dispose();
   }
@@ -152,12 +155,16 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
     required final ProjectTagModel tag,
   }) async {
     final l10n = context.l10n;
-    final shouldBeDeleted = await Modals.of(context).showWarningDialog(
-      description:
-          '${l10n.beCarefulItsInreversableAction}. ${l10n.folderDeletionWillNotDeleteProjects}',
+    final warning =
+        '${l10n.beCarefulItsInreversableAction}. '
+        '${l10n.folderDeletionWillNotDeleteProjects}';
+    final shouldBeDeleted = await showLaConfirm(
+      context,
       title: l10n.deleteFolder,
-      noActionText: l10n.cancel,
-      yesActionText: l10n.delete,
+      message: warning,
+      confirmLabel: l10n.delete,
+      cancelLabel: l10n.cancel,
+      destructive: true,
     );
 
     if (!shouldBeDeleted) return;
@@ -186,8 +193,13 @@ extension TagsNotifierXFolderEditing on TagsScreenNotifier {
   Future<void> onSaveTag() async {
     setTagLoading(true);
     try {
-      final isValid = folderFieldFormHelper.validate();
-      if (!isValid) return;
+      // Manual validation (the Material Form wrapper is gone; the validator
+      // itself is unchanged — required, same localized message).
+      final error = FormBuilderValidators.compose<String?>([
+        FormBuilderValidators.required(),
+      ])(selectedTag.title);
+      folderTitleError.value = error;
+      if (error != null) return;
 
       ProjectTagModel tag = value.selectedTag.value;
       if (tag.id.isEmpty) {

@@ -1,7 +1,7 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/widgets/answer_field_bubble.dart';
 import 'package:lastanswer/idea/widgets/question_dropdown.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class AnswerTile extends StatelessWidget {
   const AnswerTile({
@@ -47,47 +47,6 @@ class AnswerTile extends StatelessWidget {
           child: SizedBox(
             width: 150,
             child: HeroId(
-              // flightShuttleBuilder: (
-              //   final context,
-              //   final animation,
-              //   final direction,
-              //   final ____,
-              //   final _____,
-              // ) {
-              //   switch (direction) {
-              //     case HeroFlightDirection.pop:
-              //       return Material(
-              //         child: Padding(
-              //           padding: const EdgeInsets.only(left: 8, top: 11.5),
-              //           child: Text(
-              //             answer.question.title.localize(context),
-              //             textAlign: TextAlign.left,
-              //             style: Theme.of(context).textTheme.bodyLarge,
-              //           ),
-              //         ),
-              //       );
-              //     case HeroFlightDirection.push:
-              //       return Material(
-              //         child: Padding(
-              //           padding: EdgeInsets.zero,
-              //           child: Row(
-              //             mainAxisSize: MainAxisSize.min,
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               Text(
-              //                 answer.question.title.localize(context),
-              //                 textAlign: TextAlign.center,
-              //                 style: Theme.of(context).textTheme.bodyLarge,
-              //               ),
-
-              //               /// Size of icon for dropdown
-              //               const SizedBox(width: 24),
-              //             ],
-              //           ),
-              //         ),
-              //       );
-              //   }
-              // },
               id: '${answer.id}-question',
               type: HeroIdTypes.projectIdeaQuestionTitle,
               child: QuestionDropdown(answer: answer, onChanged: onChanged),
@@ -103,21 +62,25 @@ class AnswerTile extends StatelessWidget {
                 visible: deleteIconVisible,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: IconButton(
+                  child: LaButton.icon(
                     onPressed: () async {
                       final confirmed = await confirmDelete();
                       if (confirmed) onReadyToDelete(answer);
                     },
-                    color: context.la.danger.withValues(alpha: 0.6),
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: context.laUi.danger.withValues(alpha: 0.6),
+                    ),
                   ),
                 ),
               ),
-              IconButton(
+              LaButton.icon(
                 onPressed: () => onExpand(answer),
-                iconSize: 18,
-                icon: const Icon(Icons.expand),
-                color: context.la.accent.withValues(alpha: 0.6),
+                icon: Icon(
+                  Icons.expand,
+                  size: 18,
+                  color: context.laUi.accent.withValues(alpha: 0.6),
+                ),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
@@ -55,7 +56,7 @@ class _ActorsPanelState extends State<ActorsPanel> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final service = _service;
     final roster = service.roster;
     final actors = roster?.all ?? const <ActorProfile>[];
@@ -66,35 +67,33 @@ class _ActorsPanelState extends State<ActorsPanel> {
         children: [
           Text(
             context.l10n.actorsSectionTitle,
-            style: theme.textTheme.labelSmall?.copyWith(
+            style: theme.micro.copyWith(
               letterSpacing: 1.2,
               fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurfaceVariant,
+              color: theme.inkMuted,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             context.l10n.actorsSectionHint,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: theme.compact.copyWith(color: theme.inkMuted),
           ),
           const SizedBox(height: 8),
           if (!service.isSupported)
             Text(
               context.l10n.actorsUnsupported,
-              style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+              style: TextStyle(color: theme.inkMuted),
             )
           else if (service.error != null && !service.isReady)
             Text(
               'World failed to open: ${service.error}',
-              style: TextStyle(color: theme.colorScheme.error),
+              style: TextStyle(color: theme.danger),
             )
           else ...[
             if (actors.isEmpty)
               Text(
                 context.l10n.actorsNoneYet,
-                style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+                style: TextStyle(color: theme.inkMuted),
               )
             else
               for (final actor in actors)
@@ -155,10 +154,10 @@ class _ActorRowState extends State<_ActorRow> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final actor = widget.actor;
     final status = widget.service.bots?.statuses[actor.actorId];
-    final muted = theme.colorScheme.onSurfaceVariant;
+    final muted = theme.inkMuted;
     final failed = status != null && status.startsWith('failed');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -175,8 +174,8 @@ class _ActorRowState extends State<_ActorRow> {
                 },
                 size: 14,
                 color: switch (status) {
-                  'listening' => context.la.accent,
-                  _ => failed ? theme.colorScheme.error : muted,
+                  'listening' => theme.accent,
+                  _ => failed ? theme.danger : muted,
                 },
               ),
               const SizedBox(width: 8),
@@ -188,33 +187,33 @@ class _ActorRowState extends State<_ActorRow> {
                       actor.kind == ActorKind.human
                           ? '${actor.displayName} · ${context.l10n.actorsYou}'
                           : '${actor.displayName} · ${actor.brainRef.isEmpty ? 'no brain' : actor.brainRef}',
-                      style: theme.textTheme.bodyMedium,
+                      style: theme.body,
                     ),
                     if (status != null && status != 'listening')
                       Text(
                         status,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: failed ? theme.colorScheme.error : muted,
+                        style: theme.compact.copyWith(
+                          color: failed ? theme.danger : muted,
                         ),
                       ),
                   ],
                 ),
               ),
-              IconButton(
+              LaButton.icon(
                 key: ValueKey('actors.edit.${actor.actorId}'),
+                size: LaButtonSize.sm,
                 tooltip: context.l10n.actorsEditTooltip,
                 icon: Icon(
                   _editing ? Icons.keyboard_arrow_up : Icons.edit_outlined,
-                  size: 20,
+                  size: 18,
                 ),
-                visualDensity: VisualDensity.compact,
                 onPressed: () => setState(() => _editing = !_editing),
               ),
-              IconButton(
+              LaButton.icon(
                 key: ValueKey('actors.remove.${actor.actorId}'),
+                size: LaButtonSize.sm,
                 tooltip: context.l10n.actorsRemoveTooltip,
-                icon: const Icon(Icons.delete_outline, size: 20),
-                visualDensity: VisualDensity.compact,
+                icon: const Icon(Icons.delete_outline, size: 18),
                 onPressed: () => widget.service.removeActor(actor.actorId),
               ),
             ],
@@ -237,8 +236,7 @@ class _ActorRowState extends State<_ActorRow> {
                 ),
                 onCancel: () => setState(() => _editing = false),
                 initialBrainSet:
-                    widget.service.brainSets[actor.actorId] ??
-                    const <String>[],
+                    widget.service.brainSets[actor.actorId] ?? const <String>[],
                 initialSelfBind:
                     (widget.service.selfBinds[actor.actorId] ?? 'allow') !=
                     'deny',
@@ -301,7 +299,7 @@ class _CreateActorFormState extends State<_CreateActorForm> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final options = availableBrainOptions(
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
       paletteRungs:
@@ -318,45 +316,30 @@ class _CreateActorFormState extends State<_CreateActorForm> {
             children: [
               Expanded(
                 flex: 2,
-                child: TextField(
+                child: LaField(
                   key: const ValueKey('actors.name'),
                   controller: _name,
-                  decoration: InputDecoration(
-                    labelText: context.l10n.actorsNameLabel,
-                    hintText: context.l10n.actorsNameHint,
-                    isDense: true,
-                  ),
+                  placeholder: context.l10n.actorsNameLabel,
                   onChanged: (_) => setState(() {}),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 flex: 3,
-                child: DropdownButtonFormField<String>(
+                // 1b — the brain is a RESOURCE: its daemon-side health
+                // verdict rides its name in the picker (LaSelectItem
+                // has a leading icon slot — the dot rides there).
+                child: LaSelect<String>(
                   key: const ValueKey('actors.brain'),
-                  initialValue: effective,
-                  decoration: InputDecoration(
-                    labelText: context.l10n.actorsBrainLabel,
-                    isDense: true,
-                  ),
+                  value: effective,
+                  expand: true,
+                  placeholder: context.l10n.actorsBrainLabel,
                   items: [
                     for (final option in options)
-                      DropdownMenuItem(
+                      LaSelectItem(
                         value: option.ref,
-                        // 1b — the brain is a RESOURCE: its daemon-side
-                        // health verdict rides its name in the picker.
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                option.label,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            BrainHealthDot(brainRef: option.ref),
-                          ],
-                        ),
+                        label: option.label,
+                        icon: BrainHealthDot(brainRef: option.ref),
                       ),
                   ],
                   onChanged: (final value) => setState(() => _brainRef = value),
@@ -368,32 +351,27 @@ class _CreateActorFormState extends State<_CreateActorForm> {
           Row(
             children: [
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const ValueKey('actors.role'),
                   controller: _role,
-                  decoration: InputDecoration(
-                    labelText: context.l10n.actorsRoleLabel,
-                    hintText: context.l10n.actorsRoleHint,
-                    isDense: true,
-                  ),
+                  placeholder: context.l10n.actorsRoleLabel,
                 ),
               ),
               const SizedBox(width: 8),
-              FilledButton(
+              LaButton(
                 key: const ValueKey('actors.create'),
+                variant: LaButtonVariant.primary,
                 onPressed: canCreate ? _create : null,
-                child: Text(context.l10n.actorsCreateActor),
+                label: context.l10n.actorsCreateActor,
               ),
             ],
           ),
-          if (Theme.of(context).platform != TargetPlatform.macOS)
+          if (defaultTargetPlatform != TargetPlatform.macOS)
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 context.l10n.actorsLocalNeedsMacos,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+                style: theme.compact.copyWith(color: theme.inkMuted),
               ),
             ),
         ],

@@ -1,6 +1,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -74,6 +75,10 @@ Future<void> _pumpShell(
           ),
         ],
         child: MaterialApp(
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,

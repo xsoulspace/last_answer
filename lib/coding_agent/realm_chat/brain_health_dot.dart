@@ -23,14 +23,14 @@ final class BrainHealthDot extends StatelessWidget {
   Widget build(final BuildContext context) {
     final health = _store.statusFor(brainRef);
     if (health == null) return const SizedBox.shrink();
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final color = switch (health.status) {
       'ok' => const Color(0xFF30A46C),
-      'failed' => theme.colorScheme.error,
+      'failed' => laUi.danger,
       'unknown' => context.shellMuted,
       _ => const Color(0xFFB58A00),
     };
-    return Tooltip(
+    return LaTooltip(
       message:
           '${health.status}'
           '${health.code == null ? '' : ' (${health.code})'}'

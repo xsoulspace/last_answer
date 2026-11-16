@@ -1,8 +1,8 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/settings/views/views.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class SettingsScreen extends HookWidget {
   const SettingsScreen({this.onClose, this.embedded = false, super.key});
@@ -19,7 +19,7 @@ class SettingsScreen extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    void onBack() => onClose != null ? onClose!() : Navigator.pop(context);
+    final onBack = onClose ?? () => Navigator.pop(context);
     final screenLayout = ScreenLayout.of(context);
     // Plan v5 4a — the Pro entry, un-hidden: the Account/Pro tab shows
     // when this build's store target declares products OR the
@@ -39,40 +39,65 @@ class SettingsScreen extends HookWidget {
         else
           const MyAccountViewLocalImpl(),
     ];
-    Widget child = TabBarView(
+    final labels = [
+      context.l10n.generalSettingsShortTitle,
+      context.l10n.agentSettingsTitle,
+      if (isAccountViewVisible) context.l10n.myAccount,
+    ];
+    final pageController = usePageController();
+    final currentTab = useState(0);
+    final theme = context.laUi;
+
+    final pager = PageView(
+      controller: pageController,
       physics: const SpeedyPageViewScrollPhysics(),
+      onPageChanged: (final index) => currentTab.value = index,
       children: tabsViews,
     );
-    final appbar = AppBar(
-      centerTitle: true,
-      leading: CupertinoCloseButton(onPressed: onBack),
-      actions: const [FeedbackButton()],
-      title: Text(context.l10n.settings),
-      bottom: TabBar(
-        tabs: [
-          Tab(text: context.l10n.generalSettingsShortTitle),
-          Tab(text: context.l10n.agentSettingsTitle),
-          if (isAccountViewVisible) Tab(text: context.l10n.myAccount),
-        ],
-      ),
+
+    // The kit tab strip (Material AppBar+TabBar grammar retired): quiet
+    // labels over the top bar, the ONE accent underline on the selected
+    // tab — the shell's own tab law, at phone scale.
+    final topBar = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        LaTopBar(
+          leading: LaButton.icon(
+            key: const ValueKey('settings.close'),
+            icon: const Icon(Icons.close, size: 20),
+            onPressed: onBack,
+          ),
+          title: Text(
+            context.l10n.settings,
+            textAlign: TextAlign.center,
+            style: theme.emphasis,
+          ),
+          trailing: const FeedbackButton(),
+        ),
+        LaTabStrip(
+          labels: labels,
+          currentIndex: currentTab.value,
+          onTap: (final index) => pageController.animateToPage(
+            index,
+            duration: theme.motionSettle,
+            curve: theme.motionCurve,
+          ),
+        ),
+      ],
     );
 
+    Widget child;
     if (embedded) {
       child = Column(
         children: [
-          SizedBox(width: double.infinity, height: 80, child: appbar),
-          Expanded(child: child),
+          topBar,
+          Expanded(child: pager),
         ],
       );
     } else if (screenLayout.small) {
-      child = Scaffold(
-        appBar: appbar,
-        backgroundColor: context.theme.canvasColor,
-        body: child,
-      );
+      child = LaScaffold(topBar: topBar, body: pager);
     } else {
-      child = Scaffold(
-        backgroundColor: context.theme.canvasColor,
+      child = LaScaffold(
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(
@@ -81,19 +106,20 @@ class SettingsScreen extends HookWidget {
             ),
             child: Column(
               children: [
-                SizedBox(
-                  width: ScreenLayout.maxSmallWidth,
-                  height: 80,
-                  child: appbar,
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: ScreenLayout.maxSmallWidth,
+                  ),
+                  child: topBar,
                 ),
-                Expanded(child: child),
+                Expanded(child: pager),
               ],
             ),
           ),
         ),
       );
     }
-    return DefaultTabController(length: tabsViews.length, child: child);
+    return child;
   }
 }
 

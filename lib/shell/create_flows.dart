@@ -38,10 +38,10 @@ Future<void> openMessageActorFlow(
     for (final actor in service.roster?.all ?? const <ActorProfile>[])
       if (actor.kind != ActorKind.human) actor,
   ];
-  await showDialog<void>(
+  await showLaDialog<void>(
     context: context,
-    builder: (final dialogContext) => AlertDialog(
-      title: Text(dialogContext.l10n.worldChatPickActorTitle),
+    builder: (final dialogContext) => LaDialog(
+      titleText: dialogContext.l10n.worldChatPickActorTitle,
       content: SizedBox(
         width: 360,
         height: 420,
@@ -58,9 +58,10 @@ Future<void> openMessageActorFlow(
         ),
       ),
       actions: [
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: Text(dialogContext.l10n.worldChatCancel),
+          label: dialogContext.l10n.worldChatCancel,
         ),
       ],
     ),
@@ -80,32 +81,42 @@ Future<void> openNewChannelFlow(
   final name = TextEditingController();
   final picked = <String>{};
   var nameTaken = false;
-  await showDialog<void>(
+  await showLaDialog<void>(
     context: context,
     builder: (final dialogContext) => StatefulBuilder(
-      builder: (final dialogContext, final setDialogState) => AlertDialog(
-        title: Text(dialogContext.l10n.worldChatNewChannelTitle),
+      builder: (final dialogContext, final setDialogState) => LaDialog(
+        titleText: dialogContext.l10n.worldChatNewChannelTitle,
         content: SizedBox(
           width: 360,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
+              // The field law is borderless (no floating label): the
+              // label rides a quiet Text above, the hint IS the
+              // placeholder — both frozen l10n strings preserved.
+              Text(
+                dialogContext.l10n.worldChatChannelNameLabel,
+                style: dialogContext.laUi.compact,
+              ),
+              const SizedBox(height: 4),
+              LaField(
                 key: const ValueKey('rail.channel.name'),
                 controller: name,
                 autofocus: true,
                 onChanged: (final _) {
                   if (nameTaken) setDialogState(() => nameTaken = false);
                 },
-                decoration: InputDecoration(
-                  prefixText: '#',
-                  labelText: dialogContext.l10n.worldChatChannelNameLabel,
-                  hintText: dialogContext.l10n.worldChatChannelNameHint,
-                  errorText: nameTaken
-                      ? dialogContext.l10n.worldChatChannelNameTaken
-                      : null,
+                prefix: Text(
+                  '#',
+                  style: dialogContext.laUi.body.copyWith(
+                    color: dialogContext.laUi.inkMuted,
+                  ),
                 ),
+                placeholder: dialogContext.l10n.worldChatChannelNameHint,
+                errorText: nameTaken
+                    ? dialogContext.l10n.worldChatChannelNameTaken
+                    : null,
               ),
               const SizedBox(height: 12),
               Flexible(
@@ -113,17 +124,26 @@ Future<void> openNewChannelFlow(
                   shrinkWrap: true,
                   children: [
                     for (final actor in actors)
-                      CheckboxListTile(
+                      LaRow(
                         key: ValueKey('rail.pick.actor.${actor.actorId}'),
-                        dense: true,
-                        title: Text(actor.displayName),
-                        subtitle: actor.role.isEmpty ? null : Text(actor.role),
-                        value: picked.contains(actor.actorId),
-                        onChanged: (final value) => setDialogState(() {
-                          if (value ?? false) {
-                            picked.add(actor.actorId);
-                          } else {
+                        margin: EdgeInsets.zero,
+                        leading: LaCheckbox(
+                          value: picked.contains(actor.actorId),
+                          onChanged: (final value) => setDialogState(() {
+                            if (value ?? false) {
+                              picked.add(actor.actorId);
+                            } else {
+                              picked.remove(actor.actorId);
+                            }
+                          }),
+                        ),
+                        titleText: actor.displayName,
+                        metaText: actor.role.isEmpty ? null : actor.role,
+                        onTap: () => setDialogState(() {
+                          if (picked.contains(actor.actorId)) {
                             picked.remove(actor.actorId);
+                          } else {
+                            picked.add(actor.actorId);
                           }
                         }),
                       ),
@@ -134,12 +154,14 @@ Future<void> openNewChannelFlow(
           ),
         ),
         actions: [
-          TextButton(
+          LaButton(
+            variant: LaButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(dialogContext.l10n.worldChatCancel),
+            label: dialogContext.l10n.worldChatCancel,
           ),
-          FilledButton(
+          LaButton(
             key: const ValueKey('rail.channel.create'),
+            variant: LaButtonVariant.primary,
             onPressed: name.text.trim().isEmpty
                 ? null
                 : () async {
@@ -154,7 +176,7 @@ Future<void> openNewChannelFlow(
                       setDialogState(() => nameTaken = true);
                     }
                   },
-            child: Text(dialogContext.l10n.worldChatChannelCreate),
+            label: dialogContext.l10n.worldChatChannelCreate,
           ),
         ],
       ),
@@ -171,51 +193,57 @@ Future<void> openNewWorkspaceFlow(final BuildContext context) async {
   if (notifier == null) return;
   final name = TextEditingController();
   final folders = <String>[];
-  await showDialog<void>(
+  await showLaDialog<void>(
     context: context,
     builder: (final dialogContext) => StatefulBuilder(
-      builder: (final dialogContext, final setDialogState) => AlertDialog(
-        title: Text(dialogContext.l10n.worldChatNewWorkspaceTitle),
+      builder: (final dialogContext, final setDialogState) => LaDialog(
+        titleText: dialogContext.l10n.worldChatNewWorkspaceTitle,
         content: SizedBox(
           width: 360,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
+              // The borderless field law: the label rides a quiet Text
+              // above, the hint IS the placeholder (both l10n frozen).
+              Text(
+                dialogContext.l10n.worldChatWorkspaceNameLabel,
+                style: dialogContext.laUi.compact,
+              ),
+              const SizedBox(height: 4),
+              LaField(
                 key: const ValueKey('rail.workspace.name'),
                 controller: name,
                 autofocus: true,
                 onChanged: (_) => setDialogState(() {}),
-                decoration: InputDecoration(
-                  labelText: dialogContext.l10n.worldChatWorkspaceNameLabel,
-                  hintText: dialogContext.l10n.worldChatWorkspaceNameHint,
-                ),
+                placeholder: dialogContext.l10n.worldChatWorkspaceNameHint,
               ),
               const SizedBox(height: 8),
               for (final folder in folders)
-                ListTile(
+                LaRow(
                   key: ValueKey('rail.workspace.folder.$folder'),
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
                   leading: const Icon(Icons.folder_outlined, size: 18),
                   title: Text(
                     folder,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: dialogContext.laUi.control,
                   ),
-                  trailing: IconButton(
+                  trailing: LaButton.icon(
                     icon: const Icon(Icons.close, size: 16),
+                    size: LaButtonSize.sm,
                     onPressed: () =>
                         setDialogState(() => folders.remove(folder)),
                   ),
                 ),
-              ListTile(
+              LaRow(
                 key: const ValueKey('rail.workspace.pick-folder'),
-                dense: true,
-                contentPadding: EdgeInsets.zero,
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
                 leading: const Icon(Icons.create_new_folder_outlined, size: 20),
-                title: Text(dialogContext.l10n.worldChatWorkspaceAddFolder),
+                titleText: dialogContext.l10n.worldChatWorkspaceAddFolder,
                 onTap: () async {
                   final path = await _pickDirectory();
                   if (path != null && !folders.contains(path)) {
@@ -227,12 +255,14 @@ Future<void> openNewWorkspaceFlow(final BuildContext context) async {
           ),
         ),
         actions: [
-          TextButton(
+          LaButton(
+            variant: LaButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(dialogContext.l10n.worldChatCancel),
+            label: dialogContext.l10n.worldChatCancel,
           ),
-          FilledButton(
+          LaButton(
             key: const ValueKey('rail.workspace.create'),
+            variant: LaButtonVariant.primary,
             onPressed: name.text.trim().isEmpty
                 ? null
                 : () async {
@@ -250,7 +280,7 @@ Future<void> openNewWorkspaceFlow(final BuildContext context) async {
                       Navigator.of(dialogContext).pop();
                     }
                   },
-            child: Text(dialogContext.l10n.worldChatWorkspaceCreate),
+            label: dialogContext.l10n.worldChatWorkspaceCreate,
           ),
         ],
       ),
@@ -298,12 +328,12 @@ Future<void> openAcpBridgeFlow(
     installationService: installationService,
   );
   if (!context.mounted) return;
-  await showDialog<void>(
+  await showLaDialog<void>(
     context: context,
-    builder: (final dialogContext) => AlertDialog(
+    builder: (final dialogContext) => LaDialog(
       // Unlocalized mono house vocabulary (v1 — l10n keys listed in the
       // change report; the dialog never fakes a translation).
-      title: const Text('acp · bridge an agent'),
+      titleText: 'acp · bridge an agent',
       content: SizedBox(
         width: 360,
         height: 420,
@@ -318,11 +348,11 @@ Future<void> openAcpBridgeFlow(
             : ListView(
                 children: [
                   for (final installation in installations)
-                    ListTile(
+                    LaRow(
                       key: ValueKey('acp.pick.${installation.entry.id}'),
-                      dense: true,
-                      title: Text(installation.entry.displayName),
-                      subtitle: Text(installation.path),
+                      margin: EdgeInsets.zero,
+                      titleText: installation.entry.displayName,
+                      metaText: installation.path,
                       onTap: () {
                         Navigator.of(dialogContext).pop();
                         unawaited(
@@ -338,9 +368,10 @@ Future<void> openAcpBridgeFlow(
               ),
       ),
       actions: [
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: Text(dialogContext.l10n.worldChatCancel),
+          label: dialogContext.l10n.worldChatCancel,
         ),
       ],
     ),

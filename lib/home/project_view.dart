@@ -1,5 +1,4 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
@@ -9,6 +8,7 @@ import 'package:lastanswer/doc/doc_view.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
 import 'package:lastanswer/settings/views/changelog_view.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class ProjectView extends StatelessWidget {
@@ -31,7 +31,7 @@ class ProjectView extends StatelessWidget {
           (final c) => c.value,
         );
     if (project == null && projectContainer.isLoading) {
-      return const UiCircularProgress();
+      return const Center(child: LaSpinner(size: 24));
     }
 
     final selected = project == null || projectContainer.value.id == project!.id
@@ -119,10 +119,11 @@ class _ProjectViewAppBar extends StatelessWidget {
   const _ProjectViewAppBar();
 
   @override
-  Widget build(final BuildContext context) => BackTextUniversalAppBar(
-    onBack: () => context.go(ScreenPaths.home),
-    titleStr: '',
-    useBackButton: true,
+  Widget build(final BuildContext context) => LaTopBar(
+    leading: LaButton.icon(
+      icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+      onPressed: () => context.go(ScreenPaths.home),
+    ),
   );
 }
 
@@ -130,10 +131,12 @@ class _ChangelogViewAppBar extends StatelessWidget {
   const _ChangelogViewAppBar();
 
   @override
-  Widget build(final BuildContext context) => BackTextUniversalAppBar(
-    onBack: () => context.go(ScreenPaths.home),
-    titleStr: context.l10n.changeLog,
-    useBackButton: true,
+  Widget build(final BuildContext context) => LaTopBar(
+    leading: LaButton.icon(
+      icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+      onPressed: () => context.go(ScreenPaths.home),
+    ),
+    titleText: context.l10n.changeLog,
   );
 }
 
@@ -151,8 +154,9 @@ class _WorkbenchDocumentHostState extends State<_WorkbenchDocumentHost> {
     children: [
       Align(
         alignment: Alignment.centerRight,
-        child: TextButton(
+        child: LaButton(
           key: const ValueKey('open-workbench'),
+          variant: LaButtonVariant.ghost,
           onPressed: () async {
             final doc = widget.doc;
             final repo = context.read<hc.DocumentRepository>();

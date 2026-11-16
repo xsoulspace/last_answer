@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
@@ -74,29 +75,31 @@ void main() {
   Future<void> mount(WidgetTester tester, {Size? size}) async {
     owner = _Owner();
     await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: S.localizationsDelegates,
-        supportedLocales: S.supportedLocales,
-        home: Scaffold(
-          body: SizedBox(
-            width: size?.width,
-            height: size?.height,
-            child: WorldConversationView(
-              binding: const WorldBindingModel(
-                worldId: 'test-world',
-                endpoint: 'http://localhost/',
-              ),
-              worldResolver: (_) async => const DiscoveredWorld(
-                worldId: 'test-world',
-                endpoint: 'http://localhost/',
-                source: 'fixture',
-                localSeatSocket: '/unused-fixture-socket',
-              ),
-              seatRequester: (_) async => WorldSeatLease(
-                credential: 'fixture-only',
-                tools: const {'agent_participation'},
-                actor: 'human',
-                invoke: owner.invoke,
+      Portal(
+        child: MaterialApp(
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: SizedBox(
+              width: size?.width,
+              height: size?.height,
+              child: WorldConversationView(
+                binding: const WorldBindingModel(
+                  worldId: 'test-world',
+                  endpoint: 'http://localhost/',
+                ),
+                worldResolver: (_) async => const DiscoveredWorld(
+                  worldId: 'test-world',
+                  endpoint: 'http://localhost/',
+                  source: 'fixture',
+                  localSeatSocket: '/unused-fixture-socket',
+                ),
+                seatRequester: (_) async => WorldSeatLease(
+                  credential: 'fixture-only',
+                  tools: const {'agent_participation'},
+                  actor: 'human',
+                  invoke: owner.invoke,
+                ),
               ),
             ),
           ),
@@ -243,6 +246,16 @@ void main() {
   ) async {
     await mount(tester);
     await tester.tap(find.byKey(const Key('world_conversation.consent')));
+    await tester.pumpAndSettle();
+    // The consent form is taller than the test window — scroll inside the
+    // dialog's own SingleChildScrollView (what a user does) before each
+    // below-the-fold control.
+    final form = find.byType(Scrollable).last;
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('world_conversation.consent.task')),
+      120,
+      scrollable: form,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('world_conversation.consent.task')));
     await tester.pumpAndSettle();

@@ -1,18 +1,22 @@
 import 'dart:math' as math;
 
 import 'package:intl/intl.dart' as intl;
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
+
+/// The community invite (was `DiscordButton` in the legacy kit).
+const _discordLink = 'https://discord.gg/y54DpJwmAn';
 
 Future<void> showNotificationDialog({
   required final BuildContext context,
   required final NotificationsNotifier notificationController,
 }) async {
-  await showAdaptiveDialog(
+  await showLaDialog(
     context: context,
     builder: (final context) {
-      final theme = Theme.of(context);
-      final isDark = theme.brightness == Brightness.dark;
+      final theme = context.laUi;
+      final isDark = theme.isDark;
       final size = MediaQuery.of(context).size;
       final screenLayout = ScreenLayout.of(context);
       final double? width = screenLayout.small
@@ -28,22 +32,18 @@ Future<void> showNotificationDialog({
               600,
             );
 
-      return Dialog(
-        insetPadding: screenLayout.small ? EdgeInsets.zero : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: defaultPopupBorderRadius,
-          side: BorderSide(
-            color: isDark ? context.la.ink : context.la.rule
-                .withOpacity(0.2),
-          ),
+      return LaBox(
+        floating: true,
+        color: theme.surfaceOverlay,
+        radius: defaultPopupBorderRadius,
+        border: BorderSide(
+          color: isDark ? theme.ink : theme.rule.withValues(alpha: 0.2),
         ),
+        width: width,
+        height: height,
         child: NavigatorPopHandler(
           onPop: notificationController.readAllUpdates,
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: const ChangelogDialog(),
-          ),
+          child: const ChangelogDialog(),
         ),
       );
     },
@@ -55,8 +55,7 @@ class ChangelogDialog extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final theme = context.laUi;
     final notificationController = context.read<NotificationsNotifier>();
     final updates = notificationController.updates;
     final lastMessage = updates.first;
@@ -82,8 +81,9 @@ class ChangelogDialog extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: CloseButton(
+                    padding: const EdgeInsets.all(8),
+                    child: LaButton.icon(
+                      icon: const Icon(Icons.close, size: 18),
                       onPressed: close,
                     ),
                   ),
@@ -91,10 +91,10 @@ class ChangelogDialog extends StatelessWidget {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 18),
-                    child: SelectableText(
+                    child: LaSelectableText(
                       lastMessage.title.localize(context),
                       textAlign: TextAlign.center,
-                      style: textTheme.displayLarge,
+                      style: theme.display,
                     ),
                   ),
                 ),
@@ -106,14 +106,21 @@ class ChangelogDialog extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             child: Row(
               children: [
-                const DiscordButton(text: 'Discord'),
+                LaButton(
+                  variant: LaButtonVariant.link,
+                  label: 'Discord',
+                  onPressed: () async {
+                    final uri = Uri.parse(_discordLink);
+                    if (await url_launcher.canLaunchUrl(uri)) {
+                      await url_launcher.launchUrl(uri);
+                    }
+                  },
+                ),
                 const Spacer(),
-                TextButton(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: close,
-                  child: Text(
-                    context.l10n.close.sentenceCase,
-                    style: textTheme.bodyLarge,
-                  ),
+                  label: context.l10n.close.sentenceCase,
                 ),
               ],
             ),
@@ -133,7 +140,7 @@ class ChangelogBody extends StatelessWidget {
   Widget build(final BuildContext context) {
     final notificationController = context.read<NotificationsNotifier>();
     final updates = notificationController.updates;
-    final theme = context.theme;
+    final theme = context.laUi;
     return ListView.separated(
       separatorBuilder: (final context, final index) {
         final notification = updates[index + 1];
@@ -142,16 +149,16 @@ class ChangelogBody extends StatelessWidget {
         if (index == 0) {
           child = Column(
             children: [
-              Divider(color: theme.highlightColor),
+              const LaHairline(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 35),
                 child: Text(
                   'PREVIOUS UPDATES',
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.titleSmall,
+                  style: theme.emphasis,
                 ),
               ),
-              Divider(color: theme.highlightColor),
+              const LaHairline(),
               const SizedBox(height: 35),
               child,
             ],
@@ -169,7 +176,7 @@ class ChangelogBody extends StatelessWidget {
       itemBuilder: (final context, final i) {
         final notification = updates[i];
 
-        return SelectableText(
+        return LaSelectableText(
           notification.message.localize(context),
         );
       },
@@ -185,15 +192,15 @@ class ChangelogTile extends StatelessWidget {
   final NotificationMessageModel notification;
   @override
   Widget build(final BuildContext context) {
-    final theme = context.theme;
-    return ListTile(
-      title: SelectableText(
+    final theme = context.laUi;
+    return LaRow(
+      title: LaSelectableText(
         notification.title.localize(context),
-        style: theme.textTheme.headlineSmall,
+        style: theme.section,
       ),
-      subtitle: SelectableText(
+      meta: LaSelectableText(
         intl.DateFormat.yMd().format(notification.created.toLocal()),
-        style: theme.textTheme.titleSmall,
+        style: theme.emphasis,
       ),
     );
   }

@@ -8,6 +8,8 @@
 // hermetic world (the repo's lane — a final class is never faked).
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
 import 'package:flutter_test/flutter_test.dart';
 
@@ -85,7 +87,10 @@ Future<void> _pumpShell(
           ),
         ],
         child: MaterialApp(
-          locale: const Locale('en'),
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
@@ -279,7 +284,10 @@ void main() {
         Provider<LaWorld?>.value(
           value: laWorld,
           child: MaterialApp(
-            locale: const Locale('en'),
+            // The kit overlay host (same shape as last_answer_app.dart):
+            // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
             localizationsDelegates: S.localizationsDelegates,
             supportedLocales: S.supportedLocales,
             home: Scaffold(
@@ -663,7 +671,10 @@ void main() {
       final calls = <List<Object?>>[];
       await tester.pumpWidget(
         MaterialApp(
-          locale: const Locale('en'),
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
@@ -741,7 +752,7 @@ void main() {
         final tip = find.descendant(
           of: find.byKey(ValueKey(entry.key)),
           matching: find.byWidgetPredicate(
-            (final w) => w is Tooltip && w.message == entry.value,
+            (final w) => w is LaTooltip && w.message == entry.value,
           ),
         );
         expect(tip, findsOneWidget, reason: entry.key);
@@ -749,10 +760,10 @@ void main() {
       // The channel row mark carries the kind word.
       final channelTip = find.descendant(
         of: find.byKey(ValueKey('rooms.row.channel.$channelId')),
-        matching: find.byType(Tooltip),
+        matching: find.byType(LaTooltip),
       );
       expect(channelTip, findsOneWidget);
-      expect(tester.widget<Tooltip>(channelTip).message, isNotEmpty);
+      expect(tester.widget<LaTooltip>(channelTip).message, isNotEmpty);
     });
   });
 

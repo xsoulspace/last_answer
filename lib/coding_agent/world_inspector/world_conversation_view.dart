@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as worlds;
@@ -626,80 +627,80 @@ class WorldConversationViewState extends State<WorldConversationView> {
   Future<void> _showTaskConsent() async {
     var actor = '';
     var paths = '';
-    final form = GlobalKey<FormState>();
+    var actorError = false;
+    var pathsError = false;
     var task = _selected;
     var minutes = 15;
     try {
-      final revoke = await showDialog<bool>(
+      final revoke = await showLaDialog<bool>(
         context: context,
         builder: (dialogContext) => StatefulBuilder(
-          builder: (context, update) => AlertDialog(
-            title: Text(context.l10n.worldTaskPermission),
-            content: SizedBox(
-              width: 460,
-              child: SingleChildScrollView(
-                child: Form(
-                  key: form,
+          builder: (context, update) {
+            // The Form/validator pair the Material draft carried, at the
+            // widgets layer: the required check runs on the action and the
+            // honest error line rides LaField.errorText.
+            bool validate() {
+              final actorBad = actor.trim().isEmpty;
+              final pathsBad = paths.trim().isEmpty;
+              if (actorBad != actorError || pathsBad != pathsError) {
+                update(() {
+                  actorError = actorBad;
+                  pathsError = pathsBad;
+                });
+              }
+              return !actorBad && !pathsBad;
+            }
+
+            return LaDialog(
+              showClose: false,
+              titleText: context.l10n.worldTaskPermission,
+              content: SizedBox(
+                width: 460,
+                child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(context.l10n.worldTaskPermissionHint),
-                      DropdownButtonFormField<String>(
+                      LaSelect<String>(
                         key: const Key('world_conversation.consent.task'),
-                        initialValue: task,
-                        isExpanded: true,
-                        decoration: InputDecoration(
-                          labelText: context.l10n.worldTaskTarget,
-                        ),
+                        value: task,
+                        expand: true,
+                        placeholder: context.l10n.worldTaskTarget,
                         items: [
                           for (final row in _subjects)
-                            DropdownMenuItem(
+                            LaSelectItem(
                               value: (row['anchor']! as Map)['id'] as String,
-                              child: Text(
-                                row['label']! as String,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              label: row['label']! as String,
                             ),
                         ],
                         onChanged: (value) => update(() => task = value),
                       ),
-                      TextFormField(
+                      LaField(
                         key: const Key('world_conversation.consent.actor'),
                         onChanged: (value) => actor = value,
-                        decoration: InputDecoration(
-                          labelText: context.l10n.worldTaskActor,
-                        ),
-                        validator: (value) =>
-                            value == null || value.trim().isEmpty
+                        placeholder: context.l10n.worldTaskActor,
+                        errorText: actorError
                             ? context.l10n.worldTaskRequired
                             : null,
                       ),
-                      TextFormField(
+                      LaField(
                         key: const Key('world_conversation.consent.paths'),
                         onChanged: (value) => paths = value,
                         minLines: 2,
                         maxLines: 5,
-                        decoration: InputDecoration(
-                          labelText: context.l10n.worldTaskPaths,
-                        ),
-                        validator: (value) =>
-                            value == null || value.trim().isEmpty
+                        placeholder: context.l10n.worldTaskPaths,
+                        errorText: pathsError
                             ? context.l10n.worldTaskRequired
                             : null,
                       ),
-                      DropdownButtonFormField<int>(
+                      LaSelect<int>(
                         key: const Key('world_conversation.consent.duration'),
-                        initialValue: minutes,
-                        decoration: InputDecoration(
-                          labelText: context.l10n.worldTaskMinutes,
-                        ),
+                        value: minutes,
+                        placeholder: context.l10n.worldTaskMinutes,
                         items: [
                           for (final value in [5, 15, 30, 60])
-                            DropdownMenuItem(
-                              value: value,
-                              child: Text('$value'),
-                            ),
+                            LaSelectItem(value: value, label: '$value'),
                         ],
                         onChanged: (value) => update(() => minutes = value!),
                       ),
@@ -707,33 +708,36 @@ class WorldConversationViewState extends State<WorldConversationView> {
                   ),
                 ),
               ),
-            ),
-            actions: [
-              TextButton(
-                key: const Key('world_conversation.consent.cancel'),
-                onPressed: () => Navigator.pop(dialogContext),
-                child: Text(context.l10n.cancel),
-              ),
-              TextButton(
-                key: const Key('world_conversation.consent.revoke'),
-                onPressed: () {
-                  if (form.currentState!.validate()) {
-                    Navigator.pop(dialogContext, true);
-                  }
-                },
-                child: Text(context.l10n.worldTaskRevoke),
-              ),
-              TextButton(
-                key: const Key('world_conversation.consent.authorize'),
-                onPressed: () {
-                  if (form.currentState!.validate()) {
-                    Navigator.pop(dialogContext, false);
-                  }
-                },
-                child: Text(context.l10n.worldTaskAuthorize),
-              ),
-            ],
-          ),
+              actions: [
+                LaButton(
+                  key: const Key('world_conversation.consent.cancel'),
+                  variant: LaButtonVariant.ghost,
+                  onPressed: () => Navigator.pop(dialogContext),
+                  label: context.l10n.cancel,
+                ),
+                LaButton(
+                  key: const Key('world_conversation.consent.revoke'),
+                  variant: LaButtonVariant.destructiveGhost,
+                  onPressed: () {
+                    if (validate()) {
+                      Navigator.pop(dialogContext, true);
+                    }
+                  },
+                  label: context.l10n.worldTaskRevoke,
+                ),
+                LaButton(
+                  key: const Key('world_conversation.consent.authorize'),
+                  variant: LaButtonVariant.primary,
+                  onPressed: () {
+                    if (validate()) {
+                      Navigator.pop(dialogContext, false);
+                    }
+                  },
+                  label: context.l10n.worldTaskAuthorize,
+                ),
+              ],
+            );
+          },
         ),
       );
       if (revoke == null || task == null || !mounted) return;
@@ -769,49 +773,46 @@ class WorldConversationViewState extends State<WorldConversationView> {
     children: [
       Text(
         'WORLD · ${widget.binding.displayName}',
-        style: Theme.of(context).textTheme.labelSmall,
+        style: context.laUi.micro,
       ),
       Row(
         children: [
           Expanded(
-            child: DropdownButton<String>(
-              isExpanded: true,
+            child: LaSelect<String>(
+              expand: true,
               value: _selected,
-              hint: Text(context.l10n.worldConversationChoose),
+              placeholder: context.l10n.worldConversationChoose,
               items: [
                 for (final row in _subjects)
-                  DropdownMenuItem(
+                  LaSelectItem(
                     value: (row['anchor']! as Map)['id'] as String,
-                    child: Text(
-                      row['label']! as String,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    label: row['label']! as String,
                   ),
               ],
               onChanged: (value) => setState(() => _selected = value),
             ),
           ),
-          TextButton(
+          LaButton(
+            variant: LaButtonVariant.ghost,
             onPressed: _busy ? null : connect,
-            child: Text(
-              _lease == null
-                  ? context.l10n.connectWithToken
-                  : context.l10n.worldConversationReconnect,
-            ),
+            label: _lease == null
+                ? context.l10n.connectWithToken
+                : context.l10n.worldConversationReconnect,
           ),
-          TextButton(
+          LaButton(
             key: const Key('world_conversation.consent'),
+            variant: LaButtonVariant.ghost,
             onPressed: _lease == null || _busy || _selected == null
                 ? null
                 : _showTaskConsent,
-            child: Text(context.l10n.worldTaskPermission),
+            label: context.l10n.worldTaskPermission,
           ),
         ],
       ),
       Expanded(
         child: ListView(
           children: [
-            if (_error != null) SelectableText(_error!),
+            if (_error != null) LaSelectableText(_error!),
             // The seat's WORK affordances, on the same grid as the
             // conversation: what the world declares, never a default.
             if (_workSeat case final seat?) ...[
@@ -832,7 +833,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
                 busy: _workBusy,
                 onRun: (name) => unawaited(runTool(name)),
               ),
-              Container(height: 0.6, color: Theme.of(context).dividerColor),
+              const LaHairline(),
             ],
             if (_presence.isNotEmpty)
               Padding(
@@ -843,12 +844,18 @@ class WorldConversationViewState extends State<WorldConversationView> {
                   children: [
                     for (final row in _presence)
                       if (row['actor'] is String)
-                        ChoiceChip(
+                        LaPill(
                           key: Key('world_conversation.actor.${row['actor']}'),
-                          label: Text('${row['actor']}'),
-                          selected: _recipient == row['actor'],
-                          onSelected: (selected) {
+                          label: '${row['actor']}',
+                          background: _recipient == row['actor']
+                              ? context.laUi.accent
+                              : null,
+                          color: _recipient == row['actor']
+                              ? context.laUi.onAccent
+                              : null,
+                          onTap: () {
                             final actor = row['actor'] as String?;
+                            final selected = _recipient != actor;
                             setState(
                               () => _recipient = selected ? actor : null,
                             );
@@ -860,7 +867,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             for (final step in _frontier)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
-                child: SelectableText(
+                child: LaSelectableText(
                   'OPEN  ${step['title']}'
                   '${step['ready'] == true ? '  (claimable)' : ''}',
                 ),
@@ -868,7 +875,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             for (final claim in _claims)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
-                child: SelectableText(
+                child: LaSelectableText(
                   'HELD  ${claim['claim']}  ·  ${claim['claimedBy']}',
                 ),
               ),
@@ -876,7 +883,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
               if ((event['anchor'] as Map?)?['id'] == _selected)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: SelectableText(
+                  child: LaSelectableText(
                     '${event['speaker']}  ${event['text']}',
                   ),
                 ),
@@ -885,7 +892,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             if (_selected != null && _workAbsence != null)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: SelectableText(
+                child: LaSelectableText(
                   'WORK  not available  ·  $_workAbsence',
                   key: const Key('world_conversation.work.absence'),
                 ),
@@ -893,7 +900,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             for (final work in _work)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: SelectableText(
+                child: LaSelectableText(
                   'WORK  ${work['kind']}'
                   '${work['speakerId'] == null ? '' : '  ${work['speakerId']}'}'
                   '  ${work['text']}',
@@ -903,7 +910,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             if (_workOmitted > 0)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: SelectableText(
+                child: LaSelectableText(
                   'WORK  +$_workOmitted more row(s) the world did not serve.',
                   key: const Key('world_conversation.work.omitted'),
                 ),
@@ -914,7 +921,7 @@ class WorldConversationViewState extends State<WorldConversationView> {
             for (var index = 0; index < _receipts.length; index++)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 3),
-                child: SelectableText(
+                child: LaSelectableText(
                   'WORK  ${_receipts[index].label}',
                   key: Key('coding_agent.world.receipt.$index'),
                 ),
@@ -925,12 +932,10 @@ class WorldConversationViewState extends State<WorldConversationView> {
       Row(
         children: [
           Expanded(
-            child: TextField(
+            child: LaField(
               key: const Key('world_conversation.input'),
               controller: _input,
-              decoration: InputDecoration(
-                hintText: context.l10n.worldConversationHint,
-              ),
+              placeholder: context.l10n.worldConversationHint,
               onSubmitted: (text) async {
                 try {
                   await send(text);
@@ -940,8 +945,9 @@ class WorldConversationViewState extends State<WorldConversationView> {
               },
             ),
           ),
-          TextButton(
+          LaButton(
             key: const Key('world_conversation.send'),
+            variant: LaButtonVariant.primary,
             onPressed: _lease == null || _busy
                 ? null
                 : () async {
@@ -951,12 +957,13 @@ class WorldConversationViewState extends State<WorldConversationView> {
                       if (mounted) setState(() => _error = '$error');
                     }
                   },
-            child: Text(context.l10n.worldConversationSend),
+            label: context.l10n.worldConversationSend,
           ),
           // DELEGATE rides the SAME composer: the sentence a human already
           // typed becomes world work instead of a message.
-          TextButton(
+          LaButton(
             key: const Key('coding_agent.world.delegate'),
+            variant: LaButtonVariant.ghost,
             onPressed: _lease == null || _busy || _workBusy
                 ? null
                 : () async {
@@ -966,13 +973,13 @@ class WorldConversationViewState extends State<WorldConversationView> {
                       if (mounted) setState(() => _error = '$error');
                     }
                   },
-            child: const Text('DELEGATE'),
+            label: 'DELEGATE',
           ),
         ],
       ),
       Text(
         context.l10n.worldConversationPublic,
-        style: Theme.of(context).textTheme.labelSmall,
+        style: context.laUi.micro,
       ),
     ],
   );

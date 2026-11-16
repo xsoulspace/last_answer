@@ -10,16 +10,13 @@
 /// stable widget keys (`browser.*`) as the agent-facing contract.
 library;
 
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-
 import 'package:lastanswer/browser/browser_address.dart';
 import 'package:lastanswer/browser/browser_bridge.dart';
 import 'package:lastanswer/browser/browser_strings.dart';
 import 'package:lastanswer/browser/browser_view.dart';
 import 'package:lastanswer/browser/browser_windows.dart';
 import 'package:lastanswer/browser/native_browser_view.dart';
+import 'package:lastanswer/common_imports.dart';
 
 /// A general embedded browser window.
 class WorkspaceBrowser extends StatefulWidget {
@@ -117,7 +114,6 @@ class _WorkspaceBrowserState extends State<WorkspaceBrowser> {
   @override
   Widget build(BuildContext context) {
     final strings = BrowserStrings.of(context);
-    final theme = Theme.of(context);
     final viewBuilder = widget.viewBuilder ?? buildNativeBrowserView;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,7 +124,7 @@ class _WorkspaceBrowserState extends State<WorkspaceBrowser> {
           strings: strings,
           onSubmit: _openTypedAddress,
         ),
-        Divider(height: 0.6, color: theme.dividerColor),
+        const LaHairline(),
         _ControlRow(
           strings: strings,
           canGoBack: _canGoBack,
@@ -146,7 +142,7 @@ class _WorkspaceBrowserState extends State<WorkspaceBrowser> {
             await _refreshHistoryFlags();
           },
         ),
-        Divider(height: 0.6, color: theme.dividerColor),
+        const LaHairline(),
         _ProgressLine(progress: _bridge.progress, loading: _bridge.isLoading),
         _TitleLine(title: _bridge.title, url: _bridge.url),
         if (_bridge.error != null)
@@ -176,27 +172,24 @@ class _AddressRow extends StatelessWidget {
     child: Row(
       children: [
         Expanded(
-          child: TextField(
+          child: LaField(
             key: const Key('browser.address'),
             controller: controller,
             focusNode: focusNode,
             style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-            decoration: InputDecoration(
-              isDense: true,
-              border: InputBorder.none,
-              hintText: strings.addressHint,
-              hintStyle: TextStyle(
-                color: Theme.of(context).hintColor,
-                fontSize: 12,
-              ),
+            placeholder: strings.addressHint,
+            placeholderStyle: TextStyle(
+              color: context.laUi.inkQuiet,
+              fontSize: 12,
             ),
             onSubmitted: (_) => onSubmit(),
           ),
         ),
-        TextButton(
+        LaButton(
           key: const Key('browser.go'),
+          label: strings.go,
+          variant: LaButtonVariant.ghost,
           onPressed: onSubmit,
-          child: Text(strings.go),
         ),
       ],
     ),
@@ -225,20 +218,23 @@ class _ControlRow extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Row(
       children: [
-        TextButton(
+        LaButton(
           key: const Key('browser.back'),
+          label: strings.back,
+          variant: LaButtonVariant.ghost,
           onPressed: canGoBack ? onBack : null,
-          child: Text(strings.back),
         ),
-        TextButton(
+        LaButton(
           key: const Key('browser.forward'),
+          label: strings.forward,
+          variant: LaButtonVariant.ghost,
           onPressed: canGoForward ? onForward : null,
-          child: Text(strings.forward),
         ),
-        TextButton(
+        LaButton(
           key: const Key('browser.reload'),
+          label: strings.reload,
+          variant: LaButtonVariant.ghost,
           onPressed: onReload,
-          child: Text(strings.reload),
         ),
       ],
     ),
@@ -263,7 +259,7 @@ class _ProgressLine extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: FractionallySizedBox(
           widthFactor: progress <= 0 ? 0.02 : progress,
-          child: Container(color: Theme.of(context).colorScheme.primary),
+          child: Container(color: context.laUi.accent),
         ),
       ),
     );
@@ -278,7 +274,7 @@ class _TitleLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final label = title?.trim();
     final text = (label == null || label.isEmpty)
         ? (url?.toString() ?? '')
@@ -289,7 +285,7 @@ class _TitleLine extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: theme.dividerColor, width: 0.6),
+          bottom: BorderSide(color: laUi.rule, width: 0.6),
         ),
       ),
       child: Text(
@@ -300,7 +296,7 @@ class _TitleLine extends StatelessWidget {
         style: TextStyle(
           fontSize: 9.5,
           letterSpacing: 1.2,
-          color: theme.colorScheme.onSurfaceVariant,
+          color: laUi.inkMuted,
         ),
       ),
     );
@@ -315,15 +311,15 @@ class _ErrorLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      color: theme.colorScheme.error.withValues(alpha: 0.08),
+      color: laUi.danger.withValues(alpha: 0.08),
       child: Text(
         message.isEmpty ? strings.loadFailed : message,
         key: const Key('browser.error'),
-        style: TextStyle(fontSize: 12, color: theme.colorScheme.error),
+        style: TextStyle(fontSize: 12, color: laUi.danger),
       ),
     );
   }

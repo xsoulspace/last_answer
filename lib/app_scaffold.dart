@@ -17,5 +17,6 @@ class ScreenScaffold extends StatelessWidget {
   });
   final Widget navigator;
   @override
-  Widget build(final BuildContext context) => Scaffold(body: navigator);
+  Widget build(final BuildContext context) =>
+      LaScaffold(body: navigator, safeArea: false);
 }

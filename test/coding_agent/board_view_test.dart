@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart' show BoardTaskStatus;
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/board_view.dart';
 import 'package:lastanswer/coding_agent/planning_board_controller.dart';
@@ -16,6 +17,10 @@ void main() {
     final PlanningBoardController controller,
   ) => tester.pumpWidget(
     MaterialApp(
+      // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+      // even while closed (the house pattern).
+      builder: (final context, final child) =>
+          Portal(child: child ?? const SizedBox.shrink()),
       localizationsDelegates: S.localizationsDelegates,
       supportedLocales: S.supportedLocales,
       home: Scaffold(body: BoardView(controller: controller)),

@@ -9,20 +9,17 @@
 library;
 
 import 'dart:convert' show utf8;
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_models/shared_models.dart' show ActorKind;
 
 /// A VALID png (real CRC — Flutter's own decoder reads it).
 Uint8List pngBytes({final int width = 64, final int height = 48}) {
@@ -96,7 +93,7 @@ void main() {
     await tester.runAsync(() async {
       final share = RealmChatMediaShare(worldHome: pin);
       entry = await share.buildFromBytes(
-        bytes: pngBytes(width: 64, height: 48),
+        bytes: pngBytes(),
         threadId: threadId,
         nameHint: 'lighthouse.png',
       );
@@ -107,8 +104,8 @@ void main() {
     });
     expect(entry['kind'], 'media');
     expect(entry['mimeType'], 'image/png');
-    expect((entry['width'] as num), 64);
-    expect((entry['revision'] as String).length, 16);
+    expect(entry['width']! as num, 64);
+    expect((entry['revision']! as String).length, 16);
     // The file landed under the world's asset dir, byte-exact.
     final assetFile = File(entry['path']! as String);
     expect(assetFile.existsSync(), isTrue);
@@ -139,6 +136,10 @@ void main() {
       ChangeNotifierProvider<RealmChatService>.value(
         value: service,
         child: MaterialApp(
+          // The kit overlay host (the world_chat_composer_test pattern):
+          // LaTooltip/LaMenuAnchor build PortalTargets even while closed.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,

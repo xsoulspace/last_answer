@@ -6,26 +6,26 @@ import 'package:lastanswer/common_imports.dart';
 /// means the human dismissed.
 Future<String?> askImagePrompt(final BuildContext context) {
   final controller = TextEditingController();
-  return showDialog<String>(
+  return showLaDialog<String>(
     context: context,
-    builder: (final dialogContext) => AlertDialog(
-      title: Text(dialogContext.l10n.generateImage),
-      content: TextField(
+    builder: (final dialogContext) => LaDialog(
+      titleText: dialogContext.l10n.generateImage,
+      content: LaField(
         controller: controller,
         autofocus: true,
-        decoration: InputDecoration(
-          hintText: dialogContext.l10n.imageGenerationPrompt,
-        ),
+        placeholder: dialogContext.l10n.imageGenerationPrompt,
         onSubmitted: (final value) => Navigator.of(dialogContext).pop(value),
       ),
       actions: [
-        TextButton(
+        LaButton(
+          label: dialogContext.l10n.cancel,
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: Text(dialogContext.l10n.cancel),
         ),
-        TextButton(
+        LaButton(
+          label: dialogContext.l10n.generateImage,
+          variant: LaButtonVariant.primary,
           onPressed: () => Navigator.of(dialogContext).pop(controller.text),
-          child: Text(dialogContext.l10n.generateImage),
         ),
       ],
     ),

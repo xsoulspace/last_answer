@@ -12,7 +12,7 @@ import 'package:lastanswer/common_imports.dart';
 Future<String?> pickActorAvatar(
   final BuildContext context, {
   final String? current,
-}) => showDialog<String?>(
+}) => showLaDialog<String?>(
   context: context,
   builder: (final dialogContext) => _AvatarDialog(
     initial: current ?? '',
@@ -34,7 +34,6 @@ final class _AvatarDialogState extends State<_AvatarDialog> {
   late final TextEditingController _ctrl = TextEditingController(
     text: widget.initial,
   );
-  String? _hovered;
 
   @override
   void dispose() {
@@ -47,11 +46,12 @@ final class _AvatarDialogState extends State<_AvatarDialog> {
 
   @override
   Widget build(final BuildContext context) {
-    final la = context.la;
+    final laUi = context.laUi;
     final value = _ctrl.text;
-    return AlertDialog(
+    return LaDialog(
       key: const ValueKey('actor.avatar.dialog'),
-      title: Text(widget.l10n.actorsAvatar),
+      showClose: false,
+      titleText: widget.l10n.actorsAvatar,
       content: SizedBox(
         width: 300,
         child: Column(
@@ -63,40 +63,26 @@ final class _AvatarDialogState extends State<_AvatarDialog> {
               runSpacing: 6,
               children: [
                 for (final name in kActorAvatarGlyphs.keys)
-                  MouseRegion(
-                    onEnter: (_) => setState(() => _hovered = name),
-                    onExit: (_) => setState(() => _hovered = null),
-                    child: GestureDetector(
-                      key: ValueKey('actor.avatar.glyph.$name'),
-                      onTap: () => setState(() => _ctrl.text = name),
-                      child: Container(
-                        width: 34,
-                        height: 34,
-                        decoration: BoxDecoration(
-                          color: value == name || _hovered == name
-                              ? la.ink.withValues(alpha: 0.08)
-                              : null,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          kActorAvatarGlyphs[name],
-                          size: 16,
-                          color: la.inkMuted,
-                        ),
-                      ),
+                  LaPressable(
+                    key: ValueKey('actor.avatar.glyph.$name'),
+                    onTap: () => setState(() => _ctrl.text = name),
+                    selected: value == name,
+                    radius: BorderRadius.circular(8),
+                    padding: const EdgeInsets.all(9),
+                    child: Icon(
+                      kActorAvatarGlyphs[name],
+                      size: 16,
+                      color: laUi.inkMuted,
                     ),
                   ),
               ],
             ),
             const SizedBox(height: 10),
-            TextField(
+            LaField(
               key: const ValueKey('actor.avatar.custom'),
               controller: _ctrl,
               onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                hintText: widget.l10n.actorsAvatarHint,
-                isDense: true,
-              ),
+              placeholder: widget.l10n.actorsAvatarHint,
             ),
             if (_isCustom(value))
               Padding(
@@ -110,19 +96,22 @@ final class _AvatarDialogState extends State<_AvatarDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        LaButton(
           key: const ValueKey('actor.avatar.clear'),
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(context).pop(''),
-          child: Text(widget.l10n.actorsAvatarClear),
+          label: widget.l10n.actorsAvatarClear,
         ),
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(widget.l10n.worldChatCancel),
+          label: widget.l10n.worldChatCancel,
         ),
-        TextButton(
+        LaButton(
           key: const ValueKey('actor.avatar.confirm'),
+          variant: LaButtonVariant.primary,
           onPressed: () => Navigator.of(context).pop(_ctrl.text.trim()),
-          child: Text(widget.l10n.actorsCreate),
+          label: widget.l10n.actorsCreate,
         ),
       ],
     );

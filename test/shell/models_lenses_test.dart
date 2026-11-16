@@ -20,6 +20,8 @@ library;
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -32,7 +34,10 @@ import 'package:lastanswer/shell/models/models_view.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
 
 Widget _wrap(final Widget child) => MaterialApp(
-  locale: const Locale('en'),
+  // The kit overlay host (same shape as last_answer_app.dart):
+  // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+  builder: (final context, final child) =>
+      Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
   localizationsDelegates: S.localizationsDelegates,
   supportedLocales: S.supportedLocales,
   home: Scaffold(body: child),

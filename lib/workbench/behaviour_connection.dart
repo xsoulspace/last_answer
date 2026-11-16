@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
 
 /// An executable connection has a direct handle plus a selection alternative.
 /// Dropping inserts/removes the supported operation in a candidate, never adopts.
@@ -35,7 +35,7 @@ class _BehaviourConnectionState extends State<BehaviourConnection> {
               builder: (context, candidates, rejected) => Semantics(
                 label: 'Project opening edge. Insert or remove restoration.',
                 button: true,
-                child: InkWell(
+                child: LaPressable(
                   key: const ValueKey('project-opening-edge'),
                   onTap: () {
                     if (armed) {
@@ -69,16 +69,17 @@ class _BehaviourConnectionState extends State<BehaviourConnection> {
       ),
       Draggable<String>(
         data: 'restore',
-        feedback: Material(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text(
-              widget.restore ? 'Remove restoration' : 'Restore position',
-            ),
+        feedback: LaBox(
+          floating: true,
+          color: context.laUi.surfaceOverlay,
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            widget.restore ? 'Remove restoration' : 'Restore position',
           ),
         ),
-        child: TextButton(
+        child: LaButton(
           key: const ValueKey('restore-operation'),
+          variant: LaButtonVariant.ghost,
           onPressed: () => setState(() => armed = true),
           child: Text(
             armed
@@ -90,7 +91,8 @@ class _BehaviourConnectionState extends State<BehaviourConnection> {
         ),
       ),
       if (armed)
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => setState(() => armed = false),
           child: const Text('Cancel connection'),
         ),

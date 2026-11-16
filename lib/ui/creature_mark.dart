@@ -26,7 +26,7 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/la_world/creatures.dart';

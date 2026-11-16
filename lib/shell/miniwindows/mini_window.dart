@@ -11,7 +11,8 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 
 import 'package:lastanswer/shell/shell_theme.dart';
 
@@ -57,9 +58,7 @@ class MiniWindowController extends ChangeNotifier {
   /// The open windows, back → front. The last entry is the front
   /// (focused) window and paints above the rest.
   List<MiniWindowSpec> get windows =>
-      List<MiniWindowSpec>.unmodifiable(
-        _records.map((record) => record.spec),
-      );
+      List<MiniWindowSpec>.unmodifiable(_records.map((record) => record.spec));
 
   /// The id of the front (focused) window, or null when none is open.
   String? get frontId => _records.isEmpty ? null : _records.last.spec.id;
@@ -181,8 +180,7 @@ class MiniWindowController extends ChangeNotifier {
         ..size = size
         ..position = record.position;
     }
-    final int slot =
-        math.min(math.max(record.order, 0), _records.length - 1);
+    final int slot = math.min(math.max(record.order, 0), _records.length - 1);
     _records
       ..remove(existing)
       ..insert(slot, existing);
@@ -217,7 +215,7 @@ class MiniWindowController extends ChangeNotifier {
 /// [MiniWindowController.resize].
 class _MiniWindowRecord {
   _MiniWindowRecord({required this.spec, required this.position})
-      : size = spec.initialSize;
+    : size = spec.initialSize;
 
   final MiniWindowSpec spec;
   Size size;
@@ -263,13 +261,13 @@ class MiniWindowRecord {
   final int order;
 
   Map<String, Object?> toJson() => <String, Object?>{
-        'id': id,
-        'x': position.dx,
-        'y': position.dy,
-        'w': size.width,
-        'h': size.height,
-        'order': order,
-      };
+    'id': id,
+    'x': position.dx,
+    'y': position.dy,
+    'w': size.width,
+    'h': size.height,
+    'order': order,
+  };
 }
 
 /// The v1 window presentation: a Stack with the app's [child] below and
@@ -298,26 +296,26 @@ class MiniWindowLayer extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ListenableBuilder(
-        listenable: controller,
-        builder: (context, _) => LayoutBuilder(
-          builder: (context, constraints) {
-            final Size bounds = constraints.biggest;
-            return Stack(
-              key: const Key('miniwindow.layer'),
-              children: <Widget>[
-                child,
-                for (final MiniWindowSpec spec in controller.windows)
-                  _MiniWindowView(
-                    key: Key('miniwindow.${spec.id}'),
-                    controller: controller,
-                    spec: spec,
-                    bounds: bounds,
-                  ),
-              ],
-            );
-          },
-        ),
-      );
+    listenable: controller,
+    builder: (context, _) => LayoutBuilder(
+      builder: (context, constraints) {
+        final Size bounds = constraints.biggest;
+        return Stack(
+          key: const Key('miniwindow.layer'),
+          children: <Widget>[
+            child,
+            for (final MiniWindowSpec spec in controller.windows)
+              _MiniWindowView(
+                key: Key('miniwindow.${spec.id}'),
+                controller: controller,
+                spec: spec,
+                bounds: bounds,
+              ),
+          ],
+        );
+      },
+    ),
+  );
 
   /// Title bar height — the drag handle and the vertical clamp
   /// reserve.
@@ -343,10 +341,14 @@ class MiniWindowLayer extends StatelessWidget {
     final Offset position,
     final Size bounds,
   ) {
-    final double maxWidth =
-        math.max(minWindowSize.width, bounds.width - position.dx);
-    final double maxHeight =
-        math.max(minWindowSize.height, bounds.height - position.dy);
+    final double maxWidth = math.max(
+      minWindowSize.width,
+      bounds.width - position.dx,
+    );
+    final double maxHeight = math.max(
+      minWindowSize.height,
+      bounds.height - position.dy,
+    );
     return Size(
       size.width.clamp(minWindowSize.width, maxWidth),
       size.height.clamp(minWindowSize.height, maxHeight),
@@ -390,7 +392,7 @@ class _MiniWindowView extends StatelessWidget {
   Widget build(final BuildContext context) {
     final Offset position = controller.positionOf(spec.id)!;
     final Size size = controller.sizeOf(spec.id)!;
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    final theme = context.laUi;
     return Positioned(
       left: position.dx,
       top: position.dy,
@@ -399,41 +401,39 @@ class _MiniWindowView extends StatelessWidget {
       child: GestureDetector(
         onTap: () => controller.focus(spec.id),
         behavior: HitTestBehavior.opaque,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: colors.surface,
-              border: Border.all(
-                color: colors.outlineVariant,
-              ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: Column(
-                    children: <Widget>[
-                      _MiniWindowTitleBar(
-                        controller: controller,
-                        spec: spec,
-                        bounds: bounds,
-                      ),
-                      Expanded(
-                        child: ClipRect(child: Builder(builder: spec.builder)),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: _MiniWindowResizeHandle(
-                    controller: controller,
-                    spec: spec,
-                    bounds: bounds,
-                  ),
-                ),
-              ],
-            ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: theme.surface,
+            border: Border.all(color: theme.rule),
           ),
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Column(
+                  children: <Widget>[
+                    _MiniWindowTitleBar(
+                      controller: controller,
+                      spec: spec,
+                      bounds: bounds,
+                    ),
+                    Expanded(
+                      child: ClipRect(child: Builder(builder: spec.builder)),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: _MiniWindowResizeHandle(
+                  controller: controller,
+                  spec: spec,
+                  bounds: bounds,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -455,64 +455,56 @@ class _MiniWindowTitleBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onPanUpdate: (details) {
-          final Offset? position = controller.positionOf(spec.id);
-          final Size? size = controller.sizeOf(spec.id);
-          if (position == null || size == null) {
-            return;
-          }
-          controller.moveTo(
-            spec.id,
-            MiniWindowLayer.clampPosition(
-              position + details.delta,
-              size,
-              bounds,
+    behavior: HitTestBehavior.opaque,
+    onPanUpdate: (details) {
+      final Offset? position = controller.positionOf(spec.id);
+      final Size? size = controller.sizeOf(spec.id);
+      if (position == null || size == null) {
+        return;
+      }
+      controller.moveTo(
+        spec.id,
+        MiniWindowLayer.clampPosition(position + details.delta, size, bounds),
+      );
+    },
+    child: MouseRegion(
+      cursor: SystemMouseCursors.move,
+      child: Container(
+        height: MiniWindowLayer.titleBarHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: context.laUi.rule)),
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                spec.title.toUpperCase(),
+                style: shellSectionLabel(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          );
-        },
-        child: MouseRegion(
-          cursor: SystemMouseCursors.move,
-          child: Container(
-            height: MiniWindowLayer.titleBarHeight,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
+            GestureDetector(
+              key: Key('miniwindow.${spec.id}.close'),
+              behavior: HitTestBehavior.opaque,
+              onTap: () => controller.close(spec.id),
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 7,
+                  ),
+                  child: Text('✕', style: shellSectionLabel(context)),
                 ),
               ),
             ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    spec.title.toUpperCase(),
-                    style: shellSectionLabel(context),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                GestureDetector(
-                  key: Key('miniwindow.${spec.id}.close'),
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => controller.close(spec.id),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 7,
-                      ),
-                      child: Text('✕', style: shellSectionLabel(context)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 /// The bottom-right resize handle: a [resizeHandleSize] hit area whose
@@ -533,7 +525,7 @@ class _MiniWindowResizeHandle extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.outlineVariant;
+    final Color color = context.laUi.rule;
     return GestureDetector(
       key: Key('miniwindow.${spec.id}.resize'),
       behavior: HitTestBehavior.opaque,
@@ -574,11 +566,7 @@ class _ResizeGripPainter extends CustomPainter {
       ..strokeWidth = ShellTokens.hairline
       ..strokeCap = StrokeCap.round;
     canvas
-      ..drawLine(
-        Offset(size.width - 4, 4),
-        Offset(4, size.height - 4),
-        paint,
-      )
+      ..drawLine(Offset(size.width - 4, 4), Offset(4, size.height - 4), paint)
       ..drawLine(
         Offset(size.width - 4, size.height * 0.55),
         Offset(size.width * 0.55, size.height - 4),

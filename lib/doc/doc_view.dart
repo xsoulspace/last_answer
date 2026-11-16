@@ -344,9 +344,7 @@ class _DocViewState extends State<DocView> {
   Future<void> _onAskAi() async {
     final port = context.read<DocInferencePort?>();
     if (port == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('No provider configured')));
+      LaToast.show(context, message: 'No provider configured');
       return;
     }
     final index = _lastFocusedBlockIndex;
@@ -381,12 +379,9 @@ class _DocViewState extends State<DocView> {
   /// once, then one durable block replace). No port, no focused block,
   /// or no selection = a named absence, never a silent no-op.
   Future<void> _onTransformSelection({required final bool expand}) async {
-    final messenger = ScaffoldMessenger.of(context);
     final port = context.read<DocInferencePort?>();
     if (port == null) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text('No provider configured')),
-      );
+      LaToast.show(context, message: 'No provider configured');
       return;
     }
     final index = _lastFocusedBlockIndex;
@@ -394,14 +389,11 @@ class _DocViewState extends State<DocView> {
     if (controller == null) return;
     final selection = controller.selection;
     if (!selection.isValid || selection.isCollapsed) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            expand
-                ? 'Select the text to expand first'
-                : 'Select the text to summarise first',
-          ),
-        ),
+      LaToast.show(
+        context,
+        message: expand
+            ? 'Select the text to expand first'
+            : 'Select the text to summarise first',
       );
       return;
     }
@@ -448,13 +440,11 @@ class _DocViewState extends State<DocView> {
   /// in the room hear it and answer there). No open room = a named
   /// absence; the room is picked in the shell, never invented here.
   void _onSendSelectionToRoom() {
-    final messenger = ScaffoldMessenger.of(context);
     final service = context.read<RealmChatService?>();
     if (service == null || service.activeThreadId == null) {
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('No open room — pick a conversation first'),
-        ),
+      LaToast.show(
+        context,
+        message: 'No open room — pick a conversation first',
       );
       return;
     }
@@ -463,9 +453,7 @@ class _DocViewState extends State<DocView> {
     if (controller == null) return;
     final selection = controller.selection;
     if (!selection.isValid || selection.isCollapsed) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text('Select the text to send first')),
-      );
+      LaToast.show(context, message: 'Select the text to send first');
       return;
     }
     var selected = selection.textInside(controller.text);
@@ -473,7 +461,7 @@ class _DocViewState extends State<DocView> {
     if (selected.length > cap) selected = '${selected.substring(0, cap)}…';
     final source = widget.doc.title.isEmpty ? 'a document' : widget.doc.title;
     unawaited(service.say('> $selected\n\n(from $source)'));
-    messenger.showSnackBar(const SnackBar(content: Text('Sent to the room')));
+    LaToast.show(context, message: 'Sent to the room');
   }
 
   List<ChatMessage> _buildPromptMessages() {
@@ -489,7 +477,7 @@ class _DocViewState extends State<DocView> {
 
   @override
   Widget build(final BuildContext context) {
-    if (_loadingRoot) return const Center(child: CircularProgressIndicator());
+    if (_loadingRoot) return const Center(child: LaSpinner(size: 24));
     if (_rootReadError != null) {
       return Center(child: Text('Document read failed: $_rootReadError'));
     }
@@ -604,19 +592,18 @@ class _BreadcrumbBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return Material(
-      elevation: 1,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-        child: Row(
-          children: [
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: path.length > 1 ? () => onTap(path.length - 2) : null,
-              icon: const Icon(Icons.arrow_upward, size: 18),
-              tooltip: 'Climb up',
-            ),
+    final theme = context.laUi;
+    return LaBox(
+      color: theme.surface,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: Row(
+        children: [
+          LaButton.icon(
+            size: LaButtonSize.sm,
+            onPressed: path.length > 1 ? () => onTap(path.length - 2) : null,
+            icon: const Icon(Icons.arrow_upward, size: 16),
+            tooltip: 'Climb up',
+          ),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -627,26 +614,20 @@ class _BreadcrumbBar extends StatelessWidget {
                         Icon(
                           Icons.chevron_right,
                           size: 16,
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.4,
-                          ),
+                          color: theme.inkQuiet,
                         ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(6),
+                      LaPressable(
+                        radius: BorderRadius.circular(6),
                         onTap: i == path.length - 1 ? null : () => onTap(i),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                            vertical: 6,
-                          ),
-                          child: Text(
-                            labelBuilder(path[i]),
-                            style: i == path.length - 1
-                                ? theme.textTheme.bodyMedium
-                                : theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.primary,
-                                  ),
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 6,
+                        ),
+                        child: Text(
+                          labelBuilder(path[i]),
+                          style: i == path.length - 1
+                              ? theme.body
+                              : theme.compact.copyWith(color: theme.accent),
                         ),
                       ),
                     ],
@@ -654,14 +635,13 @@ class _BreadcrumbBar extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: onCollapse,
-              icon: const Icon(Icons.archive_outlined, size: 18),
-              tooltip: 'Collapse discussion',
-            ),
-          ],
-        ),
+          LaButton.icon(
+            size: LaButtonSize.sm,
+            onPressed: onCollapse,
+            icon: const Icon(Icons.archive_outlined, size: 16),
+            tooltip: 'Collapse discussion',
+          ),
+        ],
       ),
     );
   }
@@ -692,63 +672,62 @@ class _SelectionToolbar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8),
-    child: Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(8),
+    child: LaBox(
+      floating: true,
+      color: context.laUi.surfaceOverlay,
+      radius: BorderRadius.circular(8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Tooltip(
-              message: 'Discuss the focused block',
-              child: TextButton.icon(
-                onPressed: onDiscuss,
-                icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                label: const Text('Discuss'),
-              ),
+            LaButton(
+              variant: LaButtonVariant.ghost,
+              tooltip: 'Discuss the focused block',
+              onPressed: onDiscuss,
+              icon: const Icon(Icons.chat_bubble_outline, size: 16),
+              label: 'Discuss',
             ),
-            Tooltip(
-              message: 'Ask AI at the cursor position',
-              child: TextButton.icon(
-                onPressed: onAskAi,
-                icon: const Icon(Icons.smart_toy_outlined, size: 18),
-                label: const Text('Ask AI'),
-              ),
+            LaButton(
+              variant: LaButtonVariant.ghost,
+              tooltip: 'Ask AI at the cursor position',
+              onPressed: onAskAi,
+              icon: const Icon(Icons.smart_toy_outlined, size: 16),
+              label: 'Ask AI',
             ),
             if (onApplyConclusion == null)
               const SizedBox.shrink()
             else
-              Tooltip(
-                message:
+              LaButton(
+                variant: LaButtonVariant.ghost,
+                tooltip:
                     'Rewrite the head span from this discussion and collapse',
-                child: TextButton.icon(
-                  onPressed: onApplyConclusion,
-                  icon: const Icon(Icons.auto_awesome, size: 18),
-                  label: const Text('Apply conclusion'),
-                ),
+                onPressed: onApplyConclusion,
+                icon: const Icon(Icons.auto_awesome, size: 16),
+                label: 'Apply conclusion',
               ),
-            TextButton.icon(
+            LaButton(
               key: const ValueKey('doc.toolbar.expand'),
+              variant: LaButtonVariant.ghost,
               onPressed: onExpand,
-              icon: const Icon(Icons.unfold_more, size: 18),
-              label: const Text('Expand'),
+              icon: const Icon(Icons.unfold_more, size: 16),
+              label: 'Expand',
             ),
-            TextButton.icon(
+            LaButton(
               key: const ValueKey('doc.toolbar.summarise'),
+              variant: LaButtonVariant.ghost,
               onPressed: onSummarise,
-              icon: const Icon(Icons.summarize, size: 18),
-              label: const Text('Summarise'),
+              icon: const Icon(Icons.summarize, size: 16),
+              label: 'Summarise',
             ),
-            Tooltip(
-              message: 'Send the selection to the open room',
-              child: TextButton.icon(
-                key: const ValueKey('doc.toolbar.sendToRoom'),
-                onPressed: onSendToRoom,
-                icon: const Icon(Icons.forum_outlined, size: 18),
-                label: const Text('Send to room'),
-              ),
+            LaButton(
+              key: const ValueKey('doc.toolbar.sendToRoom'),
+              variant: LaButtonVariant.ghost,
+              tooltip: 'Send the selection to the open room',
+              onPressed: onSendToRoom,
+              icon: const Icon(Icons.forum_outlined, size: 16),
+              label: 'Send to room',
             ),
           ],
         ),
@@ -824,7 +803,7 @@ class _DocBlockTileState extends State<_DocBlockTile> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final isHeading = widget.block.type == hc.BlockType.heading;
     final isList = widget.block.type == hc.BlockType.list;
     final hasChildren =
@@ -833,19 +812,25 @@ class _DocBlockTileState extends State<_DocBlockTile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (hasChildren)
-          IconButton(
+          LaButton.icon(
             key: const ValueKey('open-child-button'),
-            iconSize: 18,
-            visualDensity: VisualDensity.compact,
+            size: LaButtonSize.sm,
             onPressed: widget.onOpenChild,
-            icon: Badge(
-              isLabelVisible: widget.openChildrenCount > 0,
-              label: Text('${widget.openChildrenCount}'),
-              child: Icon(
-                widget.openChildrenCount > 0
-                    ? Icons.chat_bubble_outline
-                    : Icons.check_circle_outline,
-              ),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  widget.openChildrenCount > 0
+                      ? Icons.chat_bubble_outline
+                      : Icons.check_circle_outline,
+                  size: 18,
+                ),
+                Positioned(
+                  right: -8,
+                  top: -6,
+                  child: LaBadge(count: widget.openChildrenCount),
+                ),
+              ],
             ),
             tooltip: widget.openChildrenCount > 0
                 ? 'Open discussion'
@@ -857,26 +842,22 @@ class _DocBlockTileState extends State<_DocBlockTile> {
             child: Text('•'),
           ),
         Expanded(
-          child: TextField(
+          child: LaField(
             key: ValueKey(widget.block.id),
             controller: _controller,
             focusNode: _focusNode,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-              hintText: isHeading ? 'Heading' : null,
-            ),
+            padding: EdgeInsets.zero,
+            placeholder: isHeading ? 'Heading' : null,
             style: isHeading
-                ? theme.textTheme.titleMedium?.copyWith(
+                ? theme.emphasis.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize:
-                        (theme.textTheme.titleMedium?.fontSize ?? 16) +
+                        16 +
                         (widget.block.level != null
-                            ? (4 - (widget.block.level!.clamp(1, 4)))
-                            : 0),
+                            ? 4 - widget.block.level!.clamp(1, 4).toDouble()
+                            : 0.0),
                   )
-                : theme.textTheme.bodyMedium,
+                : theme.body,
             maxLines: isHeading ? 1 : null,
             onChanged: widget.onChanged,
           ),

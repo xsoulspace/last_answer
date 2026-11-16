@@ -85,7 +85,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final thread = _threadRecord();
     if (thread == null) {
       return Center(
@@ -95,7 +95,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             context.l10n.worldChatNoConversations,
             key: ValueKey('miniwindow.peek.${widget.threadId}'),
             textAlign: TextAlign.center,
-            style: theme.textTheme.labelSmall?.copyWith(
+            style: theme.micro?.copyWith(
               color: context.shellMuted,
             ),
           ),
@@ -123,7 +123,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             topic,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.labelMedium?.copyWith(
+            style: theme.compact?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -132,7 +132,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             participants.join(', '),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.labelSmall?.copyWith(
+            style: theme.micro?.copyWith(
               color: context.shellMuted,
             ),
           ),
@@ -145,7 +145,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: theme.micro?.copyWith(
                 color: context.shellMuted,
                 fontStyle: FontStyle.italic,
               ),
@@ -158,7 +158,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
                     child: Text(
                       context.l10n.worldChatSelectFromRail,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: theme.micro?.copyWith(
                         color: context.shellMuted,
                       ),
                     ),
@@ -182,7 +182,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
   /// Material chrome, DESIGN §2–3). Keyed
   /// `miniwindow.peek.<threadId>.beat.<n>` (n = the beat number).
   Widget _beatRow(final BuildContext context, final Map<String, Object?> beat) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final number = (beat['beat'] as num?)?.toInt() ?? 0;
     final author = (beat['author'] as String?) ?? '';
     final text = (beat['text'] as String?) ?? '';
@@ -200,7 +200,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
                   _displayName(author),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.micro?.copyWith(
                     color: context.shellMuted,
                     fontWeight: FontWeight.w600,
                   ),
@@ -209,14 +209,14 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
               if (time.isNotEmpty)
                 Text(
                   time,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.micro?.copyWith(
                     color: context.shellMuted,
                   ),
                 ),
             ],
           ),
           const SizedBox(height: 2),
-          Text(text, style: theme.textTheme.bodySmall),
+          Text(text, style: theme.compact),
         ],
       ),
     );

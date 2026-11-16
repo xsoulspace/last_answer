@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';
@@ -89,6 +91,24 @@ class _AppScaffoldState extends State<_AppScaffold> {
       /// running in the background.
       restorationScopeId: 'app',
       debugShowCheckedModeBanner: false,
+      // The kit's token carrier (DESIGN.md v6 component-carrier law):
+      // ONE LaUiThemeProvider above the Navigator, fed by the ambient
+      // zinc palette so the kit follows themeMode automatically. The
+      // selection-toolbar labels bridge the kit's static hooks to the
+      // live l10n bundle (EN/IT/RU) on every locale change.
+      builder: (final context, final child) {
+        final l10n = context.l10n;
+        LaSelectionLabels.cut = l10n.selectionCut;
+        LaSelectionLabels.copy = l10n.selectionCopy;
+        LaSelectionLabels.paste = l10n.selectionPaste;
+        LaSelectionLabels.selectAll = l10n.selectionSelectAll;
+        return LaUiThemeProvider(
+          theme: laUiThemeFromPalette(
+            LaPalette.of(Theme.of(context).brightness),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

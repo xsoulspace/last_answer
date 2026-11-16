@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
 
 void main() {
@@ -39,7 +40,7 @@ void main() {
       await tester.tap(find.text('+ Receipt'));
       await tester.pumpAndSettle();
       expect(
-        tester.widget<SelectableText>(find.byType(SelectableText)).data,
+        tester.widget<LaSelectableText>(find.byType(LaSelectableText)).data,
         body,
       );
       final rendered = tester.getSemantics(find.text(body)).getSemanticsData();

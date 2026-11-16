@@ -32,19 +32,15 @@ class _SubscribedCard extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       const Gap(24),
-      Icon(
-        Icons.workspace_premium,
-        size: 56,
-        color: context.colorScheme.primary,
-      ),
+      Icon(Icons.workspace_premium, size: 56, color: context.laUi.accent),
       const Gap(16),
-      Text(
-        'Thank you for supporting Last Answer!',
-        style: context.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
+      _FadeIn(
+        child: Text(
+          'Thank you for supporting Last Answer!',
+          style: context.laUi.section,
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
-      ).animate().fadeIn(),
+      ),
       const Gap(24),
       ListenableBuilder(
         listenable: context.read<ActiveSubscriptionResource>(),
@@ -63,10 +59,12 @@ class _SubscribedCard extends StatelessWidget {
         },
       ),
       const Gap(24),
-      OutlinedButton(
-        onPressed: () async =>
+      LaButton(
+        variant: LaButtonVariant.outline,
+        expand: true,
+        onPressed: () =>
             context.read<MonetizationFoundation>().openSubscriptionManagement(),
-        child: const Text('Manage Subscription'),
+        label: 'Manage Subscription',
       ),
     ],
   );
@@ -80,33 +78,76 @@ class _PaywallEntry extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       const Gap(24),
-      Icon(Icons.auto_awesome, size: 56, color: context.colorScheme.primary),
+      Icon(Icons.auto_awesome, size: 56, color: context.laUi.accent),
       const Gap(16),
-      Text(
-        'Unlock Last Answer Pro',
-        style: context.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
+      _FadeIn(
+        child: Text(
+          'Unlock Last Answer Pro',
+          style: context.laUi.section,
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
-      ).animate().fadeIn(),
-      const Gap(8),
-      const Text(
-        'Agents, intentcall, ACP support, sync with Daily Budget Planner '
-        'and more. The core app works offline for free — Pro unlocks the '
-        'connected experience.',
-        textAlign: TextAlign.center,
-      ).animate().fadeIn(delay: 100.ms),
-      const Gap(24),
-      FilledButton(
-        onPressed: () => PaywallFlow.pushPaywall(context),
-        child: const Text('See Plans'),
       ),
       const Gap(8),
-      TextButton(
-        onPressed: () async =>
+      const _FadeIn(
+        delay: Duration(milliseconds: 100),
+        child: Text(
+          'Agents, intentcall, ACP support, sync with Daily Budget Planner '
+          'and more. The core app works offline for free — Pro unlocks the '
+          'connected experience.',
+          textAlign: TextAlign.center,
+        ),
+      ),
+      const Gap(24),
+      LaButton(
+        variant: LaButtonVariant.primary,
+        expand: true,
+        onPressed: () => PaywallFlow.pushPaywall(context),
+        label: 'See Plans',
+      ),
+      const Gap(8),
+      LaButton(
+        variant: LaButtonVariant.ghost,
+        expand: true,
+        onPressed: () =>
             context.read<MonetizationFoundation>().checkActiveSubscription(),
-        child: const Text('Restore Purchases'),
+        label: 'Restore Purchases',
       ),
     ],
+  );
+}
+
+/// Kit-motion fade-in replacing the old `flutter_animate` `.fadeIn()` chain
+/// (DESIGN.md v6 motion tokens: motionSettle + motionCurve).
+class _FadeIn extends StatefulWidget {
+  const _FadeIn({required this.child, this.delay = Duration.zero});
+  final Widget child;
+  final Duration delay;
+
+  @override
+  State<_FadeIn> createState() => _FadeInState();
+}
+
+class _FadeInState extends State<_FadeIn> {
+  bool _visible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_start());
+  }
+
+  Future<void> _start() async {
+    if (widget.delay > Duration.zero) {
+      await Future<void>.delayed(widget.delay);
+    }
+    if (mounted) setState(() => _visible = true);
+  }
+
+  @override
+  Widget build(final BuildContext context) => AnimatedOpacity(
+    opacity: _visible ? 1 : 0,
+    duration: context.laUi.motionSettle,
+    curve: context.laUi.motionCurve,
+    child: widget.child,
   );
 }

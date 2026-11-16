@@ -128,7 +128,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done &&
             _project == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: LaSpinner(size: 24));
         }
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != true) {

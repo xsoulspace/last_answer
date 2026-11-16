@@ -6,6 +6,7 @@
 // same default the tab uses in production.
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 
 import 'package:lastanswer/common_imports.dart';
@@ -17,6 +18,10 @@ import 'package:lastanswer/shell/surfaces.dart';
 /// registry-build time) and hosts the spec's builder in a bounded box —
 /// the center tab's shape.
 Widget _pumpInspectorTab() => MaterialApp(
+  // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+  // even while closed (the house pattern).
+  builder: (final context, final child) =>
+      Portal(child: child ?? const SizedBox.shrink()),
   localizationsDelegates: S.localizationsDelegates,
   supportedLocales: S.supportedLocales,
   home: Scaffold(

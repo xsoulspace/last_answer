@@ -124,8 +124,7 @@ final class LiveMeshService {
         if (!known) log?.call('live plane rejected $peer (not paired)');
         return known;
       },
-      onEvent: (final event, {required final authoritative}) =>
-          _onEvent(event),
+      onEvent: (final event, {required final authoritative}) => _onEvent(event),
       log: log,
     );
     host.start();
@@ -294,7 +293,8 @@ final class LiveActor {
     required this.displayName,
     required this.isAgent,
     required this.verb,
-    required this.since, this.docId,
+    required this.since,
+    this.docId,
     this.detail,
   });
 
@@ -457,8 +457,7 @@ final class HumanLivePresence {
   }
 
   /// The surface closed: back to idle on the same doc.
-  Future<void> noteClosed() =>
-      _publish(LiveVerbs.idle, _docId, force: true);
+  Future<void> noteClosed() => _publish(LiveVerbs.idle, _docId, force: true);
 
   Future<void> _publish(
     final String verb,

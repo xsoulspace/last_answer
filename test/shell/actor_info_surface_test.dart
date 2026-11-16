@@ -11,6 +11,7 @@
 //   conversation grammar (`channel:<id>` in group 0, docked).
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
@@ -76,7 +77,10 @@ Future<void> _pumpShell(
           ),
         ],
         child: MaterialApp(
-          locale: const Locale('en'),
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
@@ -188,7 +192,7 @@ void main() {
     final nameField = find.byKey(const ValueKey(actorEditorNameKey));
     expect(nameField, findsOneWidget);
     expect(
-      tester.widget<TextField>(nameField).controller!.text,
+      tester.widget<LaField>(nameField).controller?.text,
       'Toby Researcher',
     );
     expect(

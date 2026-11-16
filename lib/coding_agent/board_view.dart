@@ -11,9 +11,13 @@ library;
 
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/planning_board_controller.dart';
 import 'package:lastanswer/coding_agent/planning_board_replica.dart';
 
@@ -55,7 +59,7 @@ class _BoardViewState extends State<BoardView> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return KeyedSubtree(
       key: const ValueKey('board'),
       child: Padding(
@@ -63,7 +67,7 @@ class _BoardViewState extends State<BoardView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(context.l10n.boardsTitle, style: theme.textTheme.titleMedium),
+            Text(context.l10n.boardsTitle, style: laUi.emphasis),
             const SizedBox(height: 12),
             Expanded(
               child: Row(
@@ -105,7 +109,7 @@ final class _ColumnLane extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final cards = controller.cardsOf(column);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +117,7 @@ final class _ColumnLane extends StatelessWidget {
         Text(
           '$column (${cards.length})',
           key: ValueKey('board.column.$column'),
-          style: theme.textTheme.labelSmall,
+          style: laUi.micro,
         ),
         const SizedBox(height: 8),
         for (final card in cards)
@@ -164,28 +168,26 @@ class _CardRowState extends State<_CardRow> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final card = widget.card;
     final columns = widget.controller.columns;
     final index = columns.indexOf(card.column);
-    return Container(
+    return LaBox(
       margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor),
-        borderRadius: BorderRadius.circular(4),
-      ),
+      border: BorderSide(color: laUi.rule),
+      radius: BorderRadius.circular(4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text('· ', style: theme.textTheme.labelSmall),
+              Text('· ', style: laUi.micro),
               Expanded(
-                child: Text(card.title, style: theme.textTheme.bodyMedium),
+                child: Text(card.title, style: laUi.body),
               ),
               if (card.status == BoardTaskStatus.completed.name)
-                Icon(Icons.check, size: 14, color: theme.colorScheme.primary),
+                Icon(Icons.check, size: 14, color: laUi.accent),
             ],
           ),
           Row(
@@ -261,12 +263,9 @@ final class _ChildComposer extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.only(top: 4),
-    child: TextField(
-      decoration: InputDecoration(
-        hintText: context.l10n.boardsAddStepHint,
-        isDense: true,
-      ),
-      style: Theme.of(context).textTheme.labelSmall,
+    child: LaField(
+      placeholder: context.l10n.boardsAddStepHint,
+      style: context.laUi.micro,
       autofocus: true,
       onSubmitted: (final value) {
         final text = value.trim();
@@ -291,12 +290,10 @@ final class _QuietOp extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(final BuildContext context) => IconButton(
-    tooltip: tooltip,
+  Widget build(final BuildContext context) => LaButton.icon(
     icon: Icon(icon, size: 14),
-    constraints: const BoxConstraints(minWidth: 28, minHeight: 24),
-    padding: EdgeInsets.zero,
-    visualDensity: VisualDensity.compact,
+    tooltip: tooltip,
+    size: LaButtonSize.sm,
     onPressed: onTap,
   );
 }
@@ -328,13 +325,10 @@ class _ComposerState extends State<_Composer> {
   }
 
   @override
-  Widget build(final BuildContext context) => TextField(
+  Widget build(final BuildContext context) => LaField(
     controller: _controller,
-    decoration: InputDecoration(
-      hintText: context.l10n.boardsAddCardHint(widget.column),
-      isDense: true,
-    ),
-    style: Theme.of(context).textTheme.labelSmall,
+    placeholder: context.l10n.boardsAddCardHint(widget.column),
+    style: context.laUi.micro,
     onSubmitted: (final value) {
       final text = value.trim();
       if (text.isEmpty) return;

@@ -21,6 +21,7 @@
 // rides the injected `unreadFor` lane (hermetic — no world needed).
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/pane_strip.dart';
 import 'package:lastanswer/shell/shell_layout.dart';
@@ -59,7 +60,10 @@ Future<void> _pumpStrip(
   addTearDown(() => tester.binding.setSurfaceSize(null));
   await tester.pumpWidget(
     MaterialApp(
-      locale: const Locale('en'),
+      // The kit overlay host (same shape as last_answer_app.dart):
+      // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+      builder: (final context, final child) =>
+          Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
       localizationsDelegates: S.localizationsDelegates,
       supportedLocales: S.supportedLocales,
       home: Scaffold(
@@ -92,10 +96,27 @@ Future<void> _pumpStrip(
 }
 
 /// The menu's row values in tree order (the hidden tabs' order law).
-List<String> _menuValues(final WidgetTester tester) => tester
-    .widgetList<PopupMenuItem<String>>(find.byType(PopupMenuItem<String>))
-    .map((final item) => item.value!)
-    .toList();
+/// The kit menu rows carry the frozen `view.strip.overflow.item.<id>`
+/// keys (LaMenuItem.key → the rendered LaMenuRow), so the order reads
+/// off the keys — the PopupMenuItem `value` lane retired with the
+/// Material menu.
+List<String> _menuValues(final WidgetTester tester) =>
+    find
+        .byWidgetPredicate(
+          (final widget) =>
+              widget.key is ValueKey<String> &&
+              (widget.key! as ValueKey<String>)
+                  .value
+                  .startsWith('view.strip.overflow.item.'),
+        )
+        .evaluate()
+        .map(
+          (final element) =>
+              (element.widget.key! as ValueKey<String>).value.substring(
+                'view.strip.overflow.item.'.length,
+              ),
+        )
+        .toList();
 
 void main() {
   group('the Wave I overflow cap', () {

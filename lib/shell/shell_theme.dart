@@ -64,48 +64,47 @@ abstract final class ShellTokens {
   static const EdgeInsets rowPadding = EdgeInsets.symmetric(horizontal: 10);
 }
 
-/// Shell colors, derived from the ambient [ThemeData] each build — no
-/// second palette beside the app's design system. Phase 0: the hairline and
-/// muted roles read the real tokens ([LaThemeExtension]); the hover/selected
-/// fills stay alpha steps of ink over whatever surface they sit on.
+/// Shell colors, derived from the ambient kit tokens (`context.laUi`,
+/// DESIGN.md v6 component-carrier law) each build — no second palette
+/// beside the app's design system, and no hand-rolled hover system: the
+/// fills ARE the kit's one state-layer alphas. Names are frozen — call
+/// sites across the shell depend on them.
 extension ShellColors on BuildContext {
-  Color get shellHover => la.ink.withValues(alpha: 0.05);
+  Color get shellHover => laUi.hoverFill();
 
-  Color get shellSelected => la.ink.withValues(alpha: 0.09);
+  Color get shellSelected => laUi.selectedFill();
 
-  Color get shellHairline => la.rule;
+  Color get shellHairline => laUi.rule;
 
-  Color get shellMuted => la.inkMuted;
+  Color get shellMuted => laUi.inkMuted;
 
-  Color get shellField => la.ink.withValues(alpha: 0.04);
+  Color get shellField => laUi.fieldFill;
 
   /// A raised surface one step of ink above the base (DESIGN §3 layered
   /// surfaces) — cards-on-canvas stay quiet without a border.
-  Color get shellRaised => la.surfaceRaised;
+  Color get shellRaised => laUi.surfaceRaised;
 }
 
 /// The micro-label style (DESIGN §3): sentence case, muted, one step
-/// down — hierarchy by tone and size, not by case tricks.
+/// down — hierarchy by tone and size, not by case tricks. The kit's
+/// `micro` token IS this role (11/16 w500).
 TextStyle shellSectionLabel(final BuildContext context) =>
-    Theme.of(context).textTheme.labelMedium!.copyWith(
-      fontSize: ShellTokens.sectionLabelSize,
-      fontWeight: FontWeight.w500,
-      color: context.shellMuted,
-    );
+    context.laUi.micro.copyWith(color: context.shellMuted);
 
 /// The ONE depth declaration for floating layers (DESIGN §3):
 /// miniwindows, menus, popovers — a soft offset shadow beside their
 /// hairline, never a zero-offset halo, never an elevation ladder.
-List<BoxShadow> shellFloatingShadow(final BuildContext context) => [
-  BoxShadow(
-    color: context.la.ink.withValues(alpha: 0.14),
-    offset: const Offset(0, 6),
-    blurRadius: 20,
-  ),
-];
+/// Owned by the kit (v6): `context.laUi.floatingShadow`.
+List<BoxShadow> shellFloatingShadow(final BuildContext context) =>
+    context.laUi.floatingShadow;
 
-/// A compact hoverable/selectable row: the rail's one tile shape.
-class ShellRow extends StatefulWidget {
+/// A compact hoverable/selectable row: the rail's one tile shape. A thin
+/// facade over the kit's [LaPressable] (v6 component-carrier law) — the
+/// hover/selected/press fills come from the kit's ONE state machine with
+/// its 120 ms settle and squircle paint; this file no longer hand-rolls
+/// MouseRegion+GestureDetector state. The public API is frozen: call
+/// sites pass child/selected/onTap/onLongPress/height/padding.
+class ShellRow extends StatelessWidget {
   const ShellRow({
     required this.child,
     this.selected = false,
@@ -127,40 +126,18 @@ class ShellRow extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   @override
-  State<ShellRow> createState() => _ShellRowState();
-}
-
-class _ShellRowState extends State<ShellRow> {
-  bool _hovering = false;
-
-  @override
-  Widget build(final BuildContext context) {
-    final fill = widget.selected
-        ? context.shellSelected
-        : _hovering
-        ? context.shellHover
-        : null;
-    return MouseRegion(
-      cursor: widget.onTap != null
-          ? SystemMouseCursors.click
-          : MouseCursor.defer,
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
-        onLongPress: widget.onLongPress,
-        child: Container(
-          height: widget.height,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          padding: widget.padding,
-          decoration: BoxDecoration(
-            color: fill,
-            borderRadius: BorderRadius.circular(ShellTokens.radius),
-          ),
-          child: widget.child,
-        ),
+  Widget build(final BuildContext context) => Padding(
+    // The row's quiet side margin (the fill never touches the column edge).
+    padding: const EdgeInsets.symmetric(horizontal: 8),
+    child: LaPressable(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      selected: selected,
+      radius: BorderRadius.circular(ShellTokens.radius),
+      child: SizedBox(
+        height: height,
+        child: Padding(padding: padding, child: child),
       ),
-    );
-  }
+    ),
+  );
 }

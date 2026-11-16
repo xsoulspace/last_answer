@@ -59,7 +59,10 @@ class PurchasableProductTile extends StatelessWidget {
   // final ProductDetails details;
   final IAPId activeProductId;
   @override
-  Widget build(final BuildContext context) => Card(
+  Widget build(final BuildContext context) => LaBox(
+    color: context.laUi.surface,
+    border: BorderSide(color: context.laUi.rule),
+    padding: const EdgeInsets.all(12),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -69,7 +72,11 @@ class PurchasableProductTile extends StatelessWidget {
         // if (activeProductId.id == details.id)
         //   const Text('Active')
         // else
-        TextButton(onPressed: onPressed, child: const Text('Purchase')),
+        LaButton(
+          onPressed: onPressed,
+          variant: LaButtonVariant.ghost,
+          label: 'Purchase',
+        ),
       ],
     ),
   );

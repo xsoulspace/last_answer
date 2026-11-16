@@ -1,6 +1,6 @@
 import 'package:ecsly/ecsly.dart';
 import 'package:ecsly_flutter_scene/ecsly_flutter_scene.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
 
 class _WorkLayer extends Component {
   const _WorkLayer(this.id, this.depth);
@@ -60,7 +60,7 @@ class _WorkbenchSceneState extends State<WorkbenchScene> {
           world: world,
           mapping: mapping,
           initialDistance: 12,
-          loadingColor: Theme.of(context).colorScheme.surface,
+          loadingColor: context.laUi.surface,
           onEntityTap: widget.onSelect,
           onManipulationStart: (id) => id == 'layout',
           onManipulationUpdate: (_, dx, dy) => widget.onWidthDelta(dx),

@@ -174,52 +174,45 @@ class CodeDocumentViewState extends State<CodeDocumentView> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const ValueKey('code.title'),
                   controller: _title,
                   onChanged: (_) => _changed(),
-                  style: LaTokens.mono(13, context.la.ink),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    hintText: 'filename.dart',
-                  ),
+                  style: LaTokens.mono(13, context.laUi.ink),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  placeholder: 'filename.dart',
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 language,
                 key: const ValueKey('code.lang'),
-                style: LaTokens.mono(10.5, context.la.inkQuiet),
+                style: LaTokens.mono(10.5, context.laUi.inkQuiet),
               ),
               const SizedBox(width: 10),
               Text(
                 _dirty ? '…' : 'saved',
                 key: const ValueKey('code.saveState'),
-                style: LaTokens.mono(10.5, context.la.inkQuiet),
+                style: LaTokens.mono(10.5, context.laUi.inkQuiet),
               ),
             ],
           ),
         ),
-        Divider(height: 1, color: context.shellHairline),
+        const LaHairline(),
         Expanded(
-          child: TextField(
+          child: LaField(
             key: const ValueKey('code.editor'),
             controller: _editor,
             onChanged: (_) => _changed(),
             maxLines: null,
             expands: true,
-            textAlignVertical: TextAlignVertical.top,
+            showFocusHairline: false,
             keyboardType: TextInputType.multiline,
             style: LaTokens.mono(
               12.5,
-              context.la.ink,
+              context.laUi.ink,
             ).copyWith(height: 1.55),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.fromLTRB(14, 10, 14, 24),
-            ),
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 24),
           ),
         ),
       ],

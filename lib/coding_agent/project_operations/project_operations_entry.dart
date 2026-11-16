@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/project_operations/project_operations_session.dart';
 import 'package:lastanswer/coding_agent/project_operations/project_operations_widget.dart';
 import 'package:oka_core/oka_core.dart' show ProcessLeaseRegistry;
@@ -21,7 +22,7 @@ Future<void> openDeclaredProjectOperations(
     ),
   );
   try {
-    await showDialog<void>(
+    await showLaDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (_) => ProjectOperationsDialog(session: session),
@@ -71,40 +72,60 @@ class _ProjectOperationsDialogState extends State<ProjectOperationsDialog> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final laUi = context.laUi;
+    // Center the box (the Material Dialog's own grammar, restored with the
+    // kit move): the route hands the dialog builder the FULL window's tight
+    // constraints, and the Center loosens them for the box — the content
+    // column never inherits window-sized constraints (the Ahem-font
+    // overflow paid for 2026-11-16).
     return PopScope(
       canPop: _canPop,
-      child: Dialog(
-        key: const Key('project_operations.dialog'),
-        insetPadding: const EdgeInsets.all(16),
-        child: SizedBox(
-          width: (size.width - 32).clamp(0, 850),
-          height: (size.height - 32).clamp(0, 720),
+      child: Center(
+        child: LaBox(
+          key: const Key('project_operations.dialog'),
+          floating: true,
+          color: laUi.surfaceOverlay,
+          border: BorderSide(color: laUi.rule),
+          radius: BorderRadius.circular(14),
+          width: (size.width - 32).clamp(0, 850).toDouble(),
+          height: (size.height - 32).clamp(0, 720).toDouble(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
+                child: LaButton(
                   key: const Key('project_operations.close'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: _closing ? null : _close,
-                  child: Text(_closing ? 'Stopping owned work…' : 'Close'),
+                  label: _closing ? 'Stopping owned work…' : 'Close',
                 ),
               ),
-              if (_cleanupError != null)
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    _cleanupError!,
-                    key: const Key('project_operations.cleanup_error'),
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                ),
+              // The scrollable body owns EVERYTHING the evidence can grow:
+              // the cleanup error rides above the ops widget INSIDE the
+              // scroll (the verbatim typed result can wrap tall — a
+              // non-flex sibling taller than the box overflows it; paid
+              // for 2026-11-16).
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(12),
-                  child: ProjectOperationsWidget(session: widget.session),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (_cleanupError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Text(
+                            _cleanupError!,
+                            key: const Key(
+                              'project_operations.cleanup_error',
+                            ),
+                            style: TextStyle(color: laUi.danger),
+                          ),
+                        ),
+                      ProjectOperationsWidget(session: widget.session),
+                    ],
+                  ),
                 ),
               ),
             ],

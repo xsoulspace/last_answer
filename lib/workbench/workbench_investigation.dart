@@ -1,14 +1,9 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/workbench/workbench_harness_tools.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// Existing agent-doc runtime is a conversation projection over a shared block.
@@ -97,10 +92,11 @@ class _WorkbenchInvestigationState extends State<WorkbenchInvestigation> {
       return Center(child: Text('Investigation unavailable: $error'));
     }
     final doc = document;
-    if (doc == null) return const Center(child: CircularProgressIndicator());
+    if (doc == null) return const Center(child: LaSpinner(size: 24));
     return Column(
       children: [
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () {
             final result =
                 HarnessSessionTools(

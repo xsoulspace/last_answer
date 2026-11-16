@@ -30,7 +30,7 @@ class ChatGptSubscriptionPane extends StatelessWidget {
             children: [
               Text(
                 strings.chatGptSubscriptionTitle,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: context.laUi.emphasis,
               ),
               if (!state.supported)
                 Text(strings.chatGptDesktopOnly)
@@ -39,50 +39,52 @@ class ChatGptSubscriptionPane extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    TextButton(
+                    LaButton(
                       key: const Key('chatgpt.continue'),
+                      variant: LaButtonVariant.ghost,
                       onPressed: state.busy ? null : state.signIn,
-                      child: Text(strings.chatGptContinue),
+                      label: strings.chatGptContinue,
                     ),
                     if (state.busy)
-                      TextButton(
+                      LaButton(
                         key: const Key('chatgpt.cancel'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: state.cancel,
-                        child: Text(strings.cancel),
+                        label: strings.cancel,
                       ),
                     if (profile?.signedIn == true ||
                         profile?.recoveryRequired == true)
-                      TextButton(
+                      LaButton(
                         key: const Key('chatgpt.sign_out'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: state.busy ? null : state.signOut,
-                        child: Text(strings.chatGptSignOut),
+                        label: strings.chatGptSignOut,
                       ),
-                    TextButton(
+                    LaButton(
                       key: const Key('chatgpt.usage'),
+                      variant: LaButtonVariant.ghost,
                       onPressed: () => launchUrl(
                         Uri.parse('https://chatgpt.com/settings/usage'),
                         mode: LaunchMode.externalApplication,
                       ),
-                      child: Text(strings.chatGptUsage),
+                      label: strings.chatGptUsage,
                     ),
                   ],
                 ),
                 if (state.profiles.isNotEmpty)
-                  DropdownButton<String>(
+                  LaSelect<String>(
                     key: const Key('chatgpt.account'),
-                    isExpanded: true,
+                    expand: true,
                     value: state.activeClientId,
-                    hint: Text(strings.chatGptChooseAccount),
+                    placeholder: strings.chatGptChooseAccount,
                     items: [
                       for (var i = 0; i < state.profiles.length; i++)
-                        DropdownMenuItem(
+                        LaSelectItem(
                           value: state.profiles[i].clientId,
-                          child: Text(
-                            _accountLabel(
-                              state.profiles[i].email,
-                              strings.chatGptAccount,
-                              i + 1,
-                            ),
+                          label: _accountLabel(
+                            state.profiles[i].email,
+                            strings.chatGptAccount,
+                            i + 1,
                           ),
                         ),
                     ],
@@ -102,16 +104,16 @@ class ChatGptSubscriptionPane extends StatelessWidget {
                   ),
                 if (profile?.signedIn == true &&
                     profile?.planEnabled == true) ...[
-                  DropdownButton<String>(
+                  LaSelect<String>(
                     key: const Key('chatgpt.model'),
-                    isExpanded: true,
+                    expand: true,
                     value: model,
-                    hint: Text(strings.chatGptChooseModel),
+                    placeholder: strings.chatGptChooseModel,
                     items: [
                       for (final entry in state.models)
-                        DropdownMenuItem(
+                        LaSelectItem(
                           value: entry.slug,
-                          child: Text(entry.displayName),
+                          label: entry.displayName,
                         ),
                     ],
                     onChanged: state.busy
@@ -125,17 +127,19 @@ class ChatGptSubscriptionPane extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     children: [
-                      TextButton(
+                      LaButton(
                         key: const Key('chatgpt.refresh_models'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: state.busy ? null : state.refreshModels,
-                        child: Text(strings.chatGptRefreshModels),
+                        label: strings.chatGptRefreshModels,
                       ),
-                      TextButton(
+                      LaButton(
                         key: const Key('chatgpt.verify_access'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: state.busy || model == null
                             ? null
                             : state.verifyAccess,
-                        child: Text(strings.chatGptVerifyAccess),
+                        label: strings.chatGptVerifyAccess,
                       ),
                     ],
                   ),

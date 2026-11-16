@@ -66,15 +66,14 @@ final class SupervisorAgentProvider implements ResourceProvider {
       );
     }
     final task = _taskOf(spec);
-    final requestId = 'supervisor-${spec.id}-'
+    final requestId =
+        'supervisor-${spec.id}-'
         '${DateTime.now().microsecondsSinceEpoch}';
     final log = request.log;
     final (client, refusal) = await _resolve(spec.id);
     if (client == null) {
       log?.add('refused: $refusal');
-      throw StateError(
-        'agent automation "${spec.id}" cannot run: $refusal',
-      );
+      throw StateError('agent automation "${spec.id}" cannot run: $refusal');
     }
     log?.add('agent automation "${spec.id}" → delegated to the world');
     final SupervisorAgentAdmission admission;
@@ -82,9 +81,7 @@ final class SupervisorAgentProvider implements ResourceProvider {
       admission = await client.admit(task: task, requestId: requestId);
     } on SupervisorAgentRefusal catch (refusal) {
       log?.add('refused: $refusal');
-      throw StateError(
-        'agent automation "${spec.id}" was refused: $refusal',
-      );
+      throw StateError('agent automation "${spec.id}" was refused: $refusal');
     }
     // The receipt is an ADMISSION. The run is over only when the world
     // says so.
@@ -240,10 +237,7 @@ final class SupervisorAgentProvider implements ResourceProvider {
     }
     final (client, refusal) = await _resolve(ref.componentId);
     if (client == null) {
-      return StopReport(
-        disposition: StopDisposition.unknown,
-        message: refusal,
-      );
+      return StopReport(disposition: StopDisposition.unknown, message: refusal);
     }
     try {
       final outcome = await client.cancel(

@@ -49,7 +49,7 @@ class _WorkspaceFolderSection extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Padding(
       padding: ShellTokens.sectionPadding,
       child: Column(
@@ -60,7 +60,7 @@ class _WorkspaceFolderSection extends StatelessWidget {
           if (workspace.folderPaths.isEmpty)
             Text(
               context.l10n.workspacesFilesNoFolders,
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: theme.compact?.copyWith(
                 color: context.shellMuted,
               ),
             )
@@ -82,7 +82,7 @@ class _WorkspaceFolderSection extends StatelessWidget {
                         key: const ValueKey('workspaces.filesTab.folder'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
+                        style: theme.compact?.copyWith(
                           fontFeatures: const [],
                         ),
                       ),
@@ -109,7 +109,7 @@ class _FilesNote extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         key: const ValueKey('workspaces.filesTab'),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+        style: context.laUi.micro?.copyWith(
           color: context.shellMuted,
         ),
       ),

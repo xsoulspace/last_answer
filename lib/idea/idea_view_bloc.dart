@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/idea/idea_answer_screen.dart';
 import 'package:lastanswer/idea/widgets/answer_creator.dart';
 import 'package:lastanswer/idea/widgets/answer_tile.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 part 'idea_view_bloc.freezed.dart';
 

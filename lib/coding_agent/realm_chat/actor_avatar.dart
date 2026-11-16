@@ -19,7 +19,10 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
@@ -333,13 +336,13 @@ final class ActorAvatar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     // The owner-set mark wins over the derived identity (wave N2);
     // absent, the kind's own species renders (monogram / identicon).
     final identity =
-        _avatarMark(theme) ??
+        _avatarMark(laUi) ??
         switch (profile.kind) {
-          ActorKind.human => _monogram(theme),
+          ActorKind.human => _monogram(laUi),
           _ => actorIdenticon(profile.actorId, size: size),
         };
     final badgeSize = (size * 0.38).clamp(10.0, 16.0);
@@ -357,7 +360,7 @@ final class ActorAvatar extends StatelessWidget {
             Positioned(
               right: -badgeSize * 0.15,
               top: -badgeSize * 0.15,
-              child: _kindBadge(theme, badgeSize),
+              child: _kindBadge(laUi, badgeSize),
             ),
           if (showPresence)
             Positioned(
@@ -366,7 +369,7 @@ final class ActorAvatar extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(1.5),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
+                  color: laUi.surface,
                   shape: BoxShape.circle,
                 ),
                 child: PresenceDot(
@@ -385,7 +388,7 @@ final class ActorAvatar extends StatelessWidget {
   /// name renders as its Icon, any other non-empty value as the raw
   /// emoji/character — both on the identity tint, in the identity ink.
   /// Null when no mark is set (the derived identity rides).
-  Widget? _avatarMark(final ThemeData theme) {
+  Widget? _avatarMark(final LaUiTheme laUi) {
     final avatar = profile.avatar;
     if (avatar == null || avatar.isEmpty) return null;
     final glyph = kActorAvatarGlyphs[avatar];
@@ -409,7 +412,7 @@ final class ActorAvatar extends StatelessWidget {
   /// The kind badge — a small surface circle hugging the top-right
   /// edge, lettered by what holds the agency (ADR 0003): `M`odel,
   /// `A`gent, `H`uman.
-  Widget _kindBadge(final ThemeData theme, final double badgeSize) {
+  Widget _kindBadge(final LaUiTheme laUi, final double badgeSize) {
     final letter = switch (profile.kind) {
       ActorKind.model => 'M',
       ActorKind.agent => 'A',
@@ -420,7 +423,7 @@ final class ActorAvatar extends StatelessWidget {
       height: badgeSize,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: laUi.surface,
         shape: BoxShape.circle,
         border: Border.all(color: actorColor(profile.actorId)),
       ),
@@ -430,7 +433,7 @@ final class ActorAvatar extends StatelessWidget {
           fontSize: badgeSize * 0.55,
           height: 1,
           fontWeight: FontWeight.w700,
-          color: theme.colorScheme.onSurface,
+          color: laUi.ink,
         ),
       ),
     );
@@ -439,7 +442,7 @@ final class ActorAvatar extends StatelessWidget {
   /// The human's mark: initials on the identity tint, letters in the
   /// identity ink — deliberately a different species from the bots'
   /// blob+glyph, and quiet enough to sit beside it.
-  Widget _monogram(final ThemeData theme) => Container(
+  Widget _monogram(final LaUiTheme laUi) => Container(
     width: size,
     height: size,
     alignment: Alignment.center,

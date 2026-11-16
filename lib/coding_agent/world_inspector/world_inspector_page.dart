@@ -18,7 +18,7 @@ final class WorldInspectorFullScreenPage extends StatelessWidget {
   final ValueChanged<WorldBindingModel?>? onBindingChanged;
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
+  Widget build(final BuildContext context) => LaScaffold(
     body: SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -37,7 +37,7 @@ final class WorldInspectorFullScreenPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              IconButton(
+              LaButton.icon(
                 key: const Key('world_inspector.fullscreen.close'),
                 tooltip: 'Close',
                 icon: const Icon(Icons.close, size: 20),

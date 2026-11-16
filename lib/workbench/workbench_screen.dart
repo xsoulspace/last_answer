@@ -1,15 +1,13 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/browser/browser_entry.dart';
 import 'package:lastanswer/coding_agent/product_autonomy.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/workbench/behaviour_connection.dart';
 import 'package:lastanswer/workbench/workbench_harness_tools.dart';
 import 'package:lastanswer/workbench/workbench_investigation.dart';
@@ -18,9 +16,7 @@ import 'package:lastanswer/workbench/workbench_strings.dart';
 import 'package:lastanswer/workspaces/workspace.dart';
 import 'package:lastanswer/workspaces/workspace_files_tab.dart';
 import 'package:lastanswer/workspaces/workspace_notifier.dart';
-import 'package:provider/provider.dart';
 import 'package:universal_automation_interface/universal_automation_interface.dart';
-import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -664,13 +660,15 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
     );
   }
 
-  Widget _action(String label, VoidCallback? action, {String? key}) =>
-      TextButton(
-        key: ValueKey(key ?? label),
-        onPressed: busy ? null : action,
-        style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
-        child: Text(workbenchText(context, label)),
-      );
+  Widget _action(String label, VoidCallback? action, {String? key}) => LaButton(
+    key: ValueKey(key ?? label),
+    variant: LaButtonVariant.ghost,
+    onPressed: busy ? null : action,
+    child: Text(workbenchText(context, label)),
+  );
+
+  String _blockLabel(int index, hc.Block block) =>
+      '${index + 1}. ${block.content.split('\n').first}';
 
   Widget _document() {
     final n = node!;
@@ -706,29 +704,32 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                         ),
                       ),
                     Expanded(
-                      child: TextField(
-                        key: ValueKey('block-${b.id.value}'),
-                        controller: controllers[b.id.value],
-                        focusNode: focusNodes[b.id.value],
-                        minLines: 1,
-                        maxLines: null,
-                        onTap: () => setState(() {
+                      child: Listener(
+                        behavior: HitTestBehavior.translucent,
+                        // The block tap-select (was TextField.onTap; LaField
+                        // has no onTap — pointer-down never competes with
+                        // the editable's own gesture).
+                        onPointerDown: (_) => setState(() {
                           selected = b.id.value;
                           focusedBlock = b.id.value;
                         }),
-                        onSubmitted: (_) =>
-                            unawaited(_run(() => _write(b.id.value))),
-                        onTapOutside: (_) {
-                          focusNodes[b.id.value]?.unfocus();
-                          unawaited(_run(() => _write(b.id.value)));
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: inspect ? b.type.name : null,
-                        ),
-                        style: TextStyle(
-                          fontSize: b.type == hc.BlockType.heading ? 26 : 20,
-                          height: 1.6,
+                        child: LaField(
+                          key: ValueKey('block-${b.id.value}'),
+                          controller: controllers[b.id.value],
+                          focusNode: focusNodes[b.id.value],
+                          minLines: 1,
+                          maxLines: null,
+                          onSubmitted: (_) =>
+                              unawaited(_run(() => _write(b.id.value))),
+                          onTapOutside: (_) {
+                            focusNodes[b.id.value]?.unfocus();
+                            unawaited(_run(() => _write(b.id.value)));
+                          },
+                          placeholder: inspect ? b.type.name : null,
+                          style: TextStyle(
+                            fontSize: b.type == hc.BlockType.heading ? 26 : 20,
+                            height: 1.6,
+                          ),
                         ),
                       ),
                     ),
@@ -851,28 +852,23 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
         children: [
           Semantics(
             label: workbenchText(context, 'Inspect object'),
-            child: DropdownButton<String>(
+            child: LaSelect<String>(
               key: const ValueKey('inspect-object'),
-              isExpanded: true,
+              expand: true,
+              enabled: !busy,
               value: block?.id.value ?? 'project_open',
               items: [
-                DropdownMenuItem(
+                LaSelectItem(
                   value: 'project_open',
-                  child: Text(
-                    workbenchText(context, 'Project opening behaviour'),
-                  ),
+                  label: workbenchText(context, 'Project opening behaviour'),
                 ),
                 for (final entry in node!.blocks.indexed)
-                  DropdownMenuItem(
+                  LaSelectItem(
                     value: entry.$2.id.value,
-                    child: Text(
-                      '${entry.$1 + 1}. ${entry.$2.content.split('\n').first}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    label: _blockLabel(entry.$1, entry.$2),
                   ),
               ],
-              onChanged: busy ? null : (id) => setState(() => selected = id),
+              onChanged: (id) => setState(() => selected = id),
             ),
           ),
           if (projection == hc.WorkProjection.spatial)
@@ -900,7 +896,7 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
             selected == 'project_open'
                 ? 'Project opening behaviour'
                 : 'Selected work',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: context.laUi.section,
           ),
           const SizedBox(height: 12),
           if (block != null) ...[
@@ -941,19 +937,16 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
               ],
             ),
             if (block.type == hc.BlockType.heading)
-              DropdownButton<String>(
-                hint: const Text('Move section before'),
-                isExpanded: true,
+              LaSelect<String>(
+                placeholder: 'Move section before',
+                expand: true,
                 items: [
                   for (final heading in node!.blocks)
                     if (heading.type == hc.BlockType.heading &&
                         heading.id != block.id)
-                      DropdownMenuItem(
+                      LaSelectItem(
                         value: heading.id.value,
-                        child: Text(
-                          heading.content,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        label: heading.content,
                       ),
                 ],
                 onChanged: (id) {
@@ -983,13 +976,11 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                   ),
                 ),
               ),
-            TextField(
+            LaField(
               controller: source,
-              decoration: InputDecoration(
-                labelText: workbenchText(
-                  context,
-                  'Evidence source (URL or project reference)',
-                ),
+              placeholder: workbenchText(
+                context,
+                'Evidence source (URL or project reference)',
               ),
             ),
             Wrap(
@@ -1028,23 +1019,16 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                   );
                 }),
               ),
-            TextField(
+            LaField(
               controller: intent,
-              decoration: InputDecoration(
-                labelText: workbenchText(context, 'Question or change intent'),
-              ),
+              placeholder: workbenchText(context, 'Question or change intent'),
             ),
-            DropdownButton<String>(
+            LaSelect<String>(
               value: harnessSession,
-              hint: Text(workbenchText(context, 'Live harness session')),
-              isExpanded: true,
+              placeholder: workbenchText(context, 'Live harness session'),
+              expand: true,
               items: HarnessSessionRegistry.instance.sessions.keys
-                  .map(
-                    (id) => DropdownMenuItem(
-                      value: id,
-                      child: Text(id, overflow: TextOverflow.ellipsis),
-                    ),
-                  )
+                  .map((id) => LaSelectItem(value: id, label: id))
                   .toList(),
               onChanged: (id) => setState(() => harnessSession = id),
             ),
@@ -1074,32 +1058,50 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
               );
             },
           ),
-          CheckboxListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(workbenchText(context, 'Restore position')),
-            value: (candidate ?? behaviour).restore,
-            onChanged: (v) => setState(
+          LaRow(
+            padding: EdgeInsets.zero,
+            onTap: () => setState(
               () => candidate = hc.ReturnBehaviour(
-                restore: v!,
+                restore: !(candidate ?? behaviour).restore,
                 focus: (candidate ?? behaviour).focus,
                 width: (candidate ?? behaviour).width,
               ),
             ),
+            leading: LaCheckbox(
+              value: (candidate ?? behaviour).restore,
+              onChanged: (v) => setState(
+                () => candidate = hc.ReturnBehaviour(
+                  restore: v!,
+                  focus: (candidate ?? behaviour).focus,
+                  width: (candidate ?? behaviour).width,
+                ),
+              ),
+            ),
+            titleText: workbenchText(context, 'Restore position'),
           ),
-          CheckboxListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(workbenchText(context, 'Focus editor')),
-            value: (candidate ?? behaviour).focus,
-            onChanged: (v) => setState(
+          LaRow(
+            padding: EdgeInsets.zero,
+            onTap: () => setState(
               () => candidate = hc.ReturnBehaviour(
                 restore: (candidate ?? behaviour).restore,
-                focus: v!,
+                focus: !(candidate ?? behaviour).focus,
                 width: (candidate ?? behaviour).width,
               ),
             ),
+            leading: LaCheckbox(
+              value: (candidate ?? behaviour).focus,
+              onChanged: (v) => setState(
+                () => candidate = hc.ReturnBehaviour(
+                  restore: (candidate ?? behaviour).restore,
+                  focus: v!,
+                  width: (candidate ?? behaviour).width,
+                ),
+              ),
+            ),
+            titleText: workbenchText(context, 'Focus editor'),
           ),
           Text('Reading width: ${width.round()}'),
-          Slider(
+          LaSlider(
             min: 320,
             max: 1200,
             value: (candidate ?? behaviour).width,
@@ -1259,17 +1261,13 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                             p['status'] == 'staged' || p['status'] == 'stale',
                       )
                       .length;
-                  return ListTile(
-                    title: Text(
-                      value.node.blocks.isEmpty
-                          ? id.value
-                          : value.node.blocks.first.content,
-                    ),
-                    subtitle: Text(
-                      work.hasError
-                          ? 'State unavailable: ${work.error}'
-                          : '$open proposals awaiting a decision',
-                    ),
+                  return LaRow(
+                    titleText: value.node.blocks.isEmpty
+                        ? id.value
+                        : value.node.blocks.first.content,
+                    metaText: work.hasError
+                        ? 'State unavailable: ${work.error}'
+                        : '$open proposals awaiting a decision',
                     onTap: () => unawaited(_run(() => _open(id.value))),
                   );
                 },
@@ -1288,113 +1286,119 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
     },
     child: Focus(
       autofocus: true,
-      child: Scaffold(
-        appBar: AppBar(title: Text(workbenchText(context, 'Workbench'))),
-        body: Column(
-          children: [
-            Wrap(
-              children: [
-                _action(
-                  'Open sample article',
-                  () => unawaited(_run(_createSample)),
-                ),
-                _action(
-                  inspect ? 'Focus writing' : 'Inspect',
-                  node == null
-                      ? null
-                      : () => setState(() {
-                          inspect = !inspect;
-                          selected ??= 'project_open';
-                        }),
-                ),
-                // 2b — the trinity toggle: the room docks beside the
-                // artifact (conversation | artifact | preview/run).
-                _action(
-                  dockChat ? 'Close room dock' : 'Room dock',
-                  node == null
-                      ? null
-                      : () => setState(() => dockChat = !dockChat),
-                  key: 'workbench.dock.chat',
-                ),
-              ],
-            ),
-            if (busy) const LinearProgressIndicator(),
-            if (error != null)
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(error!, key: const ValueKey('workbench-error')),
-              ),
-            if (node != null)
+      // LaScaffold is a ColoredBox, not a Material — without this the kit
+      // scaffold inherits Flutter's 48px red error text style for any bare
+      // Text inside (the legacy Scaffold used to install the text style).
+      child: DefaultTextStyle(
+        style: context.laUi.body,
+        child: LaScaffold(
+          topBar: LaTopBar(titleText: workbenchText(context, 'Workbench')),
+          body: Column(
+            children: [
               Wrap(
                 children: [
-                  for (final p in hc.WorkProjection.values)
-                    _action(
-                      p.name,
-                      () => setState(() {
-                        projection = p;
-                        inspect = p != hc.WorkProjection.document;
-                      }),
-                    ),
                   _action(
-                    'Project opening connection',
-                    () => setState(() {
-                      selected = 'project_open';
-                      inspect = true;
-                    }),
+                    'Open sample article',
+                    () => unawaited(_run(_createSample)),
+                  ),
+                  _action(
+                    inspect ? 'Focus writing' : 'Inspect',
+                    node == null
+                        ? null
+                        : () => setState(() {
+                            inspect = !inspect;
+                            selected ??= 'project_open';
+                          }),
+                  ),
+                  // 2b — the trinity toggle: the room docks beside the
+                  // artifact (conversation | artifact | preview/run).
+                  _action(
+                    dockChat ? 'Close room dock' : 'Room dock',
+                    node == null
+                        ? null
+                        : () => setState(() => dockChat = !dockChat),
+                    key: 'workbench.dock.chat',
                   ),
                 ],
               ),
-            Expanded(
-              child: sharedScope != null
-                  ? Column(
-                      children: [
-                        _action(
-                          'Return to project',
-                          () => unawaited(
-                            _run(() async {
-                              sharedScope = null;
-                              await _refresh();
-                            }),
-                          ),
-                        ),
-                        Expanded(
-                          child: WorkbenchInvestigation(
-                            owner: owner,
-                            scope: sharedScope!,
-                          ),
-                        ),
-                      ],
-                    )
-                  : node == null
-                  ? _projectPicker()
-                  : LayoutBuilder(
-                      builder: (context, size) {
-                        // 2b — the trinity layout: artifact | room dock
-                        // | projection pane. Wide screens carry all
-                        // three; narrow screens carry ONE (the explicit
-                        // inspect pick wins over the dock — the
-                        // pre-trinity law stays intact when the dock is
-                        // closed).
-                        final right = projection == hc.WorkProjection.runtime
-                            ? _runtimePane()
-                            : _inspector();
-                        if (!inspect && !dockChat) return _document();
-                        if (size.maxWidth >= 900) {
-                          return Row(
-                            children: [
-                              Expanded(child: _document()),
-                              if (dockChat)
-                                SizedBox(width: 340, child: _chatDock()),
-                              if (inspect) SizedBox(width: 380, child: right),
-                            ],
-                          );
-                        }
-                        if (inspect) return right;
-                        return _chatDock();
-                      },
+              if (busy) const LaProgress(value: null),
+              if (error != null)
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(error!, key: const ValueKey('workbench-error')),
+                ),
+              if (node != null)
+                Wrap(
+                  children: [
+                    for (final p in hc.WorkProjection.values)
+                      _action(
+                        p.name,
+                        () => setState(() {
+                          projection = p;
+                          inspect = p != hc.WorkProjection.document;
+                        }),
+                      ),
+                    _action(
+                      'Project opening connection',
+                      () => setState(() {
+                        selected = 'project_open';
+                        inspect = true;
+                      }),
                     ),
-            ),
-          ],
+                  ],
+                ),
+              Expanded(
+                child: sharedScope != null
+                    ? Column(
+                        children: [
+                          _action(
+                            'Return to project',
+                            () => unawaited(
+                              _run(() async {
+                                sharedScope = null;
+                                await _refresh();
+                              }),
+                            ),
+                          ),
+                          Expanded(
+                            child: WorkbenchInvestigation(
+                              owner: owner,
+                              scope: sharedScope!,
+                            ),
+                          ),
+                        ],
+                      )
+                    : node == null
+                    ? _projectPicker()
+                    : LayoutBuilder(
+                        builder: (context, size) {
+                          // 2b — the trinity layout: artifact | room dock
+                          // | projection pane. Wide screens carry all
+                          // three; narrow screens carry ONE (the explicit
+                          // inspect pick wins over the dock — the
+                          // pre-trinity law stays intact when the dock is
+                          // closed).
+                          final right = projection == hc.WorkProjection.runtime
+                              ? _runtimePane()
+                              : _inspector();
+                          if (!inspect && !dockChat) return _document();
+                          if (size.maxWidth >= 900) {
+                            return Row(
+                              children: [
+                                Expanded(child: _document()),
+                                if (dockChat)
+                                  SizedBox(width: 340, child: _chatDock()),
+                                if (inspect) SizedBox(width: 380, child: right),
+                              ],
+                            );
+                          }
+                          if (inspect) return right;
+                          return _chatDock();
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -1438,8 +1442,9 @@ class _PreviewRowState extends State<_PreviewRow> {
         child: Row(
           children: [
             const Expanded(child: Text('preview stopped')),
-            TextButton(
+            LaButton(
               key: const ValueKey('workbench.preview.start'),
+              variant: LaButtonVariant.ghost,
               onPressed: _starting
                   ? null
                   : () => unawaited(() async {
@@ -1470,8 +1475,9 @@ class _PreviewRowState extends State<_PreviewRow> {
                   key: const ValueKey('workbench.preview.state'),
                 ),
               ),
-              TextButton(
+              LaButton(
                 key: const ValueKey('workbench.preview.open'),
+                variant: LaButtonVariant.ghost,
                 onPressed: url == null
                     ? null
                     : () => unawaited(

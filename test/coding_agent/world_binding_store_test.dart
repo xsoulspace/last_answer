@@ -10,6 +10,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_binding_store.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
@@ -264,7 +266,7 @@ void main() {
       await tester.pumpAndSettle();
       // The embedded row (locale-independent: its home-work icon — the
       // sheet's first, default-path row).
-      await tester.tap(find.widgetWithIcon(ListTile, Icons.home_work_outlined));
+      await tester.tap(find.widgetWithIcon(LaRow, Icons.home_work_outlined));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 50));
 

@@ -1,6 +1,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
@@ -37,6 +38,10 @@ void main() {
     final opened = <String>[];
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor below need a
+        // Portal ancestor.
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         locale: const Locale('en'),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,

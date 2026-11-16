@@ -1,4 +1,3 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class VerticalProjectsBar extends StatelessWidget {
@@ -25,18 +24,24 @@ class VerticalProjectsBar extends StatelessWidget {
         BarItem(
           onTap: onIdeaTap,
           label: context.l10n.idea,
-          child: IconIdeaButton(onTap: onIdeaTap),
+          child: LaButton.icon(
+            onPressed: onIdeaTap,
+            icon: Assets.icons.idea.svg(height: 24, width: 24),
+          ),
         ),
         BarItem(
           onTap: onNoteTap,
           label: context.l10n.note,
-          child: IconButton(onPressed: onNoteTap, icon: const Icon(Icons.book)),
+          child: LaButton.icon(
+            onPressed: onNoteTap,
+            icon: const Icon(Icons.book),
+          ),
         ),
         if (onChatTap != null)
           BarItem(
             onTap: onChatTap!,
             label: context.l10n.chat,
-            child: IconButton(
+            child: LaButton.icon(
               onPressed: onChatTap,
               icon: const Icon(Icons.forum_outlined),
             ),
@@ -62,7 +67,7 @@ class BarItem extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 50, child: child),
+        SizedBox(height: 50, child: Center(child: child)),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 40),
           child: FittedBox(
@@ -70,7 +75,7 @@ class BarItem extends StatelessWidget {
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: context.textTheme.bodySmall,
+              style: context.laUi.compact,
             ),
           ),
         ),

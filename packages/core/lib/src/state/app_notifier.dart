@@ -50,7 +50,6 @@ class AppNotifier extends ValueNotifier<AppNotifierState> {
     required final DbSaveModel dbSave,
     required final BuildContext context,
   }) async {
-    final toasts = Toasts.of(context);
     final l10n = context.l10n;
 
     await dto.projectsRepository.putAll(projects: dbSave.projects);
@@ -67,6 +66,6 @@ class AppNotifier extends ValueNotifier<AppNotifierState> {
       dto.tagsNotifier.onLocalUserLoad(),
     ]);
 
-    await toasts.showBottomToast(message: l10n.projectsFromFileRestored);
+    LaToast.info(context, l10n.projectsFromFileRestored);
   }
 }

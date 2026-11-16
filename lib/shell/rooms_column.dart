@@ -203,9 +203,8 @@ final class RoomsColumn extends StatelessWidget {
               title: '#${channel.name}',
               // The kind word rides the mark's tooltip; the mark
               // itself is the channel's user-settable icon.
-              leading: Tooltip(
+              leading: LaTooltip(
                 message: l10n.roomsKindChannel,
-                waitDuration: const Duration(milliseconds: 600),
                 child: ChannelIconMark(icon: channel.icon),
               ),
               threadId: channel.threadId,
@@ -270,66 +269,59 @@ final class _ConversationRow extends StatelessWidget {
 
   /// The row's right-click / long-press (the strip tab's menu pattern):
   /// channels offer Rename, Change icon, Close and the miniwindow;
-  /// every other row offers the window presentation only.
+  /// every other row offers the window presentation only. The kit menu
+  /// grammar (v6): rows carry their own activation, the menu closes on
+  /// choice, and the frozen `rooms.menu.*` keys ride the items.
   void _onContext(final BuildContext context, final Offset globalPosition) {
     final l10n = context.l10n;
     final channel = this.channel;
     final onSetIcon = this.onSetIcon;
-    unawaited(() async {
-      final overlay =
-          Overlay.of(context).context.findRenderObject()! as RenderBox;
-      final choice = await showMenu<String>(
-        context: context,
-        position: RelativeRect.fromLTRB(
-          globalPosition.dx,
-          globalPosition.dy,
-          overlay.size.width - globalPosition.dx,
-          overlay.size.height - globalPosition.dy,
-        ),
-        items: [
-          if (channel != null)
-            PopupMenuItem<String>(
-              value: 'rename',
-              key: ValueKey('rooms.menu.rename.${channel.channelId}'),
-              child: Text(l10n.roomsRenameAction),
-            ),
-          if (channel != null && onSetIcon != null)
-            PopupMenuItem<String>(
-              value: 'setIcon',
-              key: ValueKey('rooms.menu.setIcon.${channel.channelId}'),
-              child: Text(l10n.roomsSetIconAction),
-            ),
-          if (channel != null)
-            PopupMenuItem<String>(
-              value: 'close',
-              key: ValueKey('rooms.menu.close.${channel.channelId}'),
-              child: Text(l10n.roomsCloseChannel),
-            ),
-          PopupMenuItem<String>(
-            value: 'miniwindow',
-            key: ValueKey('rooms.menu.miniwindow.$surfaceId'),
-            child: Text(l10n.railRowMiniwindow),
+    LaMenuItem item(
+      final String keyValue,
+      final String label,
+      final VoidCallback onPressed,
+    ) => LaMenuItem(
+      key: ValueKey(keyValue),
+      label: label,
+      onPressed: onPressed,
+    );
+    showLaMenuAt(
+      context,
+      globalPosition: globalPosition,
+      entries: [
+        if (channel != null)
+          item(
+            'rooms.menu.rename.${channel.channelId}',
+            l10n.roomsRenameAction,
+            () {
+              if (context.mounted) {
+                unawaited(_renameChannel(context, channel));
+              }
+            },
           ),
-        ],
-      );
-      if (choice == null) return;
-      switch (choice) {
-        case 'rename':
-          if (channel != null && context.mounted) {
-            await _renameChannel(context, channel);
-          }
-        case 'setIcon':
-          if (channel != null && onSetIcon != null && context.mounted) {
-            await _changeChannelIcon(context, channel, onSetIcon);
-          }
-        case 'close':
-          if (channel != null) {
-            unawaited(service.closeChannel(channel.channelId));
-          }
-        case 'miniwindow':
-          onMiniWindow(surfaceId);
-      }
-    }());
+        if (channel != null && onSetIcon != null)
+          item(
+            'rooms.menu.setIcon.${channel.channelId}',
+            l10n.roomsSetIconAction,
+            () {
+              if (context.mounted) {
+                unawaited(_changeChannelIcon(context, channel, onSetIcon));
+              }
+            },
+          ),
+        if (channel != null)
+          item(
+            'rooms.menu.close.${channel.channelId}',
+            l10n.roomsCloseChannel,
+            () => unawaited(service.closeChannel(channel.channelId)),
+          ),
+        item(
+          'rooms.menu.miniwindow.$surfaceId',
+          l10n.railRowMiniwindow,
+          () => onMiniWindow(surfaceId),
+        ),
+      ],
+    );
   }
 
   /// The rename dialog: one field, the service's verb, honest refusal
@@ -337,7 +329,7 @@ final class _ConversationRow extends StatelessWidget {
   Future<void> _renameChannel(
     final BuildContext context,
     final ChannelInfo channel,
-  ) => showDialog<void>(
+  ) => showLaDialog<void>(
     context: context,
     builder: (final dialogContext) => _RenameDialog(
       service: service,
@@ -353,7 +345,7 @@ final class _ConversationRow extends StatelessWidget {
     final BuildContext context,
     final ChannelInfo channel,
     final Future<bool> Function(String channelId, String? icon) onSetIcon,
-  ) => showDialog<void>(
+  ) => showLaDialog<void>(
     context: context,
     builder: (final dialogContext) => _SetIconDialog(
       channel: channel,
@@ -379,7 +371,7 @@ final class _ConversationRow extends StatelessWidget {
 
 /// The rename dialog's own State owns its TextEditingController (init
 /// and dispose with the State): the route's EXIT animation still
-/// rebuilds the field after `showDialog` returns, so a controller
+/// rebuilds the field after `showLaDialog` returns, so a controller
 /// disposed at that point would be used after dispose.
 final class _RenameDialog extends StatefulWidget {
   const _RenameDialog({required this.service, required this.channel});
@@ -403,27 +395,30 @@ final class _RenameDialogState extends State<_RenameDialog> {
   }
 
   @override
-  Widget build(final BuildContext context) => AlertDialog(
-    title: Text(context.l10n.roomsRenameChannelTitle),
+  Widget build(final BuildContext context) => LaDialog(
+    titleText: context.l10n.roomsRenameChannelTitle,
     content: SizedBox(
       width: 360,
-      child: TextField(
+      child: LaField(
         key: const ValueKey('rooms.rename.name'),
         controller: _name,
         autofocus: true,
-        decoration: InputDecoration(
-          prefixText: '#',
-          labelText: context.l10n.worldChatChannelNameLabel,
+        placeholder: context.l10n.worldChatChannelNameLabel,
+        prefix: Text(
+          '#',
+          style: context.laUi.body.copyWith(color: context.laUi.inkMuted),
         ),
       ),
     ),
     actions: [
-      TextButton(
+      LaButton(
+        variant: LaButtonVariant.ghost,
         onPressed: () => Navigator.of(context).pop(),
-        child: Text(context.l10n.worldChatCancel),
+        label: context.l10n.worldChatCancel,
       ),
-      FilledButton(
+      LaButton(
         key: const ValueKey('rooms.rename.confirm'),
+        variant: LaButtonVariant.primary,
         onPressed: () async {
           final trimmed = _name.text.trim();
           if (trimmed.isEmpty) return;
@@ -435,7 +430,7 @@ final class _RenameDialogState extends State<_RenameDialog> {
           if (!mounted || !renamed) return;
           navigator.pop();
         },
-        child: Text(context.l10n.roomsRenameAction),
+        label: context.l10n.roomsRenameAction,
       ),
     ],
   );
@@ -443,7 +438,7 @@ final class _RenameDialogState extends State<_RenameDialog> {
 
 /// The change-icon dialog (the _RenameDialog law: its own State owns
 /// the TextEditingController — the route's exit animation still
-/// rebuilds the field after `showDialog` returns). A curated glyph tap
+/// rebuilds the field after `showLaDialog` returns). A curated glyph tap
 /// selects it; the clear button selects the default '#' mark; the
 /// field takes ONE character/emoji verbatim (the emoji path). Confirm
 /// applies through the shell's [RoomsColumn.onSetIcon] lane and a
@@ -462,10 +457,6 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
   /// The pending choice: a curated name, a raw character/emoji, or
   /// null (the default '#' mark).
   String? _selected;
-
-  /// The hovered glyph (the shadcn hover fill, tracked here so the
-  /// grid stays a plain Wrap of Stateless buttons).
-  String? _hovered;
 
   late final TextEditingController _custom = TextEditingController(
     text: _isCustom(widget.channel.icon) ? widget.channel.icon : '',
@@ -500,8 +491,8 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    return AlertDialog(
-      title: Text(l10n.roomsSetIconTitle),
+    return LaDialog(
+      titleText: l10n.roomsSetIconTitle,
       content: SizedBox(
         width: 360,
         child: Column(
@@ -520,14 +511,12 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
               ],
             ),
             const SizedBox(height: 12),
-            TextField(
+            LaField(
               key: const ValueKey('rooms.icon.custom'),
               controller: _custom,
               maxLength: 8,
-              decoration: InputDecoration(
-                labelText: l10n.roomsIconCustomLabel,
-                counterText: '',
-              ),
+              placeholder: l10n.roomsIconCustomLabel,
+              counterText: '',
               onChanged: (final value) => setState(
                 () => _selected = value.trim().isEmpty ? null : value.trim(),
               ),
@@ -536,17 +525,20 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        LaButton(
           key: const ValueKey('rooms.icon.clear'),
+          variant: LaButtonVariant.ghost,
           onPressed: () => _select(null),
-          child: Text(l10n.roomsIconClear),
+          label: l10n.roomsIconClear,
         ),
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.worldChatCancel),
+          label: l10n.worldChatCancel,
         ),
-        FilledButton(
+        LaButton(
           key: const ValueKey('rooms.icon.confirm'),
+          variant: LaButtonVariant.primary,
           onPressed: () async {
             final trimmed = _selected?.trim();
             final navigator = Navigator.of(context);
@@ -557,57 +549,46 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
             if (!mounted || !applied) return;
             navigator.pop();
           },
-          child: Text(l10n.save),
+          label: l10n.save,
         ),
       ],
     );
   }
 
   /// ONE glyph cell (34px tile on the shell's radius, hover fill +
-  /// selected fill — shadcn discipline, no new colors): the hash mark
-  /// renders its '#' text, every other name its curated icon.
+  /// selected fill — the kit's ONE state layer, no new colors): the
+  /// hash mark renders its '#' text, every other name its curated icon.
   Widget _glyphButton(final BuildContext context, final String name) {
     final selected = _selected == name;
-    final hovered = _hovered == name;
-    final fill = selected
-        ? context.shellSelected
-        : hovered
-        ? context.shellHover
-        : null;
     return Semantics(
       button: true,
       selected: selected,
       label: 'rooms.icon.$name',
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => setState(() => _hovered = name),
-        onExit: (final _) => setState(() => _hovered = null),
-        child: GestureDetector(
-          key: ValueKey('rooms.icon.$name'),
-          behavior: HitTestBehavior.opaque,
-          onTap: () => _select(name),
-          child: Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: fill,
-              borderRadius: BorderRadius.circular(ShellTokens.radius),
-            ),
-            child: Center(
-              child: name == kChannelHashIcon
-                  ? Text(
-                      '#',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: selected ? context.la.ink : context.shellMuted,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  : Icon(
-                      kChannelIconGlyphs[name],
-                      size: 17,
-                      color: selected ? context.la.ink : context.shellMuted,
+      child: LaPressable(
+        key: ValueKey('rooms.icon.$name'),
+        onTap: () => _select(name),
+        selected: selected,
+        radius: BorderRadius.circular(ShellTokens.radius),
+        scaleOnPress: false,
+        // The outer Semantics carries the frozen contract.
+        semanticsButton: false,
+        child: SizedBox(
+          width: 34,
+          height: 34,
+          child: Center(
+            child: name == kChannelHashIcon
+                ? Text(
+                    '#',
+                    style: context.laUi.micro.copyWith(
+                      color: selected ? context.laUi.ink : context.shellMuted,
+                      fontWeight: FontWeight.w600,
                     ),
-            ),
+                  )
+                : Icon(
+                    kChannelIconGlyphs[name],
+                    size: 17,
+                    color: selected ? context.laUi.ink : context.shellMuted,
+                  ),
           ),
         ),
       ),
@@ -615,9 +596,10 @@ final class _SetIconDialogState extends State<_SetIconDialog> {
   }
 }
 
-/// The one row shape: hover + selected fill on the shell's tile
-/// grammar, the §2.3 contract (the Semantics name IS the widget key).
-final class _RoomsRow extends StatefulWidget {
+/// The one row shape: hover + selected fill through the kit's ONE
+/// state layer ([LaPressable], v6) on the shell's tile grammar, the
+/// §2.3 contract (the Semantics name IS the widget key).
+final class _RoomsRow extends StatelessWidget {
   const _RoomsRow({
     required this.rowKey,
     required this.title,
@@ -637,81 +619,60 @@ final class _RoomsRow extends StatefulWidget {
   final ValueChanged<Offset>? onContext;
 
   @override
-  State<_RoomsRow> createState() => _RoomsRowState();
-}
-
-final class _RoomsRowState extends State<_RoomsRow> {
-  var _hovering = false;
-
-  @override
-  Widget build(final BuildContext context) {
-    final fill = widget.selected
-        ? context.shellSelected
-        : _hovering
-        ? context.shellHover
-        : null;
-    return Semantics(
-      button: true,
-      selected: widget.selected,
-      // The agent contract: the Semantics name IS the widget key; the
-      // human title rides the hint.
-      label: widget.rowKey,
-      hint: widget.title,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => setState(() => _hovering = true),
-        onExit: (final _) => setState(() => _hovering = false),
-        child: GestureDetector(
-          key: ValueKey(widget.rowKey),
-          behavior: HitTestBehavior.opaque,
-          onTap: widget.onTap,
-          onSecondaryTapUp: (final details) =>
-              widget.onContext?.call(details.globalPosition),
-          onLongPressStart: (final details) =>
-              widget.onContext?.call(details.globalPosition),
-          child: Container(
-            height: ShellTokens.rowHeight,
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: fill,
-              borderRadius: BorderRadius.circular(ShellTokens.radius),
-            ),
-            child: Row(
-              children: [
-                if (widget.leading != null) ...[
-                  widget.leading!,
-                  const SizedBox(width: 8),
-                ],
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      // DESIGN type scale: Compact 12 (the off-scale
-                      // 12.5 was chrome drift).
-                      fontSize: 12,
-                      color: widget.selected
-                          ? context.la.ink
-                          : context.shellMuted,
-                      fontWeight: widget.selected
-                          ? FontWeight.w600
-                          : FontWeight.w400,
-                    ),
+  Widget build(final BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    // The agent contract: the Semantics name IS the widget key; the
+    // human title rides the hint.
+    label: rowKey,
+    hint: title,
+    // The context-menu gestures ride OUTSIDE the pressable: they need
+    // the event's globalPosition, which LaPressable's position-less
+    // callbacks do not carry (kit gap). The pressable never registers
+    // them, so the arena has exactly one claimant each.
+    child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onSecondaryTapUp: (final details) =>
+          onContext?.call(details.globalPosition),
+      onLongPressStart: (final details) =>
+          onContext?.call(details.globalPosition),
+      child: LaPressable(
+        key: ValueKey(rowKey),
+        onTap: onTap,
+        selected: selected,
+        radius: BorderRadius.circular(ShellTokens.radius),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        scaleOnPress: false,
+        // The outer Semantics carries the §2.3 contract — frozen.
+        semanticsButton: false,
+        child: SizedBox(
+          height: ShellTokens.rowHeight,
+          child: Row(
+            children: [
+              if (leading != null) ...[leading!, const SizedBox(width: 8)],
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.laUi.compact.copyWith(
+                    // DESIGN type scale: Compact 12 (the off-scale
+                    // 12.5 was chrome drift).
+                    color: selected ? context.laUi.ink : context.shellMuted,
+                    fontWeight: selected
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                   ),
                 ),
-                if (widget.trailing != null) ...[
-                  const SizedBox(width: 4),
-                  widget.trailing!,
-                ],
-              ],
-            ),
+              ),
+              if (trailing != null) ...[const SizedBox(width: 4), trailing!],
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 /// One row's unread badge: an [EcsWorldSelector] over the journal
@@ -752,8 +713,8 @@ final class _RowUnreadBadge extends StatelessWidget {
             ),
             child: Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: context.la.onAccent,
+              style: context.laUi.micro.copyWith(
+                color: context.laUi.onAccent,
                 fontSize: 9,
                 fontWeight: FontWeight.w700,
               ),
@@ -788,9 +749,8 @@ final class _SectionHead extends StatelessWidget {
   Widget build(final BuildContext context) => Semantics(
     key: ValueKey(sectionKey),
     label: sectionKey,
-    child: Tooltip(
+    child: LaTooltip(
       message: tooltip,
-      waitDuration: const Duration(milliseconds: 600),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
         child: Row(
@@ -826,19 +786,19 @@ final class _HeaderAction extends StatelessWidget {
     button: true,
     label: actionKey,
     hint: tooltip,
-    child: Tooltip(
+    child: LaTooltip(
       message: tooltip,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          key: ValueKey(actionKey),
-          behavior: HitTestBehavior.opaque,
-          onTap: onTap,
-          child: SizedBox(
-            width: 22,
-            height: 22,
-            child: Icon(icon, size: 15, color: context.shellMuted),
-          ),
+      child: LaPressable(
+        key: ValueKey(actionKey),
+        onTap: onTap,
+        radius: BorderRadius.circular(6),
+        scaleOnPress: false,
+        // The outer Semantics carries the §2.3 contract — frozen.
+        semanticsButton: false,
+        child: SizedBox(
+          width: 22,
+          height: 22,
+          child: Icon(icon, size: 15, color: context.shellMuted),
         ),
       ),
     ),
@@ -872,7 +832,7 @@ final class ChannelIconMark extends StatelessWidget {
         child: Center(
           child: Text(
             '#',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: context.laUi.micro.copyWith(
               color: context.shellMuted,
               fontWeight: FontWeight.w600,
             ),
@@ -901,7 +861,7 @@ final class ChannelIconMark extends StatelessWidget {
           value,
           maxLines: 1,
           overflow: TextOverflow.clip,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          style: context.laUi.micro.copyWith(
             fontSize: size - 2,
             color: context.shellMuted,
           ),

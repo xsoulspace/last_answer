@@ -9,6 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
+  la_ui:
   archive: ^4.1.2
   collection: ^1.19.1
   connectivity_plus: ^7.3.0
@@ -44,7 +45,6 @@ dependencies:
   share_plus: ^13.2.1
   shared_models:
   shared_preferences: ^2.5.5
-  ui_kit:
   universal_io: ^2.3.1
   universal_storage_interface:
   universal_storage_local_db:

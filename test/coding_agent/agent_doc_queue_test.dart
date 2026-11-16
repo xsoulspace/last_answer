@@ -13,7 +13,9 @@ import 'dart:io';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/coding_agent.dart';
 
 import 'pump_until.dart';
@@ -28,11 +30,12 @@ Finder _keyPrefix(final String prefix) => find.byWidgetPredicate(
   },
 );
 
-/// Row-level actions are InkWells — this excludes the composer's
-/// `send now ⌘⏎` TextButton, which shares the sendNow key prefix.
+/// Row-level actions are LaPressables — this excludes the composer's
+/// `send now ⌘⏎` LaButton (its key rides the LaButton, not the inner
+/// keyless LaPressable), which shares the sendNow key prefix.
 Finder _rowAction(final String prefix) => find.byWidgetPredicate(
   (final w) => switch ((w, w.key)) {
-    (InkWell(), final ValueKey<String> k) => k.value.startsWith(prefix),
+    (LaPressable(), final ValueKey<String> k) => k.value.startsWith(prefix),
     _ => false,
   },
 );
@@ -69,13 +72,18 @@ void main() {
       ),
     );
     addTearDown(controller.dispose);
+    // Portal mirrors the app composition (last_answer_app.dart): the kit's
+    // tooltip/menu layer (LaTooltip on the workspace pick button) builds a
+    // PortalTarget even while closed and requires the Portal ancestor.
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: AgentDocSurface(
-            doc: _agentDoc(),
-            controller: controller,
-            onDocChanged: docUpdates.add,
+      Portal(
+        child: MaterialApp(
+          home: Scaffold(
+            body: AgentDocSurface(
+              doc: _agentDoc(),
+              controller: controller,
+              onDocChanged: docUpdates.add,
+            ),
           ),
         ),
       ),

@@ -126,7 +126,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
       await service.saveAutomation(draft);
     } on Object catch (error) {
       if (!mounted) return;
-      await Toasts.of(context).showBottomToast(message: '$error');
+      LaToast.show(context, message: '$error');
     }
     await _refresh();
   }
@@ -142,9 +142,8 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
   Future<void> _openEditor([final SupervisorAutomationView? existing]) async {
     if (!mounted) return;
     final l10n = context.l10n;
-    final result = await showModalBottomSheet<_EditorOutcome>(
+    final result = await showLaSheet<_EditorOutcome>(
       context: context,
-      isScrollControlled: true,
       builder: (final context) => Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.viewInsetsOf(context).bottom,
@@ -177,20 +176,20 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
             Expanded(
               child: Text(
                 l10n.supervisorSectionTitle,
-                style: context.textTheme.titleSmall,
+                style: context.laUi.emphasis,
               ),
             ),
-            IconButton(
+            LaButton.icon(
+              size: LaButtonSize.sm,
               tooltip: l10n.supervisorSectionAdd,
               onPressed: () => unawaited(_openEditor()),
-              icon: const Icon(Icons.add),
-              visualDensity: VisualDensity.compact,
+              icon: const Icon(Icons.add, size: 18),
             ),
-            IconButton(
+            LaButton.icon(
+              size: LaButtonSize.sm,
               tooltip: l10n.supervisorSectionRefresh,
               onPressed: _refresh,
-              icon: const Icon(Icons.refresh),
-              visualDensity: VisualDensity.compact,
+              icon: const Icon(Icons.refresh, size: 18),
             ),
           ],
         ),
@@ -204,14 +203,16 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
                 Wrap(
                   spacing: 8,
                   children: [
-                    TextButton.icon(
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
                       onPressed: execution.running
                           ? null
                           : () => unawaited(execution.run()),
-                      icon: const Icon(Icons.play_arrow),
-                      label: Text(l10n.supervisorExecutionRun),
+                      icon: const Icon(Icons.play_arrow, size: 16),
+                      label: l10n.supervisorExecutionRun,
                     ),
-                    TextButton.icon(
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
                       onPressed: () {
                         if (execution.enabled) {
                           execution.pause();
@@ -221,40 +222,41 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
                       },
                       icon: Icon(
                         execution.enabled ? Icons.pause : Icons.schedule,
+                        size: 16,
                       ),
-                      label: Text(
-                        execution.enabled
-                            ? l10n.supervisorExecutionPause
-                            : l10n.supervisorExecutionEnable,
-                      ),
+                      label: execution.enabled
+                          ? l10n.supervisorExecutionPause
+                          : l10n.supervisorExecutionEnable,
                     ),
                     if (execution.running)
-                      TextButton(
+                      LaButton(
+                        variant: LaButtonVariant.ghost,
                         onPressed: execution.cancel,
-                        child: Text(l10n.supervisorExecutionCancel),
+                        label: l10n.supervisorExecutionCancel,
                       ),
-                    TextButton.icon(
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
                       onPressed: () => unawaited(execution.stop()),
-                      icon: const Icon(Icons.stop),
-                      label: Text(l10n.supervisorExecutionStop),
+                      icon: const Icon(Icons.stop, size: 16),
+                      label: l10n.supervisorExecutionStop,
                     ),
                   ],
                 ),
                 if (execution.lastError case final error?)
-                  SelectableText(
+                  LaSelectableText(
                     error,
-                    style: TextStyle(color: context.theme.colorScheme.error),
+                    style: TextStyle(color: context.laUi.danger),
                   ),
                 if (_client?.refusal case final refusal?)
-                  SelectableText(
+                  LaSelectableText(
                     refusal,
-                    style: TextStyle(color: context.theme.colorScheme.error),
+                    style: TextStyle(color: context.laUi.danger),
                   ),
                 if (execution.lastReport case final report?)
-                  SelectableText(report),
+                  LaSelectableText(report),
                 for (final entry in execution.logLines.entries)
                   if (entry.value.isNotEmpty)
-                    SelectableText('${entry.key}\n${entry.value.join('\n')}'),
+                    LaSelectableText('${entry.key}\n${entry.value.join('\n')}'),
               ],
             ),
           ),
@@ -265,13 +267,13 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
             if (view == null) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12),
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(child: LaSpinner(size: 24)),
               );
             }
             if (!view.supported) {
               return Text(
                 l10n.supervisorSectionUnsupported,
-                style: context.textTheme.bodySmall,
+                style: context.laUi.compact,
               );
             }
             if (view.automations.isEmpty && view.corruptRecords.isEmpty) {
@@ -279,7 +281,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   l10n.supervisorSectionEmpty,
-                  style: context.textTheme.bodySmall,
+                  style: context.laUi.compact,
                 ),
               );
             }
@@ -306,8 +308,8 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Text(
                       corrupt,
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.theme.colorScheme.error,
+                      style: context.laUi.compact.copyWith(
+                        color: context.laUi.danger,
                       ),
                     ),
                   ),
@@ -321,7 +323,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
 
   Widget _group(final String title, final List<SupervisorAutomationView> rows) {
     if (rows.isEmpty) return const SizedBox.shrink();
-    final outline = context.theme.colorScheme.outline;
+    final outline = context.laUi.inkQuiet;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -329,7 +331,7 @@ class _SupervisorPanelState extends State<SupervisorPanel> {
           padding: const EdgeInsets.only(top: 6, bottom: 2),
           child: Text(
             title.toUpperCase(),
-            style: context.textTheme.bodySmall?.copyWith(
+            style: context.laUi.micro.copyWith(
               color: outline,
               fontSize: 10,
               letterSpacing: 0.6,
@@ -358,10 +360,10 @@ class _AutomationRow extends StatelessWidget {
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
     final color = automation.drifted
-        ? context.theme.colorScheme.error
+        ? context.laUi.danger
         : automation.present
-        ? context.la.accent
-        : context.theme.colorScheme.outline;
+        ? context.laUi.accent
+        : context.laUi.inkQuiet;
     final row = Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Column(
@@ -375,11 +377,11 @@ class _AutomationRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(automation.id, style: context.textTheme.bodyMedium),
+                    Text(automation.id, style: context.laUi.body),
                     Text(
                       _metaText(l10n),
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.theme.colorScheme.outline,
+                      style: context.laUi.compact.copyWith(
+                        color: context.laUi.inkQuiet,
                       ),
                     ),
                     if (automation.isAgent &&
@@ -394,8 +396,8 @@ class _AutomationRow extends StatelessWidget {
                             .trim(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.theme.colorScheme.outline,
+                        style: context.laUi.compact.copyWith(
+                          color: context.laUi.inkQuiet,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -405,8 +407,8 @@ class _AutomationRow extends StatelessWidget {
               if (automation.drifted)
                 Text(
                   l10n.supervisorSectionDrifted,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.theme.colorScheme.error,
+                  style: context.laUi.compact.copyWith(
+                    color: context.laUi.danger,
                   ),
                 ),
               if (onEdit != null)
@@ -415,7 +417,7 @@ class _AutomationRow extends StatelessWidget {
                   child: Icon(
                     Icons.edit_outlined,
                     size: 16,
-                    color: context.theme.colorScheme.outline,
+                    color: context.laUi.inkQuiet,
                   ),
                 ),
             ],
@@ -432,7 +434,11 @@ class _AutomationRow extends StatelessWidget {
       ),
     );
     if (onEdit == null) return row;
-    return InkWell(onTap: onEdit, child: row);
+    return LaPressable(
+      onTap: onEdit,
+      radius: context.laUi.smallRadius,
+      child: row,
+    );
   }
 
   /// The human schedule phrase: "Always on", "Daily at 03:00",
@@ -489,13 +495,13 @@ class _ScheduleStrip extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final outline = context.theme.colorScheme.outline;
+    final outline = context.laUi.inkQuiet;
     final schedule = _PlannedSchedule(
       periodSeconds: periodSeconds,
       atMinutes: atMinutes,
     );
     final first = schedule.firstRun;
-    final style = context.textTheme.bodySmall;
+    final style = context.laUi.compact;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -522,7 +528,7 @@ class _ScheduleStrip extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             l10n.supervisorSectionNextRun(_formatTime(first)),
-            style: style?.copyWith(color: outline),
+            style: style.copyWith(color: outline),
           ),
         ],
       ],
@@ -565,7 +571,7 @@ class _DayCell extends StatelessWidget {
     final now = DateTime.now();
     final isToday =
         date.day == now.day && date.month == now.month && date.year == now.year;
-    final style = context.textTheme.bodySmall;
+    final style = context.laUi.compact;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
@@ -578,11 +584,11 @@ class _DayCell extends StatelessWidget {
         children: [
           Text(
             _weekdayLetters[date.weekday - 1],
-            style: style?.copyWith(color: outline, fontSize: 9),
+            style: style.copyWith(color: outline, fontSize: 9),
           ),
           Text(
             '${date.day}',
-            style: style?.copyWith(
+            style: style.copyWith(
               color: outline,
               fontSize: 10,
               fontWeight: isToday ? FontWeight.bold : null,
@@ -834,11 +840,13 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
     final l10n = context.l10n;
     final existing = widget.existing;
     if (existing == null) return;
-    final confirmed = await Modals.of(context).showWarningDialog(
+    final confirmed = await showLaConfirm(
+      context,
       title: l10n.delete,
-      noActionText: l10n.cancel,
-      yesActionText: l10n.confirm,
-      description: l10n.supervisorSectionDeleteWarn(existing.id),
+      cancelLabel: l10n.cancel,
+      confirmLabel: l10n.confirm,
+      destructive: true,
+      message: l10n.supervisorSectionDeleteWarn(existing.id),
     );
     if (!confirmed || !mounted) return;
     Navigator.of(context).pop(const _EditorOutcome.delete());
@@ -847,7 +855,7 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final outline = context.theme.colorScheme.outline;
+    final outline = context.laUi.inkQuiet;
     final period = _periodSeconds;
     final existing = widget.existing;
     return Padding(
@@ -862,68 +870,68 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.title, style: context.textTheme.titleSmall),
+            Text(widget.title, style: context.laUi.emphasis),
             const SizedBox(height: 12),
-            TextField(
+            LaField(
               controller: _name,
               enabled: !_editing,
-              decoration: InputDecoration(
-                labelText: l10n.supervisorSectionName,
-                isDense: true,
-              ),
+              placeholder: l10n.supervisorSectionName,
             ),
             const SizedBox(height: 12),
-            SegmentedButton<bool>(
-              segments: [
-                ButtonSegment(
-                  value: false,
-                  icon: const Icon(Icons.terminal),
-                  label: Text(l10n.supervisorSectionKindCommand),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _segment(
+                  selected: !_isAgent,
+                  icon: Icons.terminal,
+                  label: l10n.supervisorSectionKindCommand,
+                  onTap: () => setState(() => _isAgent = false),
                 ),
-                ButtonSegment(
-                  value: true,
-                  icon: const Icon(Icons.auto_awesome),
-                  label: Text(l10n.supervisorSectionKindAgent),
+                const SizedBox(width: 4),
+                _segment(
+                  selected: _isAgent,
+                  icon: Icons.auto_awesome,
+                  label: l10n.supervisorSectionKindAgent,
+                  onTap: () => setState(() => _isAgent = true),
                 ),
               ],
-              selected: {_isAgent},
-              onSelectionChanged: (final selection) =>
-                  setState(() => _isAgent = selection.first),
             ),
             const SizedBox(height: 12),
             if (!_isAgent) ...[
-              SegmentedButton<bool>(
-                segments: [
-                  ButtonSegment(
-                    value: true,
-                    icon: const Icon(Icons.play_circle_outline),
-                    label: Text(l10n.supervisorSectionKindService),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _segment(
+                    selected: _isService,
+                    icon: Icons.play_circle_outline,
+                    label: l10n.supervisorSectionKindService,
+                    onTap: () => setState(() => _isService = true),
                   ),
-                  ButtonSegment(
-                    value: false,
-                    icon: const Icon(Icons.schedule),
-                    label: Text(l10n.supervisorSectionKindJob),
+                  const SizedBox(width: 4),
+                  _segment(
+                    selected: !_isService,
+                    icon: Icons.schedule,
+                    label: l10n.supervisorSectionKindJob,
+                    onTap: () => setState(() => _isService = false),
                   ),
                 ],
-                selected: {_isService},
-                onSelectionChanged: (final selection) =>
-                    setState(() => _isService = selection.first),
               ),
             ] else ...[
-              SegmentedButton<bool>(
-                segments: [
-                  ButtonSegment(
-                    value: false,
-                    label: Text(l10n.supervisorSectionOnDemand),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _segment(
+                    selected: !_repeating,
+                    label: l10n.supervisorSectionOnDemand,
+                    onTap: () => setState(() => _repeating = false),
                   ),
-                  ButtonSegment(
-                    value: true,
-                    label: Text(l10n.supervisorSectionRepeating),
+                  const SizedBox(width: 4),
+                  _segment(
+                    selected: _repeating,
+                    label: l10n.supervisorSectionRepeating,
+                    onTap: () => setState(() => _repeating = true),
                   ),
                 ],
-                selected: {_repeating},
-                onSelectionChanged: (final selection) =>
-                    setState(() => _repeating = selection.first),
               ),
             ],
             if (_isJob && _repeating) ...[
@@ -934,29 +942,28 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                   const SizedBox(width: 8),
                   SizedBox(
                     width: 64,
-                    child: TextField(
+                    child: LaField(
                       controller: _interval,
                       keyboardType: TextInputType.number,
                       onChanged: (_) => setState(() {}),
-                      decoration: const InputDecoration(isDense: true),
                     ),
                   ),
                   const SizedBox(width: 8),
-                  DropdownButton<int>(
+                  LaSelect<int>(
                     value: _intervalUnit,
-                    underline: const SizedBox.shrink(),
+                    minWidth: 120,
                     items: [
-                      DropdownMenuItem(
+                      LaSelectItem(
                         value: 60,
-                        child: Text(l10n.supervisorSectionUnitMinutes),
+                        label: l10n.supervisorSectionUnitMinutes,
                       ),
-                      DropdownMenuItem(
+                      LaSelectItem(
                         value: 3600,
-                        child: Text(l10n.supervisorSectionUnitHours),
+                        label: l10n.supervisorSectionUnitHours,
                       ),
-                      DropdownMenuItem(
+                      LaSelectItem(
                         value: 86400,
-                        child: Text(l10n.supervisorSectionUnitDays),
+                        label: l10n.supervisorSectionUnitDays,
                       ),
                     ],
                     onChanged: (final unit) =>
@@ -971,19 +978,16 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                     Text(l10n.supervisorSectionAnchorAt),
                     const SizedBox(width: 8),
                     SizedBox(
-                      width: 90,
-                      child: TextField(
+                      width: 110,
+                      child: LaField(
                         controller: _at,
                         keyboardType: TextInputType.datetime,
                         onChanged: (_) => setState(() {}),
-                        decoration: InputDecoration(
-                          hintText: '03:00',
-                          isDense: true,
-                          errorText:
-                              _at.text.trim().isNotEmpty && _atMinutes == null
-                              ? l10n.supervisorSectionTimeHint
-                              : null,
-                        ),
+                        placeholder: '03:00',
+                        errorText:
+                            _at.text.trim().isNotEmpty && _atMinutes == null
+                            ? l10n.supervisorSectionTimeHint
+                            : null,
                       ),
                     ),
                   ],
@@ -993,7 +997,7 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                 const SizedBox(height: 12),
                 Text(
                   l10n.supervisorSectionSchedule,
-                  style: context.textTheme.titleSmall,
+                  style: context.laUi.emphasis,
                 ),
                 const SizedBox(height: 6),
                 _ScheduleStrip(
@@ -1004,34 +1008,29 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
             ],
             if (_isAgent) ...[
               const SizedBox(height: 12),
-              TextField(
+              LaTextArea(
                 controller: _instructions,
-                minLines: 3,
                 maxLines: 6,
                 onChanged: (_) => setState(() {}),
-                decoration: InputDecoration(
-                  labelText: l10n.supervisorSectionInstructions,
-                  hintText: l10n.supervisorSectionInstructionsHint,
-                  isDense: true,
-                ),
+                placeholder: l10n.supervisorSectionInstructionsHint,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.supervisorSectionInstructions,
+                style: context.laUi.compact,
               ),
             ] else ...[
               const SizedBox(height: 12),
-              TextField(
+              LaField(
                 controller: _command,
-                decoration: InputDecoration(
-                  labelText: l10n.supervisorSectionCommand,
-                  hintText: l10n.supervisorSectionCommandHint,
-                  isDense: true,
-                ),
+                placeholder: l10n.supervisorSectionCommandHint,
               ),
+              const SizedBox(height: 4),
+              Text(l10n.supervisorSectionCommand, style: context.laUi.compact),
               const SizedBox(height: 8),
-              TextField(
+              LaField(
                 controller: _args,
-                decoration: InputDecoration(
-                  labelText: l10n.supervisorSectionArgs,
-                  isDense: true,
-                ),
+                placeholder: l10n.supervisorSectionArgs,
               ),
             ],
             if (existing != null) ...[
@@ -1044,39 +1043,54 @@ class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
                   existing.restartCount ?? 0,
                   existing.lastRun ?? '—',
                 ),
-                style: context.textTheme.bodySmall?.copyWith(color: outline),
+                style: context.laUi.compact.copyWith(color: outline),
               ),
             ],
             const SizedBox(height: 16),
             Row(
               children: [
-                FilledButton(
+                LaButton(
+                  variant: LaButtonVariant.primary,
                   onPressed: _canSave ? () => unawaited(_submit()) : null,
-                  child: Text(l10n.save),
+                  label: l10n.save,
                 ),
                 const SizedBox(width: 8),
-                TextButton(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(l10n.cancel),
+                  label: l10n.cancel,
                 ),
                 const Spacer(),
                 if (_editing)
-                  TextButton(
+                  LaButton(
+                    variant: LaButtonVariant.destructiveGhost,
                     onPressed: () => unawaited(_confirmDelete()),
-                    child: Text(
-                      l10n.delete,
-                      style: TextStyle(color: context.theme.colorScheme.error),
-                    ),
+                    label: l10n.delete,
                   ),
               ],
             ),
             Text(
               l10n.supervisorSectionAuthorHint,
-              style: context.textTheme.bodySmall?.copyWith(color: outline),
+              style: context.laUi.compact.copyWith(color: outline),
             ),
           ],
         ),
       ),
     );
   }
+
+  /// The kit has no SegmentedButton: the brief's mapped equivalent is a
+  /// row of LaButtons — the selected one primary, the rest ghost.
+  Widget _segment({
+    required final bool selected,
+    required final String label,
+    required final VoidCallback onTap,
+    final IconData? icon,
+  }) => LaButton(
+    variant: selected ? LaButtonVariant.primary : LaButtonVariant.ghost,
+    icon: icon == null ? null : Icon(icon, size: 14),
+    label: label,
+    size: LaButtonSize.sm,
+    onPressed: onTap,
+  );
 }

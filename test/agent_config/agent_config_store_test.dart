@@ -2,8 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/agent_config/agent_config_persistence.dart';
 import 'package:lastanswer/agent_config/agent_platform_config.dart';
 
-final class InMemoryAgentConfigPersistence
-    implements AgentConfigPersistence {
+final class InMemoryAgentConfigPersistence implements AgentConfigPersistence {
   String? contents;
   int writes = 0;
 
@@ -21,9 +20,7 @@ void main() {
   group('AgentConfigStore', () {
     test('load on an empty store yields defaults', () async {
       final persistence = InMemoryAgentConfigPersistence();
-      final store = AgentConfigStore(
-        persistence: persistence,
-      );
+      final store = AgentConfigStore(persistence: persistence);
       await store.load();
       expect(store.isLoaded, isTrue);
       expect(store.lastError, isNull);
@@ -35,9 +32,7 @@ void main() {
 
     test('save persists the document and notifies listeners', () async {
       final persistence = InMemoryAgentConfigPersistence();
-      final store = AgentConfigStore(
-        persistence: persistence,
-      );
+      final store = AgentConfigStore(persistence: persistence);
       await store.load();
       var notified = 0;
       store.addListener(() => notified++);
@@ -51,36 +46,33 @@ void main() {
       expect(store.config.agentServers['pi']?.command, 'pi-acp');
     });
 
-    test('corrupt document falls back to defaults with a named error',
-        () async {
-      final persistence = InMemoryAgentConfigPersistence()
-        ..contents = '{not json';
-      final store = AgentConfigStore(
-        persistence: persistence,
-      );
-      await store.load();
-      expect(store.lastError, isNotNull);
-      expect(
-        store.config.providers.containsKey(AgentPlatformConfig.openRouterId),
-        isTrue,
-      );
-      // A later save repairs the document and clears the error.
-      await store.putProvider(
-        'open_router',
-        const ProviderConfig(apiKeyEnv: 'OPENROUTER_API_KEY'),
-      );
-      expect(store.lastError, isNull);
-    });
+    test(
+      'corrupt document falls back to defaults with a named error',
+      () async {
+        final persistence = InMemoryAgentConfigPersistence()
+          ..contents = '{not json';
+        final store = AgentConfigStore(persistence: persistence);
+        await store.load();
+        expect(store.lastError, isNotNull);
+        expect(
+          store.config.providers.containsKey(AgentPlatformConfig.openRouterId),
+          isTrue,
+        );
+        // A later save repairs the document and clears the error.
+        await store.putProvider(
+          'open_router',
+          const ProviderConfig(apiKeyEnv: 'OPENROUTER_API_KEY'),
+        );
+        expect(store.lastError, isNull);
+      },
+    );
 
     test('removeAgentServer drops the entry', () async {
       final store = AgentConfigStore(
         persistence: InMemoryAgentConfigPersistence(),
       );
       await store.load();
-      await store.putAgentServer(
-        'x',
-        const AgentServerConfig(command: 'x'),
-      );
+      await store.putAgentServer('x', const AgentServerConfig(command: 'x'));
       await store.removeAgentServer('x');
       expect(store.config.agentServers, isEmpty);
     });

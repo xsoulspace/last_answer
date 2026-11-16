@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
@@ -39,30 +40,32 @@ void main() {
       await tester.pumpWidget(
         Provider<DocumentRepository>.value(
           value: repo,
-          child: MaterialApp(
-            home: StatefulBuilder(
-              builder: (context, setState) {
-                rebuild = setState;
-                return Row(
-                  children: [
-                    if (showLeft)
+          child: Portal(
+            child: MaterialApp(
+              home: StatefulBuilder(
+                builder: (context, setState) {
+                  rebuild = setState;
+                  return Row(
+                    children: [
+                      if (showLeft)
+                        const Expanded(
+                          key: ValueKey('left'),
+                          child: WorkbenchScreen(
+                            project: 'article',
+                            viewerId: 'left',
+                          ),
+                        ),
                       const Expanded(
-                        key: ValueKey('left'),
+                        key: ValueKey('right'),
                         child: WorkbenchScreen(
                           project: 'article',
-                          viewerId: 'left',
+                          viewerId: 'right',
                         ),
                       ),
-                    const Expanded(
-                      key: ValueKey('right'),
-                      child: WorkbenchScreen(
-                        project: 'article',
-                        viewerId: 'right',
-                      ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -159,21 +162,23 @@ void main() {
             key: frameKey,
             child: Provider<DocumentRepository>.value(
               value: repo,
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: frameDirectory == null
-                    ? null
-                    : ThemeData(fontFamily: 'HarnessFrameSans'),
-                builder: (context, child) => MediaQuery(
-                  data: MediaQuery.of(context).copyWith(
-                    textScaler: const TextScaler.linear(1.5),
-                    disableAnimations: true,
+              child: Portal(
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: frameDirectory == null
+                      ? null
+                      : ThemeData(fontFamily: 'HarnessFrameSans'),
+                  builder: (context, child) => MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      textScaler: const TextScaler.linear(1.5),
+                      disableAnimations: true,
+                    ),
+                    child: child!,
                   ),
-                  child: child!,
-                ),
-                home: const WorkbenchScreen(
-                  project: 'article',
-                  viewerId: 'reading',
+                  home: const WorkbenchScreen(
+                    project: 'article',
+                    viewerId: 'reading',
+                  ),
                 ),
               ),
             ),

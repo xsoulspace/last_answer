@@ -1,4 +1,3 @@
-
 import 'package:lastanswer/common_imports.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -34,8 +33,14 @@ class _MeshQrScanPageState extends State<MeshQrScanPage> {
   }
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(context.l10n.storageMeshScanQr)),
+  Widget build(final BuildContext context) => LaScaffold(
+    topBar: LaTopBar(
+      leading: LaButton.icon(
+        icon: const Icon(Icons.arrow_back, size: 18),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      titleText: context.l10n.storageMeshScanQr,
+    ),
     body: MobileScanner(controller: _controller, onDetect: _onDetect),
   );
 }

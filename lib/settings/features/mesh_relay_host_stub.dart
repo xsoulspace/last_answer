@@ -4,10 +4,9 @@ final class LocalRelayHost {
   bool get isRunning => false;
   int? get boundPort => null;
 
-  Future<Uri> start({final int port = 0}) async =>
-      throw UnsupportedError(
-        'Hosting a mesh relay is not supported on this platform',
-      );
+  Future<Uri> start({final int port = 0}) async => throw UnsupportedError(
+    'Hosting a mesh relay is not supported on this platform',
+  );
 
   Future<void> stop() async {}
 }

@@ -11,7 +11,9 @@ import 'package:core/core.dart';
 import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/coding_agent.dart';
 
 import 'pump_until.dart';
@@ -70,6 +72,10 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: AgentDocSurface(
               doc: doc,
@@ -178,6 +184,10 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+        // even while closed (the house pattern).
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         home: Scaffold(
           body: AgentDocSurface(doc: _agentDoc(), controller: controller),
         ),
@@ -222,6 +232,10 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: AgentDocSurface(
               key: const ValueKey('unbound'),
@@ -256,6 +270,10 @@ void main() {
       );
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: AgentDocSurface(
               key: const ValueKey('bound'),
@@ -294,6 +312,10 @@ void main() {
       final docUpdates = <ProjectModelDoc>[];
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: AgentDocSurface(
               doc: _agentDoc(),
@@ -312,9 +334,8 @@ void main() {
 
       expect(
         tester
-            .widget<TextField>(find.byKey(const Key('coding_agent.workspace')))
-            .controller!
-            .text,
+            .widget<LaField>(find.byKey(const Key('coding_agent.workspace')))
+            .controller?.text,
         '/tmp/picked-workspace',
         reason: 'the picked directory must land in the same field',
       );
@@ -330,9 +351,8 @@ void main() {
       await tester.pump();
       expect(
         tester
-            .widget<TextField>(find.byKey(const Key('coding_agent.workspace')))
-            .controller!
-            .text,
+            .widget<LaField>(find.byKey(const Key('coding_agent.workspace')))
+            .controller?.text,
         '/tmp/picked-workspace',
       );
     },
@@ -354,6 +374,10 @@ void main() {
     final docUpdates = <ProjectModelDoc>[];
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+        // even while closed (the house pattern).
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         home: Scaffold(
           body: AgentDocSurface(
             doc: _agentDoc(),
@@ -410,6 +434,10 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: AgentDocSurface(doc: _agentDoc(), controller: controller),
           ),
@@ -470,6 +498,10 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+        // even while closed (the house pattern).
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         home: Scaffold(
           body: AgentDocSurface(doc: _agentDoc(), controller: controller),
         ),
@@ -539,6 +571,10 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        // The kit overlay host: LaTooltip/LaMenuAnchor build PortalTargets
+        // even while closed (the house pattern).
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         home: Scaffold(
           body: AgentDocSurface(doc: _agentDoc(), controller: controller),
         ),

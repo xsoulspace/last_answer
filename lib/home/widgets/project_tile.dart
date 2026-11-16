@@ -1,5 +1,5 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 typedef ProjectSelectionChanged =
     void Function({required bool? selected, required ProjectModel project});
@@ -21,32 +21,26 @@ class ProjectTile extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = context.theme;
+    final laUi = context.laUi;
+    final iconColor = laUi.accent.withValues(alpha: 0.5);
     final effectiveLeadingIcon = Padding(
       padding: const EdgeInsets.only(top: 3),
       child: project.map(
         idea: (final idea) => SizedBox.square(
           dimension: 14,
-          child: IconIdea(
-            size: 14,
-            color: theme.colorScheme.primary.withOpacity(0.5),
+          child: Assets.icons.idea.svg(
+            height: 14,
+            width: 14,
+            colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
           ),
         ),
         changelog: (final changelog) => SizedBox.square(
           dimension: 14,
-          child: Icon(
-            Icons.newspaper,
-            size: 12.5,
-            color: theme.colorScheme.primary.withOpacity(0.5),
-          ),
+          child: Icon(Icons.newspaper, size: 12.5, color: iconColor),
         ),
         note: (final note) => SizedBox.square(
           dimension: 14,
-          child: Icon(
-            Icons.book_rounded,
-            size: 12.5,
-            color: theme.colorScheme.primary.withOpacity(0.5),
-          ),
+          child: Icon(Icons.book_rounded, size: 12.5, color: iconColor),
         ),
         doc: (final doc) => SizedBox.square(
           dimension: 14,
@@ -57,7 +51,7 @@ class ProjectTile extends StatelessWidget {
               _ => Icons.article_outlined,
             },
             size: 12.5,
-            color: theme.colorScheme.primary.withOpacity(0.5),
+            color: iconColor,
           ),
         ),
       ),
@@ -71,11 +65,10 @@ class ProjectTile extends StatelessWidget {
       //   return onRemoveConfirm(project);
       // },
       onDismissed: () => onRemove(project),
-      child: ListTile(
-        dense: true,
-        shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
+      child: LaRow(
         onTap: () => onTap(project),
         selected: selected,
+        radius: defaultBorderRadius,
         title: Stack(
           children: [
             effectiveLeadingIcon,

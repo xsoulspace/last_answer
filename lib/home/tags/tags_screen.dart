@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/tags/tags.dart';
@@ -23,11 +22,44 @@ class TagsScreenBody extends StatelessWidget {
     final screenType = context.select<TagsScreenNotifier, TagsScreenType>(
       (final c) => c.value.screenType,
     );
-    return switch (screenType) {
-      TagsScreenType.allTags => const _TagsListView(),
-      TagsScreenType.editingTag => const _ManageTagView(),
-      TagsScreenType.addProjects => const _AddProjectsView(),
-    }.animate().fadeIn();
+    return _FadeIn(
+      child: switch (screenType) {
+        TagsScreenType.allTags => const _TagsListView(),
+        TagsScreenType.editingTag => const _ManageTagView(),
+        TagsScreenType.addProjects => const _AddProjectsView(),
+      },
+    );
+  }
+}
+
+/// Kit-motion replacement for the legacy `.animate().fadeIn()` chains
+/// (optional [delay] mirrors `.animate(delay: …)`).
+class _FadeIn extends HookWidget {
+  const _FadeIn({required this.child, this.delay = Duration.zero});
+  final Widget child;
+  final Duration delay;
+
+  @override
+  Widget build(final BuildContext context) {
+    final laUi = context.laUi;
+    final visible = useState(false);
+    useEffect(() {
+      var cancelled = false;
+      Future<void> reveal() async {
+        if (delay != Duration.zero) await Future<void>.delayed(delay);
+        if (!cancelled) visible.value = true;
+      }
+
+      unawaited(reveal());
+      return () => cancelled = true;
+    }, const []);
+
+    return AnimatedOpacity(
+      opacity: visible.value ? 1 : 0,
+      duration: laUi.motionSettle,
+      curve: laUi.motionCurve,
+      child: child,
+    );
   }
 }
 
@@ -43,7 +75,7 @@ class _TagsListView extends StatelessWidget {
     final foldersLimit = isPurchased ? 20 : 10;
     final isLimitReached = tags.length >= foldersLimit;
     final tagsScreenNotifier = context.watch<TagsScreenNotifier>();
-    final textTheme = context.textTheme;
+    final laUi = context.laUi;
     final l10n = context.l10n;
 
     return Column(
@@ -54,16 +86,18 @@ class _TagsListView extends StatelessWidget {
             shrinkWrap: true,
             slivers: [
               DialogTopBar(title: l10n.folders).sliver(),
-              Card(
+              LaBox(
+                color: laUi.surface,
+                border: BorderSide(color: laUi.rule),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: RichText(
                     text: TextSpan(
-                      style: textTheme.bodyMedium,
+                      style: laUi.body,
                       children: [
                         TextSpan(text: l10n.useFoldersForNotes),
                         TextSpan(
-                          style: textTheme.bodySmall,
+                          style: laUi.compact,
                           text: l10n.youCanCreateUpTo(foldersLimit),
                         ),
                       ],
@@ -92,23 +126,25 @@ class _TagsListView extends StatelessWidget {
             ],
           ),
         ),
-        const Divider(),
+        const LaHairline(),
         Row(
           children: [
             Expanded(
-              child: TextButton(
+              child: LaButton(
+                label: l10n.cancel,
+                variant: LaButtonVariant.ghost,
+                expand: true,
                 onPressed: () => Navigator.pop(context),
-                child: Text(l10n.cancel),
               ),
             ),
             Expanded(
-              child: FilledButton.tonal(
+              child: LaButton(
+                label: isLimitReached ? l10n.limitReached : l10n.createFolder,
+                variant: LaButtonVariant.primary,
+                expand: true,
                 onPressed: isLimitReached
                     ? null
                     : tagsScreenNotifier.onCreateTagManagement,
-                child: Text(
-                  isLimitReached ? l10n.limitReached : l10n.createFolder,
-                ),
               ),
             ),
           ],
@@ -131,18 +167,17 @@ class EditableTagListTile extends StatelessWidget {
   final VoidCallback onDelete;
 
   @override
-  Widget build(final BuildContext context) => ListTile(
+  Widget build(final BuildContext context) => LaRow(
     onTap: onTap,
-    title: Text(tag.title),
-    trailing: IconButton(
+    titleText: tag.title,
+    trailing: LaButton.icon(
       onPressed: onDelete,
-      iconSize: 14,
-      icon: const Icon(CupertinoIcons.trash),
+      icon: const Icon(CupertinoIcons.trash, size: 14),
     ),
   );
 }
 
-class _ManageTagView extends StatelessWidget {
+class _ManageTagView extends HookWidget {
   const _ManageTagView();
   @override
   Widget build(final BuildContext context) {
@@ -152,96 +187,115 @@ class _ManageTagView extends StatelessWidget {
     final projectsContainer = state.projects;
     final projects = projectsContainer.value;
     final tagId = selectedTag.value.id;
-    final textTheme = context.textTheme;
-    final formHelper = stateNotifier.folderFieldFormHelper;
+    final laUi = context.laUi;
     final isSaving = selectedTag.isLoading;
     final l10n = context.l10n;
 
-    return Form(
-      key: formHelper.formKey,
-      child: Column(
-        children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                DialogTopBar(
-                  title:
-                      // ignore: lines_longer_than_80_chars
-                      '${tagId.isEmpty ? l10n.create : l10n.edit} ${l10n.folder}',
-                  onClose: stateNotifier.onCloseTagManagement,
-                  isBottomBorderVisible: false,
-                ).sliver(),
-                const SliverGap(4),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: UiTextField(
-                    decoration: InputDecoration(labelText: l10n.folderName),
+    // The legacy UiTextField was value-driven; mirror the tag title into a
+    // controller for the kit field (validation state rides the notifier).
+    final titleController = useTextEditingController(
+      text: selectedTag.value.title,
+    );
+    useValueChanged<String, void>(selectedTag.value.title, (final _, final _) {
+      if (titleController.text != selectedTag.value.title) {
+        titleController.text = selectedTag.value.title;
+      }
+    });
+
+    return Column(
+      children: [
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              DialogTopBar(
+                title:
+                    // ignore: lines_longer_than_80_chars
+                    '${tagId.isEmpty ? l10n.create : l10n.edit} ${l10n.folder}',
+                onClose: stateNotifier.onCloseTagManagement,
+                isBottomBorderVisible: false,
+              ).sliver(),
+              const SliverGap(4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ValueListenableBuilder<String?>(
+                  valueListenable: stateNotifier.folderTitleError,
+                  builder: (final context, final error, final _) => LaField(
+                    controller: titleController,
+                    placeholder: l10n.folderName,
                     maxLength: 12,
-                    value: selectedTag.value.title,
                     onChanged: stateNotifier.onFolderTitleChanged,
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                    ]),
+                    errorText: error,
                   ),
-                ).sliver(),
-                const SliverGap(18),
-                const Divider(thickness: 8).sliver(),
-                const SliverGap(16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(l10n.projects, style: textTheme.titleMedium),
-                ).sliver(),
-                const SliverGap(16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: FilledButton.icon(
-                    onPressed: stateNotifier.onOpenAddProjects,
-                    icon: const Icon(Icons.add),
-                    label: Text(l10n.addProjects),
-                  ),
-                ).sliver(),
-                const SliverGap(16),
-                if (projectsContainer.isLoading)
-                  const UiCircularProgress().sliver()
-                else
-                  SliverList.builder(
-                    itemCount: projects.length,
-                    itemBuilder: (final context, final index) {
-                      final project = projects[index];
-                      return ClosableProjectListTile(
-                        project: project,
-                        key: ValueKey(project.id),
-                        onDelete: (final project) => stateNotifier
-                            .onSelectedProjectChanged(false, project),
-                      );
-                    },
-                  ),
-                const SliverGap(16),
-              ],
-            ),
-          ),
-          const Divider(),
-          Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: stateNotifier.onCloseTagManagement,
-                  child: Text(l10n.cancel),
+                ),
+              ).sliver(),
+              const SliverGap(18),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 8,
+                  child: ColoredBox(color: laUi.rule),
                 ),
               ),
-              Expanded(
-                child: FilledButton.tonal(
-                  onPressed: isSaving ? () {} : stateNotifier.onSaveTag,
-                  child: isSaving
-                      ? const UiCircularProgress()
-                      : Text(tagId.isEmpty ? l10n.create : l10n.save),
+              const SliverGap(16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(l10n.projects, style: laUi.emphasis),
+              ).sliver(),
+              const SliverGap(16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: LaButton(
+                  icon: const Icon(Icons.add),
+                  label: l10n.addProjects,
+                  variant: LaButtonVariant.primary,
+                  expand: true,
+                  onPressed: stateNotifier.onOpenAddProjects,
                 ),
-              ),
+              ).sliver(),
+              const SliverGap(16),
+              if (projectsContainer.isLoading)
+                const Center(child: LaSpinner(size: 24)).sliver()
+              else
+                SliverList.builder(
+                  itemCount: projects.length,
+                  itemBuilder: (final context, final index) {
+                    final project = projects[index];
+                    return ClosableProjectListTile(
+                      project: project,
+                      key: ValueKey(project.id),
+                      onDelete: (final project) => stateNotifier
+                          .onSelectedProjectChanged(false, project),
+                    );
+                  },
+                ),
+              const SliverGap(16),
             ],
           ),
-          const Gap(8),
-        ],
-      ),
+        ),
+        const LaHairline(),
+        Row(
+          children: [
+            Expanded(
+              child: LaButton(
+                label: l10n.cancel,
+                variant: LaButtonVariant.ghost,
+                expand: true,
+                onPressed: stateNotifier.onCloseTagManagement,
+              ),
+            ),
+            Expanded(
+              child: LaButton(
+                variant: LaButtonVariant.primary,
+                expand: true,
+                onPressed: isSaving ? () {} : stateNotifier.onSaveTag,
+                child: isSaving
+                    ? const LaSpinner()
+                    : Text(tagId.isEmpty ? l10n.create : l10n.save),
+              ),
+            ),
+          ],
+        ),
+        const Gap(8),
+      ],
     );
   }
 }
@@ -258,14 +312,12 @@ class SelectableProjectListTile extends StatelessWidget {
   // ignore: avoid_positional_boolean_parameters
   final void Function(bool isSelected, ProjectModel project) onTap;
   @override
-  Widget build(final BuildContext context) => ListTile(
-    title: Text(project.getTitle(context)),
+  Widget build(final BuildContext context) => LaRow(
+    titleText: project.getTitle(context),
     selected: selected,
     trailing: Icon(
       Icons.check,
-      color: selected
-          ? context.colorScheme.tertiary
-          : context.colorScheme.tertiaryContainer,
+      color: selected ? context.laUi.accent : context.laUi.inkQuiet,
     ),
     onTap: () => onTap(!selected, project),
   );
@@ -280,12 +332,11 @@ class ClosableProjectListTile extends StatelessWidget {
   final ProjectModel project;
   final ValueChanged<ProjectModel> onDelete;
   @override
-  Widget build(final BuildContext context) => ListTile(
+  Widget build(final BuildContext context) => LaRow(
     title: Text(project.getTitle(context), maxLines: 2),
-    trailing: IconButton(
-      iconSize: 16,
+    trailing: LaButton.icon(
       onPressed: () => onDelete(project),
-      icon: const Icon(CupertinoIcons.trash),
+      icon: const Icon(CupertinoIcons.trash, size: 16),
     ),
   );
 }
@@ -303,17 +354,13 @@ class _AddProjectsView extends StatelessWidget {
         Expanded(
           child: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
+              LaTopBar(
+                titleText: l10n.addProjects,
+                trailing: LaButton.icon(
+                  icon: const LaClose(),
+                  onPressed: tagsScreenNotifier.onCloseAddProjects,
                 ),
-                automaticallyImplyLeading: false,
-                floating: true,
-                title: Text(l10n.addProjects),
-                actions: [
-                  CloseButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
-                ],
-              ),
+              ).sliver(),
               PagingListener(
                 controller: tagsScreenNotifier.addProjectsPagedController.pager,
                 builder: (final context, final state, final nextPageCallback) =>
@@ -322,17 +369,19 @@ class _AddProjectsView extends StatelessWidget {
                       state: state,
                       builderDelegate: PagedChildBuilderDelegate(
                         animateTransitions: true,
-                        transitionDuration: 100.ms,
+                        transitionDuration: const Duration(milliseconds: 100),
                         firstPageProgressIndicatorBuilder: (final context) =>
-                            const UiCircularProgress()
-                                .animate(delay: 1500.ms)
-                                .fadeIn(),
+                            const _FadeIn(
+                              delay: Duration(milliseconds: 1500),
+                              child: Center(child: LaSpinner(size: 24)),
+                            ),
                         noItemsFoundIndicatorBuilder: (final context) =>
-                            Text(context.l10n.noProjectsYet).animate().fadeIn(),
+                            _FadeIn(child: Text(context.l10n.noProjectsYet)),
                         newPageProgressIndicatorBuilder: (final context) =>
-                            const UiCircularProgress()
-                                .animate(delay: 1500.ms)
-                                .fadeIn(),
+                            const _FadeIn(
+                              delay: Duration(milliseconds: 1500),
+                              child: Center(child: LaSpinner(size: 24)),
+                            ),
                         itemBuilder: (final context, final item, final index) =>
                             SelectableProjectListTile(
                               key: ValueKey(item.id),
@@ -351,17 +400,18 @@ class _AddProjectsView extends StatelessWidget {
             ],
           ),
         ),
-        SearchBar(
-          trailing: [
-            BackButton(onPressed: tagsScreenNotifier.onCloseAddProjects),
-          ],
-          elevation: const WidgetStatePropertyAll(8),
-          hintText: l10n.searchProjects,
-          onChanged: tagsScreenNotifier.onSearchAddProjects,
-          padding: const WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: LaField(
+            prefix: const Icon(Icons.search, size: 16),
+            placeholder: l10n.searchProjects,
+            onChanged: tagsScreenNotifier.onSearchAddProjects,
+            autofocus: PlatformInfo.isNativeWebDesktop,
+            suffix: LaButton.icon(
+              icon: const Icon(Icons.arrow_back, size: 16),
+              onPressed: tagsScreenNotifier.onCloseAddProjects,
+            ),
           ),
-          autoFocus: PlatformInfo.isNativeWebDesktop,
         ),
       ],
     );
@@ -380,7 +430,7 @@ class DialogTopBar extends StatelessWidget {
   final VoidCallback? onClose;
   @override
   Widget build(final BuildContext context) {
-    final textTheme = context.textTheme;
+    final laUi = context.laUi;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -389,12 +439,12 @@ class DialogTopBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text(title, style: textTheme.titleLarge)),
-              CloseButton(onPressed: onClose),
+              Flexible(child: Text(title, style: laUi.emphasis)),
+              LaButton.icon(icon: const LaClose(), onPressed: onClose),
             ],
           ),
         ),
-        if (isBottomBorderVisible) const Divider(),
+        if (isBottomBorderVisible) const LaHairline(),
       ],
     );
   }

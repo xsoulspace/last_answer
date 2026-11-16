@@ -329,7 +329,7 @@ final class _LensButton extends StatelessWidget {
             // via the widget inspector, 2026-11-15).
             child: Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: context.laUi.micro?.copyWith(
                 fontSize: 11,
                 fontWeight: selected ? FontWeight.w600 : null,
                 color: selected ? la.ink : la.inkMuted,

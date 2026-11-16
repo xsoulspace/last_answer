@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/services.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/browser/browser_entry.dart';
@@ -347,8 +351,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       if (!_ladderOpen) return const SizedBox.shrink();
       return Align(
         alignment: Alignment.centerLeft,
-        child: TextButton(
+        child: LaButton(
           key: const Key('coding_agent.autonomy.start'),
+          variant: LaButtonVariant.ghost,
           onPressed: _controller.isRunning || _meaningAdmissionBusy
               ? null
               : () async {
@@ -358,12 +363,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     if (mounted) setState(() => _routingError = '$error');
                   }
                 },
-          child: Text(
-            label(
-              'Start autonomous board sample',
-              'Avvia bacheca autonoma',
-              'Создать автономную доску задач',
-            ),
+          label: label(
+            'Start autonomous board sample',
+            'Avvia bacheca autonoma',
+            'Создать автономную доску задач',
           ),
         ),
       );
@@ -382,32 +385,30 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(label('PRODUCT', 'PRODOTTO', 'ПРОДУКТ')),
-            TextButton(
+            LaButton(
               key: const Key('coding_agent.autonomy.open'),
+              variant: LaButtonVariant.ghost,
               onPressed: autonomy.preview.url == null
                   ? null
                   : () => openWorkspaceBrowser(
                       context,
                       initialUrl: autonomy.preview.url,
                     ),
-              child: Text(
-                label('Open live board', 'Apri bacheca', 'Открыть доску'),
-              ),
+              label: label('Open live board', 'Apri bacheca', 'Открыть доску'),
             ),
             Text('${autonomy.preview.activations} · $modeText'),
-            TextButton(
+            LaButton(
               key: const Key('coding_agent.autonomy.revoke'),
+              variant: LaButtonVariant.ghost,
               onPressed: paused
                   ? (_controller.isRunning || _meaningAdmissionBusy
                         ? null
                         : () => autonomyAction('start'))
                   : () => autonomyAction('revoke'),
-              child: Text(
-                label(
-                  paused ? 'Resume changes' : 'Pause changes',
-                  paused ? 'Riprendi modifiche' : 'Sospendi modifiche',
-                  paused ? 'Продолжить изменения' : 'Приостановить изменения',
-                ),
+              label: label(
+                paused ? 'Resume changes' : 'Pause changes',
+                paused ? 'Riprendi modifiche' : 'Sospendi modifiche',
+                paused ? 'Продолжить изменения' : 'Приостановить изменения',
               ),
             ),
             if (autonomy.preview.lastCheck?['ok'] == false)
@@ -1878,7 +1879,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return ListenableBuilder(
       listenable: _controller,
       builder: (final context, final _) {
@@ -1886,7 +1887,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         final controller = _controller;
         AgentDocSurface.debugState = _projectState();
         return ColoredBox(
-          color: theme.colorScheme.surface,
+          color: theme.surface,
           child: LayoutBuilder(
             builder: (final context, final box) {
               // The setup pane YIELDS first (audit 3: the composer and the
@@ -1921,7 +1922,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                     _Banner(
                       key: const Key('coding_agent.error'),
                       text: 'error: ${controller.error}',
-                      color: theme.colorScheme.errorContainer,
+                      color: theme.danger,
                     ),
                   if (_showSetup && setupCap > 0)
                     _SetupPaneSlot(
@@ -1956,8 +1957,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                   if (_ladderOpen && _hasBoundWorkspace)
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
+                      child: LaButton(
                         key: const Key('coding_agent.project_operations.open'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: () async {
                           try {
                             await openDeclaredProjectOperations(
@@ -1965,11 +1967,13 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                               workspace: Directory(_workspaceField.text.trim()),
                             );
                           } on Object catch (error) {
-                            if (mounted) setState(() => _routingError = '$error');
+                            if (mounted) {
+                              setState(() => _routingError = '$error');
+                            }
                           }
                         },
                         icon: const Icon(Icons.web_outlined, size: 16),
-                        label: const Text('Project commands and preview'),
+                        label: 'Project commands and preview',
                       ),
                     ),
                   Expanded(
@@ -2083,28 +2087,27 @@ class _SetupPaneSlot extends StatelessWidget {
 
 const _gutterWidth = 52.0;
 
-TextStyle _label(final ThemeData theme) => theme.textTheme.labelSmall!.copyWith(
+TextStyle _label(final LaUiTheme theme) => theme.micro.copyWith(
   fontSize: 9.5,
   letterSpacing: 1.2,
-  color: theme.colorScheme.onSurfaceVariant,
+  color: theme.inkMuted,
   fontFeatures: const [FontFeature.tabularFigures()],
 );
 
-TextStyle _mono(final ThemeData theme, {final Color? color}) =>
-    theme.textTheme.bodySmall!.copyWith(
+TextStyle _mono(final LaUiTheme theme, {final Color? color}) =>
+    theme.mono.copyWith(
       fontFamily: 'Menlo',
       fontFamilyFallback: const ['monospace'],
       fontSize: 11,
       height: 1.45,
-      color: color ?? theme.colorScheme.onSurfaceVariant,
+      color: color ?? theme.inkMuted,
       fontFeatures: const [FontFeature.tabularFigures()],
     );
 
 class _Rule extends StatelessWidget {
   const _Rule();
   @override
-  Widget build(final BuildContext context) =>
-      Container(height: 0.6, color: Theme.of(context).dividerColor);
+  Widget build(final BuildContext context) => const LaHairline();
 }
 
 /// The top rule: binding, live state, and the two surface toggles. The
@@ -2144,7 +2147,7 @@ class _StatusRule extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final wsName = !bound
         ? 'not bound'
         : workspace.isEmpty
@@ -2173,7 +2176,7 @@ class _StatusRule extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               Flexible(
-                child: InkWell(
+                child: LaPressable(
                   key: const Key('coding_agent.binding'),
                   onTap: onOpenSetup,
                   child: Text(
@@ -2183,8 +2186,8 @@ class _StatusRule extends StatelessWidget {
                     style: _mono(
                       theme,
                       color: bound
-                          ? theme.colorScheme.onSurface
-                          : theme.colorScheme.onSurfaceVariant,
+                          ? theme.ink
+                          : theme.inkMuted,
                     ),
                   ),
                 ),
@@ -2236,8 +2239,8 @@ class _TextToggle extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
+    final theme = context.laUi;
+    return LaPressable(
       key: toggleKey,
       onTap: onTap,
       child: Padding(
@@ -2245,9 +2248,7 @@ class _TextToggle extends StatelessWidget {
         child: Text(
           label,
           style: _label(theme).copyWith(
-            color: active
-                ? theme.colorScheme.onSurface
-                : theme.colorScheme.onSurfaceVariant,
+            color: active ? theme.ink : theme.inkMuted,
             decoration: active ? TextDecoration.underline : null,
             fontWeight: active ? FontWeight.w600 : FontWeight.w400,
           ),
@@ -2303,20 +2304,7 @@ class _SetupPane extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final underline = UnderlineInputBorder(
-      borderSide: BorderSide(color: theme.dividerColor),
-      borderRadius: BorderRadius.zero,
-    );
-    InputDecoration plain(final String hint) => InputDecoration(
-      isDense: true,
-      hintText: 'none',
-      hintStyle: _mono(theme, color: theme.colorScheme.outline),
-      enabledBorder: underline,
-      focusedBorder: underline.copyWith(
-        borderSide: BorderSide(color: theme.colorScheme.onSurface, width: 0.8),
-      ),
-    );
+    final theme = context.laUi;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: Column(
@@ -2330,20 +2318,24 @@ class _SetupPane extends StatelessWidget {
                 child: Text('WORKSPACE', style: _label(theme)),
               ),
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const Key('coding_agent.workspace'),
                   controller: workspaceField,
                   enabled: !busy,
-                  style: _mono(theme, color: theme.colorScheme.onSurface),
-                  decoration: plain('/absolute/path/of/the/project'),
+                  style: _mono(theme, color: theme.ink),
+                  // NOTE: the retired Material decoration rendered the
+                  // literal 'none' hint (its hint argument was dead code);
+                  // preserved verbatim by the kit swap.
+                  placeholder: 'none',
+                  placeholderStyle: _mono(theme, color: theme.inkQuiet),
                 ),
               ),
-              IconButton(
+              LaButton.icon(
                 key: const Key('coding_agent.workspace.pick'),
                 tooltip: 'Choose a workspace directory',
                 onPressed: busy ? null : onPick,
                 icon: const Icon(Icons.folder_open, size: 18),
-                visualDensity: VisualDensity.compact,
+                size: LaButtonSize.sm,
               ),
             ],
           ),
@@ -2379,8 +2371,8 @@ class _SetupPane extends StatelessWidget {
                     style: _mono(
                       theme,
                       color: layaReady
-                          ? theme.colorScheme.onSurface
-                          : theme.colorScheme.outline,
+                          ? theme.ink
+                          : theme.inkQuiet,
                     ),
                   ),
                 ),
@@ -2401,12 +2393,13 @@ class _SetupPane extends StatelessWidget {
             children: [
               SizedBox(width: 84, child: Text('CHECK', style: _label(theme))),
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const Key('coding_agent.check'),
                   controller: checkField,
                   enabled: !busy,
-                  style: _mono(theme, color: theme.colorScheme.onSurface),
-                  decoration: plain('workspace convention decides'),
+                  style: _mono(theme, color: theme.ink),
+                  placeholder: 'none',
+                  placeholderStyle: _mono(theme, color: theme.inkQuiet),
                 ),
               ),
             ],
@@ -2469,13 +2462,14 @@ class _SetupPane extends StatelessWidget {
               if (backend == 'open_router' || backend == 'jev')
                 SizedBox(
                   width: 220,
-                  child: TextField(
+                  child: LaField(
                     key: const Key('coding_agent.api_key'),
                     controller: keyField,
                     enabled: !busy,
                     obscureText: true,
-                    style: _mono(theme, color: theme.colorScheme.onSurface),
-                    decoration: plain('sk-or-… (or OPENROUTER_API_KEY)'),
+                    style: _mono(theme, color: theme.ink),
+                    placeholder: 'none',
+                    placeholderStyle: _mono(theme, color: theme.inkQuiet),
                     onSubmitted: (_) => onBackend('open_router'),
                   ),
                 ),
@@ -2490,28 +2484,22 @@ class _SetupPane extends StatelessWidget {
                   child: Text('SERVER', style: _label(theme)),
                 ),
                 Expanded(
-                  child: DropdownButton<String>(
+                  child: LaSelect<String>(
                     key: const Key('coding_agent.external_server'),
-                    isExpanded: true,
+                    expand: true,
                     value: externalServer.isEmpty
                         ? null
                         : (agentServers.containsKey(externalServer)
                               ? externalServer
                               : null),
-                    hint: Text(
-                      agentServers.isEmpty
-                          ? 'register one in agent settings'
-                          : 'pick a configured server',
-                      style: _mono(theme, color: theme.colorScheme.outline),
-                    ),
+                    placeholder: agentServers.isEmpty
+                        ? 'register one in agent settings'
+                        : 'pick a configured server',
                     items: [
                       for (final entry in agentServers.entries)
-                        DropdownMenuItem(
+                        LaSelectItem(
                           value: entry.key,
-                          child: Text(
-                            '${entry.key} (${entry.value.command})',
-                            style: _mono(theme),
-                          ),
+                          label: '${entry.key} (${entry.value.command})',
                         ),
                     ],
                     onChanged: busy
@@ -2527,7 +2515,7 @@ class _SetupPane extends StatelessWidget {
             Text(
               'workspace picker: $pickError',
               key: const Key('coding_agent.pick_error'),
-              style: _mono(theme, color: theme.colorScheme.error),
+              style: _mono(theme, color: theme.danger),
             ),
           const _Rule(),
         ],
@@ -2736,7 +2724,7 @@ class _QueuedRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final age = DateTime.now().difference(step.createdAt);
     final ageLabel = age.inMinutes < 1
         ? '<1m'
@@ -2760,7 +2748,7 @@ class _QueuedRow extends StatelessWidget {
                   key: Key('coding_agent.queue.steer.${step.id}'),
                   style: _label(
                     theme,
-                  ).copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  ).copyWith(color: theme.inkMuted),
                 ),
               ),
               Expanded(
@@ -2770,13 +2758,13 @@ class _QueuedRow extends StatelessWidget {
                           const SingleActivator(LogicalKeyboardKey.enter):
                               onCommitEdit,
                         },
-                        child: TextField(
+                        child: LaField(
                           key: Key('coding_agent.queue.edit.field.${step.id}'),
                           controller: editField,
                           autofocus: true,
                           minLines: 1,
                           maxLines: 6,
-                          style: theme.textTheme.bodyMedium?.copyWith(
+                          style: theme.body.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                           onSubmitted: (_) => onCommitEdit(),
@@ -2784,9 +2772,9 @@ class _QueuedRow extends StatelessWidget {
                       )
                     : Text(
                         step.text,
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: theme.body.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.onSurface,
+                          color: theme.ink,
                         ),
                       ),
               ),
@@ -2798,26 +2786,26 @@ class _QueuedRow extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  InkWell(
+                  LaPressable(
                     key: Key('coding_agent.queue.edit.${step.id}'),
                     onTap: onBeginEdit,
                     child: Text('[edit]', style: _mono(theme)),
                   ),
                   const SizedBox(width: 10),
-                  InkWell(
+                  LaPressable(
                     key: Key('coding_agent.queue.sendNow.${step.id}'),
                     onTap: onSendNow,
                     child: Text('[now]', style: _mono(theme)),
                   ),
                   const SizedBox(width: 10),
-                  InkWell(
+                  LaPressable(
                     key: Key('coding_agent.queue.cancel.${step.id}'),
                     onTap: onCancel,
                     child: Text(
                       '[cancel]',
                       style: _mono(
                         theme,
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: theme.inkMuted,
                       ),
                     ),
                   ),
@@ -2881,7 +2869,7 @@ class _TurnView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final turnKey = turn.startedAt.microsecondsSinceEpoch;
     void commitAndKeepVisible() {
       onCommitEdit();
@@ -2904,21 +2892,21 @@ class _TurnView extends StatelessWidget {
                     const SingleActivator(LogicalKeyboardKey.enter):
                         commitAndKeepVisible,
                   },
-                  child: TextField(
+                  child: LaField(
                     key: Key('coding_agent.turn.edit.field.$turnKey'),
                     controller: editField,
                     autofocus: true,
                     minLines: 1,
                     maxLines: 6,
-                    style: theme.textTheme.bodyMedium?.copyWith(
+                    style: theme.body.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                     onSubmitted: (_) => commitAndKeepVisible(),
                   ),
                 )
-              : SelectableText(
+              : LaSelectableText(
                   turn.taskSentence,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: theme.body.copyWith(
                     fontWeight: FontWeight.w600,
                     height: 1.4,
                   ),
@@ -2927,12 +2915,12 @@ class _TurnView extends StatelessWidget {
         if (cooled)
           Padding(
             padding: const EdgeInsets.only(left: _gutterWidth, bottom: 2),
-            child: InkWell(
+            child: LaPressable(
               key: Key('coding_agent.turn.edit.$turnKey'),
               onTap: onBeginEdit,
               child: Text(
                 '[edit]',
-                style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+                style: _mono(theme, color: theme.inkMuted),
               ),
             ),
           ),
@@ -2942,7 +2930,7 @@ class _TurnView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
+                LaPressable(
                   key: Key('coding_agent.turn.history.toggle.$turnKey'),
                   onTap: onToggleHistory,
                   child: Text(
@@ -2982,10 +2970,10 @@ class _TurnView extends StatelessWidget {
           // fold covers the machine layer: tool beats and ladders).
           _GridRow(
             role: 'GUIDE',
-            child: SelectableText(
+            child: LaSelectableText(
               turn.guidance!,
               key: const Key('coding_agent.guidance'),
-              style: _mono(theme, color: theme.colorScheme.onSurface),
+              style: _mono(theme, color: theme.ink),
             ),
           ),
       ],
@@ -3017,7 +3005,7 @@ class _TurnBody extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final children = <Widget>[];
     final prose = StringBuffer();
     var beatIndex = 0;
@@ -3028,9 +3016,9 @@ class _TurnBody extends StatelessWidget {
         children.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 4),
-            child: SelectableText(
+            child: LaSelectableText(
               text,
-              style: theme.textTheme.bodyMedium?.copyWith(height: 1.45),
+              style: theme.body.copyWith(height: 1.45),
             ),
           ),
         );
@@ -3134,7 +3122,7 @@ class _TurnBody extends StatelessWidget {
             }}${origin == null ? '' : ' · $origin'}',
             style: _mono(
               theme,
-              color: p.allowed == false ? theme.colorScheme.error : null,
+              color: p.allowed == false ? theme.danger : null,
             ),
           ),
         ),
@@ -3177,10 +3165,10 @@ class _BeatLine extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final name = RegExp(r'^\[([a-z_]+)\]').firstMatch(line)?.group(1) ?? '·';
     final payload = line.replaceFirst(RegExp(r'^\[[a-z_\-]+\]\s?'), '');
-    return InkWell(
+    return LaPressable(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 1),
@@ -3193,7 +3181,7 @@ class _BeatLine extends StatelessWidget {
                 name,
                 style: _mono(
                   theme,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  color: theme.inkMuted,
                 ).copyWith(fontSize: 10),
               ),
             ),
@@ -3226,7 +3214,7 @@ class _VerdictRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final passed = turn.verdictPassed;
     // PLAN 9 — an interrupted turn's verdict lands with whatever partial
     // spend exists. The backend emits no spend figures on cancel, so the
@@ -3234,10 +3222,10 @@ class _VerdictRow extends StatelessWidget {
     // time) — zeros and guesses are never fabricated (DESIGN §6).
     final interrupted = turn.interrupted;
     final color = interrupted || turn.completedUnverified
-        ? theme.colorScheme.onSurfaceVariant
+        ? theme.inkMuted
         : passed
-        ? context.la.accent
-        : theme.colorScheme.error;
+        ? theme.accent
+        : theme.danger;
     final spend = turn.spend;
     final wallS = interrupted
         ? ((turn.completedAt ?? DateTime.now()).millisecondsSinceEpoch -
@@ -3291,7 +3279,7 @@ class _GridRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
       child: Row(
@@ -3325,18 +3313,18 @@ class _LadderFold extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InkWell(
+        LaPressable(
           key: const Key('coding_agent.ladder.open'),
           onTap: onOpen,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2),
             child: Text(
               '···  $label',
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              style: _mono(theme, color: theme.inkMuted),
             ),
           ),
         ),
@@ -3351,14 +3339,14 @@ class _LiveRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return _GridRow(
       role: '···',
       child: Text(
         'running…',
         style: _mono(
           theme,
-          color: theme.colorScheme.onSurfaceVariant,
+          color: theme.inkMuted,
         ).copyWith(fontStyle: FontStyle.italic),
       ),
     );
@@ -3383,7 +3371,7 @@ class _RemotePermRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final pending = record.isPending;
     return Padding(
       key: Key('coding_agent.perm.${record.requestId}'),
@@ -3396,7 +3384,7 @@ class _RemotePermRow extends StatelessWidget {
             child: Text(
               originLabel,
               key: Key('coding_agent.perm.${record.requestId}.origin'),
-              style: _label(theme).copyWith(color: theme.colorScheme.onSurface),
+              style: _label(theme).copyWith(color: theme.ink),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -3411,7 +3399,7 @@ class _RemotePermRow extends StatelessWidget {
               style: _mono(
                 theme,
                 color: record.status == PermRequestStatus.reject
-                    ? theme.colorScheme.error
+                    ? theme.danger
                     : null,
               ),
               maxLines: 2,
@@ -3420,23 +3408,18 @@ class _RemotePermRow extends StatelessWidget {
           ),
           if (pending) ...[
             const SizedBox(width: 12),
-            TextButton(
+            LaButton(
               key: Key('coding_agent.perm.${record.requestId}.reject'),
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.onSurface,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                minimumSize: const Size(0, 30),
-              ),
+              variant: LaButtonVariant.ghost,
+              size: LaButtonSize.sm,
               onPressed: () => onAnswer(false),
               child: Text('[reject]', style: _mono(theme)),
             ),
             const SizedBox(width: 6),
-            TextButton(
+            LaButton(
               key: Key('coding_agent.perm.${record.requestId}.allow'),
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.onSurface,
-                minimumSize: const Size(0, 30),
-              ),
+              variant: LaButtonVariant.ghost,
+              size: LaButtonSize.sm,
               onPressed: () => onAnswer(true),
               child: Text('[allow]', style: _mono(theme)),
             ),
@@ -3457,7 +3440,7 @@ class _PendingPermission extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final pending = controller.pendingPermission!;
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final review = controller.meaningReviewProposal;
     final proposalId =
         review?['proposalId'] ??
@@ -3472,8 +3455,8 @@ class _PendingPermission extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: theme.colorScheme.error),
-            bottom: BorderSide(color: theme.dividerColor, width: 0.6),
+            top: BorderSide(color: theme.danger),
+            bottom: BorderSide(color: theme.rule, width: 0.6),
           ),
         ),
         child: Row(
@@ -3489,7 +3472,7 @@ class _PendingPermission extends StatelessWidget {
                 children: [
                   Text(
                     pending.request.title,
-                    style: _mono(theme, color: theme.colorScheme.onSurface),
+                    style: _mono(theme, color: theme.ink),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -3511,23 +3494,18 @@ class _PendingPermission extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            TextButton(
+            LaButton(
               key: const Key('coding_agent.permission.reject'),
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.onSurface,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                minimumSize: const Size(0, 30),
-              ),
+              variant: LaButtonVariant.ghost,
+              size: LaButtonSize.sm,
               onPressed: () => controller.answerPermission(allow: false),
               child: Text('[reject]', style: _mono(theme)),
             ),
             const SizedBox(width: 6),
-            TextButton(
+            LaButton(
               key: const Key('coding_agent.permission.allow'),
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.onSurface,
-                minimumSize: const Size(0, 30),
-              ),
+              variant: LaButtonVariant.ghost,
+              size: LaButtonSize.sm,
               onPressed: () => controller.answerPermission(allow: true),
               child: Text('[allow]', style: _mono(theme)),
             ),
@@ -3560,7 +3538,7 @@ class _Composer extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -3591,7 +3569,7 @@ class _Composer extends StatelessWidget {
                     ): () =>
                         unawaited(onSubmit(immediate: true)),
                   },
-                  child: TextField(
+                  child: LaField(
                     key: const Key('coding_agent.task'),
                     controller: taskField,
                     focusNode: composerFocus,
@@ -3601,40 +3579,45 @@ class _Composer extends StatelessWidget {
                     // runs: submitting queues the message (steer by
                     // default). Queued rows are visible + editable above.
                     autofocus: true,
-                    style: theme.textTheme.bodyMedium,
-                    decoration: InputDecoration.collapsed(
-                      hintText: running
-                          ? 'running — ⏎ steers (queues after this turn), '
-                                '⌘⏎ sends now'
-                          : 'message — ⏎ to send, ⇧⏎ newline',
-                      hintStyle: _mono(theme),
-                    ),
+                    style: theme.body,
+                    // The retired Material field was InputDecoration
+                    // .collapsed — zero inner inset keeps the caret on
+                    // the grid's gutter alignment.
+                    padding: EdgeInsets.zero,
+                    placeholder: running
+                        ? 'running — ⏎ steers (queues after this turn), '
+                              '⌘⏎ sends now'
+                        : 'message — ⏎ to send, ⇧⏎ newline',
+                    placeholderStyle: _mono(theme),
                   ),
                 ),
               ),
               const SizedBox(width: 8),
               if (running) ...[
-                TextButton(
+                LaButton(
                   key: const Key('coding_agent.queue.sendNow.composer'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(onSubmit(immediate: true)),
-                  child: Text('send now \u2318\u23ce', style: _mono(theme)),
+                  child: Text('send now ⌘⏎', style: _mono(theme)),
                 ),
                 const SizedBox(width: 6),
-                TextButton(
+                LaButton(
                   key: const Key('coding_agent.cancel'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: onCancel,
                   child: Text('stop', style: _mono(theme)),
                 ),
               ] else
-                TextButton(
+                LaButton(
                   key: const Key('coding_agent.delegate'),
+                  variant: LaButtonVariant.ghost,
                   // Always enabled when idle — validation (non-empty
                   // sentence + workspace) happens in the delegate path, NOT
                   // in build-time button state: text edits never rebuild
                   // this widget, so a computed guard would strand the
                   // button disabled after typing (measured).
                   onPressed: () => unawaited(onSubmit(immediate: false)),
-                  child: Text('run \u23ce', style: _mono(theme)),
+                  child: Text('run ⏎', style: _mono(theme)),
                 ),
             ],
           ),
@@ -3712,7 +3695,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
   @override
   Widget build(final BuildContext context) {
     final controller = widget.controller;
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final current = controller.current;
     final roster = controller.roster;
     final turns = current?.turns ?? const <HarnessTurn>[];
@@ -3728,7 +3711,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
     return DecoratedBox(
       key: const Key('coding_agent.profile'),
       decoration: BoxDecoration(
-        border: Border(left: BorderSide(color: theme.dividerColor)),
+        border: Border(left: BorderSide(color: theme.rule)),
       ),
       child: ListView(
         padding: const EdgeInsets.all(12),
@@ -3739,7 +3722,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
             'turns ${turns.length} · decisions $totalDecisions · '
             '${(totalTokens / 1000).toStringAsFixed(1)}k tok'
             '${current == null ? '' : ' · ${current.transcript.length} chars'}',
-            style: _mono(theme, color: theme.colorScheme.onSurface),
+            style: _mono(theme, color: theme.ink),
           ),
           const SizedBox(height: 8),
           for (var i = 0; i < turns.length; i++)
@@ -3766,7 +3749,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                   '${p.title}',
                   style: _mono(
                     theme,
-                    color: p.allowed == false ? theme.colorScheme.error : null,
+                    color: p.allowed == false ? theme.danger : null,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -3804,14 +3787,14 @@ class _ProfilePaneState extends State<_ProfilePane> {
                   ? 'policy on — announced as doc ops'
                   : 'policy off — answering stays local',
               key: const Key('coding_agent.routing.status'),
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              style: _mono(theme, color: theme.inkMuted),
             ),
           ),
           if (widget.routingError != null)
             Text(
               'routing: ${widget.routingError}',
               key: const Key('coding_agent.routing.error'),
-              style: _mono(theme, color: theme.colorScheme.error),
+              style: _mono(theme, color: theme.danger),
             ),
           const SizedBox(height: 14),
           Text('SESSIONS', style: _label(theme)),
@@ -3839,7 +3822,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
             for (final session in controller.workspaces[i].sessions) ...[
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
-                child: InkWell(
+                child: LaPressable(
                   key: Key('coding_agent.session.${session.viewId}'),
                   onTap: () => controller.selectSession(session),
                   child: Text(
@@ -3865,7 +3848,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                     '    ${actors.map((final a) => a.gutterLabel).join('  ')}',
                     style: _label(
                       theme,
-                    ).copyWith(color: theme.colorScheme.onSurface),
+                    ).copyWith(color: theme.ink),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -3873,7 +3856,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
             ],
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
-              child: InkWell(
+              child: LaPressable(
                 key: Key('coding_agent.workspace.$i.new'),
                 onTap: () => unawaited(
                   controller.openNewSession(controller.workspaces[i].cwd),
@@ -3882,7 +3865,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                   '  + new session',
                   style: _mono(
                     theme,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.inkMuted,
                   ),
                 ),
               ),
@@ -3898,16 +3881,16 @@ class _ProfilePaneState extends State<_ProfilePane> {
           if (roster.isEmpty && !_adding) ...[
             Text(
               'no actors yet. two steps:',
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              style: _mono(theme, color: theme.inkMuted),
             ),
             Text(
               '1. add an actor — a model, an agent runtime, or yourself.',
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              style: _mono(theme, color: theme.inkMuted),
             ),
             Text(
               '2. actors recur across sessions; their names join the '
               'gutter labels.',
-              style: _mono(theme, color: theme.colorScheme.onSurfaceVariant),
+              style: _mono(theme, color: theme.inkMuted),
             ),
           ],
           for (final profile in roster.all)
@@ -3975,20 +3958,20 @@ class _ProfilePaneState extends State<_ProfilePane> {
               padding: const EdgeInsets.only(top: 2, bottom: 2),
               child: Row(
                 children: [
-                  InkWell(
+                  LaPressable(
                     key: const Key('coding_agent.actors.confirm'),
                     onTap: _commit,
                     child: Text('[add]', style: _mono(theme)),
                   ),
                   const SizedBox(width: 10),
-                  InkWell(
+                  LaPressable(
                     key: const Key('coding_agent.actors.cancel'),
                     onTap: _closeForm,
                     child: Text(
                       '[cancel]',
                       style: _mono(
                         theme,
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: theme.inkMuted,
                       ),
                     ),
                   ),
@@ -3998,14 +3981,14 @@ class _ProfilePaneState extends State<_ProfilePane> {
           ] else
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
-              child: InkWell(
+              child: LaPressable(
                 key: const Key('coding_agent.actors.add'),
                 onTap: () => setState(() => _adding = true),
                 child: Text(
                   '+ add actor',
                   style: _mono(
                     theme,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.inkMuted,
                   ),
                 ),
               ),
@@ -4026,7 +4009,7 @@ class _ActorRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final detail = [
       if (profile.brainRef.isNotEmpty) profile.brainRef,
       if (profile.role.isNotEmpty) profile.role,
@@ -4043,21 +4026,21 @@ class _ActorRow extends StatelessWidget {
                   profile.gutterLabel,
                   key: Key('coding_agent.actors.${profile.actorId}'),
                   style: _label(theme).copyWith(
-                    color: theme.colorScheme.onSurface,
+                    color: theme.ink,
                     fontWeight: FontWeight.w600,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              InkWell(
+              LaPressable(
                 key: Key('coding_agent.actors.${profile.actorId}.remove'),
                 onTap: onRemove,
                 child: Text(
                   '[remove]',
                   style: _mono(
                     theme,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.inkMuted,
                   ),
                 ),
               ),
@@ -4096,34 +4079,20 @@ class _ActorFieldRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final underline = UnderlineInputBorder(
-      borderSide: BorderSide(color: theme.dividerColor),
-      borderRadius: BorderRadius.zero,
-    );
+    final theme = context.laUi;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
           SizedBox(width: 64, child: Text(label, style: _label(theme))),
           Expanded(
-            child: TextField(
+            child: LaField(
               key: fieldKey,
               controller: controller,
-              style: _mono(theme, color: theme.colorScheme.onSurface),
+              style: _mono(theme, color: theme.ink),
               onSubmitted: (_) => onCommit(),
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: hint,
-                hintStyle: _mono(theme, color: theme.colorScheme.outline),
-                enabledBorder: underline,
-                focusedBorder: underline.copyWith(
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onSurface,
-                    width: 0.8,
-                  ),
-                ),
-              ),
+              placeholder: hint,
+              placeholderStyle: _mono(theme, color: theme.inkQuiet),
             ),
           ),
         ],
@@ -4141,7 +4110,7 @@ class _TurnStatRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final spend = turn.spend;
     final state = turn.hasVerdict
         ? turn.interrupted
@@ -4152,11 +4121,11 @@ class _TurnStatRow extends StatelessWidget {
         : '···';
     final color = turn.hasVerdict
         ? turn.interrupted
-              ? theme.colorScheme.onSurfaceVariant
+              ? theme.inkMuted
               : turn.verdictPassed
-              ? context.la.accent
-              : theme.colorScheme.error
-        : theme.colorScheme.onSurfaceVariant;
+              ? theme.accent
+              : theme.danger
+        : theme.inkMuted;
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
@@ -4550,8 +4519,8 @@ class _EmptyStateGuide extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    final muted = theme.colorScheme.onSurfaceVariant;
+    final theme = context.laUi;
+    final muted = theme.inkMuted;
     return Padding(
       padding: const EdgeInsets.only(top: 4, bottom: 8),
       child: DefaultTextStyle(
@@ -4580,14 +4549,14 @@ final class _Banner extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Container(
       width: double.infinity,
       color: color,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Text(
         text,
-        style: _mono(theme, color: theme.colorScheme.onErrorContainer),
+        style: _mono(theme, color: theme.onDanger),
       ),
     );
   }

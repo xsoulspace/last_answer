@@ -14,53 +14,26 @@ class QuestionDropdown extends StatelessWidget {
   Widget build(final BuildContext context) {
     final projectsNotifier = context.watch<ProjectsNotifier>();
     final questions = projectsNotifier.ideaQuestions;
-    final textStyle = context.textTheme.bodyLarge;
 
-    final dropdownMenuEntries = questions
-        .map(
-          (final question) => DropdownMenuEntry<IdeaProjectQuestionModel>(
-            value: question,
-            labelWidget: Text(
-              question.title.localize(context),
-              style: textStyle?.copyWith(
-                color: textStyle.color?.withOpacity(0.8),
+    return LaSelect<IdeaProjectQuestionModel>(
+      value: answer.question,
+      items: questions
+          .map(
+            (final question) => LaSelectItem<IdeaProjectQuestionModel>(
+              value: question,
+              label: question.title.localize(context),
+              icon: Icon(
+                Icons.circle,
+                color: context.laUi.accent.withValues(alpha: 0.4),
+                size: 6,
               ),
             ),
-            label: question.title.localize(context),
-          ),
-        )
-        .toList();
-
-    return DropdownMenu<IdeaProjectQuestionModel>(
-      dropdownMenuEntries: dropdownMenuEntries,
-      textStyle: context.textTheme.bodyMedium,
-      initialSelection: answer.question,
-      menuStyle: defaultDropdownMenuStyle,
-      leadingIcon: Icon(
-        Icons.circle,
-        color: context.colorScheme.tertiaryContainer.withOpacity(0.4),
-        size: 6,
-      ),
-      selectedTrailingIcon: const SizedBox(),
-      trailingIcon: const SizedBox(),
-      inputDecorationTheme: defaultDropdownMenuInputTheme,
-      onSelected: (final question) {
+          )
+          .toList(),
+      onChanged: (final question) {
         if (question == null) return;
         onChanged(answer.copyWith(question: question));
       },
     );
   }
 }
-
-final defaultDropdownMenuStyle = MenuStyle(
-  shape: WidgetStatePropertyAll(
-    RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-  ),
-);
-
-const defaultDropdownMenuInputTheme = InputDecorationTheme(
-  border: InputBorder.none,
-  isCollapsed: true,
-  isDense: true,
-  contentPadding: EdgeInsets.symmetric(vertical: 5),
-);

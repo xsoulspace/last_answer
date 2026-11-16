@@ -25,6 +25,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
   final _meshPathController = TextEditingController();
   final _peerIdController = TextEditingController();
   var _advancedInitialized = false;
+  var _advancedOpen = false;
   Uint8List? _qrPayload;
   var _qrBusy = false;
   var _permissionBlocked = false;
@@ -87,39 +88,36 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
       // that denial is the usual reason hosting cannot start.
       if (mounted) {
         setState(
-          () => _permissionBlocked =
-              error.toString().contains('Operation not permitted'),
+          () => _permissionBlocked = error.toString().contains(
+            'Operation not permitted',
+          ),
         );
       }
       if (!mounted) return;
-      await Toasts.of(
-        context,
-      ).showBottomToast(message: error.toString());
+      LaToast.show(context, message: error.toString());
     }
   }
 
   Future<void> _join() async {
     final l10n = context.l10n;
-    final code = await showDialog<String>(
+    final code = await showLaDialog<String>(
       context: context,
-      builder: (final context) => _PairingCodeDialog(
-        showScanButton: _cameraAvailable,
-      ),
+      builder: (final context) =>
+          _PairingCodeDialog(showScanButton: _cameraAvailable),
     );
     if (code == null || code.isEmpty || !mounted) return;
     try {
       final report = await _notifier.joinWithCode(code);
       if (!mounted) return;
-      await Toasts.of(context).showBottomToast(
+      LaToast.show(
+        context,
         message: report.ok
             ? l10n.storageMeshJoinedStatus
             : l10n.storageMeshPairingFailed(report.message),
       );
     } on Object catch (error) {
       if (!mounted) return;
-      await Toasts.of(
-        context,
-      ).showBottomToast(message: l10n.storageMeshPairingFailed('$error'));
+      LaToast.show(context, message: l10n.storageMeshPairingFailed('$error'));
     }
   }
 
@@ -132,29 +130,26 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
       // The sync cycle may have delivered remote doc ops (a routed
       // permission answer) — projections re-read the fold.
       StorageBackendsNotifier.onSyncCycle?.call();
-      final report = await _notifier.restoreNow(
-        backend: StorageBackendId.mesh,
-      );
+      final report = await _notifier.restoreNow(backend: StorageBackendId.mesh);
       if (!mounted) return;
-      await Toasts.of(context).showBottomToast(
-        message:
-            report.ok ? l10n.storageMeshSyncDone : report.message,
+      LaToast.show(
+        context,
+        message: report.ok ? l10n.storageMeshSyncDone : report.message,
       );
     } on Object catch (error) {
       if (!mounted) return;
-      await Toasts.of(
-        context,
-      ).showBottomToast(message: l10n.storageMeshPairingFailed('$error'));
+      LaToast.show(context, message: l10n.storageMeshPairingFailed('$error'));
     }
   }
 
   Future<void> _unpair() async {
     final l10n = context.l10n;
-    final confirmed = await Modals.of(context).showWarningDialog(
+    final confirmed = await showLaConfirm(
+      context,
       title: l10n.storageMeshUnpair,
-      noActionText: l10n.cancel,
-      yesActionText: l10n.confirm,
-      description: l10n.beCarefulItsInreversableAction,
+      cancelLabel: l10n.cancel,
+      confirmLabel: l10n.confirm,
+      message: l10n.beCarefulItsInreversableAction,
     );
     if (!confirmed || !mounted) return;
     await _notifier.leaveMesh();
@@ -166,9 +161,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
     if (_qrPayload == null) return;
     await Clipboard.setData(ClipboardData(text: base64Encode(_qrPayload!)));
     if (!mounted) return;
-    await Toasts.of(context).showBottomToast(
-      message: l10n.storageMeshCodeCopied,
-    );
+    LaToast.show(context, message: l10n.storageMeshCodeCopied);
   }
 
   void _submitAdvanced(final String _) => unawaited(
@@ -192,24 +185,26 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(l10n.storageMeshHint, style: context.textTheme.bodySmall),
+            Text(l10n.storageMeshHint, style: context.laUi.compact),
             const SizedBox(height: 12),
             Wrap(
               spacing: 12,
               runSpacing: 8,
               children: [
                 if (MeshStorageService.canHostRelay)
-                  FilledButton.icon(
+                  LaButton(
                     key: const ValueKey('mesh-become-main'),
+                    variant: LaButtonVariant.primary,
                     onPressed: () => unawaited(_becomeMain()),
-                    icon: const Icon(Icons.qr_code_2),
-                    label: Text(l10n.storageMeshBecomeMain),
+                    icon: const Icon(Icons.qr_code_2, size: 16),
+                    label: l10n.storageMeshBecomeMain,
                   ),
-                OutlinedButton.icon(
+                LaButton(
                   key: const ValueKey('mesh-join'),
+                  variant: LaButtonVariant.outline,
                   onPressed: () => unawaited(_join()),
-                  icon: const Icon(Icons.paste),
-                  label: Text(l10n.storageMeshJoinWithCode),
+                  icon: const Icon(Icons.paste, size: 16),
+                  label: l10n.storageMeshJoinWithCode,
                 ),
               ],
             ),
@@ -224,19 +219,19 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
             const SizedBox(height: 12),
             Center(
               child: _qrBusy
-                  ? const CircularProgressIndicator()
+                  ? const LaSpinner(size: 24)
                   : _qrPayload == null
                   ? _PairingIdleCard(
-                    onStart: () => unawaited(_becomeMain()),
-                    permissionBlocked: _permissionBlocked,
-                  )
+                      onStart: () => unawaited(_becomeMain()),
+                      permissionBlocked: _permissionBlocked,
+                    )
                   : _QrCard(payload: _qrPayload!),
             ),
             const SizedBox(height: 12),
             if (_qrPayload != null)
               Text(
                 l10n.storageMeshWaitingHint(l10n.storageMeshJoinWithCode),
-                style: context.textTheme.bodySmall,
+                style: context.laUi.compact,
                 textAlign: TextAlign.center,
               ),
             const SizedBox(height: 8),
@@ -244,15 +239,17 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
               spacing: 12,
               runSpacing: 4,
               children: [
-                TextButton.icon(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(_copyCode()),
-                  icon: const Icon(Icons.copy),
-                  label: Text(l10n.storageMeshCopyCode),
+                  icon: const Icon(Icons.copy, size: 16),
+                  label: l10n.storageMeshCopyCode,
                 ),
-                TextButton.icon(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(_syncNow()),
-                  icon: const Icon(Icons.sync),
-                  label: Text(l10n.storageMeshSyncNow),
+                  icon: const Icon(Icons.sync, size: 16),
+                  label: l10n.storageMeshSyncNow,
                 ),
               ],
             ),
@@ -264,16 +261,13 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              l10n.storageMeshJoinedStatus,
-              style: context.textTheme.bodySmall,
-            ),
+            Text(l10n.storageMeshJoinedStatus, style: context.laUi.compact),
             if (_notifier.meshService case final service?)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   l10n.storageMeshConnectedCount(service.peers.length),
-                  style: context.textTheme.bodySmall,
+                  style: context.laUi.compact,
                 ),
               ),
             const SizedBox(height: 8),
@@ -281,15 +275,17 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
               spacing: 12,
               runSpacing: 4,
               children: [
-                TextButton.icon(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(_syncNow()),
-                  icon: const Icon(Icons.sync),
-                  label: Text(l10n.storageMeshSyncNow),
+                  icon: const Icon(Icons.sync, size: 16),
+                  label: l10n.storageMeshSyncNow,
                 ),
-                TextButton.icon(
+                LaButton(
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(_unpair()),
-                  icon: const Icon(Icons.link_off),
-                  label: Text(l10n.storageMeshUnpair),
+                  icon: const Icon(Icons.link_off, size: 16),
+                  label: l10n.storageMeshUnpair,
                 ),
               ],
             ),
@@ -306,7 +302,7 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
     children: [
       Icon(icon, size: 16),
       const SizedBox(width: 4),
-      Text(text, style: context.textTheme.labelMedium),
+      Text(text, style: context.laUi.control),
     ],
   );
 
@@ -318,63 +314,65 @@ class _MeshSyncPanelState extends State<MeshSyncPanel> {
   Widget _sharingTile(final S l10n) {
     final live = _notifier.liveMesh;
     if (live == null) return const SizedBox.shrink();
-    return SwitchListTile(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      title: Text(l10n.liveSharingTitle),
-      subtitle: Text(l10n.liveSharingSubtitle),
-      value: live.shareHumanActivity,
-      onChanged: (final value) {
-        unawaited(live.setSharing(value));
+    return LaRow(
+      margin: EdgeInsets.zero,
+      titleText: l10n.liveSharingTitle,
+      metaText: l10n.liveSharingSubtitle,
+      onTap: () {
+        unawaited(live.setSharing(!live.shareHumanActivity));
         setState(() {});
       },
+      trailing: LaSwitch(
+        value: live.shareHumanActivity,
+        onChanged: (final value) {
+          unawaited(live.setSharing(value));
+          setState(() {});
+        },
+      ),
     );
   }
 
-  Widget _advancedSection(final S l10n) => Theme(
-    data: Theme.of(context).copyWith(dividerColor: const Color(0x00000000)),
-    child: ExpansionTile(
-      tilePadding: EdgeInsets.zero,
-      childrenPadding: const EdgeInsets.only(bottom: 8),
-      title: Text(
-        l10n.storageMeshAdvanced,
-        style: context.textTheme.bodySmall,
+  /// Kit has no ExpansionTile: a quiet [LaRow] toggle + conditional
+  /// content (the brief's mapped equivalent).
+  Widget _advancedSection(final S l10n) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      LaRow(
+        margin: EdgeInsets.zero,
+        title: Text(l10n.storageMeshAdvanced, style: context.laUi.compact),
+        trailing: LaChevron(
+          direction: _advancedOpen
+              ? LaChevronDirection.up
+              : LaChevronDirection.down,
+        ),
+        onTap: () => setState(() => _advancedOpen = !_advancedOpen),
       ),
-      children: [
-        TextField(
+      if (_advancedOpen) ...[
+        LaField(
           controller: _meshPathController,
-          decoration: const InputDecoration(
-            labelText: 'Store path',
-            isDense: true,
-          ),
+          placeholder: 'Store path',
           onSubmitted: _submitAdvanced,
         ),
         const SizedBox(height: 8),
-        TextField(
+        LaField(
           readOnly: true,
           controller: _peerIdController,
-          decoration: const InputDecoration(
-            labelText: 'Peer ID',
-            isDense: true,
-          ),
+          placeholder: 'Peer ID',
         ),
         const SizedBox(height: 8),
-        TextField(
+        LaField(
           controller: _relayController,
-          decoration: const InputDecoration(
-            labelText: 'Relay URL',
-            hintText: 'ws://192.168.1.20:8080',
-            isDense: true,
-          ),
+          placeholder: 'Relay URL — ws://192.168.1.20:8080',
           onSubmitted: _submitAdvanced,
         ),
         const SizedBox(height: 4),
         Text(
           'Changes apply after the next sync or reconnect.',
-          style: context.textTheme.bodySmall,
+          style: context.laUi.compact,
         ),
+        const SizedBox(height: 8),
       ],
-    ),
+    ],
   );
 }
 
@@ -399,45 +397,37 @@ class _PairingIdleCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    return Container(
+    final theme = context.laUi;
+    return LaBox(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: context.colorScheme.outline.withValues(alpha: 0.3),
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      border: BorderSide(color: theme.rule),
+      radius: BorderRadius.circular(12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.qr_code_2,
-            size: 36,
-            color: context.colorScheme.outline,
-          ),
+          Icon(Icons.qr_code_2, size: 36, color: theme.inkQuiet),
           const SizedBox(height: 8),
           Text(
             l10n.storageMeshNotSharing,
-            style: context.textTheme.bodyMedium,
+            style: theme.body,
             textAlign: TextAlign.center,
           ),
           if (permissionBlocked) ...[
             const SizedBox(height: 6),
             Text(
               l10n.storageMeshPermissionBlocked,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.colorScheme.error,
-              ),
+              style: theme.compact.copyWith(color: theme.danger),
               textAlign: TextAlign.center,
             ),
           ],
           const SizedBox(height: 10),
-          FilledButton.icon(
+          LaButton(
+            variant: LaButtonVariant.primary,
             onPressed: onStart,
-            icon: const Icon(Icons.share_outlined),
-            label: Text(permissionBlocked
+            icon: const Icon(Icons.share_outlined, size: 16),
+            label: permissionBlocked
                 ? l10n.storageMeshRetrySharing
-                : l10n.storageMeshStartSharing),
+                : l10n.storageMeshStartSharing,
           ),
         ],
       ),
@@ -451,12 +441,10 @@ class _QrCard extends StatelessWidget {
   final Uint8List payload;
 
   @override
-  Widget build(final BuildContext context) => Container(
+  Widget build(final BuildContext context) => LaBox(
     padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: context.la.ink,
-      borderRadius: BorderRadius.circular(12),
-    ),
+    color: context.laUi.ink,
+    radius: BorderRadius.circular(12),
     child: CustomPaint(
       size: const Size.square(220),
       painter: _MeshQrPainter(payload),
@@ -472,9 +460,7 @@ class _MeshQrPainter extends CustomPainter {
   @override
   void paint(final Canvas canvas, final Size size) {
     final image = QrImage(
-      QrCode(
-        payload: QrPayload.fromTypedData(Uint8List.fromList(payload)),
-      ),
+      QrCode(payload: QrPayload.fromTypedData(Uint8List.fromList(payload))),
     );
     final module = size.width / image.moduleCount;
     final paint = Paint()..color = const Color(0xFF000000);
@@ -512,27 +498,28 @@ class _PairingCodeDialogState extends State<_PairingCodeDialog> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    return AlertDialog(
-      title: Text(l10n.storageMeshPasteTitle),
+    return LaDialog(
+      titleText: l10n.storageMeshPasteTitle,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
+          LaField(
             // Widget keys are the agent's UI contract (DESIGN §6): the
             // pairing flow is automation-reachable by key, not hint text.
             key: const ValueKey('mesh.pairing.code'),
             controller: _controller,
             autofocus: true,
             maxLines: 4,
-            decoration: const InputDecoration(hintText: 'mesh-pair/v1 …'),
+            placeholder: 'mesh-pair/v1 …',
           ),
           if (widget.showScanButton)
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton.icon(
+              child: LaButton(
+                variant: LaButtonVariant.ghost,
                 onPressed: () async {
                   final code = await Navigator.of(context).push<String>(
-                    MaterialPageRoute<String>(
+                    CupertinoPageRoute<String>(
                       builder: (final context) => const MeshQrScanPage(),
                     ),
                   );
@@ -540,20 +527,22 @@ class _PairingCodeDialogState extends State<_PairingCodeDialog> {
                     setState(() => _controller.text = code);
                   }
                 },
-                icon: const Icon(Icons.qr_code_scanner),
-                label: Text(l10n.storageMeshScanQr),
+                icon: const Icon(Icons.qr_code_scanner, size: 16),
+                label: l10n.storageMeshScanQr,
               ),
             ),
         ],
       ),
       actions: [
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel),
+          label: l10n.cancel,
         ),
-        FilledButton(
+        LaButton(
+          variant: LaButtonVariant.primary,
           onPressed: () => Navigator.pop(context, _controller.text),
-          child: Text(l10n.storageMeshConnectButton),
+          label: l10n.storageMeshConnectButton,
         ),
       ],
     );

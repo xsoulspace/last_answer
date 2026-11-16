@@ -207,25 +207,42 @@ Future<void> main(final List<String> args) async {
     }, interval: const Duration(seconds: 1));
     row('PASS', 'shell', 'edge.world present — the chat surface can bind');
 
-    // ---- the GENERAL room: realm-sealed, conversational, no project ----
+    // ---- the GENERAL room: a DECLARED session (kind: session, ADR
+    // 0145), realm-sealed, conversational, no project. Never a channel,
+    // never DM-shaped — two-member machine rooms once silently joined
+    // the DM class (the 2026-11-16 dogfood redirect bug).
     final roomName = 'workorder-${DateTime.now().millisecondsSinceEpoch}';
-    final opened = await _laTool(vmUri, 'realm_chat_create_channel', {
-      'name': roomName,
+    final opened = await _laTool(vmUri, 'realm_chat_open_session', {
+      'label': roomName,
+      // The intent's members contract is a comma-separated string (the
+      // create_channel convention), not a JSON list.
       'members': actor,
     });
     final parentThread = '${_deepFind(opened, 'threadId') ?? ''}';
     if (parentThread.isEmpty) {
       failures++;
-      row('FAIL', 'parent-room', 'create_channel → ${jsonEncode(opened)}');
-      throw StateError('create_channel refused');
+      row('FAIL', 'parent-room', 'open_session → ${jsonEncode(opened)}');
+      throw StateError('open_session refused');
     }
-    // Journal truth: the parent room carries NO project seal.
+    // Journal truth: the parent room carries NO project seal AND is a
+    // DECLARED session — session rows carry 'kind': 'session' and no
+    // projectId (general/conversational); the daemon actor sees and
+    // answers in them like any realm-sealed room.
     final parentRow = await store.read('threads', parentThread);
     if (parentRow == null || parentRow['projectId'] != null) {
       failures++;
       row('FAIL', 'parent-room', 'parent is not realm-sealed: $parentRow');
+    } else if (parentRow['kind'] != 'session') {
+      failures++;
+      row(
+        'FAIL',
+        'parent-room',
+        'parent is not a declared session '
+            '(kind=${parentRow['kind']}): $parentRow',
+      );
     } else {
-      row('PASS', 'parent-room', '"$roomName" realm-sealed (projectId: null) → $parentThread');
+      row('PASS', 'parent-room',
+          '"$roomName" declared session, realm-sealed (projectId: null) → $parentThread');
     }
 
     // ---- grants manageable from LA: list, self-heal, verify ----

@@ -17,7 +17,7 @@
 /// no actor and lands in the shell — a brain is never faked.
 ///
 /// Design law (docs/DESIGN.md): the shell's de-Material vocabulary —
-/// `context.la.*` semantic ink, hairlines, flat surfaces, sentence case,
+/// `context.laUi.*` semantic ink, hairlines, flat surfaces, sentence case,
 /// micro-labels. Widget keys are the agent's UI contract: every
 /// interactive widget carries a Semantics label equal to its key
 /// (`firstrun.name`, `firstrun.persona`, `firstrun.brain`,
@@ -141,18 +141,12 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                l10n.firstRunTitle,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: context.la.ink,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(l10n.firstRunTitle, style: context.laUi.display),
               const Gap(10),
               Text(
                 l10n.firstRunSubtitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.la.inkMuted,
+                style: context.laUi.body.copyWith(
+                  color: context.laUi.inkMuted,
                   height: 1.45,
                 ),
               ),
@@ -165,14 +159,11 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
               Semantics(
                 label: 'firstrun.name',
                 textField: true,
-                child: TextField(
+                child: LaField(
                   key: const ValueKey('firstrun.name'),
                   controller: _name,
                   enabled: !_busy,
-                  decoration: InputDecoration(
-                    hintText: l10n.firstRunNameHint,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.firstRunNameHint,
                   textInputAction: TextInputAction.next,
                   onChanged: (_) => setState(() {}),
                 ),
@@ -186,14 +177,11 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
               Semantics(
                 label: 'firstrun.persona',
                 textField: true,
-                child: TextField(
+                child: LaField(
                   key: const ValueKey('firstrun.persona'),
                   controller: _persona,
                   enabled: !_busy,
-                  decoration: InputDecoration(
-                    hintText: l10n.firstRunPersonaHint,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.firstRunPersonaHint,
                   minLines: 2,
                   maxLines: 4,
                 ),
@@ -207,28 +195,21 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
               if (options.isEmpty)
                 Text(
                   l10n.firstRunNoBrains,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: context.la.inkMuted,
+                  style: context.laUi.compact.copyWith(
+                    color: context.laUi.inkMuted,
                     height: 1.4,
                   ),
                 )
               else
                 Semantics(
                   label: 'firstrun.brain',
-                  child: DropdownButtonFormField<String>(
+                  child: LaSelect<String>(
                     key: const ValueKey('firstrun.brain'),
-                    initialValue: effectiveBrain,
-                    isExpanded: true,
-                    decoration: const InputDecoration(isDense: true),
+                    value: effectiveBrain,
+                    expand: true,
                     items: [
                       for (final option in options)
-                        DropdownMenuItem(
-                          value: option.ref,
-                          child: Text(
-                            option.label,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+                        LaSelectItem(value: option.ref, label: option.label),
                     ],
                     onChanged: _busy
                         ? null
@@ -240,12 +221,12 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
                 label: 'firstrun.create',
                 button: true,
                 enabled: canCreate,
-                child: FilledButton(
+                child: LaButton(
                   key: const ValueKey('firstrun.create'),
+                  variant: LaButtonVariant.primary,
+                  expand: true,
                   onPressed: canCreate ? _create : null,
-                  child: Text(
-                    _busy ? l10n.firstRunCreating : l10n.firstRunCreate,
-                  ),
+                  label: _busy ? l10n.firstRunCreating : l10n.firstRunCreate,
                 ),
               ),
               const Gap(4),
@@ -253,23 +234,22 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
                 label: 'firstrun.skip',
                 button: true,
                 enabled: !_busy,
-                child: TextButton(
+                child: LaButton(
                   key: const ValueKey('firstrun.skip'),
+                  variant: LaButtonVariant.ghost,
+                  expand: true,
                   onPressed: _busy ? null : _skip,
-                  child: Text(l10n.firstRunSkip),
+                  label: l10n.firstRunSkip,
                 ),
               ),
               if (_error != null) ...[
                 const Gap(12),
-                Container(
-                  height: ShellTokens.hairline,
-                  color: context.la.rule,
-                ),
+                const LaHairline(),
                 const Gap(12),
                 Text(
                   _error!,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: context.la.danger,
+                  style: context.laUi.compact.copyWith(
+                    color: context.laUi.danger,
                   ),
                 ),
               ],

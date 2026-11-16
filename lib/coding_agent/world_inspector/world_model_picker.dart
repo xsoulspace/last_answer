@@ -8,27 +8,28 @@
 /// not bound is shown as unbound rather than hidden.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_work_verbs.dart';
 
 // DESIGN §3 reference constants (the agent-doc surface's own grid).
 const _gutterWidth = 52.0;
 const _hairline = 0.6;
 
-TextStyle _label(final ThemeData theme) => theme.textTheme.labelSmall!.copyWith(
+TextStyle _label(final LaUiTheme laUi) => laUi.micro.copyWith(
   fontSize: 9.5,
   letterSpacing: 1.2,
-  color: theme.colorScheme.onSurfaceVariant,
+  color: laUi.inkMuted,
   fontFeatures: const [FontFeature.tabularFigures()],
 );
 
-TextStyle _mono(final ThemeData theme, {final Color? color}) =>
-    theme.textTheme.bodySmall!.copyWith(
+TextStyle _mono(final LaUiTheme laUi, {final Color? color}) =>
+    laUi.mono.copyWith(
       fontFamily: 'Menlo',
       fontFamilyFallback: const ['monospace'],
       fontSize: 11,
       height: 1.45,
-      color: color ?? theme.colorScheme.onSurfaceVariant,
+      color: color ?? laUi.inkMuted,
       fontFeatures: const [FontFeature.tabularFigures()],
     );
 
@@ -77,7 +78,7 @@ class WorldModelPicker extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final selected = palette.entryById(selectedId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,7 +112,7 @@ class WorldModelPicker extends StatelessWidget {
             child: Text(
               'model palette not available · $absence',
               key: const Key('coding_agent.world.model.absence'),
-              style: _mono(theme),
+              style: _mono(laUi),
             ),
           )
         else if (palette.isEmpty)
@@ -120,7 +121,7 @@ class WorldModelPicker extends StatelessWidget {
             child: Text(
               'no model palette declared for this world',
               key: const Key('coding_agent.world.model.empty'),
-              style: _mono(theme),
+              style: _mono(laUi),
             ),
           )
         else
@@ -153,7 +154,7 @@ class _PaletteRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final annotations = [
       entry.id,
       if (entry.provider.isNotEmpty) entry.provider,
@@ -161,16 +162,17 @@ class _PaletteRow extends StatelessWidget {
       if (declaredForPurpose) 'ROLE',
       if (!entry.bound) 'UNBOUND',
     ].join(' · ');
-    return InkWell(
+    return LaPressable(
       key: Key('coding_agent.world.model.entry.${entry.id}'),
       onTap: onTap,
+      enabled: onTap != null,
+      scaleOnPress: false,
+      radius: BorderRadius.zero,
       child: Container(
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: selected
-                  ? theme.colorScheme.onSurface
-                  : theme.dividerColor,
+              color: selected ? laUi.ink : laUi.rule,
               width: selected ? 1.2 : _hairline,
             ),
           ),
@@ -183,10 +185,8 @@ class _PaletteRow extends StatelessWidget {
               width: _gutterWidth,
               child: Text(
                 worldPaletteKindLabel(entry.kind),
-                style: _label(theme).copyWith(
-                  color: selected
-                      ? theme.colorScheme.onSurface
-                      : theme.colorScheme.onSurfaceVariant,
+                style: _label(laUi).copyWith(
+                  color: selected ? laUi.ink : laUi.inkMuted,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -199,13 +199,11 @@ class _PaletteRow extends StatelessWidget {
                   Text(
                     entry.model.isEmpty ? entry.id : entry.model,
                     style: _mono(
-                      theme,
-                      color: selected
-                          ? theme.colorScheme.onSurface
-                          : theme.colorScheme.onSurfaceVariant,
+                      laUi,
+                      color: selected ? laUi.ink : laUi.inkMuted,
                     ),
                   ),
-                  Text(annotations, style: _mono(theme)),
+                  Text(annotations, style: _mono(laUi)),
                 ],
               ),
             ),
@@ -236,7 +234,7 @@ class WorldToolMenuList extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -245,7 +243,7 @@ class WorldToolMenuList extends StatelessWidget {
           child: Text(
             revision == null ? 'no tool menu' : 'rev $revision',
             key: const Key('coding_agent.world.tools.revision'),
-            style: _mono(theme),
+            style: _mono(laUi),
           ),
         ),
         if (absence != null)
@@ -254,14 +252,17 @@ class WorldToolMenuList extends StatelessWidget {
             child: Text(
               'tool menu not available · $absence',
               key: const Key('coding_agent.world.tools.absence'),
-              style: _mono(theme),
+              style: _mono(laUi),
             ),
           )
         else
           for (final tool in tools)
-            InkWell(
+            LaPressable(
               key: Key('coding_agent.world.tool.${tool.name}'),
               onTap: busy ? null : () => onRun(tool.name),
+              enabled: !busy,
+              scaleOnPress: false,
+              radius: BorderRadius.zero,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 3),
                 child: Row(
@@ -269,14 +270,14 @@ class WorldToolMenuList extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: _gutterWidth,
-                      child: Text('TOOL', style: _label(theme)),
+                      child: Text('TOOL', style: _label(laUi)),
                     ),
                     Expanded(
                       child: Text(
                         tool.summary.isEmpty
                             ? tool.name
                             : '${tool.name}  ${tool.summary}',
-                        style: _mono(theme),
+                        style: _mono(laUi),
                       ),
                     ),
                   ],
@@ -298,7 +299,7 @@ class _GridLine extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -308,7 +309,7 @@ class _GridLine extends StatelessWidget {
             width: _gutterWidth,
             child: Text(
               role,
-              style: _label(theme),
+              style: _label(laUi),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -334,15 +335,20 @@ class _PurposeToggle extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
+    final laUi = context.laUi;
+    return LaPressable(
       key: Key('coding_agent.world.purpose.$purpose'),
       onTap: onTap,
+      enabled: onTap != null,
+      scaleOnPress: false,
+      radius: BorderRadius.zero,
       child: Container(
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: active ? theme.colorScheme.onSurface : Colors.transparent,
+              color: active
+                  ? laUi.ink
+                  : const Color(0x00000000), // transparent at rest
               width: 1.2,
             ),
           ),
@@ -350,10 +356,8 @@ class _PurposeToggle extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 1),
         child: Text(
           purpose.toUpperCase(),
-          style: _label(theme).copyWith(
-            color: active
-                ? theme.colorScheme.onSurface
-                : theme.colorScheme.onSurfaceVariant,
+          style: _label(laUi).copyWith(
+            color: active ? laUi.ink : laUi.inkMuted,
           ),
         ),
       ),
@@ -371,15 +375,16 @@ class _TextAction extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
+    final laUi = context.laUi;
+    return LaPressable(
       onTap: onTap,
+      enabled: onTap != null,
+      scaleOnPress: false,
+      radius: BorderRadius.zero,
       child: Text(
         label,
-        style: _label(theme).copyWith(
-          color: onTap == null
-              ? theme.disabledColor
-              : theme.colorScheme.onSurface,
+        style: _label(laUi).copyWith(
+          color: onTap == null ? laUi.inkQuiet : laUi.ink,
         ),
       ),
     );

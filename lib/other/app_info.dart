@@ -1,5 +1,6 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
+import 'package:flutter/material.dart' show showLicensePage;
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
@@ -18,13 +19,13 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
   final _info = PackageInfo.fromPlatform();
   @override
   Widget build(final BuildContext context) {
-    final bodyText1Style = Theme.of(context).textTheme.bodyLarge;
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      appBar: BackTextUniversalAppBar(
-        titleStr: context.l10n.appInfo,
-        onBack: () => Navigator.pop(context),
+    return LaScaffold(
+      topBar: LaTopBar(
+        leading: LaButton.icon(
+          icon: const Icon(Icons.close, size: 18),
+          onPressed: () => Navigator.pop(context),
+        ),
+        titleText: context.l10n.appInfo,
       ),
       body: Align(
         alignment: Alignment.topCenter,
@@ -45,43 +46,55 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                 padding: const EdgeInsets.all(18),
                 children: [
                   ...[
-                    SelectableText(
+                    LaSelectableText(
                       context.l10n.aboutAbstractWhatForDescription,
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 5),
-                    SelectableText(
+                    LaSelectableText(
                       context.l10n.niceDayWish,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
-                    SelectableText(
+                    LaSelectableText(
                       context.l10n.aboutAbstractIdeasImprovementsBugs,
                       textAlign: TextAlign.center,
                     ),
                     Wrap(
                       alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        const DiscordButton(),
-                        SelectableText(context.l10n.feedbackTextWithEmail),
+                        LaButton(
+                          variant: LaButtonVariant.link,
+                          label: context.l10n.joinDiscord,
+                          onPressed: () async {
+                            const url = _discordLink;
+                            final uri = Uri.parse(url);
+                            if (await url_launcher.canLaunchUrl(uri)) {
+                              await url_launcher.launchUrl(uri);
+                            }
+                          },
+                        ),
+                        LaSelectableText(context.l10n.feedbackTextWithEmail),
                       ],
                     ),
-                    TextButton(
+                    LaButton(
+                      variant: LaButtonVariant.link,
                       onPressed: () {
+                        // Material's license page has no kit equivalent —
+                        // left as Material intentionally.
                         showLicensePage(
                           context: context,
                           useRootNavigator: true,
                         );
                       },
-                      child: Text(
-                        context.l10n.madeWithLoveAndFlutter,
-                        style: bodyText1Style,
-                      ),
+                      label: context.l10n.madeWithLoveAndFlutter,
                     ),
                     Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        TextButton(
+                        LaButton(
+                          variant: LaButtonVariant.link,
                           onPressed: () async {
                             const url = AppInfoScreen.privacyPolicyLink;
                             final uri = Uri.parse(url);
@@ -89,12 +102,10 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                               await url_launcher.launchUrl(uri);
                             }
                           },
-                          child: Text(
-                            context.l10n.privacyPolicy,
-                            style: bodyText1Style,
-                          ),
+                          label: context.l10n.privacyPolicy,
                         ),
-                        TextButton(
+                        LaButton(
+                          variant: LaButtonVariant.link,
                           onPressed: () async {
                             const url = AppInfoScreen.termsAndConditions;
                             final uri = Uri.parse(url);
@@ -102,14 +113,11 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                               await url_launcher.launchUrl(uri);
                             }
                           },
-                          child: Text(
-                            context.l10n.termsAndConditions,
-                            style: bodyText1Style,
-                          ),
+                          label: context.l10n.termsAndConditions,
                         ),
                       ],
                     ),
-                    SelectableText(version, textAlign: TextAlign.center),
+                    LaSelectableText(version, textAlign: TextAlign.center),
                   ].map(
                     (final w) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -125,3 +133,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
     );
   }
 }
+
+/// The community invite (was `DiscordButton` in the legacy kit).
+const _discordLink = 'https://discord.gg/y54DpJwmAn';

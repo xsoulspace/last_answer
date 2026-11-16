@@ -1,4 +1,3 @@
-
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_page.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -30,42 +29,50 @@ class AgentSettingsView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: ActorsPanel(),
             ),
-            const Divider(height: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: LaHairline(),
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: AgentConfigSettingsPane(closeOnSave: false),
             ),
-            const Divider(height: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: LaHairline(),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  OutlinedButton(
+                  LaButton(
                     key: const ValueKey('settings.world_inspector'),
+                    variant: LaButtonVariant.outline,
                     onPressed: () => unawaited(
                       Navigator.of(context).push(
-                        MaterialPageRoute<void>(
+                        CupertinoPageRoute<void>(
                           fullscreenDialog: true,
                           builder: (final routeContext) =>
                               const WorldInspectorFullScreenPage(),
                         ),
                       ),
                     ),
-                    child: Text(context.l10n.settingsWorldInspector),
+                    label: context.l10n.settingsWorldInspector,
                   ),
-                  OutlinedButton(
+                  LaButton(
                     key: const ValueKey('settings.mesh_tasks'),
+                    variant: LaButtonVariant.outline,
                     onPressed: () => unawaited(
                       Navigator.of(context).push(
-                        MaterialPageRoute<void>(
+                        CupertinoPageRoute<void>(
                           builder: (final routeContext) =>
                               const MeshTasksSettingsPage(),
                         ),
                       ),
                     ),
-                    child: Text(context.l10n.settingsMeshTasks),
+                    label: context.l10n.settingsMeshTasks,
                   ),
                 ],
               ),

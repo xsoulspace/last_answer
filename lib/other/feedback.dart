@@ -39,9 +39,9 @@ class FeedbackButton extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Visibility(
     visible: Envs.isFeedbackAvailable,
-    child: IconButton(
+    child: LaButton.icon(
       onPressed: () => {}, // FeedbackProvider.show(context),
-      icon: const Icon(CupertinoIcons.exclamationmark_bubble),
+      icon: const Icon(CupertinoIcons.exclamationmark_bubble, size: 18),
     ),
   );
 }

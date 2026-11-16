@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/note/widgets/note_asset_attach_sheet.dart';
 import 'package:lastanswer/note/widgets/note_settings_button.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class NoteProjectSideActionBar extends HookWidget {
   const NoteProjectSideActionBar({super.key});
@@ -21,7 +21,7 @@ class NoteProjectSideActionBar extends HookWidget {
                 SizedBox(
                   height: 34,
                   width: 48,
-                  child: IconButton(
+                  child: LaButton.icon(
                     key: const Key('note.attachImage'),
                     tooltip: context.l10n.attachImage,
                     onPressed: () => unawaited(
@@ -38,7 +38,7 @@ class NoteProjectSideActionBar extends HookWidget {
                 SizedBox(
                   height: 34,
                   width: 48,
-                  child: IconShareButton(
+                  child: ShareIconButton(
                     onTap: () {
                       unawaited(ProjectSharer.of(context).share(bloc.note));
                     },
@@ -51,7 +51,7 @@ class NoteProjectSideActionBar extends HookWidget {
                 if (Platform.isAndroid || Platform.isIOS)
                   AnimatedBuilder(
                     animation: bloc.keyboardVisibilityController,
-                    builder: (final context, final child) => IconButton(
+                    builder: (final context, final child) => LaButton.icon(
                       onPressed: bloc.onSwitchKeyboard,
                       icon: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 300),

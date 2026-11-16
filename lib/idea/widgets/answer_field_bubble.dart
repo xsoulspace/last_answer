@@ -1,4 +1,3 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class AnswerFieldBubble extends HookWidget {
@@ -13,44 +12,40 @@ class AnswerFieldBubble extends HookWidget {
   final VoidCallback onFocus;
   @override
   Widget build(final BuildContext context) {
-    final consts = FocusBubbleContainerConsts.of(context);
     void updateAnswer(final String text) {
       if (answer.text == text) return;
       onChanged(answer.copyWith(text: text));
     }
 
-    final theme = Theme.of(context);
+    // The legacy FocusBubbleContainer focus fill is now the kit field's own
+    // hover/focus paint; the focus callback rides a listener on the node.
+    final focusNode = useFocusNode();
+    useEffect(
+      () {
+        void listener() {
+          if (focusNode.hasFocus) onFocus();
+        }
 
-    return FocusBubbleContainer(
-      onUnfocus: () {},
-      onFocus: onFocus,
-      child: Theme(
-        data: theme.copyWith(
-          inputDecorationTheme: theme.inputDecorationTheme.copyWith(
-            focusedBorder: OutlineInputBorder(
-              borderRadius: defaultBorderRadius,
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimaryContainer,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: defaultBorderRadius,
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimaryContainer.withOpacity(0.2),
-              ),
-            ),
-          ),
-        ),
-        child: UiTextField(
-          onChanged: updateAnswer,
-          value: answer.text,
-          maxLines: null,
-          textAlignVertical: TextAlignVertical.center,
-          keyboardType: TextInputType.multiline,
-          style: context.textTheme.bodyMedium,
-          decoration: const InputDecoration(isDense: true),
-        ),
-      ),
+        focusNode.addListener(listener);
+        return () => focusNode.removeListener(listener);
+      },
+      const [],
+    );
+
+    // The legacy UiTextField was value-driven; mirror the answer text into
+    // a controller for the kit field.
+    final controller = useTextEditingController(text: answer.text);
+    useValueChanged<String, void>(answer.text, (final _, final _) {
+      if (controller.text != answer.text) controller.text = answer.text;
+    });
+
+    return LaField(
+      controller: controller,
+      focusNode: focusNode,
+      onChanged: updateAnswer,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      style: context.laUi.body,
     );
   }
 }

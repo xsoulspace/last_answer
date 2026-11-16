@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:la_ui/la_ui.dart';
 
 import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
 
@@ -19,9 +21,9 @@ final class MeaningExperimentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final text = _MeaningText(Localizations.localeOf(context).languageCode);
-    final mono = theme.textTheme.bodySmall?.copyWith(fontFamily: 'monospace');
+    final mono = laUi.mono;
     Future<Map<String, Object?>> act(String action) =>
         (onAction ?? controller.action)(action);
     return ListenableBuilder(
@@ -54,7 +56,7 @@ final class MeaningExperimentView extends StatelessWidget {
                       ),
                     if (controller.currentObservation != null) ...[
                       Text(text.current),
-                      SelectableText(
+                      LaSelectableText(
                         text.observation(controller.currentObservation),
                         key: const Key(
                           'coding_agent.meaning.current_observation',
@@ -62,7 +64,7 @@ final class MeaningExperimentView extends StatelessWidget {
                       ),
                     ],
                     if (preview != null && !controller.proposalInvoked)
-                      SelectableText(
+                      LaSelectableText(
                         '${text.before}\n'
                         '${text.observation(preview['baseline_observation'])}'
                         '\n\n${text.after}\n'
@@ -72,35 +74,36 @@ final class MeaningExperimentView extends StatelessWidget {
                     Wrap(
                       spacing: 12,
                       children: [
-                        TextButton(
+                        LaButton(
                           key: const Key('coding_agent.meaning.preview'),
+                          variant: LaButtonVariant.ghost,
                           onPressed: busy || controller.rollbackAvailable
                               ? null
                               : () => act('preview'),
-                          child: Text(
-                            controller.proposalInvoked
-                                ? text.previewAgain
-                                : text.preview,
-                          ),
+                          label: controller.proposalInvoked
+                              ? text.previewAgain
+                              : text.preview,
                         ),
                         if (!controller.rollbackAvailable)
-                          TextButton(
+                          LaButton(
                             key: const Key('coding_agent.meaning.apply'),
+                            variant: LaButtonVariant.ghost,
                             onPressed:
                                 busy ||
                                     controller.proposalId == null ||
                                     controller.proposalInvoked
                                 ? null
                                 : () => act('apply'),
-                            child: Text(text.apply),
+                            label: text.apply,
                           ),
                         if (controller.rollbackAvailable)
-                          TextButton(
+                          LaButton(
                             // Keep the established native/key contract; Undo is
                             // the user's label for the same rollback operation.
                             key: const Key('coding_agent.meaning.rollback'),
+                            variant: LaButtonVariant.ghost,
                             onPressed: busy ? null : () => act('rollback'),
-                            child: Text(text.undo),
+                            label: text.undo,
                           ),
                       ],
                     ),
@@ -113,9 +116,7 @@ final class MeaningExperimentView extends StatelessWidget {
                       Text(
                         text.refusal(controller.refusal!),
                         key: const Key('coding_agent.meaning.refusal'),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.error,
-                        ),
+                        style: laUi.compact.copyWith(color: laUi.danger),
                       ),
                     MeaningEvidenceDetails(
                       surfaceKey: const Key('coding_agent.meaning.details'),
@@ -124,7 +125,7 @@ final class MeaningExperimentView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (preview != null) ...[
-                            SelectableText(
+                            LaSelectableText(
                               '${(preview['proposal'] as Map?)?['diff'] ?? ''}',
                               key: const Key('coding_agent.meaning.diff'),
                               style: mono,
@@ -139,20 +140,22 @@ final class MeaningExperimentView extends StatelessWidget {
                               style: mono,
                             ),
                           ],
-                          TextButton(
+                          LaButton(
                             key: const Key('coding_agent.meaning.status'),
+                            variant: LaButtonVariant.ghost,
                             onPressed: busy ? null : () => act('status'),
-                            child: Text(text.status),
+                            label: text.status,
                           ),
-                          TextButton(
+                          LaButton(
                             key: const Key('coding_agent.meaning.finalize'),
+                            variant: LaButtonVariant.ghost,
                             onPressed: busy || !controller.rollbackAvailable
                                 ? null
                                 : () => act('finalize'),
-                            child: Text(text.finalize),
+                            label: text.finalize,
                           ),
                           if (controller.refusal != null)
-                            SelectableText(controller.refusal!, style: mono),
+                            LaSelectableText(controller.refusal!, style: mono),
                           for (final (index, receipt)
                               in controller.receipts.indexed)
                             MeaningEvidenceDetails(
@@ -326,13 +329,14 @@ class _MeaningEvidenceDetailsState extends State<MeaningEvidenceDetails>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextButton(
+        LaButton(
           key: widget.surfaceKey,
+          variant: LaButtonVariant.ghost,
           onPressed: () {
             setState(() => expanded = !expanded);
             updateKeepAlive();
           },
-          child: Text('${expanded ? '−' : '+'} ${widget.title}'),
+          label: '${expanded ? '−' : '+'} ${widget.title}',
         ),
         if (expanded) ...[
           if (widget.child != null) widget.child!,
@@ -341,12 +345,7 @@ class _MeaningEvidenceDetailsState extends State<MeaningEvidenceDetails>
               constraints: const BoxConstraints(maxHeight: 240),
               child: SingleChildScrollView(
                 primary: false,
-                child: SelectableText(
-                  widget.body!,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(fontFamily: 'monospace'),
-                ),
+                child: LaSelectableText(widget.body!, style: context.laUi.mono),
               ),
             ),
         ],

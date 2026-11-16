@@ -38,6 +38,7 @@ archive/*
 .pub-cache/
 .pub/
 /build/
+build/
 .env
 
 # Web related

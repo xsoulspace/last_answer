@@ -49,27 +49,26 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   /// Replicates the payload to every enabled target at once.
   Future<void> _backup() async {
     final l10n = context.l10n;
-    final toasts = Toasts.of(context);
     final payload = jsonEncode(await _buildDbSaveJson());
     await _notifier.replicateToAll(jsonPayload: payload);
     if (!mounted) return;
     final report = _notifier.lastReport;
-    await toasts.showBottomToast(
-      message:
-          (report?.ok ?? false) ? l10n.storageBackupDone : (
-            report?.message ?? l10n.storageOperationFailed
-          ),
+    LaToast.show(
+      context,
+      message: (report?.ok ?? false)
+          ? l10n.storageBackupDone
+          : (report?.message ?? l10n.storageOperationFailed),
     );
   }
 
   Future<void> _restore() async {
     final l10n = context.l10n;
-    final modals = Modals.of(context);
-    final shouldContinue = await modals.showWarningDialog(
+    final shouldContinue = await showLaConfirm(
+      context,
       title: l10n.confirmProjectsOwerwrite,
-      noActionText: l10n.cancel,
-      yesActionText: l10n.confirm,
-      description: l10n.beCarefulItsInreversableAction,
+      cancelLabel: l10n.cancel,
+      confirmLabel: l10n.confirm,
+      message: l10n.beCarefulItsInreversableAction,
     );
     if (!shouldContinue || !mounted) return;
 
@@ -81,16 +80,16 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
       );
       if (!dbSave.isEmpty) {
         final appNotifier = context.read<AppNotifier>();
-        final toasts = Toasts.of(context);
         await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
         if (mounted) {
-          await toasts.showBottomToast(message: l10n.storageRestoreDone);
+          LaToast.show(context, message: l10n.storageRestoreDone);
         }
         return;
       }
     }
     if (mounted) {
-      await Toasts.of(context).showBottomToast(
+      LaToast.show(
+        context,
         message: report.ok ? l10n.storageNoBackupFound : report.message,
       );
     }
@@ -110,16 +109,10 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 4),
-          child: Text(
-            l10n.storageSectionHint,
-            style: context.textTheme.bodySmall,
-          ),
+          child: Text(l10n.storageSectionHint, style: context.laUi.compact),
         ),
         for (final id in StorageBackendId.values) ...[
-          if (id == StorageBackendId.github)
-            _githubTile(id)
-          else
-            _tile(id),
+          if (id == StorageBackendId.github) _githubTile(id) else _tile(id),
           ..._configSection(id),
         ],
         const SizedBox(height: 16),
@@ -130,15 +123,17 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
             spacing: 12,
             runSpacing: 4,
             children: [
-              TextButton.icon(
+              LaButton(
                 key: const ValueKey('storage-backup-now'),
-                icon: const Icon(Icons.backup_outlined),
-                label: Text(l10n.storageBackupNow),
+                variant: LaButtonVariant.ghost,
+                icon: const Icon(Icons.backup_outlined, size: 16),
+                label: l10n.storageBackupNow,
                 onPressed: () => unawaited(_backup()),
               ),
-              TextButton.icon(
-                icon: const Icon(Icons.restore),
-                label: Text(l10n.storageRestoreNow),
+              LaButton(
+                variant: LaButtonVariant.ghost,
+                icon: const Icon(Icons.restore, size: 16),
+                label: l10n.storageRestoreNow,
                 onPressed: () => unawaited(_restore()),
               ),
             ],
@@ -155,28 +150,29 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
     switch (id) {
       case StorageBackendId.mesh:
         yield _meshSection();
-      case StorageBackendId.filesystem ||
-      StorageBackendId.gitOffline when _needsPath(id):
+      case StorageBackendId.filesystem || StorageBackendId.gitOffline
+          when _needsPath(id):
         yield const SizedBox(height: 8);
-        yield TextField(
+        yield Text(
+          id == StorageBackendId.filesystem
+              ? l10n.storageFolderPathLabel
+              : l10n.storageGitPathLabel,
+          style: context.laUi.compact,
+        );
+        yield const SizedBox(height: 4);
+        yield LaField(
           controller: _pathController(id),
-          decoration: InputDecoration(
-            labelText: id == StorageBackendId.filesystem
-                ? l10n.storageFolderPathLabel
-                : l10n.storageGitPathLabel,
-            hintText: _notifier.defaultPath.isEmpty
-                ? null
-                : '${_notifier.defaultPath}/last-answer',
-            isDense: true,
-          ),
+          placeholder: _notifier.defaultPath.isEmpty
+              ? null
+              : '${_notifier.defaultPath}/last-answer',
           onSubmitted: (final value) => unawaited(_submitPath(id, value)),
         );
         yield const SizedBox(height: 4);
-        yield Text(l10n.storagePathHint, style: context.textTheme.bodySmall);
+        yield Text(l10n.storagePathHint, style: context.laUi.compact);
       case StorageBackendId.localDb ||
-      StorageBackendId.filesystem ||
-      StorageBackendId.gitOffline ||
-      StorageBackendId.github:
+          StorageBackendId.filesystem ||
+          StorageBackendId.gitOffline ||
+          StorageBackendId.github:
         break;
     }
   }
@@ -205,10 +201,7 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
         l10n.storageLocalDb,
         l10n.storageLocalDbHint,
       ),
-      StorageBackendId.mesh => (
-        l10n.storageMeshTitle,
-        l10n.storageMeshHint,
-      ),
+      StorageBackendId.mesh => (l10n.storageMeshTitle, l10n.storageMeshHint),
       StorageBackendId.filesystem => (
         l10n.storageFilesystem,
         l10n.storageFilesystemHint,
@@ -230,20 +223,31 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
     final (title, hint) = _labels(id);
     final supported = id.isSupportedOnPlatform;
     final isEnabled = _notifier.isEnabled(id);
-    return CheckboxListTile.adaptive(
+    final checked = id == StorageBackendId.localDb || isEnabled;
+    final interactive = supported && id != StorageBackendId.localDb;
+    final star = _primaryStar(id, enabled: isEnabled);
+    return LaRow(
       key: ValueKey('storage-backend-${id.name}'),
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      controlAffinity: ListTileControlAffinity.leading,
-      title: Text(supported ? title : '$title (${l10n.storageNotAvailable})'),
-      subtitle: Text(hint, style: context.textTheme.bodySmall),
-      value: id == StorageBackendId.localDb || isEnabled,
-      onChanged: supported && id != StorageBackendId.localDb
-          ? (final value) => unawaited(
-              _notifier.setEnabled(id, value: value ?? false),
-            )
+      margin: EdgeInsets.zero,
+      height: null,
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (star != null) ...[star, const SizedBox(width: 8)],
+          LaCheckbox(
+            value: checked,
+            onChanged: interactive
+                ? (final value) =>
+                      unawaited(_notifier.setEnabled(id, value: value ?? false))
+                : null,
+          ),
+        ],
+      ),
+      titleText: supported ? title : '$title (${l10n.storageNotAvailable})',
+      meta: Text(hint, style: context.laUi.compact),
+      onTap: interactive
+          ? () => unawaited(_notifier.setEnabled(id, value: !checked))
           : null,
-      secondary: _primaryStar(id, enabled: isEnabled),
     );
   }
 
@@ -252,14 +256,13 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
   Widget _githubTile(final StorageBackendId id) {
     final l10n = context.l10n;
     final (title, hint) = _labels(id);
-    return ListTile(
+    return LaRow(
       key: ValueKey('storage-backend-${id.name}'),
-      contentPadding: EdgeInsets.zero,
-      dense: true,
+      margin: EdgeInsets.zero,
       enabled: false,
-      title: Text(title),
-      subtitle: Text(hint, style: context.textTheme.bodySmall),
-      trailing: IconButton(
+      titleText: title,
+      meta: Text(hint, style: context.laUi.compact),
+      trailing: LaButton.icon(
         tooltip: l10n.storageOpenGithubSetup,
         icon: const Icon(Icons.open_in_new, size: 18),
         onPressed: () => unawaited(
@@ -277,7 +280,7 @@ class _StorageBackendsButtonState extends State<StorageBackendsButton> {
     final l10n = context.l10n;
     final isPrimary = _notifier.primary == id;
     if (!enabled || !id.isSupportedOnPlatform) return null;
-    return IconButton(
+    return LaButton.icon(
       key: ValueKey('storage-primary-${id.name}'),
       tooltip: isPrimary ? l10n.storagePrimary : l10n.storageSetAsPrimary,
       icon: Icon(isPrimary ? Icons.star : Icons.star_outline, size: 20),

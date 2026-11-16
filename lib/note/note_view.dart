@@ -1,9 +1,9 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/note/note_view_bloc.dart';
 import 'package:lastanswer/note/widgets/note_asset_strip.dart';
 import 'package:lastanswer/note/widgets/note_project_side_actionbar.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class NoteView extends StatefulWidget {
   const NoteView({required this.note, super.key});

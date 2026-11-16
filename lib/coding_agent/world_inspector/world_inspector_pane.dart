@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
@@ -350,7 +354,6 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
   Future<void> _delegateViaSeat(final String sentence) async {
     final bound = widget.binding;
     final world = _discovered;
-    final messenger = ScaffoldMessenger.maybeOf(context);
     if (bound == null || world == null || !world.hasSeat) return;
     try {
       _seatLease ??= await WorldSeatChannel.request(
@@ -359,9 +362,9 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
       );
       final lease = _seatLease;
       if (lease == null) {
-        messenger?.showSnackBar(
-          const SnackBar(content: Text('seat: no channel — read-only world')),
-        );
+        if (mounted) {
+          LaToast.info(context, 'seat: no channel — read-only world');
+        }
         return;
       }
       final rung = context.read<WorldStateService?>()?.selectedRungId;
@@ -379,24 +382,24 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
         },
       );
       final ok = result['ok'] == true;
-      messenger?.showSnackBar(
-        SnackBar(
-          content: Text(
-            'seat · ${bound.worldId}: '
-            '${ok ? 'task admitted (${result['state'] ?? 'queued'})' : 'refused'} '
-            '${ok ? '' : result['bounce'] ?? result}',
-          ),
-        ),
-      );
+      if (mounted) {
+        LaToast.info(
+          context,
+          'seat · ${bound.worldId}: '
+          '${ok ? 'task admitted (${result['state'] ?? 'queued'})' : 'refused'} '
+          '${ok ? '' : result['bounce'] ?? result}',
+        );
+      }
     } on Object catch (e) {
       // A refused/failed seat must not strand silently — and a stale
       // credential is dropped so the next attempt earns a fresh one.
       _seatLease = null;
-      messenger?.showSnackBar(
-        SnackBar(
-          content: Text('seat failed: ${e.toString().split('\n').first}'),
-        ),
-      );
+      if (mounted) {
+        LaToast.danger(
+          context,
+          'seat failed: ${e.toString().split('\n').first}',
+        );
+      }
     }
   }
 
@@ -426,7 +429,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final bound = widget.binding;
     // A bound EXTERNAL world is observed, never operated: the palette
     // lists no verbs for it (the write rung rides the seat explicitly —
@@ -502,9 +505,11 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(height: 0.6, color: theme.dividerColor),
-        InkWell(
+        const LaHairline(),
+        LaPressable(
           key: const Key('world_inspector.toggle'),
+          scaleOnPress: false,
+          radius: BorderRadius.zero,
           // Tap-to-act (audit 3): expanding on a need aligns the canvas
           // on the actor that need names — the rule is the door, not a
           // caption.
@@ -527,10 +532,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                       ? 'WORLD'
                       : 'WORLD · EXTERNAL (read-only)',
                   key: const Key('world_inspector.rule'),
-                  style: _label(theme).copyWith(
-                    color: _expanded
-                        ? theme.colorScheme.onSurface
-                        : theme.colorScheme.onSurfaceVariant,
+                  style: _label(laUi).copyWith(
+                    color: _expanded ? laUi.ink : laUi.inkMuted,
                     fontWeight: _expanded ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
@@ -547,7 +550,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                     child: Icon(
                       Icons.link_outlined,
                       size: 13,
-                      color: theme.colorScheme.onSurfaceVariant,
+                      color: laUi.inkMuted,
                     ),
                   ),
                 ),
@@ -556,10 +559,10 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                   child: Builder(
                     builder: (final context) {
                       final quiet = _mono(
-                        theme,
+                        laUi,
                         color: needs.isNotEmpty || pending > 0
-                            ? theme.colorScheme.onSurface
-                            : theme.colorScheme.onSurfaceVariant,
+                            ? laUi.ink
+                            : laUi.inkMuted,
                       );
                       if (bound != null) {
                         // The bound world's honest line: what sampled,
@@ -619,8 +622,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: top.severity == 'failed'
-                                    ? theme.colorScheme.error
-                                    : theme.colorScheme.tertiary,
+                                    ? laUi.danger
+                                    : laUi.caution,
                               ),
                             ),
                             TextSpan(
@@ -636,7 +639,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                     },
                   ),
                 ),
-                Text(_expanded ? 'hide' : 'inspect', style: _label(theme)),
+                Text(_expanded ? 'hide' : 'inspect', style: _label(laUi)),
                 // S4 — the one grammar: the palette opens over the canvas
                 // and its roster IS the product's verb set (allow/reject/
                 // delegate for the live sessions). Verbs execute HERE,
@@ -656,10 +659,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
                           '⌘K',
-                          style: _label(theme).copyWith(
-                            color: _paletteOpen
-                                ? theme.colorScheme.onSurface
-                                : theme.colorScheme.onSurfaceVariant,
+                          style: _label(laUi).copyWith(
+                            color: _paletteOpen ? laUi.ink : laUi.inkMuted,
                           ),
                         ),
                       ),
@@ -670,7 +671,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
           ),
         ),
         if (_expanded) ...[
-          Container(height: 0.6, color: theme.dividerColor),
+          const LaHairline(),
           _expandedCanvas(
             child: LayoutBuilder(
               builder: (final context, final canvas) {
@@ -694,8 +695,8 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                                 'world appear once a session is resolvable '
                                 '(open/only or focused)',
                                 style: _mono(
-                                  theme,
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                  laUi,
+                                  color: laUi.inkMuted,
                                 ),
                               ),
                             )
@@ -705,9 +706,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                               // this app's dark theme), never a pasted-in
                               // daylight box.
                               builder: (final context) {
-                                final night =
-                                    Theme.of(context).brightness ==
-                                    Brightness.dark;
+                                final night = context.laUi.isDark;
                                 // The bench remembers per world: a bound
                                 // doc keys by its world, the embedded
                                 // registry by 'doc'.
@@ -787,8 +786,7 @@ class _WorldInspectorPaneState extends State<WorldInspectorPane> {
                         top: 88,
                         child: Builder(
                           builder: (final context) {
-                            final night =
-                                Theme.of(context).brightness == Brightness.dark;
+                            final night = context.laUi.isDark;
                             return CommandPalette(
                               commands: _commands(sessions),
                               onRun: _runCommand,
@@ -971,19 +969,19 @@ final class WorldInspectorProjection {
 // The doc-grid vocabulary (discipline, not pixels — agent_doc_surface is
 // the reference implementation; these are its same constants locally).
 
-TextStyle _label(final ThemeData theme) => theme.textTheme.labelSmall!.copyWith(
+TextStyle _label(final LaUiTheme laUi) => laUi.micro.copyWith(
   fontSize: 9.5,
   letterSpacing: 1.2,
-  color: theme.colorScheme.onSurfaceVariant,
+  color: laUi.inkMuted,
   fontFeatures: const [FontFeature.tabularFigures()],
 );
 
-TextStyle _mono(final ThemeData theme, {final Color? color}) =>
-    theme.textTheme.bodySmall!.copyWith(
+TextStyle _mono(final LaUiTheme laUi, {final Color? color}) =>
+    laUi.mono.copyWith(
       fontFamily: 'Menlo',
       fontFamilyFallback: const ['monospace'],
       fontSize: 11,
       height: 1.45,
-      color: color ?? theme.colorScheme.onSurfaceVariant,
+      color: color ?? laUi.inkMuted,
       fontFeatures: const [FontFeature.tabularFigures()],
     );

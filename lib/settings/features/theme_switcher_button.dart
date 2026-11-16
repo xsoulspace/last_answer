@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/idea/widgets/question_dropdown.dart';
 
 class ThemeSwitcherButton extends StatelessWidget {
   const ThemeSwitcherButton({required this.settings, super.key});
@@ -10,23 +10,16 @@ class ThemeSwitcherButton extends StatelessWidget {
     final themeMode = context.select<UserNotifier, ThemeMode>(
       (final c) => c.user.settings.themeMode,
     );
-    return DropdownMenu<ThemeMode>(
-      menuStyle: defaultDropdownMenuStyle,
-      textStyle: context.textTheme.bodyMedium,
-      inputDecorationTheme: defaultDropdownMenuInputTheme,
-      dropdownMenuEntries: [
-        DropdownMenuEntry(
-          value: ThemeMode.system,
-          label: context.l10n.themeSystem,
-        ),
-        DropdownMenuEntry(
-          value: ThemeMode.light,
-          label: context.l10n.themeLight,
-        ),
-        DropdownMenuEntry(value: ThemeMode.dark, label: context.l10n.themeDark),
+    return LaSelect<ThemeMode>(
+      value: themeMode,
+      onChanged: (final value) {
+        if (value != null) userNotifier.updateThemeMode(value);
+      },
+      items: [
+        LaSelectItem(value: ThemeMode.system, label: context.l10n.themeSystem),
+        LaSelectItem(value: ThemeMode.light, label: context.l10n.themeLight),
+        LaSelectItem(value: ThemeMode.dark, label: context.l10n.themeDark),
       ],
-      initialSelection: themeMode,
-      onSelected: userNotifier.updateThemeMode,
     );
   }
 }

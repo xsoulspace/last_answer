@@ -4,11 +4,10 @@
 /// builder is also available for surfaces that need a full page.
 library;
 
-import 'package:flutter/material.dart';
-
 import 'package:lastanswer/browser/browser_strings.dart';
 import 'package:lastanswer/browser/browser_view.dart';
 import 'package:lastanswer/browser/workspace_browser.dart';
+import 'package:lastanswer/common_imports.dart';
 
 /// Opens the browser window as a dialog over the current surface.
 ///
@@ -18,13 +17,14 @@ Future<void> openWorkspaceBrowser(
   BuildContext context, {
   Uri? initialUrl,
   BrowserViewBuilder? viewBuilder,
-}) => showDialog<void>(
+}) => showLaDialog<void>(
   context: context,
   builder: (context) {
     final size = MediaQuery.sizeOf(context);
-    return Dialog(
+    return LaBox(
       key: const Key('browser.dialog'),
-      insetPadding: const EdgeInsets.all(24),
+      floating: true,
+      color: context.laUi.surfaceOverlay,
       child: SizedBox(
         width: (size.width - 48).clamp(0, 1100),
         height: (size.height - 48).clamp(0, 760),
@@ -56,7 +56,7 @@ class WorkspaceBrowserPage extends StatelessWidget {
   final BrowserViewBuilder? viewBuilder;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => LaScaffold(
     body: SafeArea(
       child: WorkspaceBrowser(initialUrl: initialUrl, viewBuilder: viewBuilder),
     ),
@@ -75,7 +75,7 @@ class _DialogHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 0.6),
+          bottom: BorderSide(color: context.laUi.rule, width: 0.6),
         ),
       ),
       child: Row(
@@ -86,10 +86,11 @@ class _DialogHeader extends StatelessWidget {
               style: const TextStyle(fontSize: 9.5, letterSpacing: 1.2),
             ),
           ),
-          TextButton(
+          LaButton(
             key: const Key('browser.close'),
+            label: strings.close,
+            variant: LaButtonVariant.ghost,
             onPressed: onClose,
-            child: Text(strings.close),
           ),
         ],
       ),

@@ -652,6 +652,8 @@
   "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
   "worldChatThreadsEmpty": "Веток пока нет.",
   "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
+  "worldChatSessionKindMark": "сессия",
+  "@worldChatSessionKindMark": {"description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."},
   "worldChatPermsTooltip": "Разрешения",
   "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
   "worldChatPermsTitle": "Разрешения канала",
@@ -908,4 +910,10 @@
   "@rotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
   "cropSquare": "Обрезать в квадрат",
   "@cropSquare": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."}
+,
+  "selectionCut": "Вырезать",
+  "selectionCopy": "Копировать",
+  "selectionPaste": "Вставить",
+  "selectionSelectAll": "Выбрать всё"
 }
+

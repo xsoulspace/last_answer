@@ -1,8 +1,8 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_answer_screen_bloc.dart';
 import 'package:lastanswer/idea/widgets/question_dropdown.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class IdeaAnswerScreen extends StatelessWidget {
   const IdeaAnswerScreen._({required this.answer});
@@ -14,7 +14,7 @@ class IdeaAnswerScreen extends StatelessWidget {
   }) =>
       Navigator.push<IdeaProjectAnswerModel>(
         context,
-        MaterialPageRoute(
+        CupertinoPageRoute(
           builder: (final context) => ChangeNotifierProvider(
             create: (final _) => IdeaAnswerScreenBloc(
               dto: IdeaAnswerScreenStateDto(
@@ -43,23 +43,26 @@ class IdeaAnswerBody extends HookWidget {
   Widget build(final BuildContext context) {
     final bloc = context.watch<IdeaAnswerScreenBloc>();
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      appBar: BackTextUniversalAppBar(
-        useBackButton: true,
-        title: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 252),
-          child: HeroId(
-            id: '${bloc.value.id}-question',
-            type: HeroIdTypes.projectIdeaQuestionTitle,
-            child: QuestionDropdown(
-              answer: bloc.value,
-              onChanged: bloc.setValue,
-              alignment: Alignment.center,
+    return LaScaffold(
+      topBar: LaTopBar(
+        leading: LaButton.icon(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+          onPressed: () => bloc.onBack(context),
+        ),
+        title: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 252),
+            child: HeroId(
+              id: '${bloc.value.id}-question',
+              type: HeroIdTypes.projectIdeaQuestionTitle,
+              child: QuestionDropdown(
+                answer: bloc.value,
+                onChanged: bloc.setValue,
+                alignment: Alignment.center,
+              ),
             ),
           ),
         ),
-        onBack: () => bloc.onBack(context),
       ),
       body: Center(
         child: Container(

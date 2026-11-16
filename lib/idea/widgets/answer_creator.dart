@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_view_bloc.dart';
 import 'package:lastanswer/idea/widgets/questions_chips.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 part 'answer_creator.freezed.dart';
 
@@ -105,7 +105,7 @@ class AnswerCreator extends HookWidget {
   final AnswerCreatorController controller;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     useListenable(controller);
 
     final controllerState = controller.value;
@@ -114,57 +114,61 @@ class AnswerCreator extends HookWidget {
     final screenLayout = ScreenLayout.of(context);
     final sendButton = RotatedBox(
       quarterTurns: 3,
-      child: IconButton(
+      child: LaButton.icon(
         onPressed: controller.answerController.text.isNotEmpty
             ? controller.onCreateAnswer
             : null,
-        color: theme.colorScheme.primary,
-        icon: const Icon(Icons.send),
+        icon: Icon(Icons.send, color: laUi.accent),
       ),
     );
     final shareButton = Hero(
       tag: const Key('shareButton'),
-      child: IconShareButton(onTap: () async => controller.onShare(context)),
+      child: ShareIconButton(onTap: () async => controller.onShare(context)),
     );
 
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: context.theme.colorScheme.onSecondary),
-        ),
+        border: Border(top: BorderSide(color: laUi.rule)),
       ),
       padding: const EdgeInsets.only(top: 2),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isQuestionsOpened)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2, right: 10, left: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: QuestionsChips(
-                      onChange: controller.changeQuestion,
-                      value: selectedQuestion,
+            TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: laUi.motionSettle,
+              curve: laUi.motionCurve,
+              builder: (final context, final value, final child) =>
+                  Opacity(opacity: value, child: child),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 2, right: 10, left: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: QuestionsChips(
+                        onChange: controller.changeQuestion,
+                        value: selectedQuestion,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 14),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        shareButton,
-                        EmojiPopup(
-                          controller: controller.answerController,
-                          focusNode: controller.focusNode,
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 14),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          shareButton,
+                          EmojiPopup(
+                            controller: controller.answerController,
+                            focusNode: controller.focusNode,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ).animate().fadeIn(),
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(

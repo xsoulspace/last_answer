@@ -17,7 +17,7 @@ Future<void> showNoteAssetAttachSheet(
   required final ProjectModelId noteId,
   required final void Function(List<NoteAssetModel> assets) onAssets,
 }) async {
-  await showModalBottomSheet<void>(
+  await showLaSheet<void>(
     context: context,
     builder: (final sheetContext) => _AttachSheet(
       noteId: noteId,
@@ -64,9 +64,7 @@ class _AttachSheet extends StatelessWidget {
       Navigator.of(context).pop();
     } on NoteAssetException {
       if (context.mounted) {
-        await Toasts.of(context).showBottomToast(
-          message: context.l10n.imageEditFailed,
-        );
+        LaToast.show(context, message: context.l10n.imageEditFailed);
       }
     }
   }
@@ -76,9 +74,7 @@ class _AttachSheet extends StatelessWidget {
     final service = await composeForNotes();
     if (service == null) {
       if (context.mounted) {
-        await Toasts.of(context).showBottomToast(
-          message: context.l10n.imageGenerationFailed,
-        );
+        LaToast.show(context, message: context.l10n.imageGenerationFailed);
       }
       return;
     }
@@ -91,9 +87,7 @@ class _AttachSheet extends StatelessWidget {
     final images = result.data?.images ?? const <GeneratedImage>[];
     if (!result.success || images.isEmpty) {
       if (context.mounted) {
-        await Toasts.of(context).showBottomToast(
-          message: l10n.imageGenerationFailed,
-        );
+        LaToast.show(context, message: l10n.imageGenerationFailed);
       }
       return;
     }
@@ -113,9 +107,7 @@ class _AttachSheet extends StatelessWidget {
     }
     if (assets.isEmpty) {
       if (context.mounted) {
-        await Toasts.of(context).showBottomToast(
-          message: l10n.imageGenerationFailed,
-        );
+        LaToast.show(context, message: l10n.imageGenerationFailed);
       }
       return;
     }
@@ -131,20 +123,20 @@ class _AttachSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
+          LaRow(
             leading: const Icon(Icons.photo_outlined),
-            title: Text(l10n.chooseImage),
+            titleText: l10n.chooseImage,
             onTap: () => unawaited(_pick(context, camera: false)),
           ),
           if (isMobile)
-            ListTile(
+            LaRow(
               leading: const Icon(Icons.photo_camera_outlined),
-              title: Text(l10n.takePhoto),
+              titleText: l10n.takePhoto,
               onTap: () => unawaited(_pick(context, camera: true)),
             ),
-          ListTile(
+          LaRow(
             leading: const Icon(Icons.auto_awesome_outlined),
-            title: Text(l10n.generateImage),
+            titleText: l10n.generateImage,
             onTap: () => unawaited(_generate(context)),
           ),
         ],

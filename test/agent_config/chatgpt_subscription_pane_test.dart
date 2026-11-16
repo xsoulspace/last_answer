@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_portal/flutter_portal.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
@@ -11,12 +13,14 @@ import '../coding_agent/chatgpt_credentials_test.dart' show SecureMemory;
 import '../coding_agent/chatgpt_subscription_controller_test.dart'
     show FakeChatGptGateway;
 
-Widget wrap(ChatGptSubscriptionController controller) => MaterialApp(
-  localizationsDelegates: S.localizationsDelegates,
-  supportedLocales: S.supportedLocales,
-  home: Scaffold(
-    body: SingleChildScrollView(
-      child: ChatGptSubscriptionPane(controller: controller),
+Widget wrap(ChatGptSubscriptionController controller) => Portal(
+  child: MaterialApp(
+    localizationsDelegates: S.localizationsDelegates,
+    supportedLocales: S.supportedLocales,
+    home: Scaffold(
+      body: SingleChildScrollView(
+        child: ChatGptSubscriptionPane(controller: controller),
+      ),
     ),
   ),
 );
@@ -74,7 +78,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('chatgpt.account')), findsOneWidget);
       expect(state.accessReceipt, isNull);
-      final check = tester.widget<TextButton>(
+      final check = tester.widget<LaButton>(
         find.byKey(const Key('chatgpt.verify_access')),
       );
       expect(check.onPressed, isNull);

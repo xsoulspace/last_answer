@@ -123,7 +123,7 @@ final class BindingsLens extends StatelessWidget {
   ) {
     final count = generative.length;
     final la = context.la;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final id = '${entry['id']}';
     final rung = world.rungs.where((final r) => r.id == id).firstOrNull;
     final label = labels[index];
@@ -181,7 +181,7 @@ final class BindingsLens extends StatelessWidget {
                         label,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelMedium?.copyWith(
+                        style: laUi.compact.copyWith(
                           fontWeight: index == 0 ? FontWeight.w600 : null,
                         ),
                       ),
@@ -198,7 +198,7 @@ final class BindingsLens extends StatelessWidget {
                               : id,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: laUi.micro.copyWith(
                             fontSize: 10,
                             color: la.inkQuiet,
                           ),
@@ -215,7 +215,7 @@ final class BindingsLens extends StatelessWidget {
                     policySentenceFor(context, index, labels),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: laUi.micro.copyWith(
                       fontSize: 10,
                       color: la.inkQuiet,
                     ),
@@ -376,7 +376,7 @@ final class _SystemLanesState extends State<_SystemLanes> {
                       context.l10n.modelsSystemLanesHint,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      style: context.laUi.micro.copyWith(
                         fontSize: 10,
                         color: la.inkQuiet,
                       ),
@@ -403,7 +403,7 @@ final class _SystemLanesState extends State<_SystemLanes> {
                 widget.entries.map((final e) => '${e['id']}').join(' · '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                style: context.laUi.micro.copyWith(
                   fontSize: 10,
                   color: context.la.inkQuiet,
                 ),
@@ -431,7 +431,7 @@ final class _SystemLaneRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final la = context.la;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final id = '${entry['id']}';
     final rung = world.rungs.where((final r) => r.id == id).firstOrNull;
     final declaredModel = entry['model'] is String
@@ -457,7 +457,7 @@ final class _SystemLaneRow extends StatelessWidget {
                   brainModelLabel(id: id, model: declaredModel),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelMedium,
+                  style: laUi.compact,
                 ),
                 // The lane-mirror law (2026-11-15): the subtitle names
                 // the engine truth, never silence — a hosted lane must
@@ -467,7 +467,7 @@ final class _SystemLaneRow extends StatelessWidget {
                     builtinLaneSentence(context, id),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: laUi.micro.copyWith(
                       fontSize: 10,
                       color: la.inkQuiet,
                     ),
@@ -508,7 +508,7 @@ final class _LadderVerb extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(final BuildContext context) => Tooltip(
+  Widget build(final BuildContext context) => LaTooltip(
     message: tooltip,
     child: Semantics(
       button: enabled,

@@ -43,8 +43,6 @@ import 'package:flutter/foundation.dart'
 
 import 'package:headless_core/headless_core.dart' as hc;
 
-import 'package:lastanswer/_library/widgets/widgets.dart';
-
 import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
 
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -648,26 +646,18 @@ class _AppShellState extends State<AppShell> {
         !surfaceId.startsWith('room:')) {
       return;
     }
-    unawaited(() async {
-      final overlay =
-          Overlay.of(context).context.findRenderObject()! as RenderBox;
-      final choice = await showMenu<String>(
-        context: context,
-        position: RelativeRect.fromLTRB(
-          globalPosition.dx,
-          globalPosition.dy,
-          overlay.size.width - globalPosition.dx,
-          overlay.size.height - globalPosition.dy,
+    // The kit menu grammar (v6): the row carries its own activation and
+    // the menu closes on choice.
+    showLaMenuAt(
+      context,
+      globalPosition: globalPosition,
+      entries: [
+        LaMenuItem(
+          label: context.l10n.railRowMiniwindow,
+          onPressed: () => _openMiniWindow(surfaceId),
         ),
-        items: [
-          PopupMenuItem<String>(
-            value: 'miniwindow',
-            child: Text(context.l10n.railRowMiniwindow),
-          ),
-        ],
-      );
-      if (choice == 'miniwindow') _openMiniWindow(surfaceId);
-    }());
+      ],
+    );
   }
 
   /// The miniwindow behind a conversation surface id, null when the id
@@ -986,14 +976,9 @@ class _AppShellState extends State<AppShell> {
           group: 'channels',
           run: () => _onSelectTab('channel:${channel.channelId}'),
         ),
-      for (final thread in _service.roomThreads)
-        CommandEntry(
-          id: 'room.${thread['threadId']}',
-          label: '${thread['topic'] ?? thread['threadId']}',
-          group: 'rooms',
-          icon: Icons.forum_outlined,
-          run: () => _onSelectTab('room:${thread['threadId']}'),
-        ),
+      // No `rooms` group (the projection law): rooms and sessions
+      // surface in the panes' threads browser and via linkified
+      // references, never as top-level commands.
       CommandEntry(
         id: 'action.newTab',
         label: l10n.newTabPageTitle,
@@ -1217,17 +1202,10 @@ class _AppShellState extends State<AppShell> {
               onTap: () =>
                   tap(() => _onSelectTab('channel:${channel.channelId}')),
             ),
-          // 1d — the WATCHABLE ROOMS: actor↔actor threads and group
-          // threads are rooms like any other; the human watches and
-          // joins by addressing.
-          for (final thread in _service.roomThreads)
-            NewTabRow(
-              key: 'newtab.entry.room:${thread['threadId']}',
-              label: '${thread['topic'] ?? thread['threadId']}',
-              icon: Icons.forum_outlined,
-              onTap: () =>
-                  tap(() => _onSelectTab('room:${thread['threadId']}')),
-            ),
+          // The watchable rooms have NO top-level row (the projection
+          // law): they surface inside the conversation panes' threads
+          // browser and through linkified references — opening one is
+          // still `room:<threadId>` through the ONE router.
         ],
       ),
       NewTabSection(
@@ -1398,11 +1376,14 @@ class _AppShellState extends State<AppShell> {
       if (spec != null) surfaces[id] = spec;
     }
     _projects = context.read<ProjectsNotifier?>();
-    final screenLayout = ScreenLayout.of(context);
+    // The retired `ScreenLayout`'s small-screen law, inlined (the lane
+    // must not import lib/_library): small = width < 450 (its
+    // maxSmallWidth/minFullscreenPageWidth constant).
+    final smallScreen = MediaQuery.sizeOf(context).width < 450;
     // The small-screen branch keeps today's anatomy EXACTLY: neither
     // the bar nor the column renders — the projection switch is chrome
     // the small screen never had.
-    final roomsDocked = _roomsDocked && !screenLayout.small;
+    final roomsDocked = _roomsDocked && !smallScreen;
     return ChangeNotifierProvider<RealmChatService>.value(
       value: _service,
       child: ChangeNotifierProvider<WorldStateService>.value(
@@ -1504,7 +1485,7 @@ class _AppShellState extends State<AppShell> {
                                   ).viewPadding.top,
                                 ),
                                 Expanded(
-                                  child: screenLayout.small
+                                  child: smallScreen
                                       ? _paneColumn(_layout.active, surfaces)
                                       : Row(
                                           crossAxisAlignment:

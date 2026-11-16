@@ -48,19 +48,19 @@ final class UnknownSurface extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             context.l10n.unknownSurfaceTitle,
-            style: theme.textTheme.labelSmall?.copyWith(
+            style: theme.micro?.copyWith(
               color: context.shellMuted,
             ),
           ),
           const SizedBox(height: 4),
-          Text(surfaceId, style: theme.textTheme.bodyMedium),
+          Text(surfaceId, style: theme.body),
         ],
       ),
     );

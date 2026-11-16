@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 // import 'package:serverpod_auth_client/module.dart';
 // import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
-import 'package:ui_kit/ui_kit.dart';
 
 import '../../../../core.dart';
 import '../providers/providers.dart';
@@ -167,7 +166,7 @@ Future<NavigatorState> _showLoadingBarrier({
         completer.complete(Navigator.of(context));
 
         // ignore: avoid_unnecessary_containers
-        return Container(child: const UiCircularProgress());
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       },
       barrierDismissible: false,
     ),

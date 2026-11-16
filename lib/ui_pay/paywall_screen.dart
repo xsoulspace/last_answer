@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_pay/paywall_flow.dart';
 import 'package:provider/provider.dart';
 import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
@@ -33,36 +32,38 @@ class _PaywallScreenState extends State<PaywallScreen> {
   }
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Last Answer Pro')),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Gap(16),
-            Text(
-              'Agents, sync, and connected workflows',
-              textAlign: TextAlign.center,
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Gap(8),
-            Text(
-              'The core app works offline for free. Pro unlocks agents, '
-              'intentcall actions, ACP support and cross-app sync.',
-              textAlign: TextAlign.center,
-              style: context.textTheme.bodyMedium,
-            ),
-            const Gap(24),
-            const _SubscriptionPlans(),
-            const Gap(16),
-            const _SubscriptionActions(),
-            const Gap(16),
-          ],
-        ),
+  Widget build(final BuildContext context) => LaScaffold(
+    topBar: LaTopBar(
+      leading: LaButton.icon(
+        icon: const Icon(Icons.arrow_back, size: 18),
+        onPressed: () => Navigator.of(context).maybePop(),
+      ),
+      titleText: 'Last Answer Pro',
+    ),
+    body: SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Gap(16),
+          Text(
+            'Agents, sync, and connected workflows',
+            textAlign: TextAlign.center,
+            style: context.laUi.section,
+          ),
+          const Gap(8),
+          Text(
+            'The core app works offline for free. Pro unlocks agents, '
+            'intentcall actions, ACP support and cross-app sync.',
+            textAlign: TextAlign.center,
+            style: context.laUi.body,
+          ),
+          const Gap(24),
+          const _SubscriptionPlans(),
+          const Gap(16),
+          const _SubscriptionActions(),
+          const Gap(16),
+        ],
       ),
     ),
   );
@@ -137,7 +138,7 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(24),
-          child: CircularProgressIndicator(),
+          child: LaSpinner(size: 24),
         ),
       );
     }
@@ -167,23 +168,20 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
       return GestureDetector(
         onTap: () => _selectPlan(preset.productId),
         child: AnimatedContainer(
-          duration: 300.milliseconds,
+          duration: context.laUi.motionSettle,
+          curve: context.laUi.motionCurve,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(
-              color: isSelected
-                  ? context.colorScheme.primary
-                  : context.colorScheme.outline.withValues(alpha: 0.3),
+              color: isSelected ? context.laUi.accent : context.laUi.rule,
               width: isSelected ? 2 : 1,
             ),
             borderRadius: BorderRadius.circular(12),
-            color: isSelected
-                ? context.colorScheme.primaryContainer.withValues(alpha: 0.1)
-                : null,
+            color: isSelected ? context.laUi.selectedFill() : null,
           ),
           child: Row(
             children: [
-              Radio<PurchaseProductId>(
+              LaRadio<PurchaseProductId>(
                 value: preset.productId,
                 groupValue: selected.selectedProductId,
                 onChanged: (final value) {
@@ -198,38 +196,23 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            label,
-                            style: context.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text(label, style: context.laUi.emphasis),
                         ),
                         if (isBestValue)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.primary,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'BEST VALUE',
-                              style: context.textTheme.labelSmall?.copyWith(
-                                color: context.colorScheme.onPrimary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          LaPill(
+                            label: 'BEST VALUE',
+                            background: context.laUi.accent,
+                            color: context.laUi.onAccent,
+                            radius: BorderRadius.circular(12),
                           ),
                       ],
                     ),
                     if (product.formattedPrice.isNotEmpty)
                       Text(
                         product.formattedPrice,
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: context.colorScheme.primary,
+                        style: context.laUi.body.copyWith(
+                          fontSize: 16,
+                          color: context.laUi.accent,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -266,16 +249,12 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.autorenew,
-              size: 18,
-              color: context.colorScheme.onSurface,
-            ),
+            Icon(Icons.autorenew, size: 18, color: context.laUi.inkMuted),
             const SizedBox(width: 6),
             Flexible(
               child: Text(
                 'Recurring billing, cancel anytime.',
-                style: context.textTheme.bodySmall,
+                style: context.laUi.compact,
               ),
             ),
           ],
@@ -302,12 +281,16 @@ class _MessageCard extends StatelessWidget {
     padding: const EdgeInsets.all(24),
     child: Column(
       children: [
-        Icon(icon, size: 48, color: context.colorScheme.error),
+        Icon(icon, size: 48, color: context.laUi.danger),
         const Gap(12),
         Text(message, textAlign: TextAlign.center),
         if (actionLabel != null && onAction != null) ...[
           const Gap(16),
-          OutlinedButton(onPressed: onAction, child: Text(actionLabel!)),
+          LaButton(
+            variant: LaButtonVariant.outline,
+            onPressed: onAction,
+            label: actionLabel!,
+          ),
         ],
       ],
     ),
@@ -364,32 +347,36 @@ class _SubscriptionActionsState extends State<_SubscriptionActions> {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               paywallError.error,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.colorScheme.error,
+              style: context.laUi.compact.copyWith(
+                color: context.laUi.danger,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-        FilledButton(
+        LaButton(
+          variant: LaButtonVariant.primary,
+          expand: true,
           onPressed: selected.isLoaded && !isBusy
               ? () => unawaited(_subscribe(context))
               : null,
-          child: Text(
-            subscriptionStatus.isRestoring ? 'Restoring…' : 'SUBSCRIBE',
-          ),
+          label: subscriptionStatus.isRestoring ? 'Restoring…' : 'SUBSCRIBE',
         ),
         const Gap(8),
-        OutlinedButton(
+        LaButton(
+          variant: LaButtonVariant.outline,
+          expand: true,
           onPressed: isBusy
               ? null
               : () =>
                     unawaited(context.read<MonetizationFoundation>().restore()),
-          child: const Text('Restore Purchases'),
+          label: 'Restore Purchases',
         ),
         const Gap(8),
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
+          expand: true,
           onPressed: () => PaywallFlow.passPaywall(context),
-          child: const Text('Continue Free'),
+          label: 'Continue Free',
         ),
       ],
     );

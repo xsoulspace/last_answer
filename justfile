@@ -70,3 +70,8 @@ gate-shell *ARGS:
 # Evidence: $TMPDIR/chat_smoke_evidence/
 smoke-chat *ARGS:
     fvm dart tool/smoke/chat_endless_smoke.dart {{ARGS}}
+
+# DESIGN.md v6 component-carrier law: la_ui stays material-free and lib/
+# imports material only via the allowlist (tool/ui_gate_allowlist.txt).
+ui-gates:
+    fvm dart run tool/check_ui_gates.dart

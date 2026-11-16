@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/project_operations/project_operations_entry.dart';
 import 'package:lastanswer/coding_agent/project_operations/project_operations_session.dart';
 import 'package:oka_core/oka_core.dart';
@@ -193,6 +195,10 @@ void main() {
       final session = makeSession(runner: runner.call);
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Builder(
             builder: (context) => TextButton(
               onPressed: () => showDialog<void>(
@@ -224,7 +230,7 @@ void main() {
       expect(session.outcome!.survivors, [999999]);
       expect(
         tester
-            .widget<TextButton>(
+            .widget<LaButton>(
               find.byKey(const Key('project_operations.check')),
             )
             .onPressed,
@@ -232,7 +238,7 @@ void main() {
       );
       expect(
         tester
-            .widget<TextButton>(
+            .widget<LaButton>(
               find.byKey(const Key('project_operations.close')),
             )
             .onPressed,
@@ -253,6 +259,10 @@ void main() {
       await session.serve();
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Builder(
             builder: (context) => TextButton(
               onPressed: () => showDialog<void>(

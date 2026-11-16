@@ -4,15 +4,15 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/beat_linkify.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -51,9 +51,11 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
 /// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
 /// and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
-/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
-/// left the rooms column and surface Discord-threads-style INSIDE the
-/// channel view): `worldchat.threads.toggle` (the header affordance),
+/// The CHANNEL and DM panes' THREADS BROWSER (owner law 2026-11-16:
+/// rooms left the rooms column and surface Discord-threads-style INSIDE
+/// the channel view; owner decision 2026-11-16: people (dms) too —
+/// just talking with one actor can do some work too):
+/// `worldchat.threads.toggle` (the header affordance),
 /// `worldchat.threads.panel` (the compact drawer with its labelled
 /// groups) and the rows `worldchat.threads.row.work.<workThreadId>` /
 /// `worldchat.threads.row.room.<threadId>` — every row opens its
@@ -79,20 +81,10 @@ void openThreadLane(
   service.selectThread(threadId);
 }
 
-/// Wave K — the ONE hover/press treatment for the chat chrome's icon
-/// buttons (composer, meta row, hover cluster, chip cancels): the shell
-/// hover fill on the shell radius (the ShellRow grammar), never the
-/// Material default overlay. Style-only; keys and callbacks ride the
-/// IconButton as before.
-ButtonStyle chromeIconButtonStyle(final BuildContext context) =>
-    IconButton.styleFrom(
-      hoverColor: context.shellHover,
-      focusColor: context.shellHover,
-      highlightColor: context.shellHover,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius),
-      ),
-    );
+// Wave K's `chromeIconButtonStyle` retired with the ui-kit sweep: the
+// chat chrome's icon buttons are `LaButton.icon` now — the kit's
+// LaPressable owns the hover/press treatment (DESIGN v6: the kit is the
+// component carrier), so there is no ButtonStyle left to share.
 
 final class WorldChatSurface extends StatefulWidget {
   const WorldChatSurface({
@@ -176,7 +168,7 @@ class _WorldChatSurfaceState extends State<WorldChatSurface> {
           text: 'The world chat failed to open: ${service.error}',
         );
       }
-      return const Center(child: UiCircularProgress());
+      return const Center(child: LaSpinner());
     }
     return _ConversationPane(
       service: service,
@@ -198,7 +190,7 @@ class _CenteredNote extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        style: TextStyle(color: context.laUi.inkMuted),
       ),
     ),
   );
@@ -430,7 +422,7 @@ class _NarrationRow extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final profile = service.roster?.get(actorId);
     final name = profile?.displayName ?? actorDisplayFallback(actorId);
     final line = narration.statusLine ?? narration.state.name;
@@ -451,7 +443,7 @@ class _NarrationRow extends StatelessWidget {
                 '$name — $line',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: laUi.compact.copyWith(
                   color: narration.state == BotNarrationState.failed
                       ? context.la.danger
                       : context.shellMuted,
@@ -490,7 +482,7 @@ class _WorkCard extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final stateColor = task.terminal
         ? (task.state == 'succeeded' ? context.la.accent : context.la.danger)
         : context.la.caution;
@@ -517,10 +509,11 @@ class _WorkCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              InkWell(
+              LaPressable(
                 key: ValueKey('worldchat.work.expand.${task.taskId}'),
                 onTap: onToggle,
-                borderRadius: BorderRadius.circular(ShellTokens.radius),
+                scaleOnPress: false,
+                radius: BorderRadius.circular(ShellTokens.radius),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -542,15 +535,13 @@ class _WorkCard extends StatelessWidget {
                           task.task,
                           maxLines: expanded ? 4 : 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: context.la.ink,
-                          ),
+                          style: laUi.compact.copyWith(color: context.la.ink),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         task.state,
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: laUi.micro.copyWith(
                           color: stateColor,
                           fontWeight: FontWeight.w600,
                         ),
@@ -573,9 +564,9 @@ class _WorkCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (task.modelId != null && task.modelId!.isNotEmpty)
-                        _factLine(theme, context, 'rung · ${task.modelId}'),
+                        _factLine(laUi, context, 'rung · ${task.modelId}'),
                       if (telemetry != null)
-                        _factLine(theme, context, () {
+                        _factLine(laUi, context, () {
                           final cache = telemetry.cacheHitRate == null
                               ? '—'
                               : '${(telemetry.cacheHitRate! * 100).round()}%';
@@ -587,15 +578,15 @@ class _WorkCard extends StatelessWidget {
                               '${telemetry.appliedWrites} writes · '
                               'cache $cache · $tokens tok';
                         }()),
-                      if (task.at != null) _factLine(theme, context, task.at!),
+                      if (task.at != null) _factLine(laUi, context, task.at!),
                       if (verdict != null) ...[
                         if (verdict.spend != null && verdict.spend!.isNotEmpty)
-                          _factLine(theme, context, 'spend · ${verdict.spend}'),
+                          _factLine(laUi, context, 'spend · ${verdict.spend}'),
                         if (verdict.line.isNotEmpty)
-                          _factLine(theme, context, verdict.line),
+                          _factLine(laUi, context, verdict.line),
                       ] else if (task.summary != null &&
                           task.summary!.isNotEmpty)
-                        _factLine(theme, context, task.summary!),
+                        _factLine(laUi, context, task.summary!),
                     ],
                   ),
                 ),
@@ -607,7 +598,7 @@ class _WorkCard extends StatelessWidget {
   }
 
   Widget _factLine(
-    final ThemeData theme,
+    final LaUiTheme laUi,
     final BuildContext context,
     final String text,
   ) => Padding(
@@ -618,7 +609,7 @@ class _WorkCard extends StatelessWidget {
       // in the muted tone — the expanded card never grows a text wall.
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.labelSmall?.copyWith(
+      style: laUi.micro.copyWith(
         color: context.shellMuted,
         fontFeatures: const [FontFeature.tabularFigures()],
       ),
@@ -655,7 +646,7 @@ class _PermissionInterruptState extends State<_PermissionInterrupt> {
   Widget build(final BuildContext context) {
     final permission = widget.permission;
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final diff = permission.diff;
     final actorName = widget.actorName;
     return Semantics(
@@ -689,7 +680,7 @@ class _PermissionInterruptState extends State<_PermissionInterrupt> {
                             permission.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall,
+                            style: laUi.compact,
                           ),
                           if (actorName != null)
                             Text(
@@ -825,7 +816,7 @@ class _StripButton extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: context.laUi.micro.copyWith(
               color: danger ? context.la.danger : context.la.ink,
               fontWeight: FontWeight.w600,
             ),
@@ -849,7 +840,7 @@ class _DaemonAbsentRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final arming = world.armState == WorldArmState.arming;
     return Semantics(
       label: 'worldchat.daemonAbsent',
@@ -868,7 +859,7 @@ class _DaemonAbsentRow extends StatelessWidget {
                 '$name · ${l10n.inboxWorldDown}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: laUi.compact.copyWith(
                   color: context.shellMuted,
                   fontStyle: FontStyle.italic,
                 ),
@@ -884,9 +875,7 @@ class _DaemonAbsentRow extends StatelessWidget {
                     world.armError!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: context.la.danger,
-                    ),
+                    style: laUi.micro.copyWith(color: context.la.danger),
                   ),
                 ),
               ),
@@ -918,11 +907,13 @@ class _LoadOlderRow extends StatelessWidget {
     child: Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        child: TextButton(
+        child: LaButton(
+          variant: LaButtonVariant.ghost,
+          size: LaButtonSize.sm,
           onPressed: onTap,
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: context.laUi.micro.copyWith(
               fontSize: 12,
               color: context.shellMuted,
             ),
@@ -1231,56 +1222,48 @@ class _ConversationPaneState extends State<_ConversationPane> {
     final String Function(String actorId) displayNameOf,
   ) async {
     final l10n = context.l10n;
-    final overlay =
-        Overlay.of(context).context.findRenderObject()! as RenderBox;
     final isOwn = beat['author'] == service.humanActorId;
-    final choice = await showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        globalPosition.dx,
-        globalPosition.dy,
-        overlay.size.width - globalPosition.dx,
-        overlay.size.height - globalPosition.dy,
-      ),
-      items: [
-        PopupMenuItem<String>(
-          value: 'reply',
+    // The kit menu's answer channel: each row's onPressed records the
+    // pick, the handle's `closed` future replaces showMenu's pop-value.
+    String? choice;
+    final handle = showLaMenuAt(
+      context,
+      globalPosition: globalPosition,
+      entries: [
+        LaMenuItem(
           key: const ValueKey('worldchat.ctx.reply'),
-          child: Text(l10n.worldChatBeatReply),
+          label: l10n.worldChatBeatReply,
+          onPressed: () => choice = 'reply',
         ),
         // Edit exists only where it could ever apply (the human's own
-        // beat) — and stays disabled: the verb is the harness's.
+        // beat) — and stays disabled: the verb is the harness's. The
+        // tooltip names the gap (the honest-DISABLED law).
         if (isOwn)
-          PopupMenuItem<String>(
-            value: 'edit',
-            enabled: false,
+          LaMenuItem(
             key: const ValueKey('worldchat.ctx.edit'),
-            child: Tooltip(
-              message: l10n.worldChatEditGap,
-              child: Text(l10n.worldChatBeatEdit),
-            ),
+            label: l10n.worldChatBeatEdit,
+            enabled: false,
+            tooltip: l10n.worldChatEditGap,
           ),
-        PopupMenuItem<String>(
-          value: 'details',
+        LaMenuItem(
           key: const ValueKey('worldchat.ctx.details'),
-          child: Text(l10n.worldChatBeatDetails),
+          label: l10n.worldChatBeatDetails,
+          onPressed: () => choice = 'details',
         ),
-        PopupMenuItem<String>(
-          value: 'thread',
+        LaMenuItem(
           key: const ValueKey('worldchat.ctx.thread'),
-          child: Text(l10n.worldChatBeatNewThread),
+          label: l10n.worldChatBeatNewThread,
+          onPressed: () => choice = 'thread',
         ),
-        PopupMenuItem<String>(
-          value: 'delete',
-          enabled: false,
+        LaMenuItem(
           key: const ValueKey('worldchat.ctx.delete'),
-          child: Tooltip(
-            message: l10n.worldChatDeleteGap,
-            child: Text(l10n.worldChatBeatDelete),
-          ),
+          label: l10n.worldChatBeatDelete,
+          enabled: false,
+          tooltip: l10n.worldChatDeleteGap,
         ),
       ],
     );
+    if (handle != null) await handle.closed;
     if (!mounted || choice == null) return;
     if (choice == 'reply') {
       setState(() => _replyBeat = beat);
@@ -1290,7 +1273,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
       await _startChildThread(beat);
       return;
     }
-    await showDialog<void>(
+    await showLaDialog<void>(
       context: context,
       builder: (final dialogContext) => _BeatDetailsDialog(
         beat: beat,
@@ -1354,6 +1337,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (!mounted) return;
     composer.clear();
     if (_replyBeat != null) setState(() => _replyBeat = null);
+    if (_shareError != null) setState(() => _shareError = null);
   }
 
   /// The thread-open lane (the Wave H regression pin, 2026-11-10):
@@ -1372,8 +1356,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// plain text (honest absence, never a dead link).
   bool _beatRefResolves(final BeatRefKind kind, final String id) =>
       switch (kind) {
-        BeatRefKind.room ||
-        BeatRefKind.thread => service.knowsThread(id),
+        BeatRefKind.room || BeatRefKind.thread => service.knowsThread(id),
         BeatRefKind.channel => service.channels.any(
           (final channel) => channel.channelId == id,
         ),
@@ -1418,8 +1401,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
             .cast<String>();
     return <String>[
       for (final id in participants)
-        if (id != human && service.roster?.get(id)?.kind != ActorKind.human)
-          id,
+        if (id != human && service.roster?.get(id)?.kind != ActorKind.human) id,
     ];
   }
 
@@ -1576,8 +1558,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     final seenActors = <String>{};
     void addActor(final String id) {
       if (id == human || !seenActors.add(id)) return;
-      final name =
-          roster?.get(id)?.displayName ?? actorDisplayFallback(id);
+      final name = roster?.get(id)?.displayName ?? actorDisplayFallback(id);
       if (name.isEmpty) return;
       items.add(_Mentionable(kind: _MentionKind.actor, id: id, name: name));
     }
@@ -1622,8 +1603,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
       projects = null;
     }
     for (final project
-        in projects?.projectsPagedController.items ??
-            const <ProjectModel>[]) {
+        in projects?.projectsPagedController.items ?? const <ProjectModel>[]) {
       items.add(
         _Mentionable(
           kind: _MentionKind.doc,
@@ -1690,7 +1670,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// unchanged; Plugins and MCP servers are named-absent rows (the
   /// honest disabled state, never a fake).
   Future<void> _openAttachMenu() async {
-    final pick = await showDialog<_AttachPick>(
+    final pick = await showLaDialog<_AttachPick>(
       context: context,
       builder: (final dialogContext) =>
           _AttachDialog(items: _mentionables(dialogContext)),
@@ -1903,7 +1883,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
       }
       if (threadId != null) _scheduleOwnBeatRead(threadId);
     }
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final l10n = context.l10n;
     if (threadId == null || thread == null) {
       // No thread open: the phase-1d LANDING INBOX — the void became a
@@ -1915,8 +1895,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
         return LandingInbox(
           world: world,
           service: service,
-          onOpenThread: (final threadId) =>
-              _openThreadLane(context, threadId),
+          onOpenThread: (final threadId) => _openThreadLane(context, threadId),
         );
       }
       return _CenteredNote(text: l10n.worldChatSelectFromRail);
@@ -1971,8 +1950,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
     // (byte-for-byte today's behavior, down to the read receipt the
     // cache refresh advances for the SELECTED thread only).
     final beats = _ownThreadPane ? _ownBeats() : service.beats;
-    final hasOlderBeats =
-        _ownThreadPane ? _ownHasOlderBeats : service.hasOlderBeats;
+    final hasOlderBeats = _ownThreadPane
+        ? _ownHasOlderBeats
+        : service.hasOlderBeats;
     // The send button's busy truth: a plain `say` in flight (the
     // service's flag) or a scoped spawn (this pane's flag).
     final sendBusy = service.sending || _spawning;
@@ -1990,28 +1970,28 @@ class _ConversationPaneState extends State<_ConversationPane> {
           presenceOnline:
               otherProfile != null &&
               (bots?.isRunning(otherProfile.actorId) ?? false),
-          // The threads browser rides CHANNEL panes only (owner law
-          // 2026-11-16): a DM's identity already lives in the header,
-          // a plain group thread carries no registry facts.
-          threadsToggle: channel == null
+          // The threads browser rides CHANNEL and DM panes (owner law
+          // 2026-11-16: rooms left the rooms column and surface
+          // Discord-threads-style INSIDE the channel view; owner
+          // decision 2026-11-16: people (dms) get it too — just talking
+          // with one actor can do some work too). A plain group thread
+          // carries no registry facts and keeps the quiet header.
+          threadsToggle: (channel == null && dmOther == null)
               ? null
               : () => setState(() => _threadsOpen = !_threadsOpen),
           threadsOpen: _threadsOpen,
         ),
-        // The channel view's THREADS BROWSER (owner law 2026-11-16):
-        // the watchable rooms left the rooms column; a channel pane
-        // lists its work threads and the realm's rooms one panel away.
-        if (channel != null && _threadsOpen)
+        // The CHANNEL and DM panes' THREADS BROWSER (owner law
+        // 2026-11-16): the watchable rooms left the rooms column; a
+        // channel or dm pane lists its work threads and the realm's
+        // rooms one panel away.
+        if ((channel != null || dmOther != null) && _threadsOpen)
           _ThreadsBrowserPanel(
             service: service,
             parentThreadId: threadId,
             onOpenThread: (final id) => _openThreadLane(context, id),
           ),
-        Divider(
-          height: ShellTokens.hairline,
-          thickness: ShellTokens.hairline,
-          color: context.shellHairline,
-        ),
+        LaHairline(color: context.shellHairline),
         Expanded(
           // The strip (work cards, 0c interrupts, narration) renders
           // EVEN in a beat-less room: a fresh general room whose first
@@ -2021,217 +2001,202 @@ class _ConversationPaneState extends State<_ConversationPane> {
           // BEHIND the list then, not instead of it.
           child: Stack(
             children: [
-              if (beats.isEmpty)
-                _CenteredNote(text: l10n.worldChatFirstWord),
+              if (beats.isEmpty) _CenteredNote(text: l10n.worldChatFirstWord),
               NotificationListener<ScrollNotification>(
-                      onNotification: (final notification) {
-                        // Reversed list: OLDER beats live at larger
-                        // offsets — nearing the top edge is the
-                        // scroll-up pagination trigger. Prepending
-                        // older pages never shifts the visible window
-                        // (offsets anchor at the bottom), so the
-                        // reading position survives the fetch.
-                        final metrics = notification.metrics;
-                        if (hasOlderBeats &&
-                            metrics.maxScrollExtent - metrics.pixels < 160) {
-                          if (_ownThreadPane) {
-                            _loadOlderOwnBeats();
-                          } else {
-                            unawaited(service.loadOlderBeats());
-                          }
-                        }
-                        return false;
-                      },
-                      child: ListView.builder(
-                        controller: _scroll,
-                        reverse: true,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        // Index 0 = the work strip (the stream's live
-                        // tail — under the newest beat, above the
-                        // composer); beats follow newest-first; the
-                        // load-older row sits at the visual top.
-                        itemCount:
-                            1 + beats.length + (hasOlderBeats ? 1 : 0),
-                        itemBuilder: (final context, final index) {
-                          if (index == 0) {
-                            return _WorkStrip(
-                              service: service,
-                              threadId: threadId,
-                              participants: participants,
-                            );
-                          }
-                          if (index > beats.length) {
-                            // The visual top: the explicit load-older
-                            // affordance (the scroll trigger's twin —
-                            // tappable, so agents and keyboards reach
-                            // it too).
-                            return _LoadOlderRow(
-                              key: const ValueKey('worldchat.loadOlder'),
-                              label: l10n.worldChatLoadOlder,
-                              onTap: () => _ownThreadPane
-                                  ? _loadOlderOwnBeats()
-                                  : unawaited(service.loadOlderBeats()),
-                            );
-                          }
-                          // Newest-first: index 1 = the newest beat at
-                          // the bottom; the visually-ABOVE neighbour is
-                          // the next-older beat (grouping rule
-                          // unchanged: same author + same addressing
-                          // hides the header).
-                          final beat = beats[beats.length - index];
-                          final above = index < beats.length
-                              ? beats[beats.length - index - 1]
-                              : null;
-                          final author = beat['author']! as String;
-                          final grouped =
-                              above != null &&
-                              above['author'] == author &&
-                              above['addressedTo'].toString() ==
-                                  beat['addressedTo'].toString();
-                          final profile =
-                              roster?.get(author) ??
-                              ActorProfile(
-                                actorId: author,
-                                displayName: displayNameOf(author),
-                              );
-                          // 1g — the replyTo quote: the referenced beat
-                          // when the loaded window carries it, an
-                          // honest "#n" when it does not (the tail page
-                          // is a window, not the room).
-                          final replyNum = beat['replyTo'] as int?;
-                          String? replyQuote;
-                          if (replyNum != null) {
-                            final target = beats.firstWhereOrNull(
-                              (final candidate) =>
-                                  candidate['beat'] == replyNum,
-                            );
-                            replyQuote = target == null
-                                ? '#$replyNum'
-                                : '${displayNameOf(target['author']! as String)}: '
-                                      '${_oneLine('${target['text'] ?? ''}')}';
-                          }
-                          // 1g — addressedTo chips: only a PROPER
-                          // SUBSET of the other participants is a
-                          // mention worth showing; addressing everyone
-                          // is the default, not a fact.
-                          final addressed =
-                              (beat['addressedTo'] as List? ??
-                                      const <Object?>[])
-                                  .cast<String>();
-                          final chips =
-                              addressed.length < participants.length - 1
-                              ? [
-                                  for (final id in addressed)
-                                    (id: id, name: displayNameOf(id)),
-                                ]
-                              : const <({String id, String name})>[];
-                          final row = _MessageRow(
-                            key: ValueKey(
-                              'worldchat.beat.$threadId#${beat['beat']}',
-                            ),
-                            profile: profile,
-                            isHuman: author == service.humanActorId,
-                            text: beat['text']! as String,
-                            at: beat['at'] as String?,
-                            showHeader: !grouped,
-                            replyQuote: replyQuote,
-                            replyQuoteKey: replyNum == null
-                                ? null
-                                : ValueKey(
-                                    'worldchat.quote.$threadId#$replyNum',
-                                  ),
-                            addressedChips: chips,
-                            attachments:
-                                (beat['attachments'] as List? ?? const [])
-                                    .cast<Map>(),
-                            beatSuffix: '$threadId#${beat['beat']}',
-                            // The linkifier v1: the pane's service
-                            // facts decide resolvability; a tap rides
-                            // the shell's ONE router (the
-                            // conversation-surface lane).
-                            refResolves: _beatRefResolves,
-                            onOpenSurface: (final surfaceId) =>
-                                _openConversationLane(context, surfaceId),
-                            // Wave F — the beat's display name is an
-                            // actor affordance too: same seam (and same
-                            // ViewScope fallback) as the members popover.
-                            onTapActor:
-                                widget.onTapActor ??
-                                ViewScope.of(context)?.onFocusActor,
-                            onReply: () => setState(() => _replyBeat = beat),
-                            onNewThread: () =>
-                                unawaited(_startChildThread(beat)),
-                            onMenu: (final position) => unawaited(
-                              _onBeatContext(beat, position, displayNameOf),
-                            ),
-                          );
-                          // The beat's context affordance (1g): a
-                          // right-click / long-press opens Reply and
-                          // the durable-facts popover.
-                          final contextual = GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onSecondaryTapUp: (final details) => _onBeatContext(
-                              beat,
-                              details.globalPosition,
-                              displayNameOf,
-                            ),
-                            onLongPressEnd: (final details) => _onBeatContext(
-                              beat,
-                              details.globalPosition,
-                              displayNameOf,
-                            ),
-                            child: row,
-                          );
-                          // 1g — the "N new" divider: under the newest
-                          // beat the human had read at entry (unread
-                          // messages follow it downward), captured once
-                          // per visit; never for a never-read room (the
-                          // badge already says "all of it is new").
-                          final dividerBeat = _dividerBeat;
-                          if (dividerBeat != null &&
-                              dividerBeat > 0 &&
-                              _dividerUnread > 0 &&
-                              beat['beat'] == dividerBeat) {
-                            return Column(
-                              key: const ValueKey('worldchat.unreadDivider'),
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                contextual,
-                                _UnreadDivider(count: _dividerUnread),
-                              ],
-                            );
-                          }
-                          return contextual;
-                        },
+                onNotification: (final notification) {
+                  // Reversed list: OLDER beats live at larger
+                  // offsets — nearing the top edge is the
+                  // scroll-up pagination trigger. Prepending
+                  // older pages never shifts the visible window
+                  // (offsets anchor at the bottom), so the
+                  // reading position survives the fetch.
+                  final metrics = notification.metrics;
+                  if (hasOlderBeats &&
+                      metrics.maxScrollExtent - metrics.pixels < 160) {
+                    if (_ownThreadPane) {
+                      _loadOlderOwnBeats();
+                    } else {
+                      unawaited(service.loadOlderBeats());
+                    }
+                  }
+                  return false;
+                },
+                child: ListView.builder(
+                  controller: _scroll,
+                  reverse: true,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  // Index 0 = the work strip (the stream's live
+                  // tail — under the newest beat, above the
+                  // composer); beats follow newest-first; the
+                  // load-older row sits at the visual top.
+                  itemCount: 1 + beats.length + (hasOlderBeats ? 1 : 0),
+                  itemBuilder: (final context, final index) {
+                    if (index == 0) {
+                      return _WorkStrip(
+                        service: service,
+                        threadId: threadId,
+                        participants: participants,
+                      );
+                    }
+                    if (index > beats.length) {
+                      // The visual top: the explicit load-older
+                      // affordance (the scroll trigger's twin —
+                      // tappable, so agents and keyboards reach
+                      // it too).
+                      return _LoadOlderRow(
+                        key: const ValueKey('worldchat.loadOlder'),
+                        label: l10n.worldChatLoadOlder,
+                        onTap: () => _ownThreadPane
+                            ? _loadOlderOwnBeats()
+                            : unawaited(service.loadOlderBeats()),
+                      );
+                    }
+                    // Newest-first: index 1 = the newest beat at
+                    // the bottom; the visually-ABOVE neighbour is
+                    // the next-older beat (grouping rule
+                    // unchanged: same author + same addressing
+                    // hides the header).
+                    final beat = beats[beats.length - index];
+                    final above = index < beats.length
+                        ? beats[beats.length - index - 1]
+                        : null;
+                    final author = beat['author']! as String;
+                    final grouped =
+                        above != null &&
+                        above['author'] == author &&
+                        above['addressedTo'].toString() ==
+                            beat['addressedTo'].toString();
+                    final profile =
+                        roster?.get(author) ??
+                        ActorProfile(
+                          actorId: author,
+                          displayName: displayNameOf(author),
+                        );
+                    // 1g — the replyTo quote: the referenced beat
+                    // when the loaded window carries it, an
+                    // honest "#n" when it does not (the tail page
+                    // is a window, not the room).
+                    final replyNum = beat['replyTo'] as int?;
+                    String? replyQuote;
+                    if (replyNum != null) {
+                      final target = beats.firstWhereOrNull(
+                        (final candidate) => candidate['beat'] == replyNum,
+                      );
+                      replyQuote = target == null
+                          ? '#$replyNum'
+                          : '${displayNameOf(target['author']! as String)}: '
+                                '${_oneLine('${target['text'] ?? ''}')}';
+                    }
+                    // 1g — addressedTo chips: only a PROPER
+                    // SUBSET of the other participants is a
+                    // mention worth showing; addressing everyone
+                    // is the default, not a fact.
+                    final addressed =
+                        (beat['addressedTo'] as List? ?? const <Object?>[])
+                            .cast<String>();
+                    final chips = addressed.length < participants.length - 1
+                        ? [
+                            for (final id in addressed)
+                              (id: id, name: displayNameOf(id)),
+                          ]
+                        : const <({String id, String name})>[];
+                    final row = _MessageRow(
+                      key: ValueKey('worldchat.beat.$threadId#${beat['beat']}'),
+                      profile: profile,
+                      isHuman: author == service.humanActorId,
+                      text: beat['text']! as String,
+                      at: beat['at'] as String?,
+                      showHeader: !grouped,
+                      replyQuote: replyQuote,
+                      replyQuoteKey: replyNum == null
+                          ? null
+                          : ValueKey('worldchat.quote.$threadId#$replyNum'),
+                      addressedChips: chips,
+                      attachments: (beat['attachments'] as List? ?? const [])
+                          .cast<Map>(),
+                      beatSuffix: '$threadId#${beat['beat']}',
+                      // The linkifier v1: the pane's service
+                      // facts decide resolvability; a tap rides
+                      // the shell's ONE router (the
+                      // conversation-surface lane).
+                      refResolves: _beatRefResolves,
+                      onOpenSurface: (final surfaceId) =>
+                          _openConversationLane(context, surfaceId),
+                      // Wave F — the beat's display name is an
+                      // actor affordance too: same seam (and same
+                      // ViewScope fallback) as the members popover.
+                      onTapActor:
+                          widget.onTapActor ??
+                          ViewScope.of(context)?.onFocusActor,
+                      onReply: () => setState(() => _replyBeat = beat),
+                      onNewThread: () => unawaited(_startChildThread(beat)),
+                      onMenu: (final position) => unawaited(
+                        _onBeatContext(beat, position, displayNameOf),
+                      ),
+                    );
+                    // The beat's context affordance (1g): a
+                    // right-click / long-press opens Reply and
+                    // the durable-facts popover.
+                    final contextual = GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onSecondaryTapUp: (final details) => _onBeatContext(
+                        beat,
+                        details.globalPosition,
+                        displayNameOf,
+                      ),
+                      onLongPressEnd: (final details) => _onBeatContext(
+                        beat,
+                        details.globalPosition,
+                        displayNameOf,
+                      ),
+                      child: row,
+                    );
+                    // 1g — the "N new" divider: under the newest
+                    // beat the human had read at entry (unread
+                    // messages follow it downward), captured once
+                    // per visit; never for a never-read room (the
+                    // badge already says "all of it is new").
+                    final dividerBeat = _dividerBeat;
+                    if (dividerBeat != null &&
+                        dividerBeat > 0 &&
+                        _dividerUnread > 0 &&
+                        beat['beat'] == dividerBeat) {
+                      return Column(
+                        key: const ValueKey('worldchat.unreadDivider'),
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          contextual,
+                          _UnreadDivider(count: _dividerUnread),
+                        ],
+                      );
+                    }
+                    return contextual;
+                  },
+                ),
+              ),
+              if (_showJumpToLatest)
+                Positioned(
+                  bottom: 12,
+                  right: 20,
+                  child: _JumpToLatestPill(
+                    key: const ValueKey('worldchat.jumpLatest'),
+                    label: l10n.worldChatJumpToLatest,
+                    onTap: () => unawaited(
+                      _scroll.animateTo(
+                        0,
+                        duration: const Duration(milliseconds: 180),
+                        curve: Curves.easeOut,
                       ),
                     ),
-                    if (_showJumpToLatest)
-                      Positioned(
-                        bottom: 12,
-                        right: 20,
-                        child: _JumpToLatestPill(
-                          key: const ValueKey('worldchat.jumpLatest'),
-                          label: l10n.worldChatJumpToLatest,
-                          onTap: () => unawaited(
-                            _scroll.animateTo(
-                              0,
-                              duration: const Duration(milliseconds: 180),
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
+            ],
+          ),
         ),
-        Divider(
-          height: ShellTokens.hairline,
-          thickness: ShellTokens.hairline,
-          color: context.shellHairline,
-        ),
+        LaHairline(color: context.shellHairline),
         // 1g — the reply anchor: a quiet strip naming the beat the
         // next word answers (cancel returns to the plain say).
         if (_replyBeat != null)
@@ -2258,18 +2223,14 @@ class _ConversationPaneState extends State<_ConversationPane> {
                       '${l10n.worldChatReplyingTo(displayNameOf(_replyBeat!['author']! as String))}: ${_oneLine('${_replyBeat!['text'] ?? ''}')}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: context.shellMuted,
-                      ),
+                      style: laUi.micro.copyWith(color: context.shellMuted),
                     ),
                   ),
-                  IconButton(
+                  LaButton.icon(
                     key: const ValueKey('worldchat.replying.close'),
-                    visualDensity: VisualDensity.compact,
-                    iconSize: 14,
-                    style: chromeIconButtonStyle(context),
+                    size: LaButtonSize.sm,
                     tooltip: l10n.worldChatCancelReply,
-                    icon: const Icon(Icons.close_outlined),
+                    icon: const Icon(Icons.close_outlined, size: 14),
                     onPressed: () => setState(() => _replyBeat = null),
                   ),
                 ],
@@ -2314,7 +2275,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
               key: const ValueKey('worldchat.scope.status'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: laUi.micro.copyWith(
                 color: context.shellMuted,
                 fontStyle: FontStyle.italic,
               ),
@@ -2337,11 +2298,17 @@ class _ConversationPaneState extends State<_ConversationPane> {
         // replaces `@partial` with the mention token.
         if (_mentionQuery != null)
           _MentionOverlay(
-            items: _filterMentionables(
-              _mentionables(context),
-              _mentionQuery!,
-            ),
+            items: _filterMentionables(_mentionables(context), _mentionQuery!),
             onPick: (final item) => _insertToken(item, replacePartial: true),
+          ),
+        if (_shareError != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+            child: Text(
+              _shareError!,
+              key: const ValueKey('worldchat.shareError'),
+              style: laUi.micro.copyWith(color: laUi.danger),
+            ),
           ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
@@ -2366,14 +2333,13 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 // MCP servers are named-absent rows). The armed scope
                 // still tints the icon as its second carrier — the chip
                 // above the composer remains the visible state.
-                IconButton(
+                LaButton.icon(
                   key: const ValueKey('worldchat.attach'),
                   tooltip: l10n.worldChatAttach,
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 18,
-                  style: chromeIconButtonStyle(context),
+                  size: LaButtonSize.sm,
                   icon: Icon(
                     Icons.add_circle_outline,
+                    size: 18,
                     color: _armedScope != null
                         ? context.la.accent
                         : context.shellMuted,
@@ -2382,19 +2348,17 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 ),
                 // The image share (native-image-assets): pick → world
                 // assets → one media-attachment beat.
-                IconButton(
+                LaButton.icon(
                   key: const ValueKey('worldchat.shareImage'),
                   tooltip: context.l10n.attachImage,
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 18,
-                  style: chromeIconButtonStyle(context),
-                  icon: const Icon(Icons.image_outlined),
+                  size: LaButtonSize.sm,
+                  icon: const Icon(Icons.image_outlined, size: 18),
                   onPressed: () => unawaited(_shareImage()),
                 ),
                 Expanded(
                   child: Semantics(
                     label: 'worldchat.composer',
-                    child: TextField(
+                    child: LaField(
                       key: const ValueKey('worldchat.composer'),
                       controller: composer,
                       focusNode: _composerFocus,
@@ -2402,12 +2366,12 @@ class _ConversationPaneState extends State<_ConversationPane> {
                       maxLines: 5,
                       textInputAction: TextInputAction.send,
                       onSubmitted: (final value) => unawaited(_send(value)),
-                      decoration: InputDecoration(
-                        hintText: composerHint,
-                        border: InputBorder.none,
-                        isDense: true,
-                        filled: false,
-                      ),
+                      placeholder: composerHint,
+                      // The composer's own Container declares the field
+                      // fill (Wave K law) — the kit field stays a quiet
+                      // borderless carrier inside it.
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      showFocusHairline: false,
                     ),
                   ),
                 ),
@@ -2415,17 +2379,15 @@ class _ConversationPaneState extends State<_ConversationPane> {
                 // (the service's `sending` flag covers the plain say).
                 // Wave K: SAME density + icon size as the attach button
                 // — the two share one optical size and baseline.
-                IconButton(
+                LaButton.icon(
                   key: const ValueKey('worldchat.send'),
                   tooltip: l10n.worldChatSend,
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 18,
-                  style: chromeIconButtonStyle(context),
+                  size: LaButtonSize.sm,
                   icon: sendBusy
                       ? const SizedBox(
                           width: 14,
                           height: 14,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: LaSpinner(size: 14),
                         )
                       : const Icon(Icons.arrow_upward_outlined, size: 18),
                   onPressed: sendBusy
@@ -2543,7 +2505,7 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
   @override
   Widget build(final BuildContext context) {
     final service = widget.service;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final other = widget.other;
     final channel = widget.channel;
     final name = channel != null
@@ -2570,7 +2532,7 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
     final nameColor = other == null
         ? null // Channels and topics keep the ambient ink.
         : other.kind == ActorKind.human
-        ? theme.colorScheme.primary
+        ? laUi.accent
         : actorColor(other.actorId);
     // The identity IS the entry point to the actor's profile: tapping
     // the mark or name hosts the people view on that actor. Channels
@@ -2591,16 +2553,20 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  InkWell(
+                  LaPressable(
                     key: const ValueKey('worldchat.identity'),
+                    scaleOnPress: false,
+                    radius: BorderRadius.circular(ShellTokens.radius),
                     onTap: other == null || onFocusActor == null
                         ? null
                         : () => onFocusActor(other.actorId),
-                    child: _headerMark(theme),
+                    child: _headerMark(laUi),
                   ),
                   const SizedBox(width: 7),
                   Flexible(
-                    child: InkWell(
+                    child: LaPressable(
+                      scaleOnPress: false,
+                      radius: BorderRadius.circular(ShellTokens.radius),
                       onTap: other == null || onFocusActor == null
                           ? null
                           : () => onFocusActor(other.actorId),
@@ -2608,7 +2574,7 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
                         name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.titleSmall?.copyWith(
+                        style: laUi.compact.copyWith(
                           fontSize: 13,
                           color: nameColor,
                           fontWeight: FontWeight.w600,
@@ -2652,14 +2618,15 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
   /// The header's identity mark (20px — the HUD law): the DM avatar
   /// (with presence), the channel's bare `#` glyph in its quiet ink,
   /// or a derived identicon for a group.
-  Widget _headerMark(final ThemeData theme) => switch (this) {
+  Widget _headerMark(final LaUiTheme laUi) => switch (this) {
     _ when widget.channel != null => SizedBox(
       width: 20,
       height: 20,
       child: Center(
         child: Text(
           '#',
-          style: theme.textTheme.titleSmall?.copyWith(
+          style: laUi.compact.copyWith(
+            fontSize: 14,
             color: actorColor(widget.channel!.channelId),
             fontWeight: FontWeight.w600,
           ),
@@ -2824,7 +2791,7 @@ class _ThreadsToggle extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: context.laUi.micro.copyWith(
               fontSize: 11,
               color: open ? context.la.accent : context.shellMuted,
               fontWeight: open ? FontWeight.w600 : FontWeight.w500,
@@ -2836,18 +2803,22 @@ class _ThreadsToggle extends StatelessWidget {
   );
 }
 
-/// The channel view's THREADS BROWSER (owner law 2026-11-16: rooms
-/// left the rooms column; they surface Discord-threads-style INSIDE
-/// the channel view). One compact panel under the conversation header,
-/// two labelled groups over the service's LIVE getters — no caching,
-/// no polling (the service's notify is the freshness signal):
-/// "Threads" — the work threads spawned from THIS channel
-/// ([RealmChatService.workThreadsOf]); "Rooms" — the watchable
-/// actor↔actor and plain group threads ([RealmChatService.roomThreads],
-/// the topic or the honest raw id). Every row opens its `room:<id>` tab
-/// through the shell's ONE router (the work cards' lane). No work
-/// threads and no rooms renders one quiet line — honest absence, never
-/// a fake list.
+/// The channel and DM panes' THREADS BROWSER (owner law 2026-11-16:
+/// rooms left the rooms column; they surface Discord-threads-style
+/// INSIDE the channel view; owner decision 2026-11-16: dms get it too
+/// — just talking with one actor can do some work too). One compact
+/// panel under the conversation header, two labelled groups over the
+/// service's LIVE getters — no caching, no polling (the service's
+/// notify is the freshness signal):
+/// "Threads" — the work threads spawned from THIS pane's thread (a dm
+/// parent is a valid work-order parent, [RealmChatService.workThreadsOf]);
+/// "Rooms" — the watchable actor↔actor and plain group threads
+/// ([RealmChatService.roomThreads], the topic or the honest raw id).
+/// ADR 0145 — declared session rows (machine-life rooms) sort AFTER
+/// the organic rooms and carry a quiet kind mark (ink is data, no
+/// icons). Every row opens its `room:<id>` tab through the shell's ONE
+/// router (the work cards' lane). No work threads and no rooms renders
+/// one quiet line — honest absence, never a fake list.
 class _ThreadsBrowserPanel extends StatelessWidget {
   const _ThreadsBrowserPanel({
     required this.service,
@@ -2864,6 +2835,16 @@ class _ThreadsBrowserPanel extends StatelessWidget {
     final l10n = context.l10n;
     final workThreads = service.workThreadsOf(parentThreadId);
     final rooms = service.roomThreads;
+    // ADR 0145 — organic rooms first, declared sessions after (both
+    // keep the projection's own newest-activity order).
+    final organicRooms = [
+      for (final thread in rooms)
+        if (thread['kind'] != 'session') thread,
+    ];
+    final sessionRooms = [
+      for (final thread in rooms)
+        if (thread['kind'] == 'session') thread,
+    ];
     return Container(
       key: const ValueKey('worldchat.threads.panel'),
       decoration: BoxDecoration(
@@ -2879,7 +2860,7 @@ class _ThreadsBrowserPanel extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8, top: 2),
               child: Text(
                 l10n.worldChatThreadsEmpty,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                style: context.laUi.micro.copyWith(
                   color: context.shellMuted,
                   fontStyle: FontStyle.italic,
                 ),
@@ -2910,11 +2891,19 @@ class _ThreadsBrowserPanel extends StatelessWidget {
                   style: shellSectionLabel(context),
                 ),
               ),
-              for (final thread in rooms)
+              for (final thread in organicRooms)
                 _ThreadsRow(
                   rowKey: 'worldchat.threads.row.room.${thread['threadId']}',
                   title: _roomTitle(service, thread),
                   icon: Icons.forum_outlined,
+                  onTap: () => onOpenThread('${thread['threadId']}'),
+                ),
+              for (final thread in sessionRooms)
+                _ThreadsRow(
+                  rowKey: 'worldchat.threads.row.room.${thread['threadId']}',
+                  title: _roomTitle(service, thread),
+                  icon: Icons.forum_outlined,
+                  mark: l10n.worldChatSessionKindMark,
                   onTap: () => onOpenThread('${thread['threadId']}'),
                 ),
             ],
@@ -2939,14 +2928,17 @@ String _roomTitle(
 }
 
 /// One browser row: the mark, the title, the hover fill — the
-/// [_RoomsRow] grammar at compact height. The Semantics name IS the
-/// widget key (DESIGN §6); the human title rides the hint.
-class _ThreadsRow extends StatefulWidget {
+/// [_RoomsRow] grammar at compact height. An optional [mark] renders a
+/// quiet kind word at the row's end (ADR 0145's session rows — labels,
+/// not icons, DESIGN §2). The Semantics name IS the widget key
+/// (DESIGN §6); the human title rides the hint.
+class _ThreadsRow extends StatelessWidget {
   const _ThreadsRow({
     required this.rowKey,
     required this.title,
     required this.icon,
     required this.onTap,
+    this.mark,
   });
 
   final String rowKey;
@@ -2954,52 +2946,52 @@ class _ThreadsRow extends StatefulWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  @override
-  State<_ThreadsRow> createState() => _ThreadsRowState();
-}
-
-class _ThreadsRowState extends State<_ThreadsRow> {
-  var _hovering = false;
+  /// The quiet kind word (e.g. the localized 'session'), null for the
+  /// organic rows.
+  final String? mark;
 
   @override
   Widget build(final BuildContext context) {
-    final fill = _hovering ? context.shellHover : null;
+    final laUi = context.laUi;
     return Semantics(
       button: true,
-      label: widget.rowKey,
-      hint: widget.title,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (final _) => setState(() => _hovering = true),
-        onExit: (final _) => setState(() => _hovering = false),
-        child: GestureDetector(
-          key: ValueKey(widget.rowKey),
-          behavior: HitTestBehavior.opaque,
-          onTap: widget.onTap,
-          child: Container(
-            height: 26,
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: fill,
-              borderRadius: BorderRadius.circular(ShellTokens.radius),
-            ),
-            child: Row(
-              children: [
-                Icon(widget.icon, size: 13, color: context.shellMuted),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontSize: 12,
-                      color: context.shellMuted,
-                    ),
+      label: rowKey,
+      hint: title,
+      child: LaPressable(
+        key: ValueKey(rowKey),
+        onTap: onTap,
+        scaleOnPress: false,
+        radius: BorderRadius.circular(ShellTokens.radius),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: SizedBox(
+          height: 26,
+          child: Row(
+            children: [
+              Icon(icon, size: 13, color: context.shellMuted),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: laUi.compact.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: context.shellMuted,
+                  ),
+                ),
+              ),
+              if (mark != null) ...[
+                const SizedBox(width: 6),
+                Text(
+                  mark!,
+                  style: laUi.micro.copyWith(
+                    fontSize: 10,
+                    color: context.shellMuted,
                   ),
                 ),
               ],
-            ),
+            ],
           ),
         ),
       ),
@@ -3059,52 +3051,59 @@ class _ActorCardState extends State<_ActorCard> {
         width: 252,
         padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
         decoration: _decoration(context),
-        // The overlay floats above the Scaffold's Material — the
-        // editor's fields need their own sheet (transparent: the
-        // card's decoration stays the visible surface).
-        child: Material(
-          type: MaterialType.transparency,
-          child: ActorProfileEditor(
-            profile: other,
-            brainOptions: availableBrainOptions(
-              defaultOpenRouterModel: _defaultOpenRouterModel(context),
-              paletteRungs: worldState?.generativeDecls ?? const [],
+        // The card bounds the editor's height (≤ 90% of the window):
+        // the body SCROLLS to reach Save, never overflows past the
+        // card's edge or the window's bottom (the other embeddings
+        // own their scroll — view_people and the actor info pane
+        // wrap the editor themselves). The kit's LaField carries its
+        // own painting, so no Material sheet is needed underneath.
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+          ),
+          child: SingleChildScrollView(
+            child: ActorProfileEditor(
+              profile: other,
+              brainOptions: availableBrainOptions(
+                defaultOpenRouterModel: _defaultOpenRouterModel(context),
+                paletteRungs: worldState?.generativeDecls ?? const [],
+              ),
+              tiersForBrain: (final ref) => reasoningTiersForBrainRef(
+                ref,
+                transportOfRung: (final id) => worldState?.transportOfRung(id),
+              ),
+              saveKey: const ValueKey('worldchat.card.save'),
+              onCancel: () => setState(() => _editing = false),
+              initialBrainSet:
+                  service.brainSets[other.actorId] ?? const <String>[],
+              initialSelfBind:
+                  (service.selfBinds[other.actorId] ?? 'allow') != 'deny',
+              onSave:
+                  ({
+                    required final displayName,
+                    required final role,
+                    required final systemPrompt,
+                    required final brainRef,
+                    required final avatar,
+                    required final brainSet,
+                    required final selfBind,
+                  }) {
+                    unawaited(
+                      service
+                          .updateActor(
+                            actorId: other.actorId,
+                            displayName: displayName,
+                            role: role,
+                            systemPrompt: systemPrompt,
+                            brainRef: brainRef,
+                            avatar: avatar,
+                            brainSet: brainSet,
+                            selfBind: selfBind ? 'allow' : 'deny',
+                          )
+                          .then((final _) => onClose()),
+                    );
+                  },
             ),
-            tiersForBrain: (final ref) => reasoningTiersForBrainRef(
-              ref,
-              transportOfRung: (final id) => worldState?.transportOfRung(id),
-            ),
-            saveKey: const ValueKey('worldchat.card.save'),
-            onCancel: () => setState(() => _editing = false),
-            initialBrainSet:
-                service.brainSets[other.actorId] ?? const <String>[],
-            initialSelfBind:
-                (service.selfBinds[other.actorId] ?? 'allow') != 'deny',
-            onSave:
-                ({
-                  required final displayName,
-                  required final role,
-                  required final systemPrompt,
-                  required final brainRef,
-                  required final avatar,
-                  required final brainSet,
-                  required final selfBind,
-                }) {
-                  unawaited(
-                    service
-                        .updateActor(
-                          actorId: other.actorId,
-                          displayName: displayName,
-                          role: role,
-                          systemPrompt: systemPrompt,
-                          brainRef: brainRef,
-                          avatar: avatar,
-                          brainSet: brainSet,
-                          selfBind: selfBind ? 'allow' : 'deny',
-                        )
-                        .then((final _) => onClose()),
-                  );
-                },
           ),
         ),
       );
@@ -3191,28 +3190,26 @@ class _ActorCardState extends State<_ActorCard> {
             runSpacing: 2,
             children: [
               if (other != null)
-                TextButton.icon(
+                LaButton(
                   key: const ValueKey('worldchat.card.edit'),
+                  variant: LaButtonVariant.ghost,
+                  size: LaButtonSize.sm,
+                  dense: true,
                   onPressed: () => setState(() => _editing = true),
                   icon: const Icon(Icons.edit_outlined, size: 15),
-                  label: Text(context.l10n.actorsEditTooltip),
-                  style: TextButton.styleFrom(
-                    visualDensity: VisualDensity.compact,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                  ),
+                  label: context.l10n.actorsEditTooltip,
                 ),
-              TextButton.icon(
+              LaButton(
                 key: const ValueKey('worldchat.close'),
+                variant: LaButtonVariant.ghost,
+                size: LaButtonSize.sm,
+                dense: true,
                 onPressed: () {
                   onClose();
                   unawaited(service.closeThread(header.threadId));
                 },
                 icon: const Icon(Icons.archive_outlined, size: 15),
-                label: Text(context.l10n.worldChatCloseTooltip),
-                style: TextButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                ),
+                label: context.l10n.worldChatCloseTooltip,
               ),
             ],
           ),
@@ -3312,8 +3309,7 @@ class _MessageRowState extends State<_MessageRow> {
   String? get at => widget.at;
   String? get replyQuote => widget.replyQuote;
   Key? get replyQuoteKey => widget.replyQuoteKey;
-  List<({String id, String name})> get addressedChips =>
-      widget.addressedChips;
+  List<({String id, String name})> get addressedChips => widget.addressedChips;
 
   String _timeLabel(final BuildContext context) {
     final raw = at;
@@ -3352,9 +3348,7 @@ class _MessageRowState extends State<_MessageRow> {
           quote,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(
-            context,
-          ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+          style: context.laUi.micro.copyWith(color: context.shellMuted),
         ),
       ),
     );
@@ -3372,19 +3366,15 @@ class _MessageRowState extends State<_MessageRow> {
       required final IconData icon,
       required final String tooltip,
       required final VoidCallback? onPressed,
-    }) => IconButton(
+    }) => LaButton.icon(
       key: key,
-      visualDensity: VisualDensity.compact,
-      iconSize: 14,
-      constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
-      padding: const EdgeInsets.all(4),
-      style: chromeIconButtonStyle(context),
+      size: LaButtonSize.sm,
       tooltip: tooltip,
-      icon: Icon(icon, color: muted),
+      icon: Icon(icon, size: 14, color: muted),
       onPressed: onPressed,
     );
-    return Material(
-      type: MaterialType.transparency,
+    return Semantics(
+      container: true,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -3433,14 +3423,14 @@ class _MessageRowState extends State<_MessageRow> {
   /// dead link). A beat with no resolvable reference renders the plain
   /// Text, byte-identical to before.
   Widget _beatText(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final segments = linkifyBeatText(text, resolves: widget.refResolves);
     if (segments.length == 1 && segments.single.link == null) {
-      return Text(text, style: theme.textTheme.bodyMedium);
+      return Text(text, style: laUi.body);
     }
     return Text.rich(
       TextSpan(
-        style: theme.textTheme.bodyMedium,
+        style: laUi.body,
         children: [
           for (final segment in segments)
             if (segment.link == null)
@@ -3448,10 +3438,9 @@ class _MessageRowState extends State<_MessageRow> {
             else
               TextSpan(
                 text: segment.text,
-                style: TextStyle(color: theme.colorScheme.primary),
+                style: TextStyle(color: laUi.accent),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () =>
-                      widget.onOpenSurface(segment.link!.surfaceId),
+                  ..onTap = () => widget.onOpenSurface(segment.link!.surfaceId),
               ),
         ],
       ),
@@ -3460,7 +3449,7 @@ class _MessageRowState extends State<_MessageRow> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final muted = context.shellMuted;
     final accent = actorColor(profile.actorId);
     // The media branch (native-image-assets Wave D2): a beat whose
@@ -3475,9 +3464,7 @@ class _MessageRowState extends State<_MessageRow> {
     final mediaCards = [
       for (final entry in widget.attachments)
         if (mediaAttachmentOf(entry) != null)
-          MediaAssetCard.fromAttachment(
-            Map<String, Object?>.from(entry),
-          ),
+          MediaAssetCard.fromAttachment(Map<String, Object?>.from(entry)),
     ];
     final body = Padding(
       padding: const EdgeInsets.only(left: ShellTokens.messageGutter),
@@ -3512,10 +3499,7 @@ class _MessageRowState extends State<_MessageRow> {
           children: [
             Row(
               children: [
-                ActorAvatar(
-                  profile: profile,
-                  size: ShellTokens.messageAvatar,
-                ),
+                ActorAvatar(profile: profile, size: ShellTokens.messageAvatar),
                 const SizedBox(width: 8),
                 // Wave F — the display name is an actor affordance: a
                 // tap opens the actor (info surface via the host's
@@ -3527,25 +3511,23 @@ class _MessageRowState extends State<_MessageRow> {
                       : () => widget.onTapActor!.call(profile.actorId),
                   child: Text(
                     profile.displayName,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: isHuman ? theme.colorScheme.primary : accent,
+                    style: laUi.compact.copyWith(
+                      fontSize: 14,
+                      color: isHuman ? laUi.accent : accent,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
                 if (time.isNotEmpty) ...[
                   const SizedBox(width: 8),
-                  Text(
-                    time,
-                    style: theme.textTheme.labelSmall?.copyWith(color: muted),
-                  ),
+                  Text(time, style: laUi.micro.copyWith(color: muted)),
                 ],
                 for (final chip in addressedChips) ...[
                   const SizedBox(width: 4),
                   Text(
                     '@${chip.name}',
                     key: ValueKey('worldchat.addressed.${chip.id}'),
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: laUi.micro.copyWith(
                       color: actorColor(chip.id),
                       fontWeight: FontWeight.w500,
                     ),
@@ -3602,7 +3584,7 @@ class _UnreadDivider extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               context.l10n.worldChatUnreadDivider(count),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: context.laUi.micro.copyWith(
                 color: accent,
                 fontWeight: FontWeight.w600,
               ),
@@ -3645,15 +3627,14 @@ class _BeatDetailsDialog extends StatelessWidget {
       if (addressed.isNotEmpty) ('addressedTo', addressed),
       if (beat['replyTo'] != null) ('replyTo', '#${beat['replyTo']}'),
     ];
-    return Dialog(
-      key: const ValueKey('worldchat.beatDetails'),
-      backgroundColor: context.shellRaised,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
-        side: BorderSide(color: context.shellHairline),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 420),
+      child: LaBox(
+        key: const ValueKey('worldchat.beatDetails'),
+        color: context.shellRaised,
+        floating: true,
+        radius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: BorderSide(color: context.shellHairline),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
@@ -3662,9 +3643,7 @@ class _BeatDetailsDialog extends StatelessWidget {
             children: [
               Text(
                 context.l10n.worldChatBeatDetails,
-                style: Theme.of(
-                  context,
-                ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+                style: context.laUi.body.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               for (final (label, value) in facts)
@@ -3692,10 +3671,11 @@ class _BeatDetailsDialog extends StatelessWidget {
               const SizedBox(height: 4),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
+                child: LaButton(
                   key: const ValueKey('worldchat.beatDetails.close'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: onClose,
-                  child: Text(context.l10n.worldChatCloseTooltip),
+                  label: context.l10n.worldChatCloseTooltip,
                 ),
               ),
             ],
@@ -3751,7 +3731,7 @@ class _WorkThreadCard extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final l10n = context.l10n;
     final id = link.workThreadId;
     final author = preview?['lastBeatAuthor'] as String?;
@@ -3786,13 +3766,13 @@ class _WorkThreadCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Flexible(
-                      child: Tooltip(
+                      child: LaTooltip(
                         message: link.projectRoot,
                         child: Text(
                           link.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(
+                          style: laUi.compact.copyWith(
                             color: context.la.ink,
                             fontWeight: FontWeight.w600,
                           ),
@@ -3808,7 +3788,7 @@ class _WorkThreadCard extends StatelessWidget {
                       link.projectRoot.isEmpty
                           ? l10n.worldChatThreadKind
                           : l10n.worldChatWorkThreadKind,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: laUi.micro.copyWith(
                         color: context.shellMuted,
                       ),
                     ),
@@ -3816,11 +3796,8 @@ class _WorkThreadCard extends StatelessWidget {
                     _StripButton(
                       keyName: 'worldchat.workthread.open.$id',
                       label: l10n.worldChatOpen,
-                      onTap: () => openThreadLane(
-                        context,
-                        service,
-                        link.workThreadId,
-                      ),
+                      onTap: () =>
+                          openThreadLane(context, service, link.workThreadId),
                     ),
                   ],
                 ),
@@ -3832,12 +3809,10 @@ class _WorkThreadCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             '$authorName: $text',
-                            key: ValueKey(
-                              'worldchat.workthread.preview.$id',
-                            ),
+                            key: ValueKey('worldchat.workthread.preview.$id'),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelSmall?.copyWith(
+                            style: laUi.micro.copyWith(
                               color: context.shellMuted,
                             ),
                           ),
@@ -3846,7 +3821,7 @@ class _WorkThreadCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Text(
                             _instant(at),
-                            style: theme.textTheme.labelSmall?.copyWith(
+                            style: laUi.micro.copyWith(
                               color: context.la.inkQuiet,
                               fontFeatures: const [
                                 FontFeature.tabularFigures(),
@@ -3880,7 +3855,7 @@ class _ScopeChip extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
       child: GestureDetector(
@@ -3900,7 +3875,7 @@ class _ScopeChip extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 projectScopeDisplayName(scope),
-                style: theme.textTheme.labelSmall?.copyWith(
+                style: laUi.micro.copyWith(
                   color: context.la.ink,
                   fontWeight: FontWeight.w600,
                 ),
@@ -3914,13 +3889,11 @@ class _ScopeChip extends StatelessWidget {
                   style: LaTokens.mono(10, context.shellMuted),
                 ),
               ),
-              IconButton(
+              LaButton.icon(
                 key: const ValueKey('worldchat.scope.clear'),
-                visualDensity: VisualDensity.compact,
-                iconSize: 14,
-                style: chromeIconButtonStyle(context),
+                size: LaButtonSize.sm,
                 tooltip: l10n.worldChatScopeDismiss,
-                icon: const Icon(Icons.close_outlined),
+                icon: const Icon(Icons.close_outlined, size: 14),
                 onPressed: onClear,
               ),
             ],
@@ -3964,7 +3937,7 @@ class _SpawnRefusalCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final needsGrant = spawn.refusal == 'project_not_granted' && !retried;
     final title = spawn.refusal == 'project_not_granted'
         ? l10n.worldChatGrantNeeded
@@ -4005,7 +3978,7 @@ class _SpawnRefusalCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: theme.textTheme.bodySmall?.copyWith(
+                        style: laUi.compact.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -4132,32 +4105,29 @@ class _MentionRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Semantics(
     button: true,
-    child: InkWell(
+    child: LaPressable(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(ShellTokens.radius),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: Row(
-          children: [
-            Icon(item.icon, size: 15, color: context.shellMuted),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                item.display,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: context.la.ink,
-                ),
-              ),
+      scaleOnPress: false,
+      radius: BorderRadius.circular(ShellTokens.radius),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: Row(
+        children: [
+          Icon(item.icon, size: 15, color: context.shellMuted),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              item.display,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.laUi.compact.copyWith(color: context.la.ink),
             ),
-            const SizedBox(width: 8),
-            Text(
-              item.kind.name,
-              style: LaTokens.mono(9.5, context.la.inkQuiet),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            item.kind.name,
+            style: LaTokens.mono(9.5, context.la.inkQuiet),
+          ),
+        ],
       ),
     ),
   );
@@ -4194,7 +4164,7 @@ class _AttachDialogState extends State<_AttachDialog> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final query = _query.trim().toLowerCase();
     final filtered = query.isEmpty
         ? widget.items
@@ -4202,15 +4172,14 @@ class _AttachDialogState extends State<_AttachDialog> {
             for (final item in widget.items)
               if (item.name.toLowerCase().contains(query)) item,
           ];
-    return Dialog(
-      key: const ValueKey('worldchat.attach.dialog'),
-      backgroundColor: context.shellRaised,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
-        side: BorderSide(color: context.shellHairline),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420, maxHeight: 520),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 420, maxHeight: 520),
+      child: LaBox(
+        key: const ValueKey('worldchat.attach.dialog'),
+        color: context.shellRaised,
+        floating: true,
+        radius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: BorderSide(color: context.shellHairline),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
@@ -4219,26 +4188,19 @@ class _AttachDialogState extends State<_AttachDialog> {
             children: [
               Text(
                 l10n.worldChatAttach,
-                style: theme.textTheme.labelLarge?.copyWith(
+                style: laUi.body.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
+              LaField(
                 key: const ValueKey('worldchat.attach.search'),
                 controller: _search,
                 autofocus: true,
                 onChanged: (final value) => setState(() => _query = value),
-                style: theme.textTheme.bodySmall,
-                decoration: InputDecoration(
-                  hintText: l10n.worldChatAttachSearchHint,
-                  isDense: true,
-                  prefixIcon: const Icon(Icons.search_outlined, size: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(ShellTokens.radius),
-                    borderSide: BorderSide(color: context.shellHairline),
-                  ),
-                ),
+                style: laUi.compact,
+                placeholder: l10n.worldChatAttachSearchHint,
+                prefix: const Icon(Icons.search_outlined, size: 16),
               ),
               const SizedBox(height: 4),
               Flexible(
@@ -4248,7 +4210,7 @@ class _AttachDialogState extends State<_AttachDialog> {
                         child: Text(
                           l10n.worldChatNoMatches,
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: laUi.micro.copyWith(
                             color: context.shellMuted,
                           ),
                         ),
@@ -4272,7 +4234,7 @@ class _AttachDialogState extends State<_AttachDialog> {
                       ),
               ),
               const SizedBox(height: 4),
-              Divider(height: 1, color: context.shellHairline),
+              LaHairline(color: context.shellHairline),
               _AttachActionRow(
                 key: const ValueKey('worldchat.attach.workOrder'),
                 icon: Icons.folder_outlined,
@@ -4324,34 +4286,34 @@ class _AttachActionRow extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: enabled,
-      child: InkWell(
+      child: LaPressable(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(ShellTokens.radius),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 16,
-                color: enabled ? context.shellMuted : context.la.inkQuiet,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: enabled ? context.la.ink : context.la.inkQuiet,
-                    fontWeight: FontWeight.w600,
-                  ),
+        enabled: enabled,
+        scaleOnPress: false,
+        radius: BorderRadius.circular(ShellTokens.radius),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: enabled ? context.shellMuted : context.la.inkQuiet,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.laUi.compact.copyWith(
+                  color: enabled ? context.la.ink : context.la.inkQuiet,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              if (note != null)
-                Text(note!, style: LaTokens.mono(10, context.la.inkQuiet)),
-            ],
-          ),
+            ),
+            if (note != null)
+              Text(note!, style: LaTokens.mono(10, context.la.inkQuiet)),
+          ],
         ),
       ),
     );
@@ -4384,9 +4346,7 @@ class _MentionOverlay extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Text(
                 context.l10n.worldChatNoMatches,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: context.shellMuted,
-                ),
+                style: context.laUi.micro.copyWith(color: context.shellMuted),
               ),
             )
           : ListView(
@@ -4424,7 +4384,7 @@ class _ChannelMetaRow extends StatelessWidget {
   final void Function(String actorId)? onTapActor;
 
   Future<void> _openPermissions(final BuildContext context) =>
-      showDialog<void>(
+      showLaDialog<void>(
         context: context,
         builder: (final _) => _ChannelPermissionsDialog(
           service: service,
@@ -4432,8 +4392,11 @@ class _ChannelMetaRow extends StatelessWidget {
         ),
       );
 
-  Future<void> _openMembers(final BuildContext context) => showDialog<void>(
+  Future<void> _openMembers(final BuildContext context) => showLaDialog<void>(
     context: context,
+    // The members popover hangs top-right (the Dialog alignment/inset of
+    // the Material draft, on the kit dialog's alignment slot).
+    alignment: Alignment.topRight,
     builder: (final dialogContext) => _ChannelMembersDialog(
       service: service,
       memberIds: participants,
@@ -4444,7 +4407,7 @@ class _ChannelMetaRow extends StatelessWidget {
     ),
   );
 
-  Future<void> _openInfo(final BuildContext context) => showDialog<void>(
+  Future<void> _openInfo(final BuildContext context) => showLaDialog<void>(
     context: context,
     builder: (final _) =>
         _ChannelInfoDialog(service: service, channel: channel),
@@ -4460,31 +4423,29 @@ class _ChannelMetaRow extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 4, 12, 0),
       child: Row(
         children: [
-          IconButton(
+          LaButton.icon(
             key: const ValueKey('worldchat.meta.perms'),
             tooltip: l10n.worldChatPermsTooltip,
-            visualDensity: VisualDensity.compact,
-            iconSize: 15,
-            style: chromeIconButtonStyle(context),
-            icon: Icon(Icons.lock_outline, color: context.shellMuted),
+            size: LaButtonSize.sm,
+            icon: Icon(Icons.lock_outline, size: 15, color: context.shellMuted),
             onPressed: () => unawaited(_openPermissions(context)),
           ),
-          IconButton(
+          LaButton.icon(
             key: const ValueKey('worldchat.meta.members'),
             tooltip: l10n.worldChatMembersTooltip,
-            visualDensity: VisualDensity.compact,
-            iconSize: 15,
-            style: chromeIconButtonStyle(context),
-            icon: Icon(Icons.group_outlined, color: context.shellMuted),
+            size: LaButtonSize.sm,
+            icon: Icon(
+              Icons.group_outlined,
+              size: 15,
+              color: context.shellMuted,
+            ),
             onPressed: () => unawaited(_openMembers(context)),
           ),
-          IconButton(
+          LaButton.icon(
             key: const ValueKey('worldchat.meta.info'),
             tooltip: l10n.worldChatInfoTooltip,
-            visualDensity: VisualDensity.compact,
-            iconSize: 15,
-            style: chromeIconButtonStyle(context),
-            icon: Icon(Icons.info_outline, color: context.shellMuted),
+            size: LaButtonSize.sm,
+            icon: Icon(Icons.info_outline, size: 15, color: context.shellMuted),
             onPressed: () => unawaited(_openInfo(context)),
           ),
         ],
@@ -4567,25 +4528,24 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final service = widget.service;
     String nameOf(final String id) =>
         service.roster?.get(id)?.displayName ?? actorDisplayFallback(id);
-    return Dialog(
-      key: const ValueKey('worldchat.meta.perms.dialog'),
-      backgroundColor: context.shellRaised,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
-        side: BorderSide(color: context.shellHairline),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 460, maxHeight: 520),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 460, maxHeight: 520),
+      child: LaBox(
+        key: const ValueKey('worldchat.meta.perms.dialog'),
+        color: context.shellRaised,
+        floating: true,
+        radius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: BorderSide(color: context.shellHairline),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: _loading
               ? const Padding(
                   padding: EdgeInsets.all(24),
-                  child: Center(child: UiCircularProgress()),
+                  child: Center(child: LaSpinner()),
                 )
               : Column(
                   mainAxisSize: MainAxisSize.min,
@@ -4593,7 +4553,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                   children: [
                     Text(
                       l10n.worldChatPermsTitle,
-                      style: theme.textTheme.labelLarge?.copyWith(
+                      style: laUi.body.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -4616,13 +4576,12 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                       nameOf(id),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.bodySmall,
+                                      style: laUi.compact,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      (_grants[id] ?? const <String>[])
-                                          .isEmpty
+                                      (_grants[id] ?? const <String>[]).isEmpty
                                           ? '—'
                                           : (_grants[id]!).join('\n'),
                                       style: LaTokens.mono(
@@ -4652,9 +4611,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        '${nameOf(
-                                          '${_pending[i]['actorId'] ?? ''}',
-                                        )} → ${_pending[i]['projectId'] ?? ''}',
+                                        '${nameOf('${_pending[i]['actorId'] ?? ''}')} → ${_pending[i]['projectId'] ?? ''}',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: LaTokens.mono(
@@ -4694,10 +4651,11 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                     const SizedBox(height: 4),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: TextButton(
+                      child: LaButton(
                         key: const ValueKey('worldchat.meta.perms.close'),
+                        variant: LaButtonVariant.ghost,
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(l10n.worldChatCancel),
+                        label: l10n.worldChatCancel,
                       ),
                     ),
                   ],
@@ -4724,18 +4682,18 @@ class _ChannelMembersDialog extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-    return Dialog(
-      key: const ValueKey('worldchat.meta.members.popover'),
-      backgroundColor: context.shellRaised,
-      alignment: Alignment.topRight,
-      insetPadding: const EdgeInsets.fromLTRB(24, 110, 24, 24),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
-        side: BorderSide(color: context.shellHairline),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 260, maxHeight: 360),
+    final laUi = context.laUi;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 260, maxHeight: 360),
+      child: LaBox(
+        key: const ValueKey('worldchat.meta.members.popover'),
+        color: context.shellRaised,
+        floating: true,
+        radius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: BorderSide(color: context.shellHairline),
+        // The kit dialog insets 24 all around; the Material draft's
+        // 110px top inset rides the extra 86 here.
+        margin: const EdgeInsets.only(top: 86),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
           child: ListView(
@@ -4743,38 +4701,37 @@ class _ChannelMembersDialog extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               for (final id in memberIds)
-                InkWell(
+                LaPressable(
                   key: ValueKey('worldchat.meta.member.$id'),
                   onTap: () => onTapMember(id),
-                  borderRadius: BorderRadius.circular(ShellTokens.radius),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 6,
-                    ),
-                    child: Row(
-                      children: [
-                        ActorAvatar(
-                          profile:
-                              service.roster?.get(id) ??
-                              ActorProfile(
-                                actorId: id,
-                                displayName: actorDisplayFallback(id),
-                              ),
-                          size: 18,
+                  scaleOnPress: false,
+                  radius: BorderRadius.circular(ShellTokens.radius),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  child: Row(
+                    children: [
+                      ActorAvatar(
+                        profile:
+                            service.roster?.get(id) ??
+                            ActorProfile(
+                              actorId: id,
+                              displayName: actorDisplayFallback(id),
+                            ),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          service.roster?.get(id)?.displayName ??
+                              actorDisplayFallback(id),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: laUi.compact,
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            service.roster?.get(id)?.displayName ??
-                                actorDisplayFallback(id),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
             ],
@@ -4837,9 +4794,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
 
   Future<void> _archive() async {
     setState(() => _busy = true);
-    final closed = await widget.service.closeChannel(
-      widget.channel.channelId,
-    );
+    final closed = await widget.service.closeChannel(widget.channel.channelId);
     if (!mounted) return;
     if (closed) {
       Navigator.of(context).pop();
@@ -4854,22 +4809,21 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final channel = widget.channel;
     final facts = <(String, String)>[
       ('name', channel.name),
       ('members', l10n.worldChatMembers(channel.memberIds.length)),
       ('thread', channel.threadId),
     ];
-    return Dialog(
-      key: const ValueKey('worldchat.meta.info.dialog'),
-      backgroundColor: context.shellRaised,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ShellTokens.radius + 2),
-        side: BorderSide(color: context.shellHairline),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 420),
+      child: LaBox(
+        key: const ValueKey('worldchat.meta.info.dialog'),
+        color: context.shellRaised,
+        floating: true,
+        radius: BorderRadius.circular(ShellTokens.radius + 2),
+        border: BorderSide(color: context.shellHairline),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
           child: Column(
@@ -4878,7 +4832,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
             children: [
               Text(
                 '#${channel.name}',
-                style: theme.textTheme.labelLarge?.copyWith(
+                style: laUi.body.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -4909,21 +4863,12 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
+                    child: LaField(
                       key: const ValueKey('worldchat.meta.info.rename.field'),
                       controller: _rename,
                       enabled: !_busy,
-                      style: theme.textTheme.bodySmall,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: l10n.worldChatChannelNameHint,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            ShellTokens.radius,
-                          ),
-                          borderSide: BorderSide(color: context.shellHairline),
-                        ),
-                      ),
+                      style: laUi.compact,
+                      placeholder: l10n.worldChatChannelNameHint,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -4937,7 +4882,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
               const SizedBox(height: 4),
               // The honest-disabled icon row: the gap tooltip names
               // WHERE the verb arrives (Wave D's column menu).
-              Tooltip(
+              LaTooltip(
                 message: l10n.worldChatIconViaColumn,
                 child: Semantics(
                   enabled: false,
@@ -4954,7 +4899,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                         const SizedBox(width: 8),
                         Text(
                           l10n.worldChatChangeIcon,
-                          style: theme.textTheme.bodySmall?.copyWith(
+                          style: laUi.compact.copyWith(
                             color: context.la.inkQuiet,
                           ),
                         ),
@@ -4985,10 +4930,11 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
                     onTap: _busy ? () {} : () => unawaited(_archive()),
                   ),
                   const SizedBox(width: 4),
-                  TextButton(
+                  LaButton(
                     key: const ValueKey('worldchat.meta.info.close'),
+                    variant: LaButtonVariant.ghost,
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.worldChatCancel),
+                    label: l10n.worldChatCancel,
                   ),
                 ],
               ),

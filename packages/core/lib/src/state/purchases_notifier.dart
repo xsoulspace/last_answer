@@ -64,7 +64,6 @@ class PurchasesNotifier extends LoadableStateNotifier<PurchasesModel> {
       MonetizationProducts.subscriptionsForBuild.isNotEmpty;
 
   Future<void> watchAd(final BuildContext context) async {
-    final toasts = Toasts.of(context);
     final l10n = context.l10n;
     final userNotifier = context.read<UserNotifier>();
     final adsNotifier = context.read<AdsNotifier>();

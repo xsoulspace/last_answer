@@ -1,9 +1,9 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/home.dart';
 import 'package:lastanswer/idea/idea_view_bloc.dart';
 import 'package:lastanswer/idea/widgets/answer_creator.dart';
 import 'package:lastanswer/idea/widgets/answer_tile.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class IdeaView extends StatelessWidget {
   const IdeaView({
@@ -30,18 +30,24 @@ class IdeaViewBody extends StatelessWidget {
   Widget build(final BuildContext context) {
     final bloc = context.watch<IdeaViewBloc>();
     final answers = bloc.value.idea.answers;
+    final screenLayout = ScreenLayout.of(context);
     return Column(
       children: [
-        BackTextUniversalAppBar(
-          useBackButton: true,
-          screenLayout: ScreenLayout.of(context),
-          title: ProjectTitleField(
-            // onFocus: state.closeQuestions,
-            controller: bloc.titleController,
-            heroId: bloc.dto.initialIdea.id.value,
-            onChanged: (final _) {},
+        LaTopBar(
+          leading: screenLayout.small
+              ? LaButton.icon(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+                  onPressed: () => context.go(ScreenPaths.home),
+                )
+              : null,
+          title: Center(
+            child: ProjectTitleField(
+              // onFocus: state.closeQuestions,
+              controller: bloc.titleController,
+              heroId: bloc.dto.initialIdea.id.value,
+              onChanged: (final _) {},
+            ),
           ),
-          onBack: () => context.go(ScreenPaths.home),
         ),
         Expanded(
           child: Column(
@@ -72,7 +78,7 @@ class IdeaViewBody extends StatelessWidget {
                         onFocus: () => bloc.draftAnswerController
                             .updateIsQuestionsOpened(isOpened: false),
                         answer: answer,
-                        confirmDelete: () async => showRemoveTitleDialog(
+                        confirmDelete: () => showRemoveTitleDialog(
                           title: answer.title,
                           context: context,
                         ),

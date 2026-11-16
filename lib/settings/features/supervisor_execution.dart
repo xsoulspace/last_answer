@@ -56,7 +56,8 @@ final class SupervisorExecution extends ChangeNotifier {
                 client: agentClient,
                 resolver: agentClientResolver,
                 specs: {for (final spec in agentSpecs) spec.id: spec},
-              );        return (final name) {
+              );
+        return (final name) {
           if (name == 'process') return processes.factory(name);
           if (name == 'agent') {
             if (agentFactory != null) return agentFactory(name);

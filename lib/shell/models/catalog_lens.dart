@@ -414,18 +414,17 @@ final class _CatalogLensState extends State<CatalogLens> {
         borderRadius: BorderRadius.circular(ShellTokens.radius),
       ),
       padding: const EdgeInsets.all(10),
-      child: TextField(
+      // The raw-JSON lane on the kit field (borderless law): at rest it
+      // is the pane itself; hover earns the quiet fill, focus the
+      // accent hairline.
+      child: LaField(
         key: const ValueKey('models.json.field'),
         controller: _jsonCtrl,
         maxLines: null,
         expands: true,
-        textAlignVertical: TextAlignVertical.top,
         style: LaTokens.mono(11, la.ink),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          isDense: true,
-          contentPadding: EdgeInsets.zero,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        radius: BorderRadius.circular(4),
         onChanged: _onJsonChanged,
       ),
     );
@@ -597,7 +596,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                       : context.l10n.modelsChatGptSignedOut,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  style: context.laUi.micro.copyWith(
                     fontSize: 10,
                     color: la.inkQuiet,
                   ),
@@ -637,7 +636,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                   builtinLaneSentence(context, rung.id),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  style: context.laUi.micro.copyWith(
                     fontSize: 10,
                     color: la.inkQuiet,
                   ),
@@ -694,7 +693,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                           id,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelMedium,
+                          style: context.laUi.compact,
                         ),
                         if (!tight)
                           if (provider['base_url'] case final url?)
@@ -702,9 +701,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                               '$url',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.labelSmall?.copyWith(
+                              style: context.laUi.micro.copyWith(
                                 fontSize: 10,
                                 color: context.la.inkQuiet,
                               ),
@@ -1169,28 +1166,18 @@ final class _CatalogLensState extends State<CatalogLens> {
     final bool readOnly = false,
   }) {
     final la = context.la;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: la.canvas,
-        borderRadius: BorderRadius.circular(ShellTokens.radius),
-        border: Border.all(color: la.rule),
-      ),
-      child: TextField(
-        key: ValueKey(keyName),
-        controller: controller,
-        readOnly: readOnly,
-        style: LaTokens.mono(12, readOnly ? la.inkQuiet : la.ink),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: LaTokens.mono(11, la.inkQuiet),
-          border: InputBorder.none,
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 8,
-          ),
-        ),
-      ),
+    // The kit field law (borderless → hover fill → focus hairline):
+    // the resting canvas fill stays as the form panel's field tone.
+    return LaField(
+      key: ValueKey(keyName),
+      controller: controller,
+      readOnly: readOnly,
+      style: LaTokens.mono(12, readOnly ? la.inkQuiet : la.ink),
+      placeholder: hint,
+      placeholderStyle: LaTokens.mono(11, la.inkQuiet),
+      fill: la.canvas,
+      radius: BorderRadius.circular(ShellTokens.radius),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     );
   }
 }
@@ -1211,7 +1198,7 @@ final class _ModelIconVerb extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(final BuildContext context) => Tooltip(
+  Widget build(final BuildContext context) => LaTooltip(
     message: tooltip,
     child: Semantics(
       button: true,

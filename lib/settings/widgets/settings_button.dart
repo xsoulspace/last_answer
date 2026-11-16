@@ -10,8 +10,6 @@ class SettingsButton extends StatelessWidget {
     this.avatar,
     super.key,
   });
-  static final shape =
-      RoundedRectangleBorder(borderRadius: defaultBorderRadius);
   final String? fallbackRouteName;
   final String text;
   final BoolValueChanged<String>? checkSelected;
@@ -20,7 +18,6 @@ class SettingsButton extends StatelessWidget {
   final Widget? avatar;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     bool selected = checkSelected?.call(routeName) ?? false;
     if (!selected && fallbackRouteName != null) {
       selected = checkSelected?.call(fallbackRouteName!) ?? false;
@@ -28,20 +25,19 @@ class SettingsButton extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      child: ChoiceChip(
-        avatar: avatar,
-        label: SizedBox(
-          width: 180,
-          child: Text(text),
-        ),
-        pressElevation: 0,
-        padding: const EdgeInsets.all(14),
-        labelStyle: theme.textTheme.headlineMedium,
-        shape: shape,
-        backgroundColor: const Color(0x00000000),
-        selectedColor: context.la.accent.withValues(alpha: 0.2),
+      child: LaPressable(
+        onTap: () => onSelected(routeName),
         selected: selected,
-        onSelected: (final _) => onSelected(routeName),
+        selectedFill: context.laUi.accent.withValues(alpha: 0.2),
+        radius: defaultBorderRadius,
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (avatar != null) ...[avatar!, const SizedBox(width: 8)],
+            SizedBox(width: 180, child: Text(text, style: context.laUi.body)),
+          ],
+        ),
       ),
     );
   }

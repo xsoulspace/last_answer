@@ -1,4 +1,3 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 
 class ProjectsDirectionSwitch extends StatelessWidget {
@@ -10,27 +9,24 @@ class ProjectsDirectionSwitch extends StatelessWidget {
     final settings = userNotifier.settings;
     void setReverse({required final bool isReversed}) =>
         userNotifier.updateIsProjectsReversed(isReversed: isReversed);
+    final laUi = context.laUi;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
-          HoverableButton(
+          LaButton.icon(
             onPressed: () => setReverse(isReversed: true),
-            child: Icon(
+            icon: Icon(
               Icons.vertical_align_bottom_rounded,
-              color: settings.isProjectsListReversed
-                  ? context.colorScheme.primary
-                  : context.colorScheme.onBackground,
+              color: settings.isProjectsListReversed ? laUi.accent : laUi.ink,
             ),
           ),
-          HoverableButton(
+          LaButton.icon(
             onPressed: () => setReverse(isReversed: false),
-            child: Icon(
+            icon: Icon(
               Icons.vertical_align_top_rounded,
-              color: settings.isProjectsListReversed
-                  ? context.colorScheme.onBackground
-                  : context.colorScheme.primary,
+              color: settings.isProjectsListReversed ? laUi.ink : laUi.accent,
             ),
           ),
         ],

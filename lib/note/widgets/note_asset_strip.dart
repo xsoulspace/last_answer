@@ -23,15 +23,15 @@ class NoteAssetStrip extends HookWidget {
     final NoteAssetModel asset,
   ) async {
     final l10n = context.l10n;
-    await showModalBottomSheet<void>(
+    await showLaSheet<void>(
       context: context,
       builder: (final sheetContext) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
+            LaRow(
               leading: const Icon(Icons.edit_outlined),
-              title: Text(l10n.editImage),
+              titleText: l10n.editImage,
               onTap: () {
                 Navigator.of(sheetContext).pop();
                 unawaited(
@@ -48,17 +48,17 @@ class NoteAssetStrip extends HookWidget {
                 );
               },
             ),
-            ListTile(
+            LaRow(
               leading: const Icon(Icons.subtitles_outlined),
-              title: Text(l10n.captionImage),
+              titleText: l10n.captionImage,
               onTap: () {
                 Navigator.of(sheetContext).pop();
                 unawaited(_editCaption(context, store, asset));
               },
             ),
-            ListTile(
+            LaRow(
               leading: const Icon(Icons.delete_outline),
-              title: Text(l10n.removeImage),
+              titleText: l10n.removeImage,
               onTap: () {
                 Navigator.of(sheetContext).pop();
                 unawaited(_remove(context, store, asset));
@@ -79,27 +79,27 @@ class NoteAssetStrip extends HookWidget {
     final NoteAssetModel asset,
   ) async {
     final controller = TextEditingController(text: asset.alt);
-    final alt = await showDialog<String>(
+    final alt = await showLaDialog<String>(
       context: context,
-      builder: (final dialogContext) => AlertDialog(
-        title: Text(dialogContext.l10n.captionImage),
-        content: TextField(
+      builder: (final dialogContext) => LaDialog(
+        titleText: dialogContext.l10n.captionImage,
+        content: LaTextArea(
           controller: controller,
           autofocus: true,
           maxLines: 3,
-          decoration: InputDecoration(
-            hintText: dialogContext.l10n.altTextHint,
-          ),
+          placeholder: dialogContext.l10n.altTextHint,
         ),
         actions: [
-          TextButton(
+          LaButton(
+            label: dialogContext.l10n.cancel,
+            variant: LaButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(dialogContext.l10n.cancel),
           ),
-          TextButton(
+          LaButton(
+            label: dialogContext.l10n.captionImage,
+            variant: LaButtonVariant.primary,
             onPressed: () =>
                 Navigator.of(dialogContext).pop(controller.text),
-            child: Text(dialogContext.l10n.captionImage),
           ),
         ],
       ),

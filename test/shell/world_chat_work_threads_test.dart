@@ -17,10 +17,11 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
+
+import 'package:flutter/material.dart';import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_layout.dart';
@@ -111,6 +112,10 @@ Future<void> _pumpSurface(
   final WorkspaceNotifier? workspaces,
 }) async {
   Widget app = MaterialApp(
+    // The kit overlay host (the world_chat_composer_test pattern):
+    // LaTooltip/LaMenuAnchor build PortalTargets even while closed.
+    builder: (final context, final child) =>
+        Portal(child: child ?? const SizedBox.shrink()),
     locale: const Locale('en'),
     localizationsDelegates: S.localizationsDelegates,
     supportedLocales: S.supportedLocales,
@@ -529,6 +534,9 @@ void main() {
         ChangeNotifierProvider<RealmChatService>.value(
           value: room.service,
           child: MaterialApp(
+            // The kit overlay host (the world_chat_composer_test pattern).
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
             locale: const Locale('en'),
             localizationsDelegates: S.localizationsDelegates,
             supportedLocales: S.supportedLocales,
@@ -555,6 +563,93 @@ void main() {
       expect(opened, <String>[workId]);
       FocusManager.instance.primaryFocus?.unfocus();
       await tester.pumpAndSettle();
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  // Owner decision 2026-11-16: the threads browser rides DM panes too
+  // — "or people (dms) too — just talking with one actor can do some
+  // work too". A dm thread is already a valid work-order parent, so
+  // the Threads group lists the dm's own children; the Rooms group
+  // lists the watchable rooms with the declared sessions AFTER the
+  // organic rooms, each carrying its quiet kind mark (ADR 0145).
+  testWidgets(
+    'g — the threads browser rides a DM pane: the dm parent work '
+    'threads, the rooms group, sessions after organic rooms with the '
+    'kind mark',
+    (final tester) async {
+      final room = await _openRoom(tester, 'dmpane');
+      late final String dmThreadId;
+      late final String workId;
+      late final String sessionId;
+      late final String actorRoomId;
+      await tester.runAsync(() async {
+        final ada = (await room.service.createActor(
+          displayName: 'Ada',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+        // The declared dm (a valid work-order parent).
+        await room.service.openDm(ada.actorId);
+        dmThreadId = room.service.activeThreadId!;
+        await room.service.grantAccess(room.humanId, room.repoPath);
+        final spawn = await room.service.spawnWorkThread(
+          parentThreadId: dmThreadId,
+          projectRoot: room.repoPath,
+          memberIds: <String>[ada.actorId],
+          orderText: 'work from the dm',
+        );
+        expect(spawn.isSpawned, isTrue, reason: spawn.message);
+        workId = spawn.workThread!.workThreadId;
+        // A declared session and an organic actor↔actor room.
+        final opened = await room.service.openSession('smoke-a');
+        sessionId = opened!['threadId']! as String;
+        final human = room.world.authorityFor(room.humanId);
+        final actorRoom = await room.world.conversation().open(
+          actor: human,
+          topic: 'actors only',
+          realmSealed: true,
+        );
+        actorRoomId = actorRoom['threadId']! as String;
+        await room.service.refreshThreads();
+        room.service.selectThread(dmThreadId);
+      });
+      await _pumpSurface(tester, room.service);
+
+      // The toggle renders on a DM pane…
+      expect(
+        find.byKey(const ValueKey('worldchat.threads.toggle')),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.byKey(const ValueKey('worldchat.threads.toggle')),
+      );
+      await tester.pump();
+      // …the panel opens with the dm parent's work thread in the
+      // Threads group…
+      expect(
+        find.byKey(const ValueKey('worldchat.threads.panel')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('worldchat.threads.row.work.$workId')),
+        findsOneWidget,
+      );
+      // …and both rooms in the Rooms group, the session marked.
+      final organicRow = find.byKey(
+        ValueKey('worldchat.threads.row.room.$actorRoomId'),
+      );
+      final sessionRow = find.byKey(
+        ValueKey('worldchat.threads.row.room.$sessionId'),
+      );
+      expect(organicRow, findsOneWidget);
+      expect(sessionRow, findsOneWidget);
+      expect(find.text('session'), findsOneWidget);
+      // Sorted AFTER the organic rooms (advanced placement).
+      expect(
+        tester.getCenter(sessionRow).dy,
+        greaterThan(tester.getCenter(organicRow).dy),
+      );
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );

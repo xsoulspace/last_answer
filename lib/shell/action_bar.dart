@@ -162,8 +162,8 @@ final class _TotalUnreadBadge extends StatelessWidget {
             ),
             child: Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: context.la.onAccent,
+              style: context.laUi.micro.copyWith(
+                color: context.laUi.onAccent,
                 fontSize: 9,
                 fontWeight: FontWeight.w700,
               ),
@@ -215,69 +215,76 @@ final class _BarButtonState extends State<_BarButton> {
       selected: widget.active,
       label: widget.semanticsLabel,
       hint: widget.tooltip,
-      child: Tooltip(
+      child: LaTooltip(
         message: widget.tooltip,
-        waitDuration: const Duration(milliseconds: 600),
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          onEnter: (final _) => setState(() => _hovering = true),
-          onExit: (final _) => setState(() => _hovering = false),
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: widget.onTap,
-            child: SizedBox(
-              width: ShellTokens.actionBarWidth,
-              height: ShellTokens.actionButtonSize + 8,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  // The active pip (Discord): a quiet ink bar at the
-                  // bar's left edge — shape, never color alone.
-                  if (widget.active)
-                    Positioned(
-                      left: 0,
-                      child: Container(
-                        width: 3,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: context.la.ink,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 120),
-                    curve: Curves.easeOut,
-                    width: ShellTokens.actionButtonSize,
-                    height: ShellTokens.actionButtonSize,
+        child: SizedBox(
+          width: ShellTokens.actionBarWidth,
+          height: ShellTokens.actionButtonSize + 8,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              // The active pip (Discord): a quiet ink bar at the
+              // bar's left edge — shape, never color alone.
+              if (widget.active)
+                Positioned(
+                  left: 0,
+                  child: Container(
+                    width: 3,
+                    height: 20,
                     decoration: BoxDecoration(
-                      // Wave K: flat at rest — hover = shellHover,
-                      // selected = shellSelected (the ShellRow grammar;
-                      // the old resting tint made every button look
-                      // permanently hovered).
-                      color: widget.active
-                          ? context.shellSelected
-                          : _hovering
-                          ? context.shellHover
-                          : null,
-                      borderRadius: BorderRadius.circular(
-                        lit
-                            ? ShellTokens.actionButtonRadiusActive
-                            : ShellTokens.actionButtonRadius,
-                      ),
-                    ),
-                    child: Icon(
-                      widget.icon,
-                      size: 18,
-                      color: lit ? context.la.ink : context.shellMuted,
+                      color: context.laUi.ink,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  if (widget.badge != null)
-                    Positioned(right: 2, bottom: 0, child: widget.badge!),
-                ],
+                ),
+              // Wave K: flat at rest — hover/selected fills come from
+              // LaPressable's ONE state layer (never hand-rolled); the
+              // 14→12 radius settle (the Discord squircle grammar) rides
+              // a bounded TweenAnimationBuilder on the kit's motion budget.
+              TweenAnimationBuilder<double>(
+                tween: Tween<double>(
+                  end: lit
+                      ? ShellTokens.actionButtonRadiusActive
+                      : ShellTokens.actionButtonRadius,
+                ),
+                duration: context.laUi.motionFast,
+                curve: Curves.easeOut,
+                builder:
+                    (final context, final radius, _) =>
+                        LaPressable.builder(
+                          onTap: widget.onTap,
+                          selected: widget.active,
+                          radius: BorderRadius.circular(radius),
+                          // The outer Semantics already carries the §2.3
+                          // contract (button + selected + label + hint) —
+                          // frozen; the pressable stays a pure state and
+                          // gesture carrier.
+                          semanticsButton: false,
+                          onHoverChange: (final value) {
+                            if (value != _hovering) {
+                              setState(() => _hovering = value);
+                            }
+                          },
+                          childBuilder: (final context, final state) {
+                            final innerLit = widget.active || state.hovered;
+                            return SizedBox(
+                              width: ShellTokens.actionButtonSize,
+                              height: ShellTokens.actionButtonSize,
+                              child: Icon(
+                                widget.icon,
+                                size: 18,
+                                color: innerLit
+                                    ? context.laUi.ink
+                                    : context.shellMuted,
+                              ),
+                            );
+                          },
+                        ),
               ),
-            ),
+              if (widget.badge != null)
+                Positioned(right: 2, bottom: 0, child: widget.badge!),
+            ],
           ),
         ),
       ),

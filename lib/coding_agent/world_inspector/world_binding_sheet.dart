@@ -1,7 +1,11 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 
 import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
     if (dart.library.io)
@@ -33,7 +37,7 @@ Future<WorldBindingChoice> showWorldBindingSheet(
 }) async {
   final worlds = await external_worlds.discoverWorlds();
   if (!context.mounted) return const WorldBindingChoice.dismissed();
-  final choice = await showAdaptiveDialog<WorldBindingChoice>(
+  final choice = await showLaDialog<WorldBindingChoice>(
     context: context,
     builder: (final context) => _WorldBindingSheet(worlds: worlds, current: current),
   );
@@ -48,10 +52,11 @@ class _WorldBindingSheet extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final l10n = context.l10n;
-    return AlertDialog.adaptive(
-      title: Text(l10n.worldBindingSheetTitle),
+    return LaDialog(
+      showClose: false,
+      titleText: l10n.worldBindingSheetTitle,
       content: SizedBox(
         width: 420,
         child: Column(
@@ -68,7 +73,10 @@ class _WorldBindingSheet extends StatelessWidget {
               onPick: () => Navigator.of(context)
                   .pop(const WorldBindingChoice.embedded()),
             ),
-            const Divider(height: 12),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 6),
+              child: LaHairline(),
+            ),
             if (worlds.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -77,9 +85,7 @@ class _WorldBindingSheet extends StatelessWidget {
                 ),
                 child: Text(
                   l10n.worldBindingNoWorlds,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  style: laUi.compact,
                 ),
               )
             else
@@ -111,7 +117,10 @@ class _WorldBindingSheet extends StatelessWidget {
                   },
                 ),
               ),
-            const Divider(height: 12),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 6),
+              child: LaHairline(),
+            ),
             _row(
               context: context,
               title: l10n.worldBindingManual,
@@ -123,10 +132,11 @@ class _WorldBindingSheet extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () =>
               Navigator.of(context).pop(const WorldBindingChoice.dismissed()),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          label: context.l10n.cancel,
         ),
       ],
     );
@@ -139,12 +149,11 @@ class _WorldBindingSheet extends StatelessWidget {
     required final IconData icon,
     required final VoidCallback onPick,
     final bool selected = false,
-  }) => ListTile(
+  }) => LaRow(
     key: Key('world_binding.$title'),
-    dense: true,
     leading: Icon(icon, size: 20),
-    title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-    subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+    titleText: title,
+    metaText: subtitle,
     trailing: selected ? const Icon(Icons.check, size: 16) : null,
     onTap: onPick,
   );
@@ -153,23 +162,21 @@ class _WorldBindingSheet extends StatelessWidget {
     final l10n = context.l10n;
     final controller = TextEditingController(text: 'http://127.0.0.1:');
     String? error;
-    final binding = await showAdaptiveDialog<WorldBindingModel>(
+    final binding = await showLaDialog<WorldBindingModel>(
       context: context,
       builder: (final context) => StatefulBuilder(
-        builder: (final context, final setState) => AlertDialog.adaptive(
-          title: Text(l10n.worldBindingManual),
+        builder: (final context, final setState) => LaDialog(
+          showClose: false,
+          titleText: l10n.worldBindingManual,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
+              LaField(
                 key: const Key('world_binding.endpoint_field'),
                 controller: controller,
                 autofocus: true,
-                decoration: InputDecoration(
-                  labelText: l10n.worldBindingEndpointLabel,
-                  hintText: l10n.worldBindingManualHint,
-                  errorText: error,
-                ),
+                placeholder: l10n.worldBindingEndpointLabel,
+                errorText: error,
                 onSubmitted: (final value) {
                   final parsed = parseManualBinding(value);
                   if (parsed == null) {
@@ -182,14 +189,14 @@ class _WorldBindingSheet extends StatelessWidget {
             ],
           ),
           actions: [
-            TextButton(
+            LaButton(
+              variant: LaButtonVariant.ghost,
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                MaterialLocalizations.of(context).cancelButtonLabel,
-              ),
+              label: context.l10n.cancel,
             ),
-            TextButton(
+            LaButton(
               key: const Key('world_binding.manual_connect'),
+              variant: LaButtonVariant.primary,
               onPressed: () {
                 final parsed = parseManualBinding(controller.text);
                 if (parsed == null) {
@@ -198,9 +205,7 @@ class _WorldBindingSheet extends StatelessWidget {
                 }
                 Navigator.of(context).pop(parsed);
               },
-              child: Text(
-                MaterialLocalizations.of(context).okButtonLabel,
-              ),
+              label: context.l10n.confirm,
             ),
           ],
         ),

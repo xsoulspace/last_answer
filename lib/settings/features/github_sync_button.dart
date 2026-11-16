@@ -52,23 +52,22 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
 
   Future<void> _backup() async {
     final l10n = context.l10n;
-    final toasts = Toasts.of(context);
     final payload = jsonEncode(await _buildDbSaveJson());
     if (!mounted) return;
     await _notifier.backupNow(context, jsonPayload: payload);
     if (_notifier.selection != null && mounted) {
-      await toasts.showBottomToast(message: l10n.githubBackupDone);
+      LaToast.show(context, message: l10n.githubBackupDone);
     }
   }
 
   Future<void> _restore() async {
     final l10n = context.l10n;
-    final modals = Modals.of(context);
-    final shouldContinue = await modals.showWarningDialog(
+    final shouldContinue = await showLaConfirm(
+      context,
       title: l10n.confirmProjectsOwerwrite,
-      noActionText: l10n.cancel,
-      yesActionText: l10n.confirm,
-      description: l10n.beCarefulItsInreversableAction,
+      cancelLabel: l10n.cancel,
+      confirmLabel: l10n.confirm,
+      message: l10n.beCarefulItsInreversableAction,
     );
     if (!shouldContinue || !mounted) return;
 
@@ -77,34 +76,31 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
     final dbSave = DbSaveModel.fromJson(jsonDecode(payload));
     if (dbSave.isEmpty) return;
     final appNotifier = context.read<AppNotifier>();
-    final toasts = Toasts.of(context);
     await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
     if (mounted) {
-      await toasts.showBottomToast(message: l10n.githubRestoreDone);
+      LaToast.show(context, message: l10n.githubRestoreDone);
     }
   }
 
   Future<void> _showTokenDialog(final BuildContext context) async {
     final l10n = context.l10n;
     final controller = TextEditingController();
-    final confirmed = await showDialog<bool>(
+    final confirmed = await showLaDialog<bool>(
       context: context,
-      builder: (final dialogContext) => AlertDialog(
-        title: Text(l10n.tokenGuideTitle),
+      builder: (final dialogContext) => LaDialog(
+        titleText: l10n.tokenGuideTitle,
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.tokenStep1, style: dialogContext.textTheme.bodySmall),
+              Text(l10n.tokenStep1, style: dialogContext.laUi.compact),
               const SizedBox(height: 4),
-              Text(l10n.tokenStep2, style: dialogContext.textTheme.bodySmall),
-              TextButton.icon(
+              Text(l10n.tokenStep2, style: dialogContext.laUi.compact),
+              LaButton(
+                variant: LaButtonVariant.link,
                 icon: const Icon(Icons.open_in_new, size: 16),
-                label: Text(
-                  l10n.openGithubTokens,
-                  style: dialogContext.textTheme.bodySmall,
-                ),
+                label: l10n.openGithubTokens,
                 onPressed: () => unawaited(
                   launchUrl(
                     Uri.parse(
@@ -115,28 +111,23 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(l10n.tokenStep3, style: dialogContext.textTheme.bodySmall),
+              Text(l10n.tokenStep3, style: dialogContext.laUi.compact),
               const SizedBox(height: 4),
-              Text(l10n.tokenStep4, style: dialogContext.textTheme.bodySmall),
+              Text(l10n.tokenStep4, style: dialogContext.laUi.compact),
               const SizedBox(height: 4),
-              Text(l10n.tokenStep5, style: dialogContext.textTheme.bodySmall),
+              Text(l10n.tokenStep5, style: dialogContext.laUi.compact),
               const SizedBox(height: 12),
-              TextField(
+              LaField(
                 controller: controller,
                 obscureText: true,
-                decoration: InputDecoration(
-                  labelText: l10n.tokenFieldLabel,
-                  isDense: true,
-                ),
+                placeholder: l10n.tokenFieldLabel,
               ),
               const SizedBox(height: 12),
-              Text(l10n.tokenSafety, style: dialogContext.textTheme.bodySmall),
-              TextButton.icon(
+              Text(l10n.tokenSafety, style: dialogContext.laUi.compact),
+              LaButton(
+                variant: LaButtonVariant.link,
                 icon: const Icon(Icons.manage_accounts, size: 16),
-                label: Text(
-                  l10n.manageTokens,
-                  style: dialogContext.textTheme.bodySmall,
-                ),
+                label: l10n.manageTokens,
                 onPressed: () => unawaited(
                   launchUrl(
                     Uri.parse('https://github.com/settings/tokens'),
@@ -148,13 +139,15 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
           ),
         ),
         actions: [
-          TextButton(
+          LaButton(
+            variant: LaButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.cancel),
+            label: l10n.cancel,
           ),
-          FilledButton(
+          LaButton(
+            variant: LaButtonVariant.primary,
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l10n.connectWithToken),
+            label: l10n.connectWithToken,
           ),
         ],
       ),
@@ -168,7 +161,7 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
   @override
   Widget build(final BuildContext context) {
     if (!GithubSyncNotifier.isSupported) {
-      return Text(context.l10n.githubSync, style: context.textTheme.bodySmall);
+      return Text(context.l10n.githubSync, style: context.laUi.compact);
     }
     return ListenableBuilder(
       listenable: _notifier,
@@ -181,13 +174,7 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
     if (_notifier.connecting || _notifier.busy) {
       return const Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-        ],
+        children: [LaSpinner(size: 20)],
       );
     }
     if (!_notifier.connected) {
@@ -195,18 +182,23 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SwitchListTile.adaptive(
-            contentPadding: EdgeInsets.zero,
-            title: Text(l10n.githubSync),
-            subtitle: Text(l10n.connectGithub),
-            value: false,
-            onChanged: (final _) => unawaited(_notifier.connect(context)),
+          LaRow(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            titleText: l10n.githubSync,
+            metaText: l10n.connectGithub,
+            onTap: () => unawaited(_notifier.connect(context)),
+            trailing: LaSwitch(
+              value: false,
+              onChanged: (final _) => unawaited(_notifier.connect(context)),
+            ),
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: TextButton(
+            child: LaButton(
+              variant: LaButtonVariant.link,
               onPressed: () => unawaited(_showTokenDialog(context)),
-              child: Text(l10n.pasteTokenInstead),
+              label: l10n.pasteTokenInstead,
             ),
           ),
         ],
@@ -221,31 +213,31 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SwitchListTile.adaptive(
-          contentPadding: EdgeInsets.zero,
-          title: Text(l10n.githubSync),
-          value: true,
-          onChanged: (final _) => unawaited(_notifier.disconnect(context)),
+        LaRow(
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
+          titleText: l10n.githubSync,
+          onTap: () => unawaited(_notifier.disconnect(context)),
+          trailing: LaSwitch(
+            value: true,
+            onChanged: (final _) => unawaited(_notifier.disconnect(context)),
+          ),
         ),
         if (needsRepo)
           ..._repoPicker(l10n)
         else ...[
-          ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.folder_open),
-            title: Text('${selection.owner}/${selection.repo}'),
-            subtitle: Text(l10n.chooseRepository),
+          LaRow(
+            margin: EdgeInsets.zero,
+            leading: const Icon(Icons.folder_open, size: 18),
+            titleText: '${selection.owner}/${selection.repo}',
+            metaText: l10n.chooseRepository,
             onTap: () => unawaited(
               _notifier.selectRepository(owner: selection.owner, repo: ''),
             ),
           ),
-          TextField(
+          LaField(
             controller: _subdirController,
-            decoration: InputDecoration(
-              labelText: l10n.subdirectory,
-              isDense: true,
-            ),
+            placeholder: l10n.subdirectory,
             onSubmitted: _notifier.setSubdirectory,
           ),
           const SizedBox(height: 8),
@@ -253,14 +245,16 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
             spacing: 12,
             runSpacing: 4,
             children: [
-              TextButton.icon(
-                icon: const Icon(Icons.backup_outlined),
-                label: Text(l10n.backupToGithub),
+              LaButton(
+                variant: LaButtonVariant.ghost,
+                icon: const Icon(Icons.backup_outlined, size: 16),
+                label: l10n.backupToGithub,
                 onPressed: () => unawaited(_backup()),
               ),
-              TextButton.icon(
-                icon: const Icon(Icons.restore),
-                label: Text(l10n.restoreFromGithub),
+              LaButton(
+                variant: LaButtonVariant.ghost,
+                icon: const Icon(Icons.restore, size: 16),
+                label: l10n.restoreFromGithub,
                 onPressed: () => unawaited(_restore()),
               ),
             ],
@@ -277,26 +271,25 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
       required final String owner,
       required final String name,
       final bool? isPrivate,
-    }) => ListTile(
-      dense: true,
-      contentPadding: EdgeInsets.zero,
+    }) => LaRow(
+      margin: EdgeInsets.zero,
       leading: Icon(
         (isPrivate ?? true) ? Icons.lock_outline : Icons.lock_open_outlined,
         size: 18,
       ),
-      title: Text('$owner/$name'),
+      titleText: '$owner/$name',
       onTap: () => unawaited(
         _notifier
             .selectRepository(owner: owner, repo: name)
             .then((_) => _syncSubdirField()),
       ),
       trailing: current?.owner == owner && current?.repo == name
-          ? const Icon(Icons.check)
+          ? const Icon(Icons.check, size: 16)
           : null,
     );
 
     return [
-      Text(l10n.chooseRepository, style: context.textTheme.bodyMedium),
+      Text(l10n.chooseRepository, style: context.laUi.body),
       const SizedBox(height: 8),
       ...repos
           .take(20)
@@ -309,23 +302,20 @@ class _GithubSyncButtonState extends State<GithubSyncButton> {
               isPrivate: repo.isPrivate,
             ),
           ),
-      const Divider(),
-      Text(l10n.createNewRepository, style: context.textTheme.bodyMedium),
+      const LaHairline(),
+      Text(l10n.createNewRepository, style: context.laUi.body),
       const SizedBox(height: 4),
       Row(
         children: [
           Expanded(
-            child: TextField(
+            child: LaField(
               controller: _newRepoController,
-              decoration: InputDecoration(
-                hintText: l10n.repoNameHint,
-                isDense: true,
-              ),
+              placeholder: l10n.repoNameHint,
             ),
           ),
-          IconButton(
+          LaButton.icon(
             tooltip: l10n.createNewRepository,
-            icon: const Icon(Icons.add_circle_outline),
+            icon: const Icon(Icons.add_circle_outline, size: 18),
             onPressed: () => unawaited(
               _notifier.createRepository(
                 context: context,

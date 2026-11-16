@@ -230,7 +230,7 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     // A binding that predates the picker's options (or a hosted model
     // the option list lost) must still render — the raw ref stands in.
     final options = [
@@ -244,68 +244,44 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
       key: const ValueKey('actor.edit'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
+        LaField(
           key: const ValueKey(actorEditorNameKey),
           controller: _name,
-          decoration: InputDecoration(
-            labelText: l10n.actorsNameLabel,
-            hintText: l10n.actorsNameHint,
-            isDense: true,
-          ),
+          placeholder: l10n.actorsNameLabel,
           onChanged: (_) => setState(() {}),
         ),
         const SizedBox(height: 8),
-        TextField(
+        LaField(
           key: const ValueKey(actorEditorRoleKey),
           controller: _role,
-          decoration: InputDecoration(
-            labelText: l10n.actorsRoleLabel,
-            hintText: l10n.actorsRoleHint,
-            isDense: true,
-          ),
+          placeholder: l10n.actorsRoleLabel,
         ),
         const SizedBox(height: 8),
-        TextField(
+        LaField(
           key: const ValueKey(actorEditorPersonaKey),
           controller: _persona,
           minLines: 2,
           maxLines: 6,
-          decoration: InputDecoration(
-            labelText: l10n.actorsPersonaLabel,
-            hintText: l10n.actorsPersonaHint,
-            alignLabelWithHint: true,
-            isDense: true,
-          ),
+          placeholder: l10n.actorsPersonaLabel,
         ),
         const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
+        LaSelect<String>(
           key: const ValueKey(actorEditorBrainKey),
-          initialValue: _brainBase,
+          value: _brainBase,
           // The panel is narrow (240px): the selected label must shrink,
           // never overflow the field.
-          isExpanded: true,
-          decoration: InputDecoration(
-            labelText: l10n.actorsBrainLabel,
-            isDense: true,
-          ),
+          expand: true,
+          placeholder: l10n.actorsBrainLabel,
           items: [
             for (final option in options)
-              DropdownMenuItem(
+              LaSelectItem(
                 value: option.ref,
+                label: option.label,
                 // 1b — the brain's health verdict rides its name here
-                // too (the resource law travels with the picker).
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        option.label,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    BrainHealthDot(brainRef: option.ref),
-                  ],
-                ),
+                // too (the resource law travels with the picker). Kit
+                // gap: LaSelectItem has no trailing slot, so the dot
+                // rides the leading icon slot.
+                icon: BrainHealthDot(brainRef: option.ref),
               ),
           ],
           onChanged: (final value) => setState(() => _brainBase = value),
@@ -314,20 +290,25 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
         // or the actor's OWN ordered set, plus the self-rebind switch
         // (the row's `selfBind`; the global toggle governs the default).
         const SizedBox(height: 8),
-        Text(l10n.actorsBrainSet, style: theme.textTheme.bodySmall),
+        Text(l10n.actorsBrainSet, style: laUi.compact),
         const SizedBox(height: 2),
-        SwitchListTile(
+        LaRow(
           key: const ValueKey(actorEditorBrainSetOwnKey),
-          contentPadding: EdgeInsets.zero,
-          dense: true,
+          padding: EdgeInsets.zero,
           title: Text(
             _ownSetOn ? l10n.actorsBrainSetOwn : l10n.actorsBrainSetAuto,
-            style: theme.textTheme.bodySmall,
+            style: laUi.compact,
           ),
-          value: _ownSetOn,
-          onChanged: (final on) => setState(() {
-            _ownSetOn = on;
-            if (!on) _brainSet = <String>[];
+          trailing: LaSwitch(
+            value: _ownSetOn,
+            onChanged: (final on) => setState(() {
+              _ownSetOn = on;
+              if (!on) _brainSet = <String>[];
+            }),
+          ),
+          onTap: () => setState(() {
+            _ownSetOn = !_ownSetOn;
+            if (!_ownSetOn) _brainSet = <String>[];
           }),
         ),
         if (_ownSetOn) ...[
@@ -340,12 +321,12 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                     '${i + 1}. ${_labelOf(_brainSet[i])}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall,
+                    style: laUi.compact,
                   ),
                 ),
-                IconButton(
+                LaButton.icon(
                   key: ValueKey('actor.edit.brainSet.up.${_brainSet[i]}'),
-                  visualDensity: VisualDensity.compact,
+                  size: LaButtonSize.sm,
                   icon: const Icon(Icons.arrow_upward_outlined, size: 16),
                   onPressed: i == 0
                       ? null
@@ -354,9 +335,9 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                           _brainSet.insert(i - 1, moved);
                         }),
                 ),
-                IconButton(
+                LaButton.icon(
                   key: ValueKey('actor.edit.brainSet.down.${_brainSet[i]}'),
-                  visualDensity: VisualDensity.compact,
+                  size: LaButtonSize.sm,
                   icon: const Icon(Icons.arrow_downward_outlined, size: 16),
                   onPressed: i == _brainSet.length - 1
                       ? null
@@ -365,11 +346,11 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                           _brainSet.insert(i + 1, moved);
                         }),
                 ),
-                IconButton(
+                LaButton.icon(
                   key: ValueKey(
                     'actor.edit.brainSet.remove.${_brainSet[i]}',
                   ),
-                  visualDensity: VisualDensity.compact,
+                  size: LaButtonSize.sm,
                   icon: const Icon(Icons.close_outlined, size: 16),
                   onPressed: () =>
                       setState(() => _brainSet.removeAt(i)),
@@ -381,70 +362,60 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                 _castIdOf(option.ref) != null &&
                 !_brainSet.contains(_castIdOf(option.ref)),
           ))
-            DropdownButtonFormField<String>(
+            LaSelect<String>(
               key: const ValueKey(actorEditorBrainSetAddKey),
-              isExpanded: true,
-              hint: Text(l10n.actorsBrainSetAdd),
+              // An ADD control, never a value carrier: the trigger keeps
+              // its placeholder and each pick appends to the ordered set.
+              expand: true,
+              placeholder: l10n.actorsBrainSetAdd,
               items: [
                 for (final option in widget.brainOptions)
                   if (_castIdOf(option.ref) case final castId?)
                     if (!_brainSet.contains(castId))
-                      DropdownMenuItem(
-                        value: castId,
-                        child: Text(
-                          option.label,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      LaSelectItem(value: castId, label: option.label),
               ],
               onChanged: (final id) => setState(() {
                 if (id != null) _brainSet = [..._brainSet, id];
               }),
             ),
         ],
-        SwitchListTile(
+        LaRow(
           key: const ValueKey(actorEditorSelfBindKey),
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          title: Text(l10n.actorsSelfBind, style: theme.textTheme.bodySmall),
-          subtitle: Text(
+          padding: EdgeInsets.zero,
+          title: Text(l10n.actorsSelfBind, style: laUi.compact),
+          meta: Text(
             l10n.actorsSelfBindHint,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: laUi.compact.copyWith(color: laUi.inkMuted),
           ),
-          value: _selfBind,
-          onChanged: (final on) => setState(() => _selfBind = on),
+          trailing: LaSwitch(
+            value: _selfBind,
+            onChanged: (final on) => setState(() => _selfBind = on),
+          ),
+          onTap: () => setState(() => _selfBind = !_selfBind),
         ),
         if (_isLocalBinding) ...[
           const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const ValueKey(actorEditorTemperatureKey),
                   controller: _temperature,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  decoration: InputDecoration(
-                    labelText: l10n.actorsTemperatureLabel,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.actorsTemperatureLabel,
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: TextField(
+                child: LaField(
                   key: const ValueKey(actorEditorRepetitionKey),
                   controller: _repetition,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  decoration: InputDecoration(
-                    labelText: l10n.actorsRepetitionLabel,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.actorsRepetitionLabel,
                 ),
               ),
             ],
@@ -453,9 +424,7 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
             padding: const EdgeInsets.only(top: 4),
             child: Text(
               l10n.actorsSamplingHint,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: laUi.compact.copyWith(color: laUi.inkMuted),
             ),
           ),
         ],
@@ -464,8 +433,9 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
         // channel-icon law), the current mark previewed beside it.
         Row(
           children: [
-            TextButton(
+            LaButton(
               key: const ValueKey('actor.edit.avatar'),
+              variant: LaButtonVariant.ghost,
               onPressed: () async {
                 final picked = await pickActorAvatar(
                   context,
@@ -473,7 +443,7 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                 );
                 if (picked != null) setState(() => _avatar = picked);
               },
-              child: Text(l10n.actorsAvatar),
+              label: l10n.actorsAvatar,
             ),
             const SizedBox(width: 8),
             if (_avatar != null && _avatar!.isNotEmpty)
@@ -482,14 +452,12 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
         ),
         if (widget.tiersForBrain case final tiersFor?) ...[
           const SizedBox(height: 8),
-          Text(l10n.actorsReasoning, style: theme.textTheme.bodySmall),
+          Text(l10n.actorsReasoning, style: laUi.compact),
           const SizedBox(height: 4),
           if (tiersFor(_brainBase ?? '').isEmpty)
             Text(
               l10n.actorsReasoningNoLane,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: laUi.compact.copyWith(color: laUi.inkMuted),
             )
           else ...[
             Wrap(
@@ -500,16 +468,17 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
                   ...tiersFor(_brainBase ?? ''),
                   ?_reasoning,
                 })
-                  TextButton(
+                  LaButton(
                     key: ValueKey('actor.edit.reasoning.$tier'),
+                    variant: _reasoning == tier
+                        ? LaButtonVariant.primary
+                        : LaButtonVariant.ghost,
                     onPressed: () => setState(
                       () => _reasoning = _reasoning == tier ? null : tier,
                     ),
-                    child: Text(
-                      _reasoning == tier
-                          ? '✓ ${reasoningEffortTitle(tier)}'
-                          : reasoningEffortTitle(tier),
-                    ),
+                    label: _reasoning == tier
+                        ? '✓ ${reasoningEffortTitle(tier)}'
+                        : reasoningEffortTitle(tier),
                   ),
               ],
             ),
@@ -517,9 +486,7 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 l10n.actorsReasoningDaemonNote,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+                style: laUi.compact.copyWith(color: laUi.inkMuted),
               ),
             ),
           ],
@@ -532,15 +499,17 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
           overflowSpacing: 8,
           children: [
             if (widget.onCancel != null)
-              TextButton(
+              LaButton(
                 key: const ValueKey(actorEditorCancelKey),
+                variant: LaButtonVariant.ghost,
                 onPressed: _cancel,
-                child: Text(l10n.actorsDiscardChanges),
+                label: l10n.actorsDiscardChanges,
               ),
-            FilledButton(
+            LaButton(
               key: widget.saveKey ?? const ValueKey(actorEditorSaveKey),
+              variant: LaButtonVariant.primary,
               onPressed: _name.text.trim().isEmpty ? null : _save,
-              child: Text(l10n.actorsSaveChanges),
+              label: l10n.actorsSaveChanges,
             ),
           ],
         ),

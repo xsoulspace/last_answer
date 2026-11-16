@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
 
@@ -186,10 +187,10 @@ void main() {
       );
       await tester.pumpAndSettle();
       final plain = tester
-          .widget<SelectableText>(
+          .widget<LaSelectableText>(
             find.byKey(const Key('coding_agent.meaning.observations')),
           )
-          .data!;
+          .data;
       for (final name in names) {
         expect(plain, contains('Hello, $name!'));
         expect(plain, contains('Hello, $name! — updated'));

@@ -42,7 +42,6 @@ dependencies:
     path: ../../universal_storage/pkgs/universal_storage_live_apply
   animations: ^2.2.0
   archive: ^4.1.2
-  blur: ^4.0.2
   collection: ^1.19.1
   core:
   cryptography: ^2.7.0
@@ -53,7 +52,6 @@ dependencies:
   flextras: ^1.0.0
   flutter:
     sdk: flutter
-  flutter_animate: ^4.5.2
   flutter_hooks: ^0.21.3+1
   flutter_keyboard_visibility: ^6.0.0
   flutter_localizations:
@@ -73,6 +71,7 @@ dependencies:
   json_annotation: ^4.12.0
   image: ^4.2.0
   image_picker: ^1.1.2
+  la_ui:
   life_hooks: ^0.3.0
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6
@@ -85,7 +84,6 @@ dependencies:
   share_plus: ^13.2.1
   shared_models:
   shared_preferences: ^2.5.5
-  ui_kit:
   mcp_toolkit: ^5.0.4
   universal_storage_github_api:
     path: ../../universal_storage/pkgs/universal_storage_github_api

@@ -1,15 +1,11 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class SettingsListContainer extends StatelessWidget {
-  const SettingsListContainer({
-    required this.builder,
-    this.padding,
-    super.key,
-  });
+  const SettingsListContainer({required this.builder, this.padding, super.key});
   final EdgeInsets? padding;
   final List<Widget> Function(BuildContext context, double leftColumnWidth)
-      builder;
+  builder;
   @override
   Widget build(final BuildContext context) {
     final screenLayout = ScreenLayout.of(context);
@@ -20,10 +16,7 @@ class SettingsListContainer extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: builder(
-          context,
-          leftColumnWidth,
-        ),
+        children: builder(context, leftColumnWidth),
       ),
     );
   }

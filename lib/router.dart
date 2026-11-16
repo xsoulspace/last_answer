@@ -80,9 +80,9 @@ class AppRoute extends GoRoute {
          path: path,
          routes: routes,
          pageBuilder: (final context, final state) {
-           final pageContent = Scaffold(
+           final pageContent = LaScaffold(
              body: builder(state),
-             resizeToAvoidBottomInset: false,
+             safeArea: false,
            );
            if (useFade) {
              return CustomTransitionPage(

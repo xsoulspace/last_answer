@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
+
+import 'package:flutter/material.dart';import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
@@ -46,6 +47,10 @@ void main() {
       Widget app() => ChangeNotifierProvider<RealmChatService>.value(
         value: service,
         child: MaterialApp(
+          // The kit overlay host (the world_chat_composer_test pattern):
+          // LaTooltip/LaMenuAnchor build PortalTargets even while closed.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(body: WorldChatSurface(service: service)),
@@ -128,6 +133,9 @@ void main() {
       ChangeNotifierProvider<RealmChatService>.value(
         value: service,
         child: MaterialApp(
+          // The kit overlay host (the world_chat_composer_test pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(body: WorldChatSurface(service: service)),
@@ -191,6 +199,9 @@ void main() {
       ChangeNotifierProvider<RealmChatService>.value(
         value: service,
         child: MaterialApp(
+          // The kit overlay host (the world_chat_composer_test pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(body: WorldChatSurface(service: service)),
@@ -214,6 +225,11 @@ void main() {
     expect(nameField, findsOneWidget);
 
     await tester.enterText(nameField, 'Tuned Bot');
+    // The editor scrolls inside the bounded card (the N2 fields grew
+    // past a 600px window): reach Save the way a user does.
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('worldchat.card.save')),
+    );
     await tester.tap(find.byKey(const ValueKey('worldchat.card.save')));
     await tester.pump();
     await tester.runAsync(

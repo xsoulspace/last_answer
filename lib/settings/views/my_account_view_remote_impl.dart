@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/views/iap_views.dart';
 import 'package:lastanswer/settings/views/supporter_view/supporter_view.dart';
@@ -10,10 +9,9 @@ class MyAccountViewRemoteImpl extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     final userNotifier = context.watch<RemoteUserNotifier>();
     final isAuthorized = userNotifier.isAuthorized;
-    return SelectionArea(
+    return LaSelectionArea(
       child: isAuthorized || kDebugMode
           ? const _AuthorizedView()
           : const _UnauthorizedView(),
@@ -21,42 +19,47 @@ class MyAccountViewRemoteImpl extends StatelessWidget {
   }
 }
 
-class _AuthorizedView extends StatelessWidget {
+class _AuthorizedView extends HookWidget {
   const _AuthorizedView();
   static const isPaymentsAvailable = false;
 
   @override
   Widget build(final BuildContext context) {
-    final tabs = {
+    // The kit tab grammar (Material NestedScrollView/SliverAppBar/TabBar
+    // retired): a centered LaTabStrip over a PageView pager — the pinned
+    // sliver added nothing here, the strip was the only header content.
+    final entries = <(String, Widget)>[
+      if (isPaymentsAvailable) ('Subscription', const SubscriptionView()),
       if (isPaymentsAvailable)
-        const Tab(text: 'Subscription'): const SubscriptionView(),
-      if (isPaymentsAvailable)
-        const Tab(text: 'Payment History'): const PaymentsHistoryListView(),
-      const Tab(text: 'Become Pro'): const SupportAppView(),
-      const Tab(text: 'Profile'): const ProfileView(),
-    };
-    return DefaultTabController(
-      length: tabs.length,
-      child: NestedScrollView(
-        headerSliverBuilder: (final context, final innerBoxIsScrolled) => [
-          SliverAppBar(
-            pinned: true,
-            toolbarHeight: 0,
-            automaticallyImplyLeading: false,
-            bottom: TabBar.secondary(
-              isScrollable: true,
-              tabAlignment: TabAlignment.center,
-              tabs: tabs.keys.toList(),
-            ),
-          ),
-        ],
-        body: Padding(
-          padding: const EdgeInsets.all(24),
-          child: TabBarView(
-            children: tabs.values.toList(),
+        ('Payment History', const PaymentsHistoryListView()),
+      ('Become Pro', const SupportAppView()),
+      ('Profile', const ProfileView()),
+    ];
+    final pageController = usePageController();
+    final currentTab = useState(0);
+    return Column(
+      children: [
+        LaTabStrip(
+          labels: [for (final (label, _) in entries) label],
+          currentIndex: currentTab.value,
+          centerAligned: true,
+          onTap: (final index) => pageController.animateToPage(
+            index,
+            duration: context.laUi.motionSettle,
+            curve: context.laUi.motionCurve,
           ),
         ),
-      ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (final index) => currentTab.value = index,
+              children: [for (final (_, view) in entries) view],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -75,34 +78,57 @@ class ProfileView extends StatelessWidget {
           'Any information you creating are still be saved on your device.',
         ),
         const Gap(24),
-        TextButton(
+        LaButton(
           onPressed: userNotifier.logout,
-          child: const Text('Sign out'),
+          variant: LaButtonVariant.ghost,
+          label: 'Sign out',
         ),
         const Gap(24),
-        LoadableWidget(
-          builder: (final context, final setLoading, final isLoading) =>
-              DangerZone(
-            isLoading: isLoading,
-            onRemove: () async {
-              setLoading(true);
-              final shouldProceed = await Modals.of(context).showWarningDialog(
-                title: context.l10n.areYouSure,
-                noActionText: context.l10n.cancel,
-                yesActionText: context.l10n.delete,
-                description:
-                    // TODO(arenukvern): add l10n,
-                    // ignore: lines_longer_than_80_chars
-                    'Your account will be deleted. \n\n- All projects will be not deleted since it is stored only your device. \n- Any payment history will be deleted and cannot be restored.',
-              );
-              if (shouldProceed == true) {
-                await userNotifier.deleteRemoteUser();
-              }
+        HookBuilder(
+          builder: (final context) {
+            final isLoading = useState(false);
+            return LaBox(
+              border: BorderSide(color: context.laUi.danger),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Row(
+                children: [
+                  Text(
+                    context.l10n.danger,
+                    style: context.laUi.body.copyWith(
+                      color: context.laUi.danger,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (isLoading.value)
+                    const LaSpinner(size: 18)
+                  else
+                    LaButton(
+                      variant: LaButtonVariant.destructiveGhost,
+                      label: context.l10n.deleteMyAccount,
+                      onPressed: () async {
+                        isLoading.value = true;
+                        final shouldProceed = await showLaConfirm(
+                          context,
+                          title: context.l10n.areYouSure,
+                          cancelLabel: context.l10n.cancel,
+                          confirmLabel: context.l10n.delete,
+                          destructive: true,
+                          // TODO(arenukvern): add l10n,
+                          message:
+                              // ignore: lines_longer_than_80_chars
+                              'Your account will be deleted. \n\n- All projects will be not deleted since it is stored only your device. \n- Any payment history will be deleted and cannot be restored.',
+                        );
+                        if (shouldProceed) {
+                          await userNotifier.deleteRemoteUser();
+                        }
 
-              setLoading(false);
-            },
-            removeText: context.l10n.deleteMyAccount,
-          ),
+                        isLoading.value = false;
+                      },
+                    ),
+                ],
+              ),
+            );
+          },
         ),
       ],
     );
@@ -114,17 +140,14 @@ class _UnauthorizedView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => SettingsListContainer(
-        builder: (final context, final leftColumnWidth) => [
-          Text(
-            'Log In',
-            style: context.textTheme.headlineLarge,
-          ),
-          const Gap(24),
-          const Text(
-            'Any projects you created will still be saved on your device.',
-          ),
-          const Gap(24),
-          const GoogleSignInButton(),
-        ],
-      );
+    builder: (final context, final leftColumnWidth) => [
+      Text('Log In', style: context.laUi.display),
+      const Gap(24),
+      const Text(
+        'Any projects you created will still be saved on your device.',
+      ),
+      const Gap(24),
+      const GoogleSignInButton(),
+    ],
+  );
 }

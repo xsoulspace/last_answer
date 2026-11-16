@@ -1,0 +1,22 @@
+name: la_ui
+description: >-
+  Last Answer design-system kit — the ONE component carrier of docs/DESIGN.md
+  (shadcn zinc discipline × Discord squircle grammar × Linear density).
+  Widgets-layer only: never imports package:flutter/material.dart (CI gate:
+  tool/check_ui_gates.dart).
+version: 0.1.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.12.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_portal: ^1.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

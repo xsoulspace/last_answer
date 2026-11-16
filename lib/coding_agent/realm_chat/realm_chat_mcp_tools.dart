@@ -33,6 +33,7 @@ final class RealmChatMcpEntries {
         _createActor(),
         _openDm(),
         _createChannel(),
+        _openSession(),
         _say(),
         _spawnWork(),
         _projectAccess(),
@@ -227,6 +228,44 @@ AgentCallEntry _createChannel() => _entry(
         return _ok(<String, Object?>{
           'channelId': channel.channelId,
           'threadId': channel.threadId,
+        });
+      },
+    );
+
+AgentCallEntry _openSession() => _entry(
+      'realm_chat_open_session',
+      'Open a DECLARED session thread (ADR 0145, machine-life room — '
+      'the smokes and dogfood runs): realm-sealed, kind session on the '
+      'row, watchable in the rooms projections. members: comma-separated '
+      'actor ids. Returns the thread id.',
+      const <String, dynamic>{
+        'type': 'object',
+        'properties': <String, dynamic>{
+          'label': <String, dynamic>{'type': 'string'},
+          'members': <String, dynamic>{'type': 'string'},
+        },
+        'required': <String>['label'],
+      },
+      (final args) async {
+        final service = _service;
+        if (service == null) {
+          return _fail('no_service', 'open a chat surface first');
+        }
+        final label = (args['label'] as String? ?? '').trim();
+        if (label.isEmpty) return _fail('missing_parameters', 'label');
+        final members = (args['members'] as String? ?? '')
+            .split(',')
+            .map((final m) => m.trim())
+            .where((final m) => m.isNotEmpty)
+            .toList();
+        await service.ensureReady();
+        final opened = await service.openSession(label, memberIds: members);
+        if (opened == null) {
+          return _fail(service.error ?? 'session_refused', 'see error');
+        }
+        return _ok(<String, Object?>{
+          'threadId': opened['threadId'],
+          'kind': opened['kind'] ?? 'session',
         });
       },
     );

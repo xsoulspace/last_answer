@@ -142,16 +142,16 @@ extension ProjectsNotifierX on ProjectsNotifier {
     _setFileLoading(true);
     try {
       final appNotifier = context.read<AppNotifier>();
-      final modals = Modals.of(context);
       final l10n = context.l10n;
       final sharer = ProjectSharer.of(context);
       final dbSave = await sharer.getFromClipboard(context);
       if (dbSave.isEmpty) return;
-      final shouldContinue = await modals.showWarningDialog(
+      final shouldContinue = await showLaConfirm(
+        context,
         title: l10n.confirmProjectsOwerwrite,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.confirm,
-        description: l10n.beCarefulItsInreversableAction,
+        message: l10n.beCarefulItsInreversableAction,
+        confirmLabel: l10n.confirm,
+        cancelLabel: l10n.cancel,
       );
       if (!shouldContinue) return;
       await appNotifier.restoreFromDbSave(dbSave: dbSave, context: context);
@@ -175,7 +175,6 @@ extension ProjectsNotifierX on ProjectsNotifier {
     _setFileLoading(true);
 
     try {
-      final toasts = Toasts.of(context);
       final l10n = context.l10n;
       final dbSave = await _getDbSave();
       final jsonName = useTimestampForBackupFilename
@@ -202,7 +201,7 @@ extension ProjectsNotifierX on ProjectsNotifier {
         );
       }
       if (!wasSaved) return;
-      await toasts.showBottomToast(message: l10n.fileSaved);
+      LaToast.info(context, l10n.fileSaved);
     } finally {
       _setFileLoading(false);
     }
@@ -214,14 +213,14 @@ extension ProjectsNotifierX on ProjectsNotifier {
   }) async {
     _setFileLoading(true);
     final appNotifier = context.read<AppNotifier>();
-    final modals = Modals.of(context);
     try {
       final l10n = context.l10n;
-      bool shouldContinue = await modals.showWarningDialog(
+      bool shouldContinue = await showLaConfirm(
+        context,
         title: l10n.areYouSure,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.load,
-        description: l10n.byLoadingFileWarning,
+        message: l10n.byLoadingFileWarning,
+        confirmLabel: l10n.load,
+        cancelLabel: l10n.cancel,
       );
       if (!shouldContinue) return;
       final backupBytes = await _fileService.openFileBytes();
@@ -232,11 +231,12 @@ extension ProjectsNotifierX on ProjectsNotifier {
           backupBytes[2] == 0x03 &&
           backupBytes[3] == 0x04;
 
-      shouldContinue = await modals.showWarningDialog(
+      shouldContinue = await showLaConfirm(
+        context,
         title: l10n.confirmProjectsOwerwrite,
-        noActionText: l10n.cancel,
-        yesActionText: l10n.confirm,
-        description: l10n.beCarefulItsInreversableAction,
+        message: l10n.beCarefulItsInreversableAction,
+        confirmLabel: l10n.confirm,
+        cancelLabel: l10n.cancel,
       );
       if (!shouldContinue) return;
       // The zip magic (`PK\x03\x04`) separates the asset-carrying

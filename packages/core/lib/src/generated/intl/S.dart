@@ -3627,6 +3627,12 @@ abstract class S {
   /// **'No threads yet.'**
   String get worldChatThreadsEmpty;
 
+  /// Threads browser: the quiet kind mark on a declared session row (ADR 0145).
+  ///
+  /// In en, this message translates to:
+  /// **'session'**
+  String get worldChatSessionKindMark;
+
   /// Composer meta row: permissions button tooltip.
   ///
   /// In en, this message translates to:
@@ -4394,6 +4400,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Crop square'**
   String get cropSquare;
+
+  /// No description provided for @selectionCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut'**
+  String get selectionCut;
+
+  /// No description provided for @selectionCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get selectionCopy;
+
+  /// No description provided for @selectionPaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
+  String get selectionPaste;
+
+  /// No description provided for @selectionSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get selectionSelectAll;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -90,10 +90,10 @@ Future<String?> pickProjectScope(
   required final String listKey,
 }) {
   final options = loadProjectScopeOptions(context, service);
-  return showDialog<String>(
+  return showLaDialog<String>(
     context: context,
-    builder: (final dialogContext) => AlertDialog(
-      title: Text(title),
+    builder: (final dialogContext) => LaDialog(
+      titleText: title,
       content: SizedBox(
         width: 360,
         height: 420,
@@ -102,7 +102,7 @@ Future<String?> pickProjectScope(
           builder: (final dialogContext, final snapshot) {
             final loaded = snapshot.data;
             if (loaded == null) {
-              return const Center(child: UiCircularProgress());
+              return const Center(child: LaSpinner());
             }
             if (loaded.isEmpty) {
               return Center(
@@ -111,7 +111,7 @@ Future<String?> pickProjectScope(
                   child: Text(
                     dialogContext.l10n.worldChatScopeEmpty,
                     textAlign: TextAlign.center,
-                    style: Theme.of(dialogContext).textTheme.bodySmall,
+                    style: dialogContext.laUi.compact,
                   ),
                 ),
               );
@@ -120,16 +120,16 @@ Future<String?> pickProjectScope(
               key: ValueKey(listKey),
               children: <Widget>[
                 for (final option in loaded)
-                  ListTile(
+                  LaRow(
                     key: ValueKey('$optionKeyPrefix.${option.path}'),
-                    dense: true,
                     leading: const Icon(Icons.folder_outlined, size: 18),
                     title: Text(
                       option.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
+                      style: dialogContext.laUi.control,
                     ),
-                    subtitle: Text(
+                    meta: Text(
                       option.path,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -149,9 +149,10 @@ Future<String?> pickProjectScope(
         ),
       ),
       actions: <Widget>[
-        TextButton(
+        LaButton(
+          variant: LaButtonVariant.ghost,
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: Text(dialogContext.l10n.worldChatCancel),
+          label: dialogContext.l10n.worldChatCancel,
         ),
       ],
     ),

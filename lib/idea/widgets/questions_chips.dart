@@ -38,28 +38,19 @@ class QuestionChip extends StatelessWidget {
     required this.text,
     super.key,
   });
-  static final shape = RoundedRectangleBorder(
-    borderRadius: defaultBorderRadius,
-  );
 
   final String text;
   final bool selected;
   final ValueChanged<bool> onSelected;
 
   @override
-  Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
-
-    return ChoiceChip.elevated(
-      label: Text(text),
-      labelStyle: theme.textTheme.bodyMedium,
-      shape: shape,
-      pressElevation: 2,
-      showCheckmark: false,
-      elevation: 0,
-      padding: PlatformInfo.isNativeWebDesktop ? null : EdgeInsets.zero,
-      selected: selected,
-      onSelected: onSelected,
-    );
-  }
+  Widget build(final BuildContext context) => LaPressable(
+    onTap: () => onSelected(!selected),
+    selected: selected,
+    radius: defaultBorderRadius,
+    padding: PlatformInfo.isNativeWebDesktop
+        ? const EdgeInsets.symmetric(horizontal: 10, vertical: 4)
+        : EdgeInsets.zero,
+    child: Text(text, style: context.laUi.body),
+  );
 }

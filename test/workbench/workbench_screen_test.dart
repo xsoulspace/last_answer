@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/workbench/workbench_screen.dart';
@@ -37,7 +38,9 @@ void main() {
       await tester.pumpWidget(
         Provider<DocumentRepository>.value(
           value: repo,
-          child: const MaterialApp(home: WorkbenchScreen(project: 'article')),
+          child: const Portal(
+            child: MaterialApp(home: WorkbenchScreen(project: 'article')),
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -97,7 +100,9 @@ void main() {
     await tester.pumpWidget(
       Provider<DocumentRepository>.value(
         value: repo,
-        child: const MaterialApp(home: WorkbenchScreen(project: 'article')),
+        child: const Portal(
+          child: MaterialApp(home: WorkbenchScreen(project: 'article')),
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -133,7 +138,7 @@ void main() {
       await tester.pumpWidget(
         Provider<DocumentRepository>.value(
           value: repo,
-          child: const MaterialApp(home: WorkbenchScreen()),
+          child: const Portal(child: MaterialApp(home: WorkbenchScreen())),
         ),
       );
       await tester.pumpAndSettle();
@@ -173,10 +178,7 @@ void main() {
     // names the absence.
     await tester.tap(find.byKey(const ValueKey('workbench.dock.chat')));
     await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('workbench.dock.absent')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('workbench.dock.absent')), findsOneWidget);
 
     // The runtime projection: file tree + preview lane, both honest.
     await tester.tap(find.text('runtime'));
@@ -193,10 +195,7 @@ void main() {
     // Closing the dock leaves the artifact and its projection pane.
     await tester.tap(find.byKey(const ValueKey('workbench.dock.chat')));
     await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('workbench.dock.absent')),
-      findsNothing,
-    );
+    expect(find.byKey(const ValueKey('workbench.dock.absent')), findsNothing);
     expect(tester.takeException(), isNull);
   });
 }

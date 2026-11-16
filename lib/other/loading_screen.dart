@@ -14,7 +14,7 @@ class LoadingScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const UiCircularProgress(),
+                const LaSpinner(),
                 const SizedBox(height: 5),
                 Text(S.of(context).loading),
               ],

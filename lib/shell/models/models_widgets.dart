@@ -41,8 +41,7 @@ final class ModelsChip extends StatelessWidget {
         label,
         style: mono
             ? LaTokens.mono(9, color)
-            : Theme.of(context).textTheme.labelSmall?.copyWith(
-                fontSize: 9,
+            : context.laUi.micro.copyWith(
                 fontWeight: FontWeight.w600,
                 color: color,
               ),
@@ -91,18 +90,10 @@ final class ModelsButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(6),
             ),
             child: busy
-                ? SizedBox(
-                    width: 11,
-                    height: 11,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.5,
-                      color: la.inkMuted,
-                    ),
-                  )
+                ? LaSpinner(size: 11, strokeWidth: 1.5, color: la.inkMuted)
                 : Text(
                     label,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontSize: 11,
+                    style: context.laUi.micro.copyWith(
                       fontWeight: FontWeight.w600,
                       color: la.inkMuted,
                     ),
@@ -163,7 +154,7 @@ final class ModelsRefusalNote extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+        style: context.laUi.micro.copyWith(
           fontFamily: LaTokens.monoFamily,
           color: context.la.inkMuted,
         ),

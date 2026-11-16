@@ -5,6 +5,7 @@
 // hash (String.hashCode) fails here — on every device.
 
 import 'package:flutter/material.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
@@ -239,7 +240,8 @@ void main() {
       final context = tester.element(find.byType(PresenceDot));
       final container = tester.widget<Container>(find.byType(Container));
       final decoration = container.decoration! as BoxDecoration;
-      expect(decoration.color, Theme.of(context).colorScheme.outline);
+      // The kit token (v6): the quiet outline is inkQuiet, not M3 outline.
+      expect(decoration.color, context.laUi.inkQuiet);
       expect(decoration.color, isNot(kActorPresenceOnline));
     });
   });

@@ -70,12 +70,8 @@ final class StatusEdge extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
     final la = context.la;
-    final style = theme.textTheme.labelSmall?.copyWith(
-      fontSize: 11,
-      color: la.inkMuted,
-    );
+    final style = context.laUi.micro.copyWith(color: la.inkMuted);
     final backends = context.read<StorageBackendsNotifier?>();
     return Container(
       key: const ValueKey('shell.statusEdge'),
@@ -263,8 +259,7 @@ final class _ArmButton extends StatelessWidget {
             child: Center(
               child: Text(
                 context.l10n.statusEdgeArm,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontSize: 11,
+                style: context.laUi.micro.copyWith(
                   fontWeight: FontWeight.w600,
                   color: la.accent,
                 ),
@@ -418,13 +413,10 @@ final class _EdgeSegment extends StatelessWidget {
           const SizedBox(width: 8),
         ],
         if (spinner)
-          SizedBox(
-            width: 9,
-            height: 9,
-            child: CircularProgressIndicator(
-              strokeWidth: 1.5,
-              color: dotColor ?? context.la.inkQuiet,
-            ),
+          LaSpinner(
+            size: 9,
+            strokeWidth: 1.5,
+            color: dotColor ?? context.laUi.inkQuiet,
           )
         else if (dotColor case final color?)
           // Wave K: the edge's status dots are 6px with 8px gaps.
@@ -440,7 +432,7 @@ final class _EdgeSegment extends StatelessWidget {
       ],
     );
     if (tooltip != null && tooltip!.isNotEmpty) {
-      segment = Tooltip(message: tooltip, child: segment);
+      segment = LaTooltip(message: tooltip!, child: segment);
     }
     // Phase 2 — the agent/screen-reader contract: the Semantics name
     // IS the widget key; the human words ride the hint.

@@ -91,7 +91,8 @@ class StorageBackendsNotifier extends ChangeNotifier {
     required String storePath,
     required String peerId,
     Uri? relayEndpoint,
-  })? meshServiceOpener;
+  })?
+  meshServiceOpener;
 
   /// App wiring: called after every mesh sync cycle (Sync now, join) so
   /// projections holding routed doc state re-read the fold — a peer's
@@ -180,12 +181,12 @@ class StorageBackendsNotifier extends ChangeNotifier {
         ..clear()
         ..addAll(
           ((map['enabled'] as List<dynamic>? ?? const <dynamic>[])
-                .whereType<String>()
-                .map(StorageBackendIdX.fromName))
-            .where(
-              (final id) =>
-                  id == StorageBackendId.localDb || id.isSupportedOnPlatform,
-            ),
+                  .whereType<String>()
+                  .map(StorageBackendIdX.fromName))
+              .where(
+                (final id) =>
+                    id == StorageBackendId.localDb || id.isSupportedOnPlatform,
+              ),
         )
         ..add(StorageBackendId.localDb);
       final persistedPrimary = StorageBackendIdX.fromName(
@@ -300,9 +301,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
     // Advanced/debug edits rebuild the replica on next use; the hosted
     // relay of a paired main device keeps running until left.
     final service = _meshService;
-    if (service != null &&
-        !service.isHosting &&
-        _meshRole == MeshRole.none) {
+    if (service != null && !service.isHosting && _meshRole == MeshRole.none) {
       _meshService = null;
       unawaited(service.dispose());
     }
@@ -488,9 +487,7 @@ class StorageBackendsNotifier extends ChangeNotifier {
   }) async {
     final reports = <StorageOperationReport>[];
     for (final target in replicationTargets) {
-      reports.add(
-        await replicate(backend: target, jsonPayload: jsonPayload),
-      );
+      reports.add(await replicate(backend: target, jsonPayload: jsonPayload));
     }
     return reports;
   }
@@ -706,14 +703,13 @@ class StorageBackendsNotifier extends ChangeNotifier {
       }
       effectiveStorePath = _meshStorePath;
     }
-    final service =
-        await (meshServiceOpener ?? MeshStorageService.open)(
-          storePath: effectiveStorePath,
-          relayEndpoint: _meshRelayEndpoint.isEmpty
-              ? null
-              : Uri.tryParse(_meshRelayEndpoint),
-          peerId: meshPeerId,
-        );
+    final service = await (meshServiceOpener ?? MeshStorageService.open)(
+      storePath: effectiveStorePath,
+      relayEndpoint: _meshRelayEndpoint.isEmpty
+          ? null
+          : Uri.tryParse(_meshRelayEndpoint),
+      peerId: meshPeerId,
+    );
     await _persist();
     _attachMeshSeams(service);
     _meshService = service;

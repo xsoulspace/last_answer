@@ -5,7 +5,6 @@ class SupportAppView extends StatelessWidget {
   const SupportAppView({super.key});
 
   @override
-  Widget build(final BuildContext context) => const SupportAppBaseView(
-        children: [],
-      );
+  Widget build(final BuildContext context) =>
+      const SupportAppBaseView(children: []);
 }

@@ -85,7 +85,7 @@ final class ObserveLens extends StatelessWidget {
                           children: [
                             Text(
                               rung.id,
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: context.laUi.compact,
                             ),
                             Text(
                               [
@@ -125,7 +125,7 @@ final class ObserveLens extends StatelessWidget {
   /// chrome). The cluster scales as a whole in a narrow split.
   Widget _daemonCard(final BuildContext context) {
     final la = context.la;
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     final l10n = context.l10n;
     return Container(
       key: const ValueKey('models.daemonCard'),
@@ -149,7 +149,7 @@ final class ObserveLens extends StatelessWidget {
                                   'pid ${world.daemonPid}'
                       : l10n.modelsDaemonDown,
                   key: const ValueKey('models.daemon'),
-                  style: theme.textTheme.labelMedium?.copyWith(
+                  style: theme.compact?.copyWith(
                     color: world.daemonLive ? null : la.caution,
                   ),
                 ),
@@ -165,7 +165,7 @@ final class ObserveLens extends StatelessWidget {
                   key: const ValueKey('models.scheduler'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.micro?.copyWith(
                     color: world.schedulerLive ? la.inkQuiet : la.caution,
                     fontSize: 10,
                   ),

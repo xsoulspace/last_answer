@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
+
+import 'package:flutter/material.dart';import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
@@ -332,6 +333,10 @@ void main() {
         ChangeNotifierProvider<RealmChatService>.value(
           value: service,
           child: MaterialApp(
+            // The kit overlay host: LaTooltip/LaMenuAnchor build
+            // PortalTargets even while closed (the house pattern).
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
             localizationsDelegates: S.localizationsDelegates,
             supportedLocales: S.supportedLocales,
             home: Scaffold(
@@ -389,7 +394,7 @@ void main() {
       // Edit mode: the same editor the Settings pane embeds.
       await tester.tap(find.byKey(const ValueKey('shell.context.actor.edit')));
       await tester.pump();
-      final nameField = tester.widget<TextField>(
+      final nameField = tester.widget<LaField>(
         find.byKey(const ValueKey(actorEditorNameKey)),
       );
       expect(nameField.controller?.text, 'Toby Researcher');
@@ -400,6 +405,12 @@ void main() {
       await tester.enterText(
         find.byKey(const ValueKey(actorEditorPersonaKey)),
         'You are Toby Prime, sharper.',
+      );
+      // The editor scrolls inside the people view (the N4 brain-set
+      // fields grew past a 600px window): reach Save the way a user
+      // does.
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('shell.context.actor.save')),
       );
       await tester.tap(find.byKey(const ValueKey('shell.context.actor.save')));
       // The save rides real IO (kernel store): poll inside runAsync until

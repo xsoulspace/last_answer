@@ -1970,6 +1970,9 @@ class SRu extends S {
   String get worldChatThreadsEmpty => 'Веток пока нет.';
 
   @override
+  String get worldChatSessionKindMark => 'сессия';
+
+  @override
   String get worldChatPermsTooltip => 'Разрешения';
 
   @override
@@ -2379,4 +2382,16 @@ class SRu extends S {
 
   @override
   String get cropSquare => 'Обрезать в квадрат';
+  @override
+  String get selectionCut => 'Вырезать';
+
+  @override
+  String get selectionCopy => 'Копировать';
+
+  @override
+  String get selectionPaste => 'Вставить';
+
+  @override
+  String get selectionSelectAll => 'Выбрать всё';
+
 }

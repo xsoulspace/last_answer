@@ -1,5 +1,5 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class ProjectTitleField extends HookWidget {
   const ProjectTitleField({
@@ -14,33 +14,39 @@ class ProjectTitleField extends HookWidget {
   final String heroId;
   final VoidCallback? onFocus;
   @override
-  Widget build(final BuildContext context) => HeroId(
-    id: heroId,
-    type: HeroIdTypes.projectTitle,
-    child: FocusBubbleContainer(
-      constraints: const BoxConstraints(maxWidth: 250),
-      onFocus: onFocus,
-      fillDefaultWithCanvas: true,
-      child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        keyboardAppearance: Theme.of(context).brightness,
-        style: Theme.of(context).textTheme.bodyMedium,
-        textAlign: TextAlign.center,
-        decoration: const InputDecoration()
-            .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(
-              contentPadding: const EdgeInsets.all(6),
-              fillColor: const Color(0x00000000),
-              filled: true,
-              isDense: true,
-              focusColor: const Color(0x00000000),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: defaultBorderRadius,
-              ),
-            ),
+  Widget build(final BuildContext context) {
+    // The legacy FocusBubbleContainer focus callback rides a node listener;
+    // the focus paint itself is the kit field's own.
+    final focusNode = useFocusNode();
+    useEffect(
+      () {
+        final onFocus = this.onFocus;
+        if (onFocus == null) return null;
+        void listener() {
+          if (focusNode.hasFocus) onFocus();
+        }
+
+        focusNode.addListener(listener);
+        return () => focusNode.removeListener(listener);
+      },
+      const [],
+    );
+
+    return HeroId(
+      id: heroId,
+      type: HeroIdTypes.projectTitle,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 250),
+        child: LaField(
+          controller: controller,
+          focusNode: focusNode,
+          onChanged: onChanged,
+          style: context.laUi.body,
+          textAlign: TextAlign.center,
+          showFocusHairline: false,
+          padding: const EdgeInsets.all(6),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

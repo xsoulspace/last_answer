@@ -20,7 +20,7 @@ class SettingsListTile extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -43,9 +43,9 @@ class SettingsListTile extends StatelessWidget {
               if (description.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 7),
-                  child: SelectableText(
+                  child: LaSelectableText(
                     description,
-                    style: theme.textTheme.titleSmall,
+                    style: theme.compact.copyWith(color: theme.inkMuted),
                   ),
                 ),
             ],

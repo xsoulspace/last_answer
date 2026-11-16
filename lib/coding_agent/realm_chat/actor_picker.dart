@@ -5,8 +5,12 @@
 /// service's [RealmChatService.openDm] job.
 library;
 
+import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
@@ -70,23 +74,19 @@ class _ActorPickerContentState extends State<_ActorPickerContent> {
             actor.role.toLowerCase().contains(query))
           actor,
     ];
-    final muted = Theme.of(context).colorScheme.onSurfaceVariant;
+    final muted = context.laUi.inkMuted;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-          child: TextField(
+          child: LaField(
             key: const ValueKey('picker.search'),
             autofocus: true,
             onChanged: (final value) => setState(() => _query = value),
-            decoration: InputDecoration(
-              hintText: l10n.worldChatSearchActors,
-              prefixIcon: const Icon(Icons.search, size: 20),
-              isDense: true,
-              border: const OutlineInputBorder(),
-            ),
+            placeholder: l10n.worldChatSearchActors,
+            prefix: const Icon(Icons.search, size: 16),
           ),
         ),
         Flexible(
@@ -104,33 +104,21 @@ class _ActorPickerContentState extends State<_ActorPickerContent> {
                   itemCount: matches.length,
                   itemBuilder: (final context, final index) {
                     final actor = matches[index];
-                    return ListTile(
+                    return LaRow(
                       key: ValueKey('picker.actor.${actor.actorId}'),
-                      dense: true,
                       leading: ActorAvatar(profile: actor, size: 28),
-                      title: Text(
-                        actor.displayName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: actor.role.isEmpty
-                          ? null
-                          : Text(
-                              actor.role,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      titleText: actor.displayName,
+                      metaText: actor.role.isEmpty ? null : actor.role,
                       onTap: () => widget.onPick(actor),
                     );
                   },
                 ),
         ),
-        const Divider(height: 1),
-        ListTile(
+        const LaHairline(),
+        LaRow(
           key: const ValueKey('picker.createActor'),
-          dense: true,
           leading: const Icon(Icons.person_add_alt, size: 20),
-          title: Text(l10n.actorsCreateActor),
+          titleText: l10n.actorsCreateActor,
           onTap: widget.onCreateActor,
         ),
       ],

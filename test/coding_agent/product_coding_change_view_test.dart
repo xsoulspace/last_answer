@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/product_coding_change_view.dart';
@@ -105,13 +106,13 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    final before = tester.widget<SelectableText>(
+    final before = tester.widget<LaSelectableText>(
       find.byKey(
         const ValueKey('coding_agent.change.file.lib/value.dart.before'),
       ),
     );
     expect(before.data, 'int answer() => 1;\n');
-    final after = tester.widget<SelectableText>(
+    final after = tester.widget<LaSelectableText>(
       find.byKey(
         const ValueKey('coding_agent.change.file.lib/value.dart.after'),
       ),

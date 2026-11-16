@@ -172,10 +172,11 @@ class _PeopleListBody extends StatelessWidget {
             child: Row(
               children: [
                 const Spacer(),
-                TextButton(
+                LaButton(
                   key: const ValueKey('shell.people.newActor'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: () => unawaited(_newActor(context)),
-                  child: Text(context.l10n.actorsNewActor),
+                  label: context.l10n.actorsNewActor,
                 ),
               ],
             ),
@@ -186,7 +187,7 @@ class _PeopleListBody extends StatelessWidget {
               label: l10n.contextTopic,
               child: Text(
                 thread['topic']! as String,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: context.laUi.compact,
               ),
             ),
           if (people.isNotEmpty)
@@ -222,48 +223,36 @@ class _PeopleListBody extends StatelessWidget {
     final name = TextEditingController();
     final role = TextEditingController();
     var brain = options.isEmpty ? '' : options.first.ref;
-    final created = await showDialog<bool>(
+    final created = await showLaDialog<bool>(
       context: context,
       builder: (final dialogContext) => StatefulBuilder(
-        builder: (final dialogContext, final setDialogState) => AlertDialog(
+        builder: (final dialogContext, final setDialogState) => LaDialog(
           key: const ValueKey('shell.people.newActor.dialog'),
-          title: Text(l10n.actorsNewActor),
+          titleText: l10n.actorsNewActor,
           content: SizedBox(
             width: 320,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
+                LaField(
                   key: const ValueKey('shell.people.newActor.name'),
                   controller: name,
-                  decoration: InputDecoration(
-                    hintText: l10n.actorsNameHint,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.actorsNameHint,
                 ),
                 const SizedBox(height: 8),
-                TextField(
+                LaField(
                   key: const ValueKey('shell.people.newActor.role'),
                   controller: role,
-                  decoration: InputDecoration(
-                    hintText: l10n.actorsRoleHint,
-                    isDense: true,
-                  ),
+                  placeholder: l10n.actorsRoleHint,
                 ),
                 const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
+                LaSelect<String>(
                   key: const ValueKey('shell.people.newActor.brain'),
-                  initialValue: brain,
-                  isExpanded: true,
+                  value: brain,
+                  expand: true,
                   items: [
                     for (final option in options)
-                      DropdownMenuItem(
-                        value: option.ref,
-                        child: Text(
-                          option.label,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      LaSelectItem(value: option.ref, label: option.label),
                   ],
                   onChanged: (final value) =>
                       setDialogState(() => brain = value ?? brain),
@@ -272,14 +261,16 @@ class _PeopleListBody extends StatelessWidget {
             ),
           ),
           actions: [
-            TextButton(
+            LaButton(
+              variant: LaButtonVariant.ghost,
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: Text(l10n.worldChatCancel),
+              label: l10n.worldChatCancel,
             ),
-            TextButton(
+            LaButton(
               key: const ValueKey('shell.people.newActor.create'),
+              variant: LaButtonVariant.primary,
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: Text(l10n.actorsCreate),
+              label: l10n.actorsCreate,
             ),
           ],
         ),
@@ -424,9 +415,11 @@ class _PeopleList extends StatelessWidget {
     final open = onOpenActor ?? onFocus;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      child: InkWell(
+      child: LaPressable(
         key: ValueKey('shell.context.person.$id'),
         onTap: open == null ? null : () => open(id),
+        radius: BorderRadius.circular(6),
+        scaleOnPress: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -439,7 +432,7 @@ class _PeopleList extends StatelessWidget {
                     roster?.get(id)?.displayName ?? actorDisplayFallback(id),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: context.laUi.compact,
                   ),
                 ),
                 // ACTOR EQUALITY (owner law, 2026-11-16): the DM verb
@@ -449,11 +442,11 @@ class _PeopleList extends StatelessWidget {
                 if (rostered != null &&
                     rostered.kind != ActorKind.human &&
                     onOpenConversation != null)
-                  IconButton(
+                  LaButton.icon(
                     key: ValueKey('shell.people.message.$id'),
                     tooltip: context.l10n.actorsMessage,
                     icon: const Icon(Icons.chat_bubble_outline, size: 14),
-                    visualDensity: VisualDensity.compact,
+                    size: LaButtonSize.sm,
                     onPressed: () {
                       unawaited(service.openDm(id));
                       onOpenConversation!('dm:$id');
@@ -472,9 +465,9 @@ class _PeopleList extends StatelessWidget {
                   key: ValueKey('shell.people.status.$id'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+                  style: context.laUi.micro.copyWith(
+                    color: context.shellMuted,
+                  ),
                 ),
               ),
           ],
@@ -544,7 +537,7 @@ class _ActorPanelState extends State<_ActorPanel> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final service = widget.service;
     final profile = service.roster?.get(widget.actorId);
     final display =
@@ -634,19 +627,17 @@ class _ActorPanelState extends State<_ActorPanel> {
         children: [
           Row(
             children: [
-              IconButton(
+              LaButton.icon(
                 key: const ValueKey('shell.context.actor.back'),
                 tooltip: l10n.contextBackToConversation,
                 icon: const Icon(Icons.arrow_back, size: 18),
-                visualDensity: VisualDensity.compact,
                 onPressed: widget.peopleFocus.clear,
               ),
               const Spacer(),
-              IconButton(
+              LaButton.icon(
                 key: const ValueKey('shell.context.actor.edit'),
                 tooltip: l10n.actorsEditTooltip,
                 icon: const Icon(Icons.edit_outlined, size: 18),
-                visualDensity: VisualDensity.compact,
                 onPressed: profile == null
                     ? null
                     : () => setState(() => _editing = true),
@@ -667,7 +658,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                         display.displayName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelLarge?.copyWith(
+                        style: laUi.body.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -679,7 +670,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                         ].join(' · '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: laUi.micro.copyWith(
                           color: context.shellMuted,
                         ),
                       ),
@@ -699,7 +690,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                     Flexible(
                       child: Text(
                         brainLabel,
-                        style: theme.textTheme.bodySmall,
+                        style: laUi.compact,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -718,7 +709,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                     padding: const EdgeInsets.only(top: 2),
                     child: Text(
                       brainBase,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: laUi.micro.copyWith(
                         color: context.shellMuted,
                       ),
                     ),
@@ -728,7 +719,7 @@ class _ActorPanelState extends State<_ActorPanel> {
           ),
           _Section(
             label: l10n.contextSampling,
-            child: Text(sampling, style: theme.textTheme.bodySmall),
+            child: Text(sampling, style: laUi.compact),
           ),
           _Section(
             label: l10n.contextPersona,
@@ -736,7 +727,7 @@ class _ActorPanelState extends State<_ActorPanel> {
               persona,
               maxLines: 8,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: laUi.compact.copyWith(
                 color: persona.isEmpty ? context.shellMuted : null,
               ),
             ),
@@ -806,9 +797,7 @@ class _ViewNote extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: Theme.of(
-          context,
-        ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+        style: context.laUi.micro.copyWith(color: context.shellMuted),
       ),
     ),
   );
@@ -930,7 +919,7 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     return _Section(
       sectionKey: const ValueKey('shell.people.access'),
       label: l10n.contextProjectAccess,
@@ -940,17 +929,13 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
           if (_loading)
             Text(
               l10n.loading,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: context.shellMuted,
-              ),
+              style: laUi.micro.copyWith(color: context.shellMuted),
             )
           else if (_grants.isEmpty)
             Text(
               l10n.contextNoProjectGrants,
               key: const ValueKey('shell.people.access.empty'),
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: context.shellMuted,
-              ),
+              style: laUi.micro.copyWith(color: context.shellMuted),
             )
           else
             for (final path in _grants)
@@ -965,9 +950,10 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
                 ),
               ),
           const SizedBox(height: 6),
-          InkWell(
+          LaPressable(
             key: const ValueKey('shell.people.access.request'),
-            borderRadius: BorderRadius.circular(6),
+            radius: BorderRadius.circular(6),
+            scaleOnPress: false,
             onTap: _busy ? null : () => unawaited(_request()),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 3),
@@ -978,7 +964,7 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
                   const SizedBox(width: 6),
                   Text(
                     l10n.contextRequestAccess,
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: laUi.micro.copyWith(
                       color: _busy ? context.shellMuted : context.la.accent,
                       fontWeight: FontWeight.w600,
                     ),
@@ -1013,7 +999,6 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
     final BuildContext context,
     final Map<String, Object?> row,
   ) {
-    final theme = Theme.of(context);
     final actor = '${row['actorId'] ?? ''}';
     final project = '${row['projectId'] ?? ''}';
     final name =
@@ -1032,7 +1017,7 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
                   '$name · $actor',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelSmall,
+                  style: context.laUi.micro,
                 ),
                 Text(
                   project,
@@ -1044,14 +1029,13 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
             ),
           ),
           const SizedBox(width: 6),
-          TextButton(
+          LaButton(
             key: ValueKey('shell.people.access.approve.$actor.$project'),
+            variant: LaButtonVariant.ghost,
+            size: LaButtonSize.sm,
+            dense: true,
             onPressed: _busy ? null : () => unawaited(_approve(row)),
-            style: TextButton.styleFrom(
-              visualDensity: VisualDensity.compact,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-            ),
-            child: Text(context.l10n.contextApprove),
+            label: context.l10n.contextApprove,
           ),
         ],
       ),

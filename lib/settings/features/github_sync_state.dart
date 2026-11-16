@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_github_api/universal_storage_github_api.dart';
 // ignore: depend_on_referenced_packages -- resolved transitively via core
@@ -352,9 +353,7 @@ class GithubSyncNotifier extends ChangeNotifier {
 
   void _showError(final BuildContext context, final String message) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('GitHub error: $message')));
+    LaToast.danger(context, 'GitHub error: $message');
   }
 }
 

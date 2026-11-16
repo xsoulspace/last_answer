@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
@@ -110,6 +111,10 @@ void main() {
           ..focused = 'seed-planner';
         await tester.pumpWidget(
           MaterialApp(
+            // The kit overlay host: LaTooltip/LaMenuAnchor build
+            // PortalTargets even while closed (the house pattern).
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
             home: Scaffold(
               body: SafeArea(
                 child: Column(
@@ -138,6 +143,8 @@ void main() {
         );
         expect(pane.height, greaterThan(0));
         expect(pane.height.isFinite, isTrue);
+        // The bare pane renders no LaScaffold (that lives on the
+        // fullscreen PAGE); the host Scaffold is the finite frame here.
         final fullscreen = tester.getRect(find.byType(Scaffold));
         expect(pane.bottom, lessThanOrEqualTo(fullscreen.bottom));
         expect(find.byType(AnswerRail), findsOneWidget);
@@ -160,6 +167,10 @@ void main() {
         ..focused = 'seed-worker';
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: Column(
               children: [
@@ -249,6 +260,10 @@ void main() {
         ..focused = 'seed-worker';
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: Column(
               children: [
@@ -308,6 +323,10 @@ void main() {
         ..focused = 'seed-worker';
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: Column(
               children: [
@@ -352,6 +371,10 @@ void main() {
         ..focused = 'seed-worker';
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: WorldInspectorPane(
               registry: registry,
@@ -386,6 +409,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: WorldInspectorPane(
               registry: HarnessSessionRegistry(),
@@ -410,6 +437,10 @@ void main() {
       WorldInspectorPane.lastProjection = null;
       await tester.pumpWidget(
         MaterialApp(
+          // The kit overlay host: LaTooltip/LaMenuAnchor build
+          // PortalTargets even while closed (the house pattern).
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
           home: Scaffold(
             body: WorldInspectorPane(
               registry: registry,

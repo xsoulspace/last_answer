@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
@@ -102,6 +103,10 @@ void main() {
 
         await tester.pumpWidget(
           MaterialApp(
+            // The kit overlay host: LaTooltip/LaMenuAnchor build
+            // PortalTargets even while closed (the house pattern).
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
             home: Scaffold(
               body: AgentDocSurface(doc: layaDoc(), controller: controller),
             ),
@@ -146,6 +151,10 @@ void main() {
 
         await tester.pumpWidget(
           MaterialApp(
+            // The kit overlay host: LaTooltip/LaMenuAnchor build
+            // PortalTargets even while closed (the house pattern).
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
             home: Scaffold(
               body: AgentDocSurface(doc: layaDoc(), controller: controller),
             ),

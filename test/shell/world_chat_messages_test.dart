@@ -17,11 +17,12 @@
 library;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+import 'package:flutter/material.dart';import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -142,6 +143,10 @@ Future<void> _pumpSurface(
     ChangeNotifierProvider<RealmChatService>.value(
       value: service,
       child: MaterialApp(
+        // The kit overlay host (the world_chat_composer_test pattern):
+        // LaTooltip/LaMenuAnchor build PortalTargets even while closed.
+        builder: (final context, final child) =>
+            Portal(child: child ?? const SizedBox.shrink()),
         locale: const Locale('en'),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
@@ -289,7 +294,7 @@ void main() {
       );
       final edit = find.byKey(ValueKey('worldchat.beat.edit.$suffix1'));
       expect(edit, findsOneWidget);
-      final editButton = tester.widget<IconButton>(edit);
+      final editButton = tester.widget<LaButton>(edit);
       expect(editButton.onPressed, isNull);
       expect(editButton.tooltip, l10n.worldChatEditGap);
 
@@ -367,29 +372,21 @@ void main() {
         findsOneWidget,
       );
 
-      String tooltipOf(final String key) => tester
-          .widget<Tooltip>(
-            find.descendant(
-              of: find.byKey(ValueKey(key)),
-              matching: find.byType(Tooltip),
-            ).first,
-          )
-          .message!;
+      // The kit menu renders each entry as a LaMenuRow carrying the
+      // item's frozen key; the entry state rides `row.item`.
+      LaMenuItem entryOf(final String key) =>
+          tester.widget<LaMenuRow>(find.byKey(ValueKey(key))).item;
 
       // Own beat → the edit row exists, disabled, naming the gap: the
       // journal is append-only and the verb is harness-owned.
-      final editItem = tester.widget<PopupMenuItem<String>>(
-        find.byKey(const ValueKey('worldchat.ctx.edit')),
-      );
+      final editItem = entryOf('worldchat.ctx.edit');
       expect(editItem.enabled, isFalse);
-      expect(tooltipOf('worldchat.ctx.edit'), l10n.worldChatEditGap);
+      expect(editItem.tooltip, l10n.worldChatEditGap);
 
       // Delete: disabled for every beat, gap tooltip naming the law.
-      final deleteItem = tester.widget<PopupMenuItem<String>>(
-        find.byKey(const ValueKey('worldchat.ctx.delete')),
-      );
+      final deleteItem = entryOf('worldchat.ctx.delete');
       expect(deleteItem.enabled, isFalse);
-      expect(tooltipOf('worldchat.ctx.delete'), l10n.worldChatDeleteGap);
+      expect(deleteItem.tooltip, l10n.worldChatDeleteGap);
 
       // Dismiss the menu (barrier tap) and settle the exit BEFORE any
       // runAsync window (the popup-exit ticker law).

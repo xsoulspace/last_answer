@@ -924,6 +924,8 @@
   "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
   "worldChatThreadsEmpty": "No threads yet.",
   "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
+  "worldChatSessionKindMark": "session",
+  "@worldChatSessionKindMark": {"description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."},
   "worldChatPermsTooltip": "Permissions",
   "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
   "worldChatPermsTitle": "Channel permissions",
@@ -1180,4 +1182,10 @@
   "@rotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
   "cropSquare": "Crop square",
   "@cropSquare": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."}
+,
+  "selectionCut": "Cut",
+  "selectionCopy": "Copy",
+  "selectionPaste": "Paste",
+  "selectionSelectAll": "Select all"
 }
+

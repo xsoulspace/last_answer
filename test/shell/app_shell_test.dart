@@ -19,10 +19,11 @@
 //   the service; the shell translates that into room tabs).
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/board_view.dart';
@@ -111,7 +112,10 @@ Future<void> _pumpShell(
           ),
         ],
         child: MaterialApp(
-          locale: const Locale('en'),
+          // The kit overlay host (same shape as last_answer_app.dart):
+          // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           // Production wraps the shell in ScreenScaffold's Scaffold; mirror
@@ -711,7 +715,8 @@ void main() {
 
     // The embedded seam: the close affordance goes through the view
     // scope (a route pop from inside a view would take the shell down).
-    await tester.tap(find.byType(CupertinoCloseButton).first);
+    // The kit close affordance carries a stable key (agent-UI contract).
+    await tester.tap(find.byKey(const ValueKey('settings.close')));
     await tester.pump();
     expect(find.byKey(const ValueKey('view.tab.settings')), findsNothing);
     expect(find.byType(SettingsScreen), findsNothing);

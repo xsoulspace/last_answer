@@ -30,8 +30,7 @@ final class DocSyncParticipant implements MeshSyncParticipant {
   Future<void> absorb(final StorageService storage) => store.absorbRemote();
 
   @override
-  Future<void> compact(final StorageService storage) =>
-      store.compactAll();
+  Future<void> compact(final StorageService storage) => store.compactAll();
 }
 
 /// The actor roster (ADR 0007 §1): one whole file per replica under
@@ -99,7 +98,8 @@ final class TaskBoardParticipant implements MeshSyncParticipant {
 
   /// The pre-rename board path (ADR 0028): read forever, mirrored while
   /// [kTaskBoardLegacyMirror] stands.
-  static const String legacyPath = 'task_boards/'
+  static const String legacyPath =
+      'task_boards/'
       '${MeshTaskBoard.legacyBoardId}.json';
 
   @override

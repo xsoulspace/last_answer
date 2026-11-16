@@ -75,8 +75,9 @@ class _MeaningExperimentEntryState extends State<MeaningExperimentEntry> {
   bool preparing = false;
 
   @override
-  Widget build(BuildContext context) => TextButton(
+  Widget build(BuildContext context) => LaButton(
     key: const Key('home.meaning_experiment'),
+    variant: LaButtonVariant.link,
     onPressed: preparing
         ? null
         : () async {
@@ -85,15 +86,14 @@ class _MeaningExperimentEntryState extends State<MeaningExperimentEntry> {
             if (!mounted || !context.mounted) return;
             setState(() => preparing = false);
             if (result['ok'] != true) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    meaningExperimentRefusalLabel(
-                      Localizations.localeOf(context).languageCode,
-                      result['error'],
-                    ),
-                    key: const Key('home.meaning_experiment.refusal'),
-                  ),
+              // Kit gap: LaToast carries no widget-key slot, so the old
+              // 'home.meaning_experiment.refusal' key (no consumers in
+              // tree or tests) is not carried over.
+              LaToast.danger(
+                context,
+                meaningExperimentRefusalLabel(
+                  Localizations.localeOf(context).languageCode,
+                  result['error'],
                 ),
               );
             }

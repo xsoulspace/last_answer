@@ -24,9 +24,8 @@ Future<void> showImageEditSheet(
   required final NoteAssetStore store,
   required final void Function(NoteAssetModel newAsset) onNewAsset,
 }) async {
-  await showModalBottomSheet<void>(
+  await showLaSheet<void>(
     context: context,
-    isScrollControlled: true,
     builder: (final sheetContext) => _ImageEditSheet(
       asset: asset,
       noteId: noteId,
@@ -168,7 +167,7 @@ class _ImageEditSheetState extends State<_ImageEditSheet> {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
     final bytes = _bytes;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(12),
@@ -178,17 +177,9 @@ class _ImageEditSheetState extends State<_ImageEditSheet> {
         children: [
           Row(
             children: [
-              Text(
-                l10n.editImage,
-                style: theme.textTheme.titleMedium,
-              ),
+              Text(l10n.editImage, style: laUi.emphasis),
               const Spacer(),
-              if (_busy)
-                const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+              if (_busy) const LaSpinner(size: 16),
             ],
           ),
           const SizedBox(height: 8),
@@ -199,9 +190,7 @@ class _ImageEditSheetState extends State<_ImageEditSheet> {
                 _errorCode == 'image_generation_failed'
                     ? l10n.imageGenerationFailed
                     : l10n.imageEditFailed,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
+                style: laUi.compact.copyWith(color: laUi.danger),
               ),
             ),
           if (bytes == null)
@@ -245,7 +234,7 @@ class _ImageEditSheetState extends State<_ImageEditSheet> {
           Wrap(
             spacing: 8,
             children: [
-              IconButton(
+              LaButton.icon(
                 tooltip: l10n.rotateImage,
                 onPressed: _busy || bytes == null
                     ? null
@@ -253,40 +242,42 @@ class _ImageEditSheetState extends State<_ImageEditSheet> {
                         unawaited(_applyOp(ImageEditOp.rotateCounterClockwise)),
                 icon: const Icon(Icons.rotate_left),
               ),
-              IconButton(
+              LaButton.icon(
                 tooltip: l10n.rotateImage,
                 onPressed: _busy || bytes == null
                     ? null
                     : () => unawaited(_applyOp(ImageEditOp.rotateClockwise)),
                 icon: const Icon(Icons.rotate_right),
               ),
-              IconButton(
+              LaButton.icon(
                 tooltip: l10n.cropSquare,
                 onPressed: _busy || bytes == null
                     ? null
                     : () => unawaited(_applyOp(ImageEditOp.cropCenterSquare)),
                 icon: const Icon(Icons.crop_square),
               ),
-              IconButton(
+              LaButton.icon(
                 tooltip: l10n.annotateImage,
-                isSelected: _annotating,
+                variant: _annotating
+                    ? LaButtonVariant.primary
+                    : LaButtonVariant.ghost,
                 onPressed: bytes == null
                     ? null
                     : () => setState(() => _annotating = !_annotating),
                 icon: const Icon(Icons.edit),
               ),
               if (_annotating && _strokes.isNotEmpty)
-                TextButton(
+                LaButton(
+                  label: l10n.saveImageCopy,
+                  variant: LaButtonVariant.ghost,
                   onPressed: _busy ? null : () => unawaited(_exportAnnotated()),
-                  child: Text(l10n.saveImageCopy),
                 ),
-              TextButton(
+              LaButton(
+                label: _busy ? l10n.generatingImage : l10n.generateImage,
+                variant: LaButtonVariant.ghost,
                 onPressed: _busy || bytes == null
                     ? null
                     : () => unawaited(_generateVariation()),
-                child: Text(
-                  _busy ? l10n.generatingImage : l10n.generateImage,
-                ),
               ),
             ],
           ),

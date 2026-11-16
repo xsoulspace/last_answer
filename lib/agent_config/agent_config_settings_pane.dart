@@ -21,9 +21,8 @@ class AgentConfigSettingsPane extends StatefulWidget {
   /// Re-opens the pane as a modal sheet from any surface (chat toolbar,
   /// agent-doc status rule).
   static Future<void> show(final BuildContext context) =>
-      showModalBottomSheet<void>(
+      showLaSheet<void>(
         context: context,
-        isScrollControlled: true,
         builder: (final context) => DraggableScrollableSheet(
           expand: false,
           initialChildSize: 0.9,
@@ -116,7 +115,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.laUi;
     // Self-scrolling: the pane must not overflow any host (sheet, tab,
     // narrow window) as rows are added.
     return SingleChildScrollView(
@@ -131,13 +130,14 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
             children: [
               Text(
                 context.l10n.agentSettingsTitle,
-                style: theme.textTheme.titleMedium,
+                style: theme.emphasis,
               ),
               const Spacer(),
-              TextButton(
+              LaButton(
                 key: const Key('agent_config.save'),
+                variant: LaButtonVariant.ghost,
                 onPressed: _save,
-                child: Text(context.l10n.save),
+                label: context.l10n.save,
               ),
             ],
           ),
@@ -148,25 +148,21 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
             child: Text(
               context.l10n.agentConfigUnreadable(_store.lastError!),
               key: const Key('agent_config.load_error'),
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.error,
-              ),
+              style: theme.compact.copyWith(color: theme.danger),
             ),
           ),
-        const Divider(height: 16),
+        const _PaneDivider(),
         _agentsSection(theme),
-        const Divider(height: 16),
+        const _PaneDivider(),
         _providersSection(theme),
-        const Divider(height: 16),
+        const _PaneDivider(),
         _chatSection(theme),
         if (_saveError != null)
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
               _saveError!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.error,
-              ),
+              style: theme.compact.copyWith(color: theme.danger),
             ),
           ),
       ],
@@ -178,7 +174,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   // AGENT SERVERS
   // ------------------------------------------------------------------
 
-  Widget _agentsSection(final ThemeData theme) => Padding(
+  Widget _agentsSection(final LaUiTheme theme) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,21 +187,19 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
               style: _sectionLabel(theme),
             ),
             const Spacer(),
-            TextButton(
+            LaButton(
               key: const Key('agent_config.server.add'),
+              variant: LaButtonVariant.ghost,
               onPressed: () => setState(() {
                 _serverControllers['server-${_serverControllers.length + 1}'] =
                     _ServerFields(const AgentServerConfig(command: ''));
               }),
-              child: Text('+ ${context.l10n.agentServerAdd}'),
+              label: '+ ${context.l10n.agentServerAdd}',
             ),
           ],
         ),
         if (_serverControllers.isEmpty)
-          Text(
-            context.l10n.agentServersEmptyHint,
-            style: theme.textTheme.bodySmall,
-          ),
+          Text(context.l10n.agentServersEmptyHint, style: theme.compact),
         for (final entry in _serverControllers.entries)
           _serverRow(theme, entry.key, entry.value),
       ],
@@ -213,14 +207,14 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   );
 
   Widget _serverRow(
-    final ThemeData theme,
+    final LaUiTheme theme,
     final String id,
     final _ServerFields fields,
   ) => Container(
     // A row container is a grouping rule on the grid, not decorative chrome.
     padding: const EdgeInsets.symmetric(vertical: 6),
     decoration: BoxDecoration(
-      border: Border.all(color: theme.dividerColor, width: 0.6),
+      border: Border.all(color: theme.rule, width: 0.6),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,13 +241,14 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
 
               ),
             ),
-            IconButton(
+            LaButton.icon(
               key: Key('agent_config.server.$id.remove'),
+              size: LaButtonSize.sm,
               tooltip: context.l10n.agentServerRemove,
               onPressed: () => setState(() {
                 _serverControllers.remove(id);
               }),
-              icon: const Icon(Icons.close, size: 18),
+              icon: const Icon(Icons.close, size: 16),
             ),
           ],
         ),
@@ -278,7 +273,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   // PROVIDERS
   // ------------------------------------------------------------------
 
-  Widget _providersSection(final ThemeData theme) => Padding(
+  Widget _providersSection(final LaUiTheme theme) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +290,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   );
 
   Widget _providerRow(
-    final ThemeData theme,
+    final LaUiTheme theme,
     final String id,
     final _ProviderFields fields,
   ) => Column(
@@ -313,7 +308,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
             Text(
               context.l10n.agentProviderKeyStored,
               key: Key('agent_config.provider.$id.stored'),
-              style: theme.textTheme.bodySmall,
+              style: theme.compact,
             ),
         ],
       ),
@@ -321,12 +316,13 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
         spacing: 8,
         children: [
           Expanded(
-            child: TextField(
+            child: LaField(
               key: Key('agent_config.provider.$id.key'),
               controller: fields.key,
               obscureText: true,
               style: _mono(theme),
-              decoration: _plain(theme, context.l10n.agentProviderKeyHint),
+              placeholder: context.l10n.agentProviderKeyHint,
+              placeholderStyle: _mono(theme, color: theme.inkQuiet),
               onSubmitted: (final value) async {
                 if (value.trim().isEmpty) return;
                 await _providerKeys.writeProviderKey(id, value.trim());
@@ -336,14 +332,15 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
             ),
           ),
           if (_storedKeys[id] ?? false)
-            IconButton(
+            LaButton.icon(
               key: Key('agent_config.provider.$id.key.clear'),
+              size: LaButtonSize.sm,
               tooltip: context.l10n.agentProviderKeyRemove,
               onPressed: () async {
                 await _providerKeys.removeProviderKey(id);
                 await _refreshStoredKeys();
               },
-              icon: const Icon(Icons.close, size: 18),
+              icon: const Icon(Icons.close, size: 16),
             ),
         ],
       ),
@@ -388,7 +385,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   // CHAT DEFAULTS
   // ------------------------------------------------------------------
 
-  Widget _chatSection(final ThemeData theme) => Padding(
+  Widget _chatSection(final LaUiTheme theme) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,39 +399,37 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
           spacing: 8,
           children: [
             Expanded(
-              child: DropdownButtonFormField<String>(
+              child: LaSelect<String>(
                 key: const Key('agent_config.chat.provider'),
                 // A fresh config has no default; the value must be null
                 // (not '') when it is not among the items, or the dropdown
                 // asserts — found live on web.
-                initialValue: _providerControllers
-                        .containsKey(_chat.defaultProvider)
+                value: _providerControllers.containsKey(_chat.defaultProvider)
                     ? _chat.defaultProvider
                     : null,
-                decoration: _plain(
-                  theme,
-                  context.l10n.agentChatProviderHint,
-                ),
+                expand: true,
+                placeholder: context.l10n.agentChatProviderHint,
                 items: [
                   for (final id in _providerControllers.keys)
-                    DropdownMenuItem(value: id, child: Text(id)),
+                    LaSelectItem(value: id, label: id),
                 ],
                 onChanged: (final value) =>
                     setState(() => _chat.defaultProvider = value ?? ''),
               ),
             ),
             Expanded(
-              child: DropdownButtonFormField<String>(
+              child: LaSelect<String>(
                 key: const Key('agent_config.chat.model'),
-                initialValue: _modelsOf(
+                value: _modelsOf(
                   _chat.defaultProvider,
                 ).contains(_chat.defaultModel)
                     ? _chat.defaultModel
                     : null,
-                decoration: _plain(theme, context.l10n.agentChatModelHint),
+                expand: true,
+                placeholder: context.l10n.agentChatModelHint,
                 items: [
                   for (final model in _modelsOf(_chat.defaultProvider))
-                    DropdownMenuItem(value: model, child: Text(model)),
+                    LaSelectItem(value: model, label: model),
                 ],
                 onChanged: (final value) =>
                     setState(() => _chat.defaultModel = value ?? ''),
@@ -442,13 +437,14 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
             ),
           ],
         ),
-        TextField(
+        LaField(
           key: const Key('agent_config.chat.system_prompt'),
           controller: _chat.systemPrompt,
           minLines: 2,
           maxLines: 5,
           style: _mono(theme),
-          decoration: _plain(theme, context.l10n.agentChatSystemPromptHint),
+          placeholder: context.l10n.agentChatSystemPromptHint,
+          placeholderStyle: _mono(theme, color: theme.inkQuiet),
         ),
       ],
     ),
@@ -469,49 +465,36 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   // ------------------------------------------------------------------
 
   Widget _field(
-    final ThemeData theme, {
+    final LaUiTheme theme, {
     required final Key key,
     required final TextEditingController controller,
     required final String hint,
     final int maxLines = 1,
-  }) => TextField(
+  }) => LaField(
     key: key,
     controller: controller,
     maxLines: maxLines,
     style: _mono(theme),
-    decoration: _plain(theme, hint),
+    placeholder: hint,
+    placeholderStyle: _mono(theme, color: theme.inkQuiet),
   );
 
-  InputDecoration _plain(final ThemeData theme, final String hint) =>
-      InputDecoration(
-        isDense: true,
-        hintText: hint,
-        hintStyle: _mono(theme, color: theme.colorScheme.outline),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: theme.dividerColor),
-          borderRadius: BorderRadius.zero,
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.onSurface,
-            width: 0.8,
-          ),
-          borderRadius: BorderRadius.zero,
-        ),
-      );
+  TextStyle _sectionLabel(final LaUiTheme theme) =>
+      theme.micro.copyWith(letterSpacing: 1.2);
 
-  TextStyle _sectionLabel(final ThemeData theme) =>
-      theme.textTheme.labelSmall?.copyWith(letterSpacing: 1.2) ??
-      const TextStyle(fontSize: 10, letterSpacing: 1.2);
+  TextStyle _mono(final LaUiTheme theme, {final Color? color}) =>
+      color == null ? theme.mono : theme.mono.copyWith(color: color);
+}
 
-  TextStyle _mono(
-    final ThemeData theme, {
-    final Color? color,
-  }) => theme.textTheme.bodySmall?.copyWith(
-    fontFeatures: const [FontFeature.tabularFigures()],
-    color: color,
-  ) ??
-    TextStyle(color: color);
+/// The pane's 16px hairline separator (was `Divider(height: 16)`).
+class _PaneDivider extends StatelessWidget {
+  const _PaneDivider();
+
+  @override
+  Widget build(final BuildContext context) => const Padding(
+    padding: EdgeInsets.symmetric(vertical: 8),
+    child: LaHairline(),
+  );
 }
 
 final class _ServerFields {

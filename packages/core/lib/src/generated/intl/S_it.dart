@@ -1968,6 +1968,9 @@ class SIt extends S {
   String get worldChatThreadsEmpty => 'Ancora nessun thread.';
 
   @override
+  String get worldChatSessionKindMark => 'sessione';
+
+  @override
   String get worldChatPermsTooltip => 'Permessi';
 
   @override
@@ -2378,4 +2381,16 @@ class SIt extends S {
 
   @override
   String get cropSquare => 'Ritaglia quadrato';
+  @override
+  String get selectionCut => 'Taglia';
+
+  @override
+  String get selectionCopy => 'Copia';
+
+  @override
+  String get selectionPaste => 'Incolla';
+
+  @override
+  String get selectionSelectAll => 'Seleziona tutto';
+
 }

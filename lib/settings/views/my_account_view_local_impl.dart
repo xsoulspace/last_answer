@@ -5,10 +5,10 @@ class MyAccountViewLocalImpl extends StatelessWidget {
   const MyAccountViewLocalImpl({super.key});
 
   @override
-  Widget build(final BuildContext context) => const SelectionArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(24),
-          child: SupportAppView(),
-        ),
-      );
+  Widget build(final BuildContext context) => const LaSelectionArea(
+    child: SingleChildScrollView(
+      padding: EdgeInsets.all(24),
+      child: SupportAppView(),
+    ),
+  );
 }

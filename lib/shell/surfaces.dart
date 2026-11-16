@@ -462,8 +462,9 @@ SurfaceRegistry buildShellSurfaces(
                       style: LaTokens.mono(10, context.la.inkQuiet),
                     ),
                   ),
-                  TextButton(
+                  LaButton(
                     key: const ValueKey('boards.durableQueue'),
+                    variant: LaButtonVariant.ghost,
                     onPressed: () {
                       final scope = ViewScope.of(context);
                       if (scope == null) return;
@@ -471,9 +472,7 @@ SurfaceRegistry buildShellSurfaces(
                         scope.layout.showView(kConversationsSurfaceId),
                       );
                     },
-                    child: Text(
-                      '${tabContext.l10n.inboxDurableQueue}: $count',
-                    ),
+                    label: '${tabContext.l10n.inboxDurableQueue}: $count',
                   ),
                 ],
               ),
@@ -565,21 +564,18 @@ final class _TerminalViewEmbed extends StatelessWidget {
                   world!.armState == WorldArmState.error
                       ? '${l10n.inboxWorldArmFailed}: ${world!.armError ?? ''}'
                       : l10n.inboxWorldDown,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelSmall?.copyWith(color: la.inkMuted),
+                  style: context.laUi.micro.copyWith(color: la.inkMuted),
                 ),
                 const SizedBox(width: 10),
-                TextButton(
+                LaButton(
                   key: const ValueKey('terminal.arm'),
+                  variant: LaButtonVariant.ghost,
                   onPressed: world!.armState == WorldArmState.arming
                       ? null
                       : () => unawaited(world!.armWorld()),
-                  child: Text(
-                    world!.armState == WorldArmState.arming
-                        ? l10n.edgeArming
-                        : l10n.edgeArmWorld,
-                  ),
+                  label: world!.armState == WorldArmState.arming
+                      ? l10n.edgeArming
+                      : l10n.edgeArmWorld,
                 ),
               ],
             ),
@@ -636,7 +632,7 @@ final class _MeshTasksSection extends StatelessWidget {
                       record.task,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: context.laUi.micro,
                     ),
                   ),
                   if (record.verdict case final verdict?)
@@ -667,9 +663,7 @@ final class _QuietViewNote extends StatelessWidget {
         text,
         key: const ValueKey('view.empty'),
         textAlign: TextAlign.center,
-        style: Theme.of(
-          context,
-        ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+        style: context.laUi.micro.copyWith(color: context.shellMuted),
       ),
     ),
   );
@@ -759,9 +753,7 @@ final class _InspectorTabEmbedState extends State<_InspectorTabEmbed> {
             key: const ValueKey('world_inspector.degraded'),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: context.shellMuted),
+            style: context.laUi.micro.copyWith(color: context.shellMuted),
           ),
         ),
       Expanded(

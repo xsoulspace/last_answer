@@ -13,7 +13,7 @@ class MobileNoteSettingsMenu extends HookWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final theme = Theme.of(context);
+    final laUi = context.laUi;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: borderPadding),
@@ -30,7 +30,7 @@ class MobileNoteSettingsMenu extends HookWidget {
                 child: Text(
                   '${context.l10n.charactersLimit}:',
                   textAlign: TextAlign.end,
-                  style: theme.textTheme.titleLarge,
+                  style: laUi.emphasis,
                 ),
               ),
               const SizedBox(width: 5),

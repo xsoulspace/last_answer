@@ -1,5 +1,5 @@
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class CreateIdeaProjectScreen extends StatefulHookWidget {
   const CreateIdeaProjectScreen({super.key});
@@ -21,8 +21,9 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
   Widget build(final BuildContext context) {
     final projectNotifier = context.read<OpenedProjectNotifier>();
     void onBack() => Navigator.pop(context);
-    final color = context.colorScheme.onBackground.withOpacity(0.75);
-    final textColor = context.colorScheme.onPrimaryContainer;
+    final laUi = context.laUi;
+    final color = laUi.ink.withValues(alpha: 0.75);
+    final textColor = laUi.ink;
 
     void onCreate() {
       final text = _textController.text;
@@ -32,9 +33,13 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
       onBack();
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      appBar: BackTextUniversalAppBar(titleStr: '', onBack: onBack),
+    return LaScaffold(
+      topBar: LaTopBar(
+        leading: LaButton.icon(
+          icon: const LaClose(),
+          onPressed: onBack,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 8),
         child: Center(
@@ -46,17 +51,23 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconIdeaButton(
-                    size: 84,
+                  LaPressable(
                     onTap: () {},
-                    color: color.withOpacity(0.4),
+                    showRing: false,
+                    scaleOnPress: false,
+                    child: Assets.icons.idea.svg(
+                      height: 84,
+                      width: 84,
+                      colorFilter: ColorFilter.mode(
+                        color.withValues(alpha: 0.4),
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                   const Gap(44),
                   Text(
                     context.l10n.whatsYourIdea,
-                    style: context.textTheme.displaySmall?.copyWith(
-                      color: color,
-                    ),
+                    style: laUi.display.copyWith(color: color),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(87),
@@ -64,22 +75,17 @@ class _CreateIdeaProjectScreenState extends State<CreateIdeaProjectScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: TextFormField(
+                        child: LaField(
                           autofocus: true,
-                          onFieldSubmitted: (final _) => onCreate(),
+                          onSubmitted: (final _) => onCreate(),
                           controller: _textController,
                           maxLength: 90,
-                          style: context.textTheme.displaySmall?.copyWith(
-                            color: textColor,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: context.l10n.createIdeaHelperText,
-                            border: const UnderlineInputBorder(),
-                          ),
+                          style: laUi.display.copyWith(color: textColor),
+                          placeholder: context.l10n.createIdeaHelperText,
                         ),
                       ),
                       const Gap(6),
-                      IconButton(
+                      LaButton.icon(
                         onPressed: onCreate,
                         icon: const Icon(Icons.send),
                       ),

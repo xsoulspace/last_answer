@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lastanswer/_library/widgets/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features/characters_limit_state.dart';
 
@@ -10,12 +9,13 @@ class CharactersLimitSetting extends HookWidget {
   @override
   Widget build(final BuildContext context) {
     final settings = context.watch<UserNotifier>().settings;
-    final theme = context.theme;
-    final dark = theme.brightness == Brightness.dark;
+    final theme = context.laUi;
+    final dark = theme.isDark;
     useListenable(controller);
-    Widget otherButton = HoverableButton(
+    Widget otherButton = LaButton(
+      variant: LaButtonVariant.link,
       onPressed: () => controller.setIsEditing(true),
-      child: Text(context.l10n.charactersUnlimited),
+      label: context.l10n.charactersUnlimited,
     );
 
     // TODO(arenukvern): refactor to separate widget
@@ -24,26 +24,20 @@ class CharactersLimitSetting extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: UiTextField(
-              value: controller.limit,
-              focusNode: controller.focusNode,
-              onChanged: controller.onLimitChanged,
-              keyboardType: TextInputType.number,
-              autocorrect: false,
-              enableSuggestions: false,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: const InputDecoration()
-                  .applyDefaults(theme.inputDecorationTheme)
-                  .copyWith(
-                    isDense: true,
-                    hintText: context.l10n.charactersUnlimited,
-                    constraints: const BoxConstraints(maxWidth: 60),
-                  ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 60),
+              child: _LimitField(
+                value: controller.limit,
+                focusNode: controller.focusNode,
+                onChanged: controller.onLimitChanged,
+                placeholder: context.l10n.charactersUnlimited,
+              ),
             ),
           ),
-          HoverableButton(
+          LaButton.icon(
+            size: LaButtonSize.sm,
             onPressed: controller.isEditing ? controller.onClearLimit : null,
-            child: const Icon(CupertinoIcons.clear, size: 14),
+            icon: const Icon(CupertinoIcons.clear, size: 14),
           ),
         ],
       );
@@ -73,7 +67,7 @@ class CharactersLimitSetting extends HookWidget {
                       height: 18,
                       color: controller.isInstagramLimit
                           ? null
-                          : theme.textTheme.bodyMedium?.color,
+                          : theme.body.color,
                     ),
           ),
         if (isNotRestricted)
@@ -134,15 +128,64 @@ class CharactersLimitButton extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(final BuildContext context) => Card(
-    color: context.colorScheme.primaryContainer,
-    child: HoverableButton(
-      onPressed: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
-        child: child,
-      ),
-    ),
+  Widget build(final BuildContext context) => LaPressable(
+    onTap: onTap,
+    fill: context.laUi.fieldFill,
+    radius: context.laUi.controlRadius,
+    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
+    child: child,
+  );
+}
+
+/// A [LaField] bound to an external string value (the kit has no `value:`
+/// parameter — local sync wrapper preserving the old UiTextField semantics).
+class _LimitField extends StatefulWidget {
+  const _LimitField({
+    required this.value,
+    required this.focusNode,
+    required this.onChanged,
+    required this.placeholder,
+  });
+  final String? value;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onChanged;
+  final String? placeholder;
+
+  @override
+  State<_LimitField> createState() => _LimitFieldState();
+}
+
+class _LimitFieldState extends State<_LimitField> {
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.value,
+  );
+
+  @override
+  void didUpdateWidget(covariant final _LimitField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newValue = widget.value ?? '';
+    if (newValue != _controller.text) {
+      _controller.text = newValue;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(final BuildContext context) => LaField(
+    controller: _controller,
+    focusNode: widget.focusNode,
+    onChanged: widget.onChanged,
+    keyboardType: TextInputType.number,
+    autocorrect: false,
+    enableSuggestions: false,
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    placeholder: widget.placeholder,
+    height: 28,
   );
 }
 

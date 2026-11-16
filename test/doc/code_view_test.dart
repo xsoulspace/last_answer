@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/common_imports.dart';
+
+import 'package:flutter/material.dart';import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/doc/code_view.dart';
 
 /// 2a — the code format's laws: the language is DERIVED from the
@@ -73,7 +74,7 @@ void main() {
     // Seeded: the editor shows the block's content; the head facts the
     // derived language and the calm saved state.
     final editor = find.byKey(const ValueKey('code.editor'));
-    expect(tester.widget<TextField>(editor).controller!.text, 'print("hi")');
+    expect(tester.widget<LaField>(editor).controller?.text, 'print("hi")');
     expect(find.text('python'), findsOneWidget);
     expect(find.text('saved'), findsOneWidget);
 

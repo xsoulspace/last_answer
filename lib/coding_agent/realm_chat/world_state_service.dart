@@ -224,6 +224,7 @@ final class ActorTelemetry {
     this.completionTokens = 0,
     this.promptChars = 0,
     this.appliedWrites = 0,
+    this.escalatedFrom,
     this.at,
   });
 
@@ -232,6 +233,12 @@ final class ActorTelemetry {
   final int promptTokens;
   final int cachedTokens;
   final bool stalled;
+
+  /// ADR 0122 — the rung this dispatch ESCALATED FROM: the daemon
+  /// records the flattened tag on the promoted run's telemetry row, so
+  /// the world can narrate its own decision ("X stalled → tried Y").
+  /// Null = this run was not a promotion.
+  final String? escalatedFrom;
 
   /// The rest of the journal row (0b — the inline work texture): the
   /// loop's per-dispatch counts. The journal carries them; the old
@@ -460,10 +467,9 @@ final class WorldStateService extends ChangeNotifier {
     final rows = await store.scan('control_task_events');
     return <Map<String, Object?>>[
       for (final entry in rows.entries)
-        if (entry.value is Map &&
-            ('${(entry.value! as Map)['taskId']}' == taskId ||
-                entry.key.startsWith('$taskId#')))
-          Map<String, Object?>.from(entry.value! as Map),
+        if ('${(entry.value as Map)['taskId']}' == taskId ||
+                entry.key.startsWith('$taskId#'))
+          Map<String, Object?>.from(entry.value as Map),
     ];
   }
 
@@ -863,6 +869,9 @@ final class WorldStateService extends ChangeNotifier {
         completionTokens: (row['completionTokens'] as num?)?.toInt() ?? 0,
         promptChars: (row['promptChars'] as num?)?.toInt() ?? 0,
         appliedWrites: (row['appliedWrites'] as num?)?.toInt() ?? 0,
+        escalatedFrom: row['escalatedFrom'] is String
+            ? row['escalatedFrom']! as String
+            : null,
         at: row['at'] as String?,
       );
     }

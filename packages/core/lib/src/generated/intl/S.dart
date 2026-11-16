@@ -2370,7 +2370,7 @@ abstract class S {
   /// No description provided for @actorsBrainLabel.
   ///
   /// In en, this message translates to:
-  /// **'Brain (model)'**
+  /// **'Brain'**
   String get actorsBrainLabel;
 
   /// No description provided for @actorsRoleLabel.
@@ -2643,451 +2643,6 @@ abstract class S {
   /// **'Rename'**
   String get roomsRenameAction;
 
-  /// No description provided for @stripOverflowHint.
-  ///
-  /// In en, this message translates to:
-  /// **Hidden tabs — open the list**
-  String get stripOverflowHint;
-  /// No description provided for @modelsProviders.
-  ///
-  /// In en, this message translates to:
-  /// **Providers**
-  String get modelsProviders;
-  /// No description provided for @modelsEditProviders.
-  ///
-  /// In en, this message translates to:
-  /// **Edit providers**
-  String get modelsEditProviders;
-  /// No description provided for @modelsNoProviders.
-  ///
-  /// In en, this message translates to:
-  /// **no providers declared**
-  String get modelsNoProviders;
-  /// No description provided for @modelsCountSuffix.
-  ///
-  /// In en, this message translates to:
-  /// **models**
-  String get modelsCountSuffix;
-  /// No description provided for @modelsContextTier.
-  ///
-  /// In en, this message translates to:
-  /// **ctx**
-  String get modelsContextTier;
-  /// No description provided for @modelsNoModels.
-  ///
-  /// In en, this message translates to:
-  /// **no models declared**
-  String get modelsNoModels;
-  /// No description provided for @modelsAddProvider.
-  ///
-  /// In en, this message translates to:
-  /// **Add provider**
-  String get modelsAddProvider;
-  /// No description provided for @modelsEditProvider.
-  ///
-  /// In en, this message translates to:
-  /// **Edit provider**
-  String get modelsEditProvider;
-  /// No description provided for @modelsAddModel.
-  ///
-  /// In en, this message translates to:
-  /// **Add model**
-  String get modelsAddModel;
-  /// No description provided for @modelsRenameModel.
-  ///
-  /// In en, this message translates to:
-  /// **Rename model**
-  String get modelsRenameModel;
-  /// No description provided for @modelsEditAction.
-  ///
-  /// In en, this message translates to:
-  /// **edit**
-  String get modelsEditAction;
-  /// No description provided for @modelsRemoveAction.
-  ///
-  /// In en, this message translates to:
-  /// **remove**
-  String get modelsRemoveAction;
-  /// No description provided for @modelsRenameAction.
-  ///
-  /// In en, this message translates to:
-  /// **rename**
-  String get modelsRenameAction;
-  /// No description provided for @modelsConfirm.
-  ///
-  /// In en, this message translates to:
-  /// **Confirm**
-  String get modelsConfirm;
-  /// No description provided for @modelsCancel.
-  ///
-  /// In en, this message translates to:
-  /// **Cancel**
-  String get modelsCancel;
-  /// No description provided for @modelsPropose.
-  ///
-  /// In en, this message translates to:
-  /// **Propose**
-  String get modelsPropose;
-  /// No description provided for @modelsApply.
-  ///
-  /// In en, this message translates to:
-  /// **Apply**
-  String get modelsApply;
-  /// No description provided for @modelsUnsavedChanges.
-  ///
-  /// In en, this message translates to:
-  /// **unsaved changes**
-  String get modelsUnsavedChanges;
-  /// No description provided for @modelsInSync.
-  ///
-  /// In en, this message translates to:
-  /// **in sync with the live palette**
-  String get modelsInSync;
-  /// No description provided for @modelsRestartRequired.
-  ///
-  /// In en, this message translates to:
-  /// **restart required**
-  String get modelsRestartRequired;
-  /// No description provided for @modelsTransportLabel.
-  ///
-  /// In en, this message translates to:
-  /// **transport**
-  String get modelsTransportLabel;
-  /// No description provided for @modelsEnvPrefix.
-  ///
-  /// In en, this message translates to:
-  /// **env:**
-  String get modelsEnvPrefix;
-  /// No description provided for @modelsProviderIdHint.
-  ///
-  /// In en, this message translates to:
-  /// **provider id**
-  String get modelsProviderIdHint;
-  /// No description provided for @modelsModelIdHint.
-  ///
-  /// In en, this message translates to:
-  /// **model id**
-  String get modelsModelIdHint;
-  /// No description provided for @modelsBaseUrlHint.
-  ///
-  /// In en, this message translates to:
-  /// **base_url (https, or http loopback)**
-  String get modelsBaseUrlHint;
-  /// No description provided for @modelsCredentialEnvHint.
-  ///
-  /// In en, this message translates to:
-  /// **credential_env (an env NAME)**
-  String get modelsCredentialEnvHint;
-  /// No description provided for @modelsRefusalEmptyId.
-  ///
-  /// In en, this message translates to:
-  /// **the id must not be empty**
-  String get modelsRefusalEmptyId;
-  /// No description provided for @modelsRefusalDuplicateProvider.
-  ///
-  /// In en, this message translates to:
-  /// **a provider already exists with id**
-  String get modelsRefusalDuplicateProvider;
-  /// No description provided for @modelsRefusalDuplicateModel.
-  ///
-  /// In en, this message translates to:
-  /// **the provider already declares model**
-  String get modelsRefusalDuplicateModel;
-  /// No description provided for @modelsRefusalIdImmutable.
-  ///
-  /// In en, this message translates to:
-  /// **provider id is immutable — referenced by cast:**
-  String get modelsRefusalIdImmutable;
-  /// No description provided for @modelsRefusalProviderInUse.
-  ///
-  /// In en, this message translates to:
-  /// **cannot remove provider — referenced by cast:**
-  String get modelsRefusalProviderInUse;
-  /// No description provided for @modelsRefusalModelInUse.
-  ///
-  /// In en, this message translates to:
-  /// **cannot remove model — referenced by cast:**
-  String get modelsRefusalModelInUse;
-  /// No description provided for @modelsRefusalNoSeat.
-  ///
-  /// In en, this message translates to:
-  /// **the realm seat is not ready — the palette verbs need it**
-  String get modelsRefusalNoSeat;
-  /// No description provided for @modelsLensCatalog.
-  String get modelsLensCatalog;
-  /// No description provided for @modelsLensBindings.
-  String get modelsLensBindings;
-  /// No description provided for @modelsLensObserve.
-  String get modelsLensObserve;
-  /// No description provided for @modelsJsonToggle.
-  String get modelsJsonToggle;
-  /// No description provided for @modelsJsonInvalid.
-  String get modelsJsonInvalid;
-  /// No description provided for @modelsFieldMaxTokens.
-  String get modelsFieldMaxTokens;
-  /// No description provided for @modelsFieldMaxOutputTokens.
-  String get modelsFieldMaxOutputTokens;
-  /// No description provided for @modelsFieldReasoningEffort.
-  String get modelsFieldReasoningEffort;
-  /// No description provided for @modelsFieldIncludeReasoning.
-  String get modelsFieldIncludeReasoning;
-  /// No description provided for @modelsBuiltinLaneLocal.
-  String get modelsBuiltinLaneLocal;
-  /// No description provided for @modelsBuiltinLaneDecision.
-  String get modelsBuiltinLaneDecision;
-  /// No description provided for @modelsBuiltinLaneAfm.
-  String get modelsBuiltinLaneAfm;
-  /// No description provided for @modelsBuiltinLaneOpenRouter.
-  String get modelsBuiltinLaneOpenRouter;
-  /// No description provided for @modelsBuiltinLaneUnknown.
-  String get modelsBuiltinLaneUnknown;
-  /// No description provided for @modelsReasoningNoLane.
-  String get modelsReasoningNoLane;
-  /// No description provided for @modelsReasoningTitle.
-  String get modelsReasoningTitle;
-  /// No description provided for @actorsMessage.
-  String get actorsMessage;
-  /// No description provided for @actorsRemove.
-  String get actorsRemove;
-  /// No description provided for @actorsRemoveConfirm.
-  String get actorsRemoveConfirm;
-  /// No description provided for @actorsNewActor.
-  String get actorsNewActor;
-  /// No description provided for @actorsCreate.
-  String get actorsCreate;
-  /// No description provided for @actorsAvatar.
-  String get actorsAvatar;
-  /// No description provided for @actorsAvatarHint.
-  String get actorsAvatarHint;
-  /// No description provided for @actorsAvatarClear.
-  String get actorsAvatarClear;
-  /// No description provided for @actorsReasoning.
-  String get actorsReasoning;
-  /// No description provided for @actorsReasoningNoLane.
-  String get actorsReasoningNoLane;
-  /// No description provided for @actorsReasoningDaemonNote.
-  String get actorsReasoningDaemonNote;
-  /// No description provided for @actorsYourProfile.
-  String get actorsYourProfile;
-  /// No description provided for @actorsYou.
-  String get actorsYou;
-  /// No description provided for @inboxQueuedReason.
-  String get inboxQueuedReason;
-  /// No description provided for @inboxTaskDetail.
-  String get inboxTaskDetail;
-  /// No description provided for @inboxTaskCancel.
-  String get inboxTaskCancel;
-  /// No description provided for @inboxTaskEvents.
-  String get inboxTaskEvents;
-  /// No description provided for @inboxTaskNoEvents.
-  String get inboxTaskNoEvents;
-  /// No description provided for @inboxDurableQueue.
-  String get inboxDurableQueue;
-  /// No description provided for @inboxBoardsQueueNote.
-  String get inboxBoardsQueueNote;
-  /// No description provided for @actorsRetiredNote.
-  String get actorsRetiredNote;
-  /// No description provided for @modelsClassRemote.
-  String get modelsClassRemote;
-  /// No description provided for @modelsClassRemoteEmpty.
-  String get modelsClassRemoteEmpty;
-  /// No description provided for @modelsClassLocalServer.
-  String get modelsClassLocalServer;
-  /// No description provided for @modelsClassLocalServerEmpty.
-  String get modelsClassLocalServerEmpty;
-  /// No description provided for @modelsClassSubscription.
-  String get modelsClassSubscription;
-  /// No description provided for @modelsClassSubscriptionAbsent.
-  String get modelsClassSubscriptionAbsent;
-  /// No description provided for @modelsClassOnDevice.
-  String get modelsClassOnDevice;
-  /// No description provided for @modelsClassOnDeviceEmpty.
-  String get modelsClassOnDeviceEmpty;
-  /// No description provided for @modelsClassUnclassified.
-  String get modelsClassUnclassified;
-  /// No description provided for @modelsSettingsAdd.
-  String get modelsSettingsAdd;
-  /// No description provided for @modelsSettingsFreeKey.
-  String get modelsSettingsFreeKey;
-  /// No description provided for @modelsSettingsUnconsumed.
-  String get modelsSettingsUnconsumed;
-  /// No description provided for @modelsSettingsRemove.
-  String get modelsSettingsRemove;
-  /// No description provided for @modelsChatGptPlan.
-  String get modelsChatGptPlan;
-  /// No description provided for @modelsChatGptSignedOut.
-  String get modelsChatGptSignedOut;
-  /// No description provided for @modelsFieldCapabilities.
-  String get modelsFieldCapabilities;
-  /// No description provided for @modelsEditModel.
-  String get modelsEditModel;
-  /// No description provided for @modelsMoveUp.
-  String get modelsMoveUp;
-  /// No description provided for @modelsMoveDown.
-  String get modelsMoveDown;
-  /// No description provided for @modelsSetPrimary.
-  String get modelsSetPrimary;
-  /// No description provided for @modelsSessionPrefix.
-  String get modelsSessionPrefix;
-  /// No description provided for @modelsSessionClear.
-  String get modelsSessionClear;
-  /// No description provided for @modelsRestartPending.
-  String get modelsRestartPending;
-  /// No description provided for @modelsRestartNow.
-  String get modelsRestartNow;
-  /// No description provided for @modelsHealthSection.
-  String get modelsHealthSection;
-  /// No description provided for @modelsLedgerSection.
-  String get modelsLedgerSection;
-  /// No description provided for @modelsUnbound.
-  String get modelsUnbound;
-  /// No description provided for @modelsRefusalBadNumber.
-  String get modelsRefusalBadNumber;
-  /// No description provided for @roomsExplainDms.
-  ///
-  /// In en, this message translates to:
-  /// **Direct messages — private threads with one actor**
-  String get roomsExplainDms;
-  /// No description provided for @roomsExplainChannels.
-  ///
-  /// In en, this message translates to:
-  /// **Channels — named group rooms with shared history**
-  String get roomsExplainChannels;
-  /// No description provided for @roomsExplainRooms.
-  ///
-  /// In en, this message translates to:
-  /// **Rooms — watchable actor threads; join by addressing**
-  String get roomsExplainRooms;
-  /// No description provided for @roomsKindChannel.
-  ///
-  /// In en, this message translates to:
-  /// **Channel**
-  String get roomsKindChannel;
-  /// No description provided for @roomsKindRoom.
-  ///
-  /// In en, this message translates to:
-  /// **Room**
-  String get roomsKindRoom;
-  /// No description provided for @roomsSetIconAction.
-  ///
-  /// In en, this message translates to:
-  /// **Change icon…**
-  String get roomsSetIconAction;
-  /// No description provided for @roomsSetIconTitle.
-  ///
-  /// In en, this message translates to:
-  /// **Change channel icon**
-  String get roomsSetIconTitle;
-  /// No description provided for @roomsIconClear.
-  ///
-  /// In en, this message translates to:
-  /// **Clear icon**
-  String get roomsIconClear;
-  /// No description provided for @roomsIconCustomLabel.
-  ///
-  /// In en, this message translates to:
-  /// **Or one character / emoji**
-  String get roomsIconCustomLabel;
-  /// No description provided for @worldChatAttach.
-  ///
-  /// In en, this message translates to:
-  /// **Attach or mention**
-  String get worldChatAttach;
-  /// No description provided for @worldChatAttachSearchHint.
-  ///
-  /// In en, this message translates to:
-  /// **Search people, channels, rooms, docs…**
-  String get worldChatAttachSearchHint;
-  /// No description provided for @worldChatAttachWorkOrder.
-  ///
-  /// In en, this message translates to:
-  /// **Work order…**
-  String get worldChatAttachWorkOrder;
-  /// No description provided for @worldChatAttachPlugins.
-  ///
-  /// In en, this message translates to:
-  /// **Plugins**
-  String get worldChatAttachPlugins;
-  /// No description provided for @worldChatAttachMcpServers.
-  ///
-  /// In en, this message translates to:
-  /// **MCP servers**
-  String get worldChatAttachMcpServers;
-  /// No description provided for @worldChatAttachNoneYet.
-  ///
-  /// In en, this message translates to:
-  /// **none yet**
-  String get worldChatAttachNoneYet;
-  /// No description provided for @worldChatNoMatches.
-  ///
-  /// In en, this message translates to:
-  /// **No matches**
-  String get worldChatNoMatches;
-  /// No description provided for @worldChatPermsTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **Permissions**
-  String get worldChatPermsTooltip;
-  /// No description provided for @worldChatPermsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **Channel permissions**
-  String get worldChatPermsTitle;
-  /// No description provided for @worldChatMembersTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **Members**
-  String get worldChatMembersTooltip;
-  /// No description provided for @worldChatInfoTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **Channel info**
-  String get worldChatInfoTooltip;
-  /// No description provided for @worldChatChangeIcon.
-  ///
-  /// In en, this message translates to:
-  /// **Change icon**
-  String get worldChatChangeIcon;
-  /// No description provided for @worldChatIconViaColumn.
-  ///
-  /// In en, this message translates to:
-  /// **The channel icon changes with the rooms column menu (Wave D).**
-  String get worldChatIconViaColumn;
-  /// No description provided for @worldChatBeatEdit.
-  ///
-  /// In en, this message translates to:
-  /// **Edit**
-  String get worldChatBeatEdit;
-  /// No description provided for @worldChatBeatNewThread.
-  ///
-  /// In en, this message translates to:
-  /// **New thread**
-  String get worldChatBeatNewThread;
-  /// No description provided for @worldChatBeatDelete.
-  ///
-  /// In en, this message translates to:
-  /// **Delete**
-  String get worldChatBeatDelete;
-  /// No description provided for @worldChatBeatMenu.
-  ///
-  /// In en, this message translates to:
-  /// **Message actions**
-  String get worldChatBeatMenu;
-  /// No description provided for @worldChatEditGap.
-  ///
-  /// In en, this message translates to:
-  /// **Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.**
-  String get worldChatEditGap;
-  /// No description provided for @worldChatDeleteGap.
-  ///
-  /// In en, this message translates to:
-  /// **The journal is append-only; the delete verb is harness-owned and not exposed yet.**
-  String get worldChatDeleteGap;
-  /// No description provided for @worldChatThreadKind.
-  ///
-  /// In en, this message translates to:
-  /// **Thread**
-  String get worldChatThreadKind;
   /// No description provided for @roomsCloseChannel.
   ///
   /// In en, this message translates to:
@@ -3457,7 +3012,7 @@ abstract class S {
   /// Landing inbox: queued/running durable tasks.
   ///
   /// In en, this message translates to:
-  /// **'Running tasks'**
+  /// **'Queued & running'**
   String get inboxRunning;
 
   /// Landing inbox: the newest terminal truths.
@@ -3514,23 +3069,53 @@ abstract class S {
   /// **'Models'**
   String get viewModelsTitle;
 
-  /// Models: no config file declares model_palette.
+  /// Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs).
   ///
   /// In en, this message translates to:
-  /// **'No palette declared for this world'**
+  /// **'No models declared for this world'**
   String get modelsNoPalette;
 
-  /// Models: the generative role section.
+  /// Models: the world default order section (the old generative-rungs list, rendered as sentences).
   ///
   /// In en, this message translates to:
-  /// **'Generative rungs'**
-  String get modelsGenerative;
+  /// **'Brain policy'**
+  String get modelsPolicySection;
 
-  /// Models: the decision role section.
+  /// Policy row sentence: position 1 is the world default.
   ///
   /// In en, this message translates to:
-  /// **'Decision rungs'**
-  String get modelsDecision;
+  /// **'thinks first'**
+  String get modelsPolicyFirst;
+
+  /// No description provided for @modelsPolicyFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'if {model} is down or stuck'**
+  String modelsPolicyFallback(String model);
+
+  /// Models: the collapsed decision-role section (the world's own quick decisions).
+  ///
+  /// In en, this message translates to:
+  /// **'System lanes'**
+  String get modelsSystemLanes;
+
+  /// System lanes: the one-sentence explainer.
+  ///
+  /// In en, this message translates to:
+  /// **'The world\'s own quick decisions — leave these alone'**
+  String get modelsSystemLanesHint;
+
+  /// No description provided for @modelsActorsMore.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String modelsActorsMore(int count);
+
+  /// Observe ledger: the dispatch escalated from a stalled rung to the named model (ADR 0122 promotion, narrated).
+  ///
+  /// In en, this message translates to:
+  /// **'stalled → tried {model}'**
+  String modelsEscalatedTo(String model);
 
   /// Models header fact.
   ///
@@ -3591,12 +3176,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Recent dispatches'**
   String get modelsTelemetry;
-
-  /// Rung chip: the role's primary entry.
-  ///
-  /// In en, this message translates to:
-  /// **'primary'**
-  String get modelsChipPrimary;
 
   /// Rung chip: a builtin local lane.
   ///
@@ -3891,6 +3470,894 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Approve'**
   String get contextApprove;
+
+  /// Rooms column: tooltip explaining the Direct messages section.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messages — private threads with one actor'**
+  String get roomsExplainDms;
+
+  /// Rooms column: tooltip explaining the Channels section.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels — named group rooms with shared history'**
+  String get roomsExplainChannels;
+
+  /// Rooms column: tooltip explaining the Rooms section.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms — watchable actor threads; join by addressing'**
+  String get roomsExplainRooms;
+
+  /// Rooms column: kind word on a channel row mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel'**
+  String get roomsKindChannel;
+
+  /// Rooms column: kind word on a room row mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Room'**
+  String get roomsKindRoom;
+
+  /// Channel row context menu: opens the change-icon dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Change icon…'**
+  String get roomsSetIconAction;
+
+  /// Change-icon dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Change channel icon'**
+  String get roomsSetIconTitle;
+
+  /// Change-icon dialog: clears back to the # mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear icon'**
+  String get roomsIconClear;
+
+  /// Change-icon dialog: label of the custom glyph field.
+  ///
+  /// In en, this message translates to:
+  /// **'Or one character / emoji'**
+  String get roomsIconCustomLabel;
+
+  /// Composer: attach/mention button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach or mention'**
+  String get worldChatAttach;
+
+  /// Attach dialog: search field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search people, channels, rooms, docs…'**
+  String get worldChatAttachSearchHint;
+
+  /// Attach dialog: opens the ADR 0129 scope picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order…'**
+  String get worldChatAttachWorkOrder;
+
+  /// Attach dialog: plugins row (honest absence today).
+  ///
+  /// In en, this message translates to:
+  /// **'Plugins'**
+  String get worldChatAttachPlugins;
+
+  /// Attach dialog: MCP servers row (honest absence today).
+  ///
+  /// In en, this message translates to:
+  /// **'MCP servers'**
+  String get worldChatAttachMcpServers;
+
+  /// Attach dialog: trailing note on absent attach kinds.
+  ///
+  /// In en, this message translates to:
+  /// **'none yet'**
+  String get worldChatAttachNoneYet;
+
+  /// Attach dialog / mention overlay: empty filter result.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches'**
+  String get worldChatNoMatches;
+
+  /// Channel header: threads browser toggle label.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get worldChatThreadsToggle;
+
+  /// Channel view threads browser: the work threads group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get worldChatThreadsGroup;
+
+  /// Channel view threads browser: the watchable rooms group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get worldChatRoomsGroup;
+
+  /// Channel view threads browser: the quiet empty line.
+  ///
+  /// In en, this message translates to:
+  /// **'No threads yet.'**
+  String get worldChatThreadsEmpty;
+
+  /// Composer meta row: permissions button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get worldChatPermsTooltip;
+
+  /// Composer meta row: permissions dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel permissions'**
+  String get worldChatPermsTitle;
+
+  /// Composer meta row: members button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get worldChatMembersTooltip;
+
+  /// Composer meta row: channel info button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel info'**
+  String get worldChatInfoTooltip;
+
+  /// Channel info dialog: icon row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Change icon'**
+  String get worldChatChangeIcon;
+
+  /// Channel info dialog: honest tooltip on the icon row.
+  ///
+  /// In en, this message translates to:
+  /// **'The channel icon changes with the rooms column menu (Wave D).'**
+  String get worldChatIconViaColumn;
+
+  /// Beat hover cluster: edit action (own beats, gap-disabled).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get worldChatBeatEdit;
+
+  /// Beat hover cluster: start a child thread.
+  ///
+  /// In en, this message translates to:
+  /// **'New thread'**
+  String get worldChatBeatNewThread;
+
+  /// Beat menu: delete action (gap-disabled).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get worldChatBeatDelete;
+
+  /// Beat hover cluster: menu button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Message actions'**
+  String get worldChatBeatMenu;
+
+  /// Edit action tooltip naming the harness-owned verb gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.'**
+  String get worldChatEditGap;
+
+  /// Delete action tooltip naming the harness-owned verb gap.
+  ///
+  /// In en, this message translates to:
+  /// **'The journal is append-only; the delete verb is harness-owned and not exposed yet.'**
+  String get worldChatDeleteGap;
+
+  /// Work-card kind word for a conversational child thread (no project seal).
+  ///
+  /// In en, this message translates to:
+  /// **'Thread'**
+  String get worldChatThreadKind;
+
+  /// Tab strip: overflow control tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden tabs — open the list'**
+  String get stripOverflowHint;
+
+  /// Models view: providers section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get modelsProviders;
+
+  /// Models view: opens the provider editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit providers'**
+  String get modelsEditProviders;
+
+  /// Models view: empty providers state.
+  ///
+  /// In en, this message translates to:
+  /// **'no providers declared'**
+  String get modelsNoProviders;
+
+  /// Models view: count suffix on a provider row.
+  ///
+  /// In en, this message translates to:
+  /// **'models'**
+  String get modelsCountSuffix;
+
+  /// Models view: context-tier label.
+  ///
+  /// In en, this message translates to:
+  /// **'ctx'**
+  String get modelsContextTier;
+
+  /// Models view: empty model list.
+  ///
+  /// In en, this message translates to:
+  /// **'no models declared'**
+  String get modelsNoModels;
+
+  /// Provider editor: add row.
+  ///
+  /// In en, this message translates to:
+  /// **'Add provider'**
+  String get modelsAddProvider;
+
+  /// Provider editor: dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit provider'**
+  String get modelsEditProvider;
+
+  /// Provider editor: add model row.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get modelsAddModel;
+
+  /// Provider editor: rename model row.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename model'**
+  String get modelsRenameModel;
+
+  /// Provider editor: inline edit verb.
+  ///
+  /// In en, this message translates to:
+  /// **'edit'**
+  String get modelsEditAction;
+
+  /// Provider editor: inline remove verb.
+  ///
+  /// In en, this message translates to:
+  /// **'remove'**
+  String get modelsRemoveAction;
+
+  /// Provider editor: inline rename verb.
+  ///
+  /// In en, this message translates to:
+  /// **'rename'**
+  String get modelsRenameAction;
+
+  /// Provider editor: confirm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get modelsConfirm;
+
+  /// Provider editor: cancel button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get modelsCancel;
+
+  /// Provider editor: validate candidate.
+  ///
+  /// In en, this message translates to:
+  /// **'Propose'**
+  String get modelsPropose;
+
+  /// Provider editor: owner apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get modelsApply;
+
+  /// Provider editor: dirty-state note.
+  ///
+  /// In en, this message translates to:
+  /// **'unsaved changes'**
+  String get modelsUnsavedChanges;
+
+  /// Provider editor: clean-state note.
+  ///
+  /// In en, this message translates to:
+  /// **'in sync with the live palette'**
+  String get modelsInSync;
+
+  /// Provider editor: apply outcome note.
+  ///
+  /// In en, this message translates to:
+  /// **'restart required'**
+  String get modelsRestartRequired;
+
+  /// Provider editor: transport chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'transport'**
+  String get modelsTransportLabel;
+
+  /// Provider editor: credential env name prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'env:'**
+  String get modelsEnvPrefix;
+
+  /// Provider editor: id field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'provider id'**
+  String get modelsProviderIdHint;
+
+  /// Provider editor: model id field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'model id'**
+  String get modelsModelIdHint;
+
+  /// Provider editor: base_url field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'base_url (https, or http loopback)'**
+  String get modelsBaseUrlHint;
+
+  /// Provider editor: credential_env field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'credential_env (an env NAME)'**
+  String get modelsCredentialEnvHint;
+
+  /// Provider editor: empty-id refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the id must not be empty'**
+  String get modelsRefusalEmptyId;
+
+  /// Provider editor: duplicate provider refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'a provider already exists with id'**
+  String get modelsRefusalDuplicateProvider;
+
+  /// Provider editor: duplicate model refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the provider already declares model'**
+  String get modelsRefusalDuplicateModel;
+
+  /// Provider editor: immutable id refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'provider id is immutable — referenced by cast:'**
+  String get modelsRefusalIdImmutable;
+
+  /// Provider editor: provider-in-use refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'cannot remove provider — referenced by cast:'**
+  String get modelsRefusalProviderInUse;
+
+  /// Provider editor: model-in-use refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'cannot remove model — referenced by cast:'**
+  String get modelsRefusalModelInUse;
+
+  /// Provider editor: seat-absent refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the realm seat is not ready — the palette verbs need it'**
+  String get modelsRefusalNoSeat;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog'**
+  String get modelsLensCatalog;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Bindings'**
+  String get modelsLensBindings;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Observe'**
+  String get modelsLensObserve;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get modelsJsonToggle;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'invalid JSON — the candidate keeps its last valid shape'**
+  String get modelsJsonInvalid;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'max_tokens'**
+  String get modelsFieldMaxTokens;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'max_output_tokens'**
+  String get modelsFieldMaxOutputTokens;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'reasoning_effort'**
+  String get modelsFieldReasoningEffort;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'include_reasoning'**
+  String get modelsFieldIncludeReasoning;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in local MLX lane (on-device)'**
+  String get modelsBuiltinLaneLocal;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in local decision lane (loopback)'**
+  String get modelsBuiltinLaneDecision;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in Apple Foundation lane (on-device, Apple-specific)'**
+  String get modelsBuiltinLaneAfm;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in OpenRouter lane (hosted)'**
+  String get modelsBuiltinLaneOpenRouter;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in lane (composition-root owned)'**
+  String get modelsBuiltinLaneUnknown;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·'**
+  String get modelsReasoningNoLane;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'reasoning effort'**
+  String get modelsReasoningTitle;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get actorsMessage;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove actor'**
+  String get actorsRemove;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Retire the durable row and delete the roster profile of'**
+  String get actorsRemoveConfirm;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'New actor'**
+  String get actorsNewActor;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get actorsCreate;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get actorsAvatar;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'emoji or character'**
+  String get actorsAvatarHint;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get actorsAvatarClear;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'reasoning level'**
+  String get actorsReasoning;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'this brain lane declares no effort tiers'**
+  String get actorsReasoningNoLane;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands'**
+  String get actorsReasoningDaemonNote;
+
+  /// Wave N3 2026-11-16 (human self-profile entry).
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile'**
+  String get actorsYourProfile;
+
+  /// Wave N3 2026-11-16 (human self-profile entry).
+  ///
+  /// In en, this message translates to:
+  /// **'you'**
+  String get actorsYou;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'queued - waiting for a scheduler: arm the world'**
+  String get inboxQueuedReason;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'Task detail'**
+  String get inboxTaskDetail;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel task'**
+  String get inboxTaskCancel;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'control events'**
+  String get inboxTaskEvents;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'no control events yet'**
+  String get inboxTaskNoEvents;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'durable queue'**
+  String get inboxDurableQueue;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it'**
+  String get inboxBoardsQueueNote;
+
+  /// Wave N5b 2026-11-16 (retired actors name their retirement).
+  ///
+  /// In en, this message translates to:
+  /// **'retired - the durable row keeps its history:'**
+  String get actorsRetiredNote;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Remote providers'**
+  String get modelsClassRemote;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'no declared remote providers'**
+  String get modelsClassRemoteEmpty;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Local server (loopback)'**
+  String get modelsClassLocalServer;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url'**
+  String get modelsClassLocalServerEmpty;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Direct subscription'**
+  String get modelsClassSubscription;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane'**
+  String get modelsClassSubscriptionAbsent;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'On-device services'**
+  String get modelsClassOnDevice;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'no on-device service on this machine'**
+  String get modelsClassOnDeviceEmpty;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Unclassified lanes'**
+  String get modelsClassUnclassified;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'add'**
+  String get modelsSettingsAdd;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'free key'**
+  String get modelsSettingsFreeKey;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'unconsumed'**
+  String get modelsSettingsUnconsumed;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'remove setting'**
+  String get modelsSettingsRemove;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT plan'**
+  String get modelsChatGptPlan;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'signed out - sign in from the agent-doc runtime pane'**
+  String get modelsChatGptSignedOut;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'capabilities'**
+  String get modelsFieldCapabilities;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit model'**
+  String get modelsEditModel;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'move up the escalation ladder'**
+  String get modelsMoveUp;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'move down the escalation ladder'**
+  String get modelsMoveDown;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'session:'**
+  String get modelsSessionPrefix;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'clear'**
+  String get modelsSessionClear;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'palette landed — the daemon binds it at restart'**
+  String get modelsRestartPending;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Restart now'**
+  String get modelsRestartNow;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get modelsHealthSection;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatch ledger'**
+  String get modelsLedgerSection;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'unbound actors'**
+  String get modelsUnbound;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'not a number — the field keeps its last value'**
+  String get modelsRefusalBadNumber;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Add image'**
+  String get attachImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get takePhoto;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get chooseImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate image'**
+  String get generateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit image'**
+  String get editImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption'**
+  String get captionImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the image (alt text)'**
+  String get altTextHint;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove image'**
+  String get removeImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Image added'**
+  String get imageAddedToNote;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the image to generate…'**
+  String get imageGenerationPrompt;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Image generation failed'**
+  String get imageGenerationFailed;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit failed'**
+  String get imageEditFailed;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating…'**
+  String get generatingImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Annotate'**
+  String get annotateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Save copy'**
+  String get saveImageCopy;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get rotateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop square'**
+  String get cropSquare;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

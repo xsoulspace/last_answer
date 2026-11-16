@@ -520,7 +520,12 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
       await tester.pump();
 
-      final jev = find.byKey(const ValueKey('models.rung.jev'));
+      // jev is a decision role: it lives under System lanes now
+      // (collapsed by default — expand it first).
+      await tester.tap(find.byKey(const ValueKey('models.systemLanes')));
+      await tester.pump();
+      final jev = find.byKey(const ValueKey('models.systemLane.jev'));
+      expect(jev, findsOneWidget);
       expect(
         find.descendant(of: jev, matching: find.text('remote')),
         findsOneWidget,
@@ -551,8 +556,8 @@ void main() {
       await endClean(tester);
     });
 
-    testWidgets('the ladder order and the primary mark are candidate '
-        'verbs over the cast list', (final tester) async {
+    testWidgets('the ladder order is the candidate verb; position 1 '
+        'carries the default (the radio is gone)', (final tester) async {
       await mount(tester);
 
       await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
@@ -561,7 +566,14 @@ void main() {
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
         findsOneWidget,
       );
-      expect(find.text('primary'), findsOneWidget);
+      // The retired radio verb is GONE: moving to the top IS "set as
+      // default" now (brain-policy law, 2026-11-16).
+      expect(
+        find.byKey(
+          const ValueKey('models.cast.modelscope_qwen38max.primary'),
+        ),
+        findsNothing,
+      );
 
       // Down moves the row in the CANDIDATE cast order.
       await settleTap(tester, 'models.cast.modelscope_qwen38max.down');
@@ -570,16 +582,17 @@ void main() {
           .toList();
       expect(cast.first['id'], 'openrouter_deepseek');
 
-      // The primary mark moves, clearing the old one.
-      await settleTap(tester, 'models.cast.modelscope_qwen38max.primary');
+      // The default mark FOLLOWS position 1: the row moved off the top
+      // clears, the new first generative row carries it — order and
+      // default can never disagree.
       cast = (PaletteCandidateModel.debugLastCandidate!['cast']! as List)
           .whereType<Map<Object?, Object?>>()
           .toList();
       final byId = <String, Map<Object?, Object?>>{
         for (final entry in cast) '${entry['id']}': entry,
       };
-      expect(byId['modelscope_qwen38max']!['primary'], true);
-      expect(byId['openrouter_deepseek']!.containsKey('primary'), isFalse);
+      expect(byId['openrouter_deepseek']!['primary'], true);
+      expect(byId['modelscope_qwen38max']!.containsKey('primary'), isFalse);
       expect(find.text('unsaved changes'), findsOneWidget);
 
       await endClean(tester);
@@ -643,6 +656,36 @@ void main() {
       );
       expect(find.text('2r'), findsOneWidget);
       expect(find.text('cache 47%'), findsOneWidget);
+
+      await endClean(tester);
+    });
+
+    testWidgets('an escalation narrates the promotion: stalled → tried '
+        '<model> (the world says what it did)', (final tester) async {
+      await mount(tester);
+
+      // The daemon records the flattened `escalatedFrom` tag on the
+      // promoted run's telemetry row (ADR 0122); the narration names the
+      // model it fell back TO, not the raw entry id.
+      world.debugTelemetryOverride = <String, ActorTelemetry>{
+        'cache-probe': const ActorTelemetry(
+          actorId: 'cache-probe',
+          rounds: 1,
+          promptTokens: 90,
+          cachedTokens: 20,
+          stalled: false,
+          escalatedFrom: 'modelscope_qwen38max',
+          at: '2026-11-16T00:00:00Z',
+        ),
+      };
+
+      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      await tester.pump();
+
+      // modelscope_qwen38max declares model Qwen3.8-Max-Preview → the
+      // spoken name (the brain-policy vocabulary law).
+      expect(find.textContaining('stalled → tried'), findsOneWidget);
+      expect(find.textContaining('Qwen3.8 Max Preview'), findsOneWidget);
 
       await endClean(tester);
     });

@@ -407,9 +407,15 @@ List<({String ref, String label})> availableBrainOptions({
       ),
     ],
     // The discovered palette's generative rungs (G6): the world is the
-    // source of models; the picker lists what it declares.
+    // source of models; the picker lists what it declares. The label is
+    // the model's spoken name (the brain-policy vocabulary law,
+    // 2026-11-16 — no palette words on user surfaces); the entry id
+    // stays the stable handle agents reference.
     for (final rung in paletteRungs)
-      (ref: 'cast:${rung.id}', label: 'Palette · ${rung.id}'),
+      (
+        ref: 'cast:${rung.id}',
+        label: brainModelLabel(id: rung.id, model: rung.model),
+      ),
   ];
 }
 
@@ -589,7 +595,7 @@ final class PaletteCastBrain implements ActorBrain {
   String get ref => 'cast:${decl.id}';
 
   @override
-  String get label => 'Palette · ${decl.id}';
+  String get label => brainModelLabel(id: decl.id, model: decl.model);
 
   InferenceClient _effectiveClient() {
     final key = resolveApiKey();

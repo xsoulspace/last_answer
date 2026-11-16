@@ -533,7 +533,7 @@
   "actorsCreateActor": "Create actor",
   "actorsNameLabel": "Actor name",
   "actorsNameHint": "e.g. Toby Researcher",
-  "actorsBrainLabel": "Brain (model)",
+  "actorsBrainLabel": "Brain",
   "actorsRoleLabel": "Role (optional)",
   "actorsRoleHint": "e.g. research assistant",
   "actorsRemoveTooltip": "Remove actor",
@@ -725,12 +725,41 @@
   "@inboxWorldArmFailed": {"description": "Landing inbox: converge failed."},
   "viewModelsTitle": "Models",
   "@viewModelsTitle": {"description": "The Models surface title."},
-  "modelsNoPalette": "No palette declared for this world",
-  "@modelsNoPalette": {"description": "Models: no config file declares model_palette."},
-  "modelsGenerative": "Generative rungs",
-  "@modelsGenerative": {"description": "Models: the generative role section."},
-  "modelsDecision": "Decision rungs",
-  "@modelsDecision": {"description": "Models: the decision role section."},
+  "modelsNoPalette": "No models declared for this world",
+  "@modelsNoPalette": {"description": "Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs)."},
+  "modelsPolicySection": "Brain policy",
+  "@modelsPolicySection": {"description": "Models: the world default order section (the old generative-rungs list, rendered as sentences)."},
+  "modelsPolicyFirst": "thinks first",
+  "@modelsPolicyFirst": {"description": "Policy row sentence: position 1 is the world default."},
+  "modelsPolicyFallback": "if {model} is down or stuck",
+  "@modelsPolicyFallback": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsSystemLanes": "System lanes",
+  "@modelsSystemLanes": {"description": "Models: the collapsed decision-role section (the world's own quick decisions)."},
+  "modelsSystemLanesHint": "The world's own quick decisions — leave these alone",
+  "@modelsSystemLanesHint": {"description": "System lanes: the one-sentence explainer."},
+  "modelsActorsMore": "+{count} more",
+  "@modelsActorsMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "modelsEscalatedTo": "stalled → tried {model}",
+  "@modelsEscalatedTo": {
+    "description": "Observe ledger: the dispatch escalated from a stalled rung to the named model (ADR 0122 promotion, narrated).",
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
   "modelsDaemonLive": "daemon live",
   "@modelsDaemonLive": {"description": "Models header fact."},
   "modelsDaemonDown": "daemon down",
@@ -751,8 +780,6 @@
   "@modelsClose": {"description": "Editor: close the dialog."},
   "modelsTelemetry": "Recent dispatches",
   "@modelsTelemetry": {"description": "Models: per-actor tool-loop telemetry section."},
-  "modelsChipPrimary": "primary",
-  "@modelsChipPrimary": {"description": "Rung chip: the role's primary entry."},
   "modelsChipLocal": "local",
   "@modelsChipLocal": {"description": "Rung chip: a builtin local lane."},
   "commandPaletteHint": "Search views, people and actions…",
@@ -883,6 +910,14 @@
   "@worldChatAttachNoneYet": {"description": "Attach dialog: trailing note on absent attach kinds."},
   "worldChatNoMatches": "No matches",
   "@worldChatNoMatches": {"description": "Attach dialog / mention overlay: empty filter result."},
+  "worldChatThreadsToggle": "Threads",
+  "@worldChatThreadsToggle": {"description": "Channel header: threads browser toggle label."},
+  "worldChatThreadsGroup": "Threads",
+  "@worldChatThreadsGroup": {"description": "Channel view threads browser: the work threads group label."},
+  "worldChatRoomsGroup": "Rooms",
+  "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
+  "worldChatThreadsEmpty": "No threads yet.",
+  "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
   "worldChatPermsTooltip": "Permissions",
   "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
   "worldChatPermsTitle": "Channel permissions",
@@ -1089,8 +1124,6 @@
   "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsMoveDown": "move down the escalation ladder",
   "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
-  "modelsSetPrimary": "set as the realm's primary mover",
-  "@modelsSetPrimary": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsSessionPrefix": "session:",
   "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsSessionClear": "clear",
@@ -1106,5 +1139,39 @@
   "modelsUnbound": "unbound actors",
   "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsRefusalBadNumber": "not a number — the field keeps its last value",
-  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."}
+  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "attachImage": "Add image",
+  "@attachImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "takePhoto": "Take photo",
+  "@takePhoto": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "chooseImage": "Choose image",
+  "@chooseImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "generateImage": "Generate image",
+  "@generateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "editImage": "Edit image",
+  "@editImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "captionImage": "Caption",
+  "@captionImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "altTextHint": "Describe the image (alt text)",
+  "@altTextHint": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "removeImage": "Remove image",
+  "@removeImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "imageAddedToNote": "Image added",
+  "@imageAddedToNote": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "imageGenerationPrompt": "Describe the image to generate…",
+  "@imageGenerationPrompt": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "imageGenerationFailed": "Image generation failed",
+  "@imageGenerationFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "imageEditFailed": "Edit failed",
+  "@imageEditFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "generatingImage": "Generating…",
+  "@generatingImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "annotateImage": "Annotate",
+  "@annotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "saveImageCopy": "Save copy",
+  "@saveImageCopy": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "rotateImage": "Rotate",
+  "@rotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "cropSquare": "Crop square",
+  "@cropSquare": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."}
 }

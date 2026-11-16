@@ -321,14 +321,27 @@ void main() {
         findsOneWidget,
       );
       expect(find.byKey(const ValueKey('models.rung.qwen')), findsOneWidget);
-      expect(find.byKey(const ValueKey('models.rung.laya')), findsOneWidget);
-      // The declared primary + the on-device lane class are facts,
-      // shown as chips (wave N4: the owner's class vocabulary replaced
-      // the old builtin-equals-local chip).
-      expect(find.text('primary'), findsOneWidget);
+      // laya is a decision role: it lives under System lanes now —
+      // present and named, but explicitly not the reader's business.
+      expect(
+        find.byKey(const ValueKey('models.systemLane.laya')),
+        findsNothing,
+      );
+      await tester.tap(find.byKey(const ValueKey('models.systemLanes')));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('models.systemLane.laya')),
+        findsOneWidget,
+      );
+      // The default is position 1 now (the brain-policy law,
+      // 2026-11-16): the retired primary chip is gone, the behavior
+      // sentences replace it — position 1 thinks first, every later
+      // row names what it falls back FROM. The on-device class chips:
+      // qwen rides a policy row, laya's own chip shows expanded.
+      expect(find.text('primary'), findsNothing);
+      expect(find.text('thinks first'), findsOneWidget);
+      expect(find.textContaining('is down or stuck'), findsNWidgets(2));
       expect(find.text('on-device'), findsNWidgets(2));
-      // The ladder's next rung rides the row.
-      expect(find.text('→ openrouter_deepseek'), findsOneWidget);
 
       // The OBSERVE lens carries the health ledger (verbatim detail)
       // and the daemon's process verbs.
@@ -401,8 +414,12 @@ void main() {
       await tester.pump();
       expect(world.selectedRungId, 'modelscope_qwen38max');
 
-      // A decision rung is data, not a delegation choice.
-      await tester.tap(find.byKey(const ValueKey('models.rung.laya')));
+      // A decision rung is data, not a delegation choice — it lives
+      // under System lanes now, and a system-lane row is not tappable
+      // at all.
+      await tester.tap(find.byKey(const ValueKey('models.systemLanes')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('models.systemLane.laya')));
       await tester.pump();
       expect(world.selectedRungId, 'modelscope_qwen38max');
     });

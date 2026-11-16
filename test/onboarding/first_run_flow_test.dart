@@ -94,10 +94,12 @@ Future<_Harness> _pumpFirstRun(
             (_, _) => Scaffold(
               body: FirstRunScreen(
                 service: service,
-                // The palette-rung grammar exactly as availableBrainOptions
-                // composes it: `cast:<entryId>`.
+                // The brain-ref grammar exactly as availableBrainOptions
+                // composes it: `cast:<entryId>` (the label is the
+                // model's spoken name per the brain-policy vocabulary
+                // law, 2026-11-16).
                 brainOptions: const [
-                  (ref: 'cast:test-rung', label: 'Palette · test-rung'),
+                  (ref: 'cast:test-rung', label: 'test rung'),
                 ],
               ),
             ),

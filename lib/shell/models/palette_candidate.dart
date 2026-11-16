@@ -396,6 +396,11 @@ final class PaletteCandidateModel extends ChangeNotifier {
 
   /// The escalation ladder's order IS the cast list's order: move one
   /// entry to [toIndex] (clamped), the wave-C insert-at-index law.
+  ///
+  /// The position-1 law (brain-policy design, 2026-11-16): the FIRST
+  /// generative entry is the persisted default thinker — the move
+  /// re-maintains the `primary` mark, so the order and the default can
+  /// never disagree (the old radio let them).
   bool moveCast(final String castId, final int toIndex) {
     final list = cast;
     final from = list.indexWhere(
@@ -405,7 +410,26 @@ final class PaletteCandidateModel extends ChangeNotifier {
     final entry = list.removeAt(from);
     final at = toIndex.clamp(0, list.length);
     list.insert(at, entry);
+    _syncPrimaryToOrder();
     return _land();
+  }
+
+  /// The first `role: generative` entry carries `primary`; every other
+  /// entry is cleared — including a stale non-generative mark the old
+  /// radio could leave behind (the parser refuses a non-generative
+  /// primary). A declaration with no generative entry leaves the mark
+  /// untouched.
+  void _syncPrimaryToOrder() {
+    var placed = false;
+    for (final entry in cast) {
+      if (entry is! Map) continue;
+      if (!placed && entry['role'] == 'generative') {
+        entry['primary'] = true;
+        placed = true;
+      } else {
+        entry.remove('primary');
+      }
+    }
   }
 
   /// The JSON lane: the raw document view (the Zed rule). A decode

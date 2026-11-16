@@ -1291,7 +1291,7 @@ class SRu extends S {
   String get actorsNameHint => 'напр. Toby Researcher';
 
   @override
-  String get actorsBrainLabel => 'Мозг (модель)';
+  String get actorsBrainLabel => 'Мозг';
 
   @override
   String get actorsRoleLabel => 'Роль (необязательно)';
@@ -1438,219 +1438,6 @@ class SRu extends S {
 
   @override
   String get roomsRenameAction => 'Переименовать';
-  @override
-  String get stripOverflowHint => 'Скрытые вкладки — открыть список';
-  @override
-  String get modelsProviders => 'Провайдеры';
-  @override
-  String get modelsEditProviders => 'Редактировать провайдеров';
-  @override
-  String get modelsNoProviders => 'провайдеры не объявлены';
-  @override
-  String get modelsCountSuffix => 'моделей';
-  @override
-  String get modelsContextTier => 'контекст';
-  @override
-  String get modelsNoModels => 'модели не объявлены';
-  @override
-  String get modelsAddProvider => 'Добавить провайдера';
-  @override
-  String get modelsEditProvider => 'Изменить провайдера';
-  @override
-  String get modelsAddModel => 'Добавить модель';
-  @override
-  String get modelsRenameModel => 'Переименовать модель';
-  @override
-  String get modelsEditAction => 'изменить';
-  @override
-  String get modelsRemoveAction => 'удалить';
-  @override
-  String get modelsRenameAction => 'переименовать';
-  @override
-  String get modelsConfirm => 'Подтвердить';
-  @override
-  String get modelsCancel => 'Отмена';
-  @override
-  String get modelsPropose => 'Предложить';
-  @override
-  String get modelsApply => 'Применить';
-  @override
-  String get modelsUnsavedChanges => 'несохранённые изменения';
-  @override
-  String get modelsInSync => 'синхронизировано с активной палитрой';
-  @override
-  String get modelsRestartRequired => 'требуется перезапуск';
-  @override
-  String get modelsTransportLabel => 'транспорт';
-  @override
-  String get modelsEnvPrefix => 'env:';
-  @override
-  String get modelsProviderIdHint => 'id провайдера';
-  @override
-  String get modelsModelIdHint => 'id модели';
-  @override
-  String get modelsBaseUrlHint => 'base_url (https или http loopback)';
-  @override
-  String get modelsCredentialEnvHint => 'credential_env (ИМЯ переменной окружения)';
-  @override
-  String get modelsRefusalEmptyId => 'id не может быть пустым';
-  @override
-  String get modelsRefusalDuplicateProvider => 'провайдер с таким id уже существует';
-  @override
-  String get modelsRefusalDuplicateModel => 'провайдер уже объявляет модель';
-  @override
-  String get modelsRefusalIdImmutable => 'id провайдера неизменяем — на него ссылается каст:';
-  @override
-  String get modelsRefusalProviderInUse => 'нельзя удалить провайдера — на него ссылается каст:';
-  @override
-  String get modelsRefusalModelInUse => 'нельзя удалить модель — на неё ссылается каст:';
-  @override
-  String get modelsRefusalNoSeat => 'seat realm не готов — он нужен глаголам палитры';
-  @override
-  String get modelsLensCatalog => 'Каталог';
-  @override
-  String get modelsLensBindings => 'Биндинги';
-  @override
-  String get modelsLensObserve => 'Наблюдение';
-  @override
-  String get modelsJsonToggle => 'JSON';
-  @override
-  String get modelsJsonInvalid => 'невалидный JSON — кандидат сохраняет последнюю валидную форму';
-  @override
-  String get modelsFieldMaxTokens => 'max_tokens';
-  @override
-  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
-  @override
-  String get modelsFieldReasoningEffort => 'reasoning_effort';
-  @override
-  String get modelsFieldIncludeReasoning => 'include_reasoning';
-  String get modelsBuiltinLaneLocal => 'встроенная локальная дорожка MLX (на устройстве)';
-  String get modelsBuiltinLaneDecision => 'встроенная локальная дорожка решений (loopback)';
-  String get modelsBuiltinLaneAfm => 'встроенная дорожка Apple Foundation (на устройстве, специфична для Apple)';
-  String get modelsBuiltinLaneOpenRouter => 'встроенная дорожка OpenRouter (внешний хостинг)';
-  String get modelsBuiltinLaneUnknown => 'встроенная дорожка (composition root)';
-  String get modelsReasoningNoLane => 'нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·';
-  String get modelsReasoningTitle => 'уровень reasoning';
-  String get actorsMessage => 'Написать';
-  String get actorsRemove => 'Удалить актёра';
-  String get actorsRemoveConfirm => 'Отозвать durable-строку и удалить профиль ростера:';
-  String get actorsNewActor => 'Новый актёр';
-  String get actorsCreate => 'Создать';
-  String get actorsAvatar => 'Аватар';
-  String get actorsAvatarHint => 'эмодзи или символ';
-  String get actorsAvatarClear => 'Очистить';
-  String get actorsReasoning => 'уровень reasoning';
-  String get actorsReasoningNoLane => 'дорожка этого brain не объявляет уровни effort';
-  String get actorsReasoningDaemonNote => 'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
-  String get actorsYourProfile => 'Твой профиль';
-  String get actorsYou => 'ты';
-  String get inboxQueuedReason => 'в очереди - ждёт планировщик: запустите world';
-  String get inboxTaskDetail => 'Детали задачи';
-  String get inboxTaskCancel => 'Отменить задачу';
-  String get inboxTaskEvents => 'control-события';
-  String get inboxTaskNoEvents => 'control-событий пока нет';
-  String get inboxDurableQueue => 'durable-очередь';
-  String get inboxBoardsQueueNote => 'durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox';
-  String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';
-  String get modelsClassRemote => 'Удалённые провайдеры';
-  String get modelsClassRemoteEmpty => 'нет объявленных удалённых провайдеров';
-  String get modelsClassLocalServer => 'Локальный сервер (loopback)';
-  String get modelsClassLocalServerEmpty => 'локальный сервер не подключён - дорожка класса ollama объявляется как openai_compatible провайдер с loopback base_url';
-  String get modelsClassSubscription => 'Прямая подписка';
-  String get modelsClassSubscriptionAbsent => 'прямых дорожек qwen / grok сегодня нет - план ChatGPT единственная subscription-дорожка';
-  String get modelsClassOnDevice => 'On-device сервисы';
-  String get modelsClassOnDeviceEmpty => 'на этой машине нет on-device сервисов';
-  String get modelsClassUnclassified => 'Неклассифицированные дорожки';
-  String get modelsSettingsAdd => 'добавить';
-  String get modelsSettingsFreeKey => 'свободный ключ';
-  String get modelsSettingsUnconsumed => 'не потребляется';
-  String get modelsSettingsRemove => 'убрать настройку';
-  String get modelsChatGptPlan => 'план ChatGPT';
-  String get modelsChatGptSignedOut => 'выход выполнен - войдите через панель runtime agent-doc';
-  @override
-  String get modelsFieldCapabilities => 'capabilities';
-  @override
-  String get modelsEditModel => 'Изменить модель';
-  @override
-  String get modelsMoveUp => 'поднять по лестнице эскалации';
-  @override
-  String get modelsMoveDown => 'опустить по лестнице эскалации';
-  @override
-  String get modelsSetPrimary => 'сделать основным mover realm';
-  @override
-  String get modelsSessionPrefix => 'сессия:';
-  @override
-  String get modelsSessionClear => 'очистить';
-  @override
-  String get modelsRestartPending => 'палитра применена — daemon подхватит её после перезапуска';
-  @override
-  String get modelsRestartNow => 'Перезапустить сейчас';
-  @override
-  String get modelsHealthSection => 'Здоровье';
-  @override
-  String get modelsLedgerSection => 'Журнал диспетчеризаций';
-  @override
-  String get modelsUnbound => 'непривязанные актёры';
-  @override
-  String get modelsRefusalBadNumber => 'не число — поле сохраняет последнее значение';
-  @override
-  String get roomsExplainDms => 'Личные сообщения — приватные ветки с одним актёром';
-  @override
-  String get roomsExplainChannels => 'Каналы — именованные групповые комнаты с общей историей';
-  @override
-  String get roomsExplainRooms => 'Комнаты — наблюдаемые ветки актёров; присоединяйтесь, обращаясь к ним';
-  @override
-  String get roomsKindChannel => 'Канал';
-  @override
-  String get roomsKindRoom => 'Комната';
-  @override
-  String get roomsSetIconAction => 'Сменить значок…';
-  @override
-  String get roomsSetIconTitle => 'Сменить значок канала';
-  @override
-  String get roomsIconClear => 'Сбросить значок';
-  @override
-  String get roomsIconCustomLabel => 'Или один символ / эмодзи';
-  @override
-  String get worldChatAttach => 'Прикрепить или упомянуть';
-  @override
-  String get worldChatAttachSearchHint => 'Поиск людей, каналов, комнат, документов…';
-  @override
-  String get worldChatAttachWorkOrder => 'Рабочее задание…';
-  @override
-  String get worldChatAttachPlugins => 'Плагины';
-  @override
-  String get worldChatAttachMcpServers => 'Серверы MCP';
-  @override
-  String get worldChatAttachNoneYet => 'пока нет';
-  @override
-  String get worldChatNoMatches => 'Нет совпадений';
-  @override
-  String get worldChatPermsTooltip => 'Разрешения';
-  @override
-  String get worldChatPermsTitle => 'Разрешения канала';
-  @override
-  String get worldChatMembersTooltip => 'Участники';
-  @override
-  String get worldChatInfoTooltip => 'О канале';
-  @override
-  String get worldChatChangeIcon => 'Сменить значок';
-  @override
-  String get worldChatIconViaColumn => 'Значок канала меняется в меню колонки комнат (Wave D).';
-  @override
-  String get worldChatBeatEdit => 'Изменить';
-  @override
-  String get worldChatBeatNewThread => 'Новая ветка';
-  @override
-  String get worldChatBeatDelete => 'Удалить';
-  @override
-  String get worldChatBeatMenu => 'Действия с сообщением';
-  @override
-  String get worldChatEditGap => 'Биты в журнале только добавляются; глагол редактирования принадлежит harness и пока не предоставлен.';
-  @override
-  String get worldChatDeleteGap => 'Журнал доступен только для добавления; глагол удаления принадлежит harness и пока не предоставлен.';
-  @override
-  String get worldChatThreadKind => 'Ветка';
 
   @override
   String get roomsCloseChannel => 'Закрыть канал';
@@ -1885,13 +1672,35 @@ class SRu extends S {
   String get viewModelsTitle => 'Модели';
 
   @override
-  String get modelsNoPalette => 'Для этого мира палитра не объявлена';
+  String get modelsNoPalette => 'Для этого мира не объявлено ни одной модели';
 
   @override
-  String get modelsGenerative => 'Генеративные ранги';
+  String get modelsPolicySection => 'Политика мозгов';
 
   @override
-  String get modelsDecision => 'Ранги решений';
+  String get modelsPolicyFirst => 'думает первым';
+
+  @override
+  String modelsPolicyFallback(String model) {
+    return 'если $model недоступен или застрял';
+  }
+
+  @override
+  String get modelsSystemLanes => 'Системные каналы';
+
+  @override
+  String get modelsSystemLanesHint =>
+      'Собственные быстрые решения мира — не трогайте их';
+
+  @override
+  String modelsActorsMore(int count) {
+    return '+$count ещё';
+  }
+
+  @override
+  String modelsEscalatedTo(String model) {
+    return 'застрял → попробовали $model';
+  }
 
   @override
   String get modelsDaemonLive => 'демон активен';
@@ -1922,9 +1731,6 @@ class SRu extends S {
 
   @override
   String get modelsTelemetry => 'Недавние отправки';
-
-  @override
-  String get modelsChipPrimary => 'основная';
 
   @override
   String get modelsChipLocal => 'локальная';
@@ -2026,8 +1832,7 @@ class SRu extends S {
   String get worldChatScopeDismiss => 'Снять привязку к рабочей области';
 
   @override
-  String get worldChatScopePickTitle =>
-      'Отправить задание в рабочую область';
+  String get worldChatScopePickTitle => 'Отправить задание в рабочую область';
 
   @override
   String get worldChatScopeEmpty =>
@@ -2081,4 +1886,479 @@ class SRu extends S {
 
   @override
   String get contextApprove => 'Одобрить';
+
+  @override
+  String get roomsExplainDms =>
+      'Личные сообщения — приватные ветки с одним актёром';
+
+  @override
+  String get roomsExplainChannels =>
+      'Каналы — именованные групповые комнаты с общей историей';
+
+  @override
+  String get roomsExplainRooms =>
+      'Комнаты — наблюдаемые ветки актёров; присоединяйтесь, обращаясь к ним';
+
+  @override
+  String get roomsKindChannel => 'Канал';
+
+  @override
+  String get roomsKindRoom => 'Комната';
+
+  @override
+  String get roomsSetIconAction => 'Сменить значок…';
+
+  @override
+  String get roomsSetIconTitle => 'Сменить значок канала';
+
+  @override
+  String get roomsIconClear => 'Сбросить значок';
+
+  @override
+  String get roomsIconCustomLabel => 'Или один символ / эмодзи';
+
+  @override
+  String get worldChatAttach => 'Прикрепить или упомянуть';
+
+  @override
+  String get worldChatAttachSearchHint =>
+      'Поиск людей, каналов, комнат, документов…';
+
+  @override
+  String get worldChatAttachWorkOrder => 'Рабочее задание…';
+
+  @override
+  String get worldChatAttachPlugins => 'Плагины';
+
+  @override
+  String get worldChatAttachMcpServers => 'Серверы MCP';
+
+  @override
+  String get worldChatAttachNoneYet => 'пока нет';
+
+  @override
+  String get worldChatNoMatches => 'Нет совпадений';
+
+  @override
+  String get worldChatThreadsToggle => 'Ветки';
+
+  @override
+  String get worldChatThreadsGroup => 'Ветки';
+
+  @override
+  String get worldChatRoomsGroup => 'Комнаты';
+
+  @override
+  String get worldChatThreadsEmpty => 'Веток пока нет.';
+
+  @override
+  String get worldChatPermsTooltip => 'Разрешения';
+
+  @override
+  String get worldChatPermsTitle => 'Разрешения канала';
+
+  @override
+  String get worldChatMembersTooltip => 'Участники';
+
+  @override
+  String get worldChatInfoTooltip => 'О канале';
+
+  @override
+  String get worldChatChangeIcon => 'Сменить значок';
+
+  @override
+  String get worldChatIconViaColumn =>
+      'Значок канала меняется в меню колонки комнат (Wave D).';
+
+  @override
+  String get worldChatBeatEdit => 'Изменить';
+
+  @override
+  String get worldChatBeatNewThread => 'Новая ветка';
+
+  @override
+  String get worldChatBeatDelete => 'Удалить';
+
+  @override
+  String get worldChatBeatMenu => 'Действия с сообщением';
+
+  @override
+  String get worldChatEditGap =>
+      'Биты в журнале только добавляются; глагол редактирования принадлежит harness и пока не предоставлен.';
+
+  @override
+  String get worldChatDeleteGap =>
+      'Журнал доступен только для добавления; глагол удаления принадлежит harness и пока не предоставлен.';
+
+  @override
+  String get worldChatThreadKind => 'Ветка';
+
+  @override
+  String get stripOverflowHint => 'Скрытые вкладки — открыть список';
+
+  @override
+  String get modelsProviders => 'Провайдеры';
+
+  @override
+  String get modelsEditProviders => 'Редактировать провайдеров';
+
+  @override
+  String get modelsNoProviders => 'провайдеры не объявлены';
+
+  @override
+  String get modelsCountSuffix => 'моделей';
+
+  @override
+  String get modelsContextTier => 'контекст';
+
+  @override
+  String get modelsNoModels => 'модели не объявлены';
+
+  @override
+  String get modelsAddProvider => 'Добавить провайдера';
+
+  @override
+  String get modelsEditProvider => 'Изменить провайдера';
+
+  @override
+  String get modelsAddModel => 'Добавить модель';
+
+  @override
+  String get modelsRenameModel => 'Переименовать модель';
+
+  @override
+  String get modelsEditAction => 'изменить';
+
+  @override
+  String get modelsRemoveAction => 'удалить';
+
+  @override
+  String get modelsRenameAction => 'переименовать';
+
+  @override
+  String get modelsConfirm => 'Подтвердить';
+
+  @override
+  String get modelsCancel => 'Отмена';
+
+  @override
+  String get modelsPropose => 'Предложить';
+
+  @override
+  String get modelsApply => 'Применить';
+
+  @override
+  String get modelsUnsavedChanges => 'несохранённые изменения';
+
+  @override
+  String get modelsInSync => 'синхронизировано с активной палитрой';
+
+  @override
+  String get modelsRestartRequired => 'требуется перезапуск';
+
+  @override
+  String get modelsTransportLabel => 'транспорт';
+
+  @override
+  String get modelsEnvPrefix => 'env:';
+
+  @override
+  String get modelsProviderIdHint => 'id провайдера';
+
+  @override
+  String get modelsModelIdHint => 'id модели';
+
+  @override
+  String get modelsBaseUrlHint => 'base_url (https или http loopback)';
+
+  @override
+  String get modelsCredentialEnvHint =>
+      'credential_env (ИМЯ переменной окружения)';
+
+  @override
+  String get modelsRefusalEmptyId => 'id не может быть пустым';
+
+  @override
+  String get modelsRefusalDuplicateProvider =>
+      'провайдер с таким id уже существует';
+
+  @override
+  String get modelsRefusalDuplicateModel => 'провайдер уже объявляет модель';
+
+  @override
+  String get modelsRefusalIdImmutable =>
+      'id провайдера неизменяем — на него ссылается каст:';
+
+  @override
+  String get modelsRefusalProviderInUse =>
+      'нельзя удалить провайдера — на него ссылается каст:';
+
+  @override
+  String get modelsRefusalModelInUse =>
+      'нельзя удалить модель — на неё ссылается каст:';
+
+  @override
+  String get modelsRefusalNoSeat =>
+      'seat realm не готов — он нужен глаголам палитры';
+
+  @override
+  String get modelsLensCatalog => 'Каталог';
+
+  @override
+  String get modelsLensBindings => 'Биндинги';
+
+  @override
+  String get modelsLensObserve => 'Наблюдение';
+
+  @override
+  String get modelsJsonToggle => 'JSON';
+
+  @override
+  String get modelsJsonInvalid =>
+      'невалидный JSON — кандидат сохраняет последнюю валидную форму';
+
+  @override
+  String get modelsFieldMaxTokens => 'max_tokens';
+
+  @override
+  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
+
+  @override
+  String get modelsFieldReasoningEffort => 'reasoning_effort';
+
+  @override
+  String get modelsFieldIncludeReasoning => 'include_reasoning';
+
+  @override
+  String get modelsBuiltinLaneLocal =>
+      'встроенная локальная дорожка MLX (на устройстве)';
+
+  @override
+  String get modelsBuiltinLaneDecision =>
+      'встроенная локальная дорожка решений (loopback)';
+
+  @override
+  String get modelsBuiltinLaneAfm =>
+      'встроенная дорожка Apple Foundation (на устройстве, специфична для Apple)';
+
+  @override
+  String get modelsBuiltinLaneOpenRouter =>
+      'встроенная дорожка OpenRouter (внешний хостинг)';
+
+  @override
+  String get modelsBuiltinLaneUnknown =>
+      'встроенная дорожка (composition root)';
+
+  @override
+  String get modelsReasoningNoLane =>
+      'нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·';
+
+  @override
+  String get modelsReasoningTitle => 'уровень reasoning';
+
+  @override
+  String get actorsMessage => 'Написать';
+
+  @override
+  String get actorsRemove => 'Удалить актёра';
+
+  @override
+  String get actorsRemoveConfirm =>
+      'Отозвать durable-строку и удалить профиль ростера:';
+
+  @override
+  String get actorsNewActor => 'Новый актёр';
+
+  @override
+  String get actorsCreate => 'Создать';
+
+  @override
+  String get actorsAvatar => 'Аватар';
+
+  @override
+  String get actorsAvatarHint => 'эмодзи или символ';
+
+  @override
+  String get actorsAvatarClear => 'Очистить';
+
+  @override
+  String get actorsReasoning => 'уровень reasoning';
+
+  @override
+  String get actorsReasoningNoLane =>
+      'дорожка этого brain не объявляет уровни effort';
+
+  @override
+  String get actorsReasoningDaemonNote =>
+      'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
+
+  @override
+  String get actorsYourProfile => 'Твой профиль';
+
+  @override
+  String get actorsYou => 'ты';
+
+  @override
+  String get inboxQueuedReason =>
+      'в очереди - ждёт планировщик: запустите world';
+
+  @override
+  String get inboxTaskDetail => 'Детали задачи';
+
+  @override
+  String get inboxTaskCancel => 'Отменить задачу';
+
+  @override
+  String get inboxTaskEvents => 'control-события';
+
+  @override
+  String get inboxTaskNoEvents => 'control-событий пока нет';
+
+  @override
+  String get inboxDurableQueue => 'durable-очередь';
+
+  @override
+  String get inboxBoardsQueueNote =>
+      'durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox';
+
+  @override
+  String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';
+
+  @override
+  String get modelsClassRemote => 'Удалённые провайдеры';
+
+  @override
+  String get modelsClassRemoteEmpty => 'нет объявленных удалённых провайдеров';
+
+  @override
+  String get modelsClassLocalServer => 'Локальный сервер (loopback)';
+
+  @override
+  String get modelsClassLocalServerEmpty =>
+      'локальный сервер не подключён - дорожка класса ollama объявляется как openai_compatible провайдер с loopback base_url';
+
+  @override
+  String get modelsClassSubscription => 'Прямая подписка';
+
+  @override
+  String get modelsClassSubscriptionAbsent =>
+      'прямых дорожек qwen / grok сегодня нет - план ChatGPT единственная subscription-дорожка';
+
+  @override
+  String get modelsClassOnDevice => 'On-device сервисы';
+
+  @override
+  String get modelsClassOnDeviceEmpty =>
+      'на этой машине нет on-device сервисов';
+
+  @override
+  String get modelsClassUnclassified => 'Неклассифицированные дорожки';
+
+  @override
+  String get modelsSettingsAdd => 'добавить';
+
+  @override
+  String get modelsSettingsFreeKey => 'свободный ключ';
+
+  @override
+  String get modelsSettingsUnconsumed => 'не потребляется';
+
+  @override
+  String get modelsSettingsRemove => 'убрать настройку';
+
+  @override
+  String get modelsChatGptPlan => 'план ChatGPT';
+
+  @override
+  String get modelsChatGptSignedOut =>
+      'выход выполнен - войдите через панель runtime agent-doc';
+
+  @override
+  String get modelsFieldCapabilities => 'capabilities';
+
+  @override
+  String get modelsEditModel => 'Изменить модель';
+
+  @override
+  String get modelsMoveUp => 'поднять по лестнице эскалации';
+
+  @override
+  String get modelsMoveDown => 'опустить по лестнице эскалации';
+
+  @override
+  String get modelsSessionPrefix => 'сессия:';
+
+  @override
+  String get modelsSessionClear => 'очистить';
+
+  @override
+  String get modelsRestartPending =>
+      'палитра применена — daemon подхватит её после перезапуска';
+
+  @override
+  String get modelsRestartNow => 'Перезапустить сейчас';
+
+  @override
+  String get modelsHealthSection => 'Здоровье';
+
+  @override
+  String get modelsLedgerSection => 'Журнал диспетчеризаций';
+
+  @override
+  String get modelsUnbound => 'непривязанные актёры';
+
+  @override
+  String get modelsRefusalBadNumber =>
+      'не число — поле сохраняет последнее значение';
+
+  @override
+  String get attachImage => 'Добавить изображение';
+
+  @override
+  String get takePhoto => 'Сделать фото';
+
+  @override
+  String get chooseImage => 'Выбрать изображение';
+
+  @override
+  String get generateImage => 'Сгенерировать изображение';
+
+  @override
+  String get editImage => 'Редактировать изображение';
+
+  @override
+  String get captionImage => 'Подпись';
+
+  @override
+  String get altTextHint => 'Опишите изображение (alt-текст)';
+
+  @override
+  String get removeImage => 'Удалить изображение';
+
+  @override
+  String get imageAddedToNote => 'Изображение добавлено';
+
+  @override
+  String get imageGenerationPrompt => 'Опишите изображение для генерации…';
+
+  @override
+  String get imageGenerationFailed => 'Не удалось создать изображение';
+
+  @override
+  String get imageEditFailed => 'Не удалось изменить';
+
+  @override
+  String get generatingImage => 'Генерация…';
+
+  @override
+  String get annotateImage => 'Аннотировать';
+
+  @override
+  String get saveImageCopy => 'Сохранить копию';
+
+  @override
+  String get rotateImage => 'Повернуть';
+
+  @override
+  String get cropSquare => 'Обрезать в квадрат';
 }

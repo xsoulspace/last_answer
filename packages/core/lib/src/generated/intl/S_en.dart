@@ -1276,7 +1276,7 @@ class SEn extends S {
   String get actorsNameHint => 'e.g. Toby Researcher';
 
   @override
-  String get actorsBrainLabel => 'Brain (model)';
+  String get actorsBrainLabel => 'Brain';
 
   @override
   String get actorsRoleLabel => 'Role (optional)';
@@ -1423,219 +1423,6 @@ class SEn extends S {
 
   @override
   String get roomsRenameAction => 'Rename';
-  @override
-  String get stripOverflowHint => 'Hidden tabs — open the list';
-  @override
-  String get modelsProviders => 'Providers';
-  @override
-  String get modelsEditProviders => 'Edit providers';
-  @override
-  String get modelsNoProviders => 'no providers declared';
-  @override
-  String get modelsCountSuffix => 'models';
-  @override
-  String get modelsContextTier => 'ctx';
-  @override
-  String get modelsNoModels => 'no models declared';
-  @override
-  String get modelsAddProvider => 'Add provider';
-  @override
-  String get modelsEditProvider => 'Edit provider';
-  @override
-  String get modelsAddModel => 'Add model';
-  @override
-  String get modelsRenameModel => 'Rename model';
-  @override
-  String get modelsEditAction => 'edit';
-  @override
-  String get modelsRemoveAction => 'remove';
-  @override
-  String get modelsRenameAction => 'rename';
-  @override
-  String get modelsConfirm => 'Confirm';
-  @override
-  String get modelsCancel => 'Cancel';
-  @override
-  String get modelsPropose => 'Propose';
-  @override
-  String get modelsApply => 'Apply';
-  @override
-  String get modelsUnsavedChanges => 'unsaved changes';
-  @override
-  String get modelsInSync => 'in sync with the live palette';
-  @override
-  String get modelsRestartRequired => 'restart required';
-  @override
-  String get modelsTransportLabel => 'transport';
-  @override
-  String get modelsEnvPrefix => 'env:';
-  @override
-  String get modelsProviderIdHint => 'provider id';
-  @override
-  String get modelsModelIdHint => 'model id';
-  @override
-  String get modelsBaseUrlHint => 'base_url (https, or http loopback)';
-  @override
-  String get modelsCredentialEnvHint => 'credential_env (an env NAME)';
-  @override
-  String get modelsRefusalEmptyId => 'the id must not be empty';
-  @override
-  String get modelsRefusalDuplicateProvider => 'a provider already exists with id';
-  @override
-  String get modelsRefusalDuplicateModel => 'the provider already declares model';
-  @override
-  String get modelsRefusalIdImmutable => 'provider id is immutable — referenced by cast:';
-  @override
-  String get modelsRefusalProviderInUse => 'cannot remove provider — referenced by cast:';
-  @override
-  String get modelsRefusalModelInUse => 'cannot remove model — referenced by cast:';
-  @override
-  String get modelsRefusalNoSeat => 'the realm seat is not ready — the palette verbs need it';
-  @override
-  String get modelsLensCatalog => 'Catalog';
-  @override
-  String get modelsLensBindings => 'Bindings';
-  @override
-  String get modelsLensObserve => 'Observe';
-  @override
-  String get modelsJsonToggle => 'JSON';
-  @override
-  String get modelsJsonInvalid => 'invalid JSON — the candidate keeps its last valid shape';
-  @override
-  String get modelsFieldMaxTokens => 'max_tokens';
-  @override
-  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
-  @override
-  String get modelsFieldReasoningEffort => 'reasoning_effort';
-  @override
-  String get modelsFieldIncludeReasoning => 'include_reasoning';
-  String get modelsBuiltinLaneLocal => 'built-in local MLX lane (on-device)';
-  String get modelsBuiltinLaneDecision => 'built-in local decision lane (loopback)';
-  String get modelsBuiltinLaneAfm => 'built-in Apple Foundation lane (on-device, Apple-specific)';
-  String get modelsBuiltinLaneOpenRouter => 'built-in OpenRouter lane (hosted)';
-  String get modelsBuiltinLaneUnknown => 'built-in lane (composition-root owned)';
-  String get modelsReasoningNoLane => 'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·';
-  String get modelsReasoningTitle => 'reasoning effort';
-  String get actorsMessage => 'Message';
-  String get actorsRemove => 'Remove actor';
-  String get actorsRemoveConfirm => 'Retire the durable row and delete the roster profile of';
-  String get actorsNewActor => 'New actor';
-  String get actorsCreate => 'Create';
-  String get actorsAvatar => 'Avatar';
-  String get actorsAvatarHint => 'emoji or character';
-  String get actorsAvatarClear => 'Clear';
-  String get actorsReasoning => 'reasoning level';
-  String get actorsReasoningNoLane => 'this brain lane declares no effort tiers';
-  String get actorsReasoningDaemonNote => 'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
-  String get actorsYourProfile => 'Your profile';
-  String get actorsYou => 'you';
-  String get inboxQueuedReason => 'queued - waiting for a scheduler: arm the world';
-  String get inboxTaskDetail => 'Task detail';
-  String get inboxTaskCancel => 'Cancel task';
-  String get inboxTaskEvents => 'control events';
-  String get inboxTaskNoEvents => 'no control events yet';
-  String get inboxDurableQueue => 'durable queue';
-  String get inboxBoardsQueueNote => 'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it';
-  String get actorsRetiredNote => 'retired - the durable row keeps its history:';
-  String get modelsClassRemote => 'Remote providers';
-  String get modelsClassRemoteEmpty => 'no declared remote providers';
-  String get modelsClassLocalServer => 'Local server (loopback)';
-  String get modelsClassLocalServerEmpty => 'no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url';
-  String get modelsClassSubscription => 'Direct subscription';
-  String get modelsClassSubscriptionAbsent => 'qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane';
-  String get modelsClassOnDevice => 'On-device services';
-  String get modelsClassOnDeviceEmpty => 'no on-device service on this machine';
-  String get modelsClassUnclassified => 'Unclassified lanes';
-  String get modelsSettingsAdd => 'add';
-  String get modelsSettingsFreeKey => 'free key';
-  String get modelsSettingsUnconsumed => 'unconsumed';
-  String get modelsSettingsRemove => 'remove setting';
-  String get modelsChatGptPlan => 'ChatGPT plan';
-  String get modelsChatGptSignedOut => 'signed out - sign in from the agent-doc runtime pane';
-  @override
-  String get modelsFieldCapabilities => 'capabilities';
-  @override
-  String get modelsEditModel => 'Edit model';
-  @override
-  String get modelsMoveUp => 'move up the escalation ladder';
-  @override
-  String get modelsMoveDown => 'move down the escalation ladder';
-  @override
-  String get modelsSetPrimary => 'set as the realm\'s primary mover';
-  @override
-  String get modelsSessionPrefix => 'session:';
-  @override
-  String get modelsSessionClear => 'clear';
-  @override
-  String get modelsRestartPending => 'palette landed — the daemon binds it at restart';
-  @override
-  String get modelsRestartNow => 'Restart now';
-  @override
-  String get modelsHealthSection => 'Health';
-  @override
-  String get modelsLedgerSection => 'Dispatch ledger';
-  @override
-  String get modelsUnbound => 'unbound actors';
-  @override
-  String get modelsRefusalBadNumber => 'not a number — the field keeps its last value';
-  @override
-  String get roomsExplainDms => 'Direct messages — private threads with one actor';
-  @override
-  String get roomsExplainChannels => 'Channels — named group rooms with shared history';
-  @override
-  String get roomsExplainRooms => 'Rooms — watchable actor threads; join by addressing';
-  @override
-  String get roomsKindChannel => 'Channel';
-  @override
-  String get roomsKindRoom => 'Room';
-  @override
-  String get roomsSetIconAction => 'Change icon…';
-  @override
-  String get roomsSetIconTitle => 'Change channel icon';
-  @override
-  String get roomsIconClear => 'Clear icon';
-  @override
-  String get roomsIconCustomLabel => 'Or one character / emoji';
-  @override
-  String get worldChatAttach => 'Attach or mention';
-  @override
-  String get worldChatAttachSearchHint => 'Search people, channels, rooms, docs…';
-  @override
-  String get worldChatAttachWorkOrder => 'Work order…';
-  @override
-  String get worldChatAttachPlugins => 'Plugins';
-  @override
-  String get worldChatAttachMcpServers => 'MCP servers';
-  @override
-  String get worldChatAttachNoneYet => 'none yet';
-  @override
-  String get worldChatNoMatches => 'No matches';
-  @override
-  String get worldChatPermsTooltip => 'Permissions';
-  @override
-  String get worldChatPermsTitle => 'Channel permissions';
-  @override
-  String get worldChatMembersTooltip => 'Members';
-  @override
-  String get worldChatInfoTooltip => 'Channel info';
-  @override
-  String get worldChatChangeIcon => 'Change icon';
-  @override
-  String get worldChatIconViaColumn => 'The channel icon changes with the rooms column menu (Wave D).';
-  @override
-  String get worldChatBeatEdit => 'Edit';
-  @override
-  String get worldChatBeatNewThread => 'New thread';
-  @override
-  String get worldChatBeatDelete => 'Delete';
-  @override
-  String get worldChatBeatMenu => 'Message actions';
-  @override
-  String get worldChatEditGap => 'Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.';
-  @override
-  String get worldChatDeleteGap => 'The journal is append-only; the delete verb is harness-owned and not exposed yet.';
-  @override
-  String get worldChatThreadKind => 'Thread';
 
   @override
   String get roomsCloseChannel => 'Close channel';
@@ -1870,13 +1657,35 @@ class SEn extends S {
   String get viewModelsTitle => 'Models';
 
   @override
-  String get modelsNoPalette => 'No palette declared for this world';
+  String get modelsNoPalette => 'No models declared for this world';
 
   @override
-  String get modelsGenerative => 'Generative rungs';
+  String get modelsPolicySection => 'Brain policy';
 
   @override
-  String get modelsDecision => 'Decision rungs';
+  String get modelsPolicyFirst => 'thinks first';
+
+  @override
+  String modelsPolicyFallback(String model) {
+    return 'if $model is down or stuck';
+  }
+
+  @override
+  String get modelsSystemLanes => 'System lanes';
+
+  @override
+  String get modelsSystemLanesHint =>
+      'The world\'s own quick decisions — leave these alone';
+
+  @override
+  String modelsActorsMore(int count) {
+    return '+$count more';
+  }
+
+  @override
+  String modelsEscalatedTo(String model) {
+    return 'stalled → tried $model';
+  }
 
   @override
   String get modelsDaemonLive => 'daemon live';
@@ -1907,9 +1716,6 @@ class SEn extends S {
 
   @override
   String get modelsTelemetry => 'Recent dispatches';
-
-  @override
-  String get modelsChipPrimary => 'primary';
 
   @override
   String get modelsChipLocal => 'local';
@@ -2057,12 +1863,484 @@ class SEn extends S {
   String get contextRequestAccessTitle => 'Request access to a project';
 
   @override
-  String get contextAccessRequested =>
-      'Request recorded — pending approval.';
+  String get contextAccessRequested => 'Request recorded — pending approval.';
 
   @override
   String get contextPendingAccess => 'PENDING REQUESTS';
 
   @override
   String get contextApprove => 'Approve';
+
+  @override
+  String get roomsExplainDms =>
+      'Direct messages — private threads with one actor';
+
+  @override
+  String get roomsExplainChannels =>
+      'Channels — named group rooms with shared history';
+
+  @override
+  String get roomsExplainRooms =>
+      'Rooms — watchable actor threads; join by addressing';
+
+  @override
+  String get roomsKindChannel => 'Channel';
+
+  @override
+  String get roomsKindRoom => 'Room';
+
+  @override
+  String get roomsSetIconAction => 'Change icon…';
+
+  @override
+  String get roomsSetIconTitle => 'Change channel icon';
+
+  @override
+  String get roomsIconClear => 'Clear icon';
+
+  @override
+  String get roomsIconCustomLabel => 'Or one character / emoji';
+
+  @override
+  String get worldChatAttach => 'Attach or mention';
+
+  @override
+  String get worldChatAttachSearchHint =>
+      'Search people, channels, rooms, docs…';
+
+  @override
+  String get worldChatAttachWorkOrder => 'Work order…';
+
+  @override
+  String get worldChatAttachPlugins => 'Plugins';
+
+  @override
+  String get worldChatAttachMcpServers => 'MCP servers';
+
+  @override
+  String get worldChatAttachNoneYet => 'none yet';
+
+  @override
+  String get worldChatNoMatches => 'No matches';
+
+  @override
+  String get worldChatThreadsToggle => 'Threads';
+
+  @override
+  String get worldChatThreadsGroup => 'Threads';
+
+  @override
+  String get worldChatRoomsGroup => 'Rooms';
+
+  @override
+  String get worldChatThreadsEmpty => 'No threads yet.';
+
+  @override
+  String get worldChatPermsTooltip => 'Permissions';
+
+  @override
+  String get worldChatPermsTitle => 'Channel permissions';
+
+  @override
+  String get worldChatMembersTooltip => 'Members';
+
+  @override
+  String get worldChatInfoTooltip => 'Channel info';
+
+  @override
+  String get worldChatChangeIcon => 'Change icon';
+
+  @override
+  String get worldChatIconViaColumn =>
+      'The channel icon changes with the rooms column menu (Wave D).';
+
+  @override
+  String get worldChatBeatEdit => 'Edit';
+
+  @override
+  String get worldChatBeatNewThread => 'New thread';
+
+  @override
+  String get worldChatBeatDelete => 'Delete';
+
+  @override
+  String get worldChatBeatMenu => 'Message actions';
+
+  @override
+  String get worldChatEditGap =>
+      'Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.';
+
+  @override
+  String get worldChatDeleteGap =>
+      'The journal is append-only; the delete verb is harness-owned and not exposed yet.';
+
+  @override
+  String get worldChatThreadKind => 'Thread';
+
+  @override
+  String get stripOverflowHint => 'Hidden tabs — open the list';
+
+  @override
+  String get modelsProviders => 'Providers';
+
+  @override
+  String get modelsEditProviders => 'Edit providers';
+
+  @override
+  String get modelsNoProviders => 'no providers declared';
+
+  @override
+  String get modelsCountSuffix => 'models';
+
+  @override
+  String get modelsContextTier => 'ctx';
+
+  @override
+  String get modelsNoModels => 'no models declared';
+
+  @override
+  String get modelsAddProvider => 'Add provider';
+
+  @override
+  String get modelsEditProvider => 'Edit provider';
+
+  @override
+  String get modelsAddModel => 'Add model';
+
+  @override
+  String get modelsRenameModel => 'Rename model';
+
+  @override
+  String get modelsEditAction => 'edit';
+
+  @override
+  String get modelsRemoveAction => 'remove';
+
+  @override
+  String get modelsRenameAction => 'rename';
+
+  @override
+  String get modelsConfirm => 'Confirm';
+
+  @override
+  String get modelsCancel => 'Cancel';
+
+  @override
+  String get modelsPropose => 'Propose';
+
+  @override
+  String get modelsApply => 'Apply';
+
+  @override
+  String get modelsUnsavedChanges => 'unsaved changes';
+
+  @override
+  String get modelsInSync => 'in sync with the live palette';
+
+  @override
+  String get modelsRestartRequired => 'restart required';
+
+  @override
+  String get modelsTransportLabel => 'transport';
+
+  @override
+  String get modelsEnvPrefix => 'env:';
+
+  @override
+  String get modelsProviderIdHint => 'provider id';
+
+  @override
+  String get modelsModelIdHint => 'model id';
+
+  @override
+  String get modelsBaseUrlHint => 'base_url (https, or http loopback)';
+
+  @override
+  String get modelsCredentialEnvHint => 'credential_env (an env NAME)';
+
+  @override
+  String get modelsRefusalEmptyId => 'the id must not be empty';
+
+  @override
+  String get modelsRefusalDuplicateProvider =>
+      'a provider already exists with id';
+
+  @override
+  String get modelsRefusalDuplicateModel =>
+      'the provider already declares model';
+
+  @override
+  String get modelsRefusalIdImmutable =>
+      'provider id is immutable — referenced by cast:';
+
+  @override
+  String get modelsRefusalProviderInUse =>
+      'cannot remove provider — referenced by cast:';
+
+  @override
+  String get modelsRefusalModelInUse =>
+      'cannot remove model — referenced by cast:';
+
+  @override
+  String get modelsRefusalNoSeat =>
+      'the realm seat is not ready — the palette verbs need it';
+
+  @override
+  String get modelsLensCatalog => 'Catalog';
+
+  @override
+  String get modelsLensBindings => 'Bindings';
+
+  @override
+  String get modelsLensObserve => 'Observe';
+
+  @override
+  String get modelsJsonToggle => 'JSON';
+
+  @override
+  String get modelsJsonInvalid =>
+      'invalid JSON — the candidate keeps its last valid shape';
+
+  @override
+  String get modelsFieldMaxTokens => 'max_tokens';
+
+  @override
+  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
+
+  @override
+  String get modelsFieldReasoningEffort => 'reasoning_effort';
+
+  @override
+  String get modelsFieldIncludeReasoning => 'include_reasoning';
+
+  @override
+  String get modelsBuiltinLaneLocal => 'built-in local MLX lane (on-device)';
+
+  @override
+  String get modelsBuiltinLaneDecision =>
+      'built-in local decision lane (loopback)';
+
+  @override
+  String get modelsBuiltinLaneAfm =>
+      'built-in Apple Foundation lane (on-device, Apple-specific)';
+
+  @override
+  String get modelsBuiltinLaneOpenRouter => 'built-in OpenRouter lane (hosted)';
+
+  @override
+  String get modelsBuiltinLaneUnknown =>
+      'built-in lane (composition-root owned)';
+
+  @override
+  String get modelsReasoningNoLane =>
+      'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·';
+
+  @override
+  String get modelsReasoningTitle => 'reasoning effort';
+
+  @override
+  String get actorsMessage => 'Message';
+
+  @override
+  String get actorsRemove => 'Remove actor';
+
+  @override
+  String get actorsRemoveConfirm =>
+      'Retire the durable row and delete the roster profile of';
+
+  @override
+  String get actorsNewActor => 'New actor';
+
+  @override
+  String get actorsCreate => 'Create';
+
+  @override
+  String get actorsAvatar => 'Avatar';
+
+  @override
+  String get actorsAvatarHint => 'emoji or character';
+
+  @override
+  String get actorsAvatarClear => 'Clear';
+
+  @override
+  String get actorsReasoning => 'reasoning level';
+
+  @override
+  String get actorsReasoningNoLane =>
+      'this brain lane declares no effort tiers';
+
+  @override
+  String get actorsReasoningDaemonNote =>
+      'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
+
+  @override
+  String get actorsYourProfile => 'Your profile';
+
+  @override
+  String get actorsYou => 'you';
+
+  @override
+  String get inboxQueuedReason =>
+      'queued - waiting for a scheduler: arm the world';
+
+  @override
+  String get inboxTaskDetail => 'Task detail';
+
+  @override
+  String get inboxTaskCancel => 'Cancel task';
+
+  @override
+  String get inboxTaskEvents => 'control events';
+
+  @override
+  String get inboxTaskNoEvents => 'no control events yet';
+
+  @override
+  String get inboxDurableQueue => 'durable queue';
+
+  @override
+  String get inboxBoardsQueueNote =>
+      'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it';
+
+  @override
+  String get actorsRetiredNote =>
+      'retired - the durable row keeps its history:';
+
+  @override
+  String get modelsClassRemote => 'Remote providers';
+
+  @override
+  String get modelsClassRemoteEmpty => 'no declared remote providers';
+
+  @override
+  String get modelsClassLocalServer => 'Local server (loopback)';
+
+  @override
+  String get modelsClassLocalServerEmpty =>
+      'no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url';
+
+  @override
+  String get modelsClassSubscription => 'Direct subscription';
+
+  @override
+  String get modelsClassSubscriptionAbsent =>
+      'qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane';
+
+  @override
+  String get modelsClassOnDevice => 'On-device services';
+
+  @override
+  String get modelsClassOnDeviceEmpty => 'no on-device service on this machine';
+
+  @override
+  String get modelsClassUnclassified => 'Unclassified lanes';
+
+  @override
+  String get modelsSettingsAdd => 'add';
+
+  @override
+  String get modelsSettingsFreeKey => 'free key';
+
+  @override
+  String get modelsSettingsUnconsumed => 'unconsumed';
+
+  @override
+  String get modelsSettingsRemove => 'remove setting';
+
+  @override
+  String get modelsChatGptPlan => 'ChatGPT plan';
+
+  @override
+  String get modelsChatGptSignedOut =>
+      'signed out - sign in from the agent-doc runtime pane';
+
+  @override
+  String get modelsFieldCapabilities => 'capabilities';
+
+  @override
+  String get modelsEditModel => 'Edit model';
+
+  @override
+  String get modelsMoveUp => 'move up the escalation ladder';
+
+  @override
+  String get modelsMoveDown => 'move down the escalation ladder';
+
+  @override
+  String get modelsSessionPrefix => 'session:';
+
+  @override
+  String get modelsSessionClear => 'clear';
+
+  @override
+  String get modelsRestartPending =>
+      'palette landed — the daemon binds it at restart';
+
+  @override
+  String get modelsRestartNow => 'Restart now';
+
+  @override
+  String get modelsHealthSection => 'Health';
+
+  @override
+  String get modelsLedgerSection => 'Dispatch ledger';
+
+  @override
+  String get modelsUnbound => 'unbound actors';
+
+  @override
+  String get modelsRefusalBadNumber =>
+      'not a number — the field keeps its last value';
+
+  @override
+  String get attachImage => 'Add image';
+
+  @override
+  String get takePhoto => 'Take photo';
+
+  @override
+  String get chooseImage => 'Choose image';
+
+  @override
+  String get generateImage => 'Generate image';
+
+  @override
+  String get editImage => 'Edit image';
+
+  @override
+  String get captionImage => 'Caption';
+
+  @override
+  String get altTextHint => 'Describe the image (alt text)';
+
+  @override
+  String get removeImage => 'Remove image';
+
+  @override
+  String get imageAddedToNote => 'Image added';
+
+  @override
+  String get imageGenerationPrompt => 'Describe the image to generate…';
+
+  @override
+  String get imageGenerationFailed => 'Image generation failed';
+
+  @override
+  String get imageEditFailed => 'Edit failed';
+
+  @override
+  String get generatingImage => 'Generating…';
+
+  @override
+  String get annotateImage => 'Annotate';
+
+  @override
+  String get saveImageCopy => 'Save copy';
+
+  @override
+  String get rotateImage => 'Rotate';
+
+  @override
+  String get cropSquare => 'Crop square';
 }

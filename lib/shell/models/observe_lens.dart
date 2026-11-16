@@ -12,6 +12,7 @@
 ///   actor groups under an honest `unbound` header.
 library;
 
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -295,7 +296,25 @@ final class ObserveLens extends StatelessWidget {
                           style: LaTokens.mono(10, la.inkQuiet),
                         ),
                       ],
-                      if (row.stalled)
+                      // The world narrates its own decision (brain-policy
+                      // law, 2026-11-16): the promotion tag the daemon
+                      // recorded on this run reads as a sentence, not a
+                      // code. A bare stall (no ladder target) keeps the
+                      // honest one-word chip.
+                      if (row.escalatedFrom case final from?)
+                        ModelsChip(
+                          label: context.l10n.modelsEscalatedTo(
+                            brainModelLabel(
+                              id: from,
+                              model: world.rungs
+                                  .where((final r) => r.id == from)
+                                  .firstOrNull
+                                  ?.model,
+                            ),
+                          ),
+                          color: la.caution,
+                        )
+                      else if (row.stalled)
                         ModelsChip(label: 'stalled', color: la.caution),
                       if (!compact)
                       if (row.at case final at?) ...[

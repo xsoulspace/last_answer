@@ -158,6 +158,24 @@ LaneClass classOfBuiltin(final BuiltinLaneFamily family) => switch (family) {
   BuiltinLaneFamily.unknown => LaneClass.unclassified,
 };
 
+/// The user-facing model name (the brain-policy vocabulary law,
+/// 2026-11-16: no palette words on user surfaces). The declared model id
+/// speaks its last path segment with dashes/underscores as spaces —
+/// `modelscope/Qwen-Amassador/Qwen3.7-Plus` reads "Qwen3.7 Plus" — and a
+/// `:free` suffix survives (it is a real tier fact). A row with no
+/// declared model falls back to its entry id. The raw entry id stays the
+/// mono subtitle wherever agents need the stable handle.
+String brainModelLabel({required final String id, final String? model}) {
+  final declared = model?.trim();
+  if (declared == null || declared.isEmpty) return id;
+  final segment = declared.contains('/') ? declared.split('/').last : declared;
+  final spoken = segment
+      .replaceAll('-', ' ')
+      .replaceAll('_', ' ')
+      .trim();
+  return spoken.isEmpty ? id : spoken;
+}
+
 /// The reasoning tiers a BRAIN REF can carry (wave N2, the per-actor
 /// half of the Zed law): local brains declare none; an `openrouter:`
 /// brain rides the openrouter tiers; a `cast:` rung rides its

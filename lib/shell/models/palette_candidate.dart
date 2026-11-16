@@ -288,6 +288,53 @@ final class PaletteCandidateModel extends ChangeNotifier {
       if (capabilities != null && capabilities.isNotEmpty)
         'capabilities': <String, Object?>{...capabilities},
     };
+    return _upsertModel(providerId, id, oldId, fields);
+  }
+
+  /// The dynamic config editor's verb (wave N4, the ZCode/ComfyUI
+  /// law): [settings] is the model row minus `id`, with capabilities
+  /// flattened as `capabilities.<key>`; ANY other key rides VERBATIM
+  /// (the harness parser tolerates unknown model keys; the editor
+  /// marks them unconsumed instead of hiding them). Null-valued keys
+  /// are dropped (the wire shape's omission law).
+  bool editModelSettings({
+    required final String providerId,
+    required final String id,
+    required final Map<String, Object?> settings,
+    final String? oldId,
+  }) {
+    if (id.isEmpty) return _refuse(const CandidateRefusal('emptyId'));
+    final caps = <String, Object?>{
+      for (final entry in settings.entries)
+        if (entry.key.startsWith('capabilities.'))
+          entry.key.substring('capabilities.'.length): entry.value,
+    };
+    final fields = <String, Object?>{
+      'id': id,
+      for (final entry in settings.entries)
+        if (!entry.key.startsWith('capabilities.'))
+          entry.key:
+              entry.value,
+      if (caps.isNotEmpty) 'capabilities': caps,
+    };
+    return _upsertModel(providerId, id, oldId, fields);
+  }
+
+  /// The ONE upsert: add mode (null [oldId]) appends, edit mode
+  /// replaces in place, and the cast rows that rode a renamed model id
+  /// FOLLOW the rename — the candidate stays internally consistent.
+  bool _upsertModel(
+    final String providerId,
+    final String id,
+    final String? oldId,
+    final Map<String, Object?> fields,
+  ) {
+    final models = modelsOf(providerId);
+    if (models.any(
+      (final model) => model['id'] == id && model['id'] != oldId,
+    )) {
+      return _refuse(CandidateRefusal('duplicateModel', refs: [id]));
+    }
     if (oldId == null) {
       models.add(fields);
       _writeModels(providerId, models);
@@ -303,9 +350,6 @@ final class PaletteCandidateModel extends ChangeNotifier {
       return _refuse(CandidateRefusal('duplicateModel', refs: [oldId]));
     }
     _writeModels(providerId, models);
-    // The cast rows that rode the old model id FOLLOW the rename — the
-    // candidate stays internally consistent, and the propose receipt's
-    // diff makes the move visible.
     if (oldId != id) {
       for (final entry in cast) {
         if (entry is Map &&

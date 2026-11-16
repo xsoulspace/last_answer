@@ -1544,6 +1544,21 @@ class SRu extends S {
   String get actorsReasoningDaemonNote => 'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
   String get actorsYourProfile => 'Твой профиль';
   String get actorsYou => 'ты';
+  String get modelsClassRemote => 'Удалённые провайдеры';
+  String get modelsClassRemoteEmpty => 'нет объявленных удалённых провайдеров';
+  String get modelsClassLocalServer => 'Локальный сервер (loopback)';
+  String get modelsClassLocalServerEmpty => 'локальный сервер не подключён - дорожка класса ollama объявляется как openai_compatible провайдер с loopback base_url';
+  String get modelsClassSubscription => 'Прямая подписка';
+  String get modelsClassSubscriptionAbsent => 'прямых дорожек qwen / grok сегодня нет - план ChatGPT единственная subscription-дорожка';
+  String get modelsClassOnDevice => 'On-device сервисы';
+  String get modelsClassOnDeviceEmpty => 'на этой машине нет on-device сервисов';
+  String get modelsClassUnclassified => 'Неклассифицированные дорожки';
+  String get modelsSettingsAdd => 'добавить';
+  String get modelsSettingsFreeKey => 'свободный ключ';
+  String get modelsSettingsUnconsumed => 'не потребляется';
+  String get modelsSettingsRemove => 'убрать настройку';
+  String get modelsChatGptPlan => 'план ChatGPT';
+  String get modelsChatGptSignedOut => 'выход выполнен - войдите через панель runtime agent-doc';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

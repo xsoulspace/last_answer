@@ -105,6 +105,59 @@ const Map<String, String> kReasoningEffortTitles = <String, String>{
 String reasoningEffortTitle(final String wire) =>
     kReasoningEffortTitles[wire] ?? wire;
 
+/// The owner's four lane classes (2026-11-16): the product vocabulary
+/// the Models surface speaks — NOT the harness's wire names, and NOT
+/// the builtin-name mirror (which stays internal to resolve them).
+enum LaneClass {
+  /// A declared remote endpoint (modelscope, openrouter, …).
+  remote,
+
+  /// A declared provider whose endpoint is THIS machine (ollama-class
+  /// lanes ride the openai_compatible wire over loopback).
+  localServer,
+
+  /// A direct subscription lane (the ChatGPT plan today).
+  subscription,
+
+  /// An on-device built-in service (AFM, laya, the MLX casts).
+  onDevice,
+
+  /// A builtin name the mirror does not know: no class claim.
+  unclassified,
+}
+
+/// The chip label per class (mono, wire-ish, like the transport chips).
+String laneClassChipLabel(final LaneClass laneClass) => switch (laneClass) {
+  LaneClass.remote => 'remote',
+  LaneClass.localServer => 'loopback',
+  LaneClass.subscription => 'subscription',
+  LaneClass.onDevice => 'on-device',
+  LaneClass.unclassified => 'builtin',
+};
+
+/// Whether a declared endpoint is this machine (the harness allows
+/// plain http ONLY on loopback, so a loopback base_url is a local
+/// server by the parser's own law).
+bool isLoopbackEndpoint(final String baseUrl) {
+  final url = baseUrl.trim();
+  return url.contains('://127.') ||
+      url.contains('://localhost') ||
+      url.contains('://[::1]');
+}
+
+/// The class of a DECLARED provider (transport + endpoint law).
+LaneClass classOfProvider(final String transport, final String baseUrl) =>
+    isLoopbackEndpoint(baseUrl) ? LaneClass.localServer : LaneClass.remote;
+
+/// The class of a composition-root builtin (through the lane mirror).
+LaneClass classOfBuiltin(final BuiltinLaneFamily family) => switch (family) {
+  BuiltinLaneFamily.localMlx ||
+  BuiltinLaneFamily.localDecision ||
+  BuiltinLaneFamily.appleFoundation => LaneClass.onDevice,
+  BuiltinLaneFamily.hostedOpenRouter => LaneClass.remote,
+  BuiltinLaneFamily.unknown => LaneClass.unclassified,
+};
+
 /// The reasoning tiers a BRAIN REF can carry (wave N2, the per-actor
 /// half of the Zed law): local brains declare none; an `openrouter:`
 /// brain rides the openrouter tiers; a `cast:` rung rides its

@@ -239,15 +239,18 @@ void main() {
         tester,
         'models.model.openrouter.deepseek/deepseek-v4.1-flash.edit',
       );
+      // The dynamic list starts from the declaration: an undeclared
+      // key is ONE tap away through the add-setting row.
+      await settleTap(tester, 'models.setting.add.reasoning_effort');
       expect(
-        find.byKey(const ValueKey('models.form.reasoning.high')),
+        find.byKey(const ValueKey('models.setting.reasoning_effort.high')),
         findsOneWidget,
       );
       expect(
         find.byKey(const ValueKey('models.reasoning.noLane')),
         findsNothing,
       );
-      await settleTap(tester, 'models.form.reasoning.high');
+      await settleTap(tester, 'models.setting.reasoning_effort.high');
       await settleTap(tester, 'models.form.confirm');
       // The row chip titles the declared tier.
       expect(find.text('reasoning High'), findsOneWidget);
@@ -358,8 +361,10 @@ void main() {
       await tester.pump();
       await settleTap(tester, 'models.model.groq.add');
       await enter(tester, 'models.form.id', 'llama-3.3-70b-versatile');
-      await enter(tester, 'models.form.maxTokens', '131072');
-      await settleTap(tester, 'models.form.cap.tools');
+      await settleTap(tester, 'models.setting.add.max_tokens');
+      await enter(tester, 'models.setting.max_tokens.field', '131072');
+      await settleTap(tester, 'models.setting.add.capabilities.tools');
+      await settleTap(tester, 'models.setting.capabilities.tools.toggle');
       await settleTap(tester, 'models.form.confirm');
 
       final candidate = PaletteCandidateModel.debugLastCandidate!;
@@ -376,6 +381,41 @@ void main() {
       // The live parsed palette is untouched until an owner applies.
       expect(world.palette!.providers.containsKey('groq'), isFalse);
       expect(find.text('unsaved changes'), findsOneWidget);
+
+      await endClean(tester);
+    });
+
+    testWidgets('the image capability toggles land on the model row '
+        '(the binding-consumed pair)', (final tester) async {
+      await mount(tester);
+
+      // The fixture's modelscope provider hosts the image model row — the
+      // provider is already declared, only the model is added.
+      await tester.tap(
+        find.byKey(const ValueKey('models.provider.modelscope')),
+      );
+      await tester.pump();
+      await settleTap(tester, 'models.model.modelscope.add');
+      await enter(tester, 'models.form.id', 'Qwen/Qwen-Image');
+      await enter(tester, 'models.setting.add.free', 'capabilities.image_generation');
+      await settleTap(tester, 'models.setting.add.confirm');
+      await settleTap(tester, 'models.setting.capabilities.image_generation.toggle');
+      await enter(tester, 'models.setting.add.free', 'capabilities.image_edit');
+      await settleTap(tester, 'models.setting.add.confirm');
+      await settleTap(tester, 'models.setting.capabilities.image_edit.toggle');
+      await settleTap(tester, 'models.form.confirm');
+
+      final candidate = PaletteCandidateModel.debugLastCandidate!;
+      final models =
+          ((candidate['providers']! as Map)['modelscope']! as Map)['models']!
+              as List;
+      final imageModel = models
+          .whereType<Map>()
+          .singleWhere((model) => model['id'] == 'Qwen/Qwen-Image');
+      expect(
+        imageModel['capabilities'],
+        <String, Object?>{'image_generation': true, 'image_edit': true},
+      );
 
       await endClean(tester);
     });
@@ -427,6 +467,48 @@ void main() {
     });
   });
 
+    testWidgets('the four class sections: a loopback provider lands in '
+        'the local-server section; a free key rides unconsumed', (
+      final tester,
+    ) async {
+      await mount(tester);
+
+      // A loopback endpoint IS the ollama-class lane (the parser's own
+      // loopback allowance) — the section law sorts it there.
+      await settleTap(tester, 'models.provider.add');
+      await enter(tester, 'models.form.id', 'ollama');
+      await enter(tester, 'models.form.baseUrl', 'http://127.0.0.1:11434/v1');
+      await settleTap(tester, 'models.form.confirm');
+      expect(
+        find.byKey(const ValueKey('models.class.localServer')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('models.class.localServer')),
+          matching: find.text('loopback'),
+        ),
+        findsWidgets,
+      );
+
+      // The dynamic editor: a free key rides verbatim, marked
+      // unconsumed (declared, tolerated by the parser, read by nobody).
+      await tester.tap(find.byKey(const ValueKey('models.provider.ollama')));
+      await tester.pump();
+      await settleTap(tester, 'models.model.ollama.add');
+      await enter(tester, 'models.form.id', 'llama3');
+      await enter(tester, 'models.setting.add.free', 'num_ctx');
+      await settleTap(tester, 'models.setting.add.confirm');
+      await enter(tester, 'models.setting.num_ctx.field', '4096');
+      await settleTap(tester, 'models.form.confirm');
+      final candidate = PaletteCandidateModel.debugLastCandidate!;
+      final models =
+          ((candidate['providers']! as Map)['ollama']! as Map)['models']!
+              as List;
+      expect((models.first! as Map)['num_ctx'], 4096);
+
+      await endClean(tester);
+    });
   group('the bindings lens', () {
     testWidgets('the lane chip is the FAMILY truth: builtin never means '
         'local by default (jev rides the hosted OpenRouter lane, afm '
@@ -440,7 +522,7 @@ void main() {
 
       final jev = find.byKey(const ValueKey('models.rung.jev'));
       expect(
-        find.descendant(of: jev, matching: find.text('open_router')),
+        find.descendant(of: jev, matching: find.text('remote')),
         findsOneWidget,
       );
       expect(
@@ -457,12 +539,12 @@ void main() {
         const ValueKey('models.rung.apple_foundation_afm'),
       );
       expect(
-        find.descendant(of: afm, matching: find.text('afm')),
+        find.descendant(of: afm, matching: find.text('on-device')),
         findsOneWidget,
       );
       final qwen = find.byKey(const ValueKey('models.rung.qwen'));
       expect(
-        find.descendant(of: qwen, matching: find.text('local')),
+        find.descendant(of: qwen, matching: find.text('on-device')),
         findsOneWidget,
       );
 

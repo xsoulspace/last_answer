@@ -322,9 +322,11 @@ void main() {
       );
       expect(find.byKey(const ValueKey('models.rung.qwen')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.rung.laya')), findsOneWidget);
-      // The declared primary + the local lanes are facts, shown as chips.
+      // The declared primary + the on-device lane class are facts,
+      // shown as chips (wave N4: the owner's class vocabulary replaced
+      // the old builtin-equals-local chip).
       expect(find.text('primary'), findsOneWidget);
-      expect(find.text('local'), findsNWidgets(2));
+      expect(find.text('on-device'), findsNWidgets(2));
       // The ladder's next rung rides the row.
       expect(find.text('→ openrouter_deepseek'), findsOneWidget);
 

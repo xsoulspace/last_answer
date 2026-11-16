@@ -169,7 +169,7 @@ final class BindingsLens extends StatelessWidget {
                           )
                         else if (entry['builtin'] == true)
                           Text(
-                            _builtinLaneSentence(context, id),
+                            builtinLaneSentence(context, id),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelSmall?.copyWith(
@@ -185,13 +185,26 @@ final class BindingsLens extends StatelessWidget {
                     label: context.l10n.modelsChipPrimary,
                     color: la.accent,
                   ),
-                // The lane chip is the FAMILY truth, never `builtin`:
-                // local for the on-device native/loopback lanes, `afm`
-                // for the Apple-specific one, `open_router` for the
-                // hosted lane (`jev`), `builtin` for an unknown family.
+                // The lane chip is the owner's CLASS truth (wave N4):
+                // remote / loopback / on-device / builtin — never the
+                // bare `builtin` guess the old chip made (`jev` rides
+                // the hosted OpenRouter lane, so it chips remote).
                 if (entry['builtin'] == true)
                   ModelsChip(
-                    label: builtinLaneChipLabel(builtinLaneFamily(id)),
+                    label: laneClassChipLabel(
+                      classOfBuiltin(builtinLaneFamily(id)),
+                    ),
+                    color: la.inkQuiet,
+                    mono: true,
+                  )
+                else
+                  ModelsChip(
+                    label: laneClassChipLabel(
+                      classOfProvider(
+                        '${_providerOf(model, entry)?['transport'] ?? ''}',
+                        '${_providerOf(model, entry)?['base_url'] ?? ''}',
+                      ),
+                    ),
                     color: la.inkQuiet,
                     mono: true,
                   ),
@@ -240,19 +253,18 @@ final class BindingsLens extends StatelessWidget {
   }
 }
 
-/// The builtin row's subtitle: its composition-root lane family as one
-/// honest sentence (the mirror in `palette_lanes.dart`; an unknown
-/// family says builtin-owned, never a guessed lane).
-String _builtinLaneSentence(final BuildContext context, final String id) =>
-    switch (builtinLaneFamily(id)) {
-      BuiltinLaneFamily.localMlx => context.l10n.modelsBuiltinLaneLocal,
-      BuiltinLaneFamily.localDecision =>
-        context.l10n.modelsBuiltinLaneDecision,
-      BuiltinLaneFamily.appleFoundation => context.l10n.modelsBuiltinLaneAfm,
-      BuiltinLaneFamily.hostedOpenRouter =>
-        context.l10n.modelsBuiltinLaneOpenRouter,
-      BuiltinLaneFamily.unknown => context.l10n.modelsBuiltinLaneUnknown,
-    };
+/// The builtin row's subtitle and the declared row's provider facts
+/// come from different sources: the lane mirror vs the candidate's
+/// provider map (wave N4 class chips).
+Map<Object?, Object?>? _providerOf(
+  final PaletteCandidateModel model,
+  final Map<Object?, Object?> entry,
+) {
+  final id = entry['provider'];
+  if (id is! String) return null;
+  final raw = model.providers[id];
+  return raw is Map ? Map<Object?, Object?>.from(raw) : null;
+}
 
 /// A ladder verb (up / down / primary): dimmed when the move is a
 /// no-op at the list's edge, never hidden — the table stays scannable.

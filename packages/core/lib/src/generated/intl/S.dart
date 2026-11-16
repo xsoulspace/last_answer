@@ -2871,6 +2871,36 @@ abstract class S {
   String get actorsYourProfile;
   /// No description provided for @actorsYou.
   String get actorsYou;
+  /// No description provided for @modelsClassRemote.
+  String get modelsClassRemote;
+  /// No description provided for @modelsClassRemoteEmpty.
+  String get modelsClassRemoteEmpty;
+  /// No description provided for @modelsClassLocalServer.
+  String get modelsClassLocalServer;
+  /// No description provided for @modelsClassLocalServerEmpty.
+  String get modelsClassLocalServerEmpty;
+  /// No description provided for @modelsClassSubscription.
+  String get modelsClassSubscription;
+  /// No description provided for @modelsClassSubscriptionAbsent.
+  String get modelsClassSubscriptionAbsent;
+  /// No description provided for @modelsClassOnDevice.
+  String get modelsClassOnDevice;
+  /// No description provided for @modelsClassOnDeviceEmpty.
+  String get modelsClassOnDeviceEmpty;
+  /// No description provided for @modelsClassUnclassified.
+  String get modelsClassUnclassified;
+  /// No description provided for @modelsSettingsAdd.
+  String get modelsSettingsAdd;
+  /// No description provided for @modelsSettingsFreeKey.
+  String get modelsSettingsFreeKey;
+  /// No description provided for @modelsSettingsUnconsumed.
+  String get modelsSettingsUnconsumed;
+  /// No description provided for @modelsSettingsRemove.
+  String get modelsSettingsRemove;
+  /// No description provided for @modelsChatGptPlan.
+  String get modelsChatGptPlan;
+  /// No description provided for @modelsChatGptSignedOut.
+  String get modelsChatGptSignedOut;
   /// No description provided for @modelsFieldCapabilities.
   String get modelsFieldCapabilities;
   /// No description provided for @modelsEditModel.

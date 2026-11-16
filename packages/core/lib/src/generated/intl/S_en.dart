@@ -1529,6 +1529,21 @@ class SEn extends S {
   String get actorsReasoningDaemonNote => 'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
   String get actorsYourProfile => 'Your profile';
   String get actorsYou => 'you';
+  String get modelsClassRemote => 'Remote providers';
+  String get modelsClassRemoteEmpty => 'no declared remote providers';
+  String get modelsClassLocalServer => 'Local server (loopback)';
+  String get modelsClassLocalServerEmpty => 'no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url';
+  String get modelsClassSubscription => 'Direct subscription';
+  String get modelsClassSubscriptionAbsent => 'qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane';
+  String get modelsClassOnDevice => 'On-device services';
+  String get modelsClassOnDeviceEmpty => 'no on-device service on this machine';
+  String get modelsClassUnclassified => 'Unclassified lanes';
+  String get modelsSettingsAdd => 'add';
+  String get modelsSettingsFreeKey => 'free key';
+  String get modelsSettingsUnconsumed => 'unconsumed';
+  String get modelsSettingsRemove => 'remove setting';
+  String get modelsChatGptPlan => 'ChatGPT plan';
+  String get modelsChatGptSignedOut => 'signed out - sign in from the agent-doc runtime pane';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

@@ -1539,6 +1539,21 @@ class SIt extends S {
   String get actorsReasoningDaemonNote => 'il dispatch in-app rispetta questo livello; il dispatch del daemon legge il reasoning per modello finché la richiesta harness non arriva';
   String get actorsYourProfile => 'Il tuo profilo';
   String get actorsYou => 'tu';
+  String get modelsClassRemote => 'Provider remoti';
+  String get modelsClassRemoteEmpty => 'nessun provider remoto dichiarato';
+  String get modelsClassLocalServer => 'Server locale (loopback)';
+  String get modelsClassLocalServerEmpty => 'nessun server locale connesso - una corsia tipo ollama dichiara un provider openai_compatible con base_url loopback';
+  String get modelsClassSubscription => 'Subscription diretta';
+  String get modelsClassSubscriptionAbsent => 'le corsie dirette qwen / grok non esistono oggi - il piano ChatGPT è l unica corsia subscription';
+  String get modelsClassOnDevice => 'Servizi on-device';
+  String get modelsClassOnDeviceEmpty => 'nessun servizio on-device su questa macchina';
+  String get modelsClassUnclassified => 'Corsie non classificate';
+  String get modelsSettingsAdd => 'aggiungi';
+  String get modelsSettingsFreeKey => 'chiave libera';
+  String get modelsSettingsUnconsumed => 'non consumato';
+  String get modelsSettingsRemove => 'rimuovi impostazione';
+  String get modelsChatGptPlan => 'piano ChatGPT';
+  String get modelsChatGptSignedOut => 'non autenticato - accedi dal pannello runtime dell agent-doc';
   @override
   String get modelsFieldCapabilities => 'capabilities';
   @override

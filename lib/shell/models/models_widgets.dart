@@ -6,6 +6,7 @@
 /// names carried the dialog's anatomy (`_DialogButton` → [ModelsButton]).
 library;
 
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
@@ -170,6 +171,21 @@ final class ModelsRefusalNote extends StatelessWidget {
     ),
   );
 }
+
+/// The builtin row's subtitle: its composition-root lane family as one
+/// honest sentence (the mirror in `palette_lanes.dart`; an unknown
+/// family says builtin-owned, never a guessed lane). Shared by the
+/// bindings ladder and the catalog's on-device section (wave N4).
+String builtinLaneSentence(final BuildContext context, final String id) =>
+    switch (builtinLaneFamily(id)) {
+      BuiltinLaneFamily.localMlx => context.l10n.modelsBuiltinLaneLocal,
+      BuiltinLaneFamily.localDecision =>
+        context.l10n.modelsBuiltinLaneDecision,
+      BuiltinLaneFamily.appleFoundation => context.l10n.modelsBuiltinLaneAfm,
+      BuiltinLaneFamily.hostedOpenRouter =>
+        context.l10n.modelsBuiltinLaneOpenRouter,
+      BuiltinLaneFamily.unknown => context.l10n.modelsBuiltinLaneUnknown,
+    };
 
 /// The candidate's structured refusal as one l10n sentence plus the
 /// refs it names — the UI owns the wording, the model owns the fact.

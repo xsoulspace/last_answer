@@ -1529,6 +1529,13 @@ class SEn extends S {
   String get actorsReasoningDaemonNote => 'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands';
   String get actorsYourProfile => 'Your profile';
   String get actorsYou => 'you';
+  String get inboxQueuedReason => 'queued - waiting for a scheduler: arm the world';
+  String get inboxTaskDetail => 'Task detail';
+  String get inboxTaskCancel => 'Cancel task';
+  String get inboxTaskEvents => 'control events';
+  String get inboxTaskNoEvents => 'no control events yet';
+  String get inboxDurableQueue => 'durable queue';
+  String get inboxBoardsQueueNote => 'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it';
   String get modelsClassRemote => 'Remote providers';
   String get modelsClassRemoteEmpty => 'no declared remote providers';
   String get modelsClassLocalServer => 'Local server (loopback)';
@@ -1832,7 +1839,7 @@ class SEn extends S {
   String get inboxPermissions => 'Permissions';
 
   @override
-  String get inboxRunning => 'Running tasks';
+  String get inboxRunning => 'Queued & running';
 
   @override
   String get inboxVerdicts => 'Last verdicts';

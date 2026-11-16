@@ -10,6 +10,8 @@
 library;
 
 
+import 'dart:convert';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -82,7 +84,18 @@ final class LandingInbox extends StatelessWidget {
           keyName: 'inbox.running',
           children: [
             for (final task in world.runningTasks)
-              _TaskRow(key: ValueKey('inbox.task.${task.taskId}'), task: task),
+              _TaskRow(
+                key: ValueKey('inbox.task.${task.taskId}'),
+                task: task,
+                daemonLive: world.daemonLive,
+                onOpen: () => unawaited(
+                  showDialog<void>(
+                    context: context,
+                    builder: (final _) =>
+                        _TaskDetailDialog(world: world, taskId: task.taskId),
+                  ),
+                ),
+              ),
           ],
         ),
       if (world.verdicts.isNotEmpty)
@@ -318,55 +331,217 @@ final class _PermissionRow extends StatelessWidget {
 
 /// One running/queued task row: the delegated sentence, its state word
 /// and the rung it rides (spend lands on the verdict when the world
-/// settles it — the creation receipt is not a completion).
+/// settles it — the creation receipt is not a completion). Wave N5:
+/// the row OPENS the task's durable detail (tap), and a queued row
+/// under a sleeping daemon names WHY it waits (the scheduler is the
+/// queue's only claimant pump) instead of reading as "running".
 final class _TaskRow extends StatelessWidget {
-  const _TaskRow({required this.task, super.key});
+  const _TaskRow({
+    required this.task,
+    required this.daemonLive,
+    required this.onOpen,
+    super.key,
+  });
 
   final WorldTaskRow task;
+  final bool daemonLive;
+  final VoidCallback onOpen;
 
   @override
   Widget build(final BuildContext context) {
     final la = context.la;
+    final waiting = task.state == 'queued' && !daemonLive;
     return Semantics(
+      button: true,
       label: 'inbox.task.${task.taskId}',
       hint: task.task,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-        decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: la.rule, width: 0.5)),
-        ),
-        child: Row(
+      child: ShellRow(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        onTap: onOpen,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 10,
-              height: 10,
-              child: CircularProgressIndicator(
-                strokeWidth: 1.5,
-                color: la.inkQuiet,
+            Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.5,
+                    color: la.inkQuiet,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    task.task.isEmpty ? task.taskId : task.task,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                if (task.modelId case final model?)
+                  Text(model, style: LaTokens.mono(10, la.inkQuiet)),
+                const SizedBox(width: 8),
+                Text(
+                  task.state,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: la.caution,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
+            if (waiting)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 2, 0, 2),
+                child: Text(
+                  context.l10n.inboxQueuedReason,
+                  key: ValueKey('inbox.task.${task.taskId}.waiting'),
+                  style: LaTokens.mono(9, la.inkQuiet),
+                ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                task.task.isEmpty ? task.taskId : task.task,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            const SizedBox(width: 8),
-            if (task.modelId case final model?)
-              Text(model, style: LaTokens.mono(10, la.inkQuiet)),
-            const SizedBox(width: 8),
-            Text(
-              task.state,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: la.caution, fontSize: 10),
-            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// The task's durable detail (wave N5): the journal row VERBATIM —
+/// sentence, state, the timeline stamps the queue wrote, the terminal
+/// verdict when settled — plus the control-event tail and the owner's
+/// Cancel through the queue's own verb. Bounces render verbatim.
+final class _TaskDetailDialog extends StatefulWidget {
+  const _TaskDetailDialog({required this.world, required this.taskId});
+
+  final WorldStateService world;
+  final String taskId;
+
+  @override
+  State<_TaskDetailDialog> createState() => _TaskDetailDialogState();
+}
+
+final class _TaskDetailDialogState extends State<_TaskDetailDialog> {
+  Map<String, Object?>? _row;
+  List<Map<String, Object?>> _events = const [];
+  String? _bounce;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_load());
+  }
+
+  Future<void> _load() async {
+    final row = await widget.world.taskDetail(widget.taskId);
+    final events = await widget.world.taskEvents(widget.taskId);
+    if (!mounted) return;
+    setState(() {
+      _row = row;
+      _events = events;
+    });
+  }
+
+  Future<void> _cancel() async {
+    final receipt = await widget.world.taskCancel(widget.taskId);
+    if (!mounted) return;
+    setState(
+      () => _bounce = receipt['ok'] == true ? null : envelopeOf(receipt),
+    );
+    if (receipt['ok'] == true) await _load();
+  }
+
+  /// The delegated sentence verbatim: the payload prompt when the
+  /// row carries one, else the row's own task text.
+  String _sentenceOf(final Map<String, Object?>? row) {
+    final payload = row?['payload'];
+    if (payload is Map) return '${payload['prompt'] ?? ''}';
+    return '${row?['task'] ?? ''}';
+  }
+
+  String envelopeOf(final Map<String, Object?> receipt) =>
+      '${receipt['bounce'] ?? 'cancel_refused'}';
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final la = context.la;
+    final row = _row;
+    final terminal = row?['terminal'];
+    return AlertDialog(
+      key: ValueKey('inbox.task.${widget.taskId}.detail'),
+      title: Text(
+        l10n.inboxTaskDetail,
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+      content: SizedBox(
+        width: 460,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _sentenceOf(row),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 8),
+              for (final key in const [
+                'state',
+                'model',
+                'admittedAt',
+                'leaseAcquiredAt',
+                'startedAt',
+                'settledAt',
+              ])
+                if (row?[key] != null)
+                  Text(
+                    '$key: ${row![key]}',
+                    style: LaTokens.mono(10, la.inkMuted),
+                  ),
+              if (terminal is Map) ...[
+                const SizedBox(height: 6),
+                Text(
+                  'terminal: ${terminal['state'] ?? ''}'
+                  '${terminal['summary'] ?? terminal['reason'] ?? ''}',
+                  style: LaTokens.mono(10, la.caution),
+                ),
+              ],
+              const SizedBox(height: 8),
+              Text(l10n.inboxTaskEvents, style: LaTokens.mono(10, la.inkMuted)),
+              if (_events.isEmpty)
+                Text(
+                  l10n.inboxTaskNoEvents,
+                  style: LaTokens.mono(10, la.inkQuiet),
+                )
+              else
+                for (final event in _events.take(8))
+                  Text(
+                    const JsonEncoder.withIndent(' ').convert(event),
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                    style: LaTokens.mono(9, la.inkQuiet),
+                  ),
+              if (_bounce != null)
+                Text(_bounce!, style: LaTokens.mono(10, la.danger)),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        if (row != null && terminal == null)
+          TextButton(
+            key: ValueKey('inbox.task.${widget.taskId}.cancel'),
+            onPressed: () => unawaited(_cancel()),
+            child: Text(l10n.inboxTaskCancel),
+          ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.modelsCancel),
+        ),
+      ],
     );
   }
 }

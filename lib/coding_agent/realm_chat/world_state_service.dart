@@ -442,6 +442,51 @@ final class WorldStateService extends ChangeNotifier {
       if (rung.role == 'generative') ?castDeclFor(rung.id),
   ];
 
+  /// The raw durable row of one task, VERBATIM (wave N5: the detail
+  /// pane's source — journal truth, never a re-summary).
+  Future<Map<String, Object?>?> taskDetail(final String taskId) async {
+    final store = _store;
+    if (store == null) return null;
+    final row = await store.read('durable_tasks', taskId);
+    return row == null ? null : Map<String, Object?>.from(row);
+  }
+
+  /// The queue's control events for one task: verbatim rows in store
+  /// order (the event shape is the queue's own; the pane renders it
+  /// raw, so a future field never needs a UI migration).
+  Future<List<Map<String, Object?>>> taskEvents(final String taskId) async {
+    final store = _store;
+    if (store == null) return const <Map<String, Object?>>[];
+    final rows = await store.scan('control_task_events');
+    return <Map<String, Object?>>[
+      for (final entry in rows.entries)
+        if (entry.value is Map &&
+            ('${(entry.value! as Map)['taskId']}' == taskId ||
+                entry.key.startsWith('$taskId#')))
+          Map<String, Object?>.from(entry.value! as Map),
+    ];
+  }
+
+  /// The owner's cancel through the queue's OWN verb (ADR 0114: the
+  /// request is durable; work that never began is cancelled outright).
+  /// A bounce renders VERBATIM — the refusal names its input.
+  Future<Map<String, Object?>> taskCancel(final String taskId) async {
+    final store = _store;
+    if (store == null) {
+      return const <String, Object?>{'ok': false, 'bounce': 'realm_not_ready'};
+    }
+    try {
+      final record = await DurableTaskQueue(store: store).requestCancel(
+        taskId,
+        reason: 'owner_cancelled_from_last_answer',
+      );
+      await refresh();
+      return <String, Object?>{'ok': true, 'state': record.state.name};
+    } on Object catch (error) {
+      return <String, Object?>{'ok': false, 'bounce': '$error'};
+    }
+  }
+
   // ---- journal projections (tasks, telemetry) ----
 
   List<WorldTaskRow> _tasks = const [];

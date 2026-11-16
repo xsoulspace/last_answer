@@ -1544,6 +1544,13 @@ class SRu extends S {
   String get actorsReasoningDaemonNote => 'in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness';
   String get actorsYourProfile => 'Твой профиль';
   String get actorsYou => 'ты';
+  String get inboxQueuedReason => 'в очереди - ждёт планировщик: запустите world';
+  String get inboxTaskDetail => 'Детали задачи';
+  String get inboxTaskCancel => 'Отменить задачу';
+  String get inboxTaskEvents => 'control-события';
+  String get inboxTaskNoEvents => 'control-событий пока нет';
+  String get inboxDurableQueue => 'durable-очередь';
+  String get inboxBoardsQueueNote => 'durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox';
   String get modelsClassRemote => 'Удалённые провайдеры';
   String get modelsClassRemoteEmpty => 'нет объявленных удалённых провайдеров';
   String get modelsClassLocalServer => 'Локальный сервер (loopback)';
@@ -1847,7 +1854,7 @@ class SRu extends S {
   String get inboxPermissions => 'Разрешения';
 
   @override
-  String get inboxRunning => 'Задачи в работе';
+  String get inboxRunning => 'В очереди и в работе';
 
   @override
   String get inboxVerdicts => 'Последние вердикты';

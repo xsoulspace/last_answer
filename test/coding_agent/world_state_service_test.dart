@@ -618,4 +618,56 @@ void main() {
       service.debugPermissionsOverride = null;
     });
   });
+  // Wave N5 — task honesty: the detail pane reads the durable row
+  // VERBATIM, the cancel rides the queue's own verb, and bounces name
+  // their input (the stuck-rehearsal-row law: nothing is "running"
+  // that the queue calls queued).
+  group('task honesty (wave N5)', () {
+    test('detail verbatim, events raw, cancel through the queue verb',
+        () async {
+      final service = buildService();
+      await service.refresh();
+      // Admit through the queue's OWN verb: the row shape is the
+      // queue's contract, not a test fixture guess.
+      final admitted = await DurableTaskQueue(store: store).admit(
+        const DurableTaskRequest(
+          requestId: 'req-stuck',
+          model: 'openrouter_deepseek',
+          frozenCheck: <String, Object?>{'kind': 'task'},
+          payload: <String, Object?>{
+            'prompt': 'ADR 0118 fixture task — confirm universal creation.',
+          },
+        ),
+        authority: const DurableTaskAuthority(
+          actorId: 'scout',
+          projectId: '/proj/sealed',
+        ),
+      );
+      final taskId = admitted.taskId;
+
+      final detail = await service.taskDetail(taskId);
+      expect(detail?['state'], 'queued');
+      expect(
+        (detail?['payload'] as Map<Object?, Object?>?)?['prompt'],
+        contains('ADR 0118'),
+      );
+      // Admission itself is a control event; cancel adds more.
+      final eventsBefore = await service.taskEvents(taskId);
+      expect(eventsBefore, isNotEmpty);
+
+      final receipt = await service.taskCancel(taskId);
+      expect(receipt['ok'], true, reason: 'bounce: ${receipt['bounce']}');
+      final after = await service.taskDetail(taskId);
+      expect(after?['state'], 'cancelled');
+      expect(
+        (await service.taskEvents(taskId)).length,
+        greaterThan(eventsBefore.length),
+      );
+
+      // A ghost id bounces by name, verbatim.
+      final bounce = await service.taskCancel('task-ghost');
+      expect(bounce['ok'], isFalse);
+      expect('${bounce['bounce']}', contains('task_not_found'));
+    });
+  });
 }

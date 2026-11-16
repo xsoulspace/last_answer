@@ -442,6 +442,44 @@ SurfaceRegistry buildShellSurfaces(
     builder: (final tabContext) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // Wave N5 — the honest cross-link: the durable task queue is
+        // NOT this board (the ADR 0140 feed is landed-but-unwired in
+        // the harness); the inbox owns it, and says so with a count.
+        Builder(
+          builder: (final context) {
+            final count =
+                context.read<WorldStateService?>()?.runningTasks.length ?? 0;
+            if (count == 0) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      tabContext.l10n.inboxBoardsQueueNote,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: LaTokens.mono(10, context.la.inkQuiet),
+                    ),
+                  ),
+                  TextButton(
+                    key: const ValueKey('boards.durableQueue'),
+                    onPressed: () {
+                      final scope = ViewScope.of(context);
+                      if (scope == null) return;
+                      scope.onChanged(
+                        scope.layout.showView(kConversationsSurfaceId),
+                      );
+                    },
+                    child: Text(
+                      '${tabContext.l10n.inboxDurableQueue}: $count',
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
         Expanded(
           child: BoardView(
             // The mesh-synced controller when the mesh seams are

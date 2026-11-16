@@ -2871,6 +2871,20 @@ abstract class S {
   String get actorsYourProfile;
   /// No description provided for @actorsYou.
   String get actorsYou;
+  /// No description provided for @inboxQueuedReason.
+  String get inboxQueuedReason;
+  /// No description provided for @inboxTaskDetail.
+  String get inboxTaskDetail;
+  /// No description provided for @inboxTaskCancel.
+  String get inboxTaskCancel;
+  /// No description provided for @inboxTaskEvents.
+  String get inboxTaskEvents;
+  /// No description provided for @inboxTaskNoEvents.
+  String get inboxTaskNoEvents;
+  /// No description provided for @inboxDurableQueue.
+  String get inboxDurableQueue;
+  /// No description provided for @inboxBoardsQueueNote.
+  String get inboxBoardsQueueNote;
   /// No description provided for @modelsClassRemote.
   String get modelsClassRemote;
   /// No description provided for @modelsClassRemoteEmpty.

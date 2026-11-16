@@ -1539,6 +1539,13 @@ class SIt extends S {
   String get actorsReasoningDaemonNote => 'il dispatch in-app rispetta questo livello; il dispatch del daemon legge il reasoning per modello finché la richiesta harness non arriva';
   String get actorsYourProfile => 'Il tuo profilo';
   String get actorsYou => 'tu';
+  String get inboxQueuedReason => 'in coda - in attesa di uno scheduler: arma il world';
+  String get inboxTaskDetail => 'Dettaglio task';
+  String get inboxTaskCancel => 'Annulla task';
+  String get inboxTaskEvents => 'eventi di controllo';
+  String get inboxTaskNoEvents => 'nessun evento di controllo';
+  String get inboxDurableQueue => 'coda durevole';
+  String get inboxBoardsQueueNote => 'la coda durevole dei task non è su questa board (il feed harness non è cablato) - la gestisce l inbox';
   String get modelsClassRemote => 'Provider remoti';
   String get modelsClassRemoteEmpty => 'nessun provider remoto dichiarato';
   String get modelsClassLocalServer => 'Server locale (loopback)';
@@ -1844,7 +1851,7 @@ class SIt extends S {
   String get inboxPermissions => 'Permessi';
 
   @override
-  String get inboxRunning => 'Attività in corso';
+  String get inboxRunning => 'In coda e in corso';
 
   @override
   String get inboxVerdicts => 'Ultimi verdetti';

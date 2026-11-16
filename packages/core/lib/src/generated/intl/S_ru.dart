@@ -1551,6 +1551,7 @@ class SRu extends S {
   String get inboxTaskNoEvents => 'control-событий пока нет';
   String get inboxDurableQueue => 'durable-очередь';
   String get inboxBoardsQueueNote => 'durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox';
+  String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';
   String get modelsClassRemote => 'Удалённые провайдеры';
   String get modelsClassRemoteEmpty => 'нет объявленных удалённых провайдеров';
   String get modelsClassLocalServer => 'Локальный сервер (loopback)';

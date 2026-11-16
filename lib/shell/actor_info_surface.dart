@@ -81,10 +81,29 @@ final class ActorInfoSurface extends StatelessWidget {
           key: const ValueKey('actor.info'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _header(context, display),
+            _header(
+              context,
+              display,
+              service.retiredInfo(actorId) == null,
+            ),
             _facts(context, display),
             if (profile != null)
               _editor(context, profile)
+            else if (service.retiredInfo(actorId) case final retired?)
+              // Retirement is world truth (ADR 0120): named verbatim,
+              // never a read-only ghost and never a live editor.
+              Padding(
+                padding: ShellTokens.sectionPadding,
+                child: Text(
+                  '${context.l10n.actorsRetiredNote} '
+                  '${retired['retiredAt'] ?? ''}'
+                  '${retired['retireReason'] == null
+                      ? ''
+                      : ' · ${retired['retireReason']}'}',
+                  key: const ValueKey('actor.info.retired'),
+                  style: LaTokens.mono(10.5, context.shellMuted),
+                ),
+              )
             else
               // Honest absence: an id with no roster profile shows its
               // facts and grants, and NAMES the missing profile — never
@@ -107,7 +126,11 @@ final class ActorInfoSurface extends StatelessWidget {
 
   /// The identity header: avatar + name + the KIND · role line (the
   /// people panel's vocabulary, one scale up).
-  Widget _header(final BuildContext context, final ActorProfile display) {
+  Widget _header(
+    final BuildContext context,
+    final ActorProfile display,
+    final bool live,
+  ) {
     final theme = Theme.of(context);
     return Padding(
       padding: ShellTokens.sectionPadding,
@@ -143,11 +166,12 @@ final class ActorInfoSurface extends StatelessWidget {
             ),
           ),
           // ACTOR EQUALITY verbs (owner law, 2026-11-16): every
-          // non-human actor is messageable and removable from their
-          // own surface — the DM is the reuse-or-create thread, the
-          // removal retires the durable row AND tombstones the roster
-          // behind one confirm.
-          if (display.kind != ActorKind.human) ...[
+          // non-human LIVE actor is messageable and removable from
+          // their own surface — the DM is the reuse-or-create thread,
+          // the removal retires the durable row AND tombstones the
+          // roster behind one confirm. A retired row names its
+          // retirement instead (verbs there would lie).
+          if (display.kind != ActorKind.human && live) ...[
             IconButton(
               key: const ValueKey('actor.info.message'),
               tooltip: context.l10n.actorsMessage,

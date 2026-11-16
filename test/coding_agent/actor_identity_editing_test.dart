@@ -487,16 +487,25 @@ void main() {
       expect(roster.get('minted'), isNull);
     });
 
-    test('a row with neither brainRef nor brainCast stays unadopted '
-        '(nothing to bind is honest absence)', () async {
+    test('a brainless row is adopted as an EDITABLE identity (the '
+        'editor is how it gets a brain); a RETIRED row is named, '
+        'never re-adopted', () async {
       final world = await _hermeticWorld();
-      await world.store.transact(
-        (tx) => tx.put('realm_actors', 'ghost', <String, Object?>{
-          'actorId': 'ghost',
+      await world.store.transact((tx) {
+        tx.put('realm_actors', 'brainless', <String, Object?>{
+          'actorId': 'brainless',
           'kind': 'realm_actor',
-          'displayName': 'Ghost',
-        }),
-      );
+          'displayName': 'Brainless',
+        });
+        tx.put('realm_actors', 'retired-one', <String, Object?>{
+          'actorId': 'retired-one',
+          'kind': 'realm_actor',
+          'displayName': 'Retired One',
+          'brainRef': 'local:qwen',
+          'retiredAt': '2026-11-04T18:16:08.327830Z',
+          'retireReason': 'hygiene-sweep',
+        });
+      });
       final roster = ActorRoster(replicaId: 'tester');
       final service = RealmChatService(
         debugWorldOverride: world,
@@ -505,7 +514,20 @@ void main() {
       );
       addTearDown(service.dispose);
       await service.ensureReady();
-      expect(roster.get('ghost'), isNull);
+
+      // Editable identity, unbound bot: the brain is assignable.
+      final adopted = roster.get('brainless');
+      expect(adopted, isNotNull);
+      expect(adopted!.brainRef, '');
+      expect(
+        await service.updateActor(actorId: 'brainless', role: 'seeker'),
+        isTrue,
+      );
+
+      // Retirement is world truth: named, never live.
+      expect(roster.get('retired-one'), isNull);
+      final info = service.retiredInfo('retired-one');
+      expect(info?['retireReason'], 'hygiene-sweep');
     });
   });
 }

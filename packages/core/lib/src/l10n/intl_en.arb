@@ -1049,6 +1049,8 @@
   "@inboxDurableQueue": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
   "inboxBoardsQueueNote": "the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it",
   "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "actorsRetiredNote": "retired - the durable row keeps its history:",
+  "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
   "modelsClassRemote": "Remote providers",
   "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
   "modelsClassRemoteEmpty": "no declared remote providers",

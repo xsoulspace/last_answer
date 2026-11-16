@@ -1536,6 +1536,7 @@ class SEn extends S {
   String get inboxTaskNoEvents => 'no control events yet';
   String get inboxDurableQueue => 'durable queue';
   String get inboxBoardsQueueNote => 'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it';
+  String get actorsRetiredNote => 'retired - the durable row keeps its history:';
   String get modelsClassRemote => 'Remote providers';
   String get modelsClassRemoteEmpty => 'no declared remote providers';
   String get modelsClassLocalServer => 'Local server (loopback)';

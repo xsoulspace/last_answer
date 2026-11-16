@@ -800,6 +800,8 @@
   "@inboxDurableQueue": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
   "inboxBoardsQueueNote": "durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox",
   "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "actorsRetiredNote": "отозван - durable-строка сохраняет историю:",
+  "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
   "modelsClassRemote": "Удалённые провайдеры",
   "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
   "modelsClassRemoteEmpty": "нет объявленных удалённых провайдеров",

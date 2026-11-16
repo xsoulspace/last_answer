@@ -1546,6 +1546,7 @@ class SIt extends S {
   String get inboxTaskNoEvents => 'nessun evento di controllo';
   String get inboxDurableQueue => 'coda durevole';
   String get inboxBoardsQueueNote => 'la coda durevole dei task non è su questa board (il feed harness non è cablato) - la gestisce l inbox';
+  String get actorsRetiredNote => 'ritirato - la riga durevole conserva la sua storia:';
   String get modelsClassRemote => 'Provider remoti';
   String get modelsClassRemoteEmpty => 'nessun provider remoto dichiarato';
   String get modelsClassLocalServer => 'Server locale (loopback)';

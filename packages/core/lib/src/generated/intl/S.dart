@@ -2885,6 +2885,8 @@ abstract class S {
   String get inboxDurableQueue;
   /// No description provided for @inboxBoardsQueueNote.
   String get inboxBoardsQueueNote;
+  /// No description provided for @actorsRetiredNote.
+  String get actorsRetiredNote;
   /// No description provided for @modelsClassRemote.
   String get modelsClassRemote;
   /// No description provided for @modelsClassRemoteEmpty.

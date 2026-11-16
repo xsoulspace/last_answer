@@ -68,6 +68,17 @@ final class RealmChatService extends ChangeNotifier {
   RealmWorld? get world => _world;
   RealmBotHost? _bots;
   ActorRoster? _roster;
+
+  /// The RETIRED durable rows by actor id (wave N5b): retirement is
+  /// world truth (ADR 0120) — the surface names it verbatim instead of
+  /// rendering a read-only "no roster profile" ghost.
+  final Map<String, Map<String, Object?>> _retiredRows =
+      <String, Map<String, Object?>>{};
+
+  /// The retired row's facts (retiredAt, retireReason), null when the
+  /// actor is not retired.
+  Map<String, Object?>? retiredInfo(final String actorId) =>
+      _retiredRows[actorId];
   ProfileActorAuthority? _human;
   ChannelRegistry? _channelRegistry;
   WorkThreadRegistry? _workRegistry;
@@ -368,17 +379,25 @@ final class RealmChatService extends ChangeNotifier {
       for (final record in records.values) {
         final actorId = record['actorId'];
         if (actorId is! String || actorId.isEmpty) continue;
+        // A RETIRED row keeps its history and stops being driven
+        // (ADR 0120): never re-adopted as a live identity — the actor
+        // surface names the retirement verbatim instead.
+        if (record['retiredAt'] is String) {
+          _retiredRows[actorId] = Map<String, Object?>.from(record);
+          continue;
+        }
         final brain = record['brainRef'] as String?;
         final cast = record['brainCast'] as String?;
         // ACTOR EQUALITY (owner law, 2026-11-16): a model-based actor is
         // still an actor. Daemon-minted rows (`actor_ensure`) carry only
         // `brainCast`; adopting them with a synthesized `cast:` ref keeps
         // EVERY actor editable and DM-able. A row with neither brain nor
-        // cast still skips — there is nothing to bind.
+        // cast still lands in the roster with an EMPTY brainRef — the
+        // identity stays editable and the editor is exactly how it gets
+        // a brain; only its bot stays unbound until then.
         final brainRef = (brain != null && brain.isNotEmpty)
             ? brain
             : (cast != null && cast.isNotEmpty ? 'cast:$cast' : '');
-        if (brainRef.isEmpty) continue;
         if (_roster!.get(actorId) != null) continue;
         _roster!.upsert(
           ActorProfile(

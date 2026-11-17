@@ -136,14 +136,25 @@ void main() {
       chat.service.channels.map((final c) => c.name),
       <String>['general', 'Art Direction'],
     );
+    // ADR 0146 W3 — rename = topic edit (one fact, one write): the
+    // ROW's topic IS the channel name, and the registry mirror rode
+    // the flip (no row minted for a row-built channel — the channels
+    // collection stays empty, retained forever).
     final row = await chat.world.store.read('channels', design.channelId);
-    expect(row?['name'], 'Art Direction');
-    expect(row?['threadId'], design.threadId);
-    expect(row?['createdAt'], design.createdAt);
-    // The channel's journal thread keeps its ORIGINAL topic — the
-    // journal is authority; LA never rewrites its rows.
+    expect(row, isNull, reason: 'the mirror rode the W3 flip');
     final threadRow = await chat.world.store.read('threads', design.threadId);
-    expect(threadRow?['topic'], 'design');
+    expect(threadRow?['topic'], 'Art Direction');
+    // ADR 0146 — BOTH spellings rename: the row-built threadId-as-id.
+    expect(await chat.service.renameChannel(design.threadId, 'studio'), isTrue);
+    final renamedRow = await chat.world.store.read(
+      'threads',
+      design.threadId,
+    );
+    expect(renamedRow?['topic'], 'studio');
+    expect(
+      chat.service.channels.map((final c) => c.name),
+      <String>['general', 'studio'],
+    );
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   test('closeChannel: archives without destroying; the selection '
@@ -169,9 +180,11 @@ void main() {
       groupThreadId,
       reason: "only the closed channel's own thread releases the selection",
     );
+    // ADR 0146 — the projection is row-built: the surviving channel's
+    // id IS its threadId.
     expect(
       chat.service.channels.map((final c) => c.channelId),
-      <String>[design.channelId],
+      <String>[design.threadId],
     );
 
     // Closing the SELECTED channel clears the selection.
@@ -187,12 +200,17 @@ void main() {
       isFalse,
     );
 
-    // The closing-never-destroys law: both registry rows survive as
-    // archived history, and both journal threads survive OPEN (the
-    // journal is authority — the channel just left the lists).
-    final all = await chat.registry.list(includeArchived: true);
-    expect(all, hasLength(2));
-    expect(all.every((final c) => c.archived), isTrue);
+    // The closing-never-destroys law: both thread rows survive as
+    // archived history (the mirror rode the W3 flip — the registry
+    // collection stays empty, retained forever), and both journal
+    // threads survive OPEN (the journal is authority — the channel
+    // just left the lists).
+    final all = await chat.world.store.scan('threads');
+    final archivedRows = all.values.where(
+      (final row) => row['kind'] == 'channel' && row['archived'] == true,
+    );
+    expect(archivedRows, hasLength(2));
+    expect(await chat.world.store.scan('channels'), isEmpty);
     for (final threadId in <String>[general.threadId, design.threadId]) {
       final row = await chat.world.store.read('threads', threadId);
       expect(row, isNotNull, reason: 'the journal thread survives');
@@ -260,17 +278,20 @@ void main() {
     await chat.service.ensureSeededChannel();
     expect(chat.service.channels, hasLength(1));
     expect(chat.service.channels.single.channelId, general.channelId);
-    expect(
-      await chat.registry.list(includeArchived: true),
-      hasLength(1),
-    );
+    // ADR 0146 W3 — the seed's once-law rides the ROW (the registry
+    // mirror rode the flip): exactly one kind:channel row, and the
+    // channels collection stays empty.
+    final seededRows = (await chat.world.store.scan('threads')).values
+        .where((final row) => row['kind'] == 'channel');
+    expect(seededRows, hasLength(1));
+    expect(await chat.world.store.scan('channels'), isEmpty);
 
     // A restart (fresh service, empty projections) over the same world
     // seeds nothing new — the law rides the registry, never memory.
     final restarted = await _restartService(chat);
     await restarted.ensureSeededChannel();
     expect(restarted.channels, hasLength(1));
-    expect(restarted.channels.single.channelId, general.channelId);
+    expect(restarted.channels.single.threadId, general.threadId);
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   test('seed laws: an archived general is NEVER resurrected', () async {
@@ -281,23 +302,24 @@ void main() {
     expect(await chat.service.closeChannel(general.channelId), isTrue);
     expect(chat.service.channels, isEmpty);
 
-    // The seed verb reads the HISTORY (includeArchived), not the live
-    // list: a world whose only channel was closed stays empty.
+    // The seed verb reads the projection's HISTORY (any kind:channel
+    // row, live or archived), not the live list: a world whose only
+    // channel was closed stays empty.
     await chat.service.ensureSeededChannel();
     expect(chat.service.channels, isEmpty);
-    final all = await chat.registry.list(includeArchived: true);
-    expect(all, hasLength(1));
-    expect(all.single.channelId, general.channelId);
-    expect(all.single.archived, isTrue);
+    // ADR 0146 W3 — the archived seed's ROW carries the flag (the
+    // mirror rode the flip); compare by thread.
+    final archivedRow = await chat.world.store.read(
+      'threads',
+      general.threadId,
+    );
+    expect(archivedRow?['kind'], 'channel');
+    expect(archivedRow?['archived'], isTrue);
 
     // A restarted service agrees — no resurrection across a boot.
     final restarted = await _restartService(chat);
     await restarted.ensureSeededChannel();
     expect(restarted.channels, isEmpty);
-    expect(
-      await chat.registry.list(includeArchived: true),
-      hasLength(1),
-    );
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   test("dmThreadOf: another surface's two-member thread is never a DM "
@@ -380,19 +402,15 @@ void main() {
     expect(chat.service.dmThreadOf(toby.actorId), dmId);
 
     // The pairing invariant: createChannel writes the declared kind on
-    // the thread row AND the registry row in the same call (open then
-    // registry write — the harness openChannel ordering).
+    // the thread row (open then the mirror — and the mirror rode the
+    // W3 flip: the collection stays empty, the row IS the pairing).
     final design = (await chat.service.createChannel('design'))!;
     final channelThreadRow = await chat.world.store.read(
       'threads',
       design.threadId,
     );
     expect(channelThreadRow?['kind'], 'channel');
-    final channelRow = await chat.world.store.read(
-      'channels',
-      design.channelId,
-    );
-    expect(channelRow?['threadId'], design.threadId);
+    expect(await chat.world.store.scan('channels'), isEmpty);
 
     // The FAST PATH: a declared dm row is the DM even when its id ALSO
     // sits in the live channel registry — declared beats inference
@@ -407,11 +425,14 @@ void main() {
     );
     // Rebuild the projections over the mutated registry (a fresh
     // service — the restart is also the honest projection path).
+    // ADR 0146 W3 — reads off, the stray REGISTRY row is invisible
+    // (the fallback rode the flip); the row's DECLARED kind wins and
+    // the dm reuse key stands.
     final restarted = await _restartService(chat);
     expect(
       restarted.channels.map((final c) => c.threadId),
-      contains(dmId),
-      reason: 'the stray channel row is real in the projection',
+      isNot(contains(dmId)),
+      reason: 'reads off: the stray registry row is honestly invisible',
     );
     expect(restarted.dmThreadOf(toby.actorId), dmId);
     // Reuse stays: a second open does not mint a duplicate.
@@ -503,5 +524,208 @@ void main() {
       isNot(contains(sealedId)),
       reason: 'the seal derives work — its projection is the work card',
     );
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0146 W2 heal: pre-window channel rows backfill at boot '
+      '(kind/icon/archived, per-field) and the heal is idempotent',
+      () async {
+    final chat = await _openChat('heal');
+    addTearDown(chat.dispose);
+    final human = chat.world.authorityFor(chat.humanId);
+    // A PRE-WINDOW world: two UNTYPED thread rows (kind absent — the
+    // pre-ADR 0145 shape) over registry rows, one live with an icon,
+    // one archived. The first service booted on the empty world, so
+    // the rows here are crafted after it and healed by the RESTART
+    // below.
+    final live = await chat.world.conversation().open(
+          actor: human,
+          topic: 'legacy-live',
+          realmSealed: true,
+        );
+    final liveThreadId = live['threadId']! as String;
+    final legacy = chat.registry;
+    final liveRow = await legacy.create(
+      name: 'legacy-live',
+      threadId: liveThreadId,
+      memberIds: <String>[chat.humanId],
+      icon: 'star',
+    );
+    final dead = await chat.world.conversation().open(
+          actor: human,
+          topic: 'legacy-dead',
+          realmSealed: true,
+        );
+    final deadThreadId = dead['threadId']! as String;
+    final deadRow = await legacy.create(
+      name: 'legacy-dead',
+      threadId: deadThreadId,
+      memberIds: <String>[chat.humanId],
+    );
+    expect(await legacy.archive(channelId: deadRow.channelId), isTrue);
+    final preLive = await chat.world.store.read('threads', liveThreadId);
+    expect(preLive?['kind'], isNull);
+    expect(preLive?.containsKey('icon'), isFalse);
+    expect(preLive?.containsKey('archived'), isFalse);
+
+    // The boot heal: ensureReady runs migrateIntoRows — the rows come
+    // up row-shaped and the one-projection reads see both channels
+    // exactly as the registry holds them.
+    final restarted = await _restartService(chat);
+    expect(restarted.channels.map((final c) => c.name), <String>[
+      'legacy-live',
+    ], reason: 'the archived pre-window channel left the live lists');
+    final healedLive = await chat.world.store.read('threads', liveThreadId);
+    expect(healedLive?['kind'], 'channel');
+    expect(healedLive?['icon'], 'star');
+    // Never-null law: absent-means-default keys were never written.
+    expect(healedLive?.containsKey('archived'), isFalse);
+    final healedDead = await chat.world.store.read('threads', deadThreadId);
+    expect(healedDead?['kind'], 'channel');
+    expect(healedDead?['archived'], true);
+    expect(healedDead?.containsKey('icon'), isFalse);
+
+    // The healed view: the legacy channel answers with its PRESERVED
+    // mint as the id (retained forever; both spellings resolve — the
+    // row-built threadId spelling via threadIdForSurface below).
+    final channel = restarted.channels.single;
+    // ADR 0146 W3 — the preserved mint is the legacy channel's view id
+    // (retained forever; resolvers accept both spellings).
+    expect(channel.channelId, liveRow.channelId);
+    expect(channel.icon, 'star');
+    expect(
+      restarted.threadIdForSurface('channel:${liveRow.channelId}'),
+      liveThreadId,
+    );
+    // An archived pre-window channel's thread never resurfaces as a
+    // room (the same resurrection guard, over the healed rows).
+    expect(
+      restarted.roomThreads.map((final t) => t['threadId']),
+      isNot(contains(deadThreadId)),
+    );
+
+    // IDEMPOTENT: the direct second call heals 0, and the boot heal on
+    // yet another restart re-projects the same view.
+    expect(await legacy.migrateIntoRows(), 0);
+    final twice = await _restartService(chat);
+    expect(twice.channels.single.channelId, liveRow.channelId);
+    expect(twice.channels.single.icon, 'star');
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0146 W3 resolver truth table: BOTH channel-id spellings '
+      'resolve through the ONE resolvers — the healed legacy mint and '
+      'the row-built threadId-as-id — across a restart', () async {
+    final chat = await _openChat('truth');
+    addTearDown(chat.dispose);
+    // A ROW-BUILT channel: the id IS the threadId (the mint retired).
+    final guild = (await chat.service.createChannel('guild'))!;
+    final threadId = guild.threadId;
+    expect(guild.channelId, threadId);
+    // A LEGACY channel: a registry row over an untyped thread row,
+    // healed by the restart's boot heal — the mint is PRESERVED on
+    // the row and stays the legacy channel's view id.
+    final human = chat.world.authorityFor(chat.humanId);
+    final legacyOpen = await chat.world.conversation().open(
+      actor: human,
+      topic: 'legacy-guild',
+      realmSealed: true,
+    );
+    final legacyThreadId = legacyOpen['threadId']! as String;
+    final legacyRow = await chat.registry.create(
+      name: 'legacy-guild',
+      threadId: legacyThreadId,
+      memberIds: <String>[chat.humanId],
+    );
+    final legacyId = legacyRow.channelId;
+    expect(legacyId, isNot(legacyThreadId));
+
+    // The row-built projection: channelId IS the threadId.
+    expect(chat.service.channelByThreadId(threadId)?.channelId, threadId);
+    expect(chat.service.channelByAnyId(threadId)?.channelId, threadId);
+    // threadIdForSurface: the row-built spelling answers; an unknown
+    // id honestly refuses.
+    expect(chat.service.threadIdForSurface('channel:$threadId'), threadId);
+    expect(
+      chat.service.threadIdForSurface('channel:channel-000000000000'),
+      isNull,
+    );
+
+    // A restart heals the legacy row: BOTH spellings resolve — the
+    // preserved mint (legacy tabs and references never die) and the
+    // row-built threadId ride the row.
+    final restarted = await _restartService(chat);
+    expect(restarted.threadIdForSurface('channel:$legacyId'), legacyThreadId);
+    expect(restarted.threadIdForSurface('channel:$threadId'), threadId);
+    expect(restarted.channelByAnyId(legacyId)?.threadId, legacyThreadId);
+    expect(restarted.channelByAnyId(threadId)?.channelId, threadId);
+    // selectChannel: both spellings select their threads.
+    restarted.selectChannel(legacyId);
+    expect(restarted.activeThreadId, legacyThreadId);
+    restarted.selectChannel(threadId);
+    expect(restarted.activeThreadId, threadId);
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0146 W3 archive: the ROW flips in one verb, both '
+      'spellings archive, and thread_not_kind_channel surfaces '
+      'verbatim', () async {
+    final chat = await _openChat('archive');
+    addTearDown(chat.dispose);
+    final guild = (await chat.service.createChannel('guild'))!;
+    // Archive by the ROW-BUILT spelling (the threadId): the thread
+    // row's `archived: true` lands (the registry mirror rode the
+    // flip — the collection stays empty).
+    expect(await chat.service.closeChannel(guild.threadId), isTrue);
+    final threadRow = await chat.world.store.read('threads', guild.threadId);
+    expect(threadRow?['archived'], true);
+    expect(await chat.world.store.scan('channels'), isEmpty);
+    expect(chat.service.channels, isEmpty);
+    // Closing never destroys: the thread survives OPEN.
+    expect(threadRow?['closed'], false);
+
+    // Re-archiving an archived channel stays honest idempotence (true).
+    expect(await chat.service.closeChannel(guild.channelId), isTrue);
+
+    // An id naming an existing NON-channel thread refuses with the
+    // harness verb's honest name, surfaced verbatim.
+    await chat.service.startThread(topic: 'Plain room');
+    final plainId = chat.service.activeThreadId!;
+    expect(await chat.service.closeChannel(plainId), isFalse);
+    expect(chat.service.error, 'thread_not_kind_channel');
+    final plainRow = await chat.world.store.read('threads', plainId);
+    expect(plainRow?.containsKey('archived'), isFalse);
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0146 W3 the icon round-trip: the row key lands (a null '
+      'clear REMOVES it); the registry mirror rode the flip; both '
+      'spellings address the channel', () async {
+    final chat = await _openChat('icon');
+    addTearDown(chat.dispose);
+    final design = (await chat.service.createChannel('design'))!;
+    expect(
+      await chat.service.setChannelIcon(
+        channelId: design.threadId,
+        icon: 'bug',
+      ),
+      isTrue,
+    );
+    var row = await chat.world.store.read('threads', design.threadId);
+    expect(row?['icon'], 'bug');
+    // The mirror rode the flip: the collection stays empty (retained
+    // forever) — the row IS the icon's authority.
+    expect(await chat.world.store.scan('channels'), isEmpty);
+    expect(chat.service.channels.single.icon, 'bug');
+
+    // Both spellings address the same channel (the row-built id IS
+    // the threadId); a null clear removes the row key (never
+    // 'icon': null).
+    expect(
+      await chat.service.setChannelIcon(
+        channelId: design.channelId,
+        icon: null,
+      ),
+      isTrue,
+    );
+    row = await chat.world.store.read('threads', design.threadId);
+    expect(row?.containsKey('icon'), isFalse);
+    expect(chat.service.channels.single.icon, isNull);
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

@@ -15,9 +15,7 @@
 /// screen reader) gets the meaning, not silence.
 library;
 
-import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
 import 'package:la_ui/la_ui.dart';
@@ -78,16 +76,22 @@ class MediaAssetCard extends StatelessWidget {
   /// Builds the card for a parsed harness beat; [rootOverride] is the
   /// sandbox root when the caller knows one (the agent-doc workspace),
   /// null leaves relative paths honestly unresolved (placeholder).
+  /// [absPathOverride] skips resolution entirely — a PRE-RESOLVED
+  /// absolute path from the conversation media path law (the shared
+  /// host helper); null resolves nothing further.
   factory MediaAssetCard.fromBeat(
     final MediaBeat beat, {
     final String? rootOverride,
+    final String? absPathOverride,
   }) => MediaAssetCard(
     mimeType: beat.provenance.mimeType,
     byteLength: beat.provenance.byteLength,
     width: beat.provenance.width ?? 0,
     height: beat.provenance.height ?? 0,
     altText: beat.altText,
-    absPath: resolveMediaPath(beat.provenance.path, rootOverride: rootOverride),
+    absPath:
+        absPathOverride ??
+        resolveMediaPath(beat.provenance.path, rootOverride: rootOverride),
     revision: beat.provenance.revision,
   );
 
@@ -98,6 +102,7 @@ class MediaAssetCard extends StatelessWidget {
   factory MediaAssetCard.fromAttachment(
     final Map<String, Object?> attachment, {
     final String? rootOverride,
+    final String? absPathOverride,
   }) {
     final path = attachment['path'];
     final mime = attachment['mimeType'];
@@ -112,9 +117,9 @@ class MediaAssetCard extends StatelessWidget {
       width: width is int ? width : 0,
       height: height is int ? height : 0,
       altText: alt is String && alt.isNotEmpty ? alt : null,
-      absPath: path is String
+      absPath: absPathOverride ?? (path is String
           ? resolveMediaPath(path, rootOverride: rootOverride)
-          : null,
+          : null),
       revision: revision is String && revision.isNotEmpty
           ? revision
           : 'unknown',

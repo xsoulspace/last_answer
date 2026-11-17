@@ -60,7 +60,7 @@ class _WorkspaceFolderSection extends StatelessWidget {
           if (workspace.folderPaths.isEmpty)
             Text(
               context.l10n.workspacesFilesNoFolders,
-              style: theme.compact?.copyWith(
+              style: theme.compact.copyWith(
                 color: context.shellMuted,
               ),
             )
@@ -82,7 +82,7 @@ class _WorkspaceFolderSection extends StatelessWidget {
                         key: const ValueKey('workspaces.filesTab.folder'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.compact?.copyWith(
+                        style: theme.compact.copyWith(
                           fontFeatures: const [],
                         ),
                       ),
@@ -109,7 +109,7 @@ class _FilesNote extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         key: const ValueKey('workspaces.filesTab'),
-        style: context.laUi.micro?.copyWith(
+        style: context.laUi.micro.copyWith(
           color: context.shellMuted,
         ),
       ),

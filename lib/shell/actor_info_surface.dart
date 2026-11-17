@@ -21,9 +21,15 @@
 ///   the people view's actor panel renders (row pattern reused, keys
 ///   shared: `shell.people.access*`).
 ///
+/// - the durable IMAGE SPEND (the ledger's per-actor projection, the
+///   native-image-assets follow-up): rendered from the realm store's
+///   `image_spend` fold — absent rows render NOTHING (honest absence,
+///   not zeros).
+///
 /// Widget keys are the agent's UI contract (DESIGN §6): `actor.info`,
 /// `actor.info.facts`, `actor.info.save`, `actor.info.channels`,
-/// `actor.info.channel.<channelId>`, `actor.info.absent`.
+/// `actor.info.channel.<channelId>`, `actor.info.absent`,
+/// `actor.info.imageSpend`.
 library;
 
 import 'package:lastanswer/agent_config/agent_config.dart';
@@ -38,6 +44,8 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_people.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show ImageSpendSummary, imageSpendOf;
 
 /// One actor's info tab body: identity, facts, the inline editor, the
 /// channel memberships and the project-access grants.
@@ -87,6 +95,7 @@ final class ActorInfoSurface extends StatelessWidget {
               service.retiredInfo(actorId) == null,
             ),
             _facts(context, display),
+            _ImageSpendSection(service: service, actorId: actorId),
             if (profile != null)
               _editor(context, profile)
             else if (service.retiredInfo(actorId) case final retired?)
@@ -412,5 +421,61 @@ final class ActorInfoSurface extends StatelessWidget {
     } on Object {
       return '';
     }
+  }
+}
+
+/// The durable IMAGE SPEND (the ledger's per-actor projection): folded
+/// from the realm store's `image_spend` collection — the settled cost,
+/// calls, images, plus the honest unknowns (estimated / failed /
+/// refused). Absent rows render NOTHING: no store, no rows, no
+/// section — honest absence, not zeros (the placeholder law's UI
+/// face). One FutureBuilder over a columnar fold of a small
+/// collection; the scale law keeps it cheap.
+final class _ImageSpendSection extends StatelessWidget {
+  const _ImageSpendSection({required this.service, required this.actorId});
+  final RealmChatService service;
+  final String actorId;
+
+  @override
+  Widget build(final BuildContext context) {
+    final world = service.world;
+    if (world == null) return const SizedBox.shrink();
+    return FutureBuilder<ImageSpendSummary?>(
+      future: imageSpendOf(world.store, actor: actorId),
+      builder: (final context, final snapshot) {
+        final spend = snapshot.data;
+        if (spend == null ||
+            (spend.totalCalls == 0 && spend.refusedCalls == 0)) {
+          return const SizedBox.shrink();
+        }
+        final line = [
+          '\$${spend.spendUsd.toStringAsFixed(2)}',
+          '${spend.totalImages} img',
+          '${spend.totalCalls} calls',
+          if (spend.estimatedCalls > 0) '${spend.estimatedCalls} est',
+          if (spend.failedCalls > 0) '${spend.failedCalls} failed',
+          if (spend.refusedCalls > 0) '${spend.refusedCalls} refused',
+        ].join(' · ');
+        return Padding(
+          padding: ShellTokens.sectionPadding,
+          child: Column(
+            key: const ValueKey('actor.info.imageSpend'),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.l10n.actorsImageSpend,
+                style: shellSectionLabel(context),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                line,
+                key: const ValueKey('actor.info.imageSpend.line'),
+                style: LaTokens.mono(10.5, context.shellMuted),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

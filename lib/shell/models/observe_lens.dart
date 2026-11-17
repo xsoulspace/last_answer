@@ -149,7 +149,7 @@ final class ObserveLens extends StatelessWidget {
                                   'pid ${world.daemonPid}'
                       : l10n.modelsDaemonDown,
                   key: const ValueKey('models.daemon'),
-                  style: theme.compact?.copyWith(
+                  style: theme.compact.copyWith(
                     color: world.daemonLive ? null : la.caution,
                   ),
                 ),
@@ -165,7 +165,7 @@ final class ObserveLens extends StatelessWidget {
                   key: const ValueKey('models.scheduler'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.micro?.copyWith(
+                  style: theme.micro.copyWith(
                     color: world.schedulerLive ? la.inkQuiet : la.caution,
                     fontSize: 10,
                   ),

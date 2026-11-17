@@ -6,11 +6,11 @@
 // selectRoom activates the conversation by its rooms-column row key,
 // closeTab shrinks the strip, splitActive moves the focused tab right.
 // The injected service is REAL over a hermetic world (the repo's lane).
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -197,6 +197,36 @@ void main() {
     // shell_select_room: the row key activates the conversation tab
     // (group 0 — the docked law); unknown shapes refuse honestly.
     final channelId = service.channels.first.channelId;
+    expect(bridge.selectRoom('rooms.row.channel.$channelId'), isTrue);
+    await tester.pump();
+    await _drain(tester);
+    expect(bridge.state()['activeTab'], 'channel:$channelId');
+    // ADR 0146 — the key shape is frozen and the tail is an opaque id:
+    // a LEGACY mint routes to the same conversation too (the absorbed
+    // resolver). ADR 0146 W3 — the fallback cache is EMPTY (the flip
+    // emptied it), so the legacy spelling is a crafted pair whose mint
+    // the heal preserved ON the row.
+    final world = service.world!;
+    final human = service.humanActorId!;
+    final legacyOpen = await world.conversation().open(
+      actor: world.authorityFor(human),
+      topic: 'legacy-lane',
+      realmSealed: true,
+    );
+    final legacyRegistry = ChannelRegistry(store: world.store);
+    final legacyMint = (await legacyRegistry.create(
+      name: 'legacy-lane',
+      threadId: legacyOpen['threadId']! as String,
+      memberIds: <String>[human],
+    )).channelId;
+    await legacyRegistry.migrateIntoRows();
+    expect(legacyMint, isNot(channelId));
+    expect(bridge.selectRoom('rooms.row.channel.$legacyMint'), isTrue);
+    await tester.pump();
+    await _drain(tester);
+    expect(bridge.state()['activeTab'], 'channel:$legacyMint');
+    // Back on the row-built tab: the rest of the lane (close, split)
+    // pins the projection's own id.
     expect(bridge.selectRoom('rooms.row.channel.$channelId'), isTrue);
     await tester.pump();
     await _drain(tester);

@@ -16,10 +16,9 @@
 /// (d) an unscoped send stays the plain `say` (regression).
 library;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter/material.dart';import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
+import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
@@ -509,23 +508,17 @@ void main() {
       final room = await _openRoom(tester, 'openlane');
       late final String workId;
       await tester.runAsync(() async {
-        // A conversational child: startThread + the registry link with
-        // an honest-empty seal (the spawnWorkThread gate refuses an
-        // unsealed root — the surface's own _startChildThread pattern).
+        // A conversational child: startThread with the parent link on
+        // the CHILD'S ROW (ADR 0146 W3 — the row IS the link; the
+        // registry mirror rode the flip).
         await room.service.startThread(
           topic: 'child lane',
           participants: <String>[room.worker.actorId],
+          parentThreadId: room.parentThreadId,
         );
         final childId = room.service.activeThreadId;
         expect(childId, isNotNull);
         workId = childId!;
-        await WorkThreadRegistry(store: room.world.store).create(
-          workThreadId: workId,
-          parentThreadId: room.parentThreadId,
-          projectRoot: '',
-          name: 'child lane',
-          createdBy: room.humanId,
-        );
         await room.service.refreshWorkThreads();
         room.service.selectThread(room.parentThreadId);
       });

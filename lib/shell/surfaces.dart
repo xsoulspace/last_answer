@@ -171,6 +171,12 @@ String? conversationSurfaceId({
 /// when the registry's own title covers it or the rail object is
 /// unknown (the bar falls back to the raw id — honest, never blank).
 /// A `room:` tab titles from the thread's topic via [topicOf].
+///
+/// ADR 0146 — a `channel:` id resolves BOTH spellings over the
+/// supplied view: the exact registry channelId first, then the
+/// row-built threadId-as-channelId. Callers feed the row-built
+/// projection plus the registry's legacy rows (the W1 fallback) so a
+/// persisted legacy tab keeps its title.
 String? conversationSurfaceTitle(
   final String surfaceId, {
   required final Iterable<ChannelInfo> channels,
@@ -180,7 +186,9 @@ String? conversationSurfaceTitle(
   if (surfaceId.startsWith('channel:')) {
     final channelId = surfaceId.substring('channel:'.length);
     for (final channel in channels) {
-      if (channel.channelId == channelId) return '#${channel.name}';
+      if (channel.channelId == channelId || channel.threadId == channelId) {
+        return '#${channel.name}';
+      }
     }
     return null;
   }

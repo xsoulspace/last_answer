@@ -16,9 +16,12 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
 /// from the SNIFFED mime + dims and the sha256-16 revision — the same
 /// vocabulary the actors' `message` verb validates.
 ///
-/// The v1 path form is ABSOLUTE (one device IS the world; the card and
-/// the dispatcher's vision branch resolve it as-is). The shared-root
-/// story for multi-device threads is named in the ADR as follow-up.
+/// The v1.1 path form is WORLD-RELATIVE under the share root
+/// (`assets/<threadId>/<file>` — the multi-device law: durable beats
+/// never embed device-fingered absolute paths; the resolution rule
+/// lives in the host's `resolveConversationMediaPath`, which the card
+/// and the dispatch's vision branch share). Absolute v1 records keep
+/// reading forever — the readers tolerate both forms.
 final class RealmChatMediaShare {
   RealmChatMediaShare({required this.worldHome});
   final Directory worldHome;
@@ -70,7 +73,9 @@ final class RealmChatMediaShare {
     await file.writeAsBytes(asBytes, flush: true);
     final digest = crypto.sha256.convert(asBytes).toString().substring(0, 16);
     return buildMediaAttachment(
-      path: file.path,
+      // WORLD-RELATIVE (v1.1): the file lands inside the world tree;
+      // the entry names it relative to the world home.
+      path: 'assets/$threadId/$assetId.$ext',
       mimeType: meta.mimeType,
       byteLength: meta.byteLength,
       width: meta.width,

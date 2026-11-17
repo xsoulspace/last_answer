@@ -174,7 +174,7 @@ final class _RowState extends State<_Row> {
                     row.label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: context.laUi.compact?.copyWith(
+                    style: context.laUi.compact.copyWith(
                       fontSize: 12,
                       color: runways ? context.la.inkQuiet : context.la.ink,
                     ),

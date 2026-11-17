@@ -125,6 +125,28 @@ share pipeline is proven end-to-end by
 `test/shell/world_chat_media_test.dart` (real store, real say, real
 projection, real card render).
 
+## Amendment 2 — the follow-ups (2026-11-17)
+
+The three follow-ups landed in the harness packages (ADR 0142
+amendment 2); LA's half of the conversation-media law moved with it:
+
+- **The composer share path is WORLD-RELATIVE** (v1.1): the entry now
+  carries `assets/<threadId>/<file>` — durable beats never embed
+  device-fingered absolute paths. The share dir itself is unchanged
+  (`<worldHome>/assets/<threadId>/`); the room resolves entry paths
+  through the host's shared law (`resolveConversationMediaPath`),
+  exposed here as `RealmWorld.worldHome` (the store dir's parent —
+  the hermetic and production shapes agree). Old absolute records
+  read forever; nothing migrates.
+- `image_transform` (F5) and the durable per-actor image spend ledger
+  landed harness-side — BOTH slices: attribution plus the OPT-IN
+  ceiling (`realm_actor_image_budget_usd`; the reserve refuses
+  `image_budget_exhausted` with the remaining named, refused reserves
+  recorded; absent = unbounded, nothing seals). LA's half: the actor
+  info tab renders the per-actor spend line
+  (`actor.info.imageSpend`) folded from the realm store — absent rows
+  render nothing. IT/RU trained.
+
 ## References
 
 - Analysis: `~/xs/ecsai_harness/docs/agent/native-image-assets.md`

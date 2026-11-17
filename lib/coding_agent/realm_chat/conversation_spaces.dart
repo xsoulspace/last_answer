@@ -16,4 +16,10 @@ export 'package:ecsly_conversation/ecsly_conversation.dart'
         ConversationKind,
         WorkThreadLink,
         WorkThreadRegistry,
-        classifyThread;
+        classifyThread,
+        // ADR 0146 W3 — the operator flip constants (channels flipped
+        // 2026-11-17; the work-thread twin shipped retired in the same
+        // stroke). The read/write sites reference them so the flip
+        // state IS the behavior; flipping back restores W1.
+        kChannelRegistryReadsOn,
+        kWorkThreadRegistryReadsOn;

@@ -20,6 +20,8 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show resolveConversationMediaPath;
 
 /// A VALID png (real CRC — Flutter's own decoder reads it).
 Uint8List pngBytes({final int width = 64, final int height = 48}) {
@@ -58,9 +60,10 @@ void main() {
     late final RealmWorld world;
     late final RealmChatService service;
     late final String threadId;
+    late final Directory temp;
     await tester.runAsync(() async {
 
-      final temp = await Directory.systemTemp.createTemp('wc_media_ws_');
+      temp = await Directory.systemTemp.createTemp('wc_media_ws_');
       addTearDown(() => temp.delete(recursive: true));
       world = (await RealmWorld.open(rootOverride: temp.path))!;
 
@@ -88,10 +91,12 @@ void main() {
     // The SHARE: bytes → the media v1 entry (sniffed mime/dims +
     // sha256-16 revision, file copied into the world asset dir).
     // REAL IO — the write, the say and the journal watch all run
-    // outside the fake-async zone (the house image-test law).
+    // outside the fake-async zone (the house image-test law). The
+    // share's world home IS the world's own root (v1.1: the composer
+    // writes under the world tree; the entry path is world-RELATIVE).
     late final Map<String, Object?> entry;
     await tester.runAsync(() async {
-      final share = RealmChatMediaShare(worldHome: pin);
+      final share = RealmChatMediaShare(worldHome: Directory(world.worldHome));
       entry = await share.buildFromBytes(
         bytes: pngBytes(),
         threadId: threadId,
@@ -106,8 +111,20 @@ void main() {
     expect(entry['mimeType'], 'image/png');
     expect(entry['width']! as num, 64);
     expect((entry['revision']! as String).length, 16);
-    // The file landed under the world's asset dir, byte-exact.
-    final assetFile = File(entry['path']! as String);
+    // THE PATH IS WORLD-RELATIVE (v1.1): `assets/<threadId>/<file>` —
+    // durable beats never embed device-fingered absolute paths.
+    final entryPath = entry['path']! as String;
+    expect(entryPath.startsWith('assets/$threadId/'), isTrue);
+    expect(entryPath.endsWith('.png'), isTrue);
+    expect(entryPath.contains('/Users/'), isFalse);
+    // The file landed under the world's asset dir, byte-exact —
+    // resolved through the shared path law.
+    final resolved = resolveConversationMediaPath(
+      entryPath,
+      worldHome: world.worldHome,
+    );
+    expect(resolved, isNotNull);
+    final assetFile = File(resolved!);
     expect(assetFile.existsSync(), isTrue);
     expect(assetFile.lengthSync(), greaterThan(0));
     // The projection refreshes through the watch debounce; re-select

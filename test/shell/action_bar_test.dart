@@ -6,9 +6,8 @@
 // from the retired kind-button test): it totals every room the member
 // has not read; the receipt clears it; no LaWorld = honest absence.
 
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';

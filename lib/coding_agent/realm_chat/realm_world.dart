@@ -163,6 +163,12 @@ final class RealmWorld {
     );
   }
 
+  /// The realm world home (ADR 0107): the coordination store's parent
+  /// — the conversation media path law's share root (world-relative
+  /// `assets/…` entry paths resolve against it). Works for the
+  /// production tree and the hermetic shape alike.
+  String get worldHome => store.directory.parent.path;
+
   /// The realm world home (ADR 0107):
   /// `<device root>/.xsoulspace/worlds/<realm id>` — the parent of both
   /// the coordination store and the thread-replica project area.

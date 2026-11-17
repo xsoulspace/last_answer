@@ -95,7 +95,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             context.l10n.worldChatNoConversations,
             key: ValueKey('miniwindow.peek.${widget.threadId}'),
             textAlign: TextAlign.center,
-            style: theme.micro?.copyWith(
+            style: theme.micro.copyWith(
               color: context.shellMuted,
             ),
           ),
@@ -123,7 +123,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             topic,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: theme.compact?.copyWith(
+            style: theme.compact.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -132,7 +132,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
             participants.join(', '),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: theme.micro?.copyWith(
+            style: theme.micro.copyWith(
               color: context.shellMuted,
             ),
           ),
@@ -145,7 +145,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.micro?.copyWith(
+              style: theme.micro.copyWith(
                 color: context.shellMuted,
                 fontStyle: FontStyle.italic,
               ),
@@ -158,7 +158,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
                     child: Text(
                       context.l10n.worldChatSelectFromRail,
                       textAlign: TextAlign.center,
-                      style: theme.micro?.copyWith(
+                      style: theme.micro.copyWith(
                         color: context.shellMuted,
                       ),
                     ),
@@ -200,7 +200,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
                   _displayName(author),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.micro?.copyWith(
+                  style: theme.micro.copyWith(
                     color: context.shellMuted,
                     fontWeight: FontWeight.w600,
                   ),
@@ -209,7 +209,7 @@ final class _PinnedConversationPeekState extends State<PinnedConversationPeek> {
               if (time.isNotEmpty)
                 Text(
                   time,
-                  style: theme.micro?.copyWith(
+                  style: theme.micro.copyWith(
                     color: context.shellMuted,
                   ),
                 ),

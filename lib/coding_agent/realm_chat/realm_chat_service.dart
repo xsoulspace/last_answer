@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_bindings_fold.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
@@ -118,29 +119,26 @@ final class RealmChatService extends ChangeNotifier {
   /// Credential resolution by env NAME (palette rungs).
   String? Function(String envName)? resolveCredential;
 
-  /// actorId → the durable realm row's `brainCast` (the daemon's binding
-  /// vocabulary, written by `actor_bind`): the defer law's second half.
-  final Map<String, String> _realmBrainCasts = {};
-
-  /// ADR 0143 — actorId → the row's ordered `brainSet` (its own model
-  /// subset and self-bind scope; empty = the world policy whole).
-  final Map<String, List<String>> _realmBrainSets = {};
-
-  /// ADR 0143 — actorId → the row's `selfBind` override
-  /// (`allow` | `deny`; absent = the global toggle decides).
-  final Map<String, String> _realmSelfBinds = {};
+  /// The incremental actor-bindings fold (ADR 0120/0143 read path):
+  /// the `realm_actors` table is read ONCE at bind (adopted from the
+  /// roster re-materialization's scan), then only journal-tail
+  /// mutations apply — the 2000-actor law (a full-table read per
+  /// journal event does not scale). Null until bind.
+  ActorBindingsFold? _bindingsFold;
 
   /// The binding map as a read model (the Models surface's Bindings and
   /// Observe lenses join actors to their cast rows through it).
-  Map<String, String> get brainCasts => Map.unmodifiable(_realmBrainCasts);
+  Map<String, String> get brainCasts =>
+      _bindingsFold?.brainCasts ?? const <String, String>{};
 
   /// The ordered brain-set read model (the actor card's Brain section
   /// seeds from it — ADR 0143).
   Map<String, List<String>> get brainSets =>
-      Map.unmodifiable(_realmBrainSets);
+      _bindingsFold?.brainSets ?? const <String, List<String>>{};
 
   /// The per-actor self-rebind override read model (ADR 0143).
-  Map<String, String> get selfBinds => Map.unmodifiable(_realmSelfBinds);
+  Map<String, String> get selfBinds =>
+      _bindingsFold?.selfBinds ?? const <String, String>{};
 
   /// The defer predicate's BINDING half: whether this actor is bound in
   /// the daemon's own vocabulary (`cast:` brainRefs and durable
@@ -149,7 +147,7 @@ final class RealmChatService extends ChangeNotifier {
   /// with a SLEEPING daemon is exactly when the room must say so.
   bool daemonBoundActor(final ActorProfile actor) {
     if (actor.brainRef.trim().startsWith('cast:')) return true;
-    final cast = _realmBrainCasts[actor.actorId];
+    final cast = _bindingsFold?.brainCasts[actor.actorId];
     return cast != null && cast.isNotEmpty;
   }
 
@@ -162,69 +160,50 @@ final class RealmChatService extends ChangeNotifier {
   }
 
   /// Re-reads the durable `brainCast` bindings (the daemon may bind an
-  /// actor between app wakes; the defer law must see it).
+  /// actor between app wakes; the defer law must see it). The first
+  /// call cold-folds the table; after bind adopted the roster scan,
+  /// this reads ONLY the journal tail — a full-table read per journal
+  /// event does not scale to a 2000-actor world.
   Future<void> refreshBrainCasts() async {
     final world = _world;
     if (world == null) return;
     try {
-      final records = await world.store.scan('realm_actors');
-      _realmBrainCasts
-        ..clear()
-        ..addEntries(
-          records.values
-              .where(
-                (final record) =>
-                    record['brainCast'] is String &&
-                    (record['brainCast']! as String).isNotEmpty,
-              )
-              .map(
-                (final record) => MapEntry(
-                  '${record['actorId']}',
-                  record['brainCast']! as String,
-                ),
-              ),
-        );
-      _realmBrainSets
-        ..clear()
-        ..addAll(<String, List<String>>{
-          for (final record in records.values)
-            '${record['actorId']}': <String>[
-              if (record['brainSet'] is List)
-                for (final entry in record['brainSet']! as List)
-                  if (entry is String && entry.isNotEmpty) entry,
-            ],
-        });
-      _realmSelfBinds
-        ..clear()
-        ..addEntries(
-          records.values
-              .where(
-                (final record) =>
-                    record['selfBind'] is String &&
-                    (record['selfBind']! as String).isNotEmpty,
-              )
-              .map(
-                (final record) => MapEntry(
-                  '${record['actorId']}',
-                  record['selfBind']! as String,
-                ),
-              ),
-        );
+      await (_bindingsFold ??= ActorBindingsFold(world.store)).refresh();
     } on Object {
-      // An unreadable row keeps the previous binding view.
+      // An unreadable tail keeps the previous binding view — the next
+      // journal event re-reads from the last good cursor.
     }
   }
 
   /// Thread projections from `thread.list` (newest activity first).
   List<Map<String, Object?>> get threads => List.unmodifiable(_threads);
 
-  /// ADR 0024 — registered channels (oldest first), cached from the
-  /// registry's ONE-scan [ChannelRegistry.scanIndex] projection (the
-  /// index's live list); LIVE channels only — an archived channel
-  /// leaves this list (its durable thread survives; the journal is
-  /// authority). Refreshed on start and after each [createChannel],
-  /// [renameChannel] and [closeChannel].
+  /// ADR 0024 / ADR 0146 — the channels (oldest first), LIVE only — an
+  /// archived channel leaves this list (its durable thread survives;
+  /// the journal is authority). The ONE-projection view: every thread
+  /// row declaring `kind: 'channel'` answers from its own fields —
+  /// `topic` IS the name, `participants` IS the membership, `threadId`
+  /// IS the id (`channelId == threadId`; the secondary registry mint
+  /// retires for row-built channels) — and the registry answers only
+  /// what the rows don't carry yet (see [registryChannels]). Built in
+  /// [refreshThreads] from the same `threadRows()` scan that feeds the
+  /// rail, [roomThreads] and the sessions; refreshed on start and
+  /// after each [createChannel], [renameChannel], [setChannelIcon] and
+  /// [closeChannel].
   List<ChannelInfo> get channels => List.unmodifiable(_channels);
+
+  /// ADR 0146 — the REGISTRY rows (every channel ever registered,
+  /// oldest first): the legacy-spelling fallback. A pre-heal legacy row
+  /// lists exactly as before, keyed by its registry `channelId`
+  /// (retained forever — legacy tabs and references never die); the
+  /// per-field fallback (icon/archived for a pre-key row) reads the
+  /// same rows. Content only while [kChannelRegistryReadsOn] stands
+  /// (the W3 operator flip empties it — flip removes reads, doubles
+  /// nothing). Refreshed by [refreshThreads]; a failed fallback scan
+  /// keeps the previous cache (a degraded fallback never empties the
+  /// lists).
+  List<ChannelInfo> get registryChannels =>
+      List.unmodifiable(_registryChannels);
 
   /// ADR 0129 — the project-sealed work threads spawned from LA rooms
   /// (oldest first), cached from [WorkThreadRegistry.list]; refreshed on
@@ -241,10 +220,33 @@ final class RealmChatService extends ChangeNotifier {
   ];
 
   /// The channel registered over [threadId], null for plain threads
-  /// (DMs, unregistered groups).
+  /// (DMs, unregistered groups). LIVE channels only — an archived
+  /// channel's thread is never re-presented as its channel.
   ChannelInfo? channelByThreadId(final String threadId) {
     for (final channel in _channels) {
       if (channel.threadId == threadId) return channel;
+    }
+    return null;
+  }
+
+  /// ADR 0146 — the channel-id resolver over BOTH spellings (the
+  /// absorption window's law): the legacy registry `channel-…` mint
+  /// first (exact channelId match), then the row-built spelling — the
+  /// id IS the threadId (exact match covers it: a row-built channel's
+  /// `channelId == threadId`). The legacy branch reads the W1 fallback
+  /// cache ([registryChannels], populated only while
+  /// [kChannelRegistryReadsOn] stands), so after a W3 flip only the
+  /// row-built spelling resolves. LIVE channels only — an archived
+  /// channel left the lists, and its ids stop resolving with it (the
+  /// honest absence; the durable thread survives for the journal).
+  /// Sync — no IO (the sync-getter law's resolver half).
+  ChannelInfo? channelByAnyId(final String id) {
+    if (id.isEmpty) return null;
+    for (final channel in _registryChannels) {
+      if (!channel.archived && channel.channelId == id) return channel;
+    }
+    for (final channel in _channels) {
+      if (channel.channelId == id || channel.threadId == id) return channel;
     }
     return null;
   }
@@ -256,19 +258,18 @@ final class RealmChatService extends ChangeNotifier {
   /// holding two conversation tabs must never both render the global
   /// [activeThreadId] (the 2026-11-10 defect).
   ///
-  /// `channel:<channelId>` resolves through the live channel list (the
-  /// inverse of [channelByThreadId]); `dm:<actorId>` resolves through
-  /// [dmThreadOf] (the same lookup [openDm] rides — null until the DM
-  /// thread exists); `room:<threadId>` is the thread id itself; the
-  /// `conversations` world face — and every non-conversation id —
+  /// `channel:<channelId>` resolves through [channelByAnyId] — BOTH id
+  /// spellings during the absorption window (the legacy registry mint
+  /// first, then the row-built threadId-as-id); `dm:<actorId>` resolves
+  /// through [dmThreadOf] (the same lookup [openDm] rides — null until
+  /// the DM thread exists); `room:<threadId>` is the thread id itself;
+  /// the `conversations` world face — and every non-conversation id —
   /// resolves to null: the no-thread inbox face.
   String? threadIdForSurface(final String surfaceId) {
     if (surfaceId.startsWith('channel:')) {
-      final channelId = surfaceId.substring('channel:'.length);
-      for (final channel in _channels) {
-        if (channel.channelId == channelId) return channel.threadId;
-      }
-      return null;
+      return channelByAnyId(
+        surfaceId.substring('channel:'.length),
+      )?.threadId;
     }
     if (surfaceId.startsWith('dm:')) {
       return dmThreadOf(surfaceId.substring('dm:'.length));
@@ -350,19 +351,28 @@ final class RealmChatService extends ChangeNotifier {
   final List<Map<String, Object?>> _beats = <Map<String, Object?>>[];
   final List<ChannelInfo> _channels = <ChannelInfo>[];
 
+  /// ADR 0146 — the registry rows (every channel ever registered,
+  /// oldest first): the legacy-spelling fallback cache behind
+  /// [registryChannels], refreshed by the same [refreshThreads] pass
+  /// that rebuilds [_channels] (one `scanIndex` round-trip, W1 only —
+  /// [kChannelRegistryReadsOn]). A failed scan keeps the previous
+  /// cache; the W3 flip empties it.
+  final List<ChannelInfo> _registryChannels = <ChannelInfo>[];
+
   /// The thread ids of LIVE channels, refreshed alongside [_channels]
-  /// from the same registry scan (the index's live-only `byThreadId`
-  /// keys — oldest-wins per thread). The classifier's channel-wins-over-
+  /// from the same one-projection pass (row-built + legacy rows, the
+  /// merged view's live half). The classifier's channel-wins-over-
   /// dm-shape input. Sync getter law: [roomThreads] and [dmThreadOf]
   /// do no IO, so the knowledge must be cached.
   final Set<String> _liveChannelThreadIds = <String>{};
 
   /// The thread ids of ARCHIVED channels, refreshed alongside
-  /// [_channels] from the same registry scan. An archived channel's
-  /// thread stays open in the journal (closing never destroys), so
-  /// without this set [roomThreads] would resurrect it as a plain
-  /// "room" the moment it leaves the live channel list. Sync getter
-  /// law: [roomThreads] does no IO, so the knowledge must be cached.
+  /// [_channels] from the same one-projection pass. An archived
+  /// channel's thread stays open in the journal (closing never
+  /// destroys), so without this set [roomThreads] would resurrect it
+  /// as a plain "room" the moment it leaves the live channel list.
+  /// Sync getter law: [roomThreads] does no IO, so the knowledge must
+  /// be cached.
   final Set<String> _archivedChannelThreadIds = <String>{};
   final List<WorkThreadLink> _workThreads = <WorkThreadLink>[];
   final Map<String, String> _beatPreviews = <String, String>{};
@@ -426,6 +436,11 @@ final class RealmChatService extends ChangeNotifier {
       // any registered actor carrying a profile lands back in the
       // roster, so bots survive an app restart without a mesh.
       final records = await world.store.scan('realm_actors');
+      // The bindings fold adopts the SAME scan as its cold fold: one
+      // table read at bind, incremental journal-tail reads after (the
+      // TailFold law — the refresh path never re-scans per event).
+      _bindingsFold = ActorBindingsFold(world.store)
+        ..adoptScan(records.values);
       for (final record in records.values) {
         final actorId = record['actorId'];
         if (actorId is! String || actorId.isEmpty) continue;
@@ -509,8 +524,31 @@ final class RealmChatService extends ChangeNotifier {
       } on Object {
         // Heal is best-effort; the registry still lists.
       }
+      // ADR 0146 W2 — the channel heal: the registry's row fields
+      // (`kind: 'channel'`, `icon`, `archived`) backfill onto the
+      // pre-window thread rows, so the one-projection reads below see
+      // every channel row-shaped. Idempotent per-field — a second call
+      // heals 0 — and a failed heal is logged (never thrown out of
+      // boot); the next boot retries it.
+      try {
+        await registry.migrateIntoRows();
+      } on Object catch (error) {
+        _error = 'channel_row_heal_failed: $error';
+      }
       _workRegistry = WorkThreadRegistry(store: world.store);
-      await _refreshChannels();
+      // ADR 0146 W2/W3 — the work-thread heal: the registry links'
+      // `parentThreadId` backfill onto the pre-window work rows, so
+      // the row reads below (the reuse key, the parent-room cards)
+      // see every work row link-shaped. Same idempotence + honest
+      // failure law as the channel heal above.
+      final workRegistry = _workRegistry;
+      if (workRegistry != null) {
+        try {
+          await workRegistry.migrateIntoRows();
+        } on Object catch (error) {
+          _error = 'work_row_heal_failed: $error';
+        }
+      }
       await _refreshWorkThreads();
       await refreshBrainCasts();
       await refreshThreads();
@@ -668,14 +706,22 @@ final class RealmChatService extends ChangeNotifier {
   /// project scope, and durably granted projects. Preview triples are
   /// enriched from the folded beats (journal rows carry only the
   /// `lastBeat` counter).
+  ///
+  /// ADR 0146 — the ONE-projection pass: the same `threadRows()` scan
+  /// feeds the channel view too ([_refreshChannelView] — the rail's
+  /// channel list, the classifier's live/archived sets and the legacy
+  /// fallback cache), so the second collection read no longer rides
+  /// every boot/refresh path as its own projection.
   Future<void> refreshThreads() async {
     final world = _world;
     final human = _human;
     if (world == null || human == null) return;
     unawaited(refreshBrainCasts());
+    await _refreshRegistryFallback();
     try {
       final projection = world.projection;
       final rows = await projection.threadRows();
+      _refreshChannelView(rows.values);
       final grants = await projection.grantsOf(human.actor);
       final enriched = <Map<String, Object?>>[];
       for (final row in rows.values) {
@@ -728,6 +774,7 @@ final class RealmChatService extends ChangeNotifier {
     required String topic,
     List<String> participants = const <String>[],
     String? kind,
+    String? parentThreadId,
   }) async {
     final world = _world;
     final human = _human;
@@ -742,6 +789,9 @@ final class RealmChatService extends ChangeNotifier {
         // and in-app loops all see and answer in it.
         realmSealed: true,
         kind: kind,
+        // ADR 0146 W3 — a conversational child's parent link rides the
+        // row (absent means no link, never null).
+        parentThreadId: parentThreadId,
       );
       _activeThreadId = result['threadId']! as String;
       _beats.clear();
@@ -865,8 +915,7 @@ final class RealmChatService extends ChangeNotifier {
     for (final thread in _threads) {
       if (thread['closed'] == true) continue;
       final kind = kindOf(thread);
-      if (kind == ConversationKind.room ||
-          kind == ConversationKind.session) {
+      if (kind == ConversationKind.room || kind == ConversationKind.session) {
         rooms.add(thread);
       }
     }
@@ -944,15 +993,35 @@ final class RealmChatService extends ChangeNotifier {
       );
       final threadId = opened['threadId']! as String;
       openedThreadId = threadId;
-      final channel = await registry.create(
-        name: trimmed,
-        threadId: threadId,
-        memberIds: members,
-      );
-      await _refreshChannels();
+      // ADR 0146 W3 — the mirror write rides the flip: reads off → no
+      // registry row (the row IS the channel; its id IS the threadId)
+      // and the ChannelInfo builds from the opened row. Reads on → the
+      // W1 registry mirror (its mint is the legacy spelling).
+      final ChannelInfo channel;
+      if (kChannelRegistryReadsOn) {
+        channel = await registry.create(
+          name: trimmed,
+          threadId: threadId,
+          memberIds: members,
+        );
+      } else {
+        final row = await world.store.read('threads', threadId);
+        channel = ChannelInfo(
+          channelId: threadId,
+          name: trimmed,
+          threadId: threadId,
+          memberIds: members,
+          createdAt: row?['createdAt'] is String
+              ? row!['createdAt']! as String
+              : DateTime.now().toUtc().toIso8601String(),
+        );
+      }
       _activeThreadId = threadId;
       _beats.clear();
       _windowStart = null;
+      // ADR 0146 — the one-projection refresh: the channel view (the
+      // row-built list), the classifier sets and the registry fallback
+      // cache all rebuild from the same threadRows() scan.
       await refreshThreads();
       return channel;
     } on Object catch (error) {
@@ -1022,22 +1091,29 @@ final class RealmChatService extends ChangeNotifier {
   /// duplicating any OTHER live channel (case-insensitive) refuses with
   /// `channel_name_taken`, and success refreshes the projections and
   /// notifies. False on refusal, an unknown [channelId] or a not-ready
-  /// service — the honest-refusal law, never a throw. The channel's
-  /// durable thread keeps its original topic (the journal is authority;
-  /// LA never rewrites journal rows).
+  /// service — the honest-refusal law, never a throw.
+  ///
+  /// ADR 0146 — rename = topic edit (one fact, one write): `topic` IS
+  /// the channel name, so the thread row's topic is the write; the
+  /// registry mirror row over the same thread stays in sync until W3
+  /// (the dual-write law). [channelId] resolves BOTH spellings
+  /// ([channelByAnyId]).
   Future<bool> renameChannel(final String channelId, final String name) async {
+    final world = _world;
     final registry = _channelRegistry;
-    if (registry == null) return false;
+    if (world == null || registry == null) return false;
     final trimmed = name.trim();
     if (trimmed.isEmpty) {
       _error = 'channel_name_empty';
       notifyListeners();
       return false;
     }
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
     final taken = _channels.any(
-      (final channel) =>
-          channel.channelId != channelId &&
-          channel.name.toLowerCase() == trimmed.toLowerCase(),
+      (final candidate) =>
+          candidate.threadId != channel.threadId &&
+          candidate.name.toLowerCase() == trimmed.toLowerCase(),
     );
     if (taken) {
       _error = 'channel_name_taken';
@@ -1045,12 +1121,18 @@ final class RealmChatService extends ChangeNotifier {
       return false;
     }
     try {
-      final renamed = await registry.rename(
-        channelId: channelId,
-        name: trimmed,
-      );
-      if (renamed == null) return false;
-      await _refreshChannels();
+      await world.store.transact((tx) {
+        final thread = tx.get('threads', channel.threadId);
+        if (thread == null) return;
+        tx.put('threads', channel.threadId, <String, Object?>{
+          ...thread,
+          'topic': trimmed,
+        });
+      });
+      final mirror = _registryByThread(channel.threadId);
+      if (mirror != null) {
+        await registry.rename(channelId: mirror.channelId, name: trimmed);
+      }
       await refreshThreads();
       notifyListeners();
       return true;
@@ -1061,51 +1143,86 @@ final class RealmChatService extends ChangeNotifier {
     }
   }
 
-  /// Closes one channel: the registry row is ARCHIVED and the channel
-  /// leaves [channels] (and [roomThreads]); when its thread is the
-  /// active one, the selection is cleared. LAW: closing never destroys
-  /// anything — the journal is authority, so the durable thread and
-  /// every beat in it survive untouched. False on an unknown
-  /// [channelId] or a not-ready service.
+  /// Closes one channel: the channel is ARCHIVED and leaves [channels]
+  /// (and [roomThreads]); when its thread is the active one, the
+  /// selection is cleared. LAW: closing never destroys anything — the
+  /// journal is authority, so the durable thread and every beat in it
+  /// survive untouched. False on a refusal or a not-ready service.
+  ///
+  /// ADR 0146 — the archive rides the harness `archiveChannel` verb:
+  /// the thread row's `archived: true` flips IN THE SAME TRANSACTION
+  /// as the registry row's (no half states), BOTH id spellings resolve
+  /// (the legacy registry mint first, then the row-built threadId-as-
+  /// id), re-archiving an archived channel stays honest idempotence,
+  /// an id naming an existing NON-channel thread refuses
+  /// `thread_not_kind_channel` and an unknown id refuses
+  /// `channel_not_found` — both surfaced verbatim (the honest-refusal
+  /// law).
   Future<bool> closeChannel(final String channelId) async {
-    final registry = _channelRegistry;
-    if (registry == null) return false;
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    // Resolved BEFORE the flip (the selection release needs the thread
+    // id); an unknown id rides the verb's honest `channel_not_found`.
+    final channel = channelByAnyId(channelId);
     try {
-      final channel = await registry.byId(channelId);
-      if (channel == null) return false;
-      final archived = await registry.archive(channelId: channelId);
-      if (!archived) return false;
-      if (_activeThreadId == channel.threadId) clearActiveThread();
-      await _refreshChannels();
-      await refreshThreads();
+      await world.conversation().archiveChannel(
+        actor: human,
+        channelId: channelId,
+      );
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
       notifyListeners();
-      return true;
+      return false;
     } on Object catch (error) {
       _error = error.toString();
       notifyListeners();
       return false;
     }
+    if (channel != null && _activeThreadId == channel.threadId) {
+      clearActiveThread();
+    }
+    await refreshThreads();
+    return true;
   }
 
   /// Sets (or clears, with null/blank) a channel's user-chosen icon
-  /// glyph — the registry row rides the journal like rename/archive,
-  /// and [channels] re-scans + notifies so rows and tab leadings follow.
-  /// False on an unknown [channelId] or a not-ready service.
+  /// glyph — ADR 0146: the mark rides the thread ROW (a present icon
+  /// writes the key; a null CLEAR removes the key — absent means the
+  /// default '#' mark, never `'icon': null`), with the registry mirror
+  /// row kept in sync until W3. [channels] re-projects + notifies so
+  /// rows and tab leadings follow. [channelId] resolves BOTH spellings
+  /// ([channelByAnyId]). False on an unknown [channelId] or a
+  /// not-ready service.
   Future<bool> setChannelIcon({
     required final String channelId,
     required final String? icon,
   }) async {
+    final world = _world;
     final registry = _channelRegistry;
-    if (registry == null) return false;
+    if (world == null || registry == null) return false;
     final trimmed = icon?.trim();
+    final value = (trimmed?.isEmpty ?? true) ? null : trimmed;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
     try {
-      final set = await registry.setIcon(
-        channelId: channelId,
-        icon: (trimmed?.isEmpty ?? true) ? null : trimmed,
-      );
-      if (!set) return false;
-      await _refreshChannels();
-      notifyListeners();
+      await world.store.transact((tx) {
+        final thread = tx.get('threads', channel.threadId);
+        if (thread == null) return;
+        final next = <String, Object?>{...thread};
+        // Never write null for an absent-means-default key.
+        if (value == null) {
+          next.remove('icon');
+        } else {
+          next['icon'] = value;
+        }
+        tx.put('threads', channel.threadId, next);
+      });
+      final mirror = _registryByThread(channel.threadId);
+      if (mirror != null) {
+        await registry.setIcon(channelId: mirror.channelId, icon: value);
+      }
+      await refreshThreads();
       return true;
     } on Object catch (error) {
       _error = error.toString();
@@ -1143,55 +1260,196 @@ final class RealmChatService extends ChangeNotifier {
     if (!firstRunSeedEnabled) return;
     try {
       await ensureReady();
-      final registry = _channelRegistry;
-      if (registry == null) return;
-      final all = await registry.list(includeArchived: true);
-      if (all.isNotEmpty) return;
+      final world = _world;
+      // ADR 0146 W3 — the seed's "never had a channel" answer reads
+      // the ROW projection (any kind:channel row, live OR archived —
+      // an archived seed is never resurrected); the registry scan
+      // stays the W1 path only.
+      if (kChannelRegistryReadsOn) {
+        final registry = _channelRegistry;
+        if (registry == null) return;
+        final all = await registry.list(includeArchived: true);
+        if (all.isNotEmpty) return;
+      } else {
+        if (world == null) return;
+        final rows = await world.projection.threadRows();
+        if (rows.values.any((final row) => row['kind'] == 'channel')) {
+          return;
+        }
+      }
       await createChannel(seededChannelName);
     } on Object {
       // Boot seed law: never throw into the shell.
     }
   }
 
-  /// Selects the thread the named channel talks in (no-op when unknown).
+  /// Selects the thread the named channel talks in (no-op when
+  /// unknown). ADR 0146 — BOTH id spellings resolve
+  /// ([channelByAnyId]).
   void selectChannel(final String channelId) {
-    for (final channel in _channels) {
-      if (channel.channelId == channelId) {
-        selectThread(channel.threadId);
-        return;
-      }
+    final channel = channelByAnyId(channelId);
+    if (channel != null) selectThread(channel.threadId);
+  }
+
+  /// ADR 0146 — the W1 fallback read: ONE [ChannelRegistry.scanIndex]
+  /// round-trip feeds the legacy-spelling resolution and the channel
+  /// view's per-field fallback. Gated on [kChannelRegistryReadsOn] (the
+  /// operator flip empties the cache and stops the read — flip doubles
+  /// nothing, it only removes reads). A failed scan keeps the previous
+  /// cache: a degraded fallback never empties the lists, and the row
+  /// projection below is the preferred truth anyway.
+  Future<void> _refreshRegistryFallback() async {
+    final registry = _channelRegistry;
+    if (registry == null) {
+      _registryChannels.clear();
+      return;
+    }
+    if (!kChannelRegistryReadsOn) {
+      _registryChannels.clear();
+      return;
+    }
+    try {
+      final index = await registry.scanIndex();
+      _registryChannels
+        ..clear()
+        ..addAll(index.all);
+    } on Object {
+      // The fallback degraded; the row projection still lands.
     }
   }
 
-  Future<void> _refreshChannels() async {
-    final registry = _channelRegistry;
-    if (registry == null) return;
-    try {
-      // ADR 0145 — ONE [ChannelRegistry.scanIndex] feeds every channel
-      // view at once: the live list ([channels]), the live thread-id
-      // set (the classifier's channel-wins input) and the archived
-      // thread-id set ([roomThreads]'s resurrection guard). Sync
-      // getters — no IO there — so all three cache from this scan.
-      final index = await registry.scanIndex();
-      _channels
-        ..clear()
-        ..addAll(index.live);
-      _liveChannelThreadIds
-        ..clear()
-        ..addAll(index.byThreadId.keys);
-      _archivedChannelThreadIds
-        ..clear()
-        ..addAll(index.archivedThreadIds);
-    } on Object catch (error) {
-      _error = error.toString();
+  /// The registry row over [threadId] (first — oldest — wins, the
+  /// scanIndex law), null when none: the channel view's per-field
+  /// fallback and the verbs' registry mirror lookup.
+  ChannelInfo? _registryByThread(final String threadId) {
+    for (final channel in _registryChannels) {
+      if (channel.threadId == threadId) return channel;
     }
+    return null;
+  }
+
+  /// ADR 0146 — the ONE-projection channel view, built inside
+  /// [refreshThreads] from the same `threadRows()` scan that feeds the
+  /// rail: every thread row DECLARING `kind: 'channel'` answers from
+  /// its own fields — `topic` IS the name, `participants` IS the
+  /// membership, `threadId` IS the id (`channelId == threadId`; the
+  /// secondary registry mint retires for row-built channels, absorbed
+  /// by the resolvers) — with the registry answering ONLY what the row
+  /// doesn't carry yet (a pre-key `icon`/`archived`, pre-heal). The
+  /// legacy branch (registry rows whose thread rows predate `kind`)
+  /// lists exactly as before, keyed by its registry id — retained
+  /// forever. One merged, `createdAt`-ordered list feeds [channels],
+  /// the classifier's live/archived thread-id sets (sync getter law:
+  /// no IO there) at once.
+  void _refreshChannelView(final Iterable<Map<String, Object?>> rows) {
+    final channels = <ChannelInfo>[];
+    final rowChannelThreadIds = <String>{};
+    for (final row in rows) {
+      if (row['kind'] != 'channel') continue;
+      final threadId = '${row['threadId'] ?? ''}';
+      if (threadId.isEmpty) continue;
+      rowChannelThreadIds.add(threadId);
+      final fallback = _registryByThread(threadId);
+      final topic = row['topic'];
+      // ADR 0146 W3 — the legacy mint is preserved ON the row (the
+      // heal carried it across the flip), so the both-spelling
+      // resolver law survives the emptied fallback cache: a healed
+      // legacy row answers its `channel-…` id; a row-built channel's
+      // id IS the threadId.
+      final channelId = row['channelId'] is String
+          ? row['channelId']! as String
+          : threadId;
+      channels.add(
+        ChannelInfo(
+          channelId: channelId,
+          name: topic is String && topic.isNotEmpty ? topic : threadId,
+          threadId: threadId,
+          memberIds: <String>[
+            for (final id in row['participants'] as List? ?? const <Object?>[])
+              if (id is String && id.isNotEmpty) id,
+          ]..sort(),
+          createdAt: row['createdAt'] is String
+              ? row['createdAt']! as String
+              : '',
+          // Per-field fallback law: a row carrying the key answers from
+          // the row; a pre-key row reads its registry row (pre-heal).
+          archived: row.containsKey('archived')
+              ? row['archived'] == true
+              : (fallback?.archived ?? false),
+          icon: row['icon'] is String ? row['icon']! as String : fallback?.icon,
+        ),
+      );
+    }
+    for (final channel in _registryChannels) {
+      if (rowChannelThreadIds.contains(channel.threadId)) continue;
+      channels.add(channel);
+    }
+    channels.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    // LIVE channels only — an archived channel leaves the list (the
+    // same law the registry scan's live list held); its thread id lands
+    // in the archived set ([roomThreads]'s resurrection guard).
+    _channels
+      ..clear()
+      ..addAll(<ChannelInfo>[
+        for (final channel in channels)
+          if (!channel.archived) channel,
+      ]);
+    _liveChannelThreadIds
+      ..clear()
+      ..addAll(<String>{
+        for (final channel in channels)
+          if (!channel.archived) channel.threadId,
+      });
+    _archivedChannelThreadIds
+      ..clear()
+      ..addAll(<String>{
+        for (final channel in channels)
+          if (channel.archived) channel.threadId,
+      });
   }
 
   Future<void> _refreshWorkThreads() async {
     final registry = _workRegistry;
     if (registry == null) return;
     try {
-      final links = await registry.list();
+      final List<WorkThreadLink> links;
+      // ADR 0146 W3 — reads off: the links build from the row
+      // projection (`parentThreadId` + the seal ride the row); the
+      // registry scan stays a migration-time path only. Same
+      // createdAt order either way.
+      if (kWorkThreadRegistryReadsOn) {
+        links = await registry.list();
+      } else {
+        final rows = await _world?.projection.threadRows() ??
+            const <String, Map<String, Object?>>{};
+        links = <WorkThreadLink>[];
+        for (final row in rows.values) {
+          final parent = row['parentThreadId'];
+          // A conversational child carries the parent link with NO
+          // seal (the honest empty root); a work thread carries the
+          // project seal. Both are links — the parent key is the law.
+          if (parent is! String) continue;
+          final scope = row['projectId'] is String
+              ? row['projectId']! as String
+              : '';
+          final threadId = '${row['threadId'] ?? ''}';
+          if (threadId.isEmpty) continue;
+          links.add(
+            _workLinkFromRow(
+              row,
+              workThreadId: threadId,
+              parentThreadId: parent,
+              projectRoot: scope,
+              fallbackName: scope.isEmpty
+                  ? (row['topic'] is String && (row['topic']! as String).isNotEmpty
+                        ? row['topic']! as String
+                        : threadId)
+                  : _defaultWorkThreadName(scope),
+            ),
+          );
+        }
+        links.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      }
       _workThreads
         ..clear()
         ..addAll(links);
@@ -1305,10 +1563,13 @@ final class RealmChatService extends ChangeNotifier {
       for (final id in memberIds)
         if (id.trim().isNotEmpty && id.trim() != human.actor) id.trim(),
     ];
-    var link = await registry.byKey(
-      parentThreadId: parent,
-      projectRoot: projectRoot,
-    );
+    // ADR 0146 W3 — the reuse key rides the flip: reads on → the
+    // registry's `byKey` (the W1 law); reads off → the ROW reuse key
+    // (a work row answers `parentThreadId` + `projectId` — the seal
+    // IS the scope). The heal at boot carried the legacy links across.
+    var link = kWorkThreadRegistryReadsOn
+        ? await registry.byKey(parentThreadId: parent, projectRoot: projectRoot)
+        : await _workLinkFromRows(parent, projectRoot);
     final reused = link != null;
     String? refusal;
     var grants = const <String>[];
@@ -1327,23 +1588,38 @@ final class RealmChatService extends ChangeNotifier {
           // mutually exclusive): the seal is the daemon actor's sandbox
           // and minting it requires the durable grant.
           projectId: projectRoot,
-        );
-        link = await registry.create(
-          workThreadId: opened['threadId']! as String,
+          // ADR 0146 — the parent link rides the SAME open() call as
+          // the row (`parentThreadId` on the work row; absent means no
+          // link, never null). The registry link below stays W1-only —
+          // reads off, the row IS the link.
           parentThreadId: parent,
-          projectRoot: projectRoot,
-          name: name,
-          createdBy: human.actor,
         );
+        final workThreadId = opened['threadId']! as String;
+        link = kWorkThreadRegistryReadsOn
+            ? await registry.create(
+                workThreadId: workThreadId,
+                parentThreadId: parent,
+                projectRoot: projectRoot,
+                name: name,
+                createdBy: human.actor,
+              )
+            : _workLinkFromRow(
+                await world.store.read('threads', workThreadId) ??
+                    const <String, Object?>{},
+                workThreadId: workThreadId,
+                parentThreadId: parent,
+                projectRoot: projectRoot,
+                fallbackName: name,
+              );
       } on DurableRealmRefusal catch (refused) {
         // The honest-refusal law: `project_not_granted` lands as a typed
         // result carrying the current grants — never an escape, never a
         // guess around the absence.
         refusal = refused.code;
-        grants =
-            (refused.detail?['grants'] as List? ?? const <Object?>[])
-                .cast<String>();
-        message = 'the human authority lacks the durable grant for '
+        grants = (refused.detail?['grants'] as List? ?? const <Object?>[])
+            .cast<String>();
+        message =
+            'the human authority lacks the durable grant for '
             '$projectRoot (ADR 0129)';
       } on Object catch (error) {
         refusal = 'work_thread_open_failed';
@@ -1389,6 +1665,65 @@ final class RealmChatService extends ChangeNotifier {
       requestedProject: refusal == null ? null : projectRoot,
       message: message,
     );
+  }
+
+  /// ADR 0146 W3 — the row-built work link (reads off): the row IS
+  /// the link — `workThreadId` = the threadId, the scope = the seal
+  /// (`projectId`), the card name = the topic (the open wrote it;
+  /// [fallbackName] covers a blank one), the parent = the row's
+  /// `parentThreadId` (the boot heal carried legacy links across).
+  WorkThreadLink _workLinkFromRow(
+    final Map<String, Object?> row, {
+    required final String workThreadId,
+    required final String parentThreadId,
+    required final String projectRoot,
+    required final String fallbackName,
+  }) {
+    final topic = row['topic'];
+    final rowThreadId = row['threadId'];
+    return WorkThreadLink(
+      workThreadId:
+          rowThreadId is String && rowThreadId.isNotEmpty
+          ? rowThreadId
+          : workThreadId,
+      parentThreadId: row['parentThreadId'] is String
+          ? row['parentThreadId']! as String
+          : parentThreadId,
+      projectRoot: row['projectId'] is String
+          ? row['projectId']! as String
+          : projectRoot,
+      name: topic is String && topic.isNotEmpty ? topic : fallbackName,
+      createdBy: row['createdBy'] is String ? row['createdBy']! as String : '',
+      createdAt: row['createdAt'] is String
+          ? row['createdAt']! as String
+          : DateTime.now().toUtc().toIso8601String(),
+    );
+  }
+
+  /// The row reuse key (reads off): the FIRST work row whose parent
+  /// and seal match the key — the one-link-per-key law, read from
+  /// rows. Null when the scope has no work thread yet.
+  Future<WorkThreadLink?> _workLinkFromRows(
+    final String parentThreadId,
+    final String projectRoot,
+  ) async {
+    final world = _world;
+    if (world == null) return null;
+    final rows = await world.projection.threadRows();
+    for (final row in rows.values) {
+      if (row['parentThreadId'] != parentThreadId) continue;
+      if (row['projectId'] != projectRoot) continue;
+      final threadId = '${row['threadId'] ?? ''}';
+      if (threadId.isEmpty) continue;
+      return _workLinkFromRow(
+        row,
+        workThreadId: threadId,
+        parentThreadId: parentThreadId,
+        projectRoot: projectRoot,
+        fallbackName: _defaultWorkThreadName(projectRoot),
+      );
+    }
+    return null;
   }
 
   /// The work thread's default name: the project root's last path
@@ -1452,18 +1787,12 @@ final class RealmChatService extends ChangeNotifier {
   ) async {
     final world = _world;
     if (world == null) {
-      return const <String, Object?>{
-        'ok': false,
-        'error': 'realm_not_ready',
-      };
+      return const <String, Object?>{'ok': false, 'error': 'realm_not_ready'};
     }
     return projectAccessRequest(
       store: world.store,
       seat: world.authorityFor(actorId),
-      args: <String, Object?>{
-        'action': 'request',
-        'projectId': projectRoot,
-      },
+      args: <String, Object?>{'action': 'request', 'projectId': projectRoot},
     );
   }
 
@@ -1557,10 +1886,7 @@ final class RealmChatService extends ChangeNotifier {
     final world = _world;
     final seat = _human;
     if (world == null || seat == null) {
-      return const <String, Object?>{
-        'ok': false,
-        'bounce': 'realm_not_ready',
-      };
+      return const <String, Object?>{'ok': false, 'bounce': 'realm_not_ready'};
     }
     try {
       final tools = DurableRealmTools(
@@ -1573,15 +1899,11 @@ final class RealmChatService extends ChangeNotifier {
         modelConfigurationRoot: debugPaletteConfigRoot ?? _worldHome,
         paletteHealthPath: debugPaletteHealthPath,
       );
-      return await tools.invoke(
-        seat,
-        'agent_participation',
-        <String, Object?>{
-          'op': op,
-          'modelPalette': candidate,
-          'expectedBeforeSha256': ?expectedBeforeSha256,
-        },
-      );
+      return await tools.invoke(seat, 'agent_participation', <String, Object?>{
+        'op': op,
+        'modelPalette': candidate,
+        'expectedBeforeSha256': ?expectedBeforeSha256,
+      });
     } on Object catch (error) {
       // A transport surprise lands as a named outcome, never as an
       // exception in the UI (the honest-refusal law).

@@ -113,7 +113,7 @@ final class _ThreadRow extends StatelessWidget {
                     topic,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: context.laUi.compact?.copyWith(
+                    style: context.laUi.compact.copyWith(
                       color: closed ? la.inkQuiet : null,
                     ),
                   ),
@@ -122,7 +122,7 @@ final class _ThreadRow extends StatelessWidget {
                       preview!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: context.laUi.micro?.copyWith(
+                      style: context.laUi.micro.copyWith(
                         fontSize: 10,
                         color: la.inkQuiet,
                       ),
@@ -185,7 +185,7 @@ final class _SessionRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             state,
-            style: context.laUi.micro?.copyWith(
+            style: context.laUi.micro.copyWith(
               fontSize: 10,
               color: snapshot.running ? la.accent : la.inkQuiet,
             ),

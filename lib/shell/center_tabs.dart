@@ -55,7 +55,7 @@ final class UnknownSurface extends StatelessWidget {
         children: [
           Text(
             context.l10n.unknownSurfaceTitle,
-            style: theme.micro?.copyWith(
+            style: theme.micro.copyWith(
               color: context.shellMuted,
             ),
           ),

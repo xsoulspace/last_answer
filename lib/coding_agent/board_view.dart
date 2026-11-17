@@ -11,10 +11,8 @@ library;
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:core/core.dart';
 import 'package:ecsly_boards/ecsly_boards.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
 import 'package:la_ui/la_ui.dart';

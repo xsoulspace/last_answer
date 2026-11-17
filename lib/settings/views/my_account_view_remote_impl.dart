@@ -100,7 +100,7 @@ class ProfileView extends StatelessWidget {
                   ),
                   const Spacer(),
                   if (isLoading.value)
-                    const LaSpinner(size: 18)
+                    const LaSpinner()
                   else
                     LaButton(
                       variant: LaButtonVariant.destructiveGhost,

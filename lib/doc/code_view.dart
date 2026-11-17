@@ -12,7 +12,6 @@
 library;
 
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
 
 /// The language word for a filename (the head chip's fact). Unknown
 /// extensions and no extension fall back to `text` — honest, never a

@@ -4137,6 +4137,12 @@ abstract class S {
   /// **'retired - the durable row keeps its history:'**
   String get actorsRetiredNote;
 
+  /// The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending..
+  ///
+  /// In en, this message translates to:
+  /// **'Image spend'**
+  String get actorsImageSpend;
+
   /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
   ///
   /// In en, this message translates to:

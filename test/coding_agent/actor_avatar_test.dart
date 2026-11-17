@@ -5,8 +5,8 @@
 // hash (String.hashCode) fails here — on every device.
 
 import 'package:flutter/material.dart';
-import 'package:la_ui/la_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';

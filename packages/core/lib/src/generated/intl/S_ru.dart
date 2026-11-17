@@ -2246,6 +2246,9 @@ class SRu extends S {
   String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';
 
   @override
+  String get actorsImageSpend => 'Расход изображений';
+
+  @override
   String get modelsClassRemote => 'Удалённые провайдеры';
 
   @override
@@ -2382,6 +2385,7 @@ class SRu extends S {
 
   @override
   String get cropSquare => 'Обрезать в квадрат';
+
   @override
   String get selectionCut => 'Вырезать';
 
@@ -2393,5 +2397,4 @@ class SRu extends S {
 
   @override
   String get selectionSelectAll => 'Выбрать всё';
-
 }

@@ -115,6 +115,10 @@ void main() {
       row?['participants'],
       containsAll(<String>[room.humanId, 'worker-a']),
     );
+    // ADR 0146 — the parent link rides the work ROW (written in the
+    // same open() transaction as the seal); the registry link below
+    // stays — the W1 dual-write. The reuse law resolves through either.
+    expect(row?['parentThreadId'], room.parentThreadId);
 
     // The realm-sealed parent stays conversation-only (no project).
     final parentRow = await room.world.store.read(
@@ -228,7 +232,9 @@ void main() {
       ),
       hasLength(1),
     );
-    expect((await room.world.store.scan('work_threads')).values, hasLength(1));
+    // ADR 0146 W3 — the mirror rode the flip: the collection stays
+    // EMPTY (retained forever); the row IS the link.
+    expect(await room.world.store.scan('work_threads'), isEmpty);
     expect(room.service.workThreads, hasLength(1));
   }, timeout: const Timeout(Duration(minutes: 2)));
 
@@ -257,7 +263,9 @@ void main() {
         .toSet();
     expect(ids, hasLength(1), reason: 'both spawns answer the same thread');
     expect(results.where((final result) => result.reused), hasLength(1));
-    expect((await room.world.store.scan('work_threads')).values, hasLength(1));
+    // ADR 0146 W3 — the mirror rode the flip: the collection stays
+    // EMPTY (retained forever); the row IS the link.
+    expect(await room.world.store.scan('work_threads'), isEmpty);
     // Both orders landed — one beat each, in the one thread.
     final beats = await room.world.projection.beatsOfThread(ids.single);
     expect(beats, hasLength(2));

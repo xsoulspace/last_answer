@@ -22,7 +22,7 @@ import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show mediaAttachmentOf;
+    show mediaAttachmentOf, resolveConversationMediaPath;
 
 /// ADR 0024 — the world chat surface: the human-facing projection of the
 /// realm's durable threads. Text-native, one grid: ONE focused
@@ -1352,14 +1352,14 @@ class _ConversationPaneState extends State<_ConversationPane> {
 
   /// The linkifier v1's resolvability oracle (the beat text's tappable
   /// references): a reference names a LIVE object — a known thread, a
-  /// registered channel's id, a rostered actor. Everything else stays
-  /// plain text (honest absence, never a dead link).
+  /// registered channel's id (BOTH spellings — the row-built
+  /// threadId-as-id and a legacy registry mint — [channelByAnyId]),
+  /// a rostered actor. Everything else stays plain text (honest
+  /// absence, never a dead link).
   bool _beatRefResolves(final BeatRefKind kind, final String id) =>
       switch (kind) {
         BeatRefKind.room || BeatRefKind.thread => service.knowsThread(id),
-        BeatRefKind.channel => service.channels.any(
-          (final channel) => channel.channelId == id,
-        ),
+        BeatRefKind.channel => service.channelByAnyId(id) != null,
         BeatRefKind.dm => service.roster?.get(id) != null,
       };
 
@@ -1760,24 +1760,35 @@ class _ConversationPaneState extends State<_ConversationPane> {
     ];
     final text = _oneLine('${beat['text'] ?? ''}').trim();
     final topic = text.isEmpty ? context.l10n.worldChatBeatNewThread : text;
-    await service.startThread(topic: topic, participants: others);
+    // ADR 0146 W3 — the parent link rides the CHILD'S ROW
+    // (`parentThreadId` via open); the registry mirror write was the
+    // W1 dual-write and rides the flip.
+    await service.startThread(
+      topic: topic,
+      participants: others,
+      parentThreadId: parentId,
+    );
     final childId = service.activeThreadId;
     if (!mounted || childId == null || childId == currentId) return;
-    final registry = WorkThreadRegistry(store: world.store);
-    await registry.create(
-      workThreadId: childId,
-      parentThreadId: parentId,
-      // Conversational child — no project seal (honest empty, never an
-      // invented root).
-      projectRoot: '',
-      name: topic,
-      createdBy: human,
-    );
+    if (kWorkThreadRegistryReadsOn) {
+      final registry = WorkThreadRegistry(store: world.store);
+      await registry.create(
+        workThreadId: childId,
+        parentThreadId: parentId,
+        // Conversational child — no project seal (honest empty, never
+        // an invented root).
+        projectRoot: '',
+        name: topic,
+        createdBy: human,
+      );
+    }
+    if (!mounted) return;
+    // The links cache rebuilds NOW (the row landed): the parent room's
+    // browser/cards see the child without waiting for the next spawn.
+    await service.refreshWorkThreads();
     if (!mounted) return;
     setState(() {});
   }
-
-  /// The one-tap grant + ONE automatic retry (the owner's
   /// everything-from-LA decision): [RealmChatService.grantAccess] runs
   /// the host's canonical `grantProjectAccess` with the VERIFY re-read,
   /// and only a VERIFIED grant retries the refused order — exactly
@@ -2117,6 +2128,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
                       addressedChips: chips,
                       attachments: (beat['attachments'] as List? ?? const [])
                           .cast<Map>(),
+                      mediaWorldHome: service.world?.worldHome,
                       beatSuffix: '$threadId#${beat['beat']}',
                       // The linkifier v1: the pane's service
                       // facts decide resolvability; a tap rides
@@ -3254,6 +3266,7 @@ class _MessageRow extends StatefulWidget {
     this.replyQuoteKey,
     this.addressedChips = const <({String id, String name})>[],
     this.attachments = const <Map>[],
+    this.mediaWorldHome,
     this.onTapActor,
     this.onReply,
     this.onNewThread,
@@ -3275,6 +3288,11 @@ class _MessageRow extends StatefulWidget {
   /// alt text as semantics, the honest placeholder when the file is
   /// not resolvable here.
   final List<Map> attachments;
+
+  /// The realm world home (the conversation media path law's share
+  /// root): world-relative entry paths resolve against it; null leaves
+  /// them honestly unresolved (the placeholder).
+  final String? mediaWorldHome;
 
   /// `<threadId>#<beat>` — the hover cluster's key family (the beat
   /// row's own suffix, so every action key is as unique as the beat).
@@ -3461,17 +3479,33 @@ class _MessageRowState extends State<_MessageRow> {
     // The STRUCTURED attachments (the media v1 vocabulary) render
     // first — one honest card per entry; the header-in-text parse
     // stays the fallback for beats that only carry the projection.
+    // THE CONVERSATION MEDIA PATH RULE: the entry path resolves
+    // through the host's shared law (world-relative shares against
+    // the world home; absolute v1 records as-is) — unresolvable HERE
+    // renders the honest placeholder, never a guess.
+    String? mediaRoot(Object? path) => path is String
+        ? resolveConversationMediaPath(
+            path,
+            worldHome: widget.mediaWorldHome,
+          )
+        : null;
     final mediaCards = [
       for (final entry in widget.attachments)
         if (mediaAttachmentOf(entry) != null)
-          MediaAssetCard.fromAttachment(Map<String, Object?>.from(entry)),
+          MediaAssetCard.fromAttachment(
+            Map<String, Object?>.from(entry),
+            absPathOverride: mediaRoot(entry['path']),
+          ),
     ];
     final body = Padding(
       padding: const EdgeInsets.only(left: ShellTokens.messageGutter),
       child: mediaCards.isEmpty
           ? mediaBeat == null
                 ? _beatText(context)
-                : MediaAssetCard.fromBeat(mediaBeat)
+                : MediaAssetCard.fromBeat(
+                    mediaBeat,
+                    absPathOverride: mediaRoot(mediaBeat.provenance.path),
+                  )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

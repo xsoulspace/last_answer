@@ -2245,6 +2245,9 @@ class SIt extends S {
       'ritirato - la riga durevole conserva la sua storia:';
 
   @override
+  String get actorsImageSpend => 'Spesa immagini';
+
+  @override
   String get modelsClassRemote => 'Provider remoti';
 
   @override
@@ -2381,6 +2384,7 @@ class SIt extends S {
 
   @override
   String get cropSquare => 'Ritaglia quadrato';
+
   @override
   String get selectionCut => 'Taglia';
 
@@ -2392,5 +2396,4 @@ class SIt extends S {
 
   @override
   String get selectionSelectAll => 'Seleziona tutto';
-
 }

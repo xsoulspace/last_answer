@@ -2229,6 +2229,9 @@ class SEn extends S {
       'retired - the durable row keeps its history:';
 
   @override
+  String get actorsImageSpend => 'Image spend';
+
+  @override
   String get modelsClassRemote => 'Remote providers';
 
   @override
@@ -2364,6 +2367,7 @@ class SEn extends S {
 
   @override
   String get cropSquare => 'Crop square';
+
   @override
   String get selectionCut => 'Cut';
 
@@ -2375,5 +2379,4 @@ class SEn extends S {
 
   @override
   String get selectionSelectAll => 'Select all';
-
 }

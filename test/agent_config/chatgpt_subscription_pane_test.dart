@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_portal/flutter_portal.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';

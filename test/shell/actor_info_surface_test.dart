@@ -9,9 +9,8 @@
 //   (the roster get reflects it);
 // - a channel-membership row routes back into the shell's
 //   conversation grammar (`channel:<id>` in group 0, docked).
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';

@@ -1,10 +1,6 @@
-import 'dart:async';
 
-import 'package:core/core.dart';
-import 'package:gap/gap.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_pay/paywall_flow.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
@@ -289,7 +285,7 @@ class _MessageCard extends StatelessWidget {
           LaButton(
             variant: LaButtonVariant.outline,
             onPressed: onAction,
-            label: actionLabel!,
+            label: actionLabel,
           ),
         ],
       ],

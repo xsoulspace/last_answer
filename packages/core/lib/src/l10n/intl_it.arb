@@ -819,6 +819,8 @@
   "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
   "actorsRetiredNote": "ritirato - la riga durevole conserva la sua storia:",
   "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
+  "actorsImageSpend": "Spesa immagini",
+  "@actorsImageSpend": {"description": "La spesa immagini per attore (ledger): costo confermato, chiamate, immagini; una chiamata rifiutata conta senza spendere.."},
   "modelsClassRemote": "Provider remoti",
   "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
   "modelsClassRemoteEmpty": "nessun provider remoto dichiarato",

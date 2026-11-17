@@ -57,6 +57,8 @@ import 'package:lastanswer/coding_agent/provider_configuration.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
@@ -600,10 +602,7 @@ class _AppShellState extends State<AppShell> {
         : null;
     final known =
         (dmActor != null && _service.roster?.get(dmActor) != null) ||
-        (channelId != null &&
-            _service.channels.any(
-              (final channel) => channel.channelId == channelId,
-            )) ||
+        (channelId != null && _service.channelByAnyId(channelId) != null) ||
         (roomThread != null && _service.knowsThread(roomThread));
     _bootRestoredId = id;
     if (!known) return;
@@ -678,15 +677,14 @@ class _AppShellState extends State<AppShell> {
         roomThread ??
         (dmActor != null
             ? _service.dmThreadOf(dmActor)
-            : _service.channels
-                  .where((final channel) => channel.channelId == channelId)
-                  .map((final channel) => channel.threadId)
-                  .firstOrNull);
+            : channelId == null
+            ? null
+            : _service.channelByAnyId(channelId)?.threadId);
     if (threadId == null) return null;
     final title =
         conversationSurfaceTitle(
           surfaceId,
-          channels: _service.channels,
+          channels: _titleChannels,
           actors: _service.roster?.all ?? const <ActorProfile>[],
           topicOf: _service.topicOf,
         ) ??
@@ -733,7 +731,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// The rooms column's "Change icon…" apply lane (Wave D): one service
-  /// verb — the registry write AND the projection refresh live in
+  /// verb — the row write AND the registry mirror live in
   /// [RealmChatService.setChannelIcon] (the steward verb that collapsed
   /// this lane's original store-plus-rename workaround).
   Future<bool> _setChannelIcon(
@@ -741,6 +739,17 @@ class _AppShellState extends State<AppShell> {
     final String? icon,
   ) =>
       _service.setChannelIcon(channelId: channelId, icon: icon);
+
+  /// ADR 0146 — the channel view the tab-title and miniwindow lookups
+  /// resolve over: the row-built projection PLUS the registry's legacy
+  /// rows (the W1 fallback). A persisted `channel:<registryId>` tab or
+  /// miniwindow keeps resolving exactly as today — legacy tabs and
+  /// references never die; the registry answer rides
+  /// [RealmChatService.registryChannels] (empty after a W3 flip).
+  Iterable<ChannelInfo> get _titleChannels => [
+    ..._service.channels,
+    ..._service.registryChannels,
+  ];
 
   // ---- Wave F: the `shell_*` debug bridge's implementations -----------
   //
@@ -801,7 +810,11 @@ class _AppShellState extends State<AppShell> {
   /// selected through the shell's own row-tap path. False for any
   /// other key shape (the CTA rows are not rooms; the retired
   /// `rooms.row.room.` keys honestly refuse — rooms live in the
-  /// channel view's threads browser now).
+  /// channel view's threads browser now). ADR 0146: the key shape is
+  /// frozen (keys are opaque ids) — the `<id>` tail may be either
+  /// channel-id spelling (the row-built threadId or a legacy registry
+  /// mint); the `channel:` surface id it maps to resolves through
+  /// [RealmChatService.channelByAnyId], both spellings.
   bool _debugSelectRoom(final String rowKey) {
     const prefixes = <String, String>{
       'rooms.row.dm.': 'dm:',
@@ -1092,9 +1105,9 @@ class _AppShellState extends State<AppShell> {
       // The channel's user-settable icon (Wave D): the strip pill
       // renders through the SAME mark widget as the rooms column's
       // row — curated glyph, raw emoji, or the default '#' mark.
-      final channelId = surfaceId.substring('channel:'.length);
-      final channel = _service.channels.firstWhereOrNull(
-        (final candidate) => candidate.channelId == channelId,
+      // ADR 0146: BOTH id spellings resolve (channelByAnyId).
+      final channel = _service.channelByAnyId(
+        surfaceId.substring('channel:'.length),
       );
       return ChannelIconMark(
         icon: channel?.icon,
@@ -1410,7 +1423,7 @@ class _AppShellState extends State<AppShell> {
               titleFor: (final id) =>
                   conversationSurfaceTitle(
                     id,
-                    channels: _service.channels,
+                    channels: _titleChannels,
                     actors: _service.roster?.all ?? const <ActorProfile>[],
                     topicOf: _service.topicOf,
                   ) ??
@@ -1665,7 +1678,7 @@ class _AppShellState extends State<AppShell> {
           titleFor: (final id) =>
               conversationSurfaceTitle(
                 id,
-                channels: _service.channels,
+                channels: _titleChannels,
                 actors: _service.roster?.all ?? const <ActorProfile>[],
                 topicOf: _service.topicOf,
               ) ??

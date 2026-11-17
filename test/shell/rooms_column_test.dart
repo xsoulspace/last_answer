@@ -8,11 +8,9 @@
 // hermetic world (the repo's lane — a final class is never faked).
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';

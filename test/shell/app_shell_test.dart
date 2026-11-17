@@ -19,10 +19,9 @@
 //   the service; the shell translates that into room tabs).
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';

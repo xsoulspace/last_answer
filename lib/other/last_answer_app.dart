@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';

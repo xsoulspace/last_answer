@@ -18,8 +18,7 @@ class AppInfoScreen extends StatefulWidget {
 class _AppInfoScreenState extends State<AppInfoScreen> {
   final _info = PackageInfo.fromPlatform();
   @override
-  Widget build(final BuildContext context) {
-    return LaScaffold(
+  Widget build(final BuildContext context) => LaScaffold(
       topBar: LaTopBar(
         leading: LaButton.icon(
           icon: const Icon(Icons.close, size: 18),
@@ -131,7 +130,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
         ),
       ),
     );
-  }
 }
 
 /// The community invite (was `DiscordButton` in the legacy kit).

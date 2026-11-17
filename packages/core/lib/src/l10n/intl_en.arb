@@ -1094,6 +1094,8 @@
   "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
   "actorsRetiredNote": "retired - the durable row keeps its history:",
   "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
+  "actorsImageSpend": "Image spend",
+  "@actorsImageSpend": {"description": "The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending.."},
   "modelsClassRemote": "Remote providers",
   "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
   "modelsClassRemoteEmpty": "no declared remote providers",

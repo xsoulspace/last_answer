@@ -453,16 +453,9 @@ void main() {
       expect(childId, isNot(room.channelThreadId));
 
       await tester.runAsync(() async {
-        // HONEST GAP (documented on the surface): the service's
-        // workThreads cache refreshes only inside its own spawn verb,
-        // so a reuse-only spawn is the public trigger that makes the
-        // fresh link visible through workThreadsOf (the durable
-        // registry row landed with the click).
-        final reuse = await room.service.spawnWorkThread(
-          parentThreadId: room.channelThreadId,
-          projectRoot: repoPath,
-        );
-        expect(reuse.reused, isTrue, reason: reuse.message);
+        // The surface refreshes the links cache itself now (ADR 0146
+        // W3 — the row landed with the click; no reuse-spawn preamble
+        // is needed to make it visible).
 
         // The ONE-LEVEL law: the child links to the ROOT channel, not
         // to the work thread it was spawned from — no grandchildren.
@@ -475,13 +468,13 @@ void main() {
         expect(child.projectRoot, '');
         expect(room.service.workThreadsOf(workId), isEmpty);
 
-        // The durable row, read straight from the registry (the journal
-        // store is the oracle, not the projection).
-        final row = await WorkThreadRegistry(
-          store: room.world.store,
-        ).byWorkThreadId(childId);
-        expect(row, isNotNull);
-        expect(row!.parentThreadId, room.channelThreadId);
+        // The durable ROW is the oracle (the journal store, not the
+        // projection): the parent link rides the child's row; the
+        // registry collection stays empty (the mirror rode the flip).
+        final row = await room.world.store.read('threads', childId);
+        expect(row?['parentThreadId'], room.channelThreadId);
+        expect(row?['projectId'], isNull);
+        expect(await room.world.store.scan('work_threads'), isEmpty);
       });
 
       FocusManager.instance.primaryFocus?.unfocus();

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter/material.dart';import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_route.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 

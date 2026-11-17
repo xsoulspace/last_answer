@@ -21,37 +21,60 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = context.laUi;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: crossAxisAlignment,
+    final labelWidget =
+        title ?? Text(addTitleQuote ? '$titleText:' : titleText);
+    final control = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          width: leftColumnWidth,
-          child: DefaultTextStyle.merge(
-            textAlign: TextAlign.end,
-            child: title ?? Text(addTitleQuote ? '$titleText:' : titleText),
+        child,
+        if (description.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 7),
+            child: LaSelectableText(
+              description,
+              style: theme.compact.copyWith(color: theme.inkMuted),
+            ),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              child,
-              if (description.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 7),
-                  child: LaSelectableText(
-                    description,
-                    style: theme.compact.copyWith(color: theme.inkMuted),
-                  ),
-                ),
-            ],
-          ),
-        ),
       ],
+    );
+
+    // A narrow split pane stacks the label above the control instead of
+    // keeping the fixed label column (a crushed pane squeezed the row
+    // past its label width and overflowed — live-caught reverify,
+    // 2026-11-17). The fixed-column two-line form is the WIDE layout.
+    return LayoutBuilder(
+      builder: (final context, final constraints) {
+        if (constraints.maxWidth < 380) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DefaultTextStyle.merge(
+                textAlign: TextAlign.start,
+                child: labelWidget,
+              ),
+              const SizedBox(height: 6),
+              control,
+            ],
+          );
+        }
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: crossAxisAlignment,
+          children: [
+            SizedBox(
+              width: leftColumnWidth,
+              child: DefaultTextStyle.merge(
+                textAlign: TextAlign.end,
+                child: labelWidget,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: control),
+          ],
+        );
+      },
     );
   }
 }

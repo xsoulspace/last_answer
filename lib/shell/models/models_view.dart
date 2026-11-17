@@ -329,7 +329,13 @@ final class _LensButton extends StatelessWidget {
             // via the widget inspector, 2026-11-15).
             child: Text(
               label,
-              style: context.laUi.micro?.copyWith(
+              // One line: a crushed Wrap cell must move the pill to its
+              // own run, never break the word inside it (live-caught
+              // reverify, 2026-11-17).
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: context.laUi.micro.copyWith(
                 fontSize: 11,
                 fontWeight: selected ? FontWeight.w600 : null,
                 color: selected ? la.ink : la.inkMuted,

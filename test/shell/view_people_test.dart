@@ -3,9 +3,9 @@
 // humans stay quiet, a listening bot renders nothing — and the focus
 // flow (a row tap opens the actor's profile; back returns to the
 // list) works through the plain PeopleFocus notifier.
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter/material.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
@@ -62,7 +62,8 @@ void main() {
           // The kit overlay host (same shape as last_answer_app.dart):
           // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
           builder: (final context, final child) =>
-              Portal(child: child ?? const SizedBox.shrink()),localizationsDelegates: S.localizationsDelegates,
+              Portal(child: child ?? const SizedBox.shrink()),
+          localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
             body: Row(
@@ -215,7 +216,8 @@ void main() {
           // The kit overlay host (same shape as last_answer_app.dart):
           // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
           builder: (final context, final child) =>
-              Portal(child: child ?? const SizedBox.shrink()),localizationsDelegates: S.localizationsDelegates,
+              Portal(child: child ?? const SizedBox.shrink()),
+          localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
             body: Row(
@@ -257,6 +259,77 @@ void main() {
       find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
       findsOneWidget,
     );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('no active thread still lists the world roster (the '
+      'thread-scoped leftover gate hid every actor — reverify 2026-11-17)',
+      (final tester) async {
+    late final RealmChatService service;
+    late final ActorProfile toby;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_people_bare_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      final roster = ActorRoster(replicaId: 'tester');
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      toby = (await service.createActor(
+        displayName: 'Toby Researcher',
+        kind: ActorKind.model,
+        brainRef: '',
+      ))!;
+      // NO startThread: the bare-world state the live shell shows on
+      // the landing face.
+    });
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RealmChatService>.value(
+        value: service,
+        child: MaterialApp(
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: Row(
+              children: [
+                SizedBox(
+                  width: ShellTokens.contextColumnWidth,
+                  child: PeopleView(
+                    service: service,
+                    onOpenConversation: (final surfaceId) {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // The roster renders — minted actor AND the human — with the
+    // New-actor verb and the row's Message verb; no dead-end note.
+    expect(
+      find.byKey(ValueKey('shell.context.person.${toby.actorId}')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(ValueKey('shell.context.person.${service.humanActorId}')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('shell.people.newActor')), findsOneWidget);
+    expect(
+      find.byKey(ValueKey('shell.people.message.${toby.actorId}')),
+      findsOneWidget,
+    );
+    expect(find.text('Select a conversation from the rail.'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 }

@@ -587,6 +587,8 @@ final class _CatalogLensState extends State<CatalogLens> {
               children: [
                 Text(
                   'openai_chatgpt_plan',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: LaTokens.mono(11, la.inkMuted),
                 ),
                 Text(
@@ -631,7 +633,12 @@ final class _CatalogLensState extends State<CatalogLens> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(rung.id, style: LaTokens.mono(11, la.inkMuted)),
+                Text(
+                  rung.id,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: LaTokens.mono(11, la.inkMuted),
+                ),
                 Text(
                   builtinLaneSentence(context, rung.id),
                   maxLines: 1,
@@ -678,8 +685,13 @@ final class _CatalogLensState extends State<CatalogLens> {
             builder: (final context, final constraints) {
               // The pane law: a narrow split pane on a wide window
               // compresses like a phone — the chip run is a WIDTH
-              // fact, not a window fact.
-              final tight = widget.compact || constraints.maxWidth < 420;
+              // fact, not a window fact. Below 420 the metadata chips
+              // drop; below 260 the class/count chips follow (a crushed
+              // third pane kept only the fixed chip run and overflowed
+              // — live-caught reverify, 2026-11-17).
+              final width = constraints.maxWidth;
+              final tight = widget.compact || width < 420;
+              final crushed = width < 260;
               return Row(
                 children: [
                   HealthDot(status: providerHealth(widget.world, id), size: 8),
@@ -722,15 +734,17 @@ final class _CatalogLensState extends State<CatalogLens> {
                         mono: true,
                       ),
                   ],
-                  ModelsChip(
-                    label: laneClassChipLabel(_classOfDeclared(provider)),
-                    color: context.la.inkQuiet,
-                    mono: true,
-                  ),
-                  ModelsChip(
-                    label: '$count ${context.l10n.modelsCountSuffix}',
-                    color: context.la.inkQuiet,
-                  ),
+                  if (!crushed) ...[
+                    ModelsChip(
+                      label: laneClassChipLabel(_classOfDeclared(provider)),
+                      color: context.la.inkQuiet,
+                      mono: true,
+                    ),
+                    ModelsChip(
+                      label: '$count ${context.l10n.modelsCountSuffix}',
+                      color: context.la.inkQuiet,
+                    ),
+                  ],
                   const SizedBox(width: 6),
                   Icon(
                     expanded ? Icons.expand_less : Icons.expand_more,
@@ -755,20 +769,23 @@ final class _CatalogLensState extends State<CatalogLens> {
     return <Widget>[
       Padding(
         padding: const EdgeInsets.fromLTRB(33, 2, 12, 2),
-        child: Row(
+        // The verb run wraps like the model rows' chip run: a crushed
+        // pane wraps verbs to a second line instead of overflowing.
+        child: Wrap(
+          spacing: 6,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             ModelsButton(
               keyName: 'models.provider.$id.edit',
               label: context.l10n.modelsEditAction,
               onTap: () => _openProviderForm(editId: id),
             ),
-            const SizedBox(width: 6),
             ModelsButton(
               keyName: 'models.provider.$id.remove',
               label: context.l10n.modelsRemoveAction,
               onTap: () => _model.removeProvider(id),
             ),
-            const SizedBox(width: 6),
             ModelsButton(
               keyName: 'models.model.$id.add',
               label: context.l10n.modelsAddModel,

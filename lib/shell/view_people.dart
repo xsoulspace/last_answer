@@ -142,11 +142,55 @@ class _PeopleListBody extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    // ACTOR EQUALITY (owner law, 2026-11-16): minting lives where the
+    // people are — one verb, the shared create verb, then the new
+    // actor's own surface opens.
+    final newActorVerb = Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+      child: Row(
+        children: [
+          const Spacer(),
+          LaButton(
+            key: const ValueKey('shell.people.newActor'),
+            variant: LaButtonVariant.ghost,
+            onPressed: () => unawaited(_newActor(context)),
+            label: l10n.actorsNewActor,
+          ),
+        ],
+      ),
+    );
     final thread = service.activeThread;
     if (thread == null) {
-      return _ViewNote(text: context.l10n.worldChatSelectFromRail);
+      // No conversation selected: the surface still lists the WORLD's
+      // actors (the thread-scoped leftover gate hid every actor behind
+      // "select a conversation" — live-caught reverify, 2026-11-17).
+      final rosterIds = [
+        for (final actor in service.roster?.all ?? const <ActorProfile>[])
+          actor.actorId,
+      ];
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            newActorVerb,
+            _Section(
+              sectionKey: const ValueKey('shell.context.people'),
+              label: l10n.contextTabPeople,
+              child: rosterIds.isEmpty
+                  ? Text(l10n.actorsNoneYet, style: context.laUi.compact)
+                  : _PeopleList(
+                      ids: rosterIds,
+                      service: service,
+                      onFocus: onFocus,
+                      onOpenActor: onOpenActor,
+                      onOpenConversation: onOpenConversation,
+                    ),
+            ),
+          ],
+        ),
+      );
     }
-    final l10n = context.l10n;
     final threadId = thread['threadId']! as String;
     final participants = (thread['participants']! as List).cast<String>();
     final channel = service.channelByThreadId(threadId);
@@ -164,23 +208,7 @@ class _PeopleListBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ACTOR EQUALITY (owner law, 2026-11-16): minting lives where
-          // the people are — one verb, the shared create verb, then the
-          // new actor's own surface opens.
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 6),
-            child: Row(
-              children: [
-                const Spacer(),
-                LaButton(
-                  key: const ValueKey('shell.people.newActor'),
-                  variant: LaButtonVariant.ghost,
-                  onPressed: () => unawaited(_newActor(context)),
-                  label: context.l10n.actorsNewActor,
-                ),
-              ],
-            ),
-          ),
+          newActorVerb,
           if (showTopic)
             _Section(
               sectionKey: const ValueKey('shell.context.topic'),
@@ -780,25 +808,6 @@ class _Section extends StatelessWidget {
         const SizedBox(height: 6),
         child,
       ],
-    ),
-  );
-}
-
-/// The view's quiet no-conversation note.
-class _ViewNote extends StatelessWidget {
-  const _ViewNote({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(final BuildContext context) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: context.laUi.micro.copyWith(color: context.shellMuted),
-      ),
     ),
   );
 }

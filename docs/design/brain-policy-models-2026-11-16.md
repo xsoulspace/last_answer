@@ -116,10 +116,9 @@ mechanism, a product surface over existing verbs.
 — `policySentenceFor` (the behavior sentence the actor card can speak
 too) and `EscalationNarration` (the promotion chip); both lenses use
 them. `BrainOverrideCard` exists as the Brain-set section of the shared
-actor editor (stage B). `ProviderGroup`/`ModelRow` stay inline in the
-Catalog lens for now — extracting them churns a just-stabilized file
-for no behavior change; they are a mechanical follow-up when the
-Catalog grows again.
+actor editor (stage B). The Catalog lens builds its provider sections
+inline (no `ProviderGroup`/`ModelRow` classes ever existed — the
+extraction follow-up dissolves unless the lens grows real classes).
 
 **Deliberately NOT taken — the ecsly-selector read model.** The
 original stage-C premise ("no candidate-file dance in the read path")
@@ -140,3 +139,24 @@ one-ADR decision, not a lens rewrite.
   conditions are telemetry, not authoring.
 - No rename of durable config keys in Stage A; Stage B absorbs them
   behind the policy section.
+
+## Absorb-window status (2026-11-17, found live)
+
+The declared order does NOT yet cover the explicit
+`realm_actor_escalation` rows — all six live rows DIVERGE from
+adjacency on purpose: everything promotes to the strongest model
+(`modelscope_qwen38max`), and the strongest promotes to the first
+remote lane (`openrouter_deepseek`). That is a HUB, not a chain —
+adjacency cannot express it, so the rows are deliberate policy and
+STAY. The window closes incrementally: the daemon's arm banner now
+counts rows equal to adjacency as `N redundant` and logs a
+`removable` hint when any exist, so the operator deletes rows as the
+declared order absorbs them without guessing which still matter.
+(Full coverage would need the order to express the hub — an owner
+call, not a migration step.)
+
+The 2000-actor projection work also landed this day: the
+`ActorBindingsFold` reads `realm_actors` once and then only journal
+tail mutations (the full-table read per journal event is gone), and
+the rooms column builds its rows lazily (a builder delegate — 2000
+actors no longer construct 2000 widgets per rebuild).

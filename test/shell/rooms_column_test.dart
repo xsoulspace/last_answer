@@ -60,10 +60,10 @@ Future<RealmChatService> _hermeticService(final WidgetTester tester) async {
     await service.openDm(scout.actorId);
     // A watchable room: THREE members — neither a two-member DM slot
     // nor a channel.
-    await service.startThread(topic: 'Room One', participants: <String>[
-      scout.actorId,
-      ember.actorId,
-    ]);
+    await service.startThread(
+      topic: 'Room One',
+      participants: <String>[scout.actorId, ember.actorId],
+    );
     // A registered channel LAST: createChannel selects it, and its
     // non-empty registry keeps the shell's boot seed a no-op here.
     await service.createChannel('guild');
@@ -90,7 +90,8 @@ Future<void> _pumpShell(
           // The kit overlay host (same shape as last_answer_app.dart):
           // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
           builder: (final context, final child) =>
-              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
+              Portal(child: child ?? const SizedBox.shrink()),
+          locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(
@@ -188,10 +189,7 @@ void main() {
       // watchable room renders inside the channel view's threads
       // browser, never as a column row.
       expect(find.byKey(const ValueKey('rooms.section.rooms')), findsNothing);
-      expect(
-        find.byKey(ValueKey('rooms.row.dm.$actorId')),
-        findsOneWidget,
-      );
+      expect(find.byKey(ValueKey('rooms.row.dm.$actorId')), findsOneWidget);
       expect(
         find.byKey(ValueKey('rooms.row.channel.$channelId')),
         findsOneWidget,
@@ -206,6 +204,28 @@ void main() {
       );
       // The column is chrome, never a tab: no strip pill for it.
       expect(find.byKey(const ValueKey('view.tab.rooms')), findsNothing);
+    });
+
+    testWidgets('the DM section builds rows LAZILY (the 2000-actor law): '
+        'off-screen rows never construct', (final tester) async {
+      final service = await _hermeticService(tester);
+      // 300 in-memory roster actors (the projection the column reads) —
+      // the builder delegate must construct only the visible slice.
+      for (var i = 0; i < 300; i++) {
+        service.roster!.upsert(
+          ActorProfile(actorId: 'bulk-$i', displayName: 'Bulk $i'),
+        );
+      }
+      await _pumpShell(tester, service: service);
+      expect(find.byKey(const ValueKey('rooms.row.dm.bulk-0')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('rooms.row.dm.bulk-299')),
+        findsNothing,
+        reason:
+            'the far row never builds (a lazy slice, not a '
+            'children list — 2000 actors must not construct 2000 '
+            'widgets per rebuild)',
+      );
     });
 
     testWidgets('an empty DMs section renders the ONE CTA row', (
@@ -241,9 +261,9 @@ void main() {
         find.byWidgetPredicate(
           (final widget) =>
               widget.key is ValueKey &&
-              (widget.key! as ValueKey).value
-                  .toString()
-                  .startsWith('rooms.unread.'),
+              (widget.key! as ValueKey).value.toString().startsWith(
+                'rooms.unread.',
+              ),
         ),
         findsNothing,
       );
@@ -287,7 +307,8 @@ void main() {
             // The kit overlay host (same shape as last_answer_app.dart):
             // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
             builder: (final context, final child) =>
-                Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
+                Portal(child: child ?? const SizedBox.shrink()),
+            locale: const Locale('en'),
             localizationsDelegates: S.localizationsDelegates,
             supportedLocales: S.supportedLocales,
             home: Scaffold(
@@ -407,10 +428,10 @@ void main() {
       await tester.pump();
       decoded = await _persistedV4();
       expect(decoded['groups']! as List, hasLength(2));
-      expect(_groupTabs(decoded, 1), containsAll(<String>[
-        kBoardsSurfaceId,
-        kPeopleSurfaceId,
-      ]));
+      expect(
+        _groupTabs(decoded, 1),
+        containsAll(<String>[kBoardsSurfaceId, kPeopleSurfaceId]),
+      );
       expect(_groupTabs(decoded, 0), <String>[kConversationsSurfaceId]);
     });
 
@@ -420,8 +441,14 @@ void main() {
         'shell.views.v4': jsonEncode(<String, Object?>{
           'v': 4,
           'groups': <Object?>[
-            <String, Object?>{'tabs': <String>['dm:ghost'], 'active': 0},
-            <String, Object?>{'tabs': <String>[kBoardsSurfaceId], 'active': 0},
+            <String, Object?>{
+              'tabs': <String>['dm:ghost'],
+              'active': 0,
+            },
+            <String, Object?>{
+              'tabs': <String>[kBoardsSurfaceId],
+              'active': 0,
+            },
           ],
           'active': 0,
         }),
@@ -585,9 +612,9 @@ void main() {
         find.byWidgetPredicate(
           (final widget) =>
               widget.key is ValueKey &&
-              (widget.key! as ValueKey).value
-                  .toString()
-                  .startsWith('rooms.menu.rename.'),
+              (widget.key! as ValueKey).value.toString().startsWith(
+                'rooms.menu.rename.',
+              ),
         ),
         findsNothing,
       );
@@ -674,7 +701,8 @@ void main() {
           // The kit overlay host (same shape as last_answer_app.dart):
           // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
           builder: (final context, final child) =>
-              Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
+              Portal(child: child ?? const SizedBox.shrink()),
+          locale: const Locale('en'),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: Scaffold(

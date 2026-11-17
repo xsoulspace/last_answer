@@ -2,6 +2,7 @@ import 'dart:io' show Directory, File;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart'
     show CachedQwen3Snapshot;
 
@@ -45,12 +46,14 @@ void main() {
       expect(path?.loraScale, isNull, reason: 'the scale defaults, unparse');
     });
 
-    test('an empty lora value reads as unset; malformed scale reads as unset',
-        () {
-      final params = parseLocalBrainRef('local:qwen?lora=&loraScale=strong');
-      expect(params?.lora, isNull);
-      expect(params?.loraScale, isNull);
-    });
+    test(
+      'an empty lora value reads as unset; malformed scale reads as unset',
+      () {
+        final params = parseLocalBrainRef('local:qwen?lora=&loraScale=strong');
+        expect(params?.lora, isNull);
+        expect(params?.loraScale, isNull);
+      },
+    );
 
     test('unknown keys are ignored, never fatal', () {
       final params = parseLocalBrainRef(
@@ -121,8 +124,7 @@ void main() {
   });
 
   group('resolveBrain', () {
-    test('local casts resolve on a macOS host, unknown variants do not',
-        () {
+    test('local casts resolve on a macOS host, unknown variants do not', () {
       if (!mlxSupported) return;
       expect(
         resolveBrain('local:qwen', resolveOpenRouterApiKey: () => null),
@@ -168,7 +170,8 @@ void main() {
         '(lexicographically first, never recursive)', () {
       final root = Directory.systemTemp.createTempSync('la_loras_root');
       addTearDown(() => root.deleteSync(recursive: true));
-      final dir = Directory('${root.path}/scanned')..createSync(recursive: true);
+      final dir = Directory('${root.path}/scanned')
+        ..createSync(recursive: true);
       File('${dir.path}/beta.safetensors').writeAsStringSync('x');
       File('${dir.path}/alpha.safetensors').writeAsStringSync('x');
       // A NESTED safetensors is invisible to the flat scan.
@@ -205,10 +208,7 @@ void main() {
       expect(resolveLoraAdapterPath('.', root: root.path), isNull);
       // A `/` value is a PATH by the documented rule — used verbatim and
       // validated at attach time, never silently turned into an id.
-      expect(
-        resolveLoraAdapterPath('../escape', root: root.path),
-        '../escape',
-      );
+      expect(resolveLoraAdapterPath('../escape', root: root.path), '../escape');
     });
 
     test('openrouter refs keep their model and need no local engine', () {
@@ -231,19 +231,21 @@ void main() {
         defaultOpenRouterModel: 'meta-llama/llama-3',
         discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
       );
-      expect(options, everyElement(
-        isA<({String ref, String label})>()
-            .having((final o) => o.ref, 'ref', isNotEmpty)
-            .having((final o) => o.label, 'label', isNotEmpty),
-      ));
+      expect(
+        options,
+        everyElement(
+          isA<({String ref, String label})>()
+              .having((final o) => o.ref, 'ref', isNotEmpty)
+              .having((final o) => o.label, 'label', isNotEmpty),
+        ),
+      );
       expect(
         options.map((final o) => o.ref),
         contains('openrouter:meta-llama/llama-3'),
       );
     });
 
-    test('every discovered cached variant is listed with its param count',
-        () {
+    test('every discovered cached variant is listed with its param count', () {
       final options = availableBrainOptions(
         defaultOpenRouterModel: '',
         discoverQwen3Variants: () => const <CachedQwen3Snapshot>[
@@ -286,9 +288,39 @@ void main() {
         ],
       );
       if (!mlxSupported) return;
-      final bf16 = options
-          .firstWhere((final o) => o.ref == 'local:qwen3-0.6b-bf16');
+      final bf16 = options.firstWhere(
+        (final o) => o.ref == 'local:qwen3-0.6b-bf16',
+      );
       expect(bf16.label, contains('bf16'));
+    });
+  });
+
+  group('brainModelLabel (the spoken-name law)', () {
+    test('a declared model speaks its last path segment', () {
+      expect(
+        brainModelLabel(
+          id: 'modelscope_qwen37plus',
+          model: 'Qwen-Ambassador/Qwen3.7-Plus',
+        ),
+        'Qwen3.7 Plus',
+      );
+    });
+
+    test('a builtin entry with no model speaks its id — never a raw '
+        'snake_case label', () {
+      expect(
+        brainModelLabel(id: 'apple_foundation_afm'),
+        'Apple Foundation AFM',
+      );
+      expect(brainModelLabel(id: 'lfm'), 'LFM');
+      expect(brainModelLabel(id: 'qwen'), 'Qwen');
+    });
+
+    test('tokens that already carry casing keep it', () {
+      expect(
+        brainModelLabel(id: 'x', model: 'vendor/LFM-2.5-Preview'),
+        'LFM 2.5 Preview',
+      );
     });
   });
 }

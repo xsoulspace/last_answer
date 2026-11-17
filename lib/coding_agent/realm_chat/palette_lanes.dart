@@ -57,14 +57,12 @@ BuiltinLaneFamily builtinLaneFamily(final String id) => switch (id) {
 /// `local` for the on-device native/loopback lanes, `afm` for the
 /// Apple-specific one, `open_router` for the hosted lane, `builtin` for
 /// an unknown family (never a guessed lane).
-String builtinLaneChipLabel(final BuiltinLaneFamily family) =>
-    switch (family) {
-      BuiltinLaneFamily.localMlx || BuiltinLaneFamily.localDecision =>
-        'local',
-      BuiltinLaneFamily.appleFoundation => 'afm',
-      BuiltinLaneFamily.hostedOpenRouter => 'open_router',
-      BuiltinLaneFamily.unknown => 'builtin',
-    };
+String builtinLaneChipLabel(final BuiltinLaneFamily family) => switch (family) {
+  BuiltinLaneFamily.localMlx || BuiltinLaneFamily.localDecision => 'local',
+  BuiltinLaneFamily.appleFoundation => 'afm',
+  BuiltinLaneFamily.hostedOpenRouter => 'open_router',
+  BuiltinLaneFamily.unknown => 'builtin',
+};
 
 /// Whether the family serves on this device with no external egress
 /// (the `isLocal` law: the hosted lane is NOT local, and an unknown
@@ -84,10 +82,9 @@ bool builtinLaneIsLocal(final BuiltinLaneFamily family) =>
 /// whose lane declares no tiers gets NO reasoning controls — an honest
 /// absence, not a disabled field — and the gap ask names the missing
 /// client tiers (surface_gaps, 2026-11-15).
-const Map<String, List<String>> kReasoningEffortTiers =
-    <String, List<String>>{
-      'openrouter': <String>['minimal', 'low', 'medium', 'high', 'xhigh'],
-    };
+const Map<String, List<String>> kReasoningEffortTiers = <String, List<String>>{
+  'openrouter': <String>['minimal', 'low', 'medium', 'high', 'xhigh'],
+};
 
 /// The display titles of the tier wire values (Zed's shared
 /// `ReasoningEffort` labels: `xhigh` reads "Extra High", never "xhigh").
@@ -163,17 +160,29 @@ LaneClass classOfBuiltin(final BuiltinLaneFamily family) => switch (family) {
 /// speaks its last path segment with dashes/underscores as spaces —
 /// `modelscope/Qwen-Amassador/Qwen3.7-Plus` reads "Qwen3.7 Plus" — and a
 /// `:free` suffix survives (it is a real tier fact). A row with no
-/// declared model falls back to its entry id. The raw entry id stays the
-/// mono subtitle wherever agents need the stable handle.
+/// declared model speaks its entry id (`apple_foundation_afm` reads
+/// "Apple Foundation AFM") — never a raw snake_case id on a user
+/// surface. The raw entry id stays the mono subtitle wherever agents
+/// need the stable handle.
 String brainModelLabel({required final String id, final String? model}) {
   final declared = model?.trim();
-  if (declared == null || declared.isEmpty) return id;
-  final segment = declared.contains('/') ? declared.split('/').last : declared;
-  final spoken = segment
-      .replaceAll('-', ' ')
-      .replaceAll('_', ' ')
-      .trim();
-  return spoken.isEmpty ? id : spoken;
+  final source = (declared == null || declared.isEmpty) ? id : declared;
+  final segment = source.contains('/') ? source.split('/').last : source;
+  final spoken = segment.replaceAll('-', ' ').replaceAll('_', ' ').trim();
+  if (spoken.isEmpty) return id;
+  return spoken.split(' ').map(_spokenToken).join(' ');
+}
+
+/// Title-cases one spoken token. Tokens already carrying an uppercase
+/// letter keep their author's casing (`Qwen3.7`, `LFM`, `Plus`); known
+/// hardware acronyms upper-case (`afm` → `AFM`); everything else
+/// capitalizes (`apple` → `Apple`, `qwen` → `Qwen`).
+String _spokenToken(final String token) {
+  if (token.contains(RegExp('[A-Z]'))) return token;
+  const acronyms = {'afm', 'lfm', 'llm', 'gpt', 'api', 'mlx'};
+  if (acronyms.contains(token.toLowerCase())) return token.toUpperCase();
+  if (token.isEmpty) return token;
+  return '${token[0].toUpperCase()}${token.substring(1)}';
 }
 
 /// The reasoning tiers a BRAIN REF can carry (wave N2, the per-actor

@@ -132,6 +132,10 @@ final class RoomsColumn extends StatelessWidget {
       for (final actor in service.roster?.all ?? const <ActorProfile>[])
         if (actor.kind != ActorKind.human) actor,
     ];
+    // Where the channels head lands in the flat item space (after the
+    // DMs head and the CTA-or-DM rows) — the builder delegate below
+    // walks this one index space.
+    final channelsHeadIndex = 1 + (actors.isEmpty ? 1 : actors.length);
     return Container(
       key: const ValueKey('shell.roomsColumn'),
       width: ShellTokens.contextColumnWidth,
@@ -142,82 +146,95 @@ final class RoomsColumn extends StatelessWidget {
       // A ListView, not a SingleChildScrollView: the SCV's semantics
       // subtree never assembles in a live desktop app (the measured
       // rail-drop framework gap); ListView-backed lists keep their
-      // nodes, and the column is the agent's room index.
-      child: ListView(
+      // nodes, and the column is the agent's room index. The builder
+      // delegate (not a children list) keeps the anatomy and every row
+      // key while building rows LAZILY: a 2000-actor world must not
+      // construct 2000 row widgets per rebuild — only the visible
+      // slice builds.
+      child: ListView.custom(
         padding: const EdgeInsets.only(bottom: 8),
-        children: [
-          _SectionHead(
-            sectionKey: 'rooms.section.dms',
-            label: l10n.roomsSectionDms,
-            tooltip: l10n.roomsExplainDms,
-          ),
-          if (actors.isEmpty)
-            _RoomsRow(
-              rowKey: 'rooms.cta.dm',
-              title: l10n.worldChatMenuMessageActor,
-              // The 18px leading box: every row mark (avatar, '#',
-              // glyph, forum) rides ONE vertical axis (Wave K optical
-              // alignment).
-              leading: SizedBox(
-                width: 18,
-                height: 18,
-                child: Center(
-                  child: Icon(
-                    Icons.person_search_outlined,
-                    size: 15,
-                    color: context.shellMuted,
+        childrenDelegate: SliverChildBuilderDelegate((
+          final context,
+          final index,
+        ) {
+          if (index == 0) {
+            return _SectionHead(
+              sectionKey: 'rooms.section.dms',
+              label: l10n.roomsSectionDms,
+              tooltip: l10n.roomsExplainDms,
+            );
+          }
+          if (actors.isEmpty) {
+            if (index == 1) {
+              return _RoomsRow(
+                rowKey: 'rooms.cta.dm',
+                title: l10n.worldChatMenuMessageActor,
+                // The 18px leading box: every row mark (avatar, '#',
+                // glyph, forum) rides ONE vertical axis (Wave K
+                // optical alignment).
+                leading: SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: Center(
+                    child: Icon(
+                      Icons.person_search_outlined,
+                      size: 15,
+                      color: context.shellMuted,
+                    ),
                   ),
                 ),
-              ),
-              onTap: onMessageActor,
-            )
-          else
-            for (final actor in actors)
-              _ConversationRow(
-                rowKey: 'rooms.row.dm.${actor.actorId}',
-                surfaceId: 'dm:${actor.actorId}',
-                title: actor.displayName,
-                leading: ActorAvatar(profile: actor, size: 18),
-                threadId: service.dmThreadOf(actor.actorId),
-                selected: activeSurfaceId == 'dm:${actor.actorId}',
-                laWorld: laWorld,
-                service: service,
-                onSelect: onSelect,
-                onMiniWindow: onMiniWindow,
-              ),
-          _SectionHead(
-            sectionKey: 'rooms.section.channels',
-            label: l10n.railChannels,
-            tooltip: l10n.roomsExplainChannels,
-            trailing: _HeaderAction(
-              actionKey: 'rooms.create.channel',
-              tooltip: l10n.worldChatMenuNewChannel,
-              icon: Icons.add_outlined,
-              onTap: onCreateChannel,
-            ),
-          ),
-          for (final channel in service.channels)
-            _ConversationRow(
-              rowKey: 'rooms.row.channel.${channel.channelId}',
-              surfaceId: 'channel:${channel.channelId}',
-              title: '#${channel.name}',
-              // The kind word rides the mark's tooltip; the mark
-              // itself is the channel's user-settable icon.
-              leading: LaTooltip(
-                message: l10n.roomsKindChannel,
-                child: ChannelIconMark(icon: channel.icon),
-              ),
-              threadId: channel.threadId,
-              selected:
-                  activeSurfaceId == 'channel:${channel.channelId}',
+                onTap: onMessageActor,
+              );
+            }
+          } else if (index <= actors.length) {
+            final actor = actors[index - 1];
+            return _ConversationRow(
+              rowKey: 'rooms.row.dm.${actor.actorId}',
+              surfaceId: 'dm:${actor.actorId}',
+              title: actor.displayName,
+              leading: ActorAvatar(profile: actor, size: 18),
+              threadId: service.dmThreadOf(actor.actorId),
+              selected: activeSurfaceId == 'dm:${actor.actorId}',
               laWorld: laWorld,
               service: service,
-              channel: channel,
               onSelect: onSelect,
               onMiniWindow: onMiniWindow,
-              onSetIcon: onSetIcon,
+            );
+          }
+          if (index == channelsHeadIndex) {
+            return _SectionHead(
+              sectionKey: 'rooms.section.channels',
+              label: l10n.railChannels,
+              tooltip: l10n.roomsExplainChannels,
+              trailing: _HeaderAction(
+                actionKey: 'rooms.create.channel',
+                tooltip: l10n.worldChatMenuNewChannel,
+                icon: Icons.add_outlined,
+                onTap: onCreateChannel,
+              ),
+            );
+          }
+          final channel = service.channels[index - channelsHeadIndex - 1];
+          return _ConversationRow(
+            rowKey: 'rooms.row.channel.${channel.channelId}',
+            surfaceId: 'channel:${channel.channelId}',
+            title: '#${channel.name}',
+            // The kind word rides the mark's tooltip; the mark
+            // itself is the channel's user-settable icon.
+            leading: LaTooltip(
+              message: l10n.roomsKindChannel,
+              child: ChannelIconMark(icon: channel.icon),
             ),
-        ],
+            threadId: channel.threadId,
+            selected: activeSurfaceId == 'channel:${channel.channelId}',
+            laWorld: laWorld,
+            service: service,
+            channel: channel,
+            onSelect: onSelect,
+            onMiniWindow: onMiniWindow,
+            onSetIcon: onSetIcon,
+          );
+        }, childCount: channelsHeadIndex + 1 + service.channels.length),
       ),
     );
   }
@@ -280,11 +297,8 @@ final class _ConversationRow extends StatelessWidget {
       final String keyValue,
       final String label,
       final VoidCallback onPressed,
-    ) => LaMenuItem(
-      key: ValueKey(keyValue),
-      label: label,
-      onPressed: onPressed,
-    );
+    ) =>
+        LaMenuItem(key: ValueKey(keyValue), label: label, onPressed: onPressed);
     showLaMenuAt(
       context,
       globalPosition: globalPosition,
@@ -331,10 +345,8 @@ final class _ConversationRow extends StatelessWidget {
     final ChannelInfo channel,
   ) => showLaDialog<void>(
     context: context,
-    builder: (final dialogContext) => _RenameDialog(
-      service: service,
-      channel: channel,
-    ),
+    builder: (final dialogContext) =>
+        _RenameDialog(service: service, channel: channel),
   );
 
   /// The change-icon dialog: the curated glyph grid, the clear button
@@ -347,10 +359,8 @@ final class _ConversationRow extends StatelessWidget {
     final Future<bool> Function(String channelId, String? icon) onSetIcon,
   ) => showLaDialog<void>(
     context: context,
-    builder: (final dialogContext) => _SetIconDialog(
-      channel: channel,
-      onSetIcon: onSetIcon,
-    ),
+    builder: (final dialogContext) =>
+        _SetIconDialog(channel: channel, onSetIcon: onSetIcon),
   );
 
   @override
@@ -660,9 +670,7 @@ final class _RoomsRow extends StatelessWidget {
                     // DESIGN type scale: Compact 12 (the off-scale
                     // 12.5 was chrome drift).
                     color: selected ? context.laUi.ink : context.shellMuted,
-                    fontWeight: selected
-                        ? FontWeight.w600
-                        : FontWeight.w400,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
               ),
@@ -755,9 +763,7 @@ final class _SectionHead extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
         child: Row(
           children: [
-            Expanded(
-              child: Text(label, style: shellSectionLabel(context)),
-            ),
+            Expanded(child: Text(label, style: shellSectionLabel(context))),
             ?trailing,
           ],
         ),

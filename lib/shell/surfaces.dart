@@ -382,7 +382,11 @@ SurfaceRegistry buildShellSurfaces(
   ),
   kPeopleSurfaceId: SurfaceSpec(
     id: kPeopleSurfaceId,
-    title: context.l10n.contextTabPeople,
+    // The ACTORS MANAGER (2026-11-18 owner decision): the People
+    // surface re-scoped to the world roster — the id stays `people`
+    // (persisted layouts, the picker entry and the palette keep their
+    // vocabulary); the title says what it now manages.
+    title: context.l10n.viewActorsTitle,
     builder: (final tabContext) {
       final peopleService = service ?? tabContext.read<RealmChatService?>();
       if (peopleService == null) {

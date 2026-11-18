@@ -1340,17 +1340,6 @@ class SIt extends S {
   }
 
   @override
-  String get actorsSectionTitle => 'ATTORI';
-
-  @override
-  String get actorsSectionHint =>
-      'Crea identità di attori — bot con cui parlare e lavorare. Le identità vivono nel roster sincronizzato e nel mondo ecsai; lo stesso meccanismo che gli attori usano quando generano altri attori.';
-
-  @override
-  String get actorsUnsupported =>
-      'Il mondo degli attori richiede un filesystem locale (desktop).';
-
-  @override
   String get actorsNoneYet => 'Ancora nessun attore — crea il primo qui sotto.';
 
   @override
@@ -1388,13 +1377,6 @@ class SIt extends S {
 
   @override
   String get actorsRoleHint => 'es. assistente di ricerca';
-
-  @override
-  String get actorsRemoveTooltip => 'Rimuovi attore';
-
-  @override
-  String get actorsLocalNeedsMacos =>
-      'I cervelli locali richiedono macOS (MLX); i cervelli hosted funzionano ovunque sia configurata la chiave del provider.';
 
   @override
   String get firstRunTitle => 'Incontra il tuo primo attore';
@@ -2013,6 +1995,9 @@ class SIt extends S {
   String get worldChatAttachNoneYet => 'non ancora';
 
   @override
+  String get worldChatRemoveAttachment => 'Rimuovi allegato';
+
+  @override
   String get worldChatNoMatches => 'Nessun risultato';
 
   @override
@@ -2487,10 +2472,18 @@ class SIt extends S {
   String get modelsLocalPhaseFailed => 'fallito';
 
   @override
-  String get modelsBudgetAvailable => 'disponibile per i modelli locali';
+  String get modelsBudgetUsed => 'in uso';
 
   @override
-  String get modelsBudgetFloor => 'tenuta libera (margine)';
+  String get modelsBudgetCached => 'cache rilasciabile';
+
+  @override
+  String get modelsBudgetFree => 'libera';
+
+  @override
+  String modelsBudgetPolicy(String floor, String available) {
+    return 'la policy di caricamento tiene liberi $floor — disponibili per caricamenti locali $available';
+  }
 
   @override
   String get modelsBudgetUnknown =>
@@ -2710,4 +2703,34 @@ class SIt extends S {
 
   @override
   String get worldChatPermsRootRequired => 'radice obbligatoria';
+
+  @override
+  String get viewActorsTitle => 'Attori';
+
+  @override
+  String get actorsSearchHint => 'Cerca attori…';
+
+  @override
+  String get actorsSearchEmpty => 'Nessun attore corrisponde';
+
+  @override
+  String get actorsShowRetired => 'Mostra ritirati';
+
+  @override
+  String get actorsHideRetired => 'Nascondi ritirati';
+
+  @override
+  String get actorsStatusWorking => 'attivo';
+
+  @override
+  String get actorsStatusIdle => 'in pausa';
+
+  @override
+  String get actorsStatusFailed => 'in errore';
+
+  @override
+  String get roomsFilterHint => 'Filtra';
+
+  @override
+  String get actorInfoNowSection => 'Adesso';
 }

@@ -1,4 +1,3 @@
-
 import 'package:crypto/crypto.dart' as crypto;
 // ignore: depend_on_referenced_packages -- resolved transitively via core
 import 'package:file_picker/file_picker.dart';
@@ -49,9 +48,7 @@ final class RealmChatMediaShare {
   /// The messenger lane's pick: entry + the ORIGINAL file name, so the
   /// composer's staged chip shows the human's file, never the world
   /// asset id the entry's path carries.
-  Future<RealmStagedMedia?> pickNamed({
-    required final String threadId,
-  }) async {
+  Future<RealmStagedMedia?> pickNamed({required final String threadId}) async {
     if (kIsWeb) {
       throw const RealmMediaShareException('media_share_unsupported_on_web');
     }
@@ -86,9 +83,10 @@ final class RealmChatMediaShare {
       'image/jpeg' => 'jpg',
       'image/webp' => 'webp',
       'image/gif' => 'gif',
-      _ => nameHint != null && nameHint.contains('.')
-          ? nameHint.split('.').last.toLowerCase()
-          : 'img',
+      _ =>
+        nameHint != null && nameHint.contains('.')
+            ? nameHint.split('.').last.toLowerCase()
+            : 'img',
     };
     final dir = Directory('${worldHome.path}/assets/$threadId');
     if (!dir.existsSync()) dir.createSync(recursive: true);

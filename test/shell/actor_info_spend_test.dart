@@ -10,6 +10,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -111,5 +112,56 @@ void main() {
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     expect(find.byKey(const ValueKey('actor.info.imageSpend')), findsNothing);
+  });
+
+  testWidgets('the NOW section folds the live status; absent facts '
+      'render nothing', (final tester) async {
+    SharedPreferences.setMockInitialValues({});
+    late final RealmChatService service;
+    late final String scoutId;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('actor_now_ws_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      service.firstRunSeedEnabled = false;
+      await service.ensureReady();
+      final scout = (await service.createActor(
+        displayName: 'Scout',
+        kind: ActorKind.model,
+        brainRef: '',
+      ))!;
+      scoutId = scout.actorId;
+    });
+    service.debugNarrationOverride = <String, BotNarration>{
+      scoutId: BotNarration(
+        state: BotNarrationState.generating,
+        detail: 'lab',
+        since: DateTime.now(),
+      ),
+    };
+    Widget surface(final String actorId) => MaterialApp(
+      locale: const Locale('en'),
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
+      home: Scaffold(
+        body: ActorInfoSurface(service: service, actorId: actorId),
+      ),
+    );
+    await tester.pumpWidget(surface(scoutId));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    expect(find.byKey(const ValueKey('actor.info.now')), findsOneWidget);
+    expect(find.text('working'), findsOneWidget);
+    expect(find.text('generating reply to lab'), findsOneWidget);
+
+    // An id with no foldable facts: NO section — honest absence.
+    await tester.pumpWidget(surface('no-such-actor'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    expect(find.byKey(const ValueKey('actor.info.now')), findsNothing);
   });
 }

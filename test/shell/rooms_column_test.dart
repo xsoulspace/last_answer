@@ -308,6 +308,141 @@ void main() {
       expect(find.byKey(const ValueKey('actor.info.revive')), findsOneWidget);
     });
 
+    testWidgets('a DM row click opens the conversation AND the actor info '
+        'tab — the DM keeps the focus (owner law 2026-11-18, every '
+        'click)', (final tester) async {
+      final service = await _hermeticService(tester);
+      final actorId = service.roster!.all
+          .firstWhere((final actor) => actor.kind != ActorKind.human)
+          .actorId;
+      await _pumpShell(tester, service: service);
+
+      await tester.tap(find.byKey(ValueKey('rooms.row.dm.$actorId')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // BOTH tabs exist: the info split beside the conversation.
+      expect(
+        find.byKey(ValueKey('view.tab.dm:$actorId')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('view.tab.actor:$actorId')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('actor.info')), findsOneWidget);
+      // The DM is the ACTIVE tab (info first, DM second — the last
+      // openTab wins the focus), and the thread re-selected through the
+      // service.
+      final decoded = await _persistedV4();
+      final active = decoded['active']! as int;
+      expect(_groupTabs(decoded, active), contains('dm:$actorId'));
+
+      // Re-clicking spawns nothing new (an open id never duplicates).
+      await tester.tap(find.byKey(ValueKey('rooms.row.dm.$actorId')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      final redecoded = await _persistedV4();
+      expect(
+        _groupTabs(redecoded, 0).where((final id) => id == 'dm:$actorId'),
+        hasLength(1),
+      );
+
+      // Drain the selection's real IO (beat tail read) INSIDE the test.
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 100)),
+      );
+      await tester.pump();
+    });
+
+    testWidgets('the DM filter field narrows the section by name; the '
+        'miss hides every row', (final tester) async {
+      final service = await _hermeticService(tester);
+      final scout = service.roster!.all
+          .firstWhere((final actor) => actor.displayName == 'Scout')
+          .actorId;
+      final ember = service.roster!.all
+          .firstWhere((final actor) => actor.displayName == 'Ember')
+          .actorId;
+      await _pumpShell(tester, service: service);
+
+      await tester.enterText(find.byKey(const ValueKey('rooms.search')), 'sco');
+      await tester.pump();
+      expect(
+        find.byKey(ValueKey('rooms.row.dm.$scout')),
+        findsOneWidget,
+      );
+      expect(find.byKey(ValueKey('rooms.row.dm.$ember')), findsNothing);
+
+      await tester.enterText(
+        find.byKey(const ValueKey('rooms.search')),
+        'zzz',
+      );
+      await tester.pump();
+      expect(find.byKey(ValueKey('rooms.row.dm.$scout')), findsNothing);
+      expect(find.byKey(ValueKey('rooms.row.dm.$ember')), findsNothing);
+
+      // Clearing restores the section.
+      await tester.enterText(find.byKey(const ValueKey('rooms.search')), '');
+      await tester.pump();
+      expect(
+        find.byKey(ValueKey('rooms.row.dm.$scout')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('rooms.row.dm.$ember')),
+        findsOneWidget,
+      );
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('the rooms column retired toggle hides and re-shows the '
+        'retired rows (the head stays reachable)', (final tester) async {
+      late RealmChatService service;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_rooms_rett_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        await world.store.transact(
+          (tx) => tx.put('realm_actors', 'toby-researcher',
+              <String, Object?>{
+            'actorId': 'toby-researcher',
+            'kind': 'realm_actor',
+            'displayName': 'Toby Researcher',
+            'retiredAt': '2026-11-04T18:16:08.327830Z',
+            'retireReason': 'hygiene-sweep',
+          }),
+        );
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        await service.createChannel('guild');
+        service.clearActiveThread();
+      });
+      await _pumpShell(tester, service: service);
+
+      final row = find.byKey(
+        const ValueKey('rooms.row.retired.toby-researcher'),
+      );
+      final toggle = find.byKey(const ValueKey('rooms.retired.toggle'));
+      // Shown-muted is the default.
+      expect(row, findsOneWidget);
+
+      await tester.tap(toggle);
+      await tester.pump();
+      expect(row, findsNothing);
+      expect(toggle, findsOneWidget); // the head keeps the re-show verb
+
+      await tester.tap(toggle);
+      await tester.pump();
+      expect(row, findsOneWidget);
+    });
+
     testWidgets('no LaWorld = honest absence: no row badges render', (
       final tester,
     ) async {

@@ -1346,17 +1346,6 @@ class SRu extends S {
   }
 
   @override
-  String get actorsSectionTitle => 'АКТЁРЫ';
-
-  @override
-  String get actorsSectionHint =>
-      'Создавайте личности актёров — ботов, с которыми можно говорить и работать. Личности живут в синхронизируемом ростере и мире ecsai; тот же механизм, которым актёры пользуются при порождении актёров.';
-
-  @override
-  String get actorsUnsupported =>
-      'Миру актёров нужна локальная файловая система (десктоп).';
-
-  @override
   String get actorsNoneYet => 'Актёров пока нет — создайте первого ниже.';
 
   @override
@@ -1394,13 +1383,6 @@ class SRu extends S {
 
   @override
   String get actorsRoleHint => 'напр. научный ассистент';
-
-  @override
-  String get actorsRemoveTooltip => 'Удалить актёра';
-
-  @override
-  String get actorsLocalNeedsMacos =>
-      'Локальные мозги требуют macOS (MLX); хостинг-мозги работают везде, где настроен ключ провайдера.';
 
   @override
   String get firstRunTitle => 'Познакомьтесь с первым актором';
@@ -2015,6 +1997,9 @@ class SRu extends S {
   String get worldChatAttachNoneYet => 'пока нет';
 
   @override
+  String get worldChatRemoveAttachment => 'Убрать вложение';
+
+  @override
   String get worldChatNoMatches => 'Нет совпадений';
 
   @override
@@ -2491,10 +2476,18 @@ class SRu extends S {
   String get modelsLocalPhaseFailed => 'ошибка';
 
   @override
-  String get modelsBudgetAvailable => 'доступно для локальных моделей';
+  String get modelsBudgetUsed => 'занято';
 
   @override
-  String get modelsBudgetFloor => 'свободный запас';
+  String get modelsBudgetCached => 'освобождаемый кэш';
+
+  @override
+  String get modelsBudgetFree => 'свободно';
+
+  @override
+  String modelsBudgetPolicy(String floor, String available) {
+    return 'политика загрузок держит $floor свободными — доступно для локальных загрузок $available';
+  }
 
   @override
   String get modelsBudgetUnknown =>
@@ -2714,4 +2707,34 @@ class SRu extends S {
 
   @override
   String get worldChatPermsRootRequired => 'укажите корень';
+
+  @override
+  String get viewActorsTitle => 'Актёры';
+
+  @override
+  String get actorsSearchHint => 'Поиск актёров…';
+
+  @override
+  String get actorsSearchEmpty => 'Актёры не найдены';
+
+  @override
+  String get actorsShowRetired => 'Показать отозванных';
+
+  @override
+  String get actorsHideRetired => 'Скрыть отозванных';
+
+  @override
+  String get actorsStatusWorking => 'работает';
+
+  @override
+  String get actorsStatusIdle => 'простаивает';
+
+  @override
+  String get actorsStatusFailed => 'сбой';
+
+  @override
+  String get roomsFilterHint => 'Фильтр';
+
+  @override
+  String get actorInfoNowSection => 'Сейчас';
 }

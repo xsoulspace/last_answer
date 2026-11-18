@@ -1337,6 +1337,24 @@ class _AppShellState extends State<AppShell> {
     _onLayoutChanged(_routeOpen(_layout, surfaceId));
   }
 
+  /// The rooms COLUMN's row tap (owner law 2026-11-18, every click): a
+  /// DM row opens the conversation AND the actor's info tab — the info
+  /// routes FIRST, the DM SECOND, and the last [ShellLayout.openTab]
+  /// wins the focus, so the conversation is active and the info sits
+  /// open beside it (re-clicks open nothing new — an open id never
+  /// duplicates). Every other row (channels, retired → `actor:<id>`)
+  /// rides the one tab-select path unchanged.
+  void _onRoomsSelect(final String surfaceId) {
+    if (!surfaceId.startsWith('dm:')) {
+      _onSelectTab(surfaceId);
+      return;
+    }
+    final actorId = surfaceId.substring('dm:'.length);
+    activateConversationSurface(_service, surfaceId);
+    _onLayoutChanged(_routeOpen(_layout, actorSurfaceId(actorId)));
+    _onLayoutChanged(_routeOpen(_layout, surfaceId));
+  }
+
   /// The strip's split control (group 0): the active tab moves into a
   /// new pane to the right (the mockup law).
   void _onSplit() => _onLayoutChanged(_layout.split());
@@ -1930,7 +1948,7 @@ class _AppShellState extends State<AppShell> {
     builder: (final context, final _) => RoomsColumn(
       service: _service,
       width: _roomsColumnWidth,
-      onSelect: _onSelectTab,
+      onSelect: _onRoomsSelect,
       onCreateChannel: () =>
           unawaited(openNewChannelFlow(context, service: _service)),
       onMessageActor: () => unawaited(

@@ -424,9 +424,6 @@
   "worldChatWorkspaceCreate": "Создать",
   "worldChatMessageHint": "Написать {name}…",
   "worldChatMembers": "{count, plural, one{{count} участник} few{{count} участника} many{{count} участников} other{{count} участников}}",
-  "actorsSectionTitle": "АКТЁРЫ",
-  "actorsSectionHint": "Создавайте личности актёров — ботов, с которыми можно говорить и работать. Личности живут в синхронизируемом ростере и мире ecsai; тот же механизм, которым актёры пользуются при порождении актёров.",
-  "actorsUnsupported": "Миру актёров нужна локальная файловая система (десктоп).",
   "actorsNoneYet": "Актёров пока нет — создайте первого ниже.",
   "actorsCreateActor": "Создать актёра",
   "actorsNameLabel": "Имя актёра",
@@ -440,8 +437,6 @@
   "actorsSelfBindHint": "В пределах своего набора, самостоятельно",
   "actorsRoleLabel": "Роль (необязательно)",
   "actorsRoleHint": "напр. научный ассистент",
-  "actorsRemoveTooltip": "Удалить актёра",
-  "actorsLocalNeedsMacos": "Локальные мозги требуют macOS (MLX); хостинг-мозги работают везде, где настроен ключ провайдера.",
   "firstRunTitle": "Познакомьтесь с первым актором",
   "firstRunSubtitle": "Всё здесь начинается с разговора. Дайте первому актору имя, необязательную персону и мозг — он поприветствует вас в личном сообщении, и всё это можно изменить позже.",
   "firstRunNameLabel": "Имя",
@@ -636,55 +631,109 @@
   "contextPendingAccess": "ОЖИДАЮЩИЕ ЗАПРОСЫ",
   "contextApprove": "Одобрить",
   "roomsExplainDms": "Личные сообщения — приватные ветки с одним актёром",
-  "@roomsExplainDms": {"description": "Rooms column: tooltip explaining the Direct messages section."},
+  "@roomsExplainDms": {
+    "description": "Rooms column: tooltip explaining the Direct messages section."
+  },
   "roomsExplainChannels": "Каналы — именованные групповые комнаты с общей историей",
-  "@roomsExplainChannels": {"description": "Rooms column: tooltip explaining the Channels section."},
+  "@roomsExplainChannels": {
+    "description": "Rooms column: tooltip explaining the Channels section."
+  },
   "roomsExplainRooms": "Комнаты — наблюдаемые ветки актёров; присоединяйтесь, обращаясь к ним",
-  "@roomsExplainRooms": {"description": "Rooms column: tooltip explaining the Rooms section."},
+  "@roomsExplainRooms": {
+    "description": "Rooms column: tooltip explaining the Rooms section."
+  },
   "roomsKindChannel": "Канал",
-  "@roomsKindChannel": {"description": "Rooms column: kind word on a channel row mark."},
+  "@roomsKindChannel": {
+    "description": "Rooms column: kind word on a channel row mark."
+  },
   "roomsKindRoom": "Комната",
-  "@roomsKindRoom": {"description": "Rooms column: kind word on a room row mark."},
+  "@roomsKindRoom": {
+    "description": "Rooms column: kind word on a room row mark."
+  },
   "roomsSetIconAction": "Сменить значок…",
-  "@roomsSetIconAction": {"description": "Channel row context menu: opens the change-icon dialog."},
+  "@roomsSetIconAction": {
+    "description": "Channel row context menu: opens the change-icon dialog."
+  },
   "roomsSetIconTitle": "Сменить значок канала",
-  "@roomsSetIconTitle": {"description": "Change-icon dialog title."},
+  "@roomsSetIconTitle": {
+    "description": "Change-icon dialog title."
+  },
   "roomsIconClear": "Сбросить значок",
-  "@roomsIconClear": {"description": "Change-icon dialog: clears back to the # mark."},
+  "@roomsIconClear": {
+    "description": "Change-icon dialog: clears back to the # mark."
+  },
   "roomsIconCustomLabel": "Или один символ / эмодзи",
-  "@roomsIconCustomLabel": {"description": "Change-icon dialog: label of the custom glyph field."},
+  "@roomsIconCustomLabel": {
+    "description": "Change-icon dialog: label of the custom glyph field."
+  },
   "worldChatAttach": "Прикрепить или упомянуть",
-  "@worldChatAttach": {"description": "Composer: attach/mention button tooltip."},
+  "@worldChatAttach": {
+    "description": "Composer: attach/mention button tooltip."
+  },
   "worldChatAttachSearchHint": "Поиск людей, каналов, комнат, документов…",
-  "@worldChatAttachSearchHint": {"description": "Attach dialog: search field hint."},
+  "@worldChatAttachSearchHint": {
+    "description": "Attach dialog: search field hint."
+  },
   "worldChatAttachWorkOrder": "Рабочее задание…",
-  "@worldChatAttachWorkOrder": {"description": "Attach dialog: opens the ADR 0129 scope picker."},
+  "@worldChatAttachWorkOrder": {
+    "description": "Attach dialog: opens the ADR 0129 scope picker."
+  },
   "worldChatAttachPlugins": "Плагины",
-  "@worldChatAttachPlugins": {"description": "Attach dialog: plugins row (honest absence today)."},
+  "@worldChatAttachPlugins": {
+    "description": "Attach dialog: plugins row (honest absence today)."
+  },
   "worldChatAttachMcpServers": "Серверы MCP",
-  "@worldChatAttachMcpServers": {"description": "Attach dialog: MCP servers row (honest absence today)."},
+  "@worldChatAttachMcpServers": {
+    "description": "Attach dialog: MCP servers row (honest absence today)."
+  },
   "worldChatAttachNoneYet": "пока нет",
-  "@worldChatAttachNoneYet": {"description": "Attach dialog: trailing note on absent attach kinds."},
+  "@worldChatAttachNoneYet": {
+    "description": "Attach dialog: trailing note on absent attach kinds."
+  },
+  "worldChatRemoveAttachment": "Убрать вложение",
+  "@worldChatRemoveAttachment": {
+    "description": "Composer: staged-image chip's remove button tooltip (the messenger staging strip)."
+  },
   "worldChatNoMatches": "Нет совпадений",
-  "@worldChatNoMatches": {"description": "Attach dialog / mention overlay: empty filter result."},
+  "@worldChatNoMatches": {
+    "description": "Attach dialog / mention overlay: empty filter result."
+  },
   "worldChatThreadsToggle": "Ветки",
-  "@worldChatThreadsToggle": {"description": "Channel header: threads browser toggle label."},
+  "@worldChatThreadsToggle": {
+    "description": "Channel header: threads browser toggle label."
+  },
   "worldChatThreadsGroup": "Ветки",
-  "@worldChatThreadsGroup": {"description": "Channel view threads browser: the work threads group label."},
+  "@worldChatThreadsGroup": {
+    "description": "Channel view threads browser: the work threads group label."
+  },
   "worldChatRoomsGroup": "Комнаты",
-  "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
+  "@worldChatRoomsGroup": {
+    "description": "Channel view threads browser: the watchable rooms group label."
+  },
   "worldChatThreadsEmpty": "Веток пока нет.",
-  "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
+  "@worldChatThreadsEmpty": {
+    "description": "Channel view threads browser: the quiet empty line."
+  },
   "worldChatSessionKindMark": "сессия",
-  "@worldChatSessionKindMark": {"description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."},
+  "@worldChatSessionKindMark": {
+    "description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."
+  },
   "worldChatPermsTooltip": "Разрешения",
-  "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
+  "@worldChatPermsTooltip": {
+    "description": "Composer meta row: permissions button tooltip."
+  },
   "worldChatPermsTitle": "Разрешения канала",
-  "@worldChatPermsTitle": {"description": "Composer meta row: permissions dialog title."},
+  "@worldChatPermsTitle": {
+    "description": "Composer meta row: permissions dialog title."
+  },
   "worldChatMembersTooltip": "Участники",
-  "@worldChatMembersTooltip": {"description": "Composer meta row: members button tooltip."},
+  "@worldChatMembersTooltip": {
+    "description": "Composer meta row: members button tooltip."
+  },
   "worldChatInfoTooltip": "О канале",
-  "@worldChatInfoTooltip": {"description": "Composer meta row: channel info button tooltip."},
+  "@worldChatInfoTooltip": {
+    "description": "Composer meta row: channel info button tooltip."
+  },
   "worldChatMembersAdd": "Добавить людей",
   "worldChatMembersAddTitle": "Добавить в {channel}",
   "worldChatMembersSearchHint": "Фильтр людей",
@@ -700,231 +749,457 @@
   "worldChatMemberRemoved": "{name} удалён из {channel}",
   "roomsMenuMembers": "Добавить участников…",
   "worldChatChangeIcon": "Сменить значок",
-  "@worldChatChangeIcon": {"description": "Channel info dialog: icon row label."},
+  "@worldChatChangeIcon": {
+    "description": "Channel info dialog: icon row label."
+  },
   "worldChatIconViaColumn": "Значок канала меняется в меню колонки комнат (Wave D).",
-  "@worldChatIconViaColumn": {"description": "Channel info dialog: honest tooltip on the icon row."},
+  "@worldChatIconViaColumn": {
+    "description": "Channel info dialog: honest tooltip on the icon row."
+  },
   "worldChatBeatEdit": "Изменить",
-  "@worldChatBeatEdit": {"description": "Beat hover cluster: edit action (own beats, gap-disabled)."},
+  "@worldChatBeatEdit": {
+    "description": "Beat hover cluster: edit action (own beats, gap-disabled)."
+  },
   "worldChatBeatNewThread": "Новая ветка",
-  "@worldChatBeatNewThread": {"description": "Beat hover cluster: start a child thread."},
+  "@worldChatBeatNewThread": {
+    "description": "Beat hover cluster: start a child thread."
+  },
   "worldChatBeatDelete": "Удалить",
-  "@worldChatBeatDelete": {"description": "Beat menu: delete action (gap-disabled)."},
+  "@worldChatBeatDelete": {
+    "description": "Beat menu: delete action (gap-disabled)."
+  },
   "worldChatBeatMenu": "Действия с сообщением",
-  "@worldChatBeatMenu": {"description": "Beat hover cluster: menu button tooltip."},
+  "@worldChatBeatMenu": {
+    "description": "Beat hover cluster: menu button tooltip."
+  },
   "worldChatEditGap": "Биты в журнале только добавляются; глагол редактирования принадлежит harness и пока не предоставлен.",
-  "@worldChatEditGap": {"description": "Edit action tooltip naming the harness-owned verb gap."},
+  "@worldChatEditGap": {
+    "description": "Edit action tooltip naming the harness-owned verb gap."
+  },
   "worldChatDeleteGap": "Журнал доступен только для добавления; глагол удаления принадлежит harness и пока не предоставлен.",
-  "@worldChatDeleteGap": {"description": "Delete action tooltip naming the harness-owned verb gap."},
+  "@worldChatDeleteGap": {
+    "description": "Delete action tooltip naming the harness-owned verb gap."
+  },
   "worldChatThreadKind": "Ветка",
-  "@worldChatThreadKind": {"description": "Work-card kind word for a conversational child thread (no project seal)."},
+  "@worldChatThreadKind": {
+    "description": "Work-card kind word for a conversational child thread (no project seal)."
+  },
   "stripOverflowHint": "Скрытые вкладки — открыть список",
-  "@stripOverflowHint": {"description": "Tab strip: overflow control tooltip."},
+  "@stripOverflowHint": {
+    "description": "Tab strip: overflow control tooltip."
+  },
   "stripCloseAllTabs": "Закрыть все вкладки",
-  "@stripCloseAllTabs": {"description": "Tab strip: context-menu row that closes every open tab in every group."},
+  "@stripCloseAllTabs": {
+    "description": "Tab strip: context-menu row that closes every open tab in every group."
+  },
   "resizePaneHint": "Потяните, чтобы изменить ширину панелей",
-  "@resizePaneHint": {"description": "Pane seam drag handle: hint for the drag-to-resize affordance between pane groups."},
+  "@resizePaneHint": {
+    "description": "Pane seam drag handle: hint for the drag-to-resize affordance between pane groups."
+  },
   "resizeRoomsHint": "Потяните, чтобы изменить ширину списка комнат",
-  "@resizeRoomsHint": {"description": "Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge."},
+  "@resizeRoomsHint": {
+    "description": "Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge."
+  },
   "modelsProviders": "Провайдеры",
-  "@modelsProviders": {"description": "Models view: providers section label."},
+  "@modelsProviders": {
+    "description": "Models view: providers section label."
+  },
   "modelsEditProviders": "Редактировать провайдеров",
-  "@modelsEditProviders": {"description": "Models view: opens the provider editor."},
+  "@modelsEditProviders": {
+    "description": "Models view: opens the provider editor."
+  },
   "modelsNoProviders": "провайдеры не объявлены",
-  "@modelsNoProviders": {"description": "Models view: empty providers state."},
+  "@modelsNoProviders": {
+    "description": "Models view: empty providers state."
+  },
   "modelsCountSuffix": "моделей",
-  "@modelsCountSuffix": {"description": "Models view: count suffix on a provider row."},
+  "@modelsCountSuffix": {
+    "description": "Models view: count suffix on a provider row."
+  },
   "modelsContextTier": "контекст",
-  "@modelsContextTier": {"description": "Models view: context-tier label."},
+  "@modelsContextTier": {
+    "description": "Models view: context-tier label."
+  },
   "modelsNoModels": "модели не объявлены",
-  "@modelsNoModels": {"description": "Models view: empty model list."},
+  "@modelsNoModels": {
+    "description": "Models view: empty model list."
+  },
   "modelsAddProvider": "Добавить провайдера",
-  "@modelsAddProvider": {"description": "Provider editor: add row."},
+  "@modelsAddProvider": {
+    "description": "Provider editor: add row."
+  },
   "modelsEditProvider": "Изменить провайдера",
-  "@modelsEditProvider": {"description": "Provider editor: dialog title."},
+  "@modelsEditProvider": {
+    "description": "Provider editor: dialog title."
+  },
   "modelsAddModel": "Добавить модель",
-  "@modelsAddModel": {"description": "Provider editor: add model row."},
+  "@modelsAddModel": {
+    "description": "Provider editor: add model row."
+  },
   "modelsRenameModel": "Переименовать модель",
-  "@modelsRenameModel": {"description": "Provider editor: rename model row."},
+  "@modelsRenameModel": {
+    "description": "Provider editor: rename model row."
+  },
   "modelsEditAction": "изменить",
-  "@modelsEditAction": {"description": "Provider editor: inline edit verb."},
+  "@modelsEditAction": {
+    "description": "Provider editor: inline edit verb."
+  },
   "modelsRemoveAction": "удалить",
-  "@modelsRemoveAction": {"description": "Provider editor: inline remove verb."},
+  "@modelsRemoveAction": {
+    "description": "Provider editor: inline remove verb."
+  },
   "modelsRenameAction": "переименовать",
-  "@modelsRenameAction": {"description": "Provider editor: inline rename verb."},
+  "@modelsRenameAction": {
+    "description": "Provider editor: inline rename verb."
+  },
   "modelsConfirm": "Подтвердить",
-  "@modelsConfirm": {"description": "Provider editor: confirm button."},
+  "@modelsConfirm": {
+    "description": "Provider editor: confirm button."
+  },
   "modelsCancel": "Отмена",
-  "@modelsCancel": {"description": "Provider editor: cancel button."},
+  "@modelsCancel": {
+    "description": "Provider editor: cancel button."
+  },
   "modelsPropose": "Предложить",
-  "@modelsPropose": {"description": "Provider editor: validate candidate."},
+  "@modelsPropose": {
+    "description": "Provider editor: validate candidate."
+  },
   "modelsApply": "Применить",
-  "@modelsApply": {"description": "Provider editor: owner apply."},
+  "@modelsApply": {
+    "description": "Provider editor: owner apply."
+  },
   "modelsUnsavedChanges": "несохранённые изменения",
-  "@modelsUnsavedChanges": {"description": "Provider editor: dirty-state note."},
+  "@modelsUnsavedChanges": {
+    "description": "Provider editor: dirty-state note."
+  },
   "modelsInSync": "синхронизировано с активной палитрой",
-  "@modelsInSync": {"description": "Provider editor: clean-state note."},
+  "@modelsInSync": {
+    "description": "Provider editor: clean-state note."
+  },
   "modelsRestartRequired": "требуется перезапуск",
-  "@modelsRestartRequired": {"description": "Provider editor: apply outcome note."},
+  "@modelsRestartRequired": {
+    "description": "Provider editor: apply outcome note."
+  },
   "modelsTransportLabel": "транспорт",
-  "@modelsTransportLabel": {"description": "Provider editor: transport chip label."},
+  "@modelsTransportLabel": {
+    "description": "Provider editor: transport chip label."
+  },
   "modelsEnvPrefix": "env:",
-  "@modelsEnvPrefix": {"description": "Provider editor: credential env name prefix."},
+  "@modelsEnvPrefix": {
+    "description": "Provider editor: credential env name prefix."
+  },
   "modelsProviderIdHint": "id провайдера",
-  "@modelsProviderIdHint": {"description": "Provider editor: id field hint."},
+  "@modelsProviderIdHint": {
+    "description": "Provider editor: id field hint."
+  },
   "modelsModelIdHint": "id модели",
-  "@modelsModelIdHint": {"description": "Provider editor: model id field hint."},
+  "@modelsModelIdHint": {
+    "description": "Provider editor: model id field hint."
+  },
   "modelsBaseUrlHint": "base_url (https или http loopback)",
-  "@modelsBaseUrlHint": {"description": "Provider editor: base_url field hint."},
+  "@modelsBaseUrlHint": {
+    "description": "Provider editor: base_url field hint."
+  },
   "modelsCredentialEnvHint": "credential_env (ИМЯ переменной окружения)",
-  "@modelsCredentialEnvHint": {"description": "Provider editor: credential_env field hint."},
+  "@modelsCredentialEnvHint": {
+    "description": "Provider editor: credential_env field hint."
+  },
   "modelsRefusalEmptyId": "id не может быть пустым",
-  "@modelsRefusalEmptyId": {"description": "Provider editor: empty-id refusal."},
+  "@modelsRefusalEmptyId": {
+    "description": "Provider editor: empty-id refusal."
+  },
   "modelsRefusalDuplicateProvider": "провайдер с таким id уже существует",
-  "@modelsRefusalDuplicateProvider": {"description": "Provider editor: duplicate provider refusal."},
+  "@modelsRefusalDuplicateProvider": {
+    "description": "Provider editor: duplicate provider refusal."
+  },
   "modelsRefusalDuplicateModel": "провайдер уже объявляет модель",
-  "@modelsRefusalDuplicateModel": {"description": "Provider editor: duplicate model refusal."},
+  "@modelsRefusalDuplicateModel": {
+    "description": "Provider editor: duplicate model refusal."
+  },
   "modelsRefusalIdImmutable": "id провайдера неизменяем — на него ссылается каст:",
-  "@modelsRefusalIdImmutable": {"description": "Provider editor: immutable id refusal."},
+  "@modelsRefusalIdImmutable": {
+    "description": "Provider editor: immutable id refusal."
+  },
   "modelsRefusalProviderInUse": "нельзя удалить провайдера — на него ссылается каст:",
-  "@modelsRefusalProviderInUse": {"description": "Provider editor: provider-in-use refusal."},
+  "@modelsRefusalProviderInUse": {
+    "description": "Provider editor: provider-in-use refusal."
+  },
   "modelsRefusalModelInUse": "нельзя удалить модель — на неё ссылается каст:",
-  "@modelsRefusalModelInUse": {"description": "Provider editor: model-in-use refusal."},
+  "@modelsRefusalModelInUse": {
+    "description": "Provider editor: model-in-use refusal."
+  },
   "modelsRefusalNoSeat": "seat realm не готов — он нужен глаголам палитры",
-  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
+  "@modelsRefusalNoSeat": {
+    "description": "Provider editor: seat-absent refusal."
+  },
   "modelsLensCatalog": "Каталог",
-  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensCatalog": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLensBindings": "Биндинги",
-  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensBindings": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLensObserve": "Наблюдение",
-  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensObserve": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsJsonToggle": "JSON",
-  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsJsonToggle": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsJsonInvalid": "невалидный JSON — кандидат сохраняет последнюю валидную форму",
-  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsJsonInvalid": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldMaxTokens": "max_tokens",
-  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldMaxTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldMaxOutputTokens": "max_output_tokens",
-  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldMaxOutputTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldReasoningEffort": "reasoning_effort",
-  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldReasoningEffort": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldIncludeReasoning": "include_reasoning",
-  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldIncludeReasoning": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsBuiltinLaneLocal": "встроенная локальная дорожка MLX (на устройстве)",
-  "@modelsBuiltinLaneLocal": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneLocal": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneDecision": "локальная дорожка решений — обслуживается sidecar laya-serve и её загруженной моделью",
-  "@modelsBuiltinLaneDecision": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneDecision": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneAfm": "встроенная дорожка Apple Foundation (на устройстве, специфична для Apple)",
-  "@modelsBuiltinLaneAfm": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneAfm": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneOpenRouter": "встроенная дорожка OpenRouter (внешний хостинг)",
-  "@modelsBuiltinLaneOpenRouter": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneOpenRouter": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneUnknown": "встроенная дорожка (composition root)",
-  "@modelsBuiltinLaneUnknown": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneUnknown": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsReasoningNoLane": "нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·",
-  "@modelsReasoningNoLane": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsReasoningNoLane": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsReasoningTitle": "уровень reasoning",
-  "@modelsReasoningTitle": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsReasoningTitle": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "actorsMessage": "Написать",
-  "@actorsMessage": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsMessage": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsRemove": "Удалить актёра",
-  "@actorsRemove": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsRemove": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsRemoveConfirm": "Отозвать durable-строку и удалить профиль ростера:",
-  "@actorsRemoveConfirm": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsRemoveConfirm": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsNewActor": "Новый актёр",
-  "@actorsNewActor": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsNewActor": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsCreate": "Создать",
-  "@actorsCreate": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsCreate": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsAvatar": "Аватар",
-  "@actorsAvatar": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatar": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsAvatarHint": "эмодзи или символ",
-  "@actorsAvatarHint": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatarHint": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsAvatarClear": "Очистить",
-  "@actorsAvatarClear": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatarClear": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoning": "уровень reasoning",
-  "@actorsReasoning": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoning": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoningNoLane": "дорожка этого brain не объявляет уровни effort",
-  "@actorsReasoningNoLane": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoningNoLane": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoningDaemonNote": "in-app dispatch учитывает этот уровень; daemon читает reasoning по модели, пока не реализован запрос harness",
-  "@actorsReasoningDaemonNote": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoningDaemonNote": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsYourProfile": "Твой профиль",
-  "@actorsYourProfile": {"description": "Wave N3 2026-11-16 (human self-profile entry)."},
+  "@actorsYourProfile": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
   "actorsYou": "ты",
-  "@actorsYou": {"description": "Wave N3 2026-11-16 (human self-profile entry)."},
+  "@actorsYou": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
   "inboxQueuedReason": "в очереди - ждёт планировщик: запустите world",
-  "@inboxQueuedReason": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxQueuedReason": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskDetail": "Детали задачи",
-  "@inboxTaskDetail": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskDetail": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskCancel": "Отменить задачу",
-  "@inboxTaskCancel": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskCancel": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskEvents": "control-события",
-  "@inboxTaskEvents": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskNoEvents": "control-событий пока нет",
-  "@inboxTaskNoEvents": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskNoEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxDurableQueue": "durable-очередь",
-  "@inboxDurableQueue": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxDurableQueue": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxBoardsQueueNote": "durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox",
-  "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxBoardsQueueNote": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "actorsRetiredNote": "отозван - durable-строка сохраняет историю:",
-  "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
+  "@actorsRetiredNote": {
+    "description": "Wave N5b 2026-11-16 (retired actors name their retirement)."
+  },
   "actorsRetiredMark": "отозван",
-  "@actorsRetiredMark": {"description": "Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view)."},
+  "@actorsRetiredMark": {
+    "description": "Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view)."
+  },
   "actorsRetiredSection": "Отозванные",
-  "@actorsRetiredSection": {"description": "Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane)."},
+  "@actorsRetiredSection": {
+    "description": "Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane)."
+  },
   "actorsRevive": "Вернуть",
-  "@actorsRevive": {"description": "Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives)."},
+  "@actorsRevive": {
+    "description": "Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives)."
+  },
   "actorsImageSpend": "Расход изображений",
-  "@actorsImageSpend": {"description": "Расход изображений на актёра (ledger): подтверждённая стоимость, вызовы, изображения; отклонённый вызов считается без расхода.."},
+  "@actorsImageSpend": {
+    "description": "Расход изображений на актёра (ledger): подтверждённая стоимость, вызовы, изображения; отклонённый вызов считается без расхода.."
+  },
   "modelsClassRemote": "Удалённые провайдеры",
-  "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassRemote": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassRemoteEmpty": "нет объявленных удалённых провайдеров",
-  "@modelsClassRemoteEmpty": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassRemoteEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassLocalServer": "Локальный сервер (loopback)",
-  "@modelsClassLocalServer": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassLocalServer": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassLocalServerEmpty": "локальный сервер не подключён - дорожка класса ollama объявляется как openai_compatible провайдер с loopback base_url",
-  "@modelsClassLocalServerEmpty": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassLocalServerEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassSubscription": "Прямая подписка",
-  "@modelsClassSubscription": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassSubscription": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassSubscriptionAbsent": "прямой дорожки qwen сегодня нет. Grok — subscription-дорожка, и она закрыта, пока xAI не выдаст Last Answer client id.",
-  "@modelsClassSubscriptionAbsent": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassSubscriptionAbsent": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassUnclassified": "Неклассифицированные дорожки",
-  "@modelsClassUnclassified": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassUnclassified": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsAdd": "добавить",
-  "@modelsSettingsAdd": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsAdd": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsFreeKey": "свободный ключ",
-  "@modelsSettingsFreeKey": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsFreeKey": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsUnconsumed": "не потребляется",
-  "@modelsSettingsUnconsumed": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsUnconsumed": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsRemove": "убрать настройку",
-  "@modelsSettingsRemove": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsRemove": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsChatGptPlan": "план ChatGPT",
-  "@modelsChatGptPlan": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsChatGptPlan": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsChatGptSignedOut": "выход выполнен - войдите через панель runtime agent-doc",
-  "@modelsChatGptSignedOut": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsChatGptSignedOut": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsGrokPlan": "план Grok",
-  "@modelsGrokPlan": {"description": "Grok subscription catalog row. ADR 0030."},
+  "@modelsGrokPlan": {
+    "description": "Grok subscription catalog row. ADR 0030."
+  },
   "modelsGrokSignedOut": "выход выполнен - войдите через панель runtime agent-doc",
-  "@modelsGrokSignedOut": {"description": "Grok subscription catalog row when the account is signed out."},
+  "@modelsGrokSignedOut": {
+    "description": "Grok subscription catalog row when the account is signed out."
+  },
   "modelsGrokAwaitingRegistration": "ожидает регистрации client id у xAI",
-  "@modelsGrokAwaitingRegistration": {"description": "Grok subscription catalog row before xAI issues a client id."},
+  "@modelsGrokAwaitingRegistration": {
+    "description": "Grok subscription catalog row before xAI issues a client id."
+  },
   "modelsLocalCatalog": "Локальные модели",
-  "@modelsLocalCatalog": {"description": "Local model manager 2026-11-18: the merged local-models section header (downloadable checkpoints + on-device services)."},
+  "@modelsLocalCatalog": {
+    "description": "Local model manager 2026-11-18: the merged local-models section header (downloadable checkpoints + on-device services)."
+  },
   "modelsLocalDiskDownloaded": "Скачана",
-  "@modelsLocalDiskDownloaded": {"description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."},
+  "@modelsLocalDiskDownloaded": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
+  },
   "modelsLocalDiskNot": "Не скачана",
-  "@modelsLocalDiskNot": {"description": "Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet."},
+  "@modelsLocalDiskNot": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet."
+  },
   "modelsLocalMemLoaded": "Загружена",
-  "@modelsLocalMemLoaded": {"description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it)."},
+  "@modelsLocalMemLoaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it)."
+  },
   "modelsLocalMemUnloaded": "Выгружена",
-  "@modelsLocalMemUnloaded": {"description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM."},
+  "@modelsLocalMemUnloaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM."
+  },
   "modelsLocalDownload": "Скачать",
-  "@modelsLocalDownload": {"description": "Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog)."},
+  "@modelsLocalDownload": {
+    "description": "Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog)."
+  },
   "modelsLocalLoad": "Загрузить",
-  "@modelsLocalLoad": {"description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row."},
+  "@modelsLocalLoad": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row."
+  },
   "modelsLocalUnload": "Выгрузить",
-  "@modelsLocalUnload": {"description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row."},
+  "@modelsLocalUnload": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row."
+  },
   "modelsLocalDelete": "Удалить",
-  "@modelsLocalDelete": {"description": "Local model manager 2026-11-18: the row's delete verb (manager-installed entries only)."},
+  "@modelsLocalDelete": {
+    "description": "Local model manager 2026-11-18: the row's delete verb (manager-installed entries only)."
+  },
   "modelsLocalConsentTitle": "Скачать локальную модель?",
-  "@modelsLocalConsentTitle": {"description": "Local model manager 2026-11-18: the install consent dialog's title."},
+  "@modelsLocalConsentTitle": {
+    "description": "Local model manager 2026-11-18: the install consent dialog's title."
+  },
   "modelsLocalConsentBody": "Модель {label} (примерно {size}) будет скачана из сети в локальный кэш моделей. Runtime никогда не скачивает модели сам.",
   "@modelsLocalConsentBody": {
     "description": "Local model manager 2026-11-18: the install consent dialog's body (names the model, the size, the network fact).",
@@ -938,9 +1213,13 @@
     }
   },
   "modelsLocalConsentConfirm": "Скачать",
-  "@modelsLocalConsentConfirm": {"description": "Local model manager 2026-11-18: the consent dialog's confirm verb."},
+  "@modelsLocalConsentConfirm": {
+    "description": "Local model manager 2026-11-18: the consent dialog's confirm verb."
+  },
   "modelsLocalDeleteTitle": "Удалить локальную модель?",
-  "@modelsLocalDeleteTitle": {"description": "Local model manager 2026-11-18: the delete confirm dialog's title."},
+  "@modelsLocalDeleteTitle": {
+    "description": "Local model manager 2026-11-18: the delete confirm dialog's title."
+  },
   "modelsLocalDeleteBody": "Скачанные файлы модели {label} будут удалены из локального кэша моделей. Удалить можно только модели, установленные менеджером.",
   "@modelsLocalDeleteBody": {
     "description": "Local model manager 2026-11-18: the delete confirm dialog's body.",
@@ -951,27 +1230,65 @@
     }
   },
   "modelsLocalDeleteRefused": "удаление отклонено - эта модель установлена не менеджером",
-  "@modelsLocalDeleteRefused": {"description": "Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker)."},
+  "@modelsLocalDeleteRefused": {
+    "description": "Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker)."
+  },
   "modelsLocalPhaseChecking": "проверка",
-  "@modelsLocalPhaseChecking": {"description": "Local model manager 2026-11-18: the provisioning phase word."},
+  "@modelsLocalPhaseChecking": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
   "modelsLocalPhaseDownloading": "скачивание",
-  "@modelsLocalPhaseDownloading": {"description": "Local model manager 2026-11-18: the provisioning phase word."},
+  "@modelsLocalPhaseDownloading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
   "modelsLocalPhaseLoading": "загрузка",
-  "@modelsLocalPhaseLoading": {"description": "Local model manager 2026-11-18: the provisioning phase word."},
+  "@modelsLocalPhaseLoading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
   "modelsLocalPhaseReady": "готова",
-  "@modelsLocalPhaseReady": {"description": "Local model manager 2026-11-18: the provisioning phase word."},
+  "@modelsLocalPhaseReady": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
   "modelsLocalPhaseFailed": "ошибка",
-  "@modelsLocalPhaseFailed": {"description": "Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix)."},
-  "modelsBudgetAvailable": "доступно для локальных моделей",
-  "@modelsBudgetAvailable": {"description": "Local model budget 2026-11-18: the segmented RAM bar's available-for-local-loads legend label."},
-  "modelsBudgetFloor": "свободный запас",
-  "@modelsBudgetFloor": {"description": "Local model budget 2026-11-18: the segmented RAM bar's reserved-floor legend label (the load gate's incident floor)."},
+  "@modelsLocalPhaseFailed": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix)."
+  },
+  "modelsBudgetUsed": "занято",
+  "@modelsBudgetUsed": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's working-set legend label."
+  },
+  "modelsBudgetCached": "освобождаемый кэш",
+  "@modelsBudgetCached": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's file-cache legend label."
+  },
+  "modelsBudgetFree": "свободно",
+  "@modelsBudgetFree": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's free-pages legend label."
+  },
+  "modelsBudgetPolicy": "политика загрузок держит {floor} свободными — доступно для локальных загрузок {available}",
+  "@modelsBudgetPolicy": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      }
+    },
+    "description": "Local model budget v3.3 2026-11-19: the policy line under the bar."
+  },
   "modelsBudgetUnknown": "данные о памяти недоступны — load gate работает без датчика",
-  "@modelsBudgetUnknown": {"description": "Local model budget 2026-11-18: the honest degraded line when the memory sensor yields no facts."},
+  "@modelsBudgetUnknown": {
+    "description": "Local model budget 2026-11-18: the honest degraded line when the memory sensor yields no facts."
+  },
   "modelsBudgetTotalUnknown": "общий объём памяти неизвестен — шкала по доступной памяти",
-  "@modelsBudgetTotalUnknown": {"description": "Local model budget 2026-11-18: the honest note when the sensor sees available but not total memory."},
+  "@modelsBudgetTotalUnknown": {
+    "description": "Local model budget 2026-11-18: the honest note when the sensor sees available but not total memory."
+  },
   "modelsBudgetNothingFits": "ни одна скачанная модель не помещается в доступную память — освободите {size}, чтобы запустить {label}",
-  "@modelsBudgetNothingFits": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsBudgetNothingFits": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "placeholders": {
     "size": {
       "type": "String"
@@ -990,7 +1307,9 @@
     }
   },
   "modelsLocalGenerating": "генерация…",
-  "@modelsLocalGenerating": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalGenerating": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalTokPerSec": "≈{speed} ток/с",
   "@modelsLocalTokPerSec": {
     "description": "Local models v3 2026-11-18 (ru).",
@@ -1001,91 +1320,177 @@
     }
   },
   "modelsLocalDetails": "Подробнее",
-  "@modelsLocalDetails": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetails": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsDisk": "диск",
-  "@modelsLocalDetailsDisk": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetailsDisk": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsMemory": "память",
-  "@modelsLocalDetailsMemory": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetailsMemory": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsSizeOnDisk": "размер на диске",
-  "@modelsLocalDetailsSizeOnDisk": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetailsSizeOnDisk": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsPath": "путь снапшота",
-  "@modelsLocalDetailsPath": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetailsPath": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsLastGeneration": "последняя генерация",
-  "@modelsLocalDetailsLastGeneration": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsLocalDetailsLastGeneration": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsLocalDetailsLastError": "последняя ошибка",
   "modelsLocalDetailsUsedBy": "используется",
-  "@modelsLocalDetailsUsedBy": {"description": "Local models v3 2026-11-18 (ru): the detail sheet's bound-actors row."},
+  "@modelsLocalDetailsUsedBy": {
+    "description": "Local models v3 2026-11-18 (ru): the detail sheet's bound-actors row."
+  },
   "modelsBudgetSwap": "выгружено на диск (swap)",
-  "@modelsBudgetSwap": {"description": "Local models v3.2 2026-11-18 (ru)."},
+  "@modelsBudgetSwap": {
+    "description": "Local models v3.2 2026-11-18 (ru)."
+  },
   "modelsBudgetSwapNote": "система активно использует swap — загрузка модели усилит давление на память",
-  "@modelsBudgetSwapNote": {"description": "Local models v3.2 2026-11-18 (ru)."},
+  "@modelsBudgetSwapNote": {
+    "description": "Local models v3.2 2026-11-18 (ru)."
+  },
   "modelsConfigRootEdit": "корень конфигурации…",
-  "@modelsConfigRootEdit": {"description": "Local models v3.2 2026-11-18 (ru)."},
+  "@modelsConfigRootEdit": {
+    "description": "Local models v3.2 2026-11-18 (ru)."
+  },
   "modelsConfigRootTitle": "корень конфигурации ecsai",
-  "@modelsConfigRootTitle": {"description": "Local models v3.2 2026-11-18 (ru)."},
+  "@modelsConfigRootTitle": {
+    "description": "Local models v3.2 2026-11-18 (ru)."
+  },
   "modelsConfigRootHint": "Откуда читается .xsoulspace/config.json. Пусто = корень realm демона, иначе глобальный ~/.xsoulspace. Last Answer не должен зависеть от development-Checkout.",
-  "@modelsConfigRootHint": {"description": "Local models v3.2 2026-11-18 (ru)."},
-  "@modelsLocalDetailsLastError": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsConfigRootHint": {
+    "description": "Local models v3.2 2026-11-18 (ru)."
+  },
+  "@modelsLocalDetailsLastError": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsBuiltinsNoLifecycle": "всегда активна",
-  "@modelsBuiltinsNoLifecycle": {"description": "Local models v3 2026-11-18 (ru)."},
+  "@modelsBuiltinsNoLifecycle": {
+    "description": "Local models v3 2026-11-18 (ru)."
+  },
   "modelsFieldCapabilities": "capabilities",
-  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldCapabilities": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsEditModel": "Изменить модель",
-  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsEditModel": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsMoveUp": "поднять по лестнице эскалации",
-  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsMoveUp": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsMoveDown": "опустить по лестнице эскалации",
-  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsMoveDown": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsSessionPrefix": "сессия:",
-  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsSessionPrefix": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsSessionClear": "очистить",
-  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsSessionClear": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRestartPending": "палитра применена — daemon подхватит её после перезапуска",
-  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRestartPending": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRestartNow": "Перезапустить сейчас",
-  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRestartNow": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsHealthSection": "Здоровье",
-  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsHealthSection": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLedgerSection": "Журнал диспетчеризаций",
-  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLedgerSection": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsUnbound": "непривязанные актёры",
-  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsUnbound": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRefusalBadNumber": "не число — поле сохраняет последнее значение",
-  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRefusalBadNumber": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "attachImage": "Добавить изображение",
-  "@attachImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@attachImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "takePhoto": "Сделать фото",
-  "@takePhoto": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@takePhoto": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "chooseImage": "Выбрать изображение",
-  "@chooseImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@chooseImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "generateImage": "Сгенерировать изображение",
-  "@generateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@generateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "editImage": "Редактировать изображение",
-  "@editImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@editImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "captionImage": "Подпись",
-  "@captionImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@captionImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "altTextHint": "Опишите изображение (alt-текст)",
-  "@altTextHint": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@altTextHint": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "removeImage": "Удалить изображение",
-  "@removeImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@removeImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageAddedToNote": "Изображение добавлено",
-  "@imageAddedToNote": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageAddedToNote": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageGenerationPrompt": "Опишите изображение для генерации…",
-  "@imageGenerationPrompt": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageGenerationPrompt": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageGenerationFailed": "Не удалось создать изображение",
-  "@imageGenerationFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageGenerationFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageEditFailed": "Не удалось изменить",
-  "@imageEditFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageEditFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "generatingImage": "Генерация…",
-  "@generatingImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@generatingImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "annotateImage": "Аннотировать",
-  "@annotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@annotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "saveImageCopy": "Сохранить копию",
-  "@saveImageCopy": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@saveImageCopy": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "rotateImage": "Повернуть",
-  "@rotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@rotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "cropSquare": "Обрезать в квадрат",
-  "@cropSquare": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@cropSquare": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "selectionCut": "Вырезать",
   "selectionCopy": "Копировать",
   "selectionPaste": "Вставить",
@@ -1105,5 +1510,15 @@
   "worldChatPermsSubpath": "Подпуть",
   "worldChatPermsCaps": "Права",
   "worldChatPermsApply": "Применить",
-  "worldChatPermsRootRequired": "укажите корень"
+  "worldChatPermsRootRequired": "укажите корень",
+  "viewActorsTitle": "Актёры",
+  "actorsSearchHint": "Поиск актёров…",
+  "actorsSearchEmpty": "Актёры не найдены",
+  "actorsShowRetired": "Показать отозванных",
+  "actorsHideRetired": "Скрыть отозванных",
+  "actorsStatusWorking": "работает",
+  "actorsStatusIdle": "простаивает",
+  "actorsStatusFailed": "сбой",
+  "roomsFilterHint": "Фильтр",
+  "actorInfoNowSection": "Сейчас"
 }

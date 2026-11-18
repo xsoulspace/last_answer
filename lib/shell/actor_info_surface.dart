@@ -27,7 +27,8 @@
 ///   not zeros).
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6): `actor.info`,
-/// `actor.info.facts`, `actor.info.save`, `actor.info.channels`,
+/// `actor.info.facts`, `actor.info.now(.status/.line/.tasks)`,
+/// `actor.info.save`, `actor.info.channels`,
 /// `actor.info.channel.<channelId>`, `actor.info.absent`,
 /// `actor.info.imageSpend`, and the retired card's
 /// `actor.info.retired` + `actor.info.revive` (with `.bounce`).
@@ -37,7 +38,9 @@ import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_status.dart';
 import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
@@ -94,6 +97,7 @@ final class ActorInfoSurface extends StatelessWidget {
           children: [
             _header(context, display, service.retiredInfo(actorId) == null),
             _facts(context, display),
+            _NowSection(service: service, actorId: actorId),
             _ImageSpendSection(service: service, actorId: actorId),
             if (profile != null)
               _editor(context, profile)
@@ -516,6 +520,80 @@ final class ActorInfoSurface extends StatelessWidget {
     } on Object {
       return '';
     }
+  }
+}
+
+/// The NOW section (the manager's triage on the info tab, 2026-11-18):
+/// the actor's folded live status — the [deriveActorPresence] verdict
+/// as mark + word, the quiet narration line and the running durable
+/// tasks. One honest glance at what the actor is doing right now, from
+/// the same fold every other surface reads. No foldable facts render
+/// NOTHING (a human card, a never-started worker: no section — honest
+/// absence, never an invented state).
+final class _NowSection extends StatelessWidget {
+  const _NowSection({required this.service, required this.actorId});
+
+  final RealmChatService service;
+  final String actorId;
+
+  @override
+  Widget build(final BuildContext context) {
+    final worldState = context.read<WorldStateService?>();
+    final presence = presenceStatusOf(service, actorId, world: worldState);
+    if (presence == ActorPresenceStatus.absent) {
+      return const SizedBox.shrink();
+    }
+    final l10n = context.l10n;
+    final word = switch (presence) {
+      ActorPresenceStatus.working => l10n.actorsStatusWorking,
+      ActorPresenceStatus.idle => l10n.actorsStatusIdle,
+      ActorPresenceStatus.failed => l10n.actorsStatusFailed,
+      ActorPresenceStatus.retired => l10n.actorsRetiredMark,
+      ActorPresenceStatus.absent => null,
+    }!;
+    final line = service.botNarration[actorId]?.statusLine;
+    final running = runningTasksOf(worldState, actorId);
+    return Padding(
+      padding: ShellTokens.sectionPadding,
+      child: Column(
+        key: const ValueKey('actor.info.now'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.actorInfoNowSection, style: shellSectionLabel(context)),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              ActorStatusMark(
+                key: const ValueKey('actor.info.now.status'),
+                status: presence,
+              ),
+              const SizedBox(width: 6),
+              Text(word, style: context.laUi.compact),
+            ],
+          ),
+          if (line != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                line,
+                key: const ValueKey('actor.info.now.line'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: LaTokens.mono(10, context.shellMuted),
+              ),
+            ),
+          if (running > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                running == 1 ? '1 task running' : '$running tasks running',
+                key: const ValueKey('actor.info.now.tasks'),
+                style: LaTokens.mono(10, context.shellMuted),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 

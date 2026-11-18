@@ -81,7 +81,7 @@ void main() {
 
     // The DEFAULT law (key absent): the human may say; an uninvited
     // stranger may say too — auto-join on open, unchanged.
-    final strangerId = 'stranger';
+    const strangerId = 'stranger';
     final said = await conversation.say(
       actor: service.world!.authorityFor(humanId),
       threadId: channel!.threadId,
@@ -104,7 +104,7 @@ void main() {
       ),
       throwsA(
         isA<DurableRealmRefusal>().having(
-          (e) => (e as DurableRealmRefusal).code,
+          (e) => e.code,
           'code',
           'thread_not_visible',
         ),

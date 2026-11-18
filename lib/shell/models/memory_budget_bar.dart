@@ -1,23 +1,32 @@
 /// The local-model memory budget surface (2026-11-18, the storage-bar
-/// grammar — macOS System Settings) — v3: the bar IS the map of what is
-/// resident. ONE animated segmented bar + legend as the "Local models"
-/// section's lead, where each LOADED MODEL owns a labeled segment
-/// carved out of the system's in-use chunk, tap-through selects that
-/// model's row (`onModelTap`), and a generating model's segment pulses.
-/// Motion is encode-only: a segment's width animates its transition
-/// (a load sweeps in, an unload drains out) and the pulse says
-/// "decoding right now" — nothing decorates.
+/// grammar — macOS System Settings) — v3.3: the bar is Activity
+/// Monitor's own decomposition, in Apple's categories, on the
+/// owner-calibrated identity (total = working set + file cache + free,
+/// ±1%). ONE animated segmented bar + legend as the "Local models"
+/// section's lead: the WORKING SET chunk (anonymous + wired +
+/// compressor — Activity Monitor's App/Wired/Compressed) with each
+/// LOADED MODEL carved out as its own labeled accent segment
+/// (tap-through selects that model's row, a generating model pulses),
+/// then the RECLAIMABLE CACHE (file-backed — "Cached Files") and FREE
+/// pages. No invented segment: the 4 GB load floor is POLICY, not
+/// observed memory — it renders as the policy line under the bar
+/// ("available for local loads X"), never as a colored chunk.
+///
+/// Motion is encode-only: a segment's width animates its transition (a
+/// load sweeps in, an unload drains out) and the pulse says "decoding
+/// right now" — nothing decorates.
 ///
 /// The per-row fit verdict rides the SAME arithmetic
-/// (`memory_budget.dart`); the bar explains why a LOAD would refuse.
-/// Install/Delete stay disk verbs and keep working — disk is not RAM.
+/// (`memory_budget.dart`, basis = cache + free); the bar explains why a
+/// LOAD would refuse. Install/Delete stay disk verbs and keep working —
+/// disk is not RAM.
 ///
 /// Kit-only paint (DESIGN.md v6 component-carrier law): flat
 /// [ColoredBox] segments like the kit's own [LaProgress] grammar — no
 /// Material, no decoration beyond the segment fills. Facts null degrade
-/// to the honest unknown line; a total-less sensor degrades to the
-/// proportional-of-available bar with its own note — the surface never
-/// invents a segment it cannot see.
+/// to the honest unknown line; a sensor without the modern vm_stat rows
+/// degrades to the proportional-of-available bar with its own note —
+/// the surface never invents a segment it cannot see.
 library;
 
 import 'dart:math' as math;
@@ -51,17 +60,19 @@ final class LoadedModelSegment {
   int get megabytes => (approxBytes / (1024 * 1024)).ceil();
 }
 
+/// One bar chunk: the key (test + identity), the whole-MB draw size,
+/// the fill color, the pulse (a generating model), and the tap-through.
+typedef _BudgetSegment =
+    ({
+      Key? key,
+      int mb,
+      Color color,
+      bool generating,
+      VoidCallback? onTap,
+      String? semanticsLabel,
+    });
+
 /// The segmented budget bar + legend over one sensed [MemoryFacts].
-///
-/// Segments (left to right, proportions of the sensed memory): SYSTEM
-/// IN USE (the machine's own residency with the loaded models carved
-/// out — they ARE resident, the OS counter just cannot name them),
-/// one segment PER LOADED MODEL (accent, labeled, tap-through),
-/// the RESERVED FLOOR (the load gate's incident floor inside
-/// available, caution), AVAILABLE FOR LOCAL LOADS (quiet accent).
-/// Without a sensed total the bar scales to available alone and says
-/// so — never a guessed "used" segment. Facts null render only the
-/// honest unknown line.
 final class MemoryBudgetBar extends StatelessWidget {
   const MemoryBudgetBar({
     required this.facts,
@@ -97,18 +108,25 @@ final class MemoryBudgetBar extends StatelessWidget {
       );
     }
     final floor = kLocalModelLoadFloorMegabytes;
-    final available = current.availableMegabytes;
-    final total = current.totalMegabytes;
-    final floorSeg = math.min(floor, available);
-    final availSeg = math.max(0, available - floor);
-    // The "in use" chunk exists only when the sensor saw the total —
-    // available alone cannot know what the rest of the machine holds.
-    final usedRaw = total == null ? 0 : math.max(0, total - available);
-    // Carve the loaded models OUT of the system chunk (clamped to what
+    final mib = 1024 * 1024;
+    final cached = current.cachedMegabytes ?? 0;
+    final free = current.freeMegabytes;
+    final availableForLoads = math.max(0, current.availableMegabytes - floor);
+    // The observed working set; a legacy sensor (no anonymous row)
+    // falls back to the composite (total − available) and the bar says
+    // so. Null on a total-less sensor too — the fallback bar scales to
+    // available alone.
+    final used =
+        current.usedMegabytes ??
+        (current.totalMegabytes == null
+            ? null
+            : math.max(0, current.totalMegabytes! - current.availableMegabytes));
+
+    // Carve the loaded models OUT of the working set (clamped to what
     // is actually resident — a sensor race never draws a negative
     // system). The carve is ordered, so an over-budget tail collapses
     // onto the last model rather than inventing residency.
-    var remainingUsed = usedRaw;
+    var remainingUsed = used ?? 0;
     final modelSegs = <({LoadedModelSegment model, int mb})>[
       for (final model in loaded)
         (() {
@@ -118,60 +136,65 @@ final class MemoryBudgetBar extends StatelessWidget {
         })(),
     ];
     final modelMbTotal = modelSegs.fold(0, (final sum, final s) => sum + s.mb);
-    final systemSeg = usedRaw - modelMbTotal;
-    final barTotal = systemSeg + modelMbTotal + floorSeg + availSeg;
+    final systemSeg = used == null ? 0 : used - modelMbTotal;
 
-    final segments =
-        <
-          ({
-            Key? key,
-            int mb,
-            Color color,
-            bool generating,
-            VoidCallback? onTap,
-            String? semanticsLabel,
-          })
-        >[
-          if (systemSeg > 0)
-            (
-              key: const ValueKey('models.local.budget.seg.system'),
-              mb: systemSeg,
-              color: la.inkQuiet.withValues(alpha: 0.45),
-              generating: false,
-              onTap: null,
-              semanticsLabel: null,
-            ),
-          for (final (:model, :mb) in modelSegs)
-            if (mb > 0)
-              (
-                key: ValueKey('models.local.budget.seg.model.${model.cast}'),
-                mb: mb,
-                color: la.accent,
-                generating: model.generating,
-                onTap: onModelTap == null
-                    ? null
-                    : () => onModelTap!(model.cast),
-                semanticsLabel: 'models.local.budget.seg.model.${model.cast}',
-              ),
-          if (floorSeg > 0)
-            (
-              key: const ValueKey('models.local.budget.seg.floor'),
-              mb: floorSeg,
-              color: la.caution.withValues(alpha: 0.85),
-              generating: false,
-              onTap: null,
-              semanticsLabel: null,
-            ),
-          if (availSeg > 0)
-            (
-              key: const ValueKey('models.local.budget.seg.available'),
-              mb: availSeg,
-              color: la.accent.withValues(alpha: 0.30),
-              generating: false,
-              onTap: null,
-              semanticsLabel: null,
-            ),
-        ];
+    final segments = <_BudgetSegment>[
+      if (used != null && systemSeg > 0)
+        (
+          key: const ValueKey('models.local.budget.seg.system'),
+          mb: systemSeg,
+          color: la.inkQuiet.withValues(alpha: 0.45),
+          generating: false,
+          onTap: null,
+          semanticsLabel: null,
+        ),
+      for (final (:model, :mb) in modelSegs)
+        if (mb > 0)
+          (
+            key: ValueKey('models.local.budget.seg.model.${model.cast}'),
+            mb: mb,
+            color: la.accent,
+            generating: model.generating,
+            onTap: onModelTap == null
+                ? null
+                : () => onModelTap!(model.cast),
+            semanticsLabel: 'models.local.budget.seg.model.${model.cast}',
+          ),
+      // The reclaimable file cache (Activity Monitor's "Cached
+      // Files") — quiet accent; and the free pages, the strongest
+      // quiet accent (the actually-unallocated bucket).
+      if (used != null && cached > 0)
+        (
+          key: const ValueKey('models.local.budget.seg.cache'),
+          mb: cached,
+          color: la.accent.withValues(alpha: 0.25),
+          generating: false,
+          onTap: null,
+          semanticsLabel: null,
+        ),
+      if (used != null && free > 0)
+        (
+          key: const ValueKey('models.local.budget.seg.free'),
+          mb: free,
+          color: la.accent.withValues(alpha: 0.6),
+          generating: false,
+          onTap: null,
+          semanticsLabel: null,
+        ),
+      // The legacy/total-less fallback: one available chunk, scaled to
+      // itself — the bar exists, nothing is invented.
+      if (used == null && current.availableMegabytes > 0)
+        (
+          key: const ValueKey('models.local.budget.seg.available'),
+          mb: current.availableMegabytes,
+          color: la.accent.withValues(alpha: 0.6),
+          generating: false,
+          onTap: null,
+          semanticsLabel: null,
+        ),
+    ];
+
+    final barTotal = segments.fold(0, (final sum, final s) => sum + s.mb);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,36 +244,43 @@ final class MemoryBudgetBar extends StatelessWidget {
             runSpacing: 2,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              // One legend entry PER loaded model (the segment is
-              // labeled — the Apple-storage grammar: every colored
-              // chunk names what it is).
+              // One legend entry PER chunk — the Apple-storage grammar:
+              // every colored chunk names what it is (the v3 unlabeled
+              // grey rest was exactly the owner's "doesn't mean
+              // anything" complaint).
+              if (used != null && systemSeg > 0)
+                _legendEntry(
+                  context,
+                  keyName: 'models.local.budget.legend.system',
+                  label: l10n.modelsBudgetUsed,
+                  value: formatModelBytes(systemSeg * mib),
+                  color: la.inkQuiet.withValues(alpha: 0.45),
+                ),
               for (final (:model, :mb) in modelSegs)
                 if (mb > 0)
                   _legendEntry(
                     context,
                     keyName: 'models.local.budget.legend.${model.cast}',
                     label: model.label,
-                    value: '≈ ${formatModelBytes(mb * 1024 * 1024)}',
+                    value: '≈ ${formatModelBytes(mb * mib)}',
                     color: la.accent,
                   ),
-              // The floor legend shows the POLICY (the gate's target),
-              // not the kept part — when the machine cannot even hold
-              // the headroom the verdict line names the gap, and the
-              // number stays honest to what the gate wants.
-              _legendEntry(
-                context,
-                keyName: 'models.local.budget.legend.floor',
-                label: l10n.modelsBudgetFloor,
-                value: formatModelBytes(floor * 1024 * 1024),
-                color: la.caution,
-              ),
-              _legendEntry(
-                context,
-                keyName: 'models.local.budget.legend.available',
-                label: l10n.modelsBudgetAvailable,
-                value: formatModelBytes(availSeg * 1024 * 1024),
-                color: la.accent.withValues(alpha: 0.55),
-              ),
+              if (used != null && cached > 0)
+                _legendEntry(
+                  context,
+                  keyName: 'models.local.budget.legend.cache',
+                  label: l10n.modelsBudgetCached,
+                  value: formatModelBytes(cached * mib),
+                  color: la.accent.withValues(alpha: 0.25),
+                ),
+              if (used != null && free > 0)
+                _legendEntry(
+                  context,
+                  keyName: 'models.local.budget.legend.free',
+                  label: l10n.modelsBudgetFree,
+                  value: formatModelBytes(free * mib),
+                  color: la.accent.withValues(alpha: 0.6),
+                ),
               // The congestion disclosure (2026-11-18 v3.2, the owner's
               // "the measure is incorrect"): a machine that already
               // spilled to disk must never read as uncongested.
@@ -260,11 +290,28 @@ final class MemoryBudgetBar extends StatelessWidget {
                   keyName: 'models.local.budget.legend.swap',
                   label: l10n.modelsBudgetSwap,
                   value: formatModelBytes(
-                    (current.swapUsedMegabytes ?? 0) * 1024 * 1024,
+                    (current.swapUsedMegabytes ?? 0) * mib,
                   ),
                   color: la.danger,
                 ),
             ],
+          ),
+        ),
+        // The POLICY line (v3.3: the floor left the bar — a load-gate
+        // target is not a region of RAM): the gate's headroom target +
+        // today's actionable answer, caution-colored when nothing fits.
+        Padding(
+          padding: const EdgeInsets.only(top: 2),
+          child: Text(
+            key: const ValueKey('models.local.budget.policy'),
+            l10n.modelsBudgetPolicy(
+              formatModelBytes(floor * mib),
+              formatModelBytes(availableForLoads * mib),
+            ),
+            style: LaTokens.mono(
+              10,
+              availableForLoads > 0 ? la.inkMuted : la.caution,
+            ),
           ),
         ),
         // The pressure note rides the swap fact — one quiet caution
@@ -278,9 +325,9 @@ final class MemoryBudgetBar extends StatelessWidget {
               style: LaTokens.mono(10, la.caution),
             ),
           ),
-        // The total-less sensor's honest note: the bar scaled to
-        // available alone, nothing invented for the unseen total.
-        if (total == null)
+        // The legacy sensor's honest note: the bar scaled to available
+        // alone, nothing invented for the unseen buckets.
+        if (used == null)
           Padding(
             padding: const EdgeInsets.only(top: 2),
             child: Text(
@@ -304,7 +351,7 @@ final class MemoryBudgetBar extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     children: [
       ColoredBox(
-        color: color.withValues(alpha: 0.55),
+        color: color,
         child: const SizedBox(width: 6, height: 6),
       ),
       const SizedBox(width: 4),

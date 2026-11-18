@@ -1,13 +1,15 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_page.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/features/actors_panel.dart';
 import 'package:lastanswer/settings/features/mesh_tasks_settings_page.dart';
 
-/// The "Agents & Models" settings tab (ADR 0023): actor identities
-/// (create/watch/remove), the one agent config document (ACP agent
-/// servers, provider keys and models, chat defaults), and observability
-/// (world inspector, mesh tasks) that used to live under every doc.
+/// The "Agents & Models" settings tab (ADR 0023): the one agent config
+/// document (ACP agent servers, provider keys and models, chat
+/// defaults) and observability (world inspector, mesh tasks). The
+/// actors pane FOLDED into the People surface's Actors manager
+/// (2026-11-18 owner decision — the pane was the pre-tabs design;
+/// minting, editing, status and retirement live in the one manager
+/// surface now).
 class AgentSettingsView extends StatelessWidget {
   const AgentSettingsView({this.padding, super.key});
 
@@ -25,14 +27,6 @@ class AgentSettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: ActorsPanel(),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: LaHairline(),
-            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: AgentConfigSettingsPane(closeOnSave: false),

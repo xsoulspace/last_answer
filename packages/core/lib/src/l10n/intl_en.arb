@@ -549,9 +549,6 @@
       }
     }
   },
-  "actorsSectionTitle": "ACTORS",
-  "actorsSectionHint": "Create actor identities — bots you can talk and work with. Identities live in the synced roster and the ecsai world; the same mechanism actors themselves use when they spawn actors.",
-  "actorsUnsupported": "The actor world needs a local filesystem (desktop).",
   "actorsNoneYet": "No actors yet — create the first one below.",
   "actorsCreateActor": "Create actor",
   "actorsNameLabel": "Actor name",
@@ -565,8 +562,6 @@
   "actorsSelfBindHint": "Within its set, on its own",
   "actorsRoleLabel": "Role (optional)",
   "actorsRoleHint": "e.g. research assistant",
-  "actorsRemoveTooltip": "Remove actor",
-  "actorsLocalNeedsMacos": "Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.",
   "firstRunTitle": "Meet your first actor",
   "firstRunSubtitle": "Everything here starts from a conversation. Give your first actor a name, an optional persona and a brain — it will greet you in a direct message, and you can change everything later.",
   "firstRunNameLabel": "Name",
@@ -1116,6 +1111,10 @@
   "worldChatAttachNoneYet": "none yet",
   "@worldChatAttachNoneYet": {
     "description": "Attach dialog: trailing note on absent attach kinds."
+  },
+  "worldChatRemoveAttachment": "Remove attachment",
+  "@worldChatRemoveAttachment": {
+    "description": "Composer: staged-image chip's remove button tooltip (the messenger staging strip)."
   },
   "worldChatNoMatches": "No matches",
   "@worldChatNoMatches": {
@@ -1726,13 +1725,29 @@
   "@modelsLocalPhaseFailed": {
     "description": "Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix)."
   },
-  "modelsBudgetAvailable": "available for local loads",
-  "@modelsBudgetAvailable": {
-    "description": "Local model budget v3 2026-11-18: the segmented RAM bar's available-for-local-loads legend label."
+  "modelsBudgetUsed": "in use",
+  "@modelsBudgetUsed": {
+    "description": "Local model budget v3.3 2026-11-18: the segmented RAM bar's working-set legend label (anonymous + wired + compressor — Activity Monitor's App/Wired/Compressed)."
   },
-  "modelsBudgetFloor": "kept free (headroom)",
-  "@modelsBudgetFloor": {
-    "description": "Local model budget v3 2026-11-18: the segmented RAM bar's reserved-floor legend label (the load gate's incident floor)."
+  "modelsBudgetCached": "reclaimable cache",
+  "@modelsBudgetCached": {
+    "description": "Local model budget v3.3 2026-11-18: the segmented RAM bar's file-cache legend label (file-backed pages — Activity Monitor's Cached Files)."
+  },
+  "modelsBudgetFree": "free",
+  "@modelsBudgetFree": {
+    "description": "Local model budget v3.3 2026-11-18: the segmented RAM bar's free-pages legend label (free + speculative)."
+  },
+  "modelsBudgetPolicy": "load policy keeps {floor} free — available for local loads {available}",
+  "@modelsBudgetPolicy": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      }
+    },
+    "description": "Local model budget v3.3 2026-11-18: the policy line under the bar — the load gate's headroom floor and today's actionable answer (caution-colored when nothing fits)."
   },
   "modelsBudgetUnknown": "memory facts unavailable — the load gate runs sensor-absent",
   "@modelsBudgetUnknown": {
@@ -2015,5 +2030,45 @@
   "worldChatPermsRootRequired": "root is required",
   "@worldChatPermsRootRequired": {
     "description": "Grant form: honest refusal when the root field is empty."
+  },
+  "viewActorsTitle": "Actors",
+  "@viewActorsTitle": {
+    "description": "Actors manager 2026-11-18: the People surface's title and roster section label (the world-scoped actor manager)."
+  },
+  "actorsSearchHint": "Search actors…",
+  "@actorsSearchHint": {
+    "description": "Actors manager 2026-11-18: the search field's placeholder (filters names and ids)."
+  },
+  "actorsSearchEmpty": "No actors match",
+  "@actorsSearchEmpty": {
+    "description": "Actors manager 2026-11-18: the honest empty state when the search matches nothing."
+  },
+  "actorsShowRetired": "Show retired",
+  "@actorsShowRetired": {
+    "description": "Retired visibility 2026-11-18: the toggle tooltip when the retired section is hidden."
+  },
+  "actorsHideRetired": "Hide retired",
+  "@actorsHideRetired": {
+    "description": "Retired visibility 2026-11-18: the toggle tooltip when the retired section is shown (shown-muted is the default)."
+  },
+  "actorsStatusWorking": "working",
+  "@actorsStatusWorking": {
+    "description": "Actor status fold 2026-11-18: the word for a live reply cycle or running tasks."
+  },
+  "actorsStatusIdle": "idle",
+  "@actorsStatusIdle": {
+    "description": "Actor status fold 2026-11-18: the word for the quiet awake normal."
+  },
+  "actorsStatusFailed": "failed",
+  "@actorsStatusFailed": {
+    "description": "Actor status fold 2026-11-18: the word for a failed cycle or status."
+  },
+  "roomsFilterHint": "Filter",
+  "@roomsFilterHint": {
+    "description": "Rooms column 2026-11-18: the DMs section's compact filter field placeholder."
+  },
+  "actorInfoNowSection": "Now",
+  "@actorInfoNowSection": {
+    "description": "Actor info surface 2026-11-18: the live presence section's label (status word, narration, running tasks)."
   }
 }

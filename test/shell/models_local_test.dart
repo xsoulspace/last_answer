@@ -263,8 +263,9 @@ void main() {
 
       final section = find.byKey(const ValueKey('models.class.localModels'));
       // The budget bar leads the section, a REAL bar: 12px tall with
-      // its keyed segments inside the section (v3: the dark SYSTEM
-      // rest, not the old "used" label).
+      // its keyed segments inside the section (v3.3: the working-set
+      // chunk is LABELED "in use", the floor is policy — never a
+      // colored chunk).
       final bar = find.descendant(
         of: section,
         matching: find.byKey(const ValueKey('models.local.budget.bar')),
@@ -290,13 +291,31 @@ void main() {
           of: section,
           matching: find.byKey(const ValueKey('models.local.budget.seg.floor')),
         ),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.descendant(
           of: section,
           matching: find.byKey(
             const ValueKey('models.local.budget.seg.available'),
+          ),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.descendant(
+          of: section,
+          matching: find.byKey(
+            const ValueKey('models.local.budget.seg.free'),
+          ),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: section,
+          matching: find.byKey(
+            const ValueKey('models.local.budget.policy'),
           ),
         ),
         findsOneWidget,
@@ -479,17 +498,21 @@ void main() {
         'standing chip', (final tester) async {
       await mount(tester);
 
-      // The healthy machine's bar: system / floor / available segments
-      // with the legend values verbatim — and NO fit warnings at all
-      // (every row fits; nothing to say).
+      // The healthy machine's bar: the policy line names the gate's
+      // floor and today's actionable answer — and NO fit warnings at
+      // all (every row fits; nothing to say).
       await tester.scrollUntilVisible(
         find.byKey(const ValueKey('models.local.budget.bar')),
         240,
         scrollable: find.byType(Scrollable).last,
       );
       await tester.pumpAndSettle();
-      expect(find.text('kept free (headroom) 4.0 GB'), findsOneWidget);
-      expect(find.text('available for local loads 8.0 GB'), findsOneWidget);
+      expect(
+        find.text(
+          'load policy keeps 4.0 GB free — available for local loads 8.0 GB',
+        ),
+        findsOneWidget,
+      );
       expect(find.textContaining('needs'), findsNothing);
       expect(
         find.byKey(const ValueKey('models.local.budget.noFit')),
@@ -769,7 +792,7 @@ void main() {
   /// Polls past the service's refresh guard until the palette path
   /// names [needle] (or gives up after ~0.5s — the assertion then
   /// speaks).
-  Future<void> _waitForContains(WorldStateService world, String needle) async {
+  Future<void> waitForContains(WorldStateService world, String needle) async {
     for (var i = 0; i < 50; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 10));
       await world.refresh();
@@ -800,7 +823,7 @@ void main() {
       // The setter kicks its own refresh; the poll waits past the
       // refresh guard for the projection to land.
       world.configRootOverride = cfgRoot;
-      await _waitForContains(world, 'my-configs');
+      await waitForContains(world, 'my-configs');
       expect(world.palette, isNotNull);
       // Setting null returns to the defaults.
       world.configRootOverride = null;

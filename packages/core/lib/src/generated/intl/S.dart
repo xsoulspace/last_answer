@@ -2463,24 +2463,6 @@ abstract class S {
   /// **'{count, plural, one{{count} member} other{{count} members}}'**
   String worldChatMembers(int count);
 
-  /// No description provided for @actorsSectionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'ACTORS'**
-  String get actorsSectionTitle;
-
-  /// No description provided for @actorsSectionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Create actor identities — bots you can talk and work with. Identities live in the synced roster and the ecsai world; the same mechanism actors themselves use when they spawn actors.'**
-  String get actorsSectionHint;
-
-  /// No description provided for @actorsUnsupported.
-  ///
-  /// In en, this message translates to:
-  /// **'The actor world needs a local filesystem (desktop).'**
-  String get actorsUnsupported;
-
   /// No description provided for @actorsNoneYet.
   ///
   /// In en, this message translates to:
@@ -2558,18 +2540,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'e.g. research assistant'**
   String get actorsRoleHint;
-
-  /// No description provided for @actorsRemoveTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove actor'**
-  String get actorsRemoveTooltip;
-
-  /// No description provided for @actorsLocalNeedsMacos.
-  ///
-  /// In en, this message translates to:
-  /// **'Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.'**
-  String get actorsLocalNeedsMacos;
 
   /// No description provided for @firstRunTitle.
   ///
@@ -3699,6 +3669,12 @@ abstract class S {
   /// **'none yet'**
   String get worldChatAttachNoneYet;
 
+  /// Composer: staged-image chip's remove button tooltip (the messenger staging strip).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove attachment'**
+  String get worldChatRemoveAttachment;
+
   /// Attach dialog / mention overlay: empty filter result.
   ///
   /// In en, this message translates to:
@@ -4527,17 +4503,29 @@ abstract class S {
   /// **'failed'**
   String get modelsLocalPhaseFailed;
 
-  /// Local model budget v3 2026-11-18: the segmented RAM bar's available-for-local-loads legend label.
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's working-set legend label (anonymous + wired + compressor — Activity Monitor's App/Wired/Compressed).
   ///
   /// In en, this message translates to:
-  /// **'available for local loads'**
-  String get modelsBudgetAvailable;
+  /// **'in use'**
+  String get modelsBudgetUsed;
 
-  /// Local model budget v3 2026-11-18: the segmented RAM bar's reserved-floor legend label (the load gate's incident floor).
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's file-cache legend label (file-backed pages — Activity Monitor's Cached Files).
   ///
   /// In en, this message translates to:
-  /// **'kept free (headroom)'**
-  String get modelsBudgetFloor;
+  /// **'reclaimable cache'**
+  String get modelsBudgetCached;
+
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's free-pages legend label (free + speculative).
+  ///
+  /// In en, this message translates to:
+  /// **'free'**
+  String get modelsBudgetFree;
+
+  /// Local model budget v3.3 2026-11-18: the policy line under the bar — the load gate's headroom floor and today's actionable answer (caution-colored when nothing fits).
+  ///
+  /// In en, this message translates to:
+  /// **'load policy keeps {floor} free — available for local loads {available}'**
+  String modelsBudgetPolicy(String floor, String available);
 
   /// Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts.
   ///
@@ -4952,6 +4940,66 @@ abstract class S {
   /// In en, this message translates to:
   /// **'root is required'**
   String get worldChatPermsRootRequired;
+
+  /// Actors manager 2026-11-18: the People surface's title and roster section label (the world-scoped actor manager).
+  ///
+  /// In en, this message translates to:
+  /// **'Actors'**
+  String get viewActorsTitle;
+
+  /// Actors manager 2026-11-18: the search field's placeholder (filters names and ids).
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors…'**
+  String get actorsSearchHint;
+
+  /// Actors manager 2026-11-18: the honest empty state when the search matches nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors match'**
+  String get actorsSearchEmpty;
+
+  /// Retired visibility 2026-11-18: the toggle tooltip when the retired section is hidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Show retired'**
+  String get actorsShowRetired;
+
+  /// Retired visibility 2026-11-18: the toggle tooltip when the retired section is shown (shown-muted is the default).
+  ///
+  /// In en, this message translates to:
+  /// **'Hide retired'**
+  String get actorsHideRetired;
+
+  /// Actor status fold 2026-11-18: the word for a live reply cycle or running tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'working'**
+  String get actorsStatusWorking;
+
+  /// Actor status fold 2026-11-18: the word for the quiet awake normal.
+  ///
+  /// In en, this message translates to:
+  /// **'idle'**
+  String get actorsStatusIdle;
+
+  /// Actor status fold 2026-11-18: the word for a failed cycle or status.
+  ///
+  /// In en, this message translates to:
+  /// **'failed'**
+  String get actorsStatusFailed;
+
+  /// Rooms column 2026-11-18: the DMs section's compact filter field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get roomsFilterHint;
+
+  /// Actor info surface 2026-11-18: the live presence section's label (status word, narration, running tasks).
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get actorInfoNowSection;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

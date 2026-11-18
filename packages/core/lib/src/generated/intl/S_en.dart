@@ -1330,17 +1330,6 @@ class SEn extends S {
   }
 
   @override
-  String get actorsSectionTitle => 'ACTORS';
-
-  @override
-  String get actorsSectionHint =>
-      'Create actor identities — bots you can talk and work with. Identities live in the synced roster and the ecsai world; the same mechanism actors themselves use when they spawn actors.';
-
-  @override
-  String get actorsUnsupported =>
-      'The actor world needs a local filesystem (desktop).';
-
-  @override
   String get actorsNoneYet => 'No actors yet — create the first one below.';
 
   @override
@@ -1378,13 +1367,6 @@ class SEn extends S {
 
   @override
   String get actorsRoleHint => 'e.g. research assistant';
-
-  @override
-  String get actorsRemoveTooltip => 'Remove actor';
-
-  @override
-  String get actorsLocalNeedsMacos =>
-      'Local model brains need macOS (MLX); hosted brains work anywhere the provider key is configured.';
 
   @override
   String get firstRunTitle => 'Meet your first actor';
@@ -1998,6 +1980,9 @@ class SEn extends S {
   String get worldChatAttachNoneYet => 'none yet';
 
   @override
+  String get worldChatRemoveAttachment => 'Remove attachment';
+
+  @override
   String get worldChatNoMatches => 'No matches';
 
   @override
@@ -2470,10 +2455,18 @@ class SEn extends S {
   String get modelsLocalPhaseFailed => 'failed';
 
   @override
-  String get modelsBudgetAvailable => 'available for local loads';
+  String get modelsBudgetUsed => 'in use';
 
   @override
-  String get modelsBudgetFloor => 'kept free (headroom)';
+  String get modelsBudgetCached => 'reclaimable cache';
+
+  @override
+  String get modelsBudgetFree => 'free';
+
+  @override
+  String modelsBudgetPolicy(String floor, String available) {
+    return 'load policy keeps $floor free — available for local loads $available';
+  }
 
   @override
   String get modelsBudgetUnknown =>
@@ -2693,4 +2686,34 @@ class SEn extends S {
 
   @override
   String get worldChatPermsRootRequired => 'root is required';
+
+  @override
+  String get viewActorsTitle => 'Actors';
+
+  @override
+  String get actorsSearchHint => 'Search actors…';
+
+  @override
+  String get actorsSearchEmpty => 'No actors match';
+
+  @override
+  String get actorsShowRetired => 'Show retired';
+
+  @override
+  String get actorsHideRetired => 'Hide retired';
+
+  @override
+  String get actorsStatusWorking => 'working';
+
+  @override
+  String get actorsStatusIdle => 'idle';
+
+  @override
+  String get actorsStatusFailed => 'failed';
+
+  @override
+  String get roomsFilterHint => 'Filter';
+
+  @override
+  String get actorInfoNowSection => 'Now';
 }

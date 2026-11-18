@@ -409,4 +409,182 @@ void main() {
     expect(openedActorId, 'toby-researcher');
     expect(tester.takeException(), isNull);
   });
+
+  // THE ACTORS MANAGER (2026-11-18): search, retired toggle, status
+  // marks — the world-scoped manager's own contracts.
+  group('the actors manager', () {
+    Future<(RealmChatService, ActorProfile, ActorProfile)> service0(
+      final WidgetTester tester,
+    ) async {
+      late RealmChatService service;
+      late ActorProfile toby;
+      late ActorProfile ember;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_manager_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        final roster = ActorRoster(replicaId: 'tester');
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: roster,
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        toby = (await service.createActor(
+          displayName: 'Toby Researcher',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+        ember = (await service.createActor(
+          displayName: 'Ember Scout',
+          kind: ActorKind.model,
+          brainRef: '',
+        ))!;
+      });
+      return (service, toby, ember);
+    }
+
+    Widget app(final RealmChatService service) =>
+        ChangeNotifierProvider<RealmChatService>.value(
+          value: service,
+          child: MaterialApp(
+            builder: (final context, final child) =>
+                Portal(child: child ?? const SizedBox.shrink()),
+            localizationsDelegates: S.localizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: Row(
+                children: [
+                  SizedBox(
+                    width: ShellTokens.contextColumnWidth,
+                    child: PeopleView(service: service),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+    testWidgets('the search field filters names case-insensitively and '
+        'names the miss', (final tester) async {
+      final (service, toby, ember) = await service0(tester);
+      await tester.pumpWidget(app(service));
+      await tester.pump();
+
+      final tobyRow = find.byKey(
+        ValueKey('shell.context.person.${toby.actorId}'),
+      );
+      final emberRow =
+          find.byKey(ValueKey('shell.context.person.${ember.actorId}'));
+      expect(tobyRow, findsOneWidget);
+      expect(emberRow, findsOneWidget);
+
+      // A name substring narrows the roster.
+      await tester.enterText(
+        find.byKey(const ValueKey('shell.people.search')),
+        'TOBY',
+      );
+      await tester.pump();
+      expect(tobyRow, findsOneWidget);
+      expect(emberRow, findsNothing);
+
+      // A miss names itself — never a blank list.
+      await tester.enterText(
+        find.byKey(const ValueKey('shell.people.search')),
+        'zzz-no-one',
+      );
+      await tester.pump();
+      expect(tobyRow, findsNothing);
+      expect(emberRow, findsNothing);
+      expect(
+        find.byKey(const ValueKey('shell.people.search.empty')),
+        findsOneWidget,
+      );
+
+      await tester.enterText(
+        find.byKey(const ValueKey('shell.people.search')),
+        '',
+      );
+      await tester.pump();
+      expect(tobyRow, findsOneWidget);
+      expect(emberRow, findsOneWidget);
+    });
+
+    testWidgets('the retired toggle hides and re-shows the retired rows; '
+        'the head stays reachable', (final tester) async {
+      // Seed one retired durable row BEFORE the boot scan names it and
+      // never re-adopts it (the retired-visibility test's pattern).
+      late RealmChatService retiredService;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_manager_ret_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        await world.store.transact(
+          (tx) => tx.put('realm_actors', 'old-scout', <String, Object?>{
+            'actorId': 'old-scout',
+            'kind': 'realm_actor',
+            'displayName': 'Old Scout',
+            'retiredAt': '2026-11-04T18:16:08.327830Z',
+            'retireReason': 'hygiene-sweep',
+          }),
+        );
+        retiredService = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(retiredService.dispose);
+        await retiredService.ensureReady();
+      });
+      await tester.pumpWidget(app(retiredService));
+      await tester.pump();
+
+      final retiredRow = find.byKey(
+        const ValueKey('shell.people.retired.old-scout'),
+      );
+      final toggle = find.byKey(const ValueKey('shell.people.retired.toggle'));
+      // Shown-muted is the default (an invisible retirement is a lie).
+      expect(retiredRow, findsOneWidget);
+
+      await tester.tap(toggle);
+      await tester.pump();
+      expect(retiredRow, findsNothing);
+      expect(toggle, findsOneWidget); // the head keeps the re-show verb
+
+      await tester.tap(toggle);
+      await tester.pump();
+      expect(retiredRow, findsOneWidget);
+    });
+
+    testWidgets('the status mark rides the fold: a working bot renders '
+        'one, the human never does', (final tester) async {
+      final (service, toby, ember) = await service0(tester);
+      service.debugNarrationOverride = <String, BotNarration>{
+        toby.actorId: BotNarration(
+          state: BotNarrationState.generating,
+          detail: 'lab',
+          since: DateTime.now(),
+        ),
+      };
+      await tester.pumpWidget(app(service));
+      await tester.pump();
+
+      expect(
+        find.byKey(ValueKey('actor.status.${toby.actorId}')),
+        findsOneWidget,
+      );
+      // The other known bot folds to IDLE (the service's default
+      // narration fold keeps a live worker quiet-but-awake); the human
+      // never carries a mark.
+      expect(
+        find.byKey(ValueKey('actor.status.${ember.actorId}')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('actor.status.${service.humanActorId}')),
+        findsNothing,
+      );
+    });
+  });
 }

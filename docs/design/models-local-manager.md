@@ -190,3 +190,48 @@ is there no place to start any model?"); phase 3 (used-by + motion).
 - **Motion** (encode-only): the status word, the verb set and the fit
   reason crossfade (200 ms) on lifecycle changes; the bar already
   sweeps widths and pulses while generating.
+
+## v3.2 — the memory honesty + the config-root option (2026-11-18, owner round 5)
+
+- **The memory measure was not wrong in its formula — it was wrong in
+  what it HID.** The formula (free + inactive + speculative + purgeable
+  pages) is Apple's own "free percentage" basis (`memory_pressure`
+  agrees within snapshot drift). What the bar hid: the machine can be
+  DEEP in swap while "available" reads fine — inactive file cache
+  reclaims at a cost, the compressor holds resident pages already
+  squeezed, and swapped-out memory sits on disk outside every count.
+  Landed: `MemoryFacts` now senses **compressor-occupied pages** and
+  **swap used** (`vm.swapusage`); the bar discloses both when swap
+  ≥ 256 MB (a `swapped to disk X GB` legend entry in danger ink + one
+  caution line: "the machine is swapping — a load will add pressure");
+  and the floor legend now shows the POLICY (4.0 GB) rather than
+  `min(floor, available)` — the headroom is the gate's target, the
+  shortfall belongs to the verdict line. The GATE stays floor-based
+  (policy unchanged): making it pressure-aware is an owner decision.
+- **The config-root option.** The models header showed
+  `/Users/antonio/xs/ecsai_harness/.xsoulspace/config.json` — a dev
+  checkout — because the daemon was spawned with `ECSAID_ROOT` pinned
+  there and its authority row carries the root. Laws landed:
+  `WorldStateService.configRootOverride` (persisted under
+  `ecsai.configRootOverride`) LEADS the config candidates; the models
+  header's path row gains an edit verb (`models.config.edit`) opening
+  a dialog (empty = the defaults: the daemon's realm root, else the
+  global `~/.xsoulspace`). Direction (roadmap): Last Answer should
+  embed or download the ecsai runtime with its GLOBAL config home —
+  never point into a development checkout; the env pin remains a dev
+  tool. (Mobile/web integration rides that distribution story.)
+- **The model-store dedupe (analysis).** One store already rules the
+  text models: the HF hub cache is both the installer's target and
+  every resolver's source (qwen discovery, lfm2 resolver, and now the
+  laya resolver — `resolveModelDir` accepts a
+  `models--*laya-mlx*` snapshot with `rl_agent_config.json` +
+  weights, the lfm2 law mirrored), so a manager install and a
+  pre-existing HF download are the SAME bytes — nothing duplicates.
+  Remaining duplication vectors, named: (1) the raw-org checkpoints
+  in the hub cache (`Qwen/Qwen3.5-0.8B`, `RikiyaT/...`) coexist with
+  the mlx-community converts — the collision law prefers the convert;
+  a "use the already-cached checkpoint" option is the v2 pasted-ids
+  lane; (2) laya-mlx's historical home under `~/.cache/xsoulspace`
+  predates the one-store law — the resolver now accepts both, no
+  migration forced; (3) dangling snapshot dirs (the wiped-blobs
+  Qwen3-0.6B) hold no bytes and discovery already refuses them.

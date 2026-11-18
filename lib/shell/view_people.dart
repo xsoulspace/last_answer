@@ -1,37 +1,48 @@
-/// WAVE 5 — the PEOPLE view, promoted from the context panel into the
-/// surface registry (docs/design/unified-views.md): the actor-profile
-/// panel is a view now, tab-able and pin-able like any other. Two
-/// pieces live here:
+/// The ACTORS MANAGER — the People view, re-scoped (owner decision
+/// 2026-11-18): a WORLD-scoped surface for managing every actor, not a
+/// conversation's people list. The conversation-scoped sections (the
+/// thread's participants, the channel's members, the topic) retired
+/// with the pre-tabs design — a conversation's people live in the
+/// conversation's own surfaces, and an actor's name anywhere opens the
+/// `actor:<id>` info tab (Wave F). The manager owns the whole roster:
 ///
-/// - [PeopleFocus] — the session state of WHICH actor the view
-///   focuses (null = the conversation's plain people list). Plain
-///   ChangeNotifier, provided by the shell; the view reads it
-///   nullable (hermetic shells render the inert list).
-/// - [PeopleView] — the view body: the conversation's topic + people
-///   (with the bots' quiet narration lines), or the focused actor's
-///   profile with its inline EDIT mode. The same edit verb
-///   (`RealmChatService.updateActor`) backs the Settings actors pane.
+/// - the SEARCH field (the member-picker's filter grammar) over the
+///   roster's names and ids — the 2000-actor answer;
+/// - the ACTORS section — one row per roster identity (the human
+///   rides it too, labelled "you"), each with the folded status mark
+///   (`deriveActorPresence`: working / idle / failed) and the quiet
+///   narration line, the Message verb on non-human rows, and the New
+///   actor verb on the section head (actor equality: minting lives
+///   where the people are);
+/// - the RETIRED section — shown-muted by default (an invisible
+///   retirement is a lie of absence) with the show/hide toggle on the
+///   head.
 ///
-/// Widget keys are the agent's UI contract (DESIGN §6) — carried over
-/// from the panel unchanged: `shell.context.topic`, `shell.context.people`,
+/// The same edit verb (`RealmChatService.updateActor`) backs the
+/// `actor:<id>` info surface; the [PeopleFocus] seam stays for
+/// hermetic hosts (no `onOpenActor` above the view).
+///
+/// Widget keys are the agent's UI contract (DESIGN §6) — the surviving
+/// family is unchanged: `shell.context.people`,
 /// `shell.context.person.<id>`, `shell.people.status.<id>`,
-/// `shell.context.actor` (with `.back`, `.edit`, `.save`), plus the
-/// retired-visibility rows `shell.people.retired.<id>` and their mark
-/// `shell.people.retired.mark.<id>` (2026-11-18).
+/// `shell.people.newActor`, `shell.people.message.<id>`,
+/// `shell.people.retired(.<id>)` and `shell.people.retired.mark.<id>`;
+/// the manager adds `shell.people.search(.empty)`,
+/// `shell.people.retired.toggle` and the status marks
+/// `actor.status.<id>` (2026-11-18).
 library;
 
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
-import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_status.dart';
 import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show ActorScopeGrant;
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
@@ -40,14 +51,17 @@ import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/ui/creature_mark.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show ActorScopeGrant;
 
 /// Which actor the people view focuses (session state, not persisted —
-/// the same lifetime the panel's focus had). Null = the conversation's
-/// plain people list.
+/// the same lifetime the panel's focus had). Null = the plain actor
+/// list. The shell routes row taps into `actor:<id>` tabs instead;
+/// this seam stays for hermetic hosts.
 final class PeopleFocus extends ChangeNotifier {
   String? _actorId;
 
-  /// The focused actor id, null = the plain people list.
+  /// The focused actor id, null = the plain actor list.
   String? get actorId => _actorId;
 
   /// Focuses [actorId]: the view shows the actor's profile.
@@ -57,7 +71,7 @@ final class PeopleFocus extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Clears the focus (back to the conversation's people).
+  /// Clears the focus (back to the actor list).
   void clear() {
     if (_actorId == null) return;
     _actorId = null;
@@ -65,11 +79,12 @@ final class PeopleFocus extends ChangeNotifier {
   }
 }
 
-/// The PEOPLE view body: the focused actor's profile (with its inline
-/// edit mode), or the conversation's topic + people list. Reads the
-/// service (state) and the [PeopleFocus] (focus); a null focus keeps
-/// the rows inert (hermetic shells without a shell above).
-final class PeopleView extends StatelessWidget {
+/// The ACTORS MANAGER body: the focused actor's profile (with its
+/// inline edit mode — the hermetic seam), or the searchable roster with
+/// the folded status marks and the retired section. Reads the service
+/// (state); a null focus keeps the rows inert (hermetic shells without
+/// a shell above).
+final class PeopleView extends StatefulWidget {
   const PeopleView({
     required this.service,
     this.focus,
@@ -81,7 +96,7 @@ final class PeopleView extends StatelessWidget {
   /// The world conversation service — the view's state source.
   final RealmChatService service;
 
-  /// The view's focus; null renders the plain people list with inert
+  /// The view's focus; null renders the plain actor list with inert
   /// rows.
   final PeopleFocus? focus;
 
@@ -96,26 +111,44 @@ final class PeopleView extends StatelessWidget {
   final void Function(String surfaceId)? onOpenConversation;
 
   @override
+  State<PeopleView> createState() => _PeopleViewState();
+}
+
+final class _PeopleViewState extends State<PeopleView> {
+  /// The search field's live query — filters names AND ids (the
+  /// member-picker's rule).
+  var _query = '';
+
+  /// RETIRED VISIBILITY (the owner's call, 2026-11-18): shown-muted by
+  /// DEFAULT — an invisible retirement is a lie of absence; hiding is
+  /// the opt-in.
+  var _showRetired = true;
+
+  @override
   Widget build(final BuildContext context) {
-    final focus = this.focus;
+    final focus = widget.focus;
     return ListenableBuilder(
-      listenable: focus ?? service,
+      listenable: focus ?? widget.service,
       builder: (final context, final _) {
         final focusedId = focus?.actorId;
         if (focus != null && focusedId != null) {
           return _ActorPanel(
-            service: service,
+            service: widget.service,
             peopleFocus: focus,
             actorId: focusedId,
           );
         }
         return ListenableBuilder(
-          listenable: service,
-          builder: (final context, final _) => _PeopleListBody(
-            service: service,
+          listenable: widget.service,
+          builder: (final context, final _) => _ActorsManagerBody(
+            service: widget.service,
+            query: _query,
+            onQueryChanged: (final value) => setState(() => _query = value),
+            showRetired: _showRetired,
+            onToggleRetired: () => setState(() => _showRetired = !_showRetired),
             onFocus: focus?.focus,
-            onOpenActor: onOpenActor,
-            onOpenConversation: onOpenConversation,
+            onOpenActor: widget.onOpenActor,
+            onOpenConversation: widget.onOpenConversation,
           ),
         );
       },
@@ -123,17 +156,25 @@ final class PeopleView extends StatelessWidget {
   }
 }
 
-/// The conversation's people: the thread topic (when it says something
-/// the people section does not) + one row per person.
-class _PeopleListBody extends StatelessWidget {
-  const _PeopleListBody({
+/// The manager's list body: the search field, the roster (filtered,
+/// status-marked) and the retired section (the toggle on the head).
+class _ActorsManagerBody extends StatelessWidget {
+  const _ActorsManagerBody({
     required this.service,
+    required this.query,
+    required this.onQueryChanged,
+    required this.showRetired,
+    required this.onToggleRetired,
     this.onFocus,
     this.onOpenActor,
     this.onOpenConversation,
   });
 
   final RealmChatService service;
+  final String query;
+  final ValueChanged<String> onQueryChanged;
+  final bool showRetired;
+  final VoidCallback onToggleRetired;
 
   /// Focuses an actor (its profile rides the view); null keeps rows
   /// inert.
@@ -146,136 +187,134 @@ class _PeopleListBody extends StatelessWidget {
   /// conversation grammar.
   final void Function(String surfaceId)? onOpenConversation;
 
+  /// The search rule: a row matches when the query is empty or names
+  /// the actor — display name OR actor id, case-insensitive (the
+  /// member-picker's rule verbatim).
+  static bool _matches(final String query, final String id, final String name) {
+    final needle = query.trim().toLowerCase();
+    if (needle.isEmpty) return true;
+    return name.toLowerCase().contains(needle) ||
+        id.toLowerCase().contains(needle);
+  }
+
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    // ACTOR EQUALITY (owner law, 2026-11-16): minting lives where the
-    // people are — one verb, the shared create verb, then the new
-    // actor's own surface opens.
-    final newActorVerb = Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 6),
-      child: Row(
-        children: [
-          const Spacer(),
-          LaButton(
-            key: const ValueKey('shell.people.newActor'),
-            variant: LaButtonVariant.ghost,
-            onPressed: () => unawaited(_newActor(context)),
-            label: l10n.actorsNewActor,
-          ),
-        ],
-      ),
-    );
-    final thread = service.activeThread;
-    if (thread == null) {
-      // No conversation selected: the surface still lists the WORLD's
-      // actors (the thread-scoped leftover gate hid every actor behind
-      // "select a conversation" — live-caught reverify, 2026-11-17).
-      final rosterIds = [
-        for (final actor in service.roster?.all ?? const <ActorProfile>[])
-          actor.actorId,
-      ];
-      // RETIRED VISIBILITY (2026-11-18): retirement tombstones the
-      // roster, so this world list went silent about retired actors —
-      // an invisible retirement is a lie of absence. The Retired
-      // section names them muted; a tap opens the info surface (the
-      // one surface retirement names verbatim, Revive included).
-      final retiredIds = service.retiredRows.keys.toList()..sort();
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            newActorVerb,
-            _Section(
-              sectionKey: const ValueKey('shell.context.people'),
-              label: l10n.contextTabPeople,
-              child: rosterIds.isEmpty
-                  ? Text(l10n.actorsNoneYet, style: context.laUi.compact)
-                  : _PeopleList(
-                      ids: rosterIds,
-                      service: service,
-                      onFocus: onFocus,
-                      onOpenActor: onOpenActor,
-                      onOpenConversation: onOpenConversation,
-                    ),
-            ),
-            if (retiredIds.isNotEmpty)
-              _Section(
-                sectionKey: const ValueKey('shell.people.retired'),
-                label: l10n.actorsRetiredSection,
-                child: _RetiredList(
-                  ids: retiredIds,
-                  service: service,
-                  onOpenActor: onOpenActor ?? onFocus,
-                ),
-              ),
-          ],
-        ),
-      );
-    }
-    final threadId = thread['threadId']! as String;
-    final participants = (thread['participants']! as List).cast<String>();
-    final channel = service.channelByThreadId(threadId);
-    final human = service.humanActorId;
-    final isDm =
-        human != null &&
-        participants.length == 2 &&
-        participants.contains(human);
-    // A channel names its members; a conversation lists its
-    // participants. A DM's topic is the other actor's name — the
-    // people section already says it, so no topic rule there.
-    final people = channel?.memberIds ?? participants;
-    final showTopic = channel == null && !isDm;
+    final rosterIds = [
+      for (final actor in service.roster?.all ?? const <ActorProfile>[])
+        actor.actorId,
+    ]..sort((final a, final b) {
+      final an = _nameOf(a).toLowerCase();
+      final bn = _nameOf(b).toLowerCase();
+      return an.compareTo(bn) != 0 ? an.compareTo(bn) : a.compareTo(b);
+    });
+    final liveIds = [
+      for (final id in rosterIds)
+        if (_matches(query, id, _nameOf(id))) id,
+    ];
+    // RETIRED VISIBILITY: the retired ids sort by name (the rooms
+    // column's rule); the search filters them too, the toggle on the
+    // head decides whether they render at all.
+    final retiredIds =
+        service.retiredRows.keys
+            .where(
+              (final id) =>
+                  _matches(query, id, _retiredNameOf(id)),
+            )
+            .toList()
+          ..sort((final a, final b) {
+            final an = _retiredNameOf(a).toLowerCase();
+            final bn = _retiredNameOf(b).toLowerCase();
+            return an.compareTo(bn) != 0 ? an.compareTo(bn) : a.compareTo(b);
+          });
+    final searchEmpty = query.trim().isNotEmpty;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          newActorVerb,
-          if (showTopic)
-            _Section(
-              sectionKey: const ValueKey('shell.context.topic'),
-              label: l10n.contextTopic,
-              child: Text(
-                thread['topic']! as String,
-                style: context.laUi.compact,
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+            child: LaField(
+              key: const ValueKey('shell.people.search'),
+              placeholder: l10n.actorsSearchHint,
+              onChanged: onQueryChanged,
             ),
-          if (people.isNotEmpty)
-            _Section(
-              sectionKey: const ValueKey('shell.context.people'),
-              label: channel != null
-                  ? l10n.contextMembers
-                  : l10n.contextParticipants,
-              // The channel's membership add verb rides the section
-              // label (the members lane's third entry point; removal
-              // stays in the popover and the actor info surface — one
-              // destructive entry per fact).
-              trailing: channel == null
-                  ? null
-                  : LaButton.icon(
-                      key: const ValueKey('shell.context.members.add'),
-                      tooltip: l10n.worldChatMembersAdd,
-                      size: LaButtonSize.sm,
-                      icon: Icon(Icons.add, size: 13, color: context.shellMuted),
-                      onPressed: () => unawaited(
-                        openChannelMembersDialog(
-                          context,
-                          service: service,
-                          channel: channel,
-                        ),
-                      ),
+          ),
+          _Section(
+            sectionKey: const ValueKey('shell.context.people'),
+            label: l10n.viewActorsTitle,
+            // ACTOR EQUALITY (owner law, 2026-11-16): minting lives
+            // where the people are — one verb, the shared create verb,
+            // then the new actor's own surface opens.
+            trailing: LaButton.icon(
+              key: const ValueKey('shell.people.newActor'),
+              tooltip: l10n.actorsNewActor,
+              size: LaButtonSize.sm,
+              icon: Icon(Icons.add, size: 13, color: context.shellMuted),
+              onPressed: () => unawaited(_newActor(context)),
+            ),
+            child: liveIds.isEmpty
+                ? Text(
+                    searchEmpty
+                        ? l10n.actorsSearchEmpty
+                        : l10n.actorsNoneYet,
+                    key: const ValueKey('shell.people.search.empty'),
+                    style: context.laUi.compact.copyWith(
+                      color: context.shellMuted,
                     ),
-              child: _PeopleList(
-                ids: people,
-                service: service,
-                onFocus: onFocus,
-                onOpenActor: onOpenActor,
-                onOpenConversation: onOpenConversation,
+                  )
+                : _PeopleList(
+                    ids: liveIds,
+                    service: service,
+                    onFocus: onFocus,
+                    onOpenActor: onOpenActor,
+                    onOpenConversation: onOpenConversation,
+                  ),
+          ),
+          if (retiredIds.isNotEmpty || service.retiredRows.isNotEmpty)
+            _Section(
+              sectionKey: const ValueKey('shell.people.retired'),
+              label:
+                  '${l10n.actorsRetiredSection} '
+                  '${service.retiredRows.length}',
+              trailing: LaButton.icon(
+                key: const ValueKey('shell.people.retired.toggle'),
+                tooltip: showRetired
+                    ? l10n.actorsHideRetired
+                    : l10n.actorsShowRetired,
+                size: LaButtonSize.sm,
+                icon: Icon(
+                  showRetired
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  size: 14,
+                  color: context.shellMuted,
+                ),
+                onPressed: onToggleRetired,
               ),
+              child: showRetired && retiredIds.isNotEmpty
+                  ? _RetiredList(
+                      ids: retiredIds,
+                      service: service,
+                      onOpenActor: onOpenActor ?? onFocus,
+                    )
+                  : const SizedBox.shrink(),
             ),
         ],
       ),
     );
+  }
+
+  /// A live roster identity's display name (the derived fallback when
+  /// the profile says nothing).
+  String _nameOf(final String id) =>
+      service.roster?.get(id)?.displayName ?? actorDisplayFallback(id);
+
+  /// A retired row's display name: the durable record's own
+  /// `displayName` when it says one, the derived fallback otherwise.
+  String _retiredNameOf(final String id) {
+    final name = '${service.retiredInfo(id)?['displayName'] ?? ''}'.trim();
+    return name.isNotEmpty ? name : actorDisplayFallback(id);
   }
 
   /// Mint one model actor through the SHARED create verb: name + role
@@ -362,8 +401,9 @@ class _PeopleListBody extends StatelessWidget {
     if (profile != null) onOpenActor?.call(profile.actorId);
   }
 
-  /// The chat default's OpenRouter model (the picker's hosted option),
-  /// read from the agent config the same way the actor surface does.
+  /// The hosted-model option the brain picker offers (the picker's
+  /// hosted option), read from the agent config the same way the actor
+  /// surface does.
   String _defaultOpenRouterModel(final BuildContext context) {
     try {
       final config = context.read<AgentConfigStore>().config;
@@ -377,9 +417,10 @@ class _PeopleListBody extends StatelessWidget {
   }
 }
 
-/// The people of the conversation: derived avatar + display name per
-/// row, presence folded from the bot host (the rail's derivation). A
-/// row taps into the actor's profile (the header identity does too).
+/// The roster rows: derived avatar + display name per row, the folded
+/// status mark, and — Wave 3A — the bot's one-line activity narration
+/// underneath (humans and unknown ids stay quiet; a listening bot is
+/// silence). A row taps into the actor's profile.
 class _PeopleList extends StatelessWidget {
   const _PeopleList({
     required this.ids,
@@ -410,6 +451,7 @@ class _PeopleList extends StatelessWidget {
   Widget build(final BuildContext context) {
     final roster = service.roster;
     final bots = service.bots;
+    final world = context.read<WorldStateService?>();
     // 3d — the creature layer's UI fold: the narration and daemon
     // facts live in memory (service/world), not in the journal, so the
     // widget that reads them reports them to the projection on its own
@@ -418,7 +460,6 @@ class _PeopleList extends StatelessWidget {
     // the selector discipline stays intact.
     final laWorld = context.read<LaWorld?>();
     if (laWorld != null) {
-      final world = context.read<WorldStateService?>();
       laWorld.refreshCreatures(
         narrationStates: <String, String>{
           for (final entry in service.botNarration.entries)
@@ -430,29 +471,33 @@ class _PeopleList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final id in ids) _personRow(context, id, roster, bots, laWorld),
+        for (final id in ids)
+          _personRow(context, id, roster, bots, laWorld, world),
       ],
     );
   }
 
-  /// One people row: avatar + name, and — Wave 3A — the bot's one-line
-  /// activity narration underneath (humans and unknown ids stay quiet;
-  /// a listening bot is silence). The whole row taps into the profile.
-  /// 3d: a bot's avatar grows EYES — the creature overlay carries the
-  /// mood the derive law folded (the avatar keeps its identicon, kind
-  /// badge, presence dot and keys untouched — a creature never becomes
-  /// the only carrier of type or presence).
+  /// One roster row: avatar + name, the folded status mark
+  /// (`deriveActorPresence` — the manager's triage), and the bot's
+  /// one-line activity narration underneath. The whole row taps into
+  /// the profile. 3d: a bot's avatar grows EYES — the creature overlay
+  /// carries the mood the derive law folded (the avatar keeps its
+  /// identicon, kind badge, presence dot and keys untouched — a
+  /// creature never becomes the only carrier of type or presence).
   Widget _personRow(
     final BuildContext context,
     final String id,
     final ActorRoster? roster,
     final RealmBotHost? bots,
     final LaWorld? laWorld,
+    final WorldStateService? world,
   ) {
     final line = _statusLineOf(context, id);
+    final presence = presenceStatusOf(service, id, world: world);
     final profile =
         roster?.get(id) ??
         ActorProfile(actorId: id, displayName: actorDisplayFallback(id));
+    final isHuman = profile.kind == ActorKind.human;
     Widget avatar = ActorAvatar(
       profile: profile,
       size: ShellTokens.rowAvatar,
@@ -463,7 +508,7 @@ class _PeopleList extends StatelessWidget {
     // legacy id never gets an invented creature (world truth, never
     // decorative fiction).
     final rostered = roster?.get(id);
-    if (rostered != null && rostered.kind != ActorKind.human) {
+    if (rostered != null && !isHuman) {
       avatar = Stack(
         children: [
           avatar,
@@ -496,19 +541,31 @@ class _PeopleList extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    roster?.get(id)?.displayName ?? actorDisplayFallback(id),
+                    // The human rides the manager labelled "you" (the
+                    // Wave N3 actor-equality law, the settings pane's
+                    // vocabulary).
+                    isHuman
+                        ? '${profile.displayName} · ${context.l10n.actorsYou}'
+                        : profile.displayName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.laUi.compact,
                   ),
                 ),
+                // The folded status mark: working / idle / failed —
+                // humans and absent facts render nothing.
+                if (!isHuman) ...[
+                  ActorStatusMark(
+                    key: ValueKey('actor.status.$id'),
+                    status: presence,
+                  ),
+                  const SizedBox(width: 6),
+                ],
                 // ACTOR EQUALITY (owner law, 2026-11-16): the DM verb
                 // rides the row — the human writes any model actor in
                 // one tap, and the actor answers in the same thread
                 // (the dispatch plane is addressedTo-only, both planes).
-                if (rostered != null &&
-                    rostered.kind != ActorKind.human &&
-                    onOpenConversation != null)
+                if (!isHuman && onOpenConversation != null)
                   LaButton.icon(
                     key: ValueKey('shell.people.message.$id'),
                     tooltip: context.l10n.actorsMessage,
@@ -544,19 +601,13 @@ class _PeopleList extends StatelessWidget {
   /// The quiet narration line under one row (Wave 3A): only bots with a
   /// narration speak; humans and unknown ids return null. 1b appends
   /// the parallel-work fact: the actor's RUNNING durable tasks, at a
-  /// glance (the room's work card owns the detail — the row owns the
-  /// "is my cast busy" answer).
+  /// glance (the info surface's Now section owns the detail — the row
+  /// owns the "is my cast busy" answer).
   String? _statusLineOf(final BuildContext context, final String id) {
     final profile = service.roster?.get(id);
     if (profile == null || profile.kind == ActorKind.human) return null;
     final narration = service.botNarration[id]?.statusLine;
-    final world = context.read<WorldStateService?>();
-    var running = 0;
-    if (world != null) {
-      for (final task in world.tasks) {
-        if (!task.terminal && task.addressees.contains(id)) running++;
-      }
-    }
+    final running = runningTasksOf(context.read<WorldStateService?>(), id);
     if (running == 0) return narration;
     final work = running == 1 ? '1 task running' : '$running tasks running';
     return narration == null ? work : '$narration · $work';
@@ -576,12 +627,12 @@ class _PeopleList extends StatelessWidget {
   }
 }
 
-/// The RETIRED actors (the people view's Retired section, 2026-11-18):
-/// one muted row per retired durable row — half-opacity avatar, the
-/// display name and the retirement mark — the whole row tapping into
-/// the actor's INFO surface (retirement is named verbatim there,
-/// Revive included; a retired actor answers no DM, so the row offers
-/// no message verb).
+/// The RETIRED actors: one muted row per retired durable row —
+/// half-opacity avatar, the display name and the retirement mark — the
+/// whole row tapping into the actor's INFO surface (retirement is named
+/// verbatim there, Revive included; a retired actor answers no DM, so
+/// the row offers no message verb). Visibility rides the section head's
+/// toggle; shown-muted is the default.
 class _RetiredList extends StatelessWidget {
   const _RetiredList({
     required this.ids,
@@ -653,7 +704,8 @@ class _RetiredList extends StatelessWidget {
 /// and an EDIT affordance that switches in place to
 /// [ActorProfileEditor] (no modal; Save routes through
 /// `RealmChatService.updateActor`, which persists the world record and
-/// rebuilds the bot loop when the profile materially changed).
+/// rebuilds the bot loop when the profile materially changed). The
+/// hermetic seam — the shell routes actor taps into `actor:<id>` tabs.
 class _ActorPanel extends StatefulWidget {
   const _ActorPanel({
     required this.service,
@@ -877,7 +929,7 @@ class _ActorPanelState extends State<_ActorPanel> {
   }
 
   /// The hosted-model option the brain picker offers (same derivation
-  /// as the Settings pane's mint form; absence keeps the local casts).
+  /// as the mint form; absence keeps the local casts).
   String _defaultOpenRouterModel(final BuildContext context) {
     try {
       final config = context.read<AgentConfigStore>().config;
@@ -893,7 +945,7 @@ class _ActorPanelState extends State<_ActorPanel> {
 
 /// A muted section label above its content — the rail's `_Section`
 /// shape, read on the shell tokens. An optional [trailing] rides the
-/// label row (the members section's add verb).
+/// label row (the mint verb, the retired toggle).
 class _Section extends StatelessWidget {
   const _Section({
     required this.label,
@@ -923,7 +975,7 @@ class _Section extends StatelessWidget {
           children: [
             Text(label, style: shellSectionLabel(context)),
             if (trailing != null) ...[
-              const SizedBox(width: 6),
+              const Spacer(),
               trailing!,
             ],
           ],

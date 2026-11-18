@@ -23,7 +23,10 @@
 /// `rooms.row.channel.<channelId>`, `rooms.unread.<surfaceId>`,
 /// `rooms.create.channel`, `rooms.cta.dm`, the context-menu rows
 /// `rooms.menu.rename|close|setIcon|miniwindow.*` and the change-icon
-/// dialog's `rooms.icon.<glyph>|clear|custom|confirm`.
+/// dialog's `rooms.icon.<glyph>|clear|custom|confirm`. The manager's
+/// triage (2026-11-18) adds `rooms.search`, the retired block's
+/// `rooms.retired.section|toggle`, and the per-row status marks
+/// `actor.status.<actorId>`.
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
@@ -32,9 +35,15 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
+
+import 'package:lastanswer/coding_agent/realm_chat/actor_status.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+
+import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
@@ -83,7 +92,10 @@ String _retiredNameOf(final String id, final Map<String, Object?>? record) {
 /// The docked rooms column: sections of conversation rows over the
 /// service's live projections. The SHELL owns the dock state and the
 /// tab routing; this column only renders facts and forwards intents.
-final class RoomsColumn extends StatelessWidget {
+/// The DMs section carries the manager's triage (2026-11-18): a compact
+/// filter field over the roster, the folded status mark per row, and
+/// the retired block under its own head with the show/hide toggle.
+final class RoomsColumn extends StatefulWidget {
   const RoomsColumn({
     required this.service,
     required this.onSelect,
@@ -131,16 +143,30 @@ final class RoomsColumn extends StatelessWidget {
   final double width;
 
   @override
+  State<RoomsColumn> createState() => _RoomsColumnState();
+}
+
+final class _RoomsColumnState extends State<RoomsColumn> {
+  /// The DMs filter field's live query — names AND ids (the
+  /// member-picker's rule), shared with the retired block.
+  var _query = '';
+
+  /// RETIRED VISIBILITY: shown-muted by default (an invisible
+  /// retirement is a lie of absence); hiding is the opt-in.
+  var _showRetired = true;
+
+  @override
   Widget build(final BuildContext context) {
+    final column = widget;
     final l10n = context.l10n;
     // The selection fact: the service's active thread folded into its
     // surface id (the same vocabulary the strips and the tabs speak);
     // null (no thread open) selects no row — honest absence.
     final activeSurfaceId = conversationSurfaceId(
-      activeThreadId: service.activeThreadId,
-      channels: service.channels,
-      actors: service.roster?.all ?? const <ActorProfile>[],
-      dmThreadOf: service.dmThreadOf,
+      activeThreadId: column.service.activeThreadId,
+      channels: column.service.channels,
+      actors: column.service.roster?.all ?? const <ActorProfile>[],
+      dmThreadOf: column.service.dmThreadOf,
     );
     // No LaWorld yet = no badges anywhere (honest absence, the action
     // bar's null-guard pattern).
@@ -150,33 +176,64 @@ final class RoomsColumn extends StatelessWidget {
     } on ProviderNotFoundException {
       laWorld = null;
     }
+    WorldStateService? worldState;
+    try {
+      worldState = context.read<WorldStateService?>();
+    } on ProviderNotFoundException {
+      worldState = null;
+    }
     final actors = <ActorProfile>[
-      for (final actor in service.roster?.all ?? const <ActorProfile>[])
+      for (final actor in column.service.roster?.all ?? const <ActorProfile>[])
         if (actor.kind != ActorKind.human) actor,
+    ];
+    // The DM filter: a row matches when the query names it — display
+    // name OR actor id, case-insensitive (the member-picker's rule).
+    final needle = _query.trim().toLowerCase();
+    bool matches(final String id, final String name) => needle.isEmpty ||
+        name.toLowerCase().contains(needle) ||
+        id.toLowerCase().contains(needle);
+    final liveDms = <ActorProfile>[
+      for (final actor in actors)
+        if (matches(actor.actorId, actor.displayName)) actor,
     ];
     // RETIRED VISIBILITY (2026-11-18): a retirement tombstones the
     // roster, so the DM list went silent about it — an invisible
     // retirement is a lie of absence. The retired rows render muted
-    // under the live ones; a tap opens the actor's INFO surface (the
-    // one surface retirement names verbatim), never a fresh DM a
-    // retired actor cannot answer.
-    final retiredEntries = <MapEntry<String, Map<String, Object?>?>>[
-      for (final entry in service.retiredRows.entries) entry,
+    // under their own head (the toggle decides); a tap opens the
+    // actor's INFO surface (the one surface retirement names
+    // verbatim), never a fresh DM a retired actor cannot answer.
+    final retiredEntries = <MapEntry<String, Map<String, Object?>>>[
+      for (final entry in column.service.retiredRows.entries)
+        if (matches(
+          entry.key,
+          _retiredNameOf(entry.key, entry.value),
+        ))
+          entry,
     ]..sort((final a, final b) {
       final an = _retiredNameOf(a.key, a.value);
       final bn = _retiredNameOf(b.key, b.value);
       final byName = an.toLowerCase().compareTo(bn.toLowerCase());
       return byName != 0 ? byName : a.key.compareTo(b.key);
     });
-    // Where the channels head lands in the flat item space (after the
-    // DMs head, the CTA-or-DM rows and the retired rows) — the builder
-    // delegate below walks this one index space.
-    final liveDmCount = actors.isEmpty ? 1 : actors.length;
-    final retiredStart = 1 + liveDmCount;
-    final channelsHeadIndex = retiredStart + retiredEntries.length;
+    // Where each block lands in the flat item space — the builder
+    // delegate below walks this one index space:
+    // [0] DMs head, [1] search field (live DMs only) | CTA,
+    // [dm rows…], [retired head + rows…], [channels head, channels…].
+    final hasSearch = actors.isNotEmpty;
+    final dmStart = hasSearch ? 2 : 1;
+    final dmCount = actors.isEmpty ? 1 : liveDms.length;
+    final retiredHeadIndex = dmStart + dmCount;
+    final retiredRowCount =
+        (retiredEntries.isEmpty || !_showRetired) ? 0 : retiredEntries.length;
+    // The retired HEAD occupies one slot before its rows (the toggle
+    // stays reachable while hidden); with no retired rows at all, no
+    // slot is consumed.
+    final channelsHeadIndex = retiredEntries.isEmpty
+        ? retiredHeadIndex
+        : retiredHeadIndex + 1 + retiredRowCount;
     return Container(
       key: const ValueKey('shell.roomsColumn'),
-      width: width,
+      width: column.width,
       decoration: BoxDecoration(
         color: context.la.surface,
         border: Border(right: BorderSide(color: context.shellHairline)),
@@ -202,6 +259,16 @@ final class RoomsColumn extends StatelessWidget {
               tooltip: l10n.roomsExplainDms,
             );
           }
+          if (hasSearch && index == 1) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+              child: LaField(
+                key: const ValueKey('rooms.search'),
+                placeholder: l10n.roomsFilterHint,
+                onChanged: (final value) => setState(() => _query = value),
+              ),
+            );
+          }
           if (actors.isEmpty) {
             if (index == 1) {
               return _RoomsRow(
@@ -221,51 +288,83 @@ final class RoomsColumn extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: onMessageActor,
+                onTap: column.onMessageActor,
               );
             }
-          } else if (index <= actors.length) {
-            final actor = actors[index - 1];
+          } else if (index < retiredHeadIndex) {
+            final actor = liveDms[index - dmStart];
             return _ConversationRow(
               rowKey: 'rooms.row.dm.${actor.actorId}',
               surfaceId: 'dm:${actor.actorId}',
               title: actor.displayName,
               leading: ActorAvatar(profile: actor, size: 18),
-              threadId: service.dmThreadOf(actor.actorId),
+              // The folded status mark (working / idle / failed) rides
+              // before the unread badge — one verdict everywhere.
+              statusMark: ActorStatusMark(
+                key: ValueKey('actor.status.${actor.actorId}'),
+                status: presenceStatusOf(
+                  column.service,
+                  actor.actorId,
+                  world: worldState,
+                ),
+              ),
+              threadId: column.service.dmThreadOf(actor.actorId),
               selected: activeSurfaceId == 'dm:${actor.actorId}',
               laWorld: laWorld,
-              service: service,
-              onSelect: onSelect,
-              onMiniWindow: onMiniWindow,
+              service: column.service,
+              onSelect: column.onSelect,
+              onMiniWindow: column.onMiniWindow,
             );
           }
-          if (index < channelsHeadIndex) {
-            // One RETIRED actor row: muted identity, the retirement mark
-            // trailing, the tap riding the info-surface grammar
-            // (`actor:<id>` — never a DM the retired actor could not
-            // answer). Honest facts only: the row names the mark, the
-            // info surface names the retirement verbatim.
-            final entry = retiredEntries[index - retiredStart];
-            final id = entry.key;
-            final display = ActorProfile(
-              actorId: id,
-              displayName: _retiredNameOf(id, entry.value),
-            );
-            return _RoomsRow(
-              rowKey: 'rooms.row.retired.$id',
-              title: display.displayName,
-              leading: Opacity(
-                opacity: 0.5,
-                child: ActorAvatar(profile: display, size: 18),
-              ),
-              selected: activeSurfaceId == 'actor:$id',
-              onTap: () => onSelect('actor:$id'),
-              trailing: Text(
-                l10n.actorsRetiredMark,
-                key: const ValueKey('rooms.retired.mark'),
-                style: LaTokens.mono(9.5, context.shellMuted),
-              ),
-            );
+          if (retiredEntries.isNotEmpty) {
+            if (index == retiredHeadIndex) {
+              return _SectionHead(
+                sectionKey: 'rooms.retired.section',
+                label:
+                    '${l10n.actorsRetiredSection} '
+                    '${column.service.retiredRows.length}',
+                tooltip: l10n.actorsRetiredNote,
+                trailing: _HeaderAction(
+                  actionKey: 'rooms.retired.toggle',
+                  tooltip: _showRetired
+                      ? l10n.actorsHideRetired
+                      : l10n.actorsShowRetired,
+                  icon: _showRetired
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  onTap: () =>
+                      setState(() => _showRetired = !_showRetired),
+                ),
+              );
+            }
+            if (index < channelsHeadIndex) {
+              // One RETIRED actor row: muted identity, the retirement
+              // mark trailing, the tap riding the info-surface grammar
+              // (`actor:<id>` — never a DM the retired actor could not
+              // answer). Honest facts only: the row names the mark, the
+              // info surface names the retirement verbatim.
+              final entry = retiredEntries[index - retiredHeadIndex - 1];
+              final id = entry.key;
+              final display = ActorProfile(
+                actorId: id,
+                displayName: _retiredNameOf(id, entry.value),
+              );
+              return _RoomsRow(
+                rowKey: 'rooms.row.retired.$id',
+                title: display.displayName,
+                leading: Opacity(
+                  opacity: 0.5,
+                  child: ActorAvatar(profile: display, size: 18),
+                ),
+                selected: activeSurfaceId == 'actor:$id',
+                onTap: () => column.onSelect('actor:$id'),
+                trailing: Text(
+                  l10n.actorsRetiredMark,
+                  key: const ValueKey('rooms.retired.mark'),
+                  style: LaTokens.mono(9.5, context.shellMuted),
+                ),
+              );
+            }
           }
           if (index == channelsHeadIndex) {
             return _SectionHead(
@@ -276,11 +375,12 @@ final class RoomsColumn extends StatelessWidget {
                 actionKey: 'rooms.create.channel',
                 tooltip: l10n.worldChatMenuNewChannel,
                 icon: Icons.add_outlined,
-                onTap: onCreateChannel,
+                onTap: column.onCreateChannel,
               ),
             );
           }
-          final channel = service.channels[index - channelsHeadIndex - 1];
+          final channel =
+              column.service.channels[index - channelsHeadIndex - 1];
           return _ConversationRow(
             rowKey: 'rooms.row.channel.${channel.channelId}',
             surfaceId: 'channel:${channel.channelId}',
@@ -294,14 +394,14 @@ final class RoomsColumn extends StatelessWidget {
             threadId: channel.threadId,
             selected: activeSurfaceId == 'channel:${channel.channelId}',
             laWorld: laWorld,
-            service: service,
+            service: column.service,
             channel: channel,
-            onSelect: onSelect,
-            onMiniWindow: onMiniWindow,
-            onSetIcon: onSetIcon,
-            onManageMembers: onManageMembers,
+            onSelect: column.onSelect,
+            onMiniWindow: column.onMiniWindow,
+            onSetIcon: column.onSetIcon,
+            onManageMembers: column.onManageMembers,
           );
-        }, childCount: channelsHeadIndex + 1 + service.channels.length),
+        }, childCount: channelsHeadIndex + 1 + column.service.channels.length),
       ),
     );
   }
@@ -322,6 +422,7 @@ final class _ConversationRow extends StatelessWidget {
     required this.service,
     required this.onSelect,
     required this.onMiniWindow,
+    this.statusMark,
     this.onSetIcon,
     this.onManageMembers,
     this.laWorld,
@@ -332,6 +433,10 @@ final class _ConversationRow extends StatelessWidget {
   final String surfaceId;
   final String title;
   final Widget leading;
+
+  /// The folded status mark (DM rows — working / idle / failed), null
+  /// keeps the row unmarked (channels carry no bot presence).
+  final Widget? statusMark;
 
   /// The row's thread (a DM without one yet stays badge-less — the
   /// badge is a thread's fact, never an invention).
@@ -455,10 +560,16 @@ final class _ConversationRow extends StatelessWidget {
     selected: selected,
     onTap: () => onSelect(surfaceId),
     onContext: (final position) => _onContext(context, position),
-    trailing: _RowUnreadBadge(
-      badgeKey: 'rooms.unread.$surfaceId',
-      laWorld: laWorld,
-      threadId: threadId,
+    trailing: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ?statusMark,
+        _RowUnreadBadge(
+          badgeKey: 'rooms.unread.$surfaceId',
+          laWorld: laWorld,
+          threadId: threadId,
+        ),
+      ],
     ),
   );
 }

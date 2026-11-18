@@ -10,11 +10,19 @@
 ///     picker unchanged (options OR its named empty state — whichever
 ///     the hermetic world honestly has);
 /// (c) typing `@` opens the filtered completion overlay above the
-///     composer; picking replaces the partial token; the send still
-///     rides the plain `say` (the addressedTo-override gap is
-///     documented on the surface — the no-mention default is exactly
-///     today's behavior).
+/// composer; picking replaces the partial token; the send still
+/// rides the plain `say` (the addressedTo-override gap is
+/// documented on the surface — the no-mention default is exactly
+/// today's behavior).
+/// (d) the MESSENGER MEDIA law (2026-11-18): the old standalone image
+/// button is gone; the attach menu carries an ENABLED image row, and an
+/// OS drop on the composer field (the desktop_drop channel, simulated)
+/// stages a pending-media chip showing the human's file name; the chip
+/// removes; a re-drop plus a text send spends the strip as ONE media
+/// beat with the attachment riding the record.
 library;
+
+import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,10 +52,7 @@ final class _Room {
   final ActorProfile worker;
 }
 
-Future<_Room> _openRoom(
-  final WidgetTester tester,
-  final String label,
-) async {
+Future<_Room> _openRoom(final WidgetTester tester, final String label) async {
   SharedPreferences.setMockInitialValues({});
   final pin = Directory.systemTemp.createTempSync('wc_composer_$label');
   RealmWorld.debugDeviceHome = pin.path;
@@ -105,7 +110,8 @@ Future<void> _pumpSurface(
         // The kit overlay host (same shape as last_answer_app.dart):
         // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
         builder: (final context, final child) =>
-            Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
+            Portal(child: child ?? const SizedBox.shrink()),
+        locale: const Locale('en'),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         home: Scaffold(
@@ -114,6 +120,83 @@ Future<void> _pumpSurface(
       ),
     ),
   );
+  await tester.pump();
+}
+
+/// A VALID png (real magic — the media sniffer accepts it; the same
+/// helper shape as the world_chat_media proof).
+Uint8List pngBytes({final int width = 32, final int height = 24}) {
+  final b = BytesBuilder();
+  b.add([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  final ihdr = BytesBuilder()
+    ..add([...utf8.encode('IHDR')])
+    ..add([
+      (width >> 24) & 0xff,
+      (width >> 16) & 0xff,
+      (width >> 8) & 0xff,
+      width & 0xff,
+      (height >> 24) & 0xff,
+      (height >> 16) & 0xff,
+      (height >> 8) & 0xff,
+      height & 0xff,
+      8,
+      6,
+      0,
+      0,
+      0,
+    ]);
+  final chunk = ihdr.toBytes();
+  final length = chunk.length - 4;
+  b.add([0, 0, (length >> 8) & 0xff, length & 0xff]);
+  b.add(chunk);
+  b.add([0, 0, 0, 0, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
+  return b.toBytes();
+}
+
+/// The desktop_drop channel's ENTER beat: macOS dispatches `entered`
+/// with global logical coords inside the target; the framework routes
+/// it to the enabled DropTarget, whose hover accent answers it.
+Future<void> _fireDropEnter(
+  final WidgetTester tester,
+  final Finder target,
+) async {
+  final center = tester.getCenter(target);
+  await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
+    'desktop_drop',
+    const StandardMethodCodec().encodeMethodCall(
+      MethodCall('entered', <double>[center.dx, center.dy]),
+    ),
+    (final data) {},
+  );
+  await tester.pump();
+}
+
+/// The desktop_drop channel's DROP beat: `performOperation` with the
+/// dropped paths. The staging lane is real IO (read bytes → sniff →
+/// world write) — settled in a runAsync window (the house image law).
+Future<void> _fireDropPerform(
+  final WidgetTester tester,
+  final Finder target,
+  final List<String> paths,
+) async {
+  // The staging lane is REAL IO (read bytes → sniff → world write);
+  // both the dispatch and the settle ride ONE runAsync window, so the
+  // whole chain runs outside the fake-async zone (the house law — the
+  // media proof does exactly this for its share+say).
+  await tester.runAsync(() async {
+    await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
+      'desktop_drop',
+      const StandardMethodCodec().encodeMethodCall(
+        MethodCall('performOperation', paths),
+      ),
+      (final data) {},
+    );
+    // Bounded settle: the staging chain is real IO; give it a generous
+    // real-time window before the test reads the tree.
+    for (var i = 0; i < 10; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+  });
   await tester.pump();
 }
 
@@ -169,6 +252,13 @@ void main() {
         // The named absence: a disabled row (never a fake affordance).
         expect(semanticsOf(row).properties.enabled, isFalse);
       }
+      // The messenger media law: the image row is ENABLED (it stages),
+      // and the old standalone image button is gone from the row — the
+      // ⊕ menu is the composer's only pick affordance now.
+      final imageRow = find.byKey(const ValueKey('worldchat.attach.image'));
+      expect(imageRow, findsOneWidget);
+      expect(semanticsOf(imageRow).properties.enabled, isNot(isFalse));
+      expect(find.byKey(const ValueKey('worldchat.shareImage')), findsNothing);
 
       // The search field filters the ONE list.
       await tester.enterText(
@@ -289,9 +379,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(
-        find.byKey(
-          ValueKey('worldchat.beat.${room.channelThreadId}#2'),
-        ),
+        find.byKey(ValueKey('worldchat.beat.${room.channelThreadId}#2')),
         findsOneWidget,
       );
 
@@ -300,4 +388,101 @@ void main() {
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );
+
+  testWidgets('d — an OS drop on the composer STAGES a pending chip (messenger '
+      'law): the chip shows the file name and removes; a re-drop plus a '
+      'text send spends the strip as one media beat', (final tester) async {
+    final room = await _openRoom(tester, 'drop');
+    await _pumpSurface(tester, room.service);
+
+    final composerField = find.byKey(const ValueKey('worldchat.composer'));
+    expect(composerField, findsOneWidget);
+
+    // A real png on disk — the drop carries a path, exactly like a
+    // Finder drag does. SYNC creation: the fake-async zone never
+    // resolves awaited real IO (the house image-test law).
+    final dropDir = Directory.systemTemp.createTempSync('wc_drop_');
+    addTearDown(() => dropDir.deleteSync(recursive: true));
+    final png = File('${dropDir.path}/lighthouse-drop.png')
+      ..writeAsBytesSync(pngBytes());
+
+    // First drop: enter proves the routing (the field lights ONE
+    // accent border), then the drop stages the chip (the human's
+    // file name shows).
+    // The composer's own field box: quiet fill, NO border at rest.
+    BoxDecoration composerBox() =>
+        tester
+                .widget<Container>(
+                  find
+                      .ancestor(
+                        of: composerField,
+                        matching: find.byWidgetPredicate(
+                          (final w) =>
+                              w is Container && w.decoration is BoxDecoration,
+                        ),
+                      )
+                      .first,
+                )
+                .decoration!
+            as BoxDecoration;
+    expect(composerBox().border, isNull);
+    await _fireDropEnter(tester, composerField);
+    // The enter beat landed: the field lights ONE accent border.
+    expect(composerBox().border, isNotNull);
+    await _fireDropPerform(tester, composerField, [png.path]);
+    expect(find.byKey(const ValueKey('worldchat.mediaStrip')), findsOneWidget);
+    final renderedChip = tester.firstWidget(
+      find.byWidgetPredicate((final w) => '${w.key}'.endsWith('mediaChip.0')),
+    );
+    final renderedKey = renderedChip.key!;
+    const wantedKey = ValueKey<String>('worldchat.mediaChip.0');
+    // ignore: avoid_print
+    print(
+      'KEY DIAG: eq=${renderedKey == wantedKey} '
+      'rt=${renderedKey.runtimeType}/${wantedKey.runtimeType} '
+      'code=${(renderedKey as dynamic).value.codeUnits}',
+    );
+    expect(find.text('lighthouse-drop.png'), findsOneWidget);
+
+    // One tap removes the chip; the strip honest-absences away.
+    await tester.tap(
+      find.byKey(const ValueKey('worldchat.mediaChip.0.remove')),
+    );
+    await tester.pump();
+    expect(find.byKey(const ValueKey('worldchat.mediaStrip')), findsNothing);
+
+    // Re-drop, then send WITH text: one beat, the attachment rides,
+    // the strip is spent.
+    await _fireDropPerform(tester, composerField, [png.path]);
+    expect(find.byKey(const ValueKey('worldchat.mediaChip.0')), findsOneWidget);
+    await tester.enterText(composerField, 'here, the dropped lighthouse');
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('worldchat.send')));
+    await tester.pump();
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 400)),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(
+      find.byKey(ValueKey('worldchat.beat.${room.channelThreadId}#2')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('worldchat.mediaStrip')), findsNothing);
+    final beats = await tester.runAsync(
+      () => room.service.beatsFor(room.channelThreadId),
+    );
+    final media = (beats!.last['attachments']! as List).cast<Map>();
+    expect(media, hasLength(1));
+    expect(media.single['mimeType'], 'image/png');
+    expect(
+      (media.single['path']! as String).startsWith('assets/'),
+      isTrue,
+      reason: 'the staged entry path stays world-relative (v1.1)',
+    );
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

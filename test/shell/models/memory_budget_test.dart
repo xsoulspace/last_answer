@@ -1,5 +1,5 @@
-/// Local model memory budget (2026-11-18, v3) — the fit arithmetic and
-/// the budget surfaces over CANNED facts (the shell test-lane laws:
+/// Local model memory budget (2026-11-18, v3.3) — the fit arithmetic
+/// and the budget surfaces over CANNED facts (the shell test-lane laws:
 /// hermetic machine, no sensor runs).
 ///
 /// Under test:
@@ -7,11 +7,15 @@
 ///   real numbers, the exact boundary, the 25% slack, and the missing
 ///   megabytes the fit reason line renders;
 /// * `MemoryBudgetBar` — the REAL bar (12px tall, separated segments)
-///   as the v3 MAP: the system segment, one labeled segment PER loaded
-///   model with tap-through to its row, the floor + available legend
-///   (the "in use" label is gone — the system chunk is the dark
-///   rest); the total-less sensor's proportional-of-available fallback
-///   + honest note; the facts-null degraded line.
+///   as the v3.3 MAP, Activity Monitor's own decomposition: the
+///   LABELED working-set chunk (anonymous + wired + compressor — the
+///   v3 unlabeled grey rest was exactly the owner's "doesn't mean
+///   anything" complaint), one labeled segment PER loaded model carved
+///   out of it with tap-through to its row, the reclaimable cache
+///   (file-backed = "Cached Files"), the free pages — and the 4 GB
+///   floor as the POLICY LINE under the bar (a load-gate target is
+///   not a region of RAM, so it draws no chunk); the legacy sensor's
+///   composite fallback + honest note; the facts-null degraded line.
 library;
 
 import 'package:flutter/material.dart';
@@ -128,85 +132,78 @@ void main() {
   });
 
   group('the MemoryBudgetBar', () {
-    testWidgets('renders the system / floor / available segments and '
-        'the legend without the dead in-use label', (final tester) async {
-      const facts = MemoryFacts(
-        availableMegabytes: 6144,
-        freeMegabytes: 512,
-        totalMegabytes: 16384,
-      );
-      await tester.pumpWidget(_wrap(const MemoryBudgetBar(facts: facts)));
+    // The owner's real machine, captured 2026-11-18 and pinned in the
+    // dfp parse test: 16 GB physical, working set 13388 MB, file
+    // cache 1774 MB ("Cached Files" in Activity Monitor), free+spec
+    // 741 MB. Nothing fits (2515 available − 4096 floor < 0).
+    const calibrated = MemoryFacts(
+      availableMegabytes: 2515,
+      freeMegabytes: 741,
+      totalMegabytes: 16384,
+      usedMegabytes: 13388,
+      cachedMegabytes: 1774,
+    );
+
+    testWidgets('renders the calibrated decomposition — labeled '
+        'working set, reclaimable cache, free — and draws NO floor '
+        'chunk (the floor is the policy line, not a region of RAM)', (
+      final tester,
+    ) async {
+      await tester.pumpWidget(_wrap(const MemoryBudgetBar(facts: calibrated)));
+      await tester.pumpAndSettle();
 
       final bar = find.byKey(const ValueKey('models.local.budget.bar'));
       expect(bar, findsOneWidget);
       // A REAL bar: 12px tall, not a translucent hairline the
       // screenshot cannot see.
       expect(tester.getSize(bar).height, 12);
+      // The three OBSERVED buckets, keyed; no floor, no legacy
+      // available chunk in the calibrated path.
       expect(
         find.byKey(const ValueKey('models.local.budget.seg.system')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const ValueKey('models.local.budget.seg.floor')),
+        find.byKey(const ValueKey('models.local.budget.seg.cache')),
         findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.budget.seg.free')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.budget.seg.floor')),
+        findsNothing,
       );
       expect(
         find.byKey(const ValueKey('models.local.budget.seg.available')),
+        findsNothing,
+      );
+      // Every chunk is labeled — the Apple-storage grammar (the v3
+      // unlabeled grey rest was exactly the owner's "doesn't mean
+      // anything" complaint). formatModelBytes: 13388 MB → '13 GB',
+      // 1774 MB → '1.7 GB', 741 MB → '741 MB'.
+      expect(find.text('in use 13 GB'), findsOneWidget);
+      expect(find.text('reclaimable cache 1.7 GB'), findsOneWidget);
+      expect(find.text('free 741 MB'), findsOneWidget);
+      // The policy line says the gate's floor AND today's answer
+      // (2515 available − 4096 floor → 0), caution-colored.
+      expect(
+        find.text(
+          'load policy keeps 4.0 GB free — available for local loads 0 MB',
+        ),
         findsOneWidget,
       );
-      expect(
-        find.byKey(const ValueKey('models.local.budget.legend')),
-        findsOneWidget,
-      );
-      // The v3 fills: the dark system rest, the strong caution floor,
-      // the quiet accent available.
-      Color segColor(final String key) => tester
-          .widget<ColoredBox>(
-            find
-                .descendant(
-                  of: find.byKey(ValueKey(key)),
-                  matching: find.byType(ColoredBox),
-                )
-                .first,
-          )
-          .color;
-      expect(
-        segColor('models.local.budget.seg.system').a,
-        moreOrLessEquals(0.45),
-      );
-      expect(
-        segColor('models.local.budget.seg.floor').a,
-        moreOrLessEquals(0.85),
-      );
-      expect(
-        segColor('models.local.budget.seg.available').a,
-        moreOrLessEquals(0.30),
-      );
-      // The segments are SEPARATED (a segmented bar, not one flat
-      // strip): system + gap + floor + gap + available.
-      final row = tester.widget<Row>(
-        find.descendant(of: bar, matching: find.byType(Row)),
-      );
-      expect(row.children, hasLength(5));
-      // The legend names the floor + available values; "in use" is
-      // GONE (the dark system chunk is the unlabeled rest).
-      expect(find.text('kept free (headroom) 4.0 GB'), findsOneWidget);
-      expect(find.text('available for local loads 2.0 GB'), findsOneWidget);
-      expect(find.textContaining('in use'), findsNothing);
     });
 
-    testWidgets('each loaded model owns a labeled segment, tap-through '
-        'names its cast, and the legend names it', (final tester) async {
-      const facts = MemoryFacts(
-        availableMegabytes: 12288,
-        freeMegabytes: 512,
-        totalMegabytes: 16384,
-      );
+    testWidgets('each loaded model owns a labeled segment carved from '
+        'the working set, tap-through names its cast, and the legend '
+        'names it', (final tester) async {
       final taps = <String>[];
       await tester.pumpWidget(
         _wrap(
           MemoryBudgetBar(
-            facts: facts,
+            facts: calibrated,
             loaded: const [
               LoadedModelSegment(
                 cast: 'qwen3.5-0.8b',
@@ -224,17 +221,61 @@ void main() {
         const ValueKey('models.local.budget.seg.model.qwen3.5-0.8b'),
       );
       expect(modelSeg, findsOneWidget);
-      // The legend entry names the model and its ≈size.
+      // The legend entry names the model and its ≈size; the in-use
+      // chunk shrank by the carve (13388 − 700 = 12688 → '12 GB' —
+      // ≥10 GB renders without decimals).
       expect(
         find.byKey(const ValueKey('models.local.budget.legend.qwen3.5-0.8b')),
         findsOneWidget,
       );
       expect(find.textContaining('Qwen3.5 0.8B'), findsOneWidget);
+      expect(find.text('in use 12 GB'), findsOneWidget);
       // Tap-through: the segment selects the model's row.
       await tester.tap(
         find.descendant(of: modelSeg, matching: find.byType(GestureDetector)),
       );
       expect(taps, ['qwen3.5-0.8b']);
+    });
+
+    testWidgets('a legacy sensor (no anonymous/file-backed rows) '
+        'degrades to the composite working set and hides the cache '
+        'chunk instead of inventing it', (final tester) async {
+      const facts = MemoryFacts(
+        availableMegabytes: 12288,
+        freeMegabytes: 512,
+        totalMegabytes: 16384,
+      );
+      await tester.pumpWidget(_wrap(const MemoryBudgetBar(facts: facts)));
+      await tester.pumpAndSettle();
+
+      // Composite working set: total − available = 4100 → 'in use
+      // 4.0 GB'; free shows; cache stays unnamed (the sensor never
+      // saw it); the total IS known, so no total-unknown note.
+      expect(
+        find.byKey(const ValueKey('models.local.budget.seg.system')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.budget.seg.free')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.budget.seg.cache')),
+        findsNothing,
+      );
+      expect(find.text('in use 4.0 GB'), findsOneWidget);
+      expect(find.text('free 512 MB'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('models.local.budget.totalUnknown')),
+        findsNothing,
+      );
+      // The healthy policy line: 12288 − 4096 = 8192 → '8.0 GB'.
+      expect(
+        find.text(
+          'load policy keeps 4.0 GB free — available for local loads 8.0 GB',
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('a total-less sensor scales the bar to available and '
@@ -247,15 +288,17 @@ void main() {
         findsNothing,
       );
       expect(
-        find.byKey(const ValueKey('models.local.budget.seg.floor')),
-        findsOneWidget,
-      );
-      expect(
         find.byKey(const ValueKey('models.local.budget.seg.available')),
         findsOneWidget,
       );
       expect(
         find.byKey(const ValueKey('models.local.budget.totalUnknown')),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'load policy keeps 4.0 GB free — available for local loads 2.0 GB',
+        ),
         findsOneWidget,
       );
     });
@@ -266,10 +309,13 @@ void main() {
         availableMegabytes: 3967,
         freeMegabytes: 158,
         totalMegabytes: 16384,
+        usedMegabytes: 12417,
+        cachedMegabytes: 1551,
         compressorMegabytes: 6131,
         swapUsedMegabytes: 7135,
       );
       await tester.pumpWidget(_wrap(const MemoryBudgetBar(facts: facts)));
+      await tester.pumpAndSettle();
 
       expect(
         find.byKey(const ValueKey('models.local.budget.legend.swap')),
@@ -281,9 +327,14 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('the machine is swapping'), findsOneWidget);
-      // The floor legend reads the POLICY, not the kept part — the
-      // gate's target stays visible even when the machine is short.
-      expect(find.text('kept free (headroom) 4.0 GB'), findsOneWidget);
+      // The policy line keeps the gate's floor visible even when the
+      // machine is short (3967 − 4096 → 0 available for loads).
+      expect(
+        find.text(
+          'load policy keeps 4.0 GB free — available for local loads 0 MB',
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('null facts render only the honest degraded line', (

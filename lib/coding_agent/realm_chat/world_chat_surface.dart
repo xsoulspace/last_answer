@@ -15,7 +15,6 @@ import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/subscription_provider.dart';
@@ -26,7 +25,12 @@ import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show ActorGrantCaps, ActorScopeGrant, grantScopePathOf, mediaAttachmentOf, resolveConversationMediaPath;
+    show
+        ActorGrantCaps,
+        ActorScopeGrant,
+        grantScopePathOf,
+        mediaAttachmentOf,
+        resolveConversationMediaPath;
 
 /// ADR 0024 — the world chat surface: the human-facing projection of the
 /// realm's durable threads. Text-native, one grid: ONE focused
@@ -1314,7 +1318,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (world == null || target == null) return;
     try {
       final staged = await RealmChatMediaShare(
-        worldHome: Directory(RealmWorld.realmControlStorePath()).parent,
+        worldHome: Directory(world.worldHome),
       ).pickNamed(threadId: target);
       if (staged == null) return;
       if (!mounted) return;
@@ -1330,17 +1334,24 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// pdf is not an error, it is not an image); a drop that staged
   /// nothing names the refusal honestly beside the composer.
   Future<void> _stageDroppedFiles(final List<DropItem> files) async {
+    debugPrint('DROP-STAGE called files=${files.length}'); // TEMP
     final world = service.world;
     final target = _ownThreadPane ? _paneThreadId : service.activeThreadId;
-    if (world == null || target == null || files.isEmpty) return;
-    final share = RealmChatMediaShare(
-      worldHome: Directory(RealmWorld.realmControlStorePath()).parent,
-    );
+    if (world == null || target == null || files.isEmpty) {
+      debugPrint(
+        'DROP-STAGE guard: world=${world != null} target=$target',
+      ); // TEMP
+      return;
+    }
+    final share = RealmChatMediaShare(worldHome: Directory(world.worldHome));
     var staged = 0;
     for (final item in files) {
       if (item is DropItemDirectory) continue;
       try {
         final bytes = await item.readAsBytes();
+        debugPrint(
+          'DROP-STAGE read bytes=${bytes.length} name=${item.name}',
+        ); // TEMP
         final entry = await share.buildFromBytes(
           bytes: bytes,
           threadId: target,
@@ -1349,7 +1360,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
         // The messenger law: the composer stages IMAGES only — a sniffed
         // video/audio entry is not staged (the beat vocabulary keeps
         // media v1 image-first).
-        if (!('${entry['mimeType']}').startsWith('image/')) continue;
+        final mime = '${entry['mimeType']}';
+        debugPrint('DROP-STAGE sniff mime=$mime'); // TEMP
+        if (!mime.startsWith('image/')) continue;
         if (!mounted) return;
         setState(
           () => _pendingMedia.add(
@@ -1357,9 +1370,12 @@ class _ConversationPaneState extends State<_ConversationPane> {
           ),
         );
         staged++;
-      } on RealmMediaShareException {
+        debugPrint('DROP-STAGE staged=$staged'); // TEMP
+      } on RealmMediaShareException catch (error) {
+        debugPrint('DROP-STAGE skip: ${error.code}'); // TEMP PROBE
         continue; // not a media file — skipped, never a crash
-      } catch (_) {
+      } on Exception catch (error) {
+        debugPrint('DROP-STAGE error: $error'); // TEMP PROBE
         continue; // an unreadable drop item — skipped honestly
       }
     }
@@ -1396,7 +1412,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
       replyTo: replyTo,
       addressedTo: mentioned.isEmpty ? null : mentioned,
       threadId: _ownThreadPane ? _paneThreadId : null,
-      attachments: staged.isEmpty ? null : [for (final m in staged) m.entry],
+      attachments: [for (final m in staged) m.entry],
     );
     if (!mounted) return;
     composer.clear();
@@ -2398,91 +2414,125 @@ class _ConversationPaneState extends State<_ConversationPane> {
               style: laUi.micro.copyWith(color: laUi.danger),
             ),
           ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-          child: Container(
-            // Declare the field once: a quiet raised fill, no border —
-            // border+fill together is the Material double declaration.
-            decoration: BoxDecoration(
-              color: context.shellField,
-              // Wave K: the field rides the shell radius token — the
-              // ad-hoc `radius + 2` was chrome drift (floating layers
-              // keep their 10–12; controls ride 8).
-              borderRadius: BorderRadius.circular(ShellTokens.radius),
-            ),
-            padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+        // The messenger media law's visible strip: every staged image
+        // waits HERE as a quiet chip (the human's file name), one tap
+        // removes it; Send spends the strip with the text.
+        if (_pendingMedia.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              key: const ValueKey('worldchat.mediaStrip'),
               children: [
-                // Wave E — the attach button REPLACES the bare scope
-                // toggle: ONE menu over the merged mentionables and the
-                // action rows (the ADR 0129 work-order lane keeps its
-                // own row and opens the unchanged picker; Plugins and
-                // MCP servers are named-absent rows). The armed scope
-                // still tints the icon as its second carrier — the chip
-                // above the composer remains the visible state.
-                LaButton.icon(
-                  key: const ValueKey('worldchat.attach'),
-                  tooltip: l10n.worldChatAttach,
-                  size: LaButtonSize.sm,
-                  icon: Icon(
-                    Icons.add_circle_outline,
-                    size: 18,
-                    color: _armedScope != null
-                        ? context.la.accent
-                        : context.shellMuted,
-                  ),
-                  onPressed: () => unawaited(_openAttachMenu()),
-                ),
-                // The image share (native-image-assets): pick → world
-                // assets → one media-attachment beat.
-                LaButton.icon(
-                  key: const ValueKey('worldchat.shareImage'),
-                  tooltip: context.l10n.attachImage,
-                  size: LaButtonSize.sm,
-                  icon: const Icon(Icons.image_outlined, size: 18),
-                  onPressed: () => unawaited(_shareImage()),
-                ),
-                Expanded(
-                  child: Semantics(
-                    label: 'worldchat.composer',
-                    child: LaField(
-                      key: const ValueKey('worldchat.composer'),
-                      controller: composer,
-                      focusNode: _composerFocus,
-                      minLines: 1,
-                      maxLines: 5,
-                      textInputAction: TextInputAction.send,
-                      onSubmitted: (final value) => unawaited(_send(value)),
-                      placeholder: composerHint,
-                      // The composer's own Container declares the field
-                      // fill (Wave K law) — the kit field stays a quiet
-                      // borderless carrier inside it.
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      showFocusHairline: false,
+                for (var i = 0; i < _pendingMedia.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: _PendingMediaChip(
+                      key: ValueKey('worldchat.mediaChip.$i'),
+                      staged: _pendingMedia[i],
+                      index: i,
+                      onRemove: () => setState(() => _pendingMedia.removeAt(i)),
                     ),
                   ),
-                ),
-                // The send's other busy half: a scoped spawn in flight
-                // (the service's `sending` flag covers the plain say).
-                // Wave K: SAME density + icon size as the attach button
-                // — the two share one optical size and baseline.
-                LaButton.icon(
-                  key: const ValueKey('worldchat.send'),
-                  tooltip: l10n.worldChatSend,
-                  size: LaButtonSize.sm,
-                  icon: sendBusy
-                      ? const SizedBox(
-                          width: 14,
-                          height: 14,
-                          child: LaSpinner(size: 14),
-                        )
-                      : const Icon(Icons.arrow_upward_outlined, size: 18),
-                  onPressed: sendBusy
-                      ? null
-                      : () => unawaited(_send(composer.text)),
-                ),
               ],
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+          child: DropTarget(
+            // The drop lane (the messenger law): OS-dragged images stage
+            // onto the composer — the field lights ONE accent border
+            // while a drag hovers it, and the drop stages every image,
+            // skipping the rest honestly. Web has no OS file drop lane
+            // here; the target stays off rather than pretending.
+            enable: !kIsWeb,
+            onDragEntered: (final _) => setState(() => _dropHover = true),
+            onDragExited: (final _) => setState(() => _dropHover = false),
+            onDragDone: (final details) {
+              debugPrint('DROP-DONE files=${details.files.length}'); // TEMP
+              if (_dropHover) setState(() => _dropHover = false);
+              unawaited(_stageDroppedFiles(details.files));
+            },
+            child: Container(
+              // Declare the field once: a quiet raised fill, no border —
+              // border+fill together is the Material double declaration.
+              // The one exception is the drop-hover accent: a dragged
+              // file over the field is worth exactly one accent border.
+              decoration: BoxDecoration(
+                color: context.shellField,
+                // Wave K: the field rides the shell radius token — the
+                // ad-hoc `radius + 2` was chrome drift (floating layers
+                // keep their 10–12; controls ride 8).
+                borderRadius: BorderRadius.circular(ShellTokens.radius),
+                border: _dropHover
+                    ? Border.all(color: context.la.accent, width: 1.5)
+                    : null,
+              ),
+              padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Wave E — the attach button REPLACES the bare scope
+                  // toggle: ONE menu over the merged mentionables and the
+                  // action rows (the ADR 0129 work-order lane keeps its
+                  // own row and opens the unchanged picker; the image
+                  // row STAGES like the drop; Plugins and MCP servers
+                  // are named-absent rows). The armed scope still tints
+                  // the icon as its second carrier — the chip above the
+                  // composer remains the visible state.
+                  LaButton.icon(
+                    key: const ValueKey('worldchat.attach'),
+                    tooltip: l10n.worldChatAttach,
+                    size: LaButtonSize.sm,
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      size: 18,
+                      color: _armedScope != null
+                          ? context.la.accent
+                          : context.shellMuted,
+                    ),
+                    onPressed: () => unawaited(_openAttachMenu()),
+                  ),
+                  Expanded(
+                    child: Semantics(
+                      label: 'worldchat.composer',
+                      child: LaField(
+                        key: const ValueKey('worldchat.composer'),
+                        controller: composer,
+                        focusNode: _composerFocus,
+                        minLines: 1,
+                        maxLines: 5,
+                        textInputAction: TextInputAction.send,
+                        onSubmitted: (final value) => unawaited(_send(value)),
+                        placeholder: composerHint,
+                        // The composer's own Container declares the field
+                        // fill (Wave K law) — the kit field stays a quiet
+                        // borderless carrier inside it.
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        showFocusHairline: false,
+                      ),
+                    ),
+                  ),
+                  // The send's other busy half: a scoped spawn in flight
+                  // (the service's `sending` flag covers the plain say).
+                  // Wave K: SAME density + icon size as the attach button
+                  // — the two share one optical size and baseline.
+                  LaButton.icon(
+                    key: const ValueKey('worldchat.send'),
+                    tooltip: l10n.worldChatSend,
+                    size: LaButtonSize.sm,
+                    icon: sendBusy
+                        ? const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: LaSpinner(size: 14),
+                          )
+                        : const Icon(Icons.arrow_upward_outlined, size: 18),
+                    onPressed: sendBusy
+                        ? null
+                        : () => unawaited(_send(composer.text)),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -4440,6 +4490,58 @@ class _AttachActionRow extends StatelessWidget {
   }
 }
 
+/// One STAGED attachment chip (the messenger law's visible strip): the
+/// human's file name beside a quiet image mark, one tap removes it —
+/// the world asset id the entry's path carries stays under the hood.
+class _PendingMediaChip extends StatelessWidget {
+  const _PendingMediaChip({
+    required this.staged,
+    required this.index,
+    required this.onRemove,
+    super.key,
+  });
+
+  final RealmStagedMedia staged;
+
+  /// The chip's seat in the strip (the remove affordance's key seat).
+  final int index;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(final BuildContext context) {
+    final name = staged.name.isEmpty ? 'image' : staged.name;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(8, 4, 4, 4),
+      decoration: BoxDecoration(
+        color: context.shellField,
+        borderRadius: BorderRadius.circular(ShellTokens.radius),
+        border: Border.all(color: context.shellHairline),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.image_outlined, size: 14, color: context.shellMuted),
+          const SizedBox(width: 6),
+          Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.laUi.compact.copyWith(color: context.la.ink),
+          ),
+          const SizedBox(width: 4),
+          LaButton.icon(
+            key: ValueKey('worldchat.mediaChip.$index.remove'),
+            tooltip: context.l10n.worldChatRemoveAttachment,
+            size: LaButtonSize.sm,
+            icon: const Icon(Icons.close_outlined, size: 14),
+            onPressed: onRemove,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// The `@` completion panel: anchored directly above the composer in
 /// the pane's own Column (no route, no animation — settle-clean in
 /// tests), filtered live by the partial token.
@@ -4685,7 +4787,8 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
       final row = world == null
           ? null
           : await world.store.read('threads', widget.channel.threadId);
-      access = (row?['access'] as Map?)?.cast<String, Object?>() ??
+      access =
+          (row?['access'] as Map?)?.cast<String, Object?>() ??
           const <String, Object?>{};
       workScope = (row?['workScope'] as Map?)?.cast<String, Object?>();
       for (final id in widget.memberIds) {
@@ -4802,9 +4905,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
       setState(() => _outcome = l10n.worldChatPermsRootRequired);
       return;
     }
-    final subpath = _formKind == 'folder'
-        ? _formSubpath.text.trim()
-        : null;
+    final subpath = _formKind == 'folder' ? _formSubpath.text.trim() : null;
     final caps = _formCaps.toList()..sort();
     final spend = double.tryParse(_formSpend.text.trim().replaceAll(',', '.'));
     if (spend != null && spend > 0) caps.add('image.spend:$spend');
@@ -4870,10 +4971,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
-          SizedBox(
-            width: 64,
-            child: Text(label, style: context.laUi.compact),
-          ),
+          SizedBox(width: 64, child: Text(label, style: context.laUi.compact)),
           const SizedBox(width: 8),
           for (final option in options)
             Padding(
@@ -4887,9 +4985,9 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                   : _StripButton(
                       keyName: optionKey(option),
                       label: option,
-                      onTap: _busy ? () {} : () => unawaited(
-                        _setPolicy(key, option),
-                      ),
+                      onTap: _busy
+                          ? () {}
+                          : () => unawaited(_setPolicy(key, option)),
                     ),
             ),
         ],
@@ -4907,9 +5005,11 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
     final read = '${_access['read'] ?? 'realm'}';
     final say = '${_access['say'] ?? 'realm'}';
     final manage = '${_access['manage'] ?? 'realm'}';
-    final owners = (_access['owners'] as List? ?? const <Object?>[])
-        .cast<String>()
-        .toList()..sort();
+    final owners =
+        (_access['owners'] as List? ?? const <Object?>[])
+            .cast<String>()
+            .toList()
+          ..sort();
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 520, maxHeight: 620),
       child: LaBox(
@@ -4971,17 +5071,12 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                               key: const ValueKey(
                                 'worldchat.meta.perms.owners',
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 3,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 3),
                               child: Text(
                                 owners.map(nameOf).join(', '),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: LaTokens.mono(
-                                  10.5,
-                                  context.la.inkMuted,
-                                ),
+                                style: LaTokens.mono(10.5, context.la.inkMuted),
                               ),
                             ),
                           // ---- WORK SCOPE ----
@@ -5004,9 +5099,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                               key: const ValueKey(
                                 'worldchat.meta.perms.scope.bound',
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 3,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 3),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -5015,8 +5108,9 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                         '${_workScope!['kind'] ?? 'project'}',
                                         grantScopePathOf(_workScope!),
                                         if (_workScope!['caps'] is List)
-                                          (_workScope!['caps']! as List)
-                                              .join(' '),
+                                          (_workScope!['caps']! as List).join(
+                                            ' ',
+                                          ),
                                       ].join(' '),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -5027,8 +5121,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                     ),
                                   ),
                                   _StripButton(
-                                    keyName:
-                                        'worldchat.meta.perms.scope.clear',
+                                    keyName: 'worldchat.meta.perms.scope.clear',
                                     label: l10n.worldChatPermsScopeClear,
                                     danger: true,
                                     onTap: _busy
@@ -5068,8 +5161,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                     ),
                                   ),
                                   _StripButton(
-                                    keyName:
-                                        'worldchat.meta.perms.grant.$id',
+                                    keyName: 'worldchat.meta.perms.grant.$id',
                                     label: l10n.worldChatPermsGrant,
                                     onTap: _busy
                                         ? () {}
@@ -5124,15 +5216,18 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                       ),
                                       _StripButton(
                                         keyName:
-                                        'worldchat.meta.perms.ledger'
-                                        '.$id.$i.revoke',
+                                            'worldchat.meta.perms.ledger'
+                                            '.$id.$i.revoke',
                                         label: l10n.worldChatPermsRevoke,
                                         danger: true,
                                         onTap: _busy
                                             ? () {}
                                             : () => unawaited(
-                                              _revoke(id, _scopes[id]![i].path),
-                                            ),
+                                                _revoke(
+                                                  id,
+                                                  _scopes[id]![i].path,
+                                                ),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -5223,8 +5318,8 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                       const SizedBox(width: 6),
                                       _StripButton(
                                         keyName:
-                                        'worldchat.meta.perms'
-                                        '.grant.root.pick',
+                                            'worldchat.meta.perms'
+                                            '.grant.root.pick',
                                         label: '…',
                                         onTap: _busy
                                             ? () {}
@@ -5244,8 +5339,8 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                         Expanded(
                                           child: LaField(
                                             key: const ValueKey(
-                                          'worldchat.meta.perms'
-                                          '.grant.subpath',
+                                              'worldchat.meta.perms'
+                                              '.grant.subpath',
                                             ),
                                             controller: _formSubpath,
                                             placeholder: 'packages/app',
@@ -5282,14 +5377,14 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                                 ),
                                               )
                                             : _StripButton(
-                                              keyName:
-                                                  'worldchat.meta.perms'
-                                                  '.grant.cap.$cap',
-                                              label: cap,
-                                              onTap: () => setState(
-                                                () => _formCaps.add(cap),
+                                                keyName:
+                                                    'worldchat.meta.perms'
+                                                    '.grant.cap.$cap',
+                                                label: cap,
+                                                onTap: () => setState(
+                                                  () => _formCaps.add(cap),
+                                                ),
                                               ),
-                                            ),
                                     ],
                                   ),
                                   const SizedBox(height: 4),
@@ -5653,9 +5748,7 @@ class _ChannelMembersDialogState extends State<_ChannelMembersDialog> {
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
           child: Text(
             l10n.worldChatMembersAddTitle('#${channel.name}'),
-            style: context.laUi.compact.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: context.laUi.compact.copyWith(fontWeight: FontWeight.w600),
           ),
         ),
         Flexible(

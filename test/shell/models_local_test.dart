@@ -766,6 +766,53 @@ void main() {
     });
   });
 
+  /// Polls past the service's refresh guard until the palette path
+  /// names [needle] (or gives up after ~0.5s — the assertion then
+  /// speaks).
+  Future<void> _waitForContains(WorldStateService world, String needle) async {
+    for (var i = 0; i < 50; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+      await world.refresh();
+      if (world.paletteConfigPath?.contains(needle) ?? false) return;
+    }
+  }
+
+  group('the config-root option (v3.2)', () {
+    test('the override leads the candidates: a pinned root wins over '
+        'the world walk-up, and null returns to the defaults', () async {
+      final tmp = await Directory.systemTemp.createTemp('la_cfg_root_');
+      addTearDown(() => tmp.deleteSync(recursive: true));
+      final cfgRoot = '${tmp.path}/my-configs';
+      Directory('$cfgRoot/.xsoulspace').createSync(recursive: true);
+      File(
+        '$cfgRoot/.xsoulspace/config.json',
+      ).writeAsStringSync(jsonEncode(_paletteDoc()));
+
+      final world = WorldStateService(debugWorldHome: '${tmp.path}/worlds');
+      addTearDown(world.dispose);
+      // The default (no override): the world-home walk-up finds NOTHING
+      // (the fixture config lives only under the override root), so the
+      // header names the last-resort global candidate, not the fixture.
+      await world.refresh();
+      expect(world.paletteConfigPath, isNot(contains('my-configs')));
+
+      // The override pins the read — the ACTIVE path shows verbatim.
+      // The setter kicks its own refresh; the poll waits past the
+      // refresh guard for the projection to land.
+      world.configRootOverride = cfgRoot;
+      await _waitForContains(world, 'my-configs');
+      expect(world.palette, isNotNull);
+      // Setting null returns to the defaults.
+      world.configRootOverride = null;
+      for (var i = 0; i < 50; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        if (world.paletteConfigPath?.contains('my-configs') != true) break;
+        await world.refresh();
+      }
+      expect(world.paletteConfigPath, isNot(contains('my-configs')));
+    });
+  });
+
   group('the state layer (no widgets)', () {
     test('loadEntry serializes per row: a second call mid-flight is a '
         'no-op, and the loaded fact lands when the runtime answers', () async {

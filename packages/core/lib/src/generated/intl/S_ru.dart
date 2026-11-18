@@ -2547,6 +2547,26 @@ class SRu extends S {
   String get modelsLocalDetailsUsedBy => 'используется';
 
   @override
+  String get modelsBudgetSwap => 'выгружено на диск (swap)';
+
+  @override
+  String get modelsBudgetSwapNote =>
+      'система активно использует swap — загрузка модели усилит давление на память';
+
+  @override
+  String get modelsConfigRootEdit => 'корень конфигурации…';
+
+  @override
+  String get modelsConfigRootTitle => 'корень конфигурации ecsai';
+
+  @override
+  String get modelsConfigRootHint =>
+      'Откуда читается .xsoulspace/config.json. Пусто = корень realm демона, иначе глобальный ~/.xsoulspace. Last Answer не должен зависеть от development-Checkout.';
+
+  @override
+  String get modelsConfigRootSave => 'Save';
+
+  @override
   String get modelsBuiltinsNoLifecycle => 'всегда активна';
 
   @override

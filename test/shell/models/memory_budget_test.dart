@@ -260,6 +260,32 @@ void main() {
       );
     });
 
+    testWidgets('a swapping machine discloses it (legend + caution '
+        'note) — available is never read as uncongested', (final tester) async {
+      const facts = MemoryFacts(
+        availableMegabytes: 3967,
+        freeMegabytes: 158,
+        totalMegabytes: 16384,
+        compressorMegabytes: 6131,
+        swapUsedMegabytes: 7135,
+      );
+      await tester.pumpWidget(_wrap(const MemoryBudgetBar(facts: facts)));
+
+      expect(
+        find.byKey(const ValueKey('models.local.budget.legend.swap')),
+        findsOneWidget,
+      );
+      expect(find.text('swapped to disk 7.0 GB'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('models.local.budget.swap')),
+        findsOneWidget,
+      );
+      expect(find.textContaining('the machine is swapping'), findsOneWidget);
+      // The floor legend reads the POLICY, not the kept part — the
+      // gate's target stays visible even when the machine is short.
+      expect(find.text('kept free (headroom) 4.0 GB'), findsOneWidget);
+    });
+
     testWidgets('null facts render only the honest degraded line', (
       final tester,
     ) async {

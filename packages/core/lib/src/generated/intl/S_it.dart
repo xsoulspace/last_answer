@@ -2543,6 +2543,26 @@ class SIt extends S {
   String get modelsLocalDetailsUsedBy => 'usato da';
 
   @override
+  String get modelsBudgetSwap => 'scritto su swap';
+
+  @override
+  String get modelsBudgetSwapNote =>
+      'la macchina sta facendo swap — un caricamento aggiungerà pressione';
+
+  @override
+  String get modelsConfigRootEdit => 'radice di configurazione…';
+
+  @override
+  String get modelsConfigRootTitle => 'radice di configurazione ecsai';
+
+  @override
+  String get modelsConfigRootHint =>
+      'Da dove si legge .xsoulspace/config.json. Vuoto = radice del realm del daemon, altrimenti ~/.xsoulspace globale. Last Answer non deve mai dipendere da un checkout di sviluppo.';
+
+  @override
+  String get modelsConfigRootSave => 'Salva';
+
+  @override
   String get modelsBuiltinsNoLifecycle => 'sempre attivo';
 
   @override

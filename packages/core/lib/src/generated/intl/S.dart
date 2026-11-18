@@ -4623,6 +4623,42 @@ abstract class S {
   /// **'used by'**
   String get modelsLocalDetailsUsedBy;
 
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'swapped to disk'**
+  String get modelsBudgetSwap;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'the machine is swapping — a load will add pressure'**
+  String get modelsBudgetSwapNote;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'config root…'**
+  String get modelsConfigRootEdit;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'ecsai config root'**
+  String get modelsConfigRootTitle;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'Where .xsoulspace/config.json is read from. Empty = the daemon\'s realm root, else the global ~/.xsoulspace. Last Answer should never depend on a development checkout.'**
+  String get modelsConfigRootHint;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get modelsConfigRootSave;
+
   /// Local models v3 2026-11-18: the AFM chip's exemption note in the built-ins footer.
   ///
   /// In en, this message translates to:

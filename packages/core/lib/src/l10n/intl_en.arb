@@ -1805,6 +1805,30 @@
   "@modelsLocalDetailsUsedBy": {
     "description": "Local models v3 2026-11-18 (en): the detail sheet's bound-actors row."
   },
+  "modelsBudgetSwap": "swapped to disk",
+  "@modelsBudgetSwap": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
+  "modelsBudgetSwapNote": "the machine is swapping — a load will add pressure",
+  "@modelsBudgetSwapNote": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
+  "modelsConfigRootEdit": "config root…",
+  "@modelsConfigRootEdit": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
+  "modelsConfigRootTitle": "ecsai config root",
+  "@modelsConfigRootTitle": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
+  "modelsConfigRootHint": "Where .xsoulspace/config.json is read from. Empty = the daemon's realm root, else the global ~/.xsoulspace. Last Answer should never depend on a development checkout.",
+  "@modelsConfigRootHint": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
+  "modelsConfigRootSave": "Save",
+  "@modelsConfigRootSave": {
+    "description": "Local models v3.2 2026-11-18 (en)."
+  },
   "@modelsLocalDetailsLastError": {
     "description": "Local models v3 2026-11-18: the detail sheet's last-failure row, verbatim."
   },

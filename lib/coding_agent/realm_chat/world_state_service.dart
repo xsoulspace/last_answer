@@ -35,6 +35,7 @@ import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/supervised_world.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// One palette rung, merged: the config declaration × the daemon's
@@ -266,7 +267,56 @@ final class WorldStateService extends ChangeNotifier {
     PaletteHealthStore? health,
     this.debugDoctor,
     this.debugWorldHome,
-  }) : _health = health ?? PaletteHealthStore();
+  }) : _health = health ?? PaletteHealthStore() {
+    unawaited(_loadConfigRoot());
+  }
+
+  /// The user-chosen config root (2026-11-18 v3.2, the owner's law):
+  /// where `.xsoulspace/config.json` is read from FIRST. Null = the
+  /// daemon's realm root, else the global `$HOME/.xsoulspace` — Last
+  /// Answer must never SILENTLY depend on a development checkout (the
+  /// harness repo), which is exactly what an ECSAID_ROOT-pinned daemon
+  /// made it do. Persisted across runs.
+  static const String _configRootPrefsKey = 'ecsai.configRootOverride';
+  String? _configRootOverride;
+  String? get configRootOverride => _configRootOverride;
+
+  set configRootOverride(final String? value) {
+    final trimmed = value?.trim();
+    final next = (trimmed == null || trimmed.isEmpty) ? null : trimmed;
+    if (next == _configRootOverride) return;
+    _configRootOverride = next;
+    unawaited(_persistConfigRoot(next));
+    unawaited(refresh());
+  }
+
+  Future<void> _loadConfigRoot() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final stored = prefs.getString(_configRootPrefsKey);
+      if (stored == null || stored.isEmpty || stored == _configRootOverride) {
+        return;
+      }
+      _configRootOverride = stored;
+      unawaited(refresh());
+    } on Object {
+      // A closed prefs lane keeps the session override only — never a
+      // crash over a preference.
+    }
+  }
+
+  Future<void> _persistConfigRoot(final String? value) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (value == null) {
+        await prefs.remove(_configRootPrefsKey);
+      } else {
+        await prefs.setString(_configRootPrefsKey, value);
+      }
+    } on Object {
+      // Same honesty: persistence failure degrades to session-only.
+    }
+  }
 
   /// Test seam: replaces the host doctor probe (file IO) with a fixed
   /// report map (`daemon` + `daemonExe` sections).
@@ -468,7 +518,7 @@ final class WorldStateService extends ChangeNotifier {
     return <Map<String, Object?>>[
       for (final entry in rows.entries)
         if ('${(entry.value as Map)['taskId']}' == taskId ||
-                entry.key.startsWith('$taskId#'))
+            entry.key.startsWith('$taskId#'))
           Map<String, Object?>.from(entry.value as Map),
     ];
   }
@@ -482,10 +532,9 @@ final class WorldStateService extends ChangeNotifier {
       return const <String, Object?>{'ok': false, 'bounce': 'realm_not_ready'};
     }
     try {
-      final record = await DurableTaskQueue(store: store).requestCancel(
-        taskId,
-        reason: 'owner_cancelled_from_last_answer',
-      );
+      final record = await DurableTaskQueue(
+        store: store,
+      ).requestCancel(taskId, reason: 'owner_cancelled_from_last_answer');
       await refresh();
       return <String, Object?>{'ok': true, 'state': record.state.name};
     } on Object catch (error) {
@@ -932,6 +981,15 @@ final class WorldStateService extends ChangeNotifier {
 
   List<String> _configCandidates() {
     final candidates = <String>[];
+    // The user's choice leads (the option exists exactly so the app can
+    // be pointed AWAY from a checkout).
+    final override = _configRootOverride;
+    if (override != null && override.isNotEmpty) {
+      final root = override.endsWith('/.xsoulspace')
+          ? override.substring(0, override.length - '/.xsoulspace'.length)
+          : override;
+      candidates.add('$root/.xsoulspace/config.json');
+    }
     final authorityRoot = _configurationRoot;
     if (authorityRoot != null && authorityRoot.isNotEmpty) {
       candidates.add('$authorityRoot/.xsoulspace/config.json');

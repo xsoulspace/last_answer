@@ -46,6 +46,29 @@ final class RealmChatMediaShare {
     );
   }
 
+  /// The messenger lane's pick: entry + the ORIGINAL file name, so the
+  /// composer's staged chip shows the human's file, never the world
+  /// asset id the entry's path carries.
+  Future<RealmStagedMedia?> pickNamed({
+    required final String threadId,
+  }) async {
+    if (kIsWeb) {
+      throw const RealmMediaShareException('media_share_unsupported_on_web');
+    }
+    final result = await FilePicker.pickFiles(type: FileType.image);
+    if (result == null || result.files.isEmpty) return null;
+    final picked = result.files.first;
+    final bytes = await picked.readAsBytes();
+    return RealmStagedMedia(
+      entry: await buildFromBytes(
+        bytes: bytes,
+        threadId: threadId,
+        nameHint: picked.name,
+      ),
+      name: picked.name,
+    );
+  }
+
   /// Builds the attachment entry from raw bytes (the paste path).
   Future<Map<String, Object?>> buildFromBytes({
     required final List<int> bytes,
@@ -92,4 +115,14 @@ final class RealmMediaShareException implements Exception {
   final String code;
   @override
   String toString() => code;
+}
+
+/// One STAGED composer attachment (the messenger lane, 2026-11-18): the
+/// built media v1 entry plus the human-facing file name — the composer's
+/// chip shows the original file, never the world asset id the entry's
+/// `path` carries. Nothing here has been sent; Send consumes the strip.
+final class RealmStagedMedia {
+  const RealmStagedMedia({required this.entry, required this.name});
+  final Map<String, Object?> entry;
+  final String name;
 }

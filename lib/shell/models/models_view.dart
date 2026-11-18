@@ -141,6 +141,64 @@ final class _ModelsViewState extends State<ModelsView> {
     super.dispose();
   }
 
+  /// The config-root dialog (the owner's v3.2 option): an empty field
+  /// returns to the defaults (the daemon's realm root, else the global
+  /// `~/.xsoulspace`); a path pins the palette read to that root —
+  /// persisted across runs, never a guessed location (the service
+  /// re-reads and the header shows the ACTIVE path verbatim).
+  Future<void> _askConfigRoot(final BuildContext context) async {
+    final l10n = context.l10n;
+    final controller = TextEditingController(
+      text: widget.world.configRootOverride ?? '',
+    );
+    final saved = await showLaDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => LaDialog(
+        titleText: l10n.modelsConfigRootTitle,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.modelsConfigRootHint,
+              style: dialogContext.laUi.micro.copyWith(
+                fontSize: 11,
+                color: dialogContext.la.inkMuted,
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: 420,
+              child: LaField(
+                key: const ValueKey('models.config.field'),
+                controller: controller,
+                placeholder: '~/.xsoulspace',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          LaButton(
+            key: const ValueKey('models.config.cancel'),
+            variant: LaButtonVariant.ghost,
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            label: l10n.modelsCancel,
+          ),
+          LaButton(
+            key: const ValueKey('models.config.save'),
+            variant: LaButtonVariant.primary,
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            label: l10n.modelsConfigRootSave,
+          ),
+        ],
+      ),
+    );
+    if (saved == true) {
+      widget.world.configRootOverride = controller.text;
+    }
+    controller.dispose();
+  }
+
   Map<String, Object?> _liveWire() {
     final palette = widget.world.palette;
     if (palette != null) return paletteWireDocument(palette);
@@ -238,6 +296,15 @@ final class _ModelsViewState extends State<ModelsView> {
                           style: LaTokens.mono(9, la.inkQuiet),
                         ),
                       ),
+                    // The config-root option (2026-11-18 v3.2, the
+                    // owner's law): the active path is shown where it
+                    // matters AND is editable — Last Answer must never
+                    // silently point at a development checkout.
+                    ModelsButton(
+                      keyName: 'models.config.edit',
+                      label: l10n.modelsConfigRootEdit,
+                      onTap: () => unawaited(_askConfigRoot(context)),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),

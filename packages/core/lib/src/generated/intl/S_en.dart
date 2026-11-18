@@ -2526,6 +2526,26 @@ class SEn extends S {
   String get modelsLocalDetailsUsedBy => 'used by';
 
   @override
+  String get modelsBudgetSwap => 'swapped to disk';
+
+  @override
+  String get modelsBudgetSwapNote =>
+      'the machine is swapping — a load will add pressure';
+
+  @override
+  String get modelsConfigRootEdit => 'config root…';
+
+  @override
+  String get modelsConfigRootTitle => 'ecsai config root';
+
+  @override
+  String get modelsConfigRootHint =>
+      'Where .xsoulspace/config.json is read from. Empty = the daemon\'s realm root, else the global ~/.xsoulspace. Last Answer should never depend on a development checkout.';
+
+  @override
+  String get modelsConfigRootSave => 'Save';
+
+  @override
   String get modelsBuiltinsNoLifecycle => 'always-on';
 
   @override

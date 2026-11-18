@@ -1,3 +1,5 @@
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -48,11 +50,16 @@ import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
 /// with its one-tap grant).
 ///
 /// Wave E keys: `worldchat.attach` (the composer's ONE attach/mention
-/// menu — merged mentionables + the work-order lane + named absences),
-/// `worldchat.meta.{perms,members,info}` (the channel's meta row above
-/// the composer), `worldchat.mentionOverlay` (the `@` completion panel),
-/// and the per-beat hover cluster
+/// menu — merged mentionables + the image row + the work-order lane +
+/// named absences), `worldchat.meta.{perms,members,info}` (the channel's
+/// meta row above the composer), `worldchat.mentionOverlay` (the `@`
+/// completion panel), and the per-beat hover cluster
 /// `worldchat.beat.{reply,edit,thread,menu}.<threadId>#<n>`.
+/// The MESSENGER MEDIA law (2026-11-18): the composer's own field is a
+/// drop target — OS-dragged images stage as pending attachments
+/// (`worldchat.mediaStrip` + `worldchat.mediaChip.<n>[.remove]`) and
+/// ride the NEXT send with the text; picking an image from the attach
+/// menu stages the same way. Nothing sends on pick/drop alone.
 /// The CHANNEL and DM panes' THREADS BROWSER (owner law 2026-11-16:
 /// rooms left the rooms column and surface Discord-threads-style INSIDE
 /// the channel view; owner decision 2026-11-16: people (dms) too —
@@ -1026,6 +1033,18 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// The last human-share refusal (named; rendered beside the composer).
   String? _shareError;
 
+  // ---- The messenger media law (2026-11-18) ----
+  // The composer STAGES images instead of sending them outright: a pick
+  // from the attach menu or an OS drop on the field lands here as
+  // pending media v1 entries, the strip renders them above the
+  // composer, and Send carries them with the text (the messenger
+  // flow). [_pendingMedia] clears on thread switch (attachments belong
+  // to the room being answered) and after a plain send.
+  final List<RealmStagedMedia> _pendingMedia = [];
+
+  /// A drag hovers the composer field (the accent-border state).
+  bool _dropHover = false;
+
   // ---- Wave E: the `@` mention completion state ----
   // Typing `@` at a word boundary opens the filtered overlay above the
   // composer; [_mentionStart] is the index of the `@` the partial token
@@ -1285,31 +1304,67 @@ class _ConversationPaneState extends State<_ConversationPane> {
     );
   }
 
-  /// The HUMAN image share (native-image-assets DMs/channels wave):
-  /// pick → copy into the world asset dir → one `say` with the media
-  /// v1 attachment (the composer text rides along when non-empty).
-  /// The structured entry is the truth; the header projection lands
-  /// host-side inside `say`.
-  Future<void> _shareImage() async {
+  /// The HUMAN image share, messenger-law edition (native-image-assets
+  /// DMs/channels wave): pick → copy into the world asset dir → STAGE
+  /// the media v1 entry on the composer. Nothing sends here; Send
+  /// carries the staged strip with the text (the messenger flow).
+  Future<void> _pickAndStageImage() async {
     final world = service.world;
     final target = _ownThreadPane ? _paneThreadId : service.activeThreadId;
     if (world == null || target == null) return;
     try {
-      final share = RealmChatMediaShare(
+      final staged = await RealmChatMediaShare(
         worldHome: Directory(RealmWorld.realmControlStorePath()).parent,
-      );
-      final entry = await share.pickAndBuild(threadId: target);
-      if (entry == null) return;
-      final raw = composer.text.trim();
-      await service.say(
-        raw,
-        threadId: _ownThreadPane ? _paneThreadId : null,
-        attachments: [entry],
-      );
+      ).pickNamed(threadId: target);
+      if (staged == null) return;
       if (!mounted) return;
-      composer.clear();
+      setState(() => _pendingMedia.add(staged));
     } on RealmMediaShareException catch (error) {
       if (mounted) setState(() => _shareError = error.code);
+    }
+  }
+
+  /// The composer field's DROP lane (the messenger law, 2026-11-18):
+  /// OS-dragged files stage as pending media — every IMAGE lands (one
+  /// entry each), non-media files are skipped quietly (a drag of a
+  /// pdf is not an error, it is not an image); a drop that staged
+  /// nothing names the refusal honestly beside the composer.
+  Future<void> _stageDroppedFiles(final List<DropItem> files) async {
+    final world = service.world;
+    final target = _ownThreadPane ? _paneThreadId : service.activeThreadId;
+    if (world == null || target == null || files.isEmpty) return;
+    final share = RealmChatMediaShare(
+      worldHome: Directory(RealmWorld.realmControlStorePath()).parent,
+    );
+    var staged = 0;
+    for (final item in files) {
+      if (item is DropItemDirectory) continue;
+      try {
+        final bytes = await item.readAsBytes();
+        final entry = await share.buildFromBytes(
+          bytes: bytes,
+          threadId: target,
+          nameHint: item.name.isEmpty ? null : item.name,
+        );
+        // The messenger law: the composer stages IMAGES only — a sniffed
+        // video/audio entry is not staged (the beat vocabulary keeps
+        // media v1 image-first).
+        if (!('${entry['mimeType']}').startsWith('image/')) continue;
+        if (!mounted) return;
+        setState(
+          () => _pendingMedia.add(
+            RealmStagedMedia(entry: entry, name: item.name),
+          ),
+        );
+        staged++;
+      } on RealmMediaShareException {
+        continue; // not a media file — skipped, never a crash
+      } catch (_) {
+        continue; // an unreadable drop item — skipped honestly
+      }
+    }
+    if (staged == 0 && files.isNotEmpty && mounted) {
+      setState(() => _shareError = 'media_share_not_media');
     }
   }
 
@@ -1330,14 +1385,22 @@ class _ConversationPaneState extends State<_ConversationPane> {
     // pinned pane says into ITS OWN thread (null keeps the service's
     // active-thread default byte-identical).
     final mentioned = _mentionedActors(raw);
+    // The messenger media law: the staged strip rides the PLAIN send
+    // (text + images leave together, one beat). The ADR 0129 work-order
+    // lane above stays text-native and consumes NO media — a staged
+    // strip under an armed scope is never silently spent: it stays
+    // visible until the human disarms the scope or clears the strip.
+    final staged = List<RealmStagedMedia>.of(_pendingMedia);
     await service.say(
       raw,
       replyTo: replyTo,
       addressedTo: mentioned.isEmpty ? null : mentioned,
       threadId: _ownThreadPane ? _paneThreadId : null,
+      attachments: staged.isEmpty ? null : [for (final m in staged) m.entry],
     );
     if (!mounted) return;
     composer.clear();
+    if (staged.isNotEmpty) setState(_pendingMedia.clear);
     if (_replyBeat != null) setState(() => _replyBeat = null);
     if (_shareError != null) setState(() => _shareError = null);
   }
@@ -1678,6 +1741,12 @@ class _ConversationPaneState extends State<_ConversationPane> {
           _AttachDialog(items: _mentionables(dialogContext)),
     );
     if (!mounted || pick == null) return;
+    // The messenger media law: the menu's image row STAGES — the same
+    // pending strip the drop lane fills; nothing sends from a menu.
+    if (pick.image) {
+      await _pickAndStageImage();
+      return;
+    }
     if (pick.workOrder) {
       await _openScopePicker();
       return;
@@ -1923,6 +1992,10 @@ class _ConversationPaneState extends State<_ConversationPane> {
       _dividerBeat = receipt?.lastReadBeat ?? 0;
       _dividerUnread = receipt?.unread ?? 0;
       _replyBeat = null;
+      // The messenger media law: staged images belong to the room being
+      // answered — switching rooms drops the pending strip (the files
+      // stay in the world tree; the entries were never sent).
+      _pendingMedia.clear();
       // Room entry IS the focus entry (the first-entry law): boot,
       // seed or click — the composer takes the caret.
       _focusComposerOnEntry();
@@ -4126,14 +4199,17 @@ final class _Mentionable {
   String get token => kind == _MentionKind.channel ? '#$name ' : '@$name ';
 }
 
-/// The attach dialog's answer: ONE picked mentionable, or the ADR 0129
+/// The attach dialog's answer: ONE picked mentionable, the image stage
+/// (the messenger lane — same strip the drop fills), or the ADR 0129
 /// work-order lane (which opens the EXISTING scope picker unchanged).
 final class _AttachPick {
-  const _AttachPick.item(this.item) : workOrder = false;
-  const _AttachPick.workOrder() : item = null, workOrder = true;
+  const _AttachPick.item(this.item) : workOrder = false, image = false;
+  const _AttachPick.workOrder() : item = null, workOrder = true, image = false;
+  const _AttachPick.image() : item = null, workOrder = false, image = true;
 
   final _Mentionable? item;
   final bool workOrder;
+  final bool image;
 }
 
 /// One attach-menu row shared by the dialog and the overlay.
@@ -4269,6 +4345,16 @@ class _AttachDialogState extends State<_AttachDialog> {
               ),
               const SizedBox(height: 4),
               LaHairline(color: context.shellHairline),
+              // The image row (the messenger law): picking STAGES one
+              // image onto the composer's pending strip — the same lane
+              // the OS drop fills; nothing sends from a menu.
+              _AttachActionRow(
+                key: const ValueKey('worldchat.attach.image'),
+                icon: Icons.image_outlined,
+                label: l10n.attachImage,
+                onTap: () =>
+                    Navigator.of(context).pop(const _AttachPick.image()),
+              ),
               _AttachActionRow(
                 key: const ValueKey('worldchat.attach.workOrder'),
                 icon: Icons.folder_outlined,

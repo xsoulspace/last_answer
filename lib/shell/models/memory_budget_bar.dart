@@ -233,11 +233,15 @@ final class MemoryBudgetBar extends StatelessWidget {
                     value: '≈ ${formatModelBytes(mb * 1024 * 1024)}',
                     color: la.accent,
                   ),
+              // The floor legend shows the POLICY (the gate's target),
+              // not the kept part — when the machine cannot even hold
+              // the headroom the verdict line names the gap, and the
+              // number stays honest to what the gate wants.
               _legendEntry(
                 context,
                 keyName: 'models.local.budget.legend.floor',
                 label: l10n.modelsBudgetFloor,
-                value: formatModelBytes(floorSeg * 1024 * 1024),
+                value: formatModelBytes(floor * 1024 * 1024),
                 color: la.caution,
               ),
               _legendEntry(
@@ -247,9 +251,33 @@ final class MemoryBudgetBar extends StatelessWidget {
                 value: formatModelBytes(availSeg * 1024 * 1024),
                 color: la.accent.withValues(alpha: 0.55),
               ),
+              // The congestion disclosure (2026-11-18 v3.2, the owner's
+              // "the measure is incorrect"): a machine that already
+              // spilled to disk must never read as uncongested.
+              if ((current.swapUsedMegabytes ?? 0) >= 256)
+                _legendEntry(
+                  context,
+                  keyName: 'models.local.budget.legend.swap',
+                  label: l10n.modelsBudgetSwap,
+                  value: formatModelBytes(
+                    (current.swapUsedMegabytes ?? 0) * 1024 * 1024,
+                  ),
+                  color: la.danger,
+                ),
             ],
           ),
         ),
+        // The pressure note rides the swap fact — one quiet caution
+        // line, never a second alarm per row.
+        if ((current.swapUsedMegabytes ?? 0) >= 256)
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              key: const ValueKey('models.local.budget.swap'),
+              l10n.modelsBudgetSwapNote,
+              style: LaTokens.mono(10, la.caution),
+            ),
+          ),
         // The total-less sensor's honest note: the bar scaled to
         // available alone, nothing invented for the unseen total.
         if (total == null)

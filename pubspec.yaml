@@ -199,6 +199,9 @@ dependencies:
   # paths (absolute + normal form) through package:path.
   path: any
   file_picker: any
+  # The composer's drag-and-drop images (messenger law): OS files
+  # dropped on the text field stage as media attachments.
+  desktop_drop: ^0.7.0
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

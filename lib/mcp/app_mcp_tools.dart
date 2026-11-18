@@ -26,6 +26,7 @@ import 'package:lastanswer/coding_agent/device_capabilities.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/doc/acp_agent_runtime.dart';
 import 'package:lastanswer/mcp/chatgpt_mcp_tools.dart';
+import 'package:lastanswer/mcp/grok_mcp_tools.dart';
 import 'package:lastanswer/router.dart';
 import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
@@ -119,6 +120,18 @@ const List<AppIntentSpec> appIntentCatalog = [
     summary: 'Read safe device-local ChatGPT account and model state.'),
   AppIntentSpec(name: 'chatgpt_account_action', group: 'account',
     summary: 'Operate the ChatGPT account pane through its product controller.'),
+  AppIntentSpec(
+    name: 'grok_account_state',
+    group: 'account',
+    summary:
+        'Read safe device-local Grok account state and client registration.',
+  ),
+  AppIntentSpec(
+    name: 'grok_account_action',
+    group: 'account',
+    summary:
+        'Operate the Grok subscription account through its product controller.',
+  ),
   AppIntentSpec(
     name: 'workbench_state',
     group: 'workbench',
@@ -386,6 +399,7 @@ const Set<String> kDebugOnlyDiagnosticTools = <String>{
 /// workbench is open).
 Set<AgentCallEntry> appMcpEntries() => {
   ...chatGptMcpEntries(),
+  ...grokMcpEntries(),
   ...workbenchMcpEntries(),
   mcpToolkitTool(
     handler: (final parameters) {

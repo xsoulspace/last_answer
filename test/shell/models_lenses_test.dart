@@ -37,7 +37,8 @@ Widget _wrap(final Widget child) => MaterialApp(
   // The kit overlay host (same shape as last_answer_app.dart):
   // LaTooltip/LaMenuAnchor/LaSelect below need a Portal ancestor.
   builder: (final context, final child) =>
-      Portal(child: child ?? const SizedBox.shrink()),locale: const Locale('en'),
+      Portal(child: child ?? const SizedBox.shrink()),
+  locale: const Locale('en'),
   localizationsDelegates: S.localizationsDelegates,
   supportedLocales: S.supportedLocales,
   home: Scaffold(body: child),
@@ -402,10 +403,21 @@ void main() {
       await tester.pump();
       await settleTap(tester, 'models.model.modelscope.add');
       await enter(tester, 'models.form.id', 'Qwen/Qwen-Image');
-      await enter(tester, 'models.setting.add.free', 'capabilities.image_generation');
+      await enter(
+        tester,
+        'models.setting.add.free',
+        'capabilities.image_generation',
+      );
       await settleTap(tester, 'models.setting.add.confirm');
-      await settleTap(tester, 'models.setting.capabilities.image_generation.toggle');
-      await enter(tester, 'models.setting.add.free', 'capabilities.image_edit');
+      await settleTap(
+        tester,
+        'models.setting.capabilities.image_generation.toggle',
+      );
+      await enter(
+        tester,
+        'models.setting.add.free',
+        'capabilities.image_edit',
+      );
       await settleTap(tester, 'models.setting.add.confirm');
       await settleTap(tester, 'models.setting.capabilities.image_edit.toggle');
       await settleTap(tester, 'models.form.confirm');
@@ -511,6 +523,45 @@ void main() {
           ((candidate['providers']! as Map)['ollama']! as Map)['models']!
               as List;
       expect((models.first! as Map)['num_ctx'], 4096);
+
+      await endClean(tester);
+    });
+
+    testWidgets('the merged local-models section (2026-11-18): the '
+        'service rows and the checkpoint rows share ONE section and '
+        'the standalone qwen lane row is gone', (final tester) async {
+      await mount(tester);
+
+      // The merged section title.
+      expect(find.text('Local models'), findsOneWidget);
+      // The old on-device section does not exist; the `qwen` lane row
+      // is absorbed (its id stays in Bindings/Observe).
+      expect(
+        find.byKey(const ValueKey('models.class.onDevice')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('models.onDevice.qwen')),
+        findsNothing,
+      );
+
+      final section = find.byKey(const ValueKey('models.class.localModels'));
+      // The fixture's AFM builtin rides the merged section as a
+      // service row, next to the downloadable checkpoints.
+      final afm = find.descendant(
+        of: section,
+        matching: find.byKey(
+          const ValueKey('models.onDevice.apple_foundation_afm'),
+        ),
+      );
+      await see(tester, afm);
+      final checkpoint = find.descendant(
+        of: section,
+        matching: find.byKey(
+          const ValueKey('models.local.Qwen3-0.6B-4bit.row'),
+        ),
+      );
+      await see(tester, checkpoint);
 
       await endClean(tester);
     });

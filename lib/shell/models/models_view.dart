@@ -30,8 +30,10 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/bindings_lens.dart';
 import 'package:lastanswer/shell/models/catalog_lens.dart';
+import 'package:lastanswer/shell/models/local_models_state.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
 import 'package:lastanswer/shell/models/observe_lens.dart';
+import 'package:lastanswer/shell/models/package_local_model_runtime.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 
@@ -63,7 +65,12 @@ final class _ServicePaletteLane implements PaletteVerbLane {
 }
 
 final class ModelsView extends StatefulWidget {
-  const ModelsView({required this.world, this.service, super.key});
+  const ModelsView({
+    required this.world,
+    this.service,
+    this.localModels,
+    super.key,
+  });
 
   final WorldStateService world;
 
@@ -72,6 +79,12 @@ final class ModelsView extends StatefulWidget {
   /// honestly: the dirty bar names the missing seat.
   final RealmChatService? service;
 
+  /// The local model manager's state (the catalog lens's "Local model
+  /// catalog" section). Injected by tests (a fake installer, no
+  /// network); when null the view creates its own over the package
+  /// installer and owns its lifecycle.
+  final LocalModelsState? localModels;
+
   @override
   State<ModelsView> createState() => _ModelsViewState();
 }
@@ -79,28 +92,52 @@ final class ModelsView extends StatefulWidget {
 final class _ModelsViewState extends State<ModelsView> {
   ModelsLens _lens = ModelsLens.catalog;
   PaletteCandidateModel? _model;
+  LocalModelsState? _ownedLocalModels;
   bool _restartPending = false;
   int? _pidAtPending;
 
   RealmChatService? get _service =>
       widget.service ?? context.read<RealmChatService?>();
 
+  /// The injected state is NOT owned here; the self-made one is.
+  LocalModelsState get _localModels => widget.localModels ?? _ownedLocalModels!;
+
   @override
   void initState() {
     super.initState();
     widget.world.addListener(_sync);
+    if (widget.localModels == null) {
+      _ownedLocalModels = LocalModelsState(
+        // The runtime is the second lifecycle stage (Download vs Load):
+        // with it the rows carry Load/Unload; production always rides
+        // the package runtime — the dylib itself is the registry, so a
+        // preloaded model is the SAME engine the chat lanes adopt.
+        runtime: PackageLocalModelRuntime(),
+      );
+      // The initial state probe (the installer answers per entry;
+      // the stub answers synchronously, the real installer reads the
+      // hub cache — off the ticker either way).
+      unawaited(_ownedLocalModels!.refresh());
+    }
+    // The pane-visible budget cadence (2026-11-18 v3 realtime law):
+    // the bar re-senses while this pane lives — memory is exactly the
+    // fact that changes UNDER a live model. The state no-ops the
+    // poller in the test lane (no hidden timers there).
+    _localModels.startBudgetPolling();
     _sync();
   }
 
   @override
   void dispose() {
     widget.world.removeListener(_sync);
+    _localModels.stopBudgetPolling();
     final model = _model;
     if (model != null) {
       model
         ..removeListener(_onModelChanged)
         ..dispose();
     }
+    _ownedLocalModels?.dispose();
     super.dispose();
   }
 
@@ -159,130 +196,130 @@ final class _ModelsViewState extends State<ModelsView> {
     return ListenableBuilder(
       listenable: model ?? widget.world,
       builder: (final context, final _) => Column(
-          key: const ValueKey('shell.modelsView'),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      // A narrow split pane wraps the switcher instead
-                      // of overflowing it (a RenderFlex overflow is an
-                      // error, never a layout).
-                      Flexible(
-                        child: Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: [
-                            for (final lens in ModelsLens.values)
-                              _LensButton(
-                                lens: lens,
-                                selected: _lens == lens,
-                                label: switch (lens) {
-                                  ModelsLens.catalog => l10n.modelsLensCatalog,
-                                  ModelsLens.bindings =>
-                                    l10n.modelsLensBindings,
-                                  ModelsLens.observe => l10n.modelsLensObserve,
-                                },
-                                onTap: () => setState(() => _lens = lens),
-                              ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      if (widget.world.paletteConfigPath case final path?)
-                        Flexible(
-                          child: Text(
-                            path,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: LaTokens.mono(9, la.inkQuiet),
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  if (widget.world.paletteAbsence case final refusal?)
-                    ModelsRefusalNote(
-                      keyName: 'models.palette.refusal',
-                      text: refusal,
-                    )
-                  else if (widget.world.palette == null)
-                    ModelsRefusalNote(
-                      keyName: 'models.palette.empty',
-                      text: widget.world.paletteConfigPath == null
-                          ? l10n.modelsNoPalette
-                          : '${l10n.modelsNoPalette} · '
-                                '${widget.world.paletteConfigPath}',
-                    ),
-                  if (_restartPending)
-                    Container(
-                      key: const ValueKey('models.restartPending'),
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: la.caution.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(ShellTokens.radius),
-                      ),
-                      child: Row(
+        key: const ValueKey('shell.modelsView'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    // A narrow split pane wraps the switcher instead
+                    // of overflowing it (a RenderFlex overflow is an
+                    // error, never a layout).
+                    Flexible(
+                      child: Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
                         children: [
-                          Expanded(
-                            child: Text(
-                              l10n.modelsRestartPending,
-                              style: LaTokens.mono(10, la.inkMuted),
+                          for (final lens in ModelsLens.values)
+                            _LensButton(
+                              lens: lens,
+                              selected: _lens == lens,
+                              label: switch (lens) {
+                                ModelsLens.catalog => l10n.modelsLensCatalog,
+                                ModelsLens.bindings => l10n.modelsLensBindings,
+                                ModelsLens.observe => l10n.modelsLensObserve,
+                              },
+                              onTap: () => setState(() => _lens = lens),
                             ),
-                          ),
-                          ModelsButton(
-                            keyName: 'models.restartPending.restart',
-                            label: l10n.modelsRestartNow,
-                            onTap: () => unawaited(widget.world.restartWorld()),
-                          ),
                         ],
                       ),
                     ),
-                ],
-              ),
+                    const SizedBox(width: 6),
+                    if (widget.world.paletteConfigPath case final path?)
+                      Flexible(
+                        child: Text(
+                          path,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: LaTokens.mono(9, la.inkQuiet),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                if (widget.world.paletteAbsence case final refusal?)
+                  ModelsRefusalNote(
+                    keyName: 'models.palette.refusal',
+                    text: refusal,
+                  )
+                else if (widget.world.palette == null)
+                  ModelsRefusalNote(
+                    keyName: 'models.palette.empty',
+                    text: widget.world.paletteConfigPath == null
+                        ? l10n.modelsNoPalette
+                        : '${l10n.modelsNoPalette} · '
+                              '${widget.world.paletteConfigPath}',
+                  ),
+                if (_restartPending)
+                  Container(
+                    key: const ValueKey('models.restartPending'),
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: la.caution.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(ShellTokens.radius),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.modelsRestartPending,
+                            style: LaTokens.mono(10, la.inkMuted),
+                          ),
+                        ),
+                        ModelsButton(
+                          keyName: 'models.restartPending.restart',
+                          label: l10n.modelsRestartNow,
+                          onTap: () => unawaited(widget.world.restartWorld()),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
-                child: model == null
-                    ? const SizedBox.shrink()
-                    : switch (_lens) {
-                        ModelsLens.catalog => CatalogLens(
-                          model: model,
-                          world: widget.world,
-                          compact: compact,
-                        ),
-                        ModelsLens.bindings => BindingsLens(
-                          model: model,
-                          world: widget.world,
-                          compact: compact,
-                          service: _service,
-                        ),
-                        ModelsLens.observe => ObserveLens(
-                          world: widget.world,
-                          compact: compact,
-                          service: _service,
-                        ),
-                      },
-              ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+              child: model == null
+                  ? const SizedBox.shrink()
+                  : switch (_lens) {
+                      ModelsLens.catalog => CatalogLens(
+                        model: model,
+                        world: widget.world,
+                        compact: compact,
+                        localModels: _localModels,
+                      ),
+                      ModelsLens.bindings => BindingsLens(
+                        model: model,
+                        world: widget.world,
+                        compact: compact,
+                        service: _service,
+                      ),
+                      ModelsLens.observe => ObserveLens(
+                        world: widget.world,
+                        compact: compact,
+                        service: _service,
+                      ),
+                    },
             ),
-            if (model != null &&
-                _lens != ModelsLens.observe &&
-                (model.dirty ||
-                    model.refusal != null ||
-                    model.receipt != null ||
-                    model.applyOutcome != null))
-              PaletteDirtyBar(model: model),
-          ],
-        ),
+          ),
+          if (model != null &&
+              _lens != ModelsLens.observe &&
+              (model.dirty ||
+                  model.refusal != null ||
+                  model.receipt != null ||
+                  model.applyOutcome != null))
+            PaletteDirtyBar(model: model),
+        ],
+      ),
     );
   }
 }

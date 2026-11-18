@@ -24,7 +24,22 @@ abstract final class ShellTokens {
 
   /// Context column width (px) — a general narrow-column constant
   /// (tests and side panes); the retired WAVE 5 dock left it behind.
+  /// The docked rooms column's DEFAULT width (the drag-resize law can
+  /// move it within [minRoomsColumnWidth, maxRoomsColumnWidth]).
   static const double contextColumnWidth = 240;
+
+  /// Resize law (the drag-width affordance, owner request 2026-11-18):
+  /// the pane groups' seams and the rooms column's right edge are drag
+  /// handles. Minimums keep every pane/column honest (the strip's
+  /// controls + one readable column of content); the rooms maximum
+  /// keeps the rail the window's navigation, never its whole body.
+  static const double minPaneWidth = 160;
+  static const double minRoomsColumnWidth = 180;
+  static const double maxRoomsColumnWidth = 480;
+
+  /// One drag handle's hit width (px) — half of a pane seam (two
+  /// abutting zones make the 12px seam), the rooms column's right edge.
+  static const double resizeHandleWidth = 6;
 
   /// The tab strip's row height (px) — ONE chrome row per pane group
   /// (DESIGN.md v2 chrome budget).

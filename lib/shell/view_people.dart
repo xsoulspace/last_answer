@@ -15,7 +15,9 @@
 /// Widget keys are the agent's UI contract (DESIGN §6) — carried over
 /// from the panel unchanged: `shell.context.topic`, `shell.context.people`,
 /// `shell.context.person.<id>`, `shell.people.status.<id>`,
-/// `shell.context.actor` (with `.back`, `.edit`, `.save`).
+/// `shell.context.actor` (with `.back`, `.edit`, `.save`), plus the
+/// retired-visibility rows `shell.people.retired.<id>` and their mark
+/// `shell.people.retired.mark.<id>` (2026-11-18).
 library;
 
 import 'package:lastanswer/agent_config/agent_config.dart';
@@ -23,11 +25,15 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
+import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
 import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
+    show ActorScopeGrant;
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/creatures.dart';
 import 'package:lastanswer/la_world/la_world.dart';
@@ -169,6 +175,12 @@ class _PeopleListBody extends StatelessWidget {
         for (final actor in service.roster?.all ?? const <ActorProfile>[])
           actor.actorId,
       ];
+      // RETIRED VISIBILITY (2026-11-18): retirement tombstones the
+      // roster, so this world list went silent about retired actors —
+      // an invisible retirement is a lie of absence. The Retired
+      // section names them muted; a tap opens the info surface (the
+      // one surface retirement names verbatim, Revive included).
+      final retiredIds = service.retiredRows.keys.toList()..sort();
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,6 +199,16 @@ class _PeopleListBody extends StatelessWidget {
                       onOpenConversation: onOpenConversation,
                     ),
             ),
+            if (retiredIds.isNotEmpty)
+              _Section(
+                sectionKey: const ValueKey('shell.people.retired'),
+                label: l10n.actorsRetiredSection,
+                child: _RetiredList(
+                  ids: retiredIds,
+                  service: service,
+                  onOpenActor: onOpenActor ?? onFocus,
+                ),
+              ),
           ],
         ),
       );
@@ -224,6 +246,25 @@ class _PeopleListBody extends StatelessWidget {
               label: channel != null
                   ? l10n.contextMembers
                   : l10n.contextParticipants,
+              // The channel's membership add verb rides the section
+              // label (the members lane's third entry point; removal
+              // stays in the popover and the actor info surface — one
+              // destructive entry per fact).
+              trailing: channel == null
+                  ? null
+                  : LaButton.icon(
+                      key: const ValueKey('shell.context.members.add'),
+                      tooltip: l10n.worldChatMembersAdd,
+                      size: LaButtonSize.sm,
+                      icon: Icon(Icons.add, size: 13, color: context.shellMuted),
+                      onPressed: () => unawaited(
+                        openChannelMembersDialog(
+                          context,
+                          service: service,
+                          channel: channel,
+                        ),
+                      ),
+                    ),
               child: _PeopleList(
                 ids: people,
                 service: service,
@@ -247,6 +288,7 @@ class _PeopleListBody extends StatelessWidget {
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
       paletteRungs:
           context.read<WorldStateService?>()?.generativeDecls ?? const [],
+      subscriptionModels: subscriptionModelsOf(context),
     );
     final name = TextEditingController();
     final role = TextEditingController();
@@ -327,10 +369,8 @@ class _PeopleListBody extends StatelessWidget {
       final config = context.read<AgentConfigStore>().config;
       return config.chat.defaultModel.isNotEmpty
           ? config.chat.defaultModel
-          : (config
-                  .providers[AgentPlatformConfig.openRouterId]
-                  ?.defaultModel ??
-              '');
+          : (config.providers[AgentPlatformConfig.openRouterId]?.defaultModel ??
+                '');
     } on Object {
       return '';
     }
@@ -390,8 +430,7 @@ class _PeopleList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final id in ids)
-          _personRow(context, id, roster, bots, laWorld),
+        for (final id in ids) _personRow(context, id, roster, bots, laWorld),
       ],
     );
   }
@@ -493,9 +532,7 @@ class _PeopleList extends StatelessWidget {
                   key: ValueKey('shell.people.status.$id'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: context.laUi.micro.copyWith(
-                    color: context.shellMuted,
-                  ),
+                  style: context.laUi.micro.copyWith(color: context.shellMuted),
                 ),
               ),
           ],
@@ -537,6 +574,79 @@ class _PeopleList extends StatelessWidget {
       narrationState: service.botNarration[id]?.state.name,
     ).mood;
   }
+}
+
+/// The RETIRED actors (the people view's Retired section, 2026-11-18):
+/// one muted row per retired durable row — half-opacity avatar, the
+/// display name and the retirement mark — the whole row tapping into
+/// the actor's INFO surface (retirement is named verbatim there,
+/// Revive included; a retired actor answers no DM, so the row offers
+/// no message verb).
+class _RetiredList extends StatelessWidget {
+  const _RetiredList({
+    required this.ids,
+    required this.service,
+    this.onOpenActor,
+  });
+
+  final List<String> ids;
+
+  /// The world conversation service — the retired rows' facts source.
+  final RealmChatService service;
+
+  /// Opens the actor's info surface; null keeps rows inert (hermetic
+  /// hosts).
+  final void Function(String actorId)? onOpenActor;
+
+  @override
+  Widget build(final BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      for (final id in ids)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: LaPressable(
+            key: ValueKey('shell.people.retired.$id'),
+            onTap: onOpenActor == null ? null : () => onOpenActor!(id),
+            radius: BorderRadius.circular(6),
+            scaleOnPress: false,
+            child: Row(
+              children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: ActorAvatar(
+                    profile:
+                        service.roster?.get(id) ??
+                        ActorProfile(
+                          actorId: id,
+                          displayName: actorDisplayFallback(id),
+                        ),
+                    size: ShellTokens.rowAvatar,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    service.retiredInfo(id)?['displayName'] as String? ??
+                        actorDisplayFallback(id),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.laUi.compact.copyWith(
+                      color: context.shellMuted,
+                    ),
+                  ),
+                ),
+                Text(
+                  context.l10n.actorsRetiredMark,
+                  key: ValueKey('shell.people.retired.mark.$id'),
+                  style: LaTokens.mono(9.5, context.shellMuted),
+                ),
+              ],
+            ),
+          ),
+        ),
+    ],
+  );
 }
 
 /// The focused actor's profile: identity, brain, sampling, persona —
@@ -585,6 +695,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                   context.read<WorldStateService?>()?.generativeDecls ??
                   const [],
               defaultOpenRouterModel: _defaultOpenRouterModel(context),
+              subscriptionModels: subscriptionModelsOf(context),
             ),
             tiersForBrain: (final ref) => reasoningTiersForBrainRef(
               ref,
@@ -632,6 +743,7 @@ class _ActorPanelState extends State<_ActorPanel> {
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
       paletteRungs:
           context.read<WorldStateService?>()?.generativeDecls ?? const [],
+      subscriptionModels: subscriptionModelsOf(context),
     );
     final brainBase = brainRefBase(profile?.brainRef ?? '');
     final knownLabels = options
@@ -686,9 +798,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                         display.displayName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: laUi.body.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: laUi.body.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -698,9 +808,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                         ].join(' · '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: laUi.micro.copyWith(
-                          color: context.shellMuted,
-                        ),
+                        style: laUi.micro.copyWith(color: context.shellMuted),
                       ),
                     ],
                   ),
@@ -737,9 +845,7 @@ class _ActorPanelState extends State<_ActorPanel> {
                     padding: const EdgeInsets.only(top: 2),
                     child: Text(
                       brainBase,
-                      style: laUi.micro.copyWith(
-                        color: context.shellMuted,
-                      ),
+                      style: laUi.micro.copyWith(color: context.shellMuted),
                     ),
                   ),
               ],
@@ -786,9 +892,15 @@ class _ActorPanelState extends State<_ActorPanel> {
 }
 
 /// A muted section label above its content — the rail's `_Section`
-/// shape, read on the shell tokens.
+/// shape, read on the shell tokens. An optional [trailing] rides the
+/// label row (the members section's add verb).
 class _Section extends StatelessWidget {
-  const _Section({required this.label, required this.child, this.sectionKey});
+  const _Section({
+    required this.label,
+    required this.child,
+    this.sectionKey,
+    this.trailing,
+  });
 
   final String label;
   final Widget child;
@@ -797,6 +909,9 @@ class _Section extends StatelessWidget {
   /// sections.
   final Key? sectionKey;
 
+  /// A small affordance beside the label; null keeps the row plain.
+  final Widget? trailing;
+
   @override
   Widget build(final BuildContext context) => Padding(
     key: sectionKey,
@@ -804,7 +919,15 @@ class _Section extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: shellSectionLabel(context)),
+        Row(
+          children: [
+            Text(label, style: shellSectionLabel(context)),
+            if (trailing != null) ...[
+              const SizedBox(width: 6),
+              trailing!,
+            ],
+          ],
+        ),
         const SizedBox(height: 6),
         child,
       ],
@@ -838,6 +961,7 @@ class ProjectAccessSection extends StatefulWidget {
 
 class _ProjectAccessSectionState extends State<ProjectAccessSection> {
   List<String> _grants = const <String>[];
+  List<ActorScopeGrant> _scopes = const <ActorScopeGrant>[];
   List<Map<String, Object?>> _pending = const <Map<String, Object?>>[];
   var _loading = true;
   var _busy = false;
@@ -867,9 +991,14 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
 
   Future<void> _reload() async {
     var grants = const <String>[];
+    var scopes = const <ActorScopeGrant>[];
     var pending = const <Map<String, Object?>>[];
     try {
       grants = await widget.service.listGrants(widget.actorId);
+      // ADR 0147 — the SCOPE ledger rides the same section: the actor's
+      // effective grants with their caps and provenance (legacy ∪
+      // ledger ∪ channel-conferred), each row with its Revoke verb.
+      scopes = await widget.service.listScopeGrants(widget.actorId);
       if (_isHumanCard) {
         pending = await widget.service.pendingAccessRequests();
       }
@@ -882,9 +1011,27 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
     if (!mounted) return;
     setState(() {
       _grants = grants;
+      _scopes = scopes;
       _pending = pending;
       _loading = false;
     });
+  }
+
+  /// ADR 0147 — revokes one scope row (the operator lane: the harness
+  /// verb permits the operator, the granter, a superset holder, or the
+  /// grantee giving the access back).
+  Future<void> _revoke(final ActorScopeGrant grant) async {
+    setState(() => _busy = true);
+    final result = await widget.service.revokeScope(
+      actorId: widget.actorId,
+      path: grant.path,
+    );
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = result.message;
+    });
+    await _reload();
   }
 
   Future<void> _request() async {
@@ -956,6 +1103,53 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: LaTokens.mono(10.5, context.la.ink),
+                ),
+              ),
+          for (final grant in _scopes)
+            if (grant.caps != null || grant.via != null ||
+                !_grants.contains(grant.path))
+              Padding(
+                key: ValueKey('shell.people.access.scope.${grant.path}'),
+                padding: const EdgeInsets.symmetric(vertical: 1.5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        [
+                          grant.path,
+                          if (grant.caps != null) grant.caps!.join(' '),
+                          if (grant.via != null) grant.via!,
+                        ].join('  '),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: LaTokens.mono(10.5, context.la.ink),
+                      ),
+                    ),
+                    LaPressable(
+                      key: ValueKey(
+                        'shell.people.access.scope.${grant.path}.revoke',
+                      ),
+                      radius: BorderRadius.circular(6),
+                      scaleOnPress: false,
+                      onTap: _busy ? null : () => unawaited(_revoke(grant)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 1.5,
+                        ),
+                        child: Text(
+                          context.l10n.worldChatPermsRevoke,
+                          style: context.laUi.micro.copyWith(
+                            color: _busy
+                                ? context.shellMuted
+                                : context.la.danger,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
           const SizedBox(height: 6),

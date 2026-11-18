@@ -31,6 +31,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/app_shell.dart' show kViewLayoutPrefsKey;
 import 'package:lastanswer/shell/shell_layout.dart';
@@ -83,6 +84,7 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
       availableBrainOptions(
         defaultOpenRouterModel: _defaultOpenRouterModel(context),
         paletteRungs: _worldState?.generativeDecls ?? const [],
+        subscriptionModels: subscriptionModelsOf(context),
       );
 
   @override
@@ -130,8 +132,8 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
     final options = _brainOptions;
     final effectiveBrain =
         _brainRef ?? (options.isEmpty ? null : options.first.ref);
-    final canCreate = !_busy && _name.text.trim().isNotEmpty &&
-        effectiveBrain != null;
+    final canCreate =
+        !_busy && _name.text.trim().isNotEmpty && effectiveBrain != null;
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
@@ -151,10 +153,7 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
                 ),
               ),
               const Gap(32),
-              Text(
-                l10n.firstRunNameLabel,
-                style: shellSectionLabel(context),
-              ),
+              Text(l10n.firstRunNameLabel, style: shellSectionLabel(context)),
               const Gap(6),
               Semantics(
                 label: 'firstrun.name',
@@ -187,10 +186,7 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
                 ),
               ),
               const Gap(18),
-              Text(
-                l10n.firstRunBrainLabel,
-                style: shellSectionLabel(context),
-              ),
+              Text(l10n.firstRunBrainLabel, style: shellSectionLabel(context)),
               const Gap(6),
               if (options.isEmpty)
                 Text(
@@ -267,8 +263,7 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
       final config = context.read<AgentConfigStore>().config;
       return config.chat.defaultModel.isNotEmpty
           ? config.chat.defaultModel
-          : (config.providers[AgentPlatformConfig.openRouterId]
-                    ?.defaultModel ??
+          : (config.providers[AgentPlatformConfig.openRouterId]?.defaultModel ??
                 '');
     } on Object {
       return '';
@@ -288,8 +283,7 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
     final userNotifier = context.read<UserNotifier>();
     final l10n = context.l10n;
     final options = _brainOptions;
-    final brainRef =
-        _brainRef ?? (options.isEmpty ? null : options.first.ref);
+    final brainRef = _brainRef ?? (options.isEmpty ? null : options.first.ref);
     try {
       final service = _service;
       await service.ensureReady();
@@ -377,10 +371,9 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(kViewLayoutPrefsKey);
-      final layout =
-          (raw == null || raw.isEmpty)
-              ? ShellLayout.defaultLayout()
-              : ShellLayout.fromJson(jsonDecode(raw));
+      final layout = (raw == null || raw.isEmpty)
+          ? ShellLayout.defaultLayout()
+          : ShellLayout.fromJson(jsonDecode(raw));
       await prefs.setString(
         kViewLayoutPrefsKey,
         jsonEncode(layout.openConversation('dm:$actorId').toJson()),

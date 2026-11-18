@@ -121,6 +121,8 @@ dependencies:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_mlx_native
   xsoulspace_inference_openai:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_openai
+  xsoulspace_inference_xai:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_inference_xai
   # The local laya-serve runtime the agent doc's laya backend probes —
   # composed through afm's layaDecisionBinding (local dev train).
   xsoulspace_inference_laya:

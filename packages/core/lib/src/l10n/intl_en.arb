@@ -236,7 +236,9 @@
   "agentProviderDefaultModelHint": "default model",
   "agentChatDefaultsSection": "Chat defaults",
   "agentChatProviderHint": "default provider",
+  "agentChatProviderEmptyHint": "No providers configured — add one under Providers",
   "agentChatModelHint": "default model",
+  "agentChatModelEmptyHint": "Add a provider to choose a default model",
   "agentChatSystemPromptHint": "default system prompt",
   "agentChatNoTransport": "pick an agent or model above",
   "agentChatAcpDesktopOnly": "ACP agents need a desktop device",
@@ -423,6 +425,27 @@
   "chatGptSignInRequired": "Connect a ChatGPT account and enable plan access before sending.",
   "chatGptModelRequired": "Choose a ChatGPT model before sending.",
   "chatGptDocumentConsentRequired": "Confirm cloud use for this document, account, model and workspace before sending.",
+  "grokSubscriptionTitle": "Grok subscription",
+  "grokContinue": "Continue with Grok",
+  "grokDeviceSignIn": "Use a device code",
+  "grokSignOut": "Sign out",
+  "grokChooseAccount": "Choose a Grok account",
+  "grokAccount": "Grok account",
+  "grokChooseModel": "Choose a Grok model",
+  "grokRefreshModels": "Refresh models",
+  "grokVerifyAccess": "Verify access",
+  "grokAccessUnchecked": "Access not checked",
+  "grokAccessVerified": "Access verified on this device",
+  "grokPlanPermissionRequired": "This account's token does not include plan access.",
+  "grokWorking": "Working",
+  "grokRevocationUnconfirmed": "Remote sign-out was not confirmed. Local tokens were removed.",
+  "grokConnectionError": "The Grok account could not be reached.",
+  "grokDesktopOnly": "Grok sign-in is available in the desktop app.",
+  "grokSignInRequired": "Connect a Grok account and enable plan access before sending.",
+  "grokModelRequired": "Choose a Grok model before sending.",
+  "grokDocumentConsentRequired": "Confirm cloud use for this document, account, model and workspace before sending.",
+  "grokClientNotRegistered": "Last Answer does not have an xAI client id yet. Sign-in stays closed.",
+  "grokRegistrationHint": "Send xAI the referrer and redirect above so it can register this app.",
   "worldConversationChoose": "Choose a conversation",
   "worldConversationHint": "Talk in this world conversation",
   "worldConversationSend": "Send to world",
@@ -670,73 +693,157 @@
   "railViews": "Views",
   "railViewSwitchTooltip": "Switch view",
   "statusEdgeWorldLive": "world live",
-  "@statusEdgeWorldLive": {"description": "Status edge: the ecsai daemon is live."},
+  "@statusEdgeWorldLive": {
+    "description": "Status edge: the ecsai daemon is live."
+  },
   "statusEdgeWorldLiveStale": "world live · binary stale",
-  "@statusEdgeWorldLiveStale": {"description": "Status edge: daemon live but its binary predates the last build."},
+  "@statusEdgeWorldLiveStale": {
+    "description": "Status edge: daemon live but its binary predates the last build."
+  },
   "statusEdgeWorldDown": "world down",
-  "@statusEdgeWorldDown": {"description": "Status edge: no daemon is live."},
+  "@statusEdgeWorldDown": {
+    "description": "Status edge: no daemon is live."
+  },
   "statusEdgeWorldArming": "world arming…",
-  "@statusEdgeWorldArming": {"description": "Status edge: the supervised converge is running."},
+  "@statusEdgeWorldArming": {
+    "description": "Status edge: the supervised converge is running."
+  },
   "statusEdgeArmFailed": "arm failed · {reason}",
-  "@statusEdgeArmFailed": {"description": "Status edge: the converge failed, named.", "placeholders": {"reason": {}}},
+  "@statusEdgeArmFailed": {
+    "description": "Status edge: the converge failed, named.",
+    "placeholders": {
+      "reason": {}
+    }
+  },
   "statusEdgeArm": "Arm",
-  "@statusEdgeArm": {"description": "Status edge: the one-click arm button."},
+  "@statusEdgeArm": {
+    "description": "Status edge: the one-click arm button."
+  },
   "statusEdgeNoPalette": "no palette declared",
-  "@statusEdgeNoPalette": {"description": "Status edge: no config declares a model palette."},
+  "@statusEdgeNoPalette": {
+    "description": "Status edge: no config declares a model palette."
+  },
   "statusEdgePaletteRefused": "palette refused",
-  "@statusEdgePaletteRefused": {"description": "Status edge: the palette document failed to parse."},
+  "@statusEdgePaletteRefused": {
+    "description": "Status edge: the palette document failed to parse."
+  },
   "statusEdgePrimary": "primary {rung}",
-  "@statusEdgePrimary": {"description": "Status edge: the declared primary generative rung.", "placeholders": {"rung": {}}},
+  "@statusEdgePrimary": {
+    "description": "Status edge: the declared primary generative rung.",
+    "placeholders": {
+      "rung": {}
+    }
+  },
   "statusEdgeVia": "via {rung}",
-  "@statusEdgeVia": {"description": "Status edge: the session's chosen delegation rung.", "placeholders": {"rung": {}}},
+  "@statusEdgeVia": {
+    "description": "Status edge: the session's chosen delegation rung.",
+    "placeholders": {
+      "rung": {}
+    }
+  },
   "statusEdgeMeshOff": "mesh off",
-  "@statusEdgeMeshOff": {"description": "Status edge: the app mesh has no role."},
+  "@statusEdgeMeshOff": {
+    "description": "Status edge: the app mesh has no role."
+  },
   "statusEdgeMeshMain": "mesh main",
-  "@statusEdgeMeshMain": {"description": "Status edge: this device hosts the mesh relay."},
+  "@statusEdgeMeshMain": {
+    "description": "Status edge: this device hosts the mesh relay."
+  },
   "statusEdgeMeshJoined": "mesh joined",
-  "@statusEdgeMeshJoined": {"description": "Status edge: joined another device's relay, connected."},
+  "@statusEdgeMeshJoined": {
+    "description": "Status edge: joined another device's relay, connected."
+  },
   "statusEdgeMeshJoining": "mesh joining",
-  "@statusEdgeMeshJoining": {"description": "Status edge: joined role, relay not connected yet."},
+  "@statusEdgeMeshJoining": {
+    "description": "Status edge: joined role, relay not connected yet."
+  },
   "statusEdgeAttention": "attention: {count}",
-  "@statusEdgeAttention": {"description": "Status edge: open permissions + running tasks.", "placeholders": {"count": {}}},
+  "@statusEdgeAttention": {
+    "description": "Status edge: open permissions + running tasks.",
+    "placeholders": {
+      "count": {}
+    }
+  },
   "statusEdgeAttentionWaiting": "attention: {permissions} permissions, {running} running",
-  "@statusEdgeAttentionWaiting": {"description": "Status edge: a human decision waits.", "placeholders": {"permissions": {}, "running": {}}},
+  "@statusEdgeAttentionWaiting": {
+    "description": "Status edge: a human decision waits.",
+    "placeholders": {
+      "permissions": {},
+      "running": {}
+    }
+  },
   "edgeArmWorld": "Arm world",
-  "@edgeArmWorld": {"description": "One-click daemon arm (G2)."},
+  "@edgeArmWorld": {
+    "description": "One-click daemon arm (G2)."
+  },
   "edgeArming": "Arming…",
-  "@edgeArming": {"description": "The arm converge is running."},
+  "@edgeArming": {
+    "description": "The arm converge is running."
+  },
   "edgeStopWorld": "Stop",
-  "@edgeStopWorld": {"description": "Stops the supervised daemon."},
+  "@edgeStopWorld": {
+    "description": "Stops the supervised daemon."
+  },
   "edgeRestartWorld": "Restart",
-  "@edgeRestartWorld": {"description": "Verified stop, then one converge pass."},
+  "@edgeRestartWorld": {
+    "description": "Verified stop, then one converge pass."
+  },
   "inboxPermissions": "Permissions",
-  "@inboxPermissions": {"description": "Landing inbox: open permission round-trips (reject-first)."},
+  "@inboxPermissions": {
+    "description": "Landing inbox: open permission round-trips (reject-first)."
+  },
   "inboxRunning": "Queued & running",
-  "@inboxRunning": {"description": "Landing inbox: queued/running durable tasks."},
+  "@inboxRunning": {
+    "description": "Landing inbox: queued/running durable tasks."
+  },
   "inboxVerdicts": "Last verdicts",
-  "@inboxVerdicts": {"description": "Landing inbox: the newest terminal truths."},
+  "@inboxVerdicts": {
+    "description": "Landing inbox: the newest terminal truths."
+  },
   "inboxThreads": "Recent threads",
-  "@inboxThreads": {"description": "Landing inbox: the five most recent threads."},
+  "@inboxThreads": {
+    "description": "Landing inbox: the five most recent threads."
+  },
   "inboxEmpty": "Nothing needs attention",
-  "@inboxEmpty": {"description": "Landing inbox: the all-quiet row."},
+  "@inboxEmpty": {
+    "description": "Landing inbox: the all-quiet row."
+  },
   "inboxDeny": "Deny",
-  "@inboxDeny": {"description": "The reject-first default action."},
+  "@inboxDeny": {
+    "description": "The reject-first default action."
+  },
   "inboxAllow": "Allow",
-  "@inboxAllow": {"description": "The deliberate allow action."},
+  "@inboxAllow": {
+    "description": "The deliberate allow action."
+  },
   "inboxWorldDown": "The ecsai world is not running",
-  "@inboxWorldDown": {"description": "Landing inbox: daemon-down row."},
+  "@inboxWorldDown": {
+    "description": "Landing inbox: daemon-down row."
+  },
   "inboxWorldArming": "Arming the world…",
-  "@inboxWorldArming": {"description": "Landing inbox: converge running."},
+  "@inboxWorldArming": {
+    "description": "Landing inbox: converge running."
+  },
   "inboxWorldArmFailed": "Arm failed",
-  "@inboxWorldArmFailed": {"description": "Landing inbox: converge failed."},
+  "@inboxWorldArmFailed": {
+    "description": "Landing inbox: converge failed."
+  },
   "viewModelsTitle": "Models",
-  "@viewModelsTitle": {"description": "The Models surface title."},
+  "@viewModelsTitle": {
+    "description": "The Models surface title."
+  },
   "modelsNoPalette": "No models declared for this world",
-  "@modelsNoPalette": {"description": "Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs)."},
+  "@modelsNoPalette": {
+    "description": "Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs)."
+  },
   "modelsPolicySection": "Brain policy",
-  "@modelsPolicySection": {"description": "Models: the world default order section (the old generative-rungs list, rendered as sentences)."},
+  "@modelsPolicySection": {
+    "description": "Models: the world default order section (the old generative-rungs list, rendered as sentences)."
+  },
   "modelsPolicyFirst": "thinks first",
-  "@modelsPolicyFirst": {"description": "Policy row sentence: position 1 is the world default."},
+  "@modelsPolicyFirst": {
+    "description": "Policy row sentence: position 1 is the world default."
+  },
   "modelsPolicyFallback": "if {model} is down or stuck",
   "@modelsPolicyFallback": {
     "placeholders": {
@@ -746,9 +853,13 @@
     }
   },
   "modelsSystemLanes": "System lanes",
-  "@modelsSystemLanes": {"description": "Models: the collapsed decision-role section (the world's own quick decisions)."},
+  "@modelsSystemLanes": {
+    "description": "Models: the collapsed decision-role section (the world's own quick decisions)."
+  },
   "modelsSystemLanesHint": "The world's own quick decisions — leave these alone",
-  "@modelsSystemLanesHint": {"description": "System lanes: the one-sentence explainer."},
+  "@modelsSystemLanesHint": {
+    "description": "System lanes: the one-sentence explainer."
+  },
   "modelsActorsMore": "+{count} more",
   "@modelsActorsMore": {
     "placeholders": {
@@ -767,57 +878,109 @@
     }
   },
   "modelsDaemonLive": "daemon live",
-  "@modelsDaemonLive": {"description": "Models header fact."},
+  "@modelsDaemonLive": {
+    "description": "Models header fact."
+  },
   "modelsDaemonDown": "daemon down",
-  "@modelsDaemonDown": {"description": "Models header fact."},
+  "@modelsDaemonDown": {
+    "description": "Models header fact."
+  },
   "modelsDaemonStale": "binary stale",
-  "@modelsDaemonStale": {"description": "Models header fact: rebuilt after the resident booted."},
+  "@modelsDaemonStale": {
+    "description": "Models header fact: rebuilt after the resident booted."
+  },
   "modelsSchedulerLive": "scheduler live",
-  "@modelsSchedulerLive": {"description": "Models header fact: the supervised realm scheduler (delegation claimant) is running."},
+  "@modelsSchedulerLive": {
+    "description": "Models header fact: the supervised realm scheduler (delegation claimant) is running."
+  },
   "modelsSchedulerDown": "scheduler down",
-  "@modelsSchedulerDown": {"description": "Models header fact: no supervised realm scheduler — delegated tasks would sit queued."},
+  "@modelsSchedulerDown": {
+    "description": "Models header fact: no supervised realm scheduler — delegated tasks would sit queued."
+  },
   "modelsEditPalette": "Edit palette",
-  "@modelsEditPalette": {"description": "Opens the palette JSON editor."},
+  "@modelsEditPalette": {
+    "description": "Opens the palette JSON editor."
+  },
   "modelsValidate": "Validate",
-  "@modelsValidate": {"description": "Editor: dry-run the harness parser."},
+  "@modelsValidate": {
+    "description": "Editor: dry-run the harness parser."
+  },
   "modelsSave": "Save",
-  "@modelsSave": {"description": "Editor: validated write with a .bak sibling."},
+  "@modelsSave": {
+    "description": "Editor: validated write with a .bak sibling."
+  },
   "modelsClose": "Close",
-  "@modelsClose": {"description": "Editor: close the dialog."},
+  "@modelsClose": {
+    "description": "Editor: close the dialog."
+  },
   "modelsTelemetry": "Recent dispatches",
-  "@modelsTelemetry": {"description": "Models: per-actor tool-loop telemetry section."},
+  "@modelsTelemetry": {
+    "description": "Models: per-actor tool-loop telemetry section."
+  },
   "modelsChipLocal": "local",
-  "@modelsChipLocal": {"description": "Rung chip: a builtin local lane."},
+  "@modelsChipLocal": {
+    "description": "Rung chip: a builtin local lane."
+  },
   "commandPaletteHint": "Search views, people and actions…",
-  "@commandPaletteHint": {"description": "The ⌘K palette's field hint."},
+  "@commandPaletteHint": {
+    "description": "The ⌘K palette's field hint."
+  },
   "commandPaletteViews": "Views",
-  "@commandPaletteViews": {"description": "Palette group: the rail's views."},
+  "@commandPaletteViews": {
+    "description": "Palette group: the rail's views."
+  },
   "commandPalettePeople": "People",
-  "@commandPalettePeople": {"description": "Palette group: actors."},
+  "@commandPalettePeople": {
+    "description": "Palette group: actors."
+  },
   "commandPaletteChannels": "Channels",
-  "@commandPaletteChannels": {"description": "Palette group: channels."},
+  "@commandPaletteChannels": {
+    "description": "Palette group: channels."
+  },
   "commandPaletteActions": "Actions",
-  "@commandPaletteActions": {"description": "Palette group: shell actions."},
+  "@commandPaletteActions": {
+    "description": "Palette group: shell actions."
+  },
   "viewDocumentsTitle": "Documents",
-  "@viewDocumentsTitle": {"description": "The Documents view title."},
+  "@viewDocumentsTitle": {
+    "description": "The Documents view title."
+  },
   "documentsNewAgentDoc": "New agent doc",
-  "@documentsNewAgentDoc": {"description": "The Documents view's creation affordance."},
+  "@documentsNewAgentDoc": {
+    "description": "The Documents view's creation affordance."
+  },
   "documentsNewCodeFile": "New code file",
-  "@documentsNewCodeFile": {"description": "The code format's creation affordance (2a): documents view button and picker row share it."},
+  "@documentsNewCodeFile": {
+    "description": "The code format's creation affordance (2a): documents view button and picker row share it."
+  },
   "documentsEmpty": "No documents yet — create the first agent doc",
-  "@documentsEmpty": {"description": "The Documents view's empty grid."},
+  "@documentsEmpty": {
+    "description": "The Documents view's empty grid."
+  },
   "documentsMissing": "This document is not in the loaded list",
-  "@documentsMissing": {"description": "A doc tab whose id the registry page does not carry."},
+  "@documentsMissing": {
+    "description": "A doc tab whose id the registry page does not carry."
+  },
   "threadsWorld": "World threads",
-  "@threadsWorld": {"description": "Threads view: the realm thread section."},
+  "@threadsWorld": {
+    "description": "Threads view: the realm thread section."
+  },
   "threadsSessions": "Actor work",
-  "@threadsSessions": {"description": "Threads view: the live agent-work registry section. 1c vocabulary law: 'sessions' are an implementation detail; the UX says actor work."},
+  "@threadsSessions": {
+    "description": "Threads view: the live agent-work registry section. 1c vocabulary law: 'sessions' are an implementation detail; the UX says actor work."
+  },
   "threadsEmpty": "No threads yet — the rail's actors and channels start them",
-  "@threadsEmpty": {"description": "Threads view: the quiet empty state."},
+  "@threadsEmpty": {
+    "description": "Threads view: the quiet empty state."
+  },
   "boardsMeshTasks": "Mesh tasks",
-  "@boardsMeshTasks": {"description": "Boards view: the mesh task settle section."},
- "actionLandingInbox": "Landing inbox",
-  "@actionLandingInbox": {"description": "Palette action: the Conversations landing inbox."},
+  "@boardsMeshTasks": {
+    "description": "Boards view: the mesh task settle section."
+  },
+  "actionLandingInbox": "Landing inbox",
+  "@actionLandingInbox": {
+    "description": "Palette action: the Conversations landing inbox."
+  },
   "newTabSectionOpen": "Open",
   "newTabSectionRooms": "Rooms",
   "newTabSectionInstances": "New instance",
@@ -833,15 +996,25 @@
   "stripFold": "Fold split — back to one pane",
   "worldChatActorCard": "Actor card",
   "worldChatScopeArm": "Scope to workspace",
-  "@worldChatScopeArm": {"description": "Composer scope toggle (ADR 0129): arms one workspace root so the next send is a work order."},
+  "@worldChatScopeArm": {
+    "description": "Composer scope toggle (ADR 0129): arms one workspace root so the next send is a work order."
+  },
   "worldChatScopeDismiss": "Clear the workspace scope",
-  "@worldChatScopeDismiss": {"description": "Dismisses the armed scope chip; Send returns to the plain say."},
+  "@worldChatScopeDismiss": {
+    "description": "Dismisses the armed scope chip; Send returns to the plain say."
+  },
   "worldChatScopePickTitle": "Send the work order to a workspace",
-  "@worldChatScopePickTitle": {"description": "The project scope picker's dialog title."},
+  "@worldChatScopePickTitle": {
+    "description": "The project scope picker's dialog title."
+  },
   "worldChatScopeEmpty": "No project scopes yet — add a workspace folder or grant access first.",
-  "@worldChatScopeEmpty": {"description": "The scope picker's empty state: no grants and no workspace folders."},
+  "@worldChatScopeEmpty": {
+    "description": "The scope picker's empty state: no grants and no workspace folders."
+  },
   "worldChatWorkOrderHint": "Write the work order…",
-  "@worldChatWorkOrderHint": {"description": "Composer hint while a workspace scope is armed."},
+  "@worldChatWorkOrderHint": {
+    "description": "Composer hint while a workspace scope is armed."
+  },
   "worldChatWorkThreadOpened": "Work thread opened · {name}",
   "@worldChatWorkThreadOpened": {
     "description": "Transient status after a FRESH work thread spawned.",
@@ -861,333 +1034,1020 @@
     }
   },
   "worldChatWorkThreadKind": "work thread",
-  "@worldChatWorkThreadKind": {"description": "The work-thread card's kind word (never color/icon alone)."},
+  "@worldChatWorkThreadKind": {
+    "description": "The work-thread card's kind word (never color/icon alone)."
+  },
   "worldChatGrantNeeded": "Project access needed",
-  "@worldChatGrantNeeded": {"description": "Spawn-refusal card title for project_not_granted."},
+  "@worldChatGrantNeeded": {
+    "description": "Spawn-refusal card title for project_not_granted."
+  },
   "worldChatWorkOrderRefused": "Work order refused",
-  "@worldChatWorkOrderRefused": {"description": "Spawn-refusal card title for every other named refusal."},
+  "@worldChatWorkOrderRefused": {
+    "description": "Spawn-refusal card title for every other named refusal."
+  },
   "worldChatGrantAction": "Grant access",
-  "@worldChatGrantAction": {"description": "The refusal card's one-tap grant action."},
+  "@worldChatGrantAction": {
+    "description": "The refusal card's one-tap grant action."
+  },
   "worldChatGrantGranting": "Granting…",
-  "@worldChatGrantGranting": {"description": "The one-tap grant's busy label."},
+  "@worldChatGrantGranting": {
+    "description": "The one-tap grant's busy label."
+  },
   "contextProjectAccess": "PROJECT ACCESS",
-  "@contextProjectAccess": {"description": "People view: the project access section label."},
+  "@contextProjectAccess": {
+    "description": "People view: the project access section label."
+  },
   "contextNoProjectGrants": "No project grants.",
-  "@contextNoProjectGrants": {"description": "People view: the actor holds no project grants."},
+  "@contextNoProjectGrants": {
+    "description": "People view: the actor holds no project grants."
+  },
   "contextRequestAccess": "Request access…",
-  "@contextRequestAccess": {"description": "People view: the request-access affordance."},
+  "@contextRequestAccess": {
+    "description": "People view: the request-access affordance."
+  },
   "contextRequestAccessTitle": "Request access to a project",
-  "@contextRequestAccessTitle": {"description": "People view: the request-access picker title."},
+  "@contextRequestAccessTitle": {
+    "description": "People view: the request-access picker title."
+  },
   "contextAccessRequested": "Request recorded — pending approval.",
-  "@contextAccessRequested": {"description": "People view: status after a request was durably recorded."},
+  "@contextAccessRequested": {
+    "description": "People view: status after a request was durably recorded."
+  },
   "contextPendingAccess": "PENDING REQUESTS",
-  "@contextPendingAccess": {"description": "People view: the realm-wide pending requests sublabel (human card)."},
+  "@contextPendingAccess": {
+    "description": "People view: the realm-wide pending requests sublabel (human card)."
+  },
   "contextApprove": "Approve",
-  "@contextApprove": {"description": "People view: approves one pending project-access request."},
+  "@contextApprove": {
+    "description": "People view: approves one pending project-access request."
+  },
   "roomsExplainDms": "Direct messages — private threads with one actor",
-  "@roomsExplainDms": {"description": "Rooms column: tooltip explaining the Direct messages section."},
+  "@roomsExplainDms": {
+    "description": "Rooms column: tooltip explaining the Direct messages section."
+  },
   "roomsExplainChannels": "Channels — named group rooms with shared history",
-  "@roomsExplainChannels": {"description": "Rooms column: tooltip explaining the Channels section."},
+  "@roomsExplainChannels": {
+    "description": "Rooms column: tooltip explaining the Channels section."
+  },
   "roomsExplainRooms": "Rooms — watchable actor threads; join by addressing",
-  "@roomsExplainRooms": {"description": "Rooms column: tooltip explaining the Rooms section."},
+  "@roomsExplainRooms": {
+    "description": "Rooms column: tooltip explaining the Rooms section."
+  },
   "roomsKindChannel": "Channel",
-  "@roomsKindChannel": {"description": "Rooms column: kind word on a channel row mark."},
+  "@roomsKindChannel": {
+    "description": "Rooms column: kind word on a channel row mark."
+  },
   "roomsKindRoom": "Room",
-  "@roomsKindRoom": {"description": "Rooms column: kind word on a room row mark."},
+  "@roomsKindRoom": {
+    "description": "Rooms column: kind word on a room row mark."
+  },
   "roomsSetIconAction": "Change icon…",
-  "@roomsSetIconAction": {"description": "Channel row context menu: opens the change-icon dialog."},
+  "@roomsSetIconAction": {
+    "description": "Channel row context menu: opens the change-icon dialog."
+  },
   "roomsSetIconTitle": "Change channel icon",
-  "@roomsSetIconTitle": {"description": "Change-icon dialog title."},
+  "@roomsSetIconTitle": {
+    "description": "Change-icon dialog title."
+  },
   "roomsIconClear": "Clear icon",
-  "@roomsIconClear": {"description": "Change-icon dialog: clears back to the # mark."},
+  "@roomsIconClear": {
+    "description": "Change-icon dialog: clears back to the # mark."
+  },
   "roomsIconCustomLabel": "Or one character / emoji",
-  "@roomsIconCustomLabel": {"description": "Change-icon dialog: label of the custom glyph field."},
+  "@roomsIconCustomLabel": {
+    "description": "Change-icon dialog: label of the custom glyph field."
+  },
   "worldChatAttach": "Attach or mention",
-  "@worldChatAttach": {"description": "Composer: attach/mention button tooltip."},
+  "@worldChatAttach": {
+    "description": "Composer: attach/mention button tooltip."
+  },
   "worldChatAttachSearchHint": "Search people, channels, rooms, docs…",
-  "@worldChatAttachSearchHint": {"description": "Attach dialog: search field hint."},
+  "@worldChatAttachSearchHint": {
+    "description": "Attach dialog: search field hint."
+  },
   "worldChatAttachWorkOrder": "Work order…",
-  "@worldChatAttachWorkOrder": {"description": "Attach dialog: opens the ADR 0129 scope picker."},
+  "@worldChatAttachWorkOrder": {
+    "description": "Attach dialog: opens the ADR 0129 scope picker."
+  },
   "worldChatAttachPlugins": "Plugins",
-  "@worldChatAttachPlugins": {"description": "Attach dialog: plugins row (honest absence today)."},
+  "@worldChatAttachPlugins": {
+    "description": "Attach dialog: plugins row (honest absence today)."
+  },
   "worldChatAttachMcpServers": "MCP servers",
-  "@worldChatAttachMcpServers": {"description": "Attach dialog: MCP servers row (honest absence today)."},
+  "@worldChatAttachMcpServers": {
+    "description": "Attach dialog: MCP servers row (honest absence today)."
+  },
   "worldChatAttachNoneYet": "none yet",
-  "@worldChatAttachNoneYet": {"description": "Attach dialog: trailing note on absent attach kinds."},
+  "@worldChatAttachNoneYet": {
+    "description": "Attach dialog: trailing note on absent attach kinds."
+  },
   "worldChatNoMatches": "No matches",
-  "@worldChatNoMatches": {"description": "Attach dialog / mention overlay: empty filter result."},
+  "@worldChatNoMatches": {
+    "description": "Attach dialog / mention overlay: empty filter result."
+  },
   "worldChatThreadsToggle": "Threads",
-  "@worldChatThreadsToggle": {"description": "Channel header: threads browser toggle label."},
+  "@worldChatThreadsToggle": {
+    "description": "Channel header: threads browser toggle label."
+  },
   "worldChatThreadsGroup": "Threads",
-  "@worldChatThreadsGroup": {"description": "Channel view threads browser: the work threads group label."},
+  "@worldChatThreadsGroup": {
+    "description": "Channel view threads browser: the work threads group label."
+  },
   "worldChatRoomsGroup": "Rooms",
-  "@worldChatRoomsGroup": {"description": "Channel view threads browser: the watchable rooms group label."},
+  "@worldChatRoomsGroup": {
+    "description": "Channel view threads browser: the watchable rooms group label."
+  },
   "worldChatThreadsEmpty": "No threads yet.",
-  "@worldChatThreadsEmpty": {"description": "Channel view threads browser: the quiet empty line."},
+  "@worldChatThreadsEmpty": {
+    "description": "Channel view threads browser: the quiet empty line."
+  },
   "worldChatSessionKindMark": "session",
-  "@worldChatSessionKindMark": {"description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."},
+  "@worldChatSessionKindMark": {
+    "description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."
+  },
   "worldChatPermsTooltip": "Permissions",
-  "@worldChatPermsTooltip": {"description": "Composer meta row: permissions button tooltip."},
+  "@worldChatPermsTooltip": {
+    "description": "Composer meta row: permissions button tooltip."
+  },
   "worldChatPermsTitle": "Channel permissions",
-  "@worldChatPermsTitle": {"description": "Composer meta row: permissions dialog title."},
+  "@worldChatPermsTitle": {
+    "description": "Composer meta row: permissions dialog title."
+  },
   "worldChatMembersTooltip": "Members",
-  "@worldChatMembersTooltip": {"description": "Composer meta row: members button tooltip."},
+  "@worldChatMembersTooltip": {
+    "description": "Composer meta row: members button tooltip."
+  },
   "worldChatInfoTooltip": "Channel info",
-  "@worldChatInfoTooltip": {"description": "Composer meta row: channel info button tooltip."},
+  "@worldChatInfoTooltip": {
+    "description": "Composer meta row: channel info button tooltip."
+  },
+  "worldChatMembersAdd": "Add people",
+  "@worldChatMembersAdd": {
+    "description": "Members popover: the add-members affordance (popover CTA and people view section verb)."
+  },
+  "worldChatMembersAddTitle": "Add to {channel}",
+  "@worldChatMembersAddTitle": {
+    "description": "Members picker: title naming the channel.",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatMembersSearchHint": "Filter people",
+  "@worldChatMembersSearchHint": {
+    "description": "Members picker: the search field's placeholder."
+  },
+  "worldChatMembersAddSelected": "Add {count}",
+  "@worldChatMembersAddSelected": {
+    "description": "Members picker: the confirm button's label.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatMembersAddCount": "{count} added to {channel}",
+  "@worldChatMembersAddCount": {
+    "description": "Members popover: the outcome line after an add.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatMembersNoCandidates": "Everyone is already in this channel",
+  "@worldChatMembersNoCandidates": {
+    "description": "Members picker: honest empty state when no actor can be added."
+  },
+  "worldChatMemberRemoveTooltip": "Remove from channel",
+  "@worldChatMemberRemoveTooltip": {
+    "description": "Members popover / actor info: the per-channel removal affordance tooltip."
+  },
+  "worldChatMemberRemoveTitle": "Remove {name} from {channel}?",
+  "@worldChatMemberRemoveTitle": {
+    "description": "Removal confirm: names the actor and the channel.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "worldChatMemberRemoveMessages": "{count, plural, one{{count} message} other{{count} messages}}",
+  "@worldChatMemberRemoveMessages": {
+    "description": "Removal confirm: the information loss — the channel's history size.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatMemberRemoveTasks": "{count, plural, one{{count} running task} other{{count} running tasks}}",
+  "@worldChatMemberRemoveTasks": {
+    "description": "Removal confirm: the durable tasks currently addressed to the actor.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "worldChatMemberRemoveNoTasks": "none running",
+  "@worldChatMemberRemoveNoTasks": {
+    "description": "Removal confirm: the tasks row when nothing is addressed to the actor."
+  },
+  "worldChatMemberRemoveNote": "They stop receiving this channel's messages. Running tasks are world-durable and stay with the actor.",
+  "@worldChatMemberRemoveNote": {
+    "description": "Removal confirm: the honest note under the loss rows."
+  },
+  "worldChatMemberRemoved": "{name} removed from {channel}",
+  "@worldChatMemberRemoved": {
+    "description": "Members popover: the outcome line after a removal.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "roomsMenuMembers": "Add members…",
+  "@roomsMenuMembers": {
+    "description": "Rooms column context menu: open the channel's members picker."
+  },
   "worldChatChangeIcon": "Change icon",
-  "@worldChatChangeIcon": {"description": "Channel info dialog: icon row label."},
+  "@worldChatChangeIcon": {
+    "description": "Channel info dialog: icon row label."
+  },
   "worldChatIconViaColumn": "The channel icon changes with the rooms column menu (Wave D).",
-  "@worldChatIconViaColumn": {"description": "Channel info dialog: honest tooltip on the icon row."},
+  "@worldChatIconViaColumn": {
+    "description": "Channel info dialog: honest tooltip on the icon row."
+  },
   "worldChatBeatEdit": "Edit",
-  "@worldChatBeatEdit": {"description": "Beat hover cluster: edit action (own beats, gap-disabled)."},
+  "@worldChatBeatEdit": {
+    "description": "Beat hover cluster: edit action (own beats, gap-disabled)."
+  },
   "worldChatBeatNewThread": "New thread",
-  "@worldChatBeatNewThread": {"description": "Beat hover cluster: start a child thread."},
+  "@worldChatBeatNewThread": {
+    "description": "Beat hover cluster: start a child thread."
+  },
   "worldChatBeatDelete": "Delete",
-  "@worldChatBeatDelete": {"description": "Beat menu: delete action (gap-disabled)."},
+  "@worldChatBeatDelete": {
+    "description": "Beat menu: delete action (gap-disabled)."
+  },
   "worldChatBeatMenu": "Message actions",
-  "@worldChatBeatMenu": {"description": "Beat hover cluster: menu button tooltip."},
+  "@worldChatBeatMenu": {
+    "description": "Beat hover cluster: menu button tooltip."
+  },
   "worldChatEditGap": "Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.",
-  "@worldChatEditGap": {"description": "Edit action tooltip naming the harness-owned verb gap."},
+  "@worldChatEditGap": {
+    "description": "Edit action tooltip naming the harness-owned verb gap."
+  },
   "worldChatDeleteGap": "The journal is append-only; the delete verb is harness-owned and not exposed yet.",
-  "@worldChatDeleteGap": {"description": "Delete action tooltip naming the harness-owned verb gap."},
+  "@worldChatDeleteGap": {
+    "description": "Delete action tooltip naming the harness-owned verb gap."
+  },
   "worldChatThreadKind": "Thread",
-  "@worldChatThreadKind": {"description": "Work-card kind word for a conversational child thread (no project seal)."},
+  "@worldChatThreadKind": {
+    "description": "Work-card kind word for a conversational child thread (no project seal)."
+  },
   "stripOverflowHint": "Hidden tabs — open the list",
-  "@stripOverflowHint": {"description": "Tab strip: overflow control tooltip."},
+  "@stripOverflowHint": {
+    "description": "Tab strip: overflow control tooltip."
+  },
+  "stripCloseAllTabs": "Close all tabs",
+  "@stripCloseAllTabs": {
+    "description": "Tab strip: context-menu row that closes every open tab in every group."
+  },
+  "resizePaneHint": "Drag to resize the panes",
+  "@resizePaneHint": {
+    "description": "Pane seam drag handle: hint for the drag-to-resize affordance between pane groups."
+  },
+  "resizeRoomsHint": "Drag to resize the room list",
+  "@resizeRoomsHint": {
+    "description": "Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge."
+  },
   "modelsProviders": "Providers",
-  "@modelsProviders": {"description": "Models view: providers section label."},
+  "@modelsProviders": {
+    "description": "Models view: providers section label."
+  },
   "modelsEditProviders": "Edit providers",
-  "@modelsEditProviders": {"description": "Models view: opens the provider editor."},
+  "@modelsEditProviders": {
+    "description": "Models view: opens the provider editor."
+  },
   "modelsNoProviders": "no providers declared",
-  "@modelsNoProviders": {"description": "Models view: empty providers state."},
+  "@modelsNoProviders": {
+    "description": "Models view: empty providers state."
+  },
   "modelsCountSuffix": "models",
-  "@modelsCountSuffix": {"description": "Models view: count suffix on a provider row."},
+  "@modelsCountSuffix": {
+    "description": "Models view: count suffix on a provider row."
+  },
   "modelsContextTier": "ctx",
-  "@modelsContextTier": {"description": "Models view: context-tier label."},
+  "@modelsContextTier": {
+    "description": "Models view: context-tier label."
+  },
   "modelsNoModels": "no models declared",
-  "@modelsNoModels": {"description": "Models view: empty model list."},
+  "@modelsNoModels": {
+    "description": "Models view: empty model list."
+  },
   "modelsAddProvider": "Add provider",
-  "@modelsAddProvider": {"description": "Provider editor: add row."},
+  "@modelsAddProvider": {
+    "description": "Provider editor: add row."
+  },
   "modelsEditProvider": "Edit provider",
-  "@modelsEditProvider": {"description": "Provider editor: dialog title."},
+  "@modelsEditProvider": {
+    "description": "Provider editor: dialog title."
+  },
   "modelsAddModel": "Add model",
-  "@modelsAddModel": {"description": "Provider editor: add model row."},
+  "@modelsAddModel": {
+    "description": "Provider editor: add model row."
+  },
   "modelsRenameModel": "Rename model",
-  "@modelsRenameModel": {"description": "Provider editor: rename model row."},
+  "@modelsRenameModel": {
+    "description": "Provider editor: rename model row."
+  },
   "modelsEditAction": "edit",
-  "@modelsEditAction": {"description": "Provider editor: inline edit verb."},
+  "@modelsEditAction": {
+    "description": "Provider editor: inline edit verb."
+  },
   "modelsRemoveAction": "remove",
-  "@modelsRemoveAction": {"description": "Provider editor: inline remove verb."},
+  "@modelsRemoveAction": {
+    "description": "Provider editor: inline remove verb."
+  },
   "modelsRenameAction": "rename",
-  "@modelsRenameAction": {"description": "Provider editor: inline rename verb."},
+  "@modelsRenameAction": {
+    "description": "Provider editor: inline rename verb."
+  },
   "modelsConfirm": "Confirm",
-  "@modelsConfirm": {"description": "Provider editor: confirm button."},
+  "@modelsConfirm": {
+    "description": "Provider editor: confirm button."
+  },
   "modelsCancel": "Cancel",
-  "@modelsCancel": {"description": "Provider editor: cancel button."},
+  "@modelsCancel": {
+    "description": "Provider editor: cancel button."
+  },
   "modelsPropose": "Propose",
-  "@modelsPropose": {"description": "Provider editor: validate candidate."},
+  "@modelsPropose": {
+    "description": "Provider editor: validate candidate."
+  },
   "modelsApply": "Apply",
-  "@modelsApply": {"description": "Provider editor: owner apply."},
+  "@modelsApply": {
+    "description": "Provider editor: owner apply."
+  },
   "modelsUnsavedChanges": "unsaved changes",
-  "@modelsUnsavedChanges": {"description": "Provider editor: dirty-state note."},
+  "@modelsUnsavedChanges": {
+    "description": "Provider editor: dirty-state note."
+  },
   "modelsInSync": "in sync with the live palette",
-  "@modelsInSync": {"description": "Provider editor: clean-state note."},
+  "@modelsInSync": {
+    "description": "Provider editor: clean-state note."
+  },
   "modelsRestartRequired": "restart required",
-  "@modelsRestartRequired": {"description": "Provider editor: apply outcome note."},
+  "@modelsRestartRequired": {
+    "description": "Provider editor: apply outcome note."
+  },
   "modelsTransportLabel": "transport",
-  "@modelsTransportLabel": {"description": "Provider editor: transport chip label."},
+  "@modelsTransportLabel": {
+    "description": "Provider editor: transport chip label."
+  },
   "modelsEnvPrefix": "env:",
-  "@modelsEnvPrefix": {"description": "Provider editor: credential env name prefix."},
+  "@modelsEnvPrefix": {
+    "description": "Provider editor: credential env name prefix."
+  },
   "modelsProviderIdHint": "provider id",
-  "@modelsProviderIdHint": {"description": "Provider editor: id field hint."},
+  "@modelsProviderIdHint": {
+    "description": "Provider editor: id field hint."
+  },
   "modelsModelIdHint": "model id",
-  "@modelsModelIdHint": {"description": "Provider editor: model id field hint."},
+  "@modelsModelIdHint": {
+    "description": "Provider editor: model id field hint."
+  },
   "modelsBaseUrlHint": "base_url (https, or http loopback)",
-  "@modelsBaseUrlHint": {"description": "Provider editor: base_url field hint."},
+  "@modelsBaseUrlHint": {
+    "description": "Provider editor: base_url field hint."
+  },
   "modelsCredentialEnvHint": "credential_env (an env NAME)",
-  "@modelsCredentialEnvHint": {"description": "Provider editor: credential_env field hint."},
+  "@modelsCredentialEnvHint": {
+    "description": "Provider editor: credential_env field hint."
+  },
   "modelsRefusalEmptyId": "the id must not be empty",
-  "@modelsRefusalEmptyId": {"description": "Provider editor: empty-id refusal."},
+  "@modelsRefusalEmptyId": {
+    "description": "Provider editor: empty-id refusal."
+  },
   "modelsRefusalDuplicateProvider": "a provider already exists with id",
-  "@modelsRefusalDuplicateProvider": {"description": "Provider editor: duplicate provider refusal."},
+  "@modelsRefusalDuplicateProvider": {
+    "description": "Provider editor: duplicate provider refusal."
+  },
   "modelsRefusalDuplicateModel": "the provider already declares model",
-  "@modelsRefusalDuplicateModel": {"description": "Provider editor: duplicate model refusal."},
+  "@modelsRefusalDuplicateModel": {
+    "description": "Provider editor: duplicate model refusal."
+  },
   "modelsRefusalIdImmutable": "provider id is immutable — referenced by cast:",
-  "@modelsRefusalIdImmutable": {"description": "Provider editor: immutable id refusal."},
+  "@modelsRefusalIdImmutable": {
+    "description": "Provider editor: immutable id refusal."
+  },
   "modelsRefusalProviderInUse": "cannot remove provider — referenced by cast:",
-  "@modelsRefusalProviderInUse": {"description": "Provider editor: provider-in-use refusal."},
+  "@modelsRefusalProviderInUse": {
+    "description": "Provider editor: provider-in-use refusal."
+  },
   "modelsRefusalModelInUse": "cannot remove model — referenced by cast:",
-  "@modelsRefusalModelInUse": {"description": "Provider editor: model-in-use refusal."},
+  "@modelsRefusalModelInUse": {
+    "description": "Provider editor: model-in-use refusal."
+  },
   "modelsRefusalNoSeat": "the realm seat is not ready — the palette verbs need it",
-  "@modelsRefusalNoSeat": {"description": "Provider editor: seat-absent refusal."},
+  "@modelsRefusalNoSeat": {
+    "description": "Provider editor: seat-absent refusal."
+  },
   "modelsLensCatalog": "Catalog",
-  "@modelsLensCatalog": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensCatalog": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLensBindings": "Bindings",
-  "@modelsLensBindings": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensBindings": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLensObserve": "Observe",
-  "@modelsLensObserve": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLensObserve": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsJsonToggle": "JSON",
-  "@modelsJsonToggle": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsJsonToggle": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsJsonInvalid": "invalid JSON — the candidate keeps its last valid shape",
-  "@modelsJsonInvalid": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsJsonInvalid": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldMaxTokens": "max_tokens",
-  "@modelsFieldMaxTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldMaxTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldMaxOutputTokens": "max_output_tokens",
-  "@modelsFieldMaxOutputTokens": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldMaxOutputTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldReasoningEffort": "reasoning_effort",
-  "@modelsFieldReasoningEffort": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldReasoningEffort": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsFieldIncludeReasoning": "include_reasoning",
-  "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldIncludeReasoning": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsBuiltinLaneLocal": "built-in local MLX lane (on-device)",
-  "@modelsBuiltinLaneLocal": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneLocal": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneDecision": "built-in local decision lane (loopback)",
-  "@modelsBuiltinLaneDecision": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneDecision": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneAfm": "built-in Apple Foundation lane (on-device, Apple-specific)",
-  "@modelsBuiltinLaneAfm": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneAfm": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneOpenRouter": "built-in OpenRouter lane (hosted)",
-  "@modelsBuiltinLaneOpenRouter": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneOpenRouter": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsBuiltinLaneUnknown": "built-in lane (composition-root owned)",
-  "@modelsBuiltinLaneUnknown": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsBuiltinLaneUnknown": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsReasoningNoLane": "no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·",
-  "@modelsReasoningNoLane": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsReasoningNoLane": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "modelsReasoningTitle": "reasoning effort",
-  "@modelsReasoningTitle": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
+  "@modelsReasoningTitle": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
   "actorsMessage": "Message",
-  "@actorsMessage": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsMessage": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsRemove": "Remove actor",
-  "@actorsRemove": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsRemove": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsRemoveConfirm": "Retire the durable row and delete the roster profile of",
-  "@actorsRemoveConfirm": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsRemoveConfirm": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsNewActor": "New actor",
-  "@actorsNewActor": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsNewActor": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsCreate": "Create",
-  "@actorsCreate": {"description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."},
+  "@actorsCreate": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
   "actorsAvatar": "Avatar",
-  "@actorsAvatar": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatar": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsAvatarHint": "emoji or character",
-  "@actorsAvatarHint": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatarHint": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsAvatarClear": "Clear",
-  "@actorsAvatarClear": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsAvatarClear": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoning": "reasoning level",
-  "@actorsReasoning": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoning": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoningNoLane": "this brain lane declares no effort tiers",
-  "@actorsReasoningNoLane": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoningNoLane": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsReasoningDaemonNote": "in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands",
-  "@actorsReasoningDaemonNote": {"description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."},
+  "@actorsReasoningDaemonNote": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
   "actorsYourProfile": "Your profile",
-  "@actorsYourProfile": {"description": "Wave N3 2026-11-16 (human self-profile entry)."},
+  "@actorsYourProfile": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
   "actorsYou": "you",
-  "@actorsYou": {"description": "Wave N3 2026-11-16 (human self-profile entry)."},
+  "@actorsYou": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
   "inboxQueuedReason": "queued - waiting for a scheduler: arm the world",
-  "@inboxQueuedReason": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxQueuedReason": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskDetail": "Task detail",
-  "@inboxTaskDetail": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskDetail": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskCancel": "Cancel task",
-  "@inboxTaskCancel": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskCancel": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskEvents": "control events",
-  "@inboxTaskEvents": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxTaskNoEvents": "no control events yet",
-  "@inboxTaskNoEvents": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxTaskNoEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxDurableQueue": "durable queue",
-  "@inboxDurableQueue": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxDurableQueue": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "inboxBoardsQueueNote": "the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it",
-  "@inboxBoardsQueueNote": {"description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."},
+  "@inboxBoardsQueueNote": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
   "actorsRetiredNote": "retired - the durable row keeps its history:",
-  "@actorsRetiredNote": {"description": "Wave N5b 2026-11-16 (retired actors name their retirement)."},
+  "@actorsRetiredNote": {
+    "description": "Wave N5b 2026-11-16 (retired actors name their retirement)."
+  },
+  "actorsRetiredMark": "retired",
+  "@actorsRetiredMark": {
+    "description": "Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view)."
+  },
+  "actorsRetiredSection": "Retired",
+  "@actorsRetiredSection": {
+    "description": "Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane)."
+  },
+  "actorsRevive": "Revive",
+  "@actorsRevive": {
+    "description": "Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives)."
+  },
   "actorsImageSpend": "Image spend",
-  "@actorsImageSpend": {"description": "The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending.."},
+  "@actorsImageSpend": {
+    "description": "The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending.."
+  },
   "modelsClassRemote": "Remote providers",
-  "@modelsClassRemote": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassRemote": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassRemoteEmpty": "no declared remote providers",
-  "@modelsClassRemoteEmpty": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassRemoteEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassLocalServer": "Local server (loopback)",
-  "@modelsClassLocalServer": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassLocalServer": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassLocalServerEmpty": "no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url",
-  "@modelsClassLocalServerEmpty": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassLocalServerEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassSubscription": "Direct subscription",
-  "@modelsClassSubscription": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
-  "modelsClassSubscriptionAbsent": "qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane",
-  "@modelsClassSubscriptionAbsent": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
-  "modelsClassOnDevice": "On-device services",
-  "@modelsClassOnDevice": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
-  "modelsClassOnDeviceEmpty": "no on-device service on this machine",
-  "@modelsClassOnDeviceEmpty": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassSubscription": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassSubscriptionAbsent": "the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.",
+  "@modelsClassSubscriptionAbsent": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsClassUnclassified": "Unclassified lanes",
-  "@modelsClassUnclassified": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsClassUnclassified": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsAdd": "add",
-  "@modelsSettingsAdd": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsAdd": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsFreeKey": "free key",
-  "@modelsSettingsFreeKey": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsFreeKey": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsUnconsumed": "unconsumed",
-  "@modelsSettingsUnconsumed": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsUnconsumed": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsSettingsRemove": "remove setting",
-  "@modelsSettingsRemove": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsSettingsRemove": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsChatGptPlan": "ChatGPT plan",
-  "@modelsChatGptPlan": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsChatGptPlan": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
   "modelsChatGptSignedOut": "signed out - sign in from the agent-doc runtime pane",
-  "@modelsChatGptSignedOut": {"description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."},
+  "@modelsChatGptSignedOut": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsGrokPlan": "Grok plan",
+  "@modelsGrokPlan": {
+    "description": "Grok subscription catalog row. ADR 0030."
+  },
+  "modelsGrokSignedOut": "signed out - sign in from the agent-doc runtime pane",
+  "@modelsGrokSignedOut": {
+    "description": "Grok subscription catalog row when the account is signed out."
+  },
+  "modelsGrokAwaitingRegistration": "awaiting xAI client registration",
+  "@modelsGrokAwaitingRegistration": {
+    "description": "Grok subscription catalog row before xAI issues a client id."
+  },
+  "modelsLocalCatalog": "Local models",
+  "@modelsLocalCatalog": {
+    "description": "Local model manager 2026-11-18 (docs/design/models-local-manager.md): the merged local-models section header (downloadable checkpoints + on-device services)."
+  },
+  "modelsLocalDiskDownloaded": "Downloaded",
+  "@modelsLocalDiskDownloaded": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
+  },
+  "modelsLocalDiskNot": "Not downloaded",
+  "@modelsLocalDiskNot": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet."
+  },
+  "modelsLocalMemLoaded": "Loaded",
+  "@modelsLocalMemLoaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it)."
+  },
+  "modelsLocalMemUnloaded": "Unloaded",
+  "@modelsLocalMemUnloaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM."
+  },
+  "modelsLocalDownload": "Download",
+  "@modelsLocalDownload": {
+    "description": "Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog)."
+  },
+  "modelsLocalLoad": "Load",
+  "@modelsLocalLoad": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row."
+  },
+  "modelsLocalUnload": "Unload",
+  "@modelsLocalUnload": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row."
+  },
+  "modelsLocalDelete": "Delete",
+  "@modelsLocalDelete": {
+    "description": "Local model manager 2026-11-18: the row's delete verb (manager-installed entries only)."
+  },
+  "modelsLocalConsentTitle": "Download local model?",
+  "@modelsLocalConsentTitle": {
+    "description": "Local model manager 2026-11-18: the install consent dialog's title."
+  },
+  "modelsLocalConsentBody": "Downloads {label} (approx. {size}) over the network into the local model cache. The runtime never downloads on its own.",
+  "@modelsLocalConsentBody": {
+    "description": "Local model manager 2026-11-18: the install consent dialog's body (names the model, the size, the network fact).",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalConsentConfirm": "Download",
+  "@modelsLocalConsentConfirm": {
+    "description": "Local model manager 2026-11-18: the consent dialog's confirm verb."
+  },
+  "modelsLocalDeleteTitle": "Delete local model?",
+  "@modelsLocalDeleteTitle": {
+    "description": "Local model manager 2026-11-18: the delete confirm dialog's title."
+  },
+  "modelsLocalDeleteBody": "Deletes the downloaded files of {label} from the local model cache. Only manager-installed models can be deleted.",
+  "@modelsLocalDeleteBody": {
+    "description": "Local model manager 2026-11-18: the delete confirm dialog's body.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalDeleteRefused": "delete refused - this model was not installed by the manager",
+  "@modelsLocalDeleteRefused": {
+    "description": "Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker)."
+  },
+  "modelsLocalPhaseChecking": "checking",
+  "@modelsLocalPhaseChecking": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseDownloading": "downloading",
+  "@modelsLocalPhaseDownloading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseLoading": "loading",
+  "@modelsLocalPhaseLoading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseReady": "ready",
+  "@modelsLocalPhaseReady": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseFailed": "failed",
+  "@modelsLocalPhaseFailed": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix)."
+  },
+  "modelsBudgetAvailable": "available for local loads",
+  "@modelsBudgetAvailable": {
+    "description": "Local model budget v3 2026-11-18: the segmented RAM bar's available-for-local-loads legend label."
+  },
+  "modelsBudgetFloor": "kept free (headroom)",
+  "@modelsBudgetFloor": {
+    "description": "Local model budget v3 2026-11-18: the segmented RAM bar's reserved-floor legend label (the load gate's incident floor)."
+  },
+  "modelsBudgetUnknown": "memory facts unavailable — the load gate runs sensor-absent",
+  "@modelsBudgetUnknown": {
+    "description": "Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts."
+  },
+  "modelsBudgetTotalUnknown": "total memory unknown — the bar scales to available memory",
+  "@modelsBudgetTotalUnknown": {
+    "description": "Local model budget v3 2026-11-18: the honest note when the sensor sees available but not total memory."
+  },
+  "modelsBudgetNothingFits": "no downloaded model fits the memory available right now — free {size} more to run {label}",
+  "@modelsBudgetNothingFits": {
+    "placeholders": {
+      "size": {"type": "String"},
+      "label": {"type": "String"}
+    },
+    "description": "Local model budget v3 2026-11-18: the machine verdict said ONCE above the rows when every downloaded-but-unloaded entry misses its fit."
+  },
+  "modelsLocalFitReason": "needs {size} more — unload a model or free memory",
+  "@modelsLocalFitReason": {
+    "description": "Local model budget v3 2026-11-18: the quiet reason line under a row whose Load verb the fit disables (the gate's own arithmetic).",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalGenerating": "generating…",
+  "@modelsLocalGenerating": {
+    "description": "Local models v3 2026-11-18: the row status while a generation runs (the ledger's in-flight answer)."
+  },
+  "modelsLocalTokPerSec": "≈{speed} tok/s",
+  "@modelsLocalTokPerSec": {
+    "description": "Local models v3 2026-11-18: the row status after a run — the approximate decode speed (the ledger's estimate, honestly marked ≈).",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalDetails": "Details",
+  "@modelsLocalDetails": {
+    "description": "Local models v3 2026-11-18: the ⋯ menu's details entry (the sheet with the sensed facts)."
+  },
+  "modelsLocalDetailsDisk": "disk",
+  "@modelsLocalDetailsDisk": {
+    "description": "Local models v3 2026-11-18: the detail sheet's disk-state row."
+  },
+  "modelsLocalDetailsMemory": "memory",
+  "@modelsLocalDetailsMemory": {
+    "description": "Local models v3 2026-11-18: the detail sheet's memory-state row."
+  },
+  "modelsLocalDetailsSizeOnDisk": "size on disk",
+  "@modelsLocalDetailsSizeOnDisk": {
+    "description": "Local models v3 2026-11-18: the detail sheet's SENSED size row (a walk of the snapshot dir, never the approximation)."
+  },
+  "modelsLocalDetailsPath": "snapshot path",
+  "@modelsLocalDetailsPath": {
+    "description": "Local models v3 2026-11-18: the detail sheet's snapshot path row."
+  },
+  "modelsLocalDetailsLastGeneration": "last generation",
+  "@modelsLocalDetailsLastGeneration": {
+    "description": "Local models v3 2026-11-18: the detail sheet's last-generation row (≈speed or generating…)."
+  },
+  "modelsLocalDetailsLastError": "last error",
+  "modelsLocalDetailsUsedBy": "used by",
+  "@modelsLocalDetailsUsedBy": {"description": "Local models v3 2026-11-18 (en): the detail sheet's bound-actors row."},
+  "@modelsLocalDetailsLastError": {
+    "description": "Local models v3 2026-11-18: the detail sheet's last-failure row, verbatim."
+  },
+  "modelsBuiltinsNoLifecycle": "always-on",
+  "@modelsBuiltinsNoLifecycle": {
+    "description": "Local models v3 2026-11-18: the AFM chip's exemption note in the built-ins footer."
+  },
   "modelsFieldCapabilities": "capabilities",
-  "@modelsFieldCapabilities": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsFieldCapabilities": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsEditModel": "Edit model",
-  "@modelsEditModel": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsEditModel": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsMoveUp": "move up the escalation ladder",
-  "@modelsMoveUp": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsMoveUp": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsMoveDown": "move down the escalation ladder",
-  "@modelsMoveDown": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsMoveDown": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsSessionPrefix": "session:",
-  "@modelsSessionPrefix": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsSessionPrefix": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsSessionClear": "clear",
-  "@modelsSessionClear": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsSessionClear": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRestartPending": "palette landed — the daemon binds it at restart",
-  "@modelsRestartPending": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRestartPending": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRestartNow": "Restart now",
-  "@modelsRestartNow": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRestartNow": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsHealthSection": "Health",
-  "@modelsHealthSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsHealthSection": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsLedgerSection": "Dispatch ledger",
-  "@modelsLedgerSection": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsLedgerSection": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsUnbound": "unbound actors",
-  "@modelsUnbound": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsUnbound": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "modelsRefusalBadNumber": "not a number — the field keeps its last value",
-  "@modelsRefusalBadNumber": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
+  "@modelsRefusalBadNumber": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
   "attachImage": "Add image",
-  "@attachImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@attachImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "takePhoto": "Take photo",
-  "@takePhoto": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@takePhoto": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "chooseImage": "Choose image",
-  "@chooseImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@chooseImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "generateImage": "Generate image",
-  "@generateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@generateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "editImage": "Edit image",
-  "@editImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@editImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "captionImage": "Caption",
-  "@captionImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@captionImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "altTextHint": "Describe the image (alt text)",
-  "@altTextHint": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@altTextHint": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "removeImage": "Remove image",
-  "@removeImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@removeImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageAddedToNote": "Image added",
-  "@imageAddedToNote": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageAddedToNote": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageGenerationPrompt": "Describe the image to generate…",
-  "@imageGenerationPrompt": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageGenerationPrompt": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageGenerationFailed": "Image generation failed",
-  "@imageGenerationFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageGenerationFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "imageEditFailed": "Edit failed",
-  "@imageEditFailed": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@imageEditFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "generatingImage": "Generating…",
-  "@generatingImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@generatingImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "annotateImage": "Annotate",
-  "@annotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@annotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "saveImageCopy": "Save copy",
-  "@saveImageCopy": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@saveImageCopy": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "rotateImage": "Rotate",
-  "@rotateImage": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."},
+  "@rotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "cropSquare": "Crop square",
-  "@cropSquare": {"description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."}
-,
+  "@cropSquare": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
   "selectionCut": "Cut",
   "selectionCopy": "Copy",
   "selectionPaste": "Paste",
-  "selectionSelectAll": "Select all"
+  "selectionSelectAll": "Select all",
+  "worldChatPermsAccess": "Access",
+  "@worldChatPermsAccess": {
+    "description": "Permissions dialog: the access-policy section label (read/say/manage strips)."
+  },
+  "worldChatPermsRead": "Read",
+  "@worldChatPermsRead": {
+    "description": "Permissions dialog: the read-policy row label."
+  },
+  "worldChatPermsSay": "Say",
+  "@worldChatPermsSay": {
+    "description": "Permissions dialog: the say-policy row label."
+  },
+  "worldChatPermsManage": "Manage",
+  "@worldChatPermsManage": {
+    "description": "Permissions dialog: the manage-policy row label."
+  },
+  "worldChatPermsScope": "Work scope",
+  "@worldChatPermsScope": {
+    "description": "Permissions dialog: the channel work-scope section label."
+  },
+  "worldChatPermsScopeNone": "none",
+  "@worldChatPermsScopeNone": {
+    "description": "Permissions dialog: the unbound work-scope fact."
+  },
+  "worldChatPermsScopeClear": "Clear",
+  "@worldChatPermsScopeClear": {
+    "description": "Permissions dialog: clear the channel work scope."
+  },
+  "worldChatPermsScopeBind": "Bind…",
+  "@worldChatPermsScopeBind": {
+    "description": "Permissions dialog: bind a work scope to the channel."
+  },
+  "worldChatPermsGrant": "Grant…",
+  "@worldChatPermsGrant": {
+    "description": "Permissions dialog: per-member grant affordance and form title."
+  },
+  "worldChatPermsRevoke": "Revoke",
+  "@worldChatPermsRevoke": {
+    "description": "Permissions dialog: revoke one scope grant row."
+  },
+  "worldChatPermsKind": "Kind",
+  "@worldChatPermsKind": {
+    "description": "Grant form: project/folder kind row label."
+  },
+  "worldChatPermsRoot": "Root",
+  "@worldChatPermsRoot": {
+    "description": "Grant form: the canonical root path row label."
+  },
+  "worldChatPermsSubpath": "Subpath",
+  "@worldChatPermsSubpath": {
+    "description": "Grant form: the folder subpath row label."
+  },
+  "worldChatPermsCaps": "Caps",
+  "@worldChatPermsCaps": {
+    "description": "Grant form: the capability checkboxes row label."
+  },
+  "worldChatPermsApply": "Apply grant",
+  "@worldChatPermsApply": {
+    "description": "Grant form: the apply button."
+  },
+  "worldChatPermsRootRequired": "root is required",
+  "@worldChatPermsRootRequired": {
+    "description": "Grant form: honest refusal when the root field is empty."
+  }
 }
-

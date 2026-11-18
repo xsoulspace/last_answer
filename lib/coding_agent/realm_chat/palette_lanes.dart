@@ -86,6 +86,22 @@ const Map<String, List<String>> kReasoningEffortTiers = <String, List<String>>{
   'openrouter': <String>['minimal', 'low', 'medium', 'high', 'xhigh'],
 };
 
+/// Reasoning tiers a subscription provider accepts, mirrored from the
+/// clients (`OpenAiResponsesClient` none…xhigh, `GrokResponsesClient`
+/// low/medium/high). Keyed by provider id, not by palette transport.
+const Map<String, List<String>> kSubscriptionReasoningTiers =
+    <String, List<String>>{
+      'openai_chatgpt_plan': <String>[
+        'none',
+        'minimal',
+        'low',
+        'medium',
+        'high',
+        'xhigh',
+      ],
+      'xai_grok_plan': <String>['low', 'medium', 'high'],
+    };
+
 /// The display titles of the tier wire values (Zed's shared
 /// `ReasoningEffort` labels: `xhigh` reads "Extra High", never "xhigh").
 /// A declared value outside the mirror keeps its wire name.
@@ -113,7 +129,9 @@ enum LaneClass {
   /// lanes ride the openai_compatible wire over loopback).
   localServer,
 
-  /// A direct subscription lane (the ChatGPT plan today).
+  /// A subscription provider (the ChatGPT plan, the Grok plan). Actors
+  /// address it as `subscription:<providerId>/<model>` (ADR 0031). It
+  /// is not a harness palette transport.
   subscription,
 
   /// An on-device built-in service (AFM, laya, the MLX casts).
@@ -199,6 +217,11 @@ List<String> reasoningTiersForBrainRef(
   final base = brainRefBase(brainRef);
   if (base.startsWith('openrouter:')) {
     return kReasoningEffortTiers['openrouter'] ?? const <String>[];
+  }
+  if (base.startsWith(subscriptionBrainScheme)) {
+    final parsed = parseSubscriptionBrainRef(base);
+    if (parsed == null) return const <String>[];
+    return kSubscriptionReasoningTiers[parsed.providerId] ?? const <String>[];
   }
   if (base.startsWith('cast:')) {
     final rungId = base.substring('cast:'.length);

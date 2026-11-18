@@ -272,9 +272,11 @@ void main() {
         because: 'the failed generation is visible',
       );
       // First failure of the streak: the string status is 'degraded: …',
-      // the narration keeps the exact string as its detail.
-      expect(host.narrations[actor.actorId]?.detail, 'degraded: boom');
-      expect(host.statuses[actor.actorId], 'degraded: boom');
+      // the narration keeps the exact string as its detail — code FIRST,
+      // then the failure's own message (the 2026-11-18 diagnosability
+      // law: `native_engine` names the lane, the message names why).
+      expect(host.narrations[actor.actorId]?.detail, 'degraded: boom · no engine in the test');
+      expect(host.statuses[actor.actorId], 'degraded: boom · no engine in the test');
       expect(
         [for (final narration in seen) narration.state],
         contains(BotNarrationState.failed),

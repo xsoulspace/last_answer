@@ -188,6 +188,12 @@ class LaUiTheme {
   /// Restrained monospace for code, paths and measured values.
   final String monoFontFamily;
 
+  // The decoration belt: every kit style carries `decoration: none` so it
+  // is self-contained — MaterialApp's root error style (the yellow double
+  // underline, 'fallback style' debugLabel) can never bleed through a
+  // merge, even where a float misses its DefaultTextStyle (the second
+  // belt under the surface wraps; see LaDialog.build).
+  //
   /// 11/16 w500 — timestamps, quiet state labels.
   TextStyle get micro => TextStyle(
     fontSize: 11,
@@ -195,6 +201,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w500,
     fontFamily: fontFamily,
     color: inkQuiet,
+    decoration: TextDecoration.none,
   );
 
   /// 12/17 w400 — navigator metadata, controls.
@@ -204,6 +211,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w400,
     fontFamily: fontFamily,
     color: inkMuted,
+    decoration: TextDecoration.none,
   );
 
   /// 14/20 w400 — conversation and document text.
@@ -213,6 +221,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w400,
     fontFamily: fontFamily,
     color: ink,
+    decoration: TextDecoration.none,
   );
 
   /// 15/21 w600 — pane title, selected actor.
@@ -222,6 +231,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w600,
     fontFamily: fontFamily,
     color: ink,
+    decoration: TextDecoration.none,
   );
 
   /// 18/24 w600 — surface heading.
@@ -231,6 +241,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w600,
     fontFamily: fontFamily,
     color: ink,
+    decoration: TextDecoration.none,
   );
 
   /// 24/30 w600 — empty-state or settings title only.
@@ -240,6 +251,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w600,
     fontFamily: fontFamily,
     color: ink,
+    decoration: TextDecoration.none,
   );
 
   /// Small button label (sm size, 28 px controls).
@@ -248,6 +260,7 @@ class LaUiTheme {
     height: 16 / 12,
     fontWeight: FontWeight.w500,
     fontFamily: fontFamily,
+    decoration: TextDecoration.none,
   );
 
   /// Default button label (md size, 34 px controls — the row grid).
@@ -256,6 +269,7 @@ class LaUiTheme {
     height: 18 / 13,
     fontWeight: FontWeight.w500,
     fontFamily: fontFamily,
+    decoration: TextDecoration.none,
   );
 
   /// Menu/dialog control label.
@@ -265,6 +279,7 @@ class LaUiTheme {
     fontWeight: FontWeight.w400,
     fontFamily: fontFamily,
     color: ink,
+    decoration: TextDecoration.none,
   );
 
   /// Code, paths, measured values.
@@ -273,6 +288,7 @@ class LaUiTheme {
     height: 17 / 12,
     fontFamily: monoFontFamily,
     color: inkMuted,
+    decoration: TextDecoration.none,
   );
 
   // ── derived ──────────────────────────────────────────────────────

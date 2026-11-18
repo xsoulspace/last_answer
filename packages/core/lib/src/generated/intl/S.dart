@@ -1353,11 +1353,23 @@ abstract class S {
   /// **'default provider'**
   String get agentChatProviderHint;
 
+  /// No description provided for @agentChatProviderEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers configured — add one under Providers'**
+  String get agentChatProviderEmptyHint;
+
   /// No description provided for @agentChatModelHint.
   ///
   /// In en, this message translates to:
   /// **'default model'**
   String get agentChatModelHint;
+
+  /// No description provided for @agentChatModelEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a provider to choose a default model'**
+  String get agentChatModelEmptyHint;
 
   /// No description provided for @agentChatSystemPromptHint.
   ///
@@ -1958,6 +1970,132 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
   String get chatGptDocumentConsentRequired;
+
+  /// No description provided for @grokSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok subscription'**
+  String get grokSubscriptionTitle;
+
+  /// No description provided for @grokContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Grok'**
+  String get grokContinue;
+
+  /// No description provided for @grokDeviceSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a device code'**
+  String get grokDeviceSignIn;
+
+  /// No description provided for @grokSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get grokSignOut;
+
+  /// No description provided for @grokChooseAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok account'**
+  String get grokChooseAccount;
+
+  /// No description provided for @grokAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok account'**
+  String get grokAccount;
+
+  /// No description provided for @grokChooseModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok model'**
+  String get grokChooseModel;
+
+  /// No description provided for @grokRefreshModels.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh models'**
+  String get grokRefreshModels;
+
+  /// No description provided for @grokVerifyAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify access'**
+  String get grokVerifyAccess;
+
+  /// No description provided for @grokAccessUnchecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Access not checked'**
+  String get grokAccessUnchecked;
+
+  /// No description provided for @grokAccessVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Access verified on this device'**
+  String get grokAccessVerified;
+
+  /// No description provided for @grokPlanPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This account\'s token does not include plan access.'**
+  String get grokPlanPermissionRequired;
+
+  /// No description provided for @grokWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get grokWorking;
+
+  /// No description provided for @grokRevocationUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote sign-out was not confirmed. Local tokens were removed.'**
+  String get grokRevocationUnconfirmed;
+
+  /// No description provided for @grokConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'The Grok account could not be reached.'**
+  String get grokConnectionError;
+
+  /// No description provided for @grokDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok sign-in is available in the desktop app.'**
+  String get grokDesktopOnly;
+
+  /// No description provided for @grokSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect a Grok account and enable plan access before sending.'**
+  String get grokSignInRequired;
+
+  /// No description provided for @grokModelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok model before sending.'**
+  String get grokModelRequired;
+
+  /// No description provided for @grokDocumentConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
+  String get grokDocumentConsentRequired;
+
+  /// No description provided for @grokClientNotRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Answer does not have an xAI client id yet. Sign-in stays closed.'**
+  String get grokClientNotRegistered;
+
+  /// No description provided for @grokRegistrationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Send xAI the referrer and redirect above so it can register this app.'**
+  String get grokRegistrationHint;
 
   /// No description provided for @worldConversationChoose.
   ///
@@ -3657,6 +3795,90 @@ abstract class S {
   /// **'Channel info'**
   String get worldChatInfoTooltip;
 
+  /// Members popover: the add-members affordance (popover CTA and people view section verb).
+  ///
+  /// In en, this message translates to:
+  /// **'Add people'**
+  String get worldChatMembersAdd;
+
+  /// Members picker: title naming the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to {channel}'**
+  String worldChatMembersAddTitle(String channel);
+
+  /// Members picker: the search field's placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter people'**
+  String get worldChatMembersSearchHint;
+
+  /// Members picker: the confirm button's label.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {count}'**
+  String worldChatMembersAddSelected(int count);
+
+  /// Members popover: the outcome line after an add.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} added to {channel}'**
+  String worldChatMembersAddCount(int count, String channel);
+
+  /// Members picker: honest empty state when no actor can be added.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone is already in this channel'**
+  String get worldChatMembersNoCandidates;
+
+  /// Members popover / actor info: the per-channel removal affordance tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from channel'**
+  String get worldChatMemberRemoveTooltip;
+
+  /// Removal confirm: names the actor and the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from {channel}?'**
+  String worldChatMemberRemoveTitle(String name, String channel);
+
+  /// Removal confirm: the information loss — the channel's history size.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} message} other{{count} messages}}'**
+  String worldChatMemberRemoveMessages(int count);
+
+  /// Removal confirm: the durable tasks currently addressed to the actor.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} running task} other{{count} running tasks}}'**
+  String worldChatMemberRemoveTasks(int count);
+
+  /// Removal confirm: the tasks row when nothing is addressed to the actor.
+  ///
+  /// In en, this message translates to:
+  /// **'none running'**
+  String get worldChatMemberRemoveNoTasks;
+
+  /// Removal confirm: the honest note under the loss rows.
+  ///
+  /// In en, this message translates to:
+  /// **'They stop receiving this channel\'s messages. Running tasks are world-durable and stay with the actor.'**
+  String get worldChatMemberRemoveNote;
+
+  /// Members popover: the outcome line after a removal.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed from {channel}'**
+  String worldChatMemberRemoved(String name, String channel);
+
+  /// Rooms column context menu: open the channel's members picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Add members…'**
+  String get roomsMenuMembers;
+
   /// Channel info dialog: icon row label.
   ///
   /// In en, this message translates to:
@@ -3716,6 +3938,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Hidden tabs — open the list'**
   String get stripOverflowHint;
+
+  /// Tab strip: context-menu row that closes every open tab in every group.
+  ///
+  /// In en, this message translates to:
+  /// **'Close all tabs'**
+  String get stripCloseAllTabs;
+
+  /// Pane seam drag handle: hint for the drag-to-resize affordance between pane groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to resize the panes'**
+  String get resizePaneHint;
+
+  /// Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to resize the room list'**
+  String get resizeRoomsHint;
 
   /// Models view: providers section label.
   ///
@@ -4137,6 +4377,24 @@ abstract class S {
   /// **'retired - the durable row keeps its history:'**
   String get actorsRetiredNote;
 
+  /// Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view).
+  ///
+  /// In en, this message translates to:
+  /// **'retired'**
+  String get actorsRetiredMark;
+
+  /// Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane).
+  ///
+  /// In en, this message translates to:
+  /// **'Retired'**
+  String get actorsRetiredSection;
+
+  /// Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives).
+  ///
+  /// In en, this message translates to:
+  /// **'Revive'**
+  String get actorsRevive;
+
   /// The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending..
   ///
   /// In en, this message translates to:
@@ -4176,20 +4434,8 @@ abstract class S {
   /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
   ///
   /// In en, this message translates to:
-  /// **'qwen / grok direct lanes exist nowhere today - the ChatGPT plan is the only subscription lane'**
+  /// **'the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.'**
   String get modelsClassSubscriptionAbsent;
-
-  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
-  ///
-  /// In en, this message translates to:
-  /// **'On-device services'**
-  String get modelsClassOnDevice;
-
-  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
-  ///
-  /// In en, this message translates to:
-  /// **'no on-device service on this machine'**
-  String get modelsClassOnDeviceEmpty;
 
   /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
   ///
@@ -4232,6 +4478,246 @@ abstract class S {
   /// In en, this message translates to:
   /// **'signed out - sign in from the agent-doc runtime pane'**
   String get modelsChatGptSignedOut;
+
+  /// Grok subscription catalog row. ADR 0030.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok plan'**
+  String get modelsGrokPlan;
+
+  /// Grok subscription catalog row when the account is signed out.
+  ///
+  /// In en, this message translates to:
+  /// **'signed out - sign in from the agent-doc runtime pane'**
+  String get modelsGrokSignedOut;
+
+  /// Grok subscription catalog row before xAI issues a client id.
+  ///
+  /// In en, this message translates to:
+  /// **'awaiting xAI client registration'**
+  String get modelsGrokAwaitingRegistration;
+
+  /// Local model manager 2026-11-18 (docs/design/models-local-manager.md): the merged local-models section header (downloadable checkpoints + on-device services).
+  ///
+  /// In en, this message translates to:
+  /// **'Local models'**
+  String get modelsLocalCatalog;
+
+  /// Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded'**
+  String get modelsLocalDiskDownloaded;
+
+  /// Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not downloaded'**
+  String get modelsLocalDiskNot;
+
+  /// Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it).
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded'**
+  String get modelsLocalMemLoaded;
+
+  /// Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM.
+  ///
+  /// In en, this message translates to:
+  /// **'Unloaded'**
+  String get modelsLocalMemUnloaded;
+
+  /// Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog).
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get modelsLocalDownload;
+
+  /// Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get modelsLocalLoad;
+
+  /// Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row.
+  ///
+  /// In en, this message translates to:
+  /// **'Unload'**
+  String get modelsLocalUnload;
+
+  /// Local model manager 2026-11-18: the row's delete verb (manager-installed entries only).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get modelsLocalDelete;
+
+  /// Local model manager 2026-11-18: the install consent dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Download local model?'**
+  String get modelsLocalConsentTitle;
+
+  /// Local model manager 2026-11-18: the install consent dialog's body (names the model, the size, the network fact).
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads {label} (approx. {size}) over the network into the local model cache. The runtime never downloads on its own.'**
+  String modelsLocalConsentBody(String label, String size);
+
+  /// Local model manager 2026-11-18: the consent dialog's confirm verb.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get modelsLocalConsentConfirm;
+
+  /// Local model manager 2026-11-18: the delete confirm dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete local model?'**
+  String get modelsLocalDeleteTitle;
+
+  /// Local model manager 2026-11-18: the delete confirm dialog's body.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes the downloaded files of {label} from the local model cache. Only manager-installed models can be deleted.'**
+  String modelsLocalDeleteBody(String label);
+
+  /// Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker).
+  ///
+  /// In en, this message translates to:
+  /// **'delete refused - this model was not installed by the manager'**
+  String get modelsLocalDeleteRefused;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'checking'**
+  String get modelsLocalPhaseChecking;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'downloading'**
+  String get modelsLocalPhaseDownloading;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'loading'**
+  String get modelsLocalPhaseLoading;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'ready'**
+  String get modelsLocalPhaseReady;
+
+  /// Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix).
+  ///
+  /// In en, this message translates to:
+  /// **'failed'**
+  String get modelsLocalPhaseFailed;
+
+  /// Local model budget v3 2026-11-18: the segmented RAM bar's available-for-local-loads legend label.
+  ///
+  /// In en, this message translates to:
+  /// **'available for local loads'**
+  String get modelsBudgetAvailable;
+
+  /// Local model budget v3 2026-11-18: the segmented RAM bar's reserved-floor legend label (the load gate's incident floor).
+  ///
+  /// In en, this message translates to:
+  /// **'kept free (headroom)'**
+  String get modelsBudgetFloor;
+
+  /// Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts.
+  ///
+  /// In en, this message translates to:
+  /// **'memory facts unavailable — the load gate runs sensor-absent'**
+  String get modelsBudgetUnknown;
+
+  /// Local model budget v3 2026-11-18: the honest note when the sensor sees available but not total memory.
+  ///
+  /// In en, this message translates to:
+  /// **'total memory unknown — the bar scales to available memory'**
+  String get modelsBudgetTotalUnknown;
+
+  /// Local model budget v3 2026-11-18: the machine verdict said ONCE above the rows when every downloaded-but-unloaded entry misses its fit.
+  ///
+  /// In en, this message translates to:
+  /// **'no downloaded model fits the memory available right now — free {size} more to run {label}'**
+  String modelsBudgetNothingFits(String size, String label);
+
+  /// Local model budget v3 2026-11-18: the quiet reason line under a row whose Load verb the fit disables (the gate's own arithmetic).
+  ///
+  /// In en, this message translates to:
+  /// **'needs {size} more — unload a model or free memory'**
+  String modelsLocalFitReason(String size);
+
+  /// Local models v3 2026-11-18: the row status while a generation runs (the ledger's in-flight answer).
+  ///
+  /// In en, this message translates to:
+  /// **'generating…'**
+  String get modelsLocalGenerating;
+
+  /// Local models v3 2026-11-18: the row status after a run — the approximate decode speed (the ledger's estimate, honestly marked ≈).
+  ///
+  /// In en, this message translates to:
+  /// **'≈{speed} tok/s'**
+  String modelsLocalTokPerSec(String speed);
+
+  /// Local models v3 2026-11-18: the ⋯ menu's details entry (the sheet with the sensed facts).
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get modelsLocalDetails;
+
+  /// Local models v3 2026-11-18: the detail sheet's disk-state row.
+  ///
+  /// In en, this message translates to:
+  /// **'disk'**
+  String get modelsLocalDetailsDisk;
+
+  /// Local models v3 2026-11-18: the detail sheet's memory-state row.
+  ///
+  /// In en, this message translates to:
+  /// **'memory'**
+  String get modelsLocalDetailsMemory;
+
+  /// Local models v3 2026-11-18: the detail sheet's SENSED size row (a walk of the snapshot dir, never the approximation).
+  ///
+  /// In en, this message translates to:
+  /// **'size on disk'**
+  String get modelsLocalDetailsSizeOnDisk;
+
+  /// Local models v3 2026-11-18: the detail sheet's snapshot path row.
+  ///
+  /// In en, this message translates to:
+  /// **'snapshot path'**
+  String get modelsLocalDetailsPath;
+
+  /// Local models v3 2026-11-18: the detail sheet's last-generation row (≈speed or generating…).
+  ///
+  /// In en, this message translates to:
+  /// **'last generation'**
+  String get modelsLocalDetailsLastGeneration;
+
+  /// Local models v3 2026-11-18: the detail sheet's last-failure row, verbatim.
+  ///
+  /// In en, this message translates to:
+  /// **'last error'**
+  String get modelsLocalDetailsLastError;
+
+  /// Local models v3 2026-11-18 (en): the detail sheet's bound-actors row.
+  ///
+  /// In en, this message translates to:
+  /// **'used by'**
+  String get modelsLocalDetailsUsedBy;
+
+  /// Local models v3 2026-11-18: the AFM chip's exemption note in the built-ins footer.
+  ///
+  /// In en, this message translates to:
+  /// **'always-on'**
+  String get modelsBuiltinsNoLifecycle;
 
   /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
   ///
@@ -4430,6 +4916,102 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Select all'**
   String get selectionSelectAll;
+
+  /// Permissions dialog: the access-policy section label (read/say/manage strips).
+  ///
+  /// In en, this message translates to:
+  /// **'Access'**
+  String get worldChatPermsAccess;
+
+  /// Permissions dialog: the read-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get worldChatPermsRead;
+
+  /// Permissions dialog: the say-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Say'**
+  String get worldChatPermsSay;
+
+  /// Permissions dialog: the manage-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get worldChatPermsManage;
+
+  /// Permissions dialog: the channel work-scope section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Work scope'**
+  String get worldChatPermsScope;
+
+  /// Permissions dialog: the unbound work-scope fact.
+  ///
+  /// In en, this message translates to:
+  /// **'none'**
+  String get worldChatPermsScopeNone;
+
+  /// Permissions dialog: clear the channel work scope.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get worldChatPermsScopeClear;
+
+  /// Permissions dialog: bind a work scope to the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bind…'**
+  String get worldChatPermsScopeBind;
+
+  /// Permissions dialog: per-member grant affordance and form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant…'**
+  String get worldChatPermsGrant;
+
+  /// Permissions dialog: revoke one scope grant row.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get worldChatPermsRevoke;
+
+  /// Grant form: project/folder kind row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind'**
+  String get worldChatPermsKind;
+
+  /// Grant form: the canonical root path row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Root'**
+  String get worldChatPermsRoot;
+
+  /// Grant form: the folder subpath row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subpath'**
+  String get worldChatPermsSubpath;
+
+  /// Grant form: the capability checkboxes row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Caps'**
+  String get worldChatPermsCaps;
+
+  /// Grant form: the apply button.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply grant'**
+  String get worldChatPermsApply;
+
+  /// Grant form: honest refusal when the root field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'root is required'**
+  String get worldChatPermsRootRequired;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

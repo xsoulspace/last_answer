@@ -80,6 +80,14 @@ final class RealmChatService extends ChangeNotifier {
   /// actor is not retired.
   Map<String, Object?>? retiredInfo(final String actorId) =>
       _retiredRows[actorId];
+
+  /// The RETIRED durable rows, keyed by actor id: the projection the
+  /// visibility surfaces read (the rooms column's muted rows, the
+  /// people view's and the settings pane's Retired sections). A
+  /// retirement invisible in every list is a lie of absence — the row
+  /// keeps its history and the lists name it (2026-11-18).
+  Map<String, Map<String, Object?>> get retiredRows => _retiredRows;
+
   ProfileActorAuthority? _human;
   ChannelRegistry? _channelRegistry;
   WorkThreadRegistry? _workRegistry;
@@ -118,6 +126,15 @@ final class RealmChatService extends ChangeNotifier {
 
   /// Credential resolution by env NAME (palette rungs).
   String? Function(String envName)? resolveCredential;
+
+  /// The subscription resolver the shell wires (ADR 0031): chatgpt/grok
+  /// actors ride the signed-in providers. Null refuses every
+  /// `subscription:` ref — the actor names nothing this host can run.
+  /// Read THROUGH the field at bot-host construction (the shell sets it
+  /// after the service constructs — the latest value wins).
+  /// RECONSTRUCTED 2026-11-18 after a parallel lane's rewrite lost the
+  /// original member (app_shell's wiring is the contract).
+  ResolveSubscription? resolveSubscription;
 
   /// The incremental actor-bindings fold (ADR 0120/0143 read path):
   /// the `realm_actors` table is read ONCE at bind (adopted from the
@@ -451,33 +468,7 @@ final class RealmChatService extends ChangeNotifier {
           _retiredRows[actorId] = Map<String, Object?>.from(record);
           continue;
         }
-        final brain = record['brainRef'] as String?;
-        final cast = record['brainCast'] as String?;
-        // ACTOR EQUALITY (owner law, 2026-11-16): a model-based actor is
-        // still an actor. Daemon-minted rows (`actor_ensure`) carry only
-        // `brainCast`; adopting them with a synthesized `cast:` ref keeps
-        // EVERY actor editable and DM-able. A row with neither brain nor
-        // cast still lands in the roster with an EMPTY brainRef — the
-        // identity stays editable and the editor is exactly how it gets
-        // a brain; only its bot stays unbound until then.
-        final brainRef = (brain != null && brain.isNotEmpty)
-            ? brain
-            : (cast != null && cast.isNotEmpty ? 'cast:$cast' : '');
-        if (_roster!.get(actorId) != null) continue;
-        _roster!.upsert(
-          ActorProfile(
-            actorId: actorId,
-            displayName: record['displayName'] as String? ?? actorId,
-            kind: ActorKind.values.firstWhere(
-              (kind) => kind.name == record['actorKind'],
-              orElse: () => ActorKind.model,
-            ),
-            brainRef: brainRef,
-            role: record['role'] as String? ?? '',
-            systemPrompt: record['systemPrompt'] as String? ?? '',
-            avatar: record['avatar'] as String?,
-          ),
-        );
+        _adoptLiveRecord(record);
       }
       _human = world.authorityFor(humanId);
       // One-device-one-human heal + plane convergence (2026-11-07):
@@ -504,6 +495,11 @@ final class RealmChatService extends ChangeNotifier {
         resolveCredential: (final envName) =>
             resolveCredential?.call(envName) ??
             readInferenceCredential(envName),
+        // Late-bound through the field: the shell wires it after this
+        // construction (the subscription actors' mounting pass).
+        resolveSubscription:
+            (final providerId, final model) =>
+                resolveSubscription?.call(providerId, model),
         daemonOwnsActor: daemonOwnsActor,
         debugStartDispatcher: _debugStartBotDispatcher,
         onChanged: notifyListeners,
@@ -571,6 +567,26 @@ final class RealmChatService extends ChangeNotifier {
 
   /// Aligns bot loops with the roster (start new, stop removed).
   void syncBots() => _bots?.syncBots(_roster?.all ?? const <ActorProfile>[]);
+
+  /// The subscription providers changed (the shell's listener on the
+  /// chatgpt/grok actor stores): the `subscription:`-brained bots'
+  /// resolvers now answer differently. Plain [syncBots] would keep
+  /// those loops (an unchanged brainRef is not a material change), so
+  /// they are stopped first — syncBots rebuilds them, and the next
+  /// generation re-resolves against the fresh provider state (the
+  /// client factory rides generate time). RECONSTRUCTED 2026-11-18
+  /// after a parallel lane's rewrite lost the original member
+  /// (app_shell's wiring is the contract; the owning lane may refine).
+  void noteSubscriptionProvidersChanged() {
+    final bots = _bots;
+    if (bots == null) return;
+    for (final actor in _roster?.all ?? const <ActorProfile>[]) {
+      if (actor.brainRef.trim().startsWith('subscription:')) {
+        bots.stopBot(actor.actorId);
+      }
+    }
+    syncBots();
+  }
 
   /// The human's actor id is a DURABLE WORLD identity (ADR 0025: the
   /// world record is the identity): stored once in a LA-owned
@@ -671,6 +687,40 @@ final class RealmChatService extends ChangeNotifier {
     return true;
   }
 
+  /// One durable record's LIVE adoption — the boot scan's per-row body,
+  /// extracted for [reviveActor]: derives the editable brainRef (the
+  /// `cast:` synthesis included — ACTOR EQUALITY, owner law 2026-11-16:
+  /// daemon-minted rows carrying only `brainCast` land editable and
+  /// DM-able; a row with neither brain nor cast still lands with an
+  /// EMPTY brainRef, the editor being exactly how it gets a brain) and
+  /// upserts the roster identity when absent.
+  void _adoptLiveRecord(final Map<String, Object?> record) {
+    final roster = _roster;
+    if (roster == null) return;
+    final actorId = record['actorId'];
+    if (actorId is! String || actorId.isEmpty) return;
+    final brain = record['brainRef'] as String?;
+    final cast = record['brainCast'] as String?;
+    final brainRef = (brain != null && brain.isNotEmpty)
+        ? brain
+        : (cast != null && cast.isNotEmpty ? 'cast:$cast' : '');
+    if (roster.get(actorId) != null) return;
+    roster.upsert(
+      ActorProfile(
+        actorId: actorId,
+        displayName: record['displayName'] as String? ?? actorId,
+        kind: ActorKind.values.firstWhere(
+          (kind) => kind.name == record['actorKind'],
+          orElse: () => ActorKind.model,
+        ),
+        brainRef: brainRef,
+        role: record['role'] as String? ?? '',
+        systemPrompt: record['systemPrompt'] as String? ?? '',
+        avatar: record['avatar'] as String?,
+      ),
+    );
+  }
+
   void removeActor(String actorId) {
     final roster = _roster;
     if (roster == null) return;
@@ -691,6 +741,56 @@ final class RealmChatService extends ChangeNotifier {
     }
     try {
       return await retireRealmActor(world.store, actorId: actorId);
+    } on Object catch (error) {
+      return <String, Object?>{'ok': false, 'bounce': '$error'};
+    }
+  }
+
+  /// Revives a RETIRED durable row — the UI face of ADR 0120's revival
+  /// law ("a fresh ensure revives"): the retirement marks come OFF the
+  /// row (the harness ensure's own revival strips `retiredAt`; the
+  /// retireReason goes with it — the reason no longer applies to a live
+  /// identity), the identity re-adopts into the roster
+  /// ([_adoptLiveRecord]), and the bot loop rebuilds ([syncBots]). The
+  /// receipt shape mirrors [retireActor]: `ok` plus a verbatim `bounce`
+  /// on refusal (`realm_not_ready`, `actor_unknown`, `actor_not_retired`).
+  Future<Map<String, Object?>> reviveActor(final String actorId) async {
+    final world = _world;
+    if (world == null) {
+      return const <String, Object?>{'ok': false, 'bounce': 'realm_not_ready'};
+    }
+    final id = actorId.trim();
+    try {
+      final receipt = await world.store.transact((tx) {
+        final existing = tx.get('realm_actors', id);
+        if (existing == null) {
+          return <String, Object?>{
+            'ok': false,
+            'bounce': 'actor_unknown: actor "$id" has no durable row',
+          };
+        }
+        if (existing['retiredAt'] is! String) {
+          return <String, Object?>{
+            'ok': false,
+            'bounce': 'actor_not_retired: actor "$id" is not retired',
+          };
+        }
+        tx.put(
+          'realm_actors',
+          id,
+          <String, Object?>{...existing}
+            ..remove('retiredAt')
+            ..remove('retireReason'),
+        );
+        return <String, Object?>{'ok': true, 'actorId': id};
+      });
+      if (receipt['ok'] != true) return receipt;
+      _retiredRows.remove(id);
+      final record = await world.store.read('realm_actors', id);
+      if (record != null) _adoptLiveRecord(record);
+      syncBots();
+      notifyListeners();
+      return receipt;
     } on Object catch (error) {
       return <String, Object?>{'ok': false, 'bounce': '$error'};
     }
@@ -1101,7 +1201,8 @@ final class RealmChatService extends ChangeNotifier {
   Future<bool> renameChannel(final String channelId, final String name) async {
     final world = _world;
     final registry = _channelRegistry;
-    if (world == null || registry == null) return false;
+    final human = _human;
+    if (world == null || registry == null || human == null) return false;
     final trimmed = name.trim();
     if (trimmed.isEmpty) {
       _error = 'channel_name_empty';
@@ -1121,14 +1222,17 @@ final class RealmChatService extends ChangeNotifier {
       return false;
     }
     try {
-      await world.store.transact((tx) {
-        final thread = tx.get('threads', channel.threadId);
-        if (thread == null) return;
-        tx.put('threads', channel.threadId, <String, Object?>{
-          ...thread,
-          'topic': trimmed,
-        });
-      });
+      // ADR 0147 — the rename rides the harness `setChannelTopic` verb
+      // (topic IS the name, ADR 0146): one law for the naming policy
+      // AND the manage gate (without an `access` key any participant
+      // renames; `manage: 'owners'` narrows to the owners). The old
+      // direct topic write bypassed every gate — an app-side hole in
+      // the world's law.
+      await world.conversation().setChannelTopic(
+        actor: human,
+        threadId: channel.threadId,
+        name: trimmed,
+      );
       final mirror = _registryByThread(channel.threadId);
       if (mirror != null) {
         await registry.rename(channelId: mirror.channelId, name: trimmed);
@@ -1136,6 +1240,10 @@ final class RealmChatService extends ChangeNotifier {
       await refreshThreads();
       notifyListeners();
       return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
     } on Object catch (error) {
       _error = error.toString();
       notifyListeners();
@@ -1822,6 +1930,316 @@ final class RealmChatService extends ChangeNotifier {
       granted: grants.contains(projectRoot),
       message: message,
     );
+  }
+
+  // ---- ADR 0147 — scope grants + channel permission verbs ----
+  //
+  // The human IS the operator here: the LA wrappers grant with
+  // `grantedBy: 'operator'` (no monotonic check — the sovereign lane)
+  // and keep the VERIFY re-read law (the honest outcome rides the
+  // journal, never the verb's optimism).
+
+  /// One actor's effective scope grants (ADR 0147): legacy project
+  /// grants ∪ ledger rows ∪ channel-conferred scopes, each with its
+  /// caps and provenance. Empty when the world is not open.
+  Future<List<ActorScopeGrant>> listScopeGrants(final String actorId) async {
+    final world = _world;
+    if (world == null) return const <ActorScopeGrant>[];
+    return agentScopeGrants(world.store, actorId);
+  }
+
+  /// Grants one scope (project or folder) with optional caps, as the
+  /// operator. The VERIFY re-read answers [ProjectGrantResult.granted]
+  /// from the derived read — a ledger row that failed to land is
+  /// reported, never papered over.
+  Future<ProjectGrantResult> grantScope({
+    required final String actorId,
+    required final String kind,
+    required final String root,
+    final String? subpath,
+    final List<String>? caps,
+  }) async {
+    final world = _world;
+    if (world == null) {
+      return const ProjectGrantResult(
+        granted: false,
+        message: 'realm_not_ready',
+      );
+    }
+    String path;
+    String? message;
+    try {
+      final result = await grantActorScope(
+        world.store,
+        actorId: actorId,
+        scopeKind: kind,
+        root: root,
+        grantedBy: 'operator',
+        subpath: subpath,
+        caps: caps,
+      );
+      path = '${result['path'] ?? ''}';
+    } on DurableRealmRefusal catch (refused) {
+      return ProjectGrantResult(
+        granted: false,
+        message: refused.code,
+      );
+    } on Object catch (error) {
+      return ProjectGrantResult(granted: false, message: '$error');
+    }
+    final grants = await agentScopeGrants(world.store, actorId);
+    final granted = grants.any((grant) => grant.path == path);
+    return ProjectGrantResult(
+      granted: granted,
+      message: message ?? (granted ? 'granted $path' : 'grant did not land'),
+    );
+  }
+
+  /// Revokes one scope grant by path. The operator lane (the harness
+  /// verb permits the operator, the granter, a superset holder, or the
+  /// grantee giving the access back).
+  Future<ProjectGrantResult> revokeScope({
+    required final String actorId,
+    required final String path,
+  }) async {
+    final world = _world;
+    if (world == null) {
+      return const ProjectGrantResult(
+        granted: false,
+        message: 'realm_not_ready',
+      );
+    }
+    try {
+      await revokeActorScope(
+        world.store,
+        actorId: actorId,
+        path: path,
+        revokedBy: 'operator',
+      );
+    } on DurableRealmRefusal catch (refused) {
+      return ProjectGrantResult(granted: false, message: refused.code);
+    } on Object catch (error) {
+      return ProjectGrantResult(granted: false, message: '$error');
+    }
+    final grants = await agentScopeGrants(world.store, actorId);
+    return ProjectGrantResult(
+      granted: !grants.any((grant) => grant.path == path),
+      message: 'revoked $path',
+    );
+  }
+
+  /// Sets (or clears, [root] null) a channel's WORK SCOPE (ADR 0147):
+  /// every member derives the scope as a grant for as long as they are
+  /// a member — the Discord-side model, access follows membership. The
+  /// harness verb manage-gates and (for non-openers) monotonic-checks
+  /// the setter. Refreshes [channels] and notifies.
+  Future<bool> setChannelWorkScope({
+    required final String channelId,
+    required final String? kind,
+    required final String? root,
+    final String? subpath,
+    final List<String>? caps,
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
+    try {
+      await world.conversation().setChannelWorkScope(
+        actor: human,
+        threadId: channel.threadId,
+        kind: kind,
+        root: root,
+        subpath: subpath,
+        caps: caps,
+      );
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Sets a channel's access policy (ADR 0147): who reads, who says,
+  /// who manages — and optionally the owners list ([owners] null keeps
+  /// the current one; the caller is always included by the harness
+  /// verb). The defaults (`realm`/`realm`/`members`) are what a thread
+  /// WITHOUT the key answers, so `read: 'members'` is the one change
+  /// that closes a channel. Manage-gated by the harness verb.
+  Future<bool> setChannelAccess({
+    required final String channelId,
+    final String? read,
+    final String? say,
+    final String? manage,
+    final List<String>? owners,
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
+    try {
+      await world.conversation().setChannelAccess(
+        actor: human,
+        threadId: channel.threadId,
+        access: {
+          'read': ?read,
+          'say': ?say,
+          'manage': ?manage,
+        },
+        owners: owners,
+      );
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Invites members into a channel (ADR 0147 — the first verb that
+  /// grows membership other than speaking). Manage-gated; idempotent
+  /// per member. Refreshes [channels] and notifies.
+  Future<bool> inviteChannelMembers({
+    required final String channelId,
+    required final List<String> memberIds,
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
+    try {
+      await world.conversation().inviteParticipants(
+        actor: human,
+        threadId: channel.threadId,
+        memberIds: memberIds,
+      );
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Removes members from a channel (ADR 0147 — membership can SHRINK;
+  /// history is never touched, and a channel-conferred scope leaves
+  /// with the member). Manage-gated; refreshing + notifying like its
+  /// invite twin.
+  Future<bool> removeChannelMembers({
+    required final String channelId,
+    required final List<String> memberIds,
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
+    try {
+      await world.conversation().removeParticipants(
+        actor: human,
+        threadId: channel.threadId,
+        memberIds: memberIds,
+      );
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Sets a channel's membership WHOLESALE (the members editor's verb):
+  /// the diff against the current participants lands through the
+  /// harness invite/remove verbs (ADR 0147), so the manage gate runs on
+  /// every mutation and a channel-conferred scope leaves with an
+  /// evicted member. Removing the CALLER is refused (an editor cannot
+  /// evict itself by accident). History is never touched. Refreshes
+  /// [channels] and notifies once.
+  Future<bool> setChannelMembers({
+    required final String channelId,
+    required final List<String> memberIds,
+  }) async {
+    final world = _world;
+    final human = _human;
+    if (world == null || human == null) return false;
+    final channel = channelByAnyId(channelId);
+    if (channel == null) return false;
+    // The HUMAN is PERMANENT in channels (owner law, 2026-11-18): a
+    // set without the human folds them back in — the self-eviction
+    // refusal below stays as the non-human caller's defense.
+    final next = <String>{
+      human.actor,
+      for (final id in memberIds)
+        if (id.trim().isNotEmpty) id.trim(),
+    }.toList()..sort();
+    final current = (await world.store.read('threads', channel.threadId))
+            ?['participants'] as List? ??
+        const <Object?>[];
+    final currentIds = current.cast<String>().toSet();
+    final nextIds = next.toSet();
+    final toAdd = nextIds.difference(currentIds).toList()..sort();
+    final toRemove = currentIds.difference(nextIds).toList()..sort();
+    if (toRemove.contains(human.actor)) {
+      _error = 'channel_members_self_remove';
+      notifyListeners();
+      return false;
+    }
+    final conversation = world.conversation();
+    try {
+      if (toAdd.isNotEmpty) {
+        await conversation.inviteParticipants(
+          actor: human,
+          threadId: channel.threadId,
+          memberIds: toAdd,
+        );
+      }
+      if (toRemove.isNotEmpty) {
+        await conversation.removeParticipants(
+          actor: human,
+          threadId: channel.threadId,
+          memberIds: toRemove,
+        );
+      }
+      await refreshThreads();
+      notifyListeners();
+      return true;
+    } on DurableRealmRefusal catch (refused) {
+      _error = refused.code;
+      notifyListeners();
+      return false;
+    } on Object catch (error) {
+      _error = error.toString();
+      notifyListeners();
+      return false;
+    }
   }
 
   // ---- palette revision verbs (Wave J — the provider editor's seam) ----

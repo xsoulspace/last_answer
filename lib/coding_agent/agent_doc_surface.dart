@@ -11,12 +11,15 @@ import 'package:headless_core/headless_core.dart';
 import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/agent_config/grok_subscription_pane.dart';
 import 'package:lastanswer/browser/browser_entry.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/desired_coding_model.dart';
 import 'package:lastanswer/coding_agent/device_decision_routes.dart';
+import 'package:lastanswer/coding_agent/grok_harness_binding.dart';
+import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/harness_session_controller.dart';
 import 'package:lastanswer/coding_agent/meaning_experiment_preparation.dart';
@@ -446,6 +449,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
 
   ChatGptSubscriptionController? get _subscription =>
       widget.subscription ?? context.read<ChatGptSubscriptionController?>();
+
+  GrokSubscriptionController? get _grok =>
+      context.read<GrokSubscriptionController?>();
 
   // Laya backend — the surface owns the runtime so the readiness probe
   // (attach-only, never spawns) has a stable object to answer through.
@@ -1284,6 +1290,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   Object _configSignature() {
     final native = _doc.agent?.backend == chatGptBackend;
     final subscription = native ? _subscription : null;
+    final grok = _doc.agent?.backend == grokBackend ? _grok : null;
     return (
       _doc.agent,
       _workspaceField.text.trim(),
@@ -1294,6 +1301,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       subscription?.activeProfile?.signedIn,
       subscription?.activeProfile?.planEnabled,
       subscription?.activeProfile?.recoveryRequired,
+      grok?.activeAccountId,
+      grok?.selectedModel,
+      grok?.activeProfile?.signedIn,
+      grok?.activeProfile?.planEnabled,
+      grok?.registered,
     );
   }
 
@@ -1321,7 +1333,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     backend: backend,
     currentBackend: _controller.config.backend,
     currentModel: _controller.config.model,
-    subscriptionModel: _subscription?.selectedModel,
+    subscriptionModel: backend == grokBackend
+        ? _grok?.selectedModel
+        : _subscription?.selectedModel,
   );
 
   Future<bool> _syncConfigOnce() async {
@@ -1386,6 +1400,60 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           model: selectedModel,
         );
         subscriptionChoice = (clientId: profile.clientId, model: selectedModel);
+        apiKey = null;
+      }
+      if (backend == grokBackend) {
+        final grok = _grok;
+        if (grok == null) {
+          _controller.error = context.l10n.grokSignInRequired;
+          if (mounted) setState(() {});
+          return false;
+        }
+        await grok.load();
+        if (!mounted) {
+          if (_ownsController) {
+            (widget.workspaceTooling ?? ProductWorkspaceTooling.instance)
+                .forgetOwner(_controller);
+          }
+          return false;
+        }
+        final profile = grok.activeProfile;
+        final selectedModel = grok.selectedModel;
+        if (profile == null || !profile.signedIn || !profile.planEnabled) {
+          _controller.error = context.l10n.grokSignInRequired;
+          setState(() {});
+          return false;
+        }
+        if (selectedModel == null || selectedModel.isEmpty) {
+          _controller.error = context.l10n.grokModelRequired;
+          setState(() {});
+          return false;
+        }
+        final consent = await _providerConfiguration.consentGranted(
+          documentId: _doc.id.value,
+          provider: grokConsentProvider(profile.subject),
+          model: selectedModel,
+          workspace: workspaceBinding,
+        );
+        if (!mounted) return false;
+        _hostedConsentGranted = consent;
+        if (!consent) {
+          _controller.error = context.l10n.grokDocumentConsentRequired;
+          setState(() {});
+          return false;
+        }
+        inferenceModel = selectedModel;
+        inferenceBinding =
+            _subscriptionClientId == profile.subject &&
+                _subscriptionModel == selectedModel
+            ? _controller.config.inferenceBinding
+            : null;
+        inferenceBinding ??= grokHarnessBinding(
+          gateway: grok.gateway,
+          subject: profile.subject,
+          model: selectedModel,
+        );
+        subscriptionChoice = (clientId: profile.subject, model: selectedModel);
         apiKey = null;
       }
       final autonomy = ProductAutonomy.forWorkspace(workspaceBinding);
@@ -1504,7 +1572,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
               ? null
               : localPair.forEscalation(inferenceBinding.binding),
           clearRoutedBinding: localPair == null,
-          clearInferenceBinding: backend != chatGptBackend,
+          clearInferenceBinding:
+              backend != chatGptBackend && backend != grokBackend,
           extraToolsWithContext: experimentTools,
           actorToolNames: autonomy == null
               ? null
@@ -1856,17 +1925,30 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       return;
     }
     final subscription = _subscription;
+    final grok = _grok;
     final backend = _doc.agent?.backend ?? _controller.config.backend;
     final native = backend == chatGptBackend;
-    final clientId = subscription?.activeClientId;
+    final grokLane = backend == grokBackend;
+    final clientId = grokLane
+        ? grok?.activeAccountId
+        : subscription?.activeClientId;
     final model = _desiredModel(backend);
-    if (native && (clientId == null || model == null || model.isEmpty)) {
-      setState(() => _routingError = context.l10n.chatGptModelRequired);
+    if ((native || grokLane) &&
+        (clientId == null || model == null || model.isEmpty)) {
+      setState(
+        () => _routingError = grokLane
+            ? context.l10n.grokModelRequired
+            : context.l10n.chatGptModelRequired,
+      );
       return;
     }
     await _providerConfiguration.grantHostedConsent(
       documentId: _doc.id.value,
-      provider: native ? chatGptConsentProvider(clientId!) : 'open_router',
+      provider: native
+          ? chatGptConsentProvider(clientId!)
+          : grokLane
+          ? grokConsentProvider(clientId!)
+          : 'open_router',
       model: model!,
       workspace: workspace,
     );
@@ -2164,6 +2246,7 @@ class _StatusRule extends StatelessWidget {
               _TextToggle(
                 label: switch (backend) {
                   chatGptBackend => 'ChatGPT',
+                  grokBackend => 'Grok',
                   'open_router' => 'OR',
                   'jev' => 'JEV',
                   'external_acp' => 'ACP',
@@ -2339,7 +2422,8 @@ class _SetupPane extends StatelessWidget {
           ),
           if (backend == 'open_router' ||
               backend == 'jev' ||
-              backend == chatGptBackend)
+              backend == chatGptBackend ||
+              backend == grokBackend)
             Row(
               children: [
                 SizedBox(width: 84, child: Text('CLOUD', style: _label(theme))),
@@ -2428,6 +2512,12 @@ class _SetupPane extends StatelessWidget {
                 toggleKey: const Key('coding_agent.chatgpt_backend'),
               ),
               _TextToggle(
+                label: 'Grok',
+                active: backend == grokBackend,
+                onTap: busy ? () {} : () => onBackend(grokBackend),
+                toggleKey: const Key('coding_agent.grok_backend'),
+              ),
+              _TextToggle(
                 label: 'Jev · decisions',
                 active: backend == 'jev',
                 onTap: busy ? () {} : () => onBackend('jev'),
@@ -2474,6 +2564,7 @@ class _SetupPane extends StatelessWidget {
             ],
           ),
           if (backend == chatGptBackend) const ChatGptSubscriptionPane(),
+          if (backend == grokBackend) const GrokSubscriptionPane(),
           if (backend == 'external_acp')
             Row(
               children: [
@@ -2859,6 +2950,7 @@ class _TurnView extends StatelessWidget {
 
   String get _agentRole => switch (backend) {
     chatGptBackend => 'GPT',
+    grokBackend => 'Grok',
     'apple_foundation_afm' => 'AFM',
     'open_router' => 'OR',
     'laya' => 'Laya',

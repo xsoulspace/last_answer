@@ -39,7 +39,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kDebugMode;
+    show defaultTargetPlatform, kDebugMode, listEquals;
 
 import 'package:headless_core/headless_core.dart' as hc;
 
@@ -49,6 +49,10 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 
+import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
+
+import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
+
 import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
 
 import 'package:lastanswer/coding_agent/permission_doc_router.dart';
@@ -57,11 +61,15 @@ import 'package:lastanswer/coding_agent/provider_configuration.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
@@ -132,6 +140,16 @@ const String kLegacyPaneTreePrefsKey = 'shell.paneTree.v1';
 /// the chat-first projection — rail + rooms column + conversation.
 const String kRoomsDockedPrefsKey = 'shell.rooms.docked';
 
+/// The SharedPreferences key holding the pane groups' width weights
+/// (JSON list of relative flex weights, parallel to the layout's
+/// `groups`; the drag-resize law). Beside the layout document — a drag
+/// must never rewrite the tab layout per pointer move.
+const String kPaneWeightsPrefsKey = 'shell.pane.weights.v1';
+
+/// The SharedPreferences key holding the docked rooms column's dragged
+/// width (px, double). Default: [ShellTokens.contextColumnWidth].
+const String kRoomsColumnWidthPrefsKey = 'shell.rooms.width.v1';
+
 /// The shell chrome: the action bar, the pane groups (each with its own
 /// strip), the picker overlay, the status edge. Inject [service] in
 /// tests; production resolves it internally.
@@ -168,6 +186,8 @@ class _AppShellState extends State<AppShell> {
   /// (the teardown invariant), and the world it opened closes with it.
   late final RealmChatService _service;
   late final bool _ownsService;
+  ChatGptSubscriptionController? _chatgptActors;
+  GrokSubscriptionController? _grokActors;
 
   /// The world's read model behind the status edge, the landing inbox
   /// and the Models surface (phase 1d). Injected in tests (or resolved
@@ -187,6 +207,18 @@ class _AppShellState extends State<AppShell> {
   /// workspace projection (free pane groups). Persisted as
   /// [kRoomsDockedPrefsKey]; the default is the first-entry projection.
   var _roomsDocked = true;
+
+  /// The pane groups' width weights (the drag-resize law): relative
+  /// flex shares parallel to [_layout.groups] — 1.0 each by default
+  /// (the equal-`Expanded` anatomy), dragged at the seams, persisted as
+  /// [kPaneWeightsPrefsKey]. Presentation chrome BESIDE the layout
+  /// document: a drag must never rewrite the tab layout doc per pointer
+  /// move, and the weights never change which tabs live where.
+  List<double> _paneWeights = const <double>[];
+
+  /// The docked rooms column's width (px; the drag-resize law at its
+  /// right edge), persisted as [kRoomsColumnWidthPrefsKey].
+  double _roomsColumnWidth = ShellTokens.contextColumnWidth;
 
   /// 1a — LaWorld: the reactive ecsly projection over the realm
   /// journal (cursor-fed, never polling). Null until the chat service
@@ -337,6 +369,41 @@ class _AppShellState extends State<AppShell> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _installAgentDocSeams();
+    _bindSubscriptionActors();
+  }
+
+  /// Subscription plans are providers an actor can name (ADR 0031).
+  /// The resolver reads the live controllers, and a later sign-in
+  /// re-aligns the bot loops.
+  void _bindSubscriptionActors() {
+    final chatgpt = context.read<ChatGptSubscriptionController?>();
+    final grok = context.read<GrokSubscriptionController?>();
+    var changed = false;
+    if (!identical(chatgpt, _chatgptActors)) {
+      _chatgptActors?.removeListener(_onSubscriptionActors);
+      _chatgptActors = chatgpt;
+      chatgpt?.addListener(_onSubscriptionActors);
+      changed = true;
+    }
+    if (!identical(grok, _grokActors)) {
+      _grokActors?.removeListener(_onSubscriptionActors);
+      _grokActors = grok;
+      grok?.addListener(_onSubscriptionActors);
+      changed = true;
+    }
+    _service.resolveSubscription = (final providerId, final model) =>
+        subscriptionClientFor(
+          providerId: providerId,
+          model: model,
+          chatgpt: _chatgptActors,
+          grok: _grokActors,
+        );
+    if (changed) _service.syncBots();
+  }
+
+  void _onSubscriptionActors() {
+    if (!mounted) return;
+    _service.noteSubscriptionProvidersChanged();
   }
 
   @override
@@ -346,6 +413,8 @@ class _AppShellState extends State<AppShell> {
     if (kDebugMode) ShellDebugBridge.instance = null;
     FocusManager.instance.removeListener(_onPrimaryFocusChanged);
     _shellFocus.dispose();
+    _chatgptActors?.removeListener(_onSubscriptionActors);
+    _grokActors?.removeListener(_onSubscriptionActors);
     _service.removeListener(_onServiceChanged);
     _laWorldFeed?.stop();
     _laWorld?.dispose();
@@ -495,6 +564,36 @@ class _AppShellState extends State<AppShell> {
     if (docked != null && docked != _roomsDocked && mounted) {
       setState(() => _roomsDocked = docked);
     }
+    // The resize law's chrome restores beside the layout too: the pane
+    // weights and the rooms column's width. An unusable blob keeps the
+    // defaults (equal shares, the token width) — the same tolerant
+    // decode the layout itself rides.
+    final rawWeights = prefs.getString(kPaneWeightsPrefsKey);
+    if (rawWeights != null && rawWeights.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(rawWeights);
+        if (decoded is List) {
+          final weights = <double>[
+            for (final entry in decoded)
+              if (entry is num) entry.toDouble(),
+          ];
+          if (weights.isNotEmpty && mounted) {
+            setState(() => _paneWeights = weights);
+          }
+        }
+      } on Object {
+        // An unreadable blob keeps the equal shares.
+      }
+    }
+    final rawWidth = prefs.getDouble(kRoomsColumnWidthPrefsKey);
+    if (rawWidth != null && mounted) {
+      setState(() {
+        _roomsColumnWidth = rawWidth.clamp(
+          ShellTokens.minRoomsColumnWidth,
+          ShellTokens.maxRoomsColumnWidth,
+        );
+      });
+    }
     final raw = prefs.getString(kViewLayoutPrefsKey);
     if (raw != null && raw.isNotEmpty) {
       try {
@@ -544,7 +643,10 @@ class _AppShellState extends State<AppShell> {
 
   void _onLayoutChanged(final ShellLayout layout) {
     if (layout == _layout) return;
-    setState(() => _layout = layout);
+    setState(() {
+      _layout = layout;
+      _paneWeights = _weightsAfter(layout);
+    });
     _persistLayout(layout);
   }
 
@@ -553,6 +655,146 @@ class _AppShellState extends State<AppShell> {
       SharedPreferences.getInstance().then(
         (final prefs) =>
             prefs.setString(kViewLayoutPrefsKey, jsonEncode(layout.toJson())),
+      ),
+    );
+  }
+
+  // ---- drag resize (owner request 2026-11-18) -----------------------------
+  //
+  // The pane groups' seams and the docked rooms column's right edge are
+  // drag handles. Pane widths are RELATIVE flex weights ([_paneWeights])
+  // — 1.0 each by default, so the resting anatomy is the old equal
+  // split. The weight laws ride the layout ops they accompany:
+  // - a split (every path — the strip control, a dashed-edge tab drop,
+  //   the router's first-view split) lands the NEW group at
+  //   `next.active` and it takes HALF its left neighbour's weight (the
+  //   new pane shares its source's width);
+  // - a fold hands the folded group's weight to the merge target (the
+  //   surviving pane keeps the combined width);
+  // - a group close drops that group's weight (the remaining flexes
+  //   re-share), and an emptied-source cross-group move moves the
+  //   source's width WITH its lone tab;
+  // - any other change length-normalizes (an unusable entry is 1.0).
+
+  /// The weights for the layout [next]: growth (a split — the new
+  /// group sits at `next.active`) half-splits the new group's left
+  /// neighbour's weight; everything else length-normalizes.
+  List<double> _weightsAfter(final ShellLayout next) {
+    final w = List<double>.of(_paneWeights);
+    if (next.groups.length > w.length) {
+      final at = next.active;
+      if (at >= 0 && at <= w.length) {
+        final share = at > 0 ? w[at - 1] / 2 : 1.0;
+        if (at > 0) w[at - 1] = share;
+        w.insert(at, share);
+      }
+    }
+    return _normalizedWeights(w, next.groups.length);
+  }
+
+  /// [weights] trimmed/padded to exactly [count] entries; unusable
+  /// entries (non-finite, ≤ 0) fall back to the equal share 1.0.
+  static List<double> _normalizedWeights(
+    final List<double> weights,
+    final int count,
+  ) => <double>[
+    for (var i = 0; i < count; i++)
+      if (i < weights.length && weights[i].isFinite && weights[i] > 0)
+        weights[i]
+      else
+        1.0,
+  ];
+
+  /// The weight for group [index] as the tree stands now (a missing or
+  /// unusable entry is the equal share). Build-path safe.
+  double _weightFor(final int index) {
+    if (index >= 0 && index < _paneWeights.length) {
+      final w = _paneWeights[index];
+      if (w.isFinite && w > 0) return w;
+    }
+    return 1;
+  }
+
+  /// Commits [layout] together with explicit resize [weights] (null =
+  /// the generic [_onLayoutChanged] law), persisting both documents.
+  void _setLayoutWithWeights(
+    final ShellLayout layout,
+    final List<double>? weights,
+  ) {
+    if (weights == null) {
+      _onLayoutChanged(layout);
+      return;
+    }
+    final next = _normalizedWeights(weights, layout.groups.length);
+    if (layout == _layout && listEquals(next, _paneWeights)) return;
+    setState(() {
+      _layout = layout;
+      _paneWeights = next;
+    });
+    _persistLayout(layout);
+    _persistPaneWeights();
+  }
+
+  /// ONE pane seam's drag: moves [dxPx] of real width from the group
+  /// right of the seam into the group left of it ([left]; negative dx
+  /// the other way). Both sides keep [ShellTokens.minPaneWidth] real
+  /// pixels of CONTENT — plus each group's own two 6px edge zones —
+  /// of [flexibleWidth], the panes row's full width (each group's
+  /// Expanded share; at equal weights a dragged px moves the seam 1:1).
+  /// Mid-drag this updates state only; the blob persists at drag end.
+  void _onPaneResizeDrag(
+    final int left,
+    final double dxPx,
+    final double flexibleWidth,
+  ) {
+    if (left < 0 || left + 1 >= _layout.groups.length) return;
+    final current = _normalizedWeights(_paneWeights, _layout.groups.length);
+    var sum = 0.0;
+    for (final w in current) {
+      sum += w;
+    }
+    if (sum <= 0 || flexibleWidth <= 0) return;
+    final pxPerWeight = flexibleWidth / sum;
+    final minWeight = (ShellTokens.minPaneWidth + 12.0) / pxPerWeight;
+    // Manual clamp: in a window too small for two minimum panes the
+    // bounds cross, and `num.clamp` refuses crossed bounds.
+    final lo = minWeight - current[left];
+    final hi = current[left + 1] - minWeight;
+    var d = dxPx / pxPerWeight;
+    if (d < lo) d = lo;
+    if (d > hi) d = hi;
+    final next = List<double>.of(current)
+      ..[left] = current[left] + d
+      ..[left + 1] = current[left + 1] - d;
+    if (listEquals(next, current)) return;
+    setState(() => _paneWeights = next);
+  }
+
+  void _persistPaneWeights() {
+    unawaited(
+      SharedPreferences.getInstance().then(
+        (final prefs) =>
+            prefs.setString(kPaneWeightsPrefsKey, jsonEncode(_paneWeights)),
+      ),
+    );
+  }
+
+  /// The rooms column's right-edge drag: real pixels, clamped to the
+  /// token band; persisted at drag end like the pane weights.
+  void _onRoomsResizeDrag(final double dxPx) {
+    final next = (_roomsColumnWidth + dxPx).clamp(
+      ShellTokens.minRoomsColumnWidth,
+      ShellTokens.maxRoomsColumnWidth,
+    );
+    if (next == _roomsColumnWidth) return;
+    setState(() => _roomsColumnWidth = next);
+  }
+
+  void _persistRoomsWidth() {
+    unawaited(
+      SharedPreferences.getInstance().then(
+        (final prefs) =>
+            prefs.setDouble(kRoomsColumnWidthPrefsKey, _roomsColumnWidth),
       ),
     );
   }
@@ -635,25 +877,32 @@ class _AppShellState extends State<AppShell> {
     }());
   }
 
-  /// A tab's right-click (or long-press): the window presentation for
-  /// conversation tabs — the miniwindow (ADR 0027). Other kinds have no
-  /// context actions yet (honest absence: no menu).
+  /// A tab's right-click (or long-press): the kit menu — the window
+  /// presentation for conversation tabs (the miniwindow, ADR 0027) and,
+  /// for EVERY tab kind, the close-all cleanup. Conversational-ness is
+  /// the id-prefix fact (a `dm:` without a live thread still opens the
+  /// window first — [_openMiniWindow] is idempotent).
   void _onTabContext(final String surfaceId, final Offset globalPosition) {
-    if (_miniWindowSpec(surfaceId) == null &&
-        !surfaceId.startsWith('dm:') &&
-        !surfaceId.startsWith('channel:') &&
-        !surfaceId.startsWith('room:')) {
-      return;
-    }
+    final conversational =
+        surfaceId.startsWith('dm:') ||
+        surfaceId.startsWith('channel:') ||
+        surfaceId.startsWith('room:');
     // The kit menu grammar (v6): the row carries its own activation and
     // the menu closes on choice.
     showLaMenuAt(
       context,
       globalPosition: globalPosition,
       entries: [
+        if (conversational)
+          LaMenuItem(
+            label: context.l10n.railRowMiniwindow,
+            onPressed: () => _openMiniWindow(surfaceId),
+          ),
+        if (conversational) const LaMenuSeparator(),
         LaMenuItem(
-          label: context.l10n.railRowMiniwindow,
-          onPressed: () => _openMiniWindow(surfaceId),
+          key: const ValueKey('view.tab.ctx.closeAll'),
+          label: context.l10n.stripCloseAllTabs,
+          onPressed: _onCloseAllTabs,
         ),
       ],
     );
@@ -734,10 +983,7 @@ class _AppShellState extends State<AppShell> {
   /// verb — the row write AND the registry mirror live in
   /// [RealmChatService.setChannelIcon] (the steward verb that collapsed
   /// this lane's original store-plus-rename workaround).
-  Future<bool> _setChannelIcon(
-    final String channelId,
-    final String? icon,
-  ) =>
+  Future<bool> _setChannelIcon(final String channelId, final String? icon) =>
       _service.setChannelIcon(channelId: channelId, icon: icon);
 
   /// ADR 0146 — the channel view the tab-title and miniwindow lookups
@@ -759,11 +1005,14 @@ class _AppShellState extends State<AppShell> {
   // semantics walker's rail-drop is a known framework gap).
 
   /// The layout document's projection for `shell_state`: the dock bool,
-  /// the pane groups with their tab ids, the active group and tab.
+  /// the pane groups with their tab ids, the active group and tab, and
+  /// the resize law's chrome (the pane weights, the rooms width).
   Map<String, Object?> _debugShellState() => <String, Object?>{
     'docked': _roomsDocked,
     'activeGroup': _layout.active,
     'activeTab': _layout.activeSurfaceId,
+    'paneWeights': List<double>.of(_paneWeights),
+    'roomsColumnWidth': _roomsColumnWidth,
     'groups': <Object?>[
       for (final group in _layout.groups)
         <String, Object?>{
@@ -1047,7 +1296,34 @@ class _AppShellState extends State<AppShell> {
       );
       if (mapped == surfaceId) _service.clearActiveThread();
     }
-    _onLayoutChanged(_routeClose(_layout, surfaceId));
+    final old = _layout;
+    final next = _routeClose(old, surfaceId);
+    if (next.groups.length < old.groups.length) {
+      // A group dissolves: its weight drops with it (the remaining
+      // flexes re-share the space).
+      final g = old.groupOf(surfaceId);
+      final w = List<double>.of(_paneWeights);
+      if (g >= 0 && g < w.length) w.removeAt(g);
+      _setLayoutWithWeights(next, w);
+      return;
+    }
+    _onLayoutChanged(next);
+  }
+
+  /// The tab context menu's "close all": every tab in every group. The
+  /// service's active thread clears exactly like a single room-tab close
+  /// (the ensure-exists law must never resurrect what the human closed;
+  /// only the ACTIVE room auto-opens, so the others stay closed), then
+  /// the layout law lands the world face — [ShellLayout.closeAllTabs].
+  void _onCloseAllTabs() {
+    final mapped = conversationSurfaceId(
+      activeThreadId: _service.activeThreadId,
+      channels: _service.channels,
+      actors: _service.roster?.all ?? const <ActorProfile>[],
+      dmThreadOf: _service.dmThreadOf,
+    );
+    if (mapped != null) _service.clearActiveThread();
+    _onLayoutChanged(_layout.closeAllTabs());
   }
 
   /// A strip tab tap (and the rooms column's row tap — one path):
@@ -1067,22 +1343,69 @@ class _AppShellState extends State<AppShell> {
 
   /// A native drag landed on a strip: the tab reorders inside its group
   /// or moves into another one ([ShellLayout.moveTabTo] decides — the
-  /// shell only commits). [at] null = append to the strip's end.
-  void _onMoveTab(final String tabId, final int group, final int? at) =>
-      _onLayoutChanged(
-        _layout.moveTabTo(tabId: tabId, group: group, at: at),
-      );
+  /// shell only commits). [at] null = append to the strip's end. An
+  /// emptied source group dissolves, and its weight drops with it (the
+  /// remaining flexes re-share).
+  void _onMoveTab(final String tabId, final int group, final int? at) {
+    final old = _layout;
+    final next = old.moveTabTo(tabId: tabId, group: group, at: at);
+    if (next.groups.length < old.groups.length) {
+      final s = old.groupOf(tabId);
+      final w = List<double>.of(_paneWeights);
+      if (s >= 0 && s < w.length) w.removeAt(s);
+      _setLayoutWithWeights(next, w);
+      return;
+    }
+    _onLayoutChanged(next);
+  }
 
   /// A native drag landed on a pane's dashed edge: the tab splits into
   /// a NEW group at that position ([ShellLayout.splitTabAt] decides —
-  /// refusals are no-ops the commit swallows).
-  void _onSplitTab(final String tabId, final int index, final bool after) =>
-      _onLayoutChanged(
-        _layout.splitTabAt(tabId: tabId, index: index, after: after),
-      );
+  /// refusals are no-ops the commit swallows). Weight laws: the generic
+  /// split law (the new group half-shares its left neighbour) covers
+  /// the growth paths; when the source's LONE tab moved out of a
+  /// multi-group tree, the source dissolved and its width MOVES with
+  /// the tab into the new group (the whole tab set moved, so the width
+  /// must follow it).
+  void _onSplitTab(final String tabId, final int index, final bool after) {
+    final old = _layout;
+    final next = old.splitTabAt(tabId: tabId, index: index, after: after);
+    if (next == old) return;
+    final s = old.groupOf(tabId);
+    List<double>? weights;
+    if (s >= 0 &&
+        old.groups.length > 1 &&
+        old.groups[s].tabs.length == 1 &&
+        s < _paneWeights.length) {
+      final at = after ? index + 1 : index;
+      final w = List<double>.of(_paneWeights);
+      final sourceWeight = w.removeAt(s);
+      w.insert((at > s ? at - 1 : at).clamp(0, w.length), sourceWeight);
+      weights = w;
+    }
+    _setLayoutWithWeights(next, weights);
+  }
 
-  /// A trailing pane's fold control: its tabs merge back left.
-  void _onFold(final int group) => _onLayoutChanged(_layout.fold(group: group));
+  /// A trailing pane's fold control: its tabs merge back left — and its
+  /// width merges with them: the merge target absorbs the folded
+  /// group's weight, so the surviving pane keeps the combined width.
+  void _onFold(final int group) {
+    final old = _layout;
+    final next = old.fold(group: group);
+    if (next == old) return;
+    final g = group.clamp(0, old.groups.length - 1);
+    final w = List<double>.of(_paneWeights);
+    if (g < w.length) {
+      final moved = w.removeAt(g);
+      final target = g > 0 ? g - 1 : 1;
+      final mergedAt = (target > g ? target - 1 : target).clamp(
+        0,
+        w.length - 1,
+      );
+      w[mergedAt] += moved;
+    }
+    _setLayoutWithWeights(next, w);
+  }
 
   void _onBack(final int group) => _onLayoutChanged(_layout.back(group: group));
 
@@ -1109,10 +1432,7 @@ class _AppShellState extends State<AppShell> {
       final channel = _service.channelByAnyId(
         surfaceId.substring('channel:'.length),
       );
-      return ChannelIconMark(
-        icon: channel?.icon,
-        size: _kIdentityMarkSize,
-      );
+      return ChannelIconMark(icon: channel?.icon, size: _kIdentityMarkSize);
     }
     if (surfaceId.startsWith('room:')) {
       // A watchable room (1d): the forum mark — a room that is nobody's
@@ -1412,8 +1732,7 @@ class _AppShellState extends State<AppShell> {
               surfaces: surfaces,
               onChanged: _onLayoutChanged,
               onFocusActor: _onFocusActorIntent,
-              onOpenThread: (final threadId) =>
-                  _onSelectTab('room:$threadId'),
+              onOpenThread: (final threadId) => _onSelectTab('room:$threadId'),
               // The channel view's threads browser and the beat text's
               // linkified references ride the SAME router at full
               // surface-id breadth (dm:/channel:/room: — the ONE
@@ -1514,8 +1833,38 @@ class _AppShellState extends State<AppShell> {
                                             // The chat-first projection:
                                             // the docked rooms column
                                             // (navigation chrome, never
-                                            // a tab).
-                                            if (roomsDocked) _roomsColumn(),
+                                            // a tab) — its right edge
+                                            // is the width drag handle
+                                            // (the resize law).
+                                            if (roomsDocked) ...[
+                                              _roomsColumn(),
+                                              _ResizeHandle(
+                                                key: const ValueKey(
+                                                  'shell.rooms.resize',
+                                                ),
+                                                label: 'shell.rooms.resize',
+                                                hint: context
+                                                    .l10n
+                                                    .resizeRoomsHint,
+                                                // The hover accent lands on
+                                                // the handle's edge against
+                                                // the column's own right
+                                                // hairline — one boundary
+                                                // line, brightened on hover.
+                                                hoverLineLeft: 0,
+                                                onDragUpdate:
+                                                    _onRoomsResizeDrag,
+                                                onDragEnd: _persistRoomsWidth,
+                                                onIncrease: () =>
+                                                    _onRoomsResizeDrag(24),
+                                                onDecrease: () =>
+                                                    _onRoomsResizeDrag(-24),
+                                                child: const SizedBox(
+                                                  width: ShellTokens
+                                                      .resizeHandleWidth,
+                                                ),
+                                              ),
+                                            ],
                                             Expanded(
                                               child: _panesRow(surfaces),
                                             ),
@@ -1580,10 +1929,10 @@ class _AppShellState extends State<AppShell> {
     listenable: _service,
     builder: (final context, final _) => RoomsColumn(
       service: _service,
+      width: _roomsColumnWidth,
       onSelect: _onSelectTab,
-      onCreateChannel: () => unawaited(
-        openNewChannelFlow(context, service: _service),
-      ),
+      onCreateChannel: () =>
+          unawaited(openNewChannelFlow(context, service: _service)),
       onMessageActor: () => unawaited(
         openMessageActorFlow(
           context,
@@ -1593,6 +1942,9 @@ class _AppShellState extends State<AppShell> {
       ),
       onMiniWindow: _openMiniWindow,
       onSetIcon: _setChannelIcon,
+      onManageMembers: (final channel) => unawaited(
+        openChannelMembersDialog(context, service: _service, channel: channel),
+      ),
     ),
   );
 
@@ -1604,23 +1956,48 @@ class _AppShellState extends State<AppShell> {
   /// zone's outer edge. A tab dropped on an edge splits into a NEW
   /// group at that position; the outer window edges (left of group 0,
   /// right of the last group) split before the first / after the last.
+  ///
+  /// The resize law (owner request 2026-11-18): each group is a flex
+  /// child weighted by its persisted width weight ([_paneWeights]; 1.0
+  /// each by default = the equal split), and every INNER seam is a drag
+  /// handle — its two abutting zones both drag the same boundary, so
+  /// the whole 12px seam resizes the pair of groups it separates.
   Widget _panesRow(final SurfaceRegistry surfaces) {
     final groups = _layout.groups;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (var g = 0; g < groups.length; g++)
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _paneEdge(g, after: false),
-                Expanded(child: _paneColumn(g, surfaces)),
-                _paneEdge(g, after: true, rule: g < groups.length - 1),
-              ],
-            ),
-          ),
-      ],
+    return LayoutBuilder(
+      builder: (final context, final constraints) {
+        // The drag math's px-per-weight basis: the row's FULL width —
+        // exactly what the flex children (the group columns) share.
+        final flexible = constraints.maxWidth;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var g = 0; g < groups.length; g++)
+              Expanded(
+                flex: (_weightFor(g) * 1000).round().clamp(1, 1 << 30),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _paneEdge(
+                      g,
+                      after: false,
+                      resizable: g > 0,
+                      flexibleWidth: flexible,
+                    ),
+                    Expanded(child: _paneColumn(g, surfaces)),
+                    _paneEdge(
+                      g,
+                      after: true,
+                      rule: g < groups.length - 1,
+                      resizable: g < groups.length - 1,
+                      flexibleWidth: flexible,
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -1629,25 +2006,62 @@ class _AppShellState extends State<AppShell> {
   /// new group beside this one, and shows the dashed accent line while
   /// a drag hovers (shape + accent, never color alone). [rule] paints
   /// the resting hairline seam between two groups (the right zone owns
-  /// it; outer window edges stay clean).
+  /// it; outer window edges stay clean). [resizable] turns the zone
+  /// into the resize handle of the seam it borders (`after` = the seam
+  /// right of this group, else the seam left of it); the resize law
+  /// drags group [group] against its neighbour, [flexibleWidth] is the
+  /// panes row's full width (the px-per-weight basis).
   Widget _paneEdge(
     final int group, {
     required final bool after,
     final bool rule = false,
-  }) => DragTarget<String>(
-    key: ValueKey('pane.drop.$group.${after ? 'right' : 'left'}'),
-    onWillAcceptWithDetails: (final details) =>
-        _layout.groupOf(details.data) >= 0,
-    onAcceptWithDetails: (final details) =>
-        _onSplitTab(details.data, group, after),
-    builder: (final context, final hovering, final rejected) => CustomPaint(
-      painter: _PaneEdgePainter(
-        accent: hovering.isEmpty ? null : context.la.accent,
-        rule: rule ? context.shellHairline : null,
+    final bool resizable = false,
+    final double flexibleWidth = 0,
+  }) {
+    // The seam this zone drags: the left group of the pair it resizes
+    // (-1 = the zone is split-only, an outer window edge).
+    final seamLeft = !resizable
+        ? -1
+        : after
+        ? group
+        : group - 1;
+    final l10n = context.l10n;
+    return DragTarget<String>(
+      key: ValueKey('pane.drop.$group.${after ? 'right' : 'left'}'),
+      onWillAcceptWithDetails: (final details) =>
+          _layout.groupOf(details.data) >= 0,
+      onAcceptWithDetails: (final details) =>
+          _onSplitTab(details.data, group, after),
+      builder: (final context, final hovering, final rejected) => _ResizeHandle(
+        key: ValueKey('pane.resize.$group.${after ? 'right' : 'left'}'),
+        label: 'pane.resize.$group.${after ? 'right' : 'left'}',
+        enabled: seamLeft >= 0,
+        hint: l10n.resizePaneHint,
+        // The hover accent lands ON the seam's resting hairline: the
+        // right zone owns the rule at its outer (right) edge; the left
+        // zone's seam-centre edge is its left. Either way hover
+        // brightens ONE line — never a second line beside it.
+        hoverLineLeft: after ? ShellTokens.resizeHandleWidth - 1 : 0,
+        onDragUpdate: seamLeft >= 0
+            ? (final dx) => _onPaneResizeDrag(seamLeft, dx, flexibleWidth)
+            : null,
+        onDragEnd: _persistPaneWeights,
+        onIncrease: seamLeft >= 0
+            ? () => _onPaneResizeDrag(seamLeft, 24, flexibleWidth)
+            : null,
+        onDecrease: seamLeft >= 0
+            ? () => _onPaneResizeDrag(seamLeft, -24, flexibleWidth)
+            : null,
+        child: CustomPaint(
+          painter: _PaneEdgePainter(
+            accent: hovering.isEmpty ? null : context.la.accent,
+            rule: rule ? context.shellHairline : null,
+          ),
+          child: const SizedBox(width: ShellTokens.resizeHandleWidth),
+        ),
       ),
-      child: const SizedBox(width: 6),
-    ),
-  );
+    );
+  }
 
   /// ONE pane column (the chrome budget: one strip row, then content):
   /// the group's strip above its focused surface. The ACTIVE group's
@@ -1720,6 +2134,107 @@ class _SplitIntent extends Intent {
 /// Phase 2 — the ⌘K command palette intent.
 class _PaletteIntent extends Intent {
   const _PaletteIntent();
+}
+
+/// The drag-width handle (the resize law, owner request 2026-11-18;
+/// shared by the pane seams and the rooms column's right edge): an
+/// invisible [ShellTokens.resizeHandleWidth] strip that owns the
+/// horizontal drag and the resize cursor, and while hovered brightens
+/// THE boundary's own hairline — [hoverLineLeft] places the 1px accent
+/// line exactly on the resting rule's pixel (a seam zone's
+/// seam-centre edge, or the rooms handle's edge against the column's
+/// right border), so hover shows ONE line, never a second one beside
+/// it. The resting affordance is the cursor alone (quiet chrome, the
+/// de-Material law). The §2.3 contract holds here too: the Semantics
+/// label IS the widget key, and increase/decrease actions resize for a
+/// screen reader or keyboard-only user in 24px steps.
+final class _ResizeHandle extends StatefulWidget {
+  const _ResizeHandle({
+    required this.label,
+    required this.child,
+    required this.hoverLineLeft,
+    this.hint,
+    this.enabled = true,
+    this.onDragUpdate,
+    this.onDragEnd,
+    this.onIncrease,
+    this.onDecrease,
+    super.key,
+  });
+
+  /// The Semantics name (the widget key — the §2.3 contract).
+  final String label;
+
+  /// The localized drag hint (the Semantics hint).
+  final String? hint;
+
+  /// The hover accent line's x within the handle: the boundary's
+  /// resting hairline position, so hover overlays that ONE line.
+  final double hoverLineLeft;
+
+  /// The handle's visual body (the zone's own paint).
+  final Widget child;
+
+  /// False leaves the strip inert (an outer window edge): no cursor,
+  /// no hover line, no drag.
+  final bool enabled;
+
+  final ValueChanged<double>? onDragUpdate;
+  final VoidCallback? onDragEnd;
+  final VoidCallback? onIncrease;
+  final VoidCallback? onDecrease;
+
+  @override
+  State<_ResizeHandle> createState() => _ResizeHandleState();
+}
+
+final class _ResizeHandleState extends State<_ResizeHandle> {
+  var _hovered = false;
+
+  @override
+  Widget build(final BuildContext context) {
+    final live = widget.enabled && widget.onDragUpdate != null;
+    return Semantics(
+      // The §2.3 name rides the handle's own key (the caller's); the
+      // Semantics node carries the label/hint without a second key so
+      // finders stay unambiguous.
+      label: widget.label,
+      hint: widget.hint,
+      enabled: live,
+      onIncrease: widget.onIncrease,
+      onDecrease: widget.onDecrease,
+      child: MouseRegion(
+        cursor: live ? SystemMouseCursors.resizeLeftRight : MouseCursor.defer,
+        onEnter: live ? (_) => setState(() => _hovered = true) : null,
+        onExit: (_) {
+          if (_hovered) setState(() => _hovered = false);
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onHorizontalDragUpdate: live
+              ? (final details) => widget.onDragUpdate!(details.delta.dx)
+              : null,
+          onHorizontalDragEnd: live ? (_) => widget.onDragEnd?.call() : null,
+          onHorizontalDragCancel: live ? () => widget.onDragEnd?.call() : null,
+          child: Stack(
+            children: [
+              widget.child,
+              if (_hovered && live)
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  left: widget.hoverLineLeft,
+                  width: 1,
+                  child: ColoredBox(
+                    color: context.la.accent.withValues(alpha: 0.55),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// The pane edge zone's paint: the resting hairline seam between two
@@ -1809,8 +2324,7 @@ final class ShellDebugBridge {
 
   /// Opens a tab id through the shell's ONE router; [group] forces a
   /// pane group, [split] lands the tab in its own new right group.
-  late final Future<bool> Function(String id, {int? group, bool split})
-  openTab;
+  late final Future<bool> Function(String id, {int? group, bool split}) openTab;
 
   /// Closes an open tab (the docked close law applies); false when the
   /// id is not open.

@@ -56,6 +56,36 @@ void main() {
       expect(layout.closeTab(kConversationsSurfaceId), layout);
     });
 
+    test('closeAllTabs lands the sole group on the world face (the '
+        'context menu’s close-all)', () {
+      final layout = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .openTab('doc:42')
+          .openTab('dm:weaver');
+      final next = layout.closeAllTabs();
+      expect(next.groups, hasLength(1));
+      expect(next.groups.single.tabs, [kConversationsSurfaceId]);
+      expect(next.activeSurfaceId, kConversationsSurfaceId);
+      expect(next.isSplit, isFalse);
+    });
+
+    test('closeAllTabs collapses a split with its emptied groups', () {
+      final split = ShellLayout.defaultLayout()
+          .openTab('dm:scout')
+          .split()
+          .openTab('doc:42', group: 1);
+      expect(split.isSplit, isTrue);
+      final next = split.closeAllTabs();
+      expect(next.isSplit, isFalse);
+      expect(next.groups.single.tabs, [kConversationsSurfaceId]);
+    });
+
+    test('closeAllTabs at the floor is a no-op (the never-empty law '
+        'already holds)', () {
+      final layout = ShellLayout.defaultLayout();
+      expect(layout.closeAllTabs(), same(layout));
+    });
+
     test('moveTab keeps the focused id focused', () {
       final layout = ShellLayout.defaultLayout()
           .openTab('dm:scout')

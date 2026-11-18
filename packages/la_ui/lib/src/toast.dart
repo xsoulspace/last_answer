@@ -167,31 +167,37 @@ class _ToastHost {
     final top = size != null && size.width < 600;
     return LaUiThemeProvider(
       theme: _theme,
-      child: Stack(
-        children: [
-          Positioned(
-            right: 16,
-            left: top ? 16 : null,
-            top: top ? 12 : null,
-            bottom: top ? null : 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: top
-                  ? CrossAxisAlignment.center
-                  : CrossAxisAlignment.end,
-              children: [
-                for (final record in records)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: _ToastCard(
-                      record: record,
-                      onDismiss: () => dismiss(record.id),
+      // The base-type law for floats (LaDialog.build): the toast rides the
+      // ROOT overlay, above every DefaultTextStyle any route installs —
+      // without this, MaterialApp's error style underlines the message.
+      child: DefaultTextStyle(
+        style: _theme.body,
+        child: Stack(
+          children: [
+            Positioned(
+              right: 16,
+              left: top ? 16 : null,
+              top: top ? 12 : null,
+              bottom: top ? null : 16,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: top
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.end,
+                children: [
+                  for (final record in records)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: _ToastCard(
+                        record: record,
+                        onDismiss: () => dismiss(record.id),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

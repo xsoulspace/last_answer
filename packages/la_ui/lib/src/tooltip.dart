@@ -73,19 +73,26 @@ class _LaTooltipState extends State<LaTooltip> {
         follower: Alignment(0, widget.above ? 1 : -1),
         target: Alignment(0, widget.above ? -1 : 1),
       ),
-      portalFollower: IgnorePointer(
-        child: AnimatedOpacity(
-          opacity: _visible ? 1 : 0,
-          duration: laMotion(context, theme.motionFast),
-          child: LaBox(
-            color: theme.surfaceOverlay,
-            radius: theme.smallRadius,
-            border: BorderSide(color: theme.rule),
-            floating: true,
-            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-            child: Text(
-              widget.message,
-              style: theme.micro.copyWith(color: theme.ink),
+      // The base-type law for floats (LaDialog.build): a portal follower
+      // renders in the theater, OUTSIDE the anchor's ancestors — install
+      // the kit base type or MaterialApp's error style underlines the
+      // label.
+      portalFollower: DefaultTextStyle(
+        style: theme.body,
+        child: IgnorePointer(
+          child: AnimatedOpacity(
+            opacity: _visible ? 1 : 0,
+            duration: laMotion(context, theme.motionFast),
+            child: LaBox(
+              color: theme.surfaceOverlay,
+              radius: theme.smallRadius,
+              border: BorderSide(color: theme.rule),
+              floating: true,
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+              child: Text(
+                widget.message,
+                style: theme.micro.copyWith(color: theme.ink),
+              ),
             ),
           ),
         ),

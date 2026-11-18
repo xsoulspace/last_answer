@@ -15,7 +15,10 @@
 //      corner dot, and a 320px squeeze never paints badge text
 //      vertically;
 //   4. the wave-C drag law survives the cap: a visible tab still
-//      reorders through onMoveTab at ORIGINAL layout indices.
+//      reorders through onMoveTab at ORIGINAL layout indices;
+//   5. the overflow menu rides the shadcn height cap — the +N list
+//      scrolls past ~10 rows (LaMenu.maxHeight) instead of painting
+//      an unbounded column.
 // The pump is direct (PaneStrip alone over a bare MaterialApp): the
 // cap is a width law, so the width is the fixture; the unread fact
 // rides the injected `unreadFor` lane (hermetic — no world needed).
@@ -239,6 +242,42 @@ void main() {
         find.byKey(const ValueKey('drag.ghost.tab.29')),
         findsNothing,
       );
+    });
+
+    testWidgets('the overflow menu CAPS its height and scrolls (the '
+        'shadcn dropdown law): +26 hidden rows never paint a screen-tall '
+        'column', (
+      final tester,
+    ) async {
+      final tabs = _tabs(30);
+      await _pumpStrip(tester, tabs: tabs, width: 320);
+
+      await tester.tap(
+        find.byKey(const ValueKey('view.strip.overflow.0')),
+      );
+      await tester.pumpAndSettle();
+
+      // The entry column rides a scroll viewport, and the whole menu
+      // stays at the 320px cap (+ the 8px chrome padding + hairlines).
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+      final menu = tester.getSize(find.byType(LaMenu));
+      expect(menu.height, lessThanOrEqualTo(330));
+      expect(menu.height, greaterThan(150));
+
+      // The cap is a VIEWPORT, not a content cut: scrolling brings the
+      // lower rows in (the first hidden row rides up).
+      final before = tester.getTopLeft(
+        find.byKey(const ValueKey('view.strip.overflow.item.tab.22')),
+      );
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -120),
+      );
+      await tester.pump();
+      final after = tester.getTopLeft(
+        find.byKey(const ValueKey('view.strip.overflow.item.tab.22')),
+      );
+      expect(after.dy, lessThan(before.dy));
     });
   });
 

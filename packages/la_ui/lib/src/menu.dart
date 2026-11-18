@@ -106,6 +106,7 @@ class LaMenu extends StatefulWidget {
     required this.entries,
     this.minWidth = 180,
     this.maxWidth = 320,
+    this.maxHeight,
     this.onEscape,
     this.width,
     super.key,
@@ -119,6 +120,11 @@ class LaMenu extends StatefulWidget {
 
   /// Maximum menu width.
   final double maxWidth;
+
+  /// Height cap (the shadcn dropdown law — Radix's 22rem): when set, the
+  /// entry column scrolls instead of growing past it. Null grows freely
+  /// (the default; most menus are short by construction).
+  final double? maxHeight;
 
   /// Escape handler (closes the host when provided).
   final VoidCallback? onEscape;
@@ -178,7 +184,13 @@ class _LaMenuState extends State<LaMenu> {
       return;
     }
     _focused = index;
-    _itemNodes[index].requestFocus();
+    final node = _itemNodes[index]..requestFocus();
+    // Under a height cap the focused row can sit outside the scroll
+    // viewport (arrow keys past the fold) — bring it in.
+    final rowContext = node.context;
+    if (widget.maxHeight != null && rowContext != null) {
+      Scrollable.ensureVisible(rowContext);
+    }
   }
 
   KeyEventResult _onKey(final FocusNode node, final KeyEvent event) {
@@ -189,6 +201,11 @@ class _LaMenuState extends State<LaMenu> {
     if (key == LogicalKeyboardKey.escape) {
       widget.onEscape?.call();
       return KeyEventResult.handled;
+    }
+    if (_itemNodes.isEmpty) {
+      // Zero item rows (custom-entries menu): nothing to traverse, and the
+      // modulo below would divide by zero.
+      return KeyEventResult.ignored;
     }
     if (key == LogicalKeyboardKey.arrowDown) {
       _focusItem((_focused + 1) % _itemNodes.length);
@@ -213,50 +230,73 @@ class _LaMenuState extends State<LaMenu> {
   Widget build(final BuildContext context) {
     final theme = context.laUi;
     var itemIndex = -1;
-    final children = <Widget>[
-      const SizedBox(height: 4),
-      for (final entry in widget.entries)
-        switch (entry) {
-          LaMenuItem() => Builder(
-            builder: (context) {
-              itemIndex++;
-              final node = itemIndex < _itemNodes.length
-                  ? _itemNodes[itemIndex]
-                  : null;
-              return LaMenuRow(item: entry, focusNode: node, key: entry.key);
-            },
-          ),
-          LaMenuSeparator() => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: LaHairline(color: theme.rule),
-          ),
-          LaMenuHeader() => Padding(
-            padding: const EdgeInsets.fromLTRB(10, 6, 10, 2),
-            child: Text(entry.label, style: theme.micro),
-          ),
-          LaMenuCustom() => entry.child,
-        },
-      const SizedBox(height: 4),
-    ];
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: widget.minWidth,
-        maxWidth: widget.width ?? widget.maxWidth,
-      ),
-      child: Focus(
-        autofocus: true,
-        onKeyEvent: _onKey,
-        child: TapRegion(
-          child: LaBox(
-            color: theme.surfaceOverlay,
-            radius: theme.floatingRadius,
-            border: BorderSide(color: theme.rule),
-            floating: true,
-            child: IntrinsicWidth(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: children,
+    Widget body = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final entry in widget.entries)
+          switch (entry) {
+            LaMenuItem() => Builder(
+              builder: (context) {
+                itemIndex++;
+                final node = itemIndex < _itemNodes.length
+                    ? _itemNodes[itemIndex]
+                    : null;
+                return LaMenuRow(item: entry, focusNode: node, key: entry.key);
+              },
+            ),
+            LaMenuSeparator() => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: LaHairline(color: theme.rule),
+            ),
+            LaMenuHeader() => Padding(
+              padding: const EdgeInsets.fromLTRB(10, 6, 10, 2),
+              child: Text(entry.label, style: theme.micro),
+            ),
+            LaMenuCustom() => entry.child,
+          },
+      ],
+    );
+    // The height cap (the shadcn dropdown law): the ENTRY column scrolls,
+    // while the 4px chrome padding stays outside — the rounded box keeps
+    // its clean edges either way.
+    if (widget.maxHeight != null) {
+      body = ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: widget.maxHeight!),
+        child: SingleChildScrollView(child: body),
+      );
+    }
+    // The base-type law for floats (LaDialog.build): the anchored menu can
+    // ride the root overlay (showLaMenuAt), where MaterialApp's error style
+    // (the yellow double underline) would bleed into every inheriting Text.
+    // Rows keep their own explicit styles; this is the kit floor beneath
+    // them.
+    return DefaultTextStyle(
+      style: theme.body,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: widget.minWidth,
+          maxWidth: widget.width ?? widget.maxWidth,
+        ),
+        child: Focus(
+          autofocus: true,
+          onKeyEvent: _onKey,
+          child: TapRegion(
+            child: LaBox(
+              color: theme.surfaceOverlay,
+              radius: theme.floatingRadius,
+              border: BorderSide(color: theme.rule),
+              floating: true,
+              child: IntrinsicWidth(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 4),
+                    body,
+                    const SizedBox(height: 4),
+                  ],
+                ),
               ),
             ),
           ),
@@ -355,6 +395,7 @@ class LaMenuAnchor extends StatefulWidget {
     this.dropUp = false,
     this.alignRight = false,
     this.minWidth = 180,
+    this.maxHeight,
     this.enabled = true,
     this.onOpenChange,
     this.closeOnActivate = true,
@@ -368,6 +409,7 @@ class LaMenuAnchor extends StatefulWidget {
     this.dropUp = false,
     this.alignRight = false,
     this.minWidth = 180,
+    this.maxHeight,
     this.enabled = true,
     this.onOpenChange,
     this.closeOnActivate = true,
@@ -393,6 +435,9 @@ class LaMenuAnchor extends StatefulWidget {
   /// Minimum menu width.
   final double minWidth;
 
+  /// Height cap — the entry column scrolls past it ([LaMenu.maxHeight]).
+  final double? maxHeight;
+
   /// False disables the toggle.
   final bool enabled;
 
@@ -415,6 +460,10 @@ class LaMenuAnchorState extends State<LaMenuAnchor> {
 
   /// Open the popover.
   void open() {
+    if (widget.entries.isEmpty) {
+      // Nothing to show: refuse instead of laying out an 8 px chrome sliver.
+      return;
+    }
     if (!laHasPortal(context)) {
       // Bare host (unit test, embed): no Portal theater to render into.
       return;
@@ -435,6 +484,15 @@ class LaMenuAnchorState extends State<LaMenuAnchor> {
 
   /// Toggle the popover.
   void toggle() => _open ? close() : open();
+
+  @override
+  void didUpdateWidget(final LaMenuAnchor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Entries emptied while open: close instead of showing bare chrome.
+    if (_open && widget.entries.isEmpty) {
+      close();
+    }
+  }
 
   List<LaMenuEntry> get _wrapped => widget.closeOnActivate
       ? wrapLaMenuEntriesCloseOnActivate(widget.entries, close)
@@ -471,6 +529,7 @@ class LaMenuAnchorState extends State<LaMenuAnchor> {
               child: LaMenu(
                 entries: _wrapped,
                 minWidth: widget.minWidth,
+                maxHeight: widget.maxHeight,
                 onEscape: close,
               ),
             )
@@ -511,8 +570,12 @@ LaMenuHandle? showLaMenuAt(
   required final Offset globalPosition,
   required final List<LaMenuEntry> entries,
   final double minWidth = 180,
+  final double? maxHeight,
   final bool closeOnActivate = true,
 }) {
+  if (entries.isEmpty) {
+    return null;
+  }
   final overlay = Overlay.maybeOf(context, rootOverlay: true);
   if (overlay == null) {
     return null;
@@ -542,6 +605,7 @@ LaMenuHandle? showLaMenuAt(
       position: globalPosition,
       entries: wrapped,
       minWidth: minWidth,
+      maxHeight: maxHeight,
       theme: theme,
       close: close,
     ),
@@ -585,6 +649,7 @@ class _PositionedMenu extends StatefulWidget {
     required this.position,
     required this.entries,
     required this.minWidth,
+    required this.maxHeight,
     required this.theme,
     required this.close,
   });
@@ -592,6 +657,7 @@ class _PositionedMenu extends StatefulWidget {
   final Offset position;
   final List<LaMenuEntry> entries;
   final double minWidth;
+  final double? maxHeight;
   final LaUiTheme theme;
   final VoidCallback close;
 
@@ -654,8 +720,13 @@ class _PositionedMenuState extends State<_PositionedMenu> {
   Widget build(final BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     // Rough height estimate for edge flipping (32 px rows + chrome) —
-    // refined by the post-frame correction above.
-    final estimate = widget.entries.length * 34.0 + 16;
+    // refined by the post-frame correction above. A height cap bounds
+    // the estimate too: a 100-row scrolling menu never flips as if it
+    // painted all its rows.
+    final estimate = math.min(
+      widget.entries.length * 34.0 + 16,
+      (widget.maxHeight ?? double.infinity) + 16,
+    );
     final openUp = widget.position.dy + estimate > size.height - 8;
     final openLeft = widget.position.dx + widget.minWidth > size.width - 8;
     final top = openUp ? widget.position.dy - estimate : widget.position.dy;
@@ -684,6 +755,7 @@ class _PositionedMenuState extends State<_PositionedMenu> {
                 child: LaMenu(
                   entries: widget.entries,
                   minWidth: widget.minWidth,
+                  maxHeight: widget.maxHeight,
                   onEscape: widget.close,
                 ),
               ),

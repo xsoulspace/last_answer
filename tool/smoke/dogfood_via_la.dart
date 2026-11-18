@@ -122,6 +122,10 @@ Future<void> main(final List<String> args) async {
   final actor = actorIdx >= 0 && actorIdx + 1 < args.length
       ? args[actorIdx + 1]
       : 'weaver'; // weaver: local `qwen` cast — proven to POST a reply beat
+  final brainIdx = args.indexOf('--brain');
+  final brain = brainIdx >= 0 && brainIdx + 1 < args.length
+      ? args[brainIdx + 1]
+      : 'local:qwen';
   _stepsLog.writeAsStringSync('');
 
   final home =
@@ -178,6 +182,30 @@ Future<void> main(final List<String> args) async {
       return blob.contains('edge.world') ? true : null;
     }, interval: const Duration(seconds: 1));
     row('PASS', 'shell', 'edge.world present — the chat surface can bind');
+
+    // ---- ENSURE THE ACTOR: a durable roster row named [actor] bound
+    // to [brain]. An EXISTING row of the same name keeps its own
+    // binding (never silently re-bound — the row is the authority);
+    // only a missing row is minted through LA's own intent.
+    final actors = await store.scan('realm_actors');
+    final known = actors.values.any(
+      (final row) => row['displayName'] == actor,
+    );
+    if (!known) {
+      final minted = await _laTool(vmUri, 'realm_chat_create_actor', {
+        'name': actor,
+        'brain': brain,
+        'role': 'dogfood worker',
+      });
+      if ('${_deepFind(minted, 'actorId')}'.isEmpty) {
+        failures++;
+        row('FAIL', 'ensure-actor', 'create_actor($actor, $brain) → ${jsonEncode(minted)}');
+        throw StateError('create_actor refused');
+      }
+      row('PASS', 'ensure-actor', 'minted $actor on $brain');
+    } else {
+      row('PASS', 'ensure-actor', '$actor already bound (row is the authority)');
+    }
 
     // ---- OPEN A FRESH SESSION ROOM with the native actor, THROUGH LA's
     // own intent. The FRESH room per run law STAYS (the daemon groups all

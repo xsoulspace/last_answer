@@ -59,77 +59,88 @@ class LaDialog extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = context.laUi;
-    return ConstrainedBox(
-      // Height cap: a dialog taller than the viewport must shrink its
-      // Flexible content (which scrolls when the host wraps it) instead of
-      // pushing controls off-screen (caught live by the consent tests on a
-      // 600px window).
-      constraints: BoxConstraints(
-        maxWidth: width,
-        maxHeight: MediaQuery.sizeOf(context).height * 0.9,
-      ),
-      child: LaBox(
-        color: theme.surfaceOverlay,
-        radius: BorderRadius.circular(14),
-        border: BorderSide(color: theme.rule),
-        floating: true,
-        padding: padding,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (title != null || titleText != null || showClose)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (leading != null) ...[leading!, const SizedBox(width: 10)],
-                  Expanded(
-                    child:
-                        title ??
-                        Text(
-                          titleText ?? '',
-                          style: theme.section.copyWith(fontSize: 16),
-                        ),
-                  ),
-                  if (showClose)
-                    LaButton.icon(
-                      icon: const LaClose(),
-                      size: LaButtonSize.sm,
-                      onPressed:
-                          onClose ??
-                          () {
-                            Navigator.maybeOf(
-                              context,
-                              rootNavigator: true,
-                            )?.pop();
-                          },
+    // The base-type law for floats: a dialog is hosted in the root
+    // navigator's overlay, ABOVE LaChrome's body DefaultTextStyle, so
+    // without this the MaterialApp error style (the yellow double
+    // underline on every inheriting Text) bleeds in — the chrome.dart
+    // body law applied to floating surfaces.
+    return DefaultTextStyle(
+      style: theme.body,
+      child: ConstrainedBox(
+        // Height cap: a dialog taller than the viewport must shrink its
+        // Flexible content (which scrolls when the host wraps it) instead of
+        // pushing controls off-screen (caught live by the consent tests on a
+        // 600px window).
+        constraints: BoxConstraints(
+          maxWidth: width,
+          maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+        ),
+        child: LaBox(
+          color: theme.surfaceOverlay,
+          radius: BorderRadius.circular(14),
+          border: BorderSide(color: theme.rule),
+          floating: true,
+          padding: padding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title != null || titleText != null || showClose)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (leading != null) ...[
+                      leading!,
+                      const SizedBox(width: 10),
+                    ],
+                    Expanded(
+                      child:
+                          title ??
+                          Text(
+                            titleText ?? '',
+                            style: theme.section.copyWith(fontSize: 16),
+                          ),
                     ),
-                ],
-              ),
-            if (description != null) ...[
-              const SizedBox(height: 6),
-              Text(
-                description!,
-                style: theme.compact.copyWith(color: theme.inkMuted),
-              ),
+                    if (showClose)
+                      LaButton.icon(
+                        icon: const LaClose(),
+                        size: LaButtonSize.sm,
+                        onPressed:
+                            onClose ??
+                            () {
+                              Navigator.maybeOf(
+                                context,
+                                rootNavigator: true,
+                              )?.pop();
+                            },
+                      ),
+                  ],
+                ),
+              if (description != null) ...[
+                const SizedBox(height: 6),
+                Text(
+                  description!,
+                  style: theme.compact.copyWith(color: theme.inkMuted),
+                ),
+              ],
+              if (content != null) ...[
+                const SizedBox(height: 14),
+                Flexible(child: content!),
+              ],
+              if (actions != null && actions!.isNotEmpty) ...[
+                const SizedBox(height: 18),
+                // Wrap, not Row: narrow panes (a 320px compact region) must
+                // fold the action row to a second line instead of
+                // overflowing (caught live by the consent tests).
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: actions!,
+                ),
+              ],
             ],
-            if (content != null) ...[
-              const SizedBox(height: 14),
-              Flexible(child: content!),
-            ],
-            if (actions != null && actions!.isNotEmpty) ...[
-              const SizedBox(height: 18),
-              // Wrap, not Row: narrow panes (a 320px compact region) must
-              // fold the action row to a second line instead of
-              // overflowing (caught live by the consent tests).
-              Wrap(
-                alignment: WrapAlignment.end,
-                spacing: 8,
-                runSpacing: 8,
-                children: actions!,
-              ),
-            ],
-          ],
+          ),
         ),
       ),
     );
@@ -151,7 +162,14 @@ Future<T?> showLaDialog<T>({
   barrierColor: LaUiTheme.of(context).scrim,
   transitionDuration: const Duration(milliseconds: 140),
   useRootNavigator: useRootNavigator,
-  pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+  // Belt-and-braces on top of LaDialog's own wrap: the builder may return
+  // a custom body that is not an LaDialog — it must still get the kit
+  // base type, not MaterialApp's error style (nearest wins, so this is
+  // harmless when LaDialog installs its own).
+  pageBuilder: (context, animation, secondaryAnimation) => DefaultTextStyle(
+    style: LaUiTheme.of(context).body,
+    child: builder(context),
+  ),
   transitionBuilder: (context, animation, secondaryAnimation, child) => Align(
     alignment: alignment,
     child: laOverlayEntryMotion(
@@ -328,40 +346,45 @@ class LaSheet extends StatelessWidget {
   Widget build(final BuildContext context) {
     final theme = context.laUi;
     final maxHeight = MediaQuery.sizeOf(context).height * maxHeightFactor;
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: theme.surface,
-          shape: SquircleShape(
-            radius: const BorderRadius.vertical(top: Radius.circular(14)),
-            exponent: theme.squircleExponent,
+    // The base-type law for floats (LaDialog.build): the sheet rides a
+    // route in the root overlay.
+    return DefaultTextStyle(
+      style: theme.body,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
+        child: DecoratedBox(
+          decoration: ShapeDecoration(
+            color: theme.surface,
+            shape: SquircleShape(
+              radius: const BorderRadius.vertical(top: Radius.circular(14)),
+              exponent: theme.squircleExponent,
+            ),
+            shadows: theme.floatingShadow,
           ),
-          shadows: theme.floatingShadow,
-        ),
-        child: SafeArea(
-          top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showHandle)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 4),
-                  child: Center(
-                    child: Container(
-                      width: 36,
-                      height: 4,
-                      decoration: ShapeDecoration(
-                        color: theme.rule,
-                        shape: const SquircleShape(
-                          radius: BorderRadius.all(Radius.circular(2)),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (showHandle)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 4),
+                    child: Center(
+                      child: Container(
+                        width: 36,
+                        height: 4,
+                        decoration: ShapeDecoration(
+                          color: theme.rule,
+                          shape: const SquircleShape(
+                            radius: BorderRadius.all(Radius.circular(2)),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              Flexible(child: child),
-            ],
+                Flexible(child: child),
+              ],
+            ),
           ),
         ),
       ),

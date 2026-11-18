@@ -403,6 +403,22 @@ final class ShellLayout {
     return _withGroup(g, state.without(index));
   }
 
+  /// Closes EVERY open tab in every group (the tab context menu's
+  /// "close all"): emptied groups dissolve under the never-empty law
+  /// and the sole group lands on the conversations world face —
+  /// [closeTab]'s sole-group floor, reached in one step. Already at
+  /// the floor: no-op.
+  ShellLayout closeAllTabs() {
+    if (groups.length == 1) {
+      final state = groups.single;
+      if (state.tabs.length == 1 &&
+          state.tabs.single == kConversationsSurfaceId) {
+        return this;
+      }
+    }
+    return ShellLayout._(<ViewState>[ViewState()], 0);
+  }
+
   /// Moves a tab within its group's strip; the focused id stays
   /// focused.
   ShellLayout moveTab(final int group, final int from, final int to) {

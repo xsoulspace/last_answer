@@ -8,6 +8,9 @@ import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
 import 'package:lastanswer/coding_agent/chatgpt_gateway.dart';
 import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
 import 'package:lastanswer/coding_agent/completion_triggered_cutoff.dart';
+import 'package:lastanswer/coding_agent/grok_credentials.dart';
+import 'package:lastanswer/coding_agent/grok_gateway.dart';
+import 'package:lastanswer/coding_agent/grok_harness_binding.dart';
 import 'package:lastanswer/coding_agent/harness_host.dart';
 import 'package:lastanswer/coding_agent/product_autonomy.dart';
 import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
@@ -22,6 +25,8 @@ import 'package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart'
 /// available. Exactly one operation may own a session at a time.
 final class HeadlessProductCli {
   final _credentials = ChatGptCredentials();
+  final _grokCredentials = GrokCredentials();
+  late final _grokGateway = createGrokGateway(_grokCredentials);
   late final _gateway = createChatGptGateway(
     _credentials,
     diagnosticCaptureForClient: () => _projectionId == null
@@ -174,6 +179,11 @@ final class HeadlessProductCli {
         if (command['reasoningEffort'] != 'low') {
           throw const FormatException('explicit_low_reasoning_required');
         }
+        final backendName = command['backend'] ?? chatGptBackend;
+        if (backendName != chatGptBackend && backendName != grokBackend) {
+          throw const FormatException('unknown_subscription_backend');
+        }
+        final useGrok = backendName == grokBackend;
         final check = command['checkCommand'];
         if (check == null && command['autonomousProduct'] != true ||
             check != null &&
@@ -195,35 +205,50 @@ final class HeadlessProductCli {
         final client = await _openPhase(
           id,
           'account_selection',
-          _credentials.activeClientId,
+          useGrok
+              ? _grokCredentials.activeSubject
+              : _credentials.activeClientId,
         );
-        final profiles = await _openPhase(
-          id,
-          'account_status',
-          _credentials.profiles,
-        );
-        if (client == null ||
-            !profiles.any(
+        final signedIn = await _openPhase(id, 'account_status', () async {
+          if (useGrok) {
+            final profiles = await _grokCredentials.profiles();
+            return profiles.any(
               (profile) =>
-                  profile.clientId == client &&
+                  profile.subject == client &&
                   profile.signedIn &&
                   profile.planEnabled,
-            )) {
+            );
+          }
+          final profiles = await _credentials.profiles();
+          return profiles.any(
+            (profile) =>
+                profile.clientId == client &&
+                profile.signedIn &&
+                profile.planEnabled,
+          );
+        });
+        if (client == null || signedIn != true) {
           throw const FormatException('subscription_sign_in_required');
         }
         final models = await _openPhase(
           id,
           'model_catalog',
-          () => _gateway.models(client),
+          () => useGrok ? _grokGateway.models(client) : _gateway.models(client),
         );
         if (!models.any((entry) => entry.slug == model)) {
           throw const FormatException('model_not_in_account_catalog');
         }
-        final binding = chatGptHarnessBinding(
-          gateway: _gateway,
-          clientId: client,
-          model: model,
-        );
+        final binding = useGrok
+            ? grokHarnessBinding(
+                gateway: _grokGateway,
+                subject: client,
+                model: model,
+              )
+            : chatGptHarnessBinding(
+                gateway: _gateway,
+                clientId: client,
+                model: model,
+              );
         HarnessHost? host;
         try {
           final workspaceToolsWatch = Stopwatch()..start();
@@ -249,7 +274,7 @@ final class HeadlessProductCli {
           );
           host = HarnessHost(
             config: HarnessHostConfig(
-              backend: chatGptBackend,
+              backend: useGrok ? grokBackend : chatGptBackend,
               actorContextOrder: order,
               model: model,
               checkCommand: checkCommand ?? await autonomy!.goalCheckCommand(),

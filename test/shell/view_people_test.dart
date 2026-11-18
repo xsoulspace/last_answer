@@ -332,4 +332,81 @@ void main() {
     expect(find.text('Select a conversation from the rail.'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('the Retired section names retired actors muted; the tap '
+      'opens the actor info (retired visibility, 2026-11-18)',
+      (final tester) async {
+    late final RealmChatService service;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_people_ret_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      // The retired durable row seeds BEFORE ensureReady: the boot scan
+      // names it, never re-adopts it (ADR 0120).
+      await world.store.transact(
+        (tx) => tx.put('realm_actors', 'toby-researcher', <String, Object?>{
+          'actorId': 'toby-researcher',
+          'kind': 'realm_actor',
+          'displayName': 'Toby Researcher',
+          'retiredAt': '2026-11-04T18:16:08.327830Z',
+          'retireReason': 'hygiene-sweep',
+        }),
+      );
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+    });
+
+    var openedActorId = '';
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RealmChatService>.value(
+        value: service,
+        child: MaterialApp(
+          builder: (final context, final child) =>
+              Portal(child: child ?? const SizedBox.shrink()),
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: Row(
+              children: [
+                SizedBox(
+                  width: ShellTokens.contextColumnWidth,
+                  child: PeopleView(
+                    service: service,
+                    onOpenActor: (final actorId) => openedActorId = actorId,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // The section and its one muted row render; the live people list
+    // never adopted the retired identity.
+    expect(
+      find.byKey(const ValueKey('shell.people.retired')),
+      findsOneWidget,
+    );
+    final row = find.byKey(
+      const ValueKey('shell.people.retired.toby-researcher'),
+    );
+    expect(row, findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('shell.context.person.toby-researcher')),
+      findsNothing,
+    );
+
+    // The whole row taps into the actor's INFO surface.
+    await tester.tap(row);
+    await tester.pump();
+    expect(openedActorId, 'toby-researcher');
+    expect(tester.takeException(), isNull);
+  });
 }

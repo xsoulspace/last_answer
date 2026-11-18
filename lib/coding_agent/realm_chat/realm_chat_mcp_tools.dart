@@ -33,6 +33,7 @@ final class RealmChatMcpEntries {
         _createActor(),
         _openDm(),
         _createChannel(),
+        _channelMembers(),
         _openSession(),
         _say(),
         _spawnWork(),
@@ -229,6 +230,106 @@ AgentCallEntry _createChannel() => _entry(
           'channelId': channel.channelId,
           'threadId': channel.threadId,
         });
+      },
+    );
+
+AgentCallEntry _channelMembers() => _entry(
+      'realm_chat_channel_members',
+      'Channel membership management (the members lane, 2026-11-18): '
+      "list a channel's members, add members, or remove members. "
+      'channel: the channel or thread id (both spellings resolve). '
+      'members: comma-separated actor ids (add/remove). The human actor '
+      'is PERMANENT in channels — the verb folds the human back in '
+      'whatever is passed; removing them refuses '
+      'channel_member_human_permanent.',
+      const <String, dynamic>{
+        'type': 'object',
+        'properties': <String, dynamic>{
+          'action': <String, dynamic>{
+            'type': 'string',
+            'enum': <String>['list', 'add', 'remove'],
+          },
+          'channel': <String, dynamic>{
+            'type': 'string',
+            'description': 'Channel id or thread id (both resolve).',
+          },
+          'members': <String, dynamic>{
+            'type': 'string',
+            'description': 'Comma-separated actor ids (add/remove).',
+          },
+        },
+        'required': <String>['action', 'channel'],
+      },
+      (final args) async {
+        final service = _service;
+        if (service == null) {
+          return _fail('no_service', 'open a chat surface first');
+        }
+        await service.ensureReady();
+        final action = (args['action'] as String? ?? '').trim();
+        final channelId = (args['channel'] as String? ?? '').trim();
+        if (channelId.isEmpty) {
+          return _fail('missing_parameters', 'channel is required');
+        }
+        final channel = service.channelByAnyId(channelId);
+        if (channel == null) {
+          return _fail('channel_not_found', 'unknown channel or thread id');
+        }
+        final members = (args['members'] as String? ?? '')
+            .split(',')
+            .map((final m) => m.trim())
+            .where((final m) => m.isNotEmpty)
+            .toList();
+        switch (action) {
+          case 'list':
+            return _ok(<String, Object?>{
+              'channelId': channel.channelId,
+              'threadId': channel.threadId,
+              'members': channel.memberIds,
+            });
+          case 'add':
+            if (members.isEmpty) {
+              return _fail('missing_parameters', 'members is required');
+            }
+            final ok = await service.setChannelMembers(
+              channelId: channel.channelId,
+              memberIds: [...channel.memberIds, ...members],
+            );
+            return ok
+                ? _ok(<String, Object?>{
+                    'channelId': channel.channelId,
+                    'members': service.channelByThreadId(
+                          channel.threadId,
+                        )?.memberIds ??
+                        channel.memberIds,
+                  })
+                : _fail(service.error ?? 'add_refused', 'see error');
+          case 'remove':
+            if (members.isEmpty) {
+              return _fail('missing_parameters', 'members is required');
+            }
+            final dropped = members.toSet();
+            final ok = await service.setChannelMembers(
+              channelId: channel.channelId,
+              memberIds: [
+                for (final id in channel.memberIds)
+                  if (!dropped.contains(id)) id,
+              ],
+            );
+            return ok
+                ? _ok(<String, Object?>{
+                    'channelId': channel.channelId,
+                    'members': service.channelByThreadId(
+                          channel.threadId,
+                        )?.memberIds ??
+                        channel.memberIds,
+                  })
+                : _fail(service.error ?? 'remove_refused', 'see error');
+        }
+        return _fail(
+          'unknown_action',
+          "action must be one of list, add, remove (got '$action')",
+        );
       },
     );
 

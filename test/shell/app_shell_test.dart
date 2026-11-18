@@ -21,6 +21,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
+import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -428,6 +429,37 @@ void main() {
     // The focused tab carries its close glyph.
     await tester.tap(find.byKey(const ValueKey('view.tab.close.boards')));
     await tester.pump();
+    expect(find.byKey(const ValueKey('view.tab.boards')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('view.tab.conversations')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('the tab context menu’s close-all lands the sole group on '
+      'the world face (right-click/long-press → Close all tabs)', (
+    final tester,
+  ) async {
+    await _pumpShell(tester);
+    await _openViaPicker(tester, 'newtab.entry.boards');
+    // The right-click enters _onTabContext with the global position
+    // (the long-press rides the SAME callback); the secondary button
+    // keeps the tap out of the Draggable's primary-button arena.
+    await tester.tap(
+      find.byKey(const ValueKey('view.tab.boards')),
+      buttons: kSecondaryMouseButton,
+    );
+    await tester.pumpAndSettle();
+    // A registry face carries close-all alone; the miniwindow row is
+    // the conversational kinds' row (honest absence here).
+    expect(
+      find.byKey(const ValueKey('view.tab.ctx.closeAll')),
+      findsOneWidget,
+    );
+    expect(find.text('Open in miniwindow'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('view.tab.ctx.closeAll')));
+    await tester.pump();
+    // Every tab closes; the never-empty law lands the world face.
     expect(find.byKey(const ValueKey('view.tab.boards')), findsNothing);
     expect(
       find.byKey(const ValueKey('view.tab.conversations')),

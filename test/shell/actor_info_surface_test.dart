@@ -291,4 +291,79 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
   });
+
+  testWidgets('a RETIRED card names the retirement and REVIVES through '
+      'the verb (retired visibility, 2026-11-18)', (final tester) async {
+    late RealmChatService service;
+    await tester.runAsync(() async {
+      final temp = await Directory.systemTemp.createTemp('la_actor_ret_');
+      addTearDown(() => temp.delete(recursive: true));
+      final world = (await RealmWorld.open(rootOverride: temp.path))!;
+      // The retired durable row seeds BEFORE ensureReady: named by the
+      // boot scan, never re-adopted (ADR 0120).
+      await world.store.transact(
+        (tx) => tx.put('realm_actors', 'toby-researcher', <String, Object?>{
+          'actorId': 'toby-researcher',
+          'kind': 'realm_actor',
+          'displayName': 'Toby Researcher',
+          'brainRef': 'local:qwen',
+          'retiredAt': '2026-11-04T18:16:08.327830Z',
+          'retireReason': 'hygiene-sweep',
+        }),
+      );
+      service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: ActorRoster(replicaId: 'tester'),
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+      // A channel keeps the boot seed a no-op.
+      await service.createChannel('guild');
+      service.clearActiveThread();
+    });
+    await _pumpShell(tester, service: service);
+
+    // The Retired section of the people view is the only door to a
+    // retired actor: its tap opens the actor:<id> info tab.
+    await _openPeopleTab(tester);
+    await tester.tap(
+      find.byKey(const ValueKey('shell.people.retired.toby-researcher')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      find.byKey(const ValueKey('view.tab.actor:toby-researcher')),
+      findsOneWidget,
+    );
+
+    // The card NAMES the retirement verbatim and offers the Revive
+    // verb; verbs that would lie (message, remove, the editor) stay
+    // hidden.
+    expect(find.byKey(const ValueKey('actor.info.retired')), findsOneWidget);
+    expect(find.byKey(const ValueKey('actor.info.revive')), findsOneWidget);
+    expect(find.byKey(const ValueKey('actor.info.remove')), findsNothing);
+    expect(find.byKey(const ValueKey('actor.info.save')), findsNothing);
+
+    // The revival: the marks come off, the identity re-adopts, and the
+    // SAME surface re-renders live — the editor and the actor-equality
+    // verbs return.
+    await tester.tap(find.byKey(const ValueKey('actor.info.revive')));
+    await tester.pump();
+    // reviveActor writes the durable world record — real IO, drained
+    // (the updateActor test's law).
+    await _drain(tester);
+    expect(service.roster!.get('toby-researcher'), isNotNull);
+    expect(service.retiredInfo('toby-researcher'), isNull);
+    expect(
+      find.byKey(const ValueKey('actor.info.retired')),
+      findsNothing,
+    );
+    expect(find.byKey(const ValueKey('actor.info.save')), findsOneWidget);
+    expect(find.byKey(const ValueKey('actor.info.remove')), findsOneWidget);
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+    await tester.pumpAndSettle();
+  });
 }

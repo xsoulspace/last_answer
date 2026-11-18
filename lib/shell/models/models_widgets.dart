@@ -51,20 +51,29 @@ final class ModelsChip extends StatelessWidget {
 }
 
 /// The small verb button (add / edit / remove / propose / apply …):
-/// one height, one fill, a spinner while the lane is busy.
+/// one height, one fill, a spinner while the lane is busy, a muted
+/// ghost when disabled (the fit-at-load law: the verb stays visible
+/// with its reason line, never vanishes).
 final class ModelsButton extends StatelessWidget {
   const ModelsButton({
     required this.keyName,
     required this.label,
     required this.onTap,
     this.busy = false,
+    this.disabled = false,
     super.key,
   });
 
   final String keyName;
   final String label;
   final VoidCallback onTap;
+
+  /// A lane operation in flight — the spinner replaces the label.
   final bool busy;
+
+  /// Deliberately unavailable (the load the machine cannot take):
+  /// muted, non-clicking, the row's reason line names why.
+  final bool disabled;
 
   @override
   Widget build(final BuildContext context) {
@@ -74,30 +83,33 @@ final class ModelsButton extends StatelessWidget {
       label: keyName,
       hint: label,
       child: MouseRegion(
-        cursor: busy ? MouseCursor.defer : SystemMouseCursors.click,
+        cursor: busy || disabled ? MouseCursor.defer : SystemMouseCursors.click,
         child: GestureDetector(
           key: ValueKey(keyName),
           behavior: HitTestBehavior.opaque,
-          onTap: busy ? null : onTap,
-          child: Container(
-            // Padding, NOT a Center child: Align/Center expand to the
-            // incoming max width under bounded-loose constraints (a
-            // Wrap or a Row), which stretches every pill to the pane
-            // (live-caught via the widget inspector, 2026-11-15).
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: la.ink.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: busy
-                ? LaSpinner(size: 11, strokeWidth: 1.5, color: la.inkMuted)
-                : Text(
-                    label,
-                    style: context.laUi.micro.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: la.inkMuted,
+          onTap: busy || disabled ? null : onTap,
+          child: Opacity(
+            opacity: disabled ? 0.45 : 1.0,
+            child: Container(
+              // Padding, NOT a Center child: Align/Center expand to the
+              // incoming max width under bounded-loose constraints (a
+              // Wrap or a Row), which stretches every pill to the pane
+              // (live-caught via the widget inspector, 2026-11-15).
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: la.ink.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: busy
+                  ? LaSpinner(size: 11, strokeWidth: 1.5, color: la.inkMuted)
+                  : Text(
+                      label,
+                      style: context.laUi.micro.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: la.inkMuted,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
       ),
@@ -122,11 +134,7 @@ final class ModelsNote extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.only(top: 8),
-    child: Text(
-      text,
-      key: ValueKey(keyName),
-      style: LaTokens.mono(11, color),
-    ),
+    child: Text(text, key: ValueKey(keyName), style: LaTokens.mono(11, color)),
   );
 }
 
@@ -163,6 +171,20 @@ final class ModelsRefusalNote extends StatelessWidget {
   );
 }
 
+/// The builtin lane's DISPLAY name (2026-11-18 — the owner's catalog
+/// law): the composition-root ids (`laya`, `lfm`, `qwen`,
+/// `apple_foundation_afm`) are wire vocabulary, not user surfaces — a
+/// catalog row leads with the spoken name and keeps the id in the
+/// semantics/key. Proper names: never translated.
+String builtinLaneDisplayName(final String id) =>
+    switch (builtinLaneFamily(id)) {
+      BuiltinLaneFamily.localMlx => id == 'lfm' ? 'LFM 2.5' : 'Qwen3',
+      BuiltinLaneFamily.localDecision => 'Laya',
+      BuiltinLaneFamily.appleFoundation => 'Apple Foundation AFM',
+      BuiltinLaneFamily.hostedOpenRouter => 'OpenRouter (hosted)',
+      BuiltinLaneFamily.unknown => id,
+    };
+
 /// The builtin row's subtitle: its composition-root lane family as one
 /// honest sentence (the mirror in `palette_lanes.dart`; an unknown
 /// family says builtin-owned, never a guessed lane). Shared by the
@@ -170,8 +192,7 @@ final class ModelsRefusalNote extends StatelessWidget {
 String builtinLaneSentence(final BuildContext context, final String id) =>
     switch (builtinLaneFamily(id)) {
       BuiltinLaneFamily.localMlx => context.l10n.modelsBuiltinLaneLocal,
-      BuiltinLaneFamily.localDecision =>
-        context.l10n.modelsBuiltinLaneDecision,
+      BuiltinLaneFamily.localDecision => context.l10n.modelsBuiltinLaneDecision,
       BuiltinLaneFamily.appleFoundation => context.l10n.modelsBuiltinLaneAfm,
       BuiltinLaneFamily.hostedOpenRouter =>
         context.l10n.modelsBuiltinLaneOpenRouter,
@@ -194,7 +215,7 @@ String refusalText(final BuildContext context, final CandidateRefusal refusal) {
     'badNumber' => l10n.modelsRefusalBadNumber,
     'jsonInvalid' =>
       '${l10n.modelsJsonInvalid}'
-      '${refusal.detail == null ? '' : ' · ${refusal.detail}'}',
+          '${refusal.detail == null ? '' : ' · ${refusal.detail}'}',
     _ => refusal.detail ?? refusal.code,
   };
   return sentence;

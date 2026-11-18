@@ -154,6 +154,31 @@ String brainRefBase(final String brainRef) {
   return query < 0 ? brainRef : brainRef.substring(0, query);
 }
 
+/// Scheme for a subscription provider (ADR 0031). The provider id and
+/// the model belong to the actor: `subscription:xai_grok_plan/grok-4`.
+const subscriptionBrainScheme = 'subscription:';
+
+/// `subscription:<providerId>/<modelId>`. The model may contain further
+/// slashes; the provider id is the segment before the first one.
+String subscriptionBrainRef(final String providerId, final String model) =>
+    '$subscriptionBrainScheme$providerId/$model';
+
+/// The provider and model a subscription brain names, or null when the
+/// ref is a different scheme or is missing either half.
+({String providerId, String model})? parseSubscriptionBrainRef(
+  final String brainRef,
+) {
+  final base = brainRefBase(brainRef.trim());
+  if (!base.startsWith(subscriptionBrainScheme)) return null;
+  final rest = base.substring(subscriptionBrainScheme.length);
+  final slash = rest.indexOf('/');
+  if (slash <= 0 || slash >= rest.length - 1) return null;
+  return (
+    providerId: rest.substring(0, slash),
+    model: rest.substring(slash + 1),
+  );
+}
+
 /// Builds a `local:` brain binding from a cast and sampling overrides —
 /// the grammar [parseLocalBrainRef] reads (`actor_brain.dart`, read-only
 /// there): `local:<cast>[?temperature=<t>&repetitionPenalty=<r>]`. Unset

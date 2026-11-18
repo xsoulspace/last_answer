@@ -632,6 +632,10 @@ final class _OverflowControlState extends State<_OverflowControl> {
       child: LaMenuAnchor.builder(
         entries: _entries,
         alignRight: true,
+        // The shadcn dropdown height law: the list scrolls past ~10
+        // rows instead of painting an unbounded column (the ~30-tab
+        // restore's +26 rendered a screen-tall menu).
+        maxHeight: 320,
         childBuilder: (final context, final anchor) => LaPressable(
           onTap: anchor.toggle,
           radius: BorderRadius.circular(ShellTokens.tabRadius),

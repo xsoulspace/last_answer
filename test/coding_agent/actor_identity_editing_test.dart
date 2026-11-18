@@ -540,5 +540,62 @@ void main() {
       final info = service.retiredInfo('retired-one');
       expect(info?['retireReason'], 'hygiene-sweep');
     });
+
+    test('reviveActor strips the retirement marks, re-adopts the '
+        'identity and empties the retired projection; refusals name '
+        'their input', () async {
+      final world = await _hermeticWorld();
+      await world.store.transact((tx) {
+        tx.put('realm_actors', 'retired-two', <String, Object?>{
+          'actorId': 'retired-two',
+          'kind': 'realm_actor',
+          'displayName': 'Retired Two',
+          'brainCast': 'modelscope_qwen38max',
+          'retiredAt': '2026-11-04T18:16:08.327830Z',
+          'retireReason': 'hygiene-sweep',
+        });
+        tx.put('realm_actors', 'live-one', <String, Object?>{
+          'actorId': 'live-one',
+          'kind': 'realm_actor',
+          'displayName': 'Live One',
+        });
+      });
+      final roster = ActorRoster(replicaId: 'tester');
+      final service = RealmChatService(
+        debugWorldOverride: world,
+        debugRosterOverride: roster,
+        debugStartBotDispatcher: false,
+      );
+      addTearDown(service.dispose);
+      await service.ensureReady();
+
+      // The retired visibility projection: named at boot, never live.
+      expect(roster.get('retired-two'), isNull);
+      expect(service.retiredRows.containsKey('retired-two'), isTrue);
+
+      // Refusals name their input (the bounce law).
+      final unknown = await service.reviveActor('ghost');
+      expect(unknown['ok'], isFalse);
+      expect('${unknown['bounce']}', contains('actor_unknown'));
+      final notRetired = await service.reviveActor('live-one');
+      expect(notRetired['ok'], isFalse);
+      expect('${notRetired['bounce']}', contains('actor_not_retired'));
+
+      // The revival: marks OFF the durable row, identity re-adopted
+      // (the cast synthesis included — actor equality), projection
+      // emptied.
+      final receipt = await service.reviveActor('retired-two');
+      expect(receipt['ok'], isTrue);
+      final row = await world.store.read('realm_actors', 'retired-two');
+      expect(row?['retiredAt'], isNull);
+      expect(row?['retireReason'], isNull);
+      expect(service.retiredInfo('retired-two'), isNull);
+      expect(service.retiredRows.containsKey('retired-two'), isFalse);
+      expect(roster.get('retired-two')?.displayName, 'Retired Two');
+      expect(
+        roster.get('retired-two')?.brainRef,
+        'cast:modelscope_qwen38max',
+      );
+    });
   });
 }

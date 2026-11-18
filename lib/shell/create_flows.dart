@@ -17,6 +17,8 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/actor_picker.dart';
 
+import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
+
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
@@ -120,34 +122,21 @@ Future<void> openNewChannelFlow(
               ),
               const SizedBox(height: 12),
               Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    for (final actor in actors)
-                      LaRow(
-                        key: ValueKey('rail.pick.actor.${actor.actorId}'),
-                        margin: EdgeInsets.zero,
-                        leading: LaCheckbox(
-                          value: picked.contains(actor.actorId),
-                          onChanged: (final value) => setDialogState(() {
-                            if (value ?? false) {
-                              picked.add(actor.actorId);
-                            } else {
-                              picked.remove(actor.actorId);
-                            }
-                          }),
-                        ),
-                        titleText: actor.displayName,
-                        metaText: actor.role.isEmpty ? null : actor.role,
-                        onTap: () => setDialogState(() {
-                          if (picked.contains(actor.actorId)) {
-                            picked.remove(actor.actorId);
-                          } else {
-                            picked.add(actor.actorId);
-                          }
-                        }),
-                      ),
-                  ],
+                // The shared member picker (the members lane): the same
+                // searchable checkbox list the members popover and the
+                // rooms-column menu use; the frozen `rail.pick.actor.<id>`
+                // row keys ride the default prefix.
+                child: ChannelMemberPicker(
+                  searchKey: const ValueKey('rail.channel.search'),
+                  candidates: actors,
+                  selected: picked,
+                  onToggle: (final actorId) => setDialogState(() {
+                    if (picked.contains(actorId)) {
+                      picked.remove(actorId);
+                    } else {
+                      picked.add(actorId);
+                    }
+                  }),
                 ),
               ),
             ],

@@ -600,7 +600,14 @@ final class WorldStateService extends ChangeNotifier {
       if (debugDoctor case final doctor?) {
         report = doctor(workspace);
       } else {
-        final typed = collectEcsaiDoctorReport(workspace: workspace);
+        // The harness root rides EXPLICITLY (the CLI's own law — the
+        // 2026-11-18 arm finding): without it the doctor's artifact
+        // section resolves nothing and the arm refuses
+        // `daemon_artifact_absent` forever, even on a fresh build.
+        final typed = collectEcsaiDoctorReport(
+          workspace: workspace,
+          harnessRoot: resolveDoctorHarnessRoot(),
+        );
         report = typed.toJson();
       }
     } on Object {

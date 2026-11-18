@@ -1,4 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
 
@@ -210,5 +212,304 @@ void main() {
     await tester.tap(find.byType(LaSwitch));
     await tester.pump();
     expect(value, isTrue);
+  });
+
+  // ----------------------------------------------------------------
+  // LaSelect / LaMenuAnchor — the dropdown guards (zero-row menus used
+  // to open as an 8 px chrome sliver; empty selects now go dormant).
+  // ----------------------------------------------------------------
+
+  /// Host with the portal theater mounted above the Navigator — what the
+  /// app provides, and what LaMenuAnchor needs to actually open.
+  Widget portalHost(final Widget child) => LaUiThemeProvider(
+    theme: LaUiTheme.dark(),
+    child: Directionality(
+      textDirection: TextDirection.ltr,
+      child: MediaQuery(
+        data: const MediaQueryData(),
+        child: Portal(
+          child: Navigator(
+            onGenerateRoute: (_) =>
+                PageRouteBuilder<void>(pageBuilder: (_, _, _) => child),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  testWidgets('LaSelect with no items goes dormant and names the gap', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      host(
+        const Center(
+          child: SizedBox(
+            width: 300,
+            child: LaSelect<String>(
+              placeholder: 'default provider',
+              emptyHint: 'No providers configured',
+              items: [],
+            ),
+          ),
+        ),
+      ),
+    );
+    // No anchor wired at all: tapping can never open a menu.
+    expect(find.byType(LaMenuAnchor), findsNothing);
+    expect(find.byType(LaTooltip), findsOneWidget);
+    await tester.tap(find.text('default provider'), warnIfMissed: false);
+    await tester.pump();
+    expect(find.byType(LaMenu), findsNothing);
+  });
+
+  testWidgets('LaSelect opens, lists entries and reports selection', (
+    tester,
+  ) async {
+    String? picked;
+    await tester.pumpWidget(
+      portalHost(
+        Center(
+          child: SizedBox(
+            width: 300,
+            child: LaSelect<String>(
+              placeholder: 'pick',
+              items: const [
+                LaSelectItem(value: 'a', label: 'Alpha'),
+                LaSelectItem(value: 'b', label: 'Beta'),
+              ],
+              onChanged: (value) => picked = value,
+            ),
+          ),
+        ),
+      ),
+    );
+    // The 22rem height cap rides through to the popover (long model lists
+    // scroll instead of growing past the window).
+    final anchor = tester.widget<LaMenuAnchor>(find.byType(LaMenuAnchor));
+    expect(anchor.maxHeight, 352);
+    await tester.tap(find.text('pick'));
+    await tester.pump();
+    expect(find.byType(LaMenu), findsOneWidget);
+    await tester.tap(find.text('Beta'));
+    await tester.pump();
+    expect(picked, 'b');
+    expect(find.byType(LaMenu), findsNothing);
+  });
+
+  testWidgets('LaMenuAnchor refuses to open with no entries', (tester) async {
+    await tester.pumpWidget(
+      portalHost(
+        const Center(
+          child: LaMenuAnchor(
+            entries: [],
+            child: SizedBox(width: 40, height: 28),
+          ),
+        ),
+      ),
+    );
+    final state = tester.state<LaMenuAnchorState>(find.byType(LaMenuAnchor))
+      ..open();
+    await tester.pump();
+    expect(state.isOpen, isFalse);
+    expect(find.byType(LaMenu), findsNothing);
+  });
+
+  testWidgets('LaMenuAnchor closes when its entries empty while open', (
+    tester,
+  ) async {
+    // Mutate INSIDE the route: Navigator caches its route pages, so a
+    // second pumpWidget with a fresh Navigator never revisits the anchor.
+    var entries = <LaMenuEntry>[const LaMenuItem(label: 'One')];
+    void Function(void Function())? rebuild;
+    await tester.pumpWidget(
+      portalHost(
+        StatefulBuilder(
+          builder: (context, setBuilderState) {
+            rebuild = setBuilderState;
+            return Center(
+              child: LaMenuAnchor(
+                entries: entries,
+                child: const SizedBox(width: 40, height: 28),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+    final state = tester.state<LaMenuAnchorState>(find.byType(LaMenuAnchor))
+      ..open();
+    await tester.pump();
+    expect(state.isOpen, isTrue);
+    rebuild!.call(() => entries = const []);
+    await tester.pump();
+    expect(state.isOpen, isFalse);
+    expect(find.byType(LaMenu), findsNothing);
+  });
+
+  testWidgets('LaMenu arrow keys survive a zero-item entry list', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      portalHost(
+        Center(
+          child: LaMenu(entries: const [], onEscape: () {}),
+        ),
+      ),
+    );
+    await tester.pump();
+    // Focus(autofocus) holds the key events; with no rows this used to
+    // throw IntegerDivisionByZeroException on the modulo.
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+    await tester.pump();
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+    await tester.pump();
+  });
+
+  // ── The fallback-style gate ────────────────────────────────────────
+  // The app's real host is MaterialApp, whose root DefaultTextStyle is
+  // the framework error style (`decoration: underline` + yellow + double,
+  // debugLabel 'fallback style; consider putting your text in a
+  // Material'). Floating surfaces ride the root navigator's overlay,
+  // ABOVE the chrome body's kit base type — each must install its own
+  // DefaultTextStyle (LaDialog.build law) or every inheriting Text
+  // visibly picks up the yellow double underline. These tests host the
+  // kit under a REAL MaterialApp and assert the nearest DefaultTextStyle
+  // of plain Texts is never the fallback.
+
+  /// A host like the app's: MaterialApp under the theme provider.
+  Widget materialHost(final Widget child) => LaUiThemeProvider(
+    theme: LaUiTheme.dark(),
+    child: MaterialApp(home: child),
+  );
+
+  /// The nearest DefaultTextStyle above [text] must not be the framework
+  /// fallback (kit base type or an explicit style — never the error one).
+  void expectKitBaseType(final WidgetTester tester, final String text) {
+    final inherited = DefaultTextStyle.of(
+      tester.element(find.text(text)),
+    ).style;
+    expect(
+      inherited.debugLabel ?? '',
+      isNot(contains('fallback style; consider putting your text in')),
+      reason: "Text '$text' inherits MaterialApp's fallback style",
+    );
+    expect(
+      inherited.decoration,
+      isNot(TextDecoration.underline),
+      reason: "Text '$text' inherits the yellow double underline",
+    );
+  }
+
+  testWidgets('LaDialog blocks the MaterialApp fallback style', (tester) async {
+    await tester.pumpWidget(
+      materialHost(
+        Builder(
+          builder: (context) => Center(
+            child: LaButton(
+              label: 'Open',
+              onPressed: () => showLaDialog<void>(
+                context: context,
+                builder: (_) =>
+                    const LaDialog(titleText: 'Avatar', content: Text('Body')),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    // Sanity: the host root really carries the error style — the
+    // condition the surfaces must block.
+    final rootStyle = DefaultTextStyle.of(
+      tester.element(find.byType(Navigator)),
+    ).style;
+    expect(rootStyle.debugLabel, contains('fallback style'));
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(find.text('Body'), findsOneWidget);
+    expectKitBaseType(tester, 'Body');
+    expectKitBaseType(tester, 'Avatar');
+  });
+
+  testWidgets('LaSheet blocks the MaterialApp fallback style', (tester) async {
+    await tester.pumpWidget(
+      materialHost(
+        Builder(
+          builder: (context) => Center(
+            child: LaButton(
+              label: 'Open',
+              onPressed: () => showLaSheet<void>(
+                context: context,
+                builder: (_) => const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('Sheet body'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(find.text('Sheet body'), findsOneWidget);
+    expectKitBaseType(tester, 'Sheet body');
+  });
+
+  testWidgets('LaMenu blocks the MaterialApp fallback style', (tester) async {
+    await tester.pumpWidget(
+      materialHost(
+        Builder(
+          builder: (context) => Center(
+            child: LaButton(
+              label: 'Menu',
+              onPressed: () => showLaMenuAt(
+                context,
+                globalPosition: tester.getCenter(find.text('Menu')),
+                entries: [
+                  const LaMenuHeader('Edit'),
+                  LaMenuItem(label: 'Cut', onPressed: () {}),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Menu'));
+    await tester.pump();
+    await tester.pump();
+    expect(find.text('Cut'), findsOneWidget);
+    expectKitBaseType(tester, 'Cut');
+    // The header carries an explicit style and still inherits the
+    // surface's base type beneath it.
+    expectKitBaseType(tester, 'Edit');
+  });
+
+  testWidgets('LaToast blocks the MaterialApp fallback style', (tester) async {
+    await tester.pumpWidget(
+      materialHost(
+        Builder(
+          builder: (context) => Center(
+            child: LaButton(
+              label: 'Ping',
+              onPressed: () => LaToast.show(
+                context,
+                message: 'Saved',
+                duration: const Duration(milliseconds: 500),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Ping'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 60));
+    expect(find.text('Saved'), findsOneWidget);
+    expectKitBaseType(tester, 'Saved');
+    // Drain the auto-dismiss timers so teardown sees no pending work.
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.text('Saved'), findsNothing);
   });
 }

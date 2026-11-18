@@ -4,6 +4,7 @@ import 'package:la_ui/src/icons.dart';
 import 'package:la_ui/src/menu.dart';
 import 'package:la_ui/src/pressable.dart';
 import 'package:la_ui/src/theme.dart';
+import 'package:la_ui/src/tooltip.dart';
 
 /// One [LaSelect] option.
 @immutable
@@ -43,6 +44,8 @@ class LaSelect<T> extends StatelessWidget {
     this.expand = false,
     this.enabled = true,
     this.minWidth = 180,
+    this.maxHeight = 352,
+    this.emptyHint,
     this.labelBuilder,
     super.key,
   });
@@ -72,6 +75,16 @@ class LaSelect<T> extends StatelessWidget {
   /// Minimum popover width.
   final double minWidth;
 
+  /// Height cap for the popover list (the shadcn dropdown law — Radix's
+  /// 22rem): longer lists scroll instead of growing past the window.
+  /// Null grows freely.
+  final double? maxHeight;
+
+  /// Tooltip naming the missing capability when [items] is empty — the
+  /// honest-DISABLED law (DESIGN v4 §6): the trigger greys out and says why
+  /// instead of opening a zero-row menu sliver.
+  final String? emptyHint;
+
   /// Custom trigger label rendering.
   // ignore: unsafe_variance
   final Widget Function(T value)? labelBuilder;
@@ -88,7 +101,9 @@ class LaSelect<T> extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final theme = context.laUi;
-    final interactive = enabled && onChanged != null;
+    // No options: nothing to choose, so the trigger goes dormant (and
+    // names the gap via [emptyHint]) rather than opening an empty menu.
+    final interactive = enabled && onChanged != null && items.isNotEmpty;
     final height = size == LaSelectSize.sm ? 28.0 : 34.0;
 
     Widget trigger({required final bool live, final VoidCallback? onTap}) =>
@@ -115,11 +130,16 @@ class LaSelect<T> extends StatelessWidget {
         );
 
     if (!interactive) {
-      return trigger(live: false);
+      final dormant = trigger(live: false);
+      if (emptyHint == null) {
+        return dormant;
+      }
+      return LaTooltip(message: emptyHint!, child: dormant);
     }
 
     return LaMenuAnchor.builder(
       minWidth: minWidth,
+      maxHeight: maxHeight,
       alignRight: expand,
       childBuilder: (context, anchor) =>
           trigger(onTap: anchor.toggle, live: true),

@@ -250,6 +250,64 @@ void main() {
       expect(find.byKey(const ValueKey('rooms.section.dms')), findsOneWidget);
     });
 
+    testWidgets('a RETIRED actor renders a muted DM-section row; the tap '
+        'opens the actor INFO surface (retired visibility, 2026-11-18)',
+        (final tester) async {
+      late RealmChatService service;
+      await tester.runAsync(() async {
+        final temp = await Directory.systemTemp.createTemp('la_rooms_ret_');
+        addTearDown(() => temp.delete(recursive: true));
+        final world = (await RealmWorld.open(rootOverride: temp.path))!;
+        // The retired durable row seeds BEFORE ensureReady: the boot
+        // scan names it, never re-adopts it (ADR 0120).
+        await world.store.transact(
+          (tx) => tx.put('realm_actors', 'toby-researcher',
+              <String, Object?>{
+            'actorId': 'toby-researcher',
+            'kind': 'realm_actor',
+            'displayName': 'Toby Researcher',
+            'retiredAt': '2026-11-04T18:16:08.327830Z',
+            'retireReason': 'hygiene-sweep-2026-11-04',
+          }),
+        );
+        service = RealmChatService(
+          debugWorldOverride: world,
+          debugRosterOverride: ActorRoster(replicaId: 'tester'),
+          debugStartBotDispatcher: false,
+        );
+        addTearDown(service.dispose);
+        await service.ensureReady();
+        // A channel keeps the boot seed a no-op; the only identity is
+        // the retired row (no live DM rows, the CTA still rides).
+        await service.createChannel('guild');
+        service.clearActiveThread();
+      });
+      await _pumpShell(tester, service: service);
+
+      // The muted row renders under the CTA, mark trailing.
+      final row = find.byKey(
+        const ValueKey('rooms.row.retired.toby-researcher'),
+      );
+      expect(row, findsOneWidget);
+      expect(find.byKey(const ValueKey('rooms.retired.mark')), findsOneWidget);
+
+      // The tap rides the shell's ONE router into the actor:<id> tab —
+      // never a fresh DM a retired actor cannot answer.
+      await tester.tap(row);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(
+        find.byKey(const ValueKey('view.tab.actor:toby-researcher')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('actor.info')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('actor.info.retired')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('actor.info.revive')), findsOneWidget);
+    });
+
     testWidgets('no LaWorld = honest absence: no row badges render', (
       final tester,
     ) async {
@@ -588,6 +646,39 @@ void main() {
         find.byKey(ValueKey('rooms.row.channel.$channelId')),
         findsNothing,
       );
+    });
+
+    testWidgets('add members opens the shared membership dialog', (
+      final tester,
+    ) async {
+      final service = await _hermeticService(tester);
+      final channelId = service.channels.first.channelId;
+      await _pumpShell(tester, service: service);
+
+      await tester.tap(
+        find.byKey(ValueKey('rooms.row.channel.$channelId')),
+        buttons: kSecondaryMouseButton,
+      );
+      await tester.pumpAndSettle();
+      // The members row rides the frozen key family (the shell wires
+      // onManageMembers — the dialog opens over the row's channel).
+      expect(
+        find.byKey(ValueKey('rooms.menu.members.$channelId')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(ValueKey('rooms.menu.members.$channelId')));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('channel.members.dialog')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('channel.members.search')),
+        findsOneWidget,
+      );
+      // Dismiss and let the exit animation finish before teardown.
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
     });
 
     testWidgets('a dm row offers the miniwindow only', (final tester) async {

@@ -29,7 +29,8 @@
 /// Widget keys are the agent's UI contract (DESIGN §6): `actor.info`,
 /// `actor.info.facts`, `actor.info.save`, `actor.info.channels`,
 /// `actor.info.channel.<channelId>`, `actor.info.absent`,
-/// `actor.info.imageSpend`.
+/// `actor.info.imageSpend`, and the retired card's
+/// `actor.info.retired` + `actor.info.revive` (with `.bounce`).
 library;
 
 import 'package:lastanswer/agent_config/agent_config.dart';
@@ -37,10 +38,12 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
+import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/view_people.dart';
@@ -89,28 +92,40 @@ final class ActorInfoSurface extends StatelessWidget {
           key: const ValueKey('actor.info'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _header(
-              context,
-              display,
-              service.retiredInfo(actorId) == null,
-            ),
+            _header(context, display, service.retiredInfo(actorId) == null),
             _facts(context, display),
             _ImageSpendSection(service: service, actorId: actorId),
             if (profile != null)
               _editor(context, profile)
             else if (service.retiredInfo(actorId) case final retired?)
               // Retirement is world truth (ADR 0120): named verbatim,
-              // never a read-only ghost and never a live editor.
+              // never a read-only ghost and never a live editor. The
+              // Revive verb rides the note (2026-11-18) — the UI face of
+              // the revival law ("a fresh ensure revives"): the marks
+              // come off the row, the identity re-adopts, and this very
+              // surface re-renders live (verbs included) through the
+              // service's notification.
               Padding(
                 padding: ShellTokens.sectionPadding,
-                child: Text(
-                  '${context.l10n.actorsRetiredNote} '
-                  '${retired['retiredAt'] ?? ''}'
-                  '${retired['retireReason'] == null
-                      ? ''
-                      : ' · ${retired['retireReason']}'}',
-                  key: const ValueKey('actor.info.retired'),
-                  style: LaTokens.mono(10.5, context.shellMuted),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${context.l10n.actorsRetiredNote} '
+                      '${retired['retiredAt'] ?? ''}'
+                      '${retired['retireReason'] == null ? '' : ' · ${retired['retireReason']}'}',
+                      key: const ValueKey('actor.info.retired'),
+                      style: LaTokens.mono(10.5, context.shellMuted),
+                    ),
+                    const SizedBox(height: 8),
+                    LaButton(
+                      key: const ValueKey('actor.info.revive'),
+                      variant: LaButtonVariant.ghost,
+                      size: LaButtonSize.sm,
+                      onPressed: () => unawaited(_revive(context)),
+                      label: context.l10n.actorsRevive,
+                    ),
+                  ],
                 ),
               )
             else
@@ -125,7 +140,15 @@ final class ActorInfoSurface extends StatelessWidget {
                   style: LaTokens.mono(10.5, context.shellMuted),
                 ),
               ),
-            _channels(context, memberships),
+            // The leave verb rides only a non-human card: the human is
+            // PERMANENT in channels (owner law, 2026-11-18) — their own
+            // card never offers a channel removal.
+            _channels(
+              context,
+              memberships,
+              display.kind != ActorKind.human &&
+                  actorId != service.humanActorId,
+            ),
             ProjectAccessSection(service: service, actorId: actorId),
           ],
         ),
@@ -259,6 +282,32 @@ final class ActorInfoSurface extends StatelessWidget {
     onOpenConversation?.call('conversations');
   }
 
+  /// Revival needs NO confirm (it is reversible — retire again): the
+  /// service's verb strips the retirement marks and re-adopts the
+  /// identity, whose notification re-renders this surface live. A
+  /// bounce renders VERBATIM — the remove dialog's refusal shape.
+  Future<void> _revive(final BuildContext context) async {
+    final receipt = await service.reviveActor(actorId);
+    if (receipt['ok'] == true || !context.mounted) return;
+    await showLaDialog<void>(
+      context: context,
+      builder: (final dialogContext) => LaDialog(
+        key: const ValueKey('actor.info.revive.bounce'),
+        content: Text(
+          '${receipt['bounce'] ?? 'revive_refused'}',
+          style: dialogContext.laUi.body.copyWith(fontSize: 13),
+        ),
+        actions: [
+          LaButton(
+            variant: LaButtonVariant.ghost,
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            label: context.l10n.modelsCancel,
+          ),
+        ],
+      ),
+    );
+  }
+
   /// The read-only facts block: journal field names in mono, verbatim
   /// values (the beat-details actor-card law — facts are never
   /// localized, never paraphrased).
@@ -275,8 +324,7 @@ final class ActorInfoSurface extends StatelessWidget {
               _factRow(context, 'brainRef', display.brainRef, 'brainRef'),
             // ADR 0143 — the actor's own set, as the durable fact it
             // is (empty = the world policy whole).
-            if (service.brainSets[actorId] case final set?
-                when set.isNotEmpty)
+            if (service.brainSets[actorId] case final set? when set.isNotEmpty)
               _factRow(context, 'brainSet', set.join(', '), 'brainSet'),
           ],
         ),
@@ -294,10 +342,7 @@ final class ActorInfoSurface extends StatelessWidget {
       children: [
         SizedBox(
           width: 72,
-          child: Text(
-            field,
-            style: LaTokens.mono(10.5, context.shellMuted),
-          ),
+          child: Text(field, style: LaTokens.mono(10.5, context.shellMuted)),
         ),
         Expanded(
           child: Text(
@@ -320,9 +365,9 @@ final class ActorInfoSurface extends StatelessWidget {
           profile: profile,
           brainOptions: availableBrainOptions(
             paletteRungs:
-                context.read<WorldStateService?>()?.generativeDecls ??
-                const [],
+                context.read<WorldStateService?>()?.generativeDecls ?? const [],
             defaultOpenRouterModel: _defaultOpenRouterModel(context),
+            subscriptionModels: subscriptionModelsOf(context),
           ),
           tiersForBrain: (final ref) => reasoningTiersForBrainRef(
             ref,
@@ -361,9 +406,14 @@ final class ActorInfoSurface extends StatelessWidget {
   /// The channel memberships: every registered channel listing this
   /// actor. A row tap routes into the shell's conversation grammar
   /// (`channel:<id>`) — the info surface never selects threads itself.
+  /// A non-human card's rows carry the quiet leave verb (the members
+  /// lane's reverse direction): the shared removal confirm runs, the
+  /// ListenableBuilder above rebuilds the section off the service, and
+  /// a named refusal bounces verbatim (the retire-confirm's pattern).
   Widget _channels(
     final BuildContext context,
     final List<ChannelInfo> memberships,
+    final bool canLeave,
   ) => Padding(
     padding: ShellTokens.sectionPadding,
     child: Column(
@@ -401,6 +451,17 @@ final class ActorInfoSurface extends StatelessWidget {
                         style: context.laUi.micro,
                       ),
                     ),
+                    if (canLeave)
+                      LaButton.icon(
+                        key: ValueKey(
+                          'actor.info.channel.${channel.channelId}.leave',
+                        ),
+                        tooltip: context.l10n.worldChatMemberRemoveTooltip,
+                        size: LaButtonSize.sm,
+                        icon: Icon(Icons.close, size: 13, color: context.shellMuted),
+                        onPressed: () =>
+                            unawaited(_leaveChannel(context, channel)),
+                      ),
                   ],
                 ),
               ),
@@ -408,6 +469,40 @@ final class ActorInfoSurface extends StatelessWidget {
       ],
     ),
   );
+
+  /// The leave verb: the shared confirm (the losses dialog — history +
+  /// running tasks), then silence on success (the section's rebuild IS
+  /// the outcome) and the verbatim bounce on a refusal.
+  Future<void> _leaveChannel(
+    final BuildContext context,
+    final ChannelInfo channel,
+  ) async {
+    final l10n = context.l10n;
+    final result = await confirmChannelRemoval(
+      context,
+      service: service,
+      channel: channel,
+      actorId: actorId,
+    );
+    if (result == null || result == 'ok' || !context.mounted) return;
+    await showLaDialog<void>(
+      context: context,
+      builder: (final dialogContext) => LaDialog(
+        key: const ValueKey('actor.info.channel.leave.bounce'),
+        content: Text(
+          result,
+          style: dialogContext.laUi.body.copyWith(fontSize: 13),
+        ),
+        actions: [
+          LaButton(
+            variant: LaButtonVariant.ghost,
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            label: l10n.modelsCancel,
+          ),
+        ],
+      ),
+    );
+  }
 
   /// The hosted-model option the brain picker offers (the people
   /// panel's derivation; absence keeps the local casts).

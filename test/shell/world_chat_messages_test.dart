@@ -20,7 +20,6 @@ import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
@@ -235,6 +234,148 @@ void main() {
       expect(
         find.byKey(const ValueKey('worldchat.meta.members.popover')),
         findsNothing,
+      );
+
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  testWidgets(
+    'b2 — the members popover is the membership manager: the removal '
+    'verb rides only non-human rows, the add CTA opens the picker, and '
+    'the removal confirm names the losses before the row write',
+    (final tester) async {
+      final room = await _openRoom(tester, 'members-manager');
+      await _pumpSurface(tester, room.service);
+
+      await tester.tap(find.byKey(const ValueKey('worldchat.meta.members')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(
+        find.byKey(const ValueKey('worldchat.meta.members.popover')),
+        findsOneWidget,
+      );
+
+      // The worker's row carries the removal verb; the HUMAN's row
+      // carries none (permanence is the owner law) — and the add CTA
+      // sits under the list.
+      expect(
+        find.byKey(
+          ValueKey('worldchat.meta.member.${room.worker.actorId}.remove'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('worldchat.meta.member.${room.humanId}.remove')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('worldchat.meta.members.add')),
+        findsOneWidget,
+      );
+
+      // The add CTA swaps the body to the shared picker; the roster's
+      // only non-member model actor is the DM peer.
+      await tester.tap(find.byKey(const ValueKey('worldchat.meta.members.add')));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('worldchat.meta.members.pick')),
+        findsOneWidget,
+      );
+      final dmPeer = room.service.roster!.all.firstWhere(
+        (final actor) =>
+            actor.kind != ActorKind.human &&
+            actor.actorId != room.worker.actorId,
+      );
+      await tester.tap(
+        find.byKey(
+          ValueKey('worldchat.meta.members.pick.row.${dmPeer.actorId}'),
+        ),
+      );
+      await tester.pump();
+      await tester.tap(
+        find.byKey(const ValueKey('worldchat.meta.members.pick.confirm')),
+      );
+      await tester.pump();
+      await tester.runAsync(() async {
+        for (var waited = 0; waited < 20; waited++) {
+          if (room.service.channelByThreadId(room.channelThreadId)!.memberIds
+              .contains(dmPeer.actorId)) {
+            break;
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        }
+      });
+      await tester.pump();
+      // The picker closed back into the list; the outcome line carries
+      // the add, and the new member's row is live.
+      expect(
+        find.byKey(const ValueKey('worldchat.meta.members.outcome')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(ValueKey('worldchat.meta.member.${dmPeer.actorId}')),
+        findsOneWidget,
+      );
+
+      // The removal: the quiet verb opens the losses confirm (world
+      // truth — the channel's history and the actor's running tasks),
+      // and only the dialog's own confirm writes the row.
+      await tester.tap(
+        find.byKey(ValueKey('worldchat.meta.member.${dmPeer.actorId}.remove')),
+      );
+      await tester.pump();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 300)),
+      );
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('channel.member.remove.dialog')),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.byKey(const ValueKey('channel.member.remove.cancel')),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        room.service.channelByThreadId(room.channelThreadId)!.memberIds,
+        contains(dmPeer.actorId),
+        reason: 'cancel writes nothing',
+      );
+
+      await tester.tap(
+        find.byKey(ValueKey('worldchat.meta.member.${dmPeer.actorId}.remove')),
+      );
+      await tester.pump();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 300)),
+      );
+      await tester.pump();
+      await tester.tap(
+        find.byKey(const ValueKey('channel.member.remove.confirm')),
+      );
+      await tester.pump();
+      await tester.runAsync(() async {
+        for (var waited = 0; waited < 20; waited++) {
+          if (!room.service.channelByThreadId(room.channelThreadId)!
+              .memberIds
+              .contains(dmPeer.actorId)) {
+            break;
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        }
+      });
+      await tester.pump();
+      expect(
+        find.byKey(ValueKey('worldchat.meta.member.${dmPeer.actorId}')),
+        findsNothing,
+      );
+      // The human survived the whole round trip — permanence.
+      expect(
+        room.service.channelByThreadId(room.channelThreadId)!.memberIds,
+        contains(room.humanId),
       );
 
       FocusManager.instance.primaryFocus?.unfocus();

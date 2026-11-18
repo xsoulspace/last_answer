@@ -19,8 +19,8 @@
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6):
 /// `shell.roomsColumn`, `rooms.section.dms|channels`,
-/// `rooms.row.dm.<actorId>`, `rooms.row.channel.<channelId>`,
-/// `rooms.unread.<surfaceId>`,
+/// `rooms.row.dm.<actorId>`, `rooms.row.retired.<actorId>`,
+/// `rooms.row.channel.<channelId>`, `rooms.unread.<surfaceId>`,
 /// `rooms.create.channel`, `rooms.cta.dm`, the context-menu rows
 /// `rooms.menu.rename|close|setIcon|miniwindow.*` and the change-icon
 /// dialog's `rooms.icon.<glyph>|clear|custom|confirm`.
@@ -71,6 +71,15 @@ const Map<String, IconData> kChannelIconGlyphs = <String, IconData>{
 /// _ChannelMark's grammar), never an icon font glyph.
 const String kChannelHashIcon = 'hash';
 
+/// A RETIRED row's display name (the retired-visibility rows, the DMs
+/// section): the durable record's own `displayName` when it says one,
+/// the derived fallback otherwise — the same honest-absence grammar
+/// the people rows speak.
+String _retiredNameOf(final String id, final Map<String, Object?>? record) {
+  final name = '${record?['displayName'] ?? ''}'.trim();
+  return name.isNotEmpty ? name : actorDisplayFallback(id);
+}
+
 /// The docked rooms column: sections of conversation rows over the
 /// service's live projections. The SHELL owns the dock state and the
 /// tab routing; this column only renders facts and forwards intents.
@@ -82,6 +91,8 @@ final class RoomsColumn extends StatelessWidget {
     required this.onMessageActor,
     required this.onMiniWindow,
     this.onSetIcon,
+    this.onManageMembers,
+    this.width = ShellTokens.contextColumnWidth,
     super.key,
   });
 
@@ -108,6 +119,17 @@ final class RoomsColumn extends StatelessWidget {
   /// menu row honestly absent — the column never writes on its own.
   final Future<bool> Function(String channelId, String? icon)? onSetIcon;
 
+  /// The add-members dialog lane (the shared
+  /// [openChannelMembersDialog]): the shell opens it over the row's
+  /// channel. Null keeps the menu row honestly absent — the column
+  /// never writes membership on its own.
+  final void Function(ChannelInfo channel)? onManageMembers;
+
+  /// The column's width (px): the shell's drag-resize law owns the
+  /// value (dragged at the column's right edge, persisted beside the
+  /// dock bool); the token default keeps the standalone use honest.
+  final double width;
+
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
@@ -132,13 +154,29 @@ final class RoomsColumn extends StatelessWidget {
       for (final actor in service.roster?.all ?? const <ActorProfile>[])
         if (actor.kind != ActorKind.human) actor,
     ];
+    // RETIRED VISIBILITY (2026-11-18): a retirement tombstones the
+    // roster, so the DM list went silent about it — an invisible
+    // retirement is a lie of absence. The retired rows render muted
+    // under the live ones; a tap opens the actor's INFO surface (the
+    // one surface retirement names verbatim), never a fresh DM a
+    // retired actor cannot answer.
+    final retiredEntries = <MapEntry<String, Map<String, Object?>?>>[
+      for (final entry in service.retiredRows.entries) entry,
+    ]..sort((final a, final b) {
+      final an = _retiredNameOf(a.key, a.value);
+      final bn = _retiredNameOf(b.key, b.value);
+      final byName = an.toLowerCase().compareTo(bn.toLowerCase());
+      return byName != 0 ? byName : a.key.compareTo(b.key);
+    });
     // Where the channels head lands in the flat item space (after the
-    // DMs head and the CTA-or-DM rows) — the builder delegate below
-    // walks this one index space.
-    final channelsHeadIndex = 1 + (actors.isEmpty ? 1 : actors.length);
+    // DMs head, the CTA-or-DM rows and the retired rows) — the builder
+    // delegate below walks this one index space.
+    final liveDmCount = actors.isEmpty ? 1 : actors.length;
+    final retiredStart = 1 + liveDmCount;
+    final channelsHeadIndex = retiredStart + retiredEntries.length;
     return Container(
       key: const ValueKey('shell.roomsColumn'),
-      width: ShellTokens.contextColumnWidth,
+      width: width,
       decoration: BoxDecoration(
         color: context.la.surface,
         border: Border(right: BorderSide(color: context.shellHairline)),
@@ -201,6 +239,34 @@ final class RoomsColumn extends StatelessWidget {
               onMiniWindow: onMiniWindow,
             );
           }
+          if (index < channelsHeadIndex) {
+            // One RETIRED actor row: muted identity, the retirement mark
+            // trailing, the tap riding the info-surface grammar
+            // (`actor:<id>` — never a DM the retired actor could not
+            // answer). Honest facts only: the row names the mark, the
+            // info surface names the retirement verbatim.
+            final entry = retiredEntries[index - retiredStart];
+            final id = entry.key;
+            final display = ActorProfile(
+              actorId: id,
+              displayName: _retiredNameOf(id, entry.value),
+            );
+            return _RoomsRow(
+              rowKey: 'rooms.row.retired.$id',
+              title: display.displayName,
+              leading: Opacity(
+                opacity: 0.5,
+                child: ActorAvatar(profile: display, size: 18),
+              ),
+              selected: activeSurfaceId == 'actor:$id',
+              onTap: () => onSelect('actor:$id'),
+              trailing: Text(
+                l10n.actorsRetiredMark,
+                key: const ValueKey('rooms.retired.mark'),
+                style: LaTokens.mono(9.5, context.shellMuted),
+              ),
+            );
+          }
           if (index == channelsHeadIndex) {
             return _SectionHead(
               sectionKey: 'rooms.section.channels',
@@ -233,6 +299,7 @@ final class RoomsColumn extends StatelessWidget {
             onSelect: onSelect,
             onMiniWindow: onMiniWindow,
             onSetIcon: onSetIcon,
+            onManageMembers: onManageMembers,
           );
         }, childCount: channelsHeadIndex + 1 + service.channels.length),
       ),
@@ -256,6 +323,7 @@ final class _ConversationRow extends StatelessWidget {
     required this.onSelect,
     required this.onMiniWindow,
     this.onSetIcon,
+    this.onManageMembers,
     this.laWorld,
     this.channel,
   });
@@ -278,6 +346,10 @@ final class _ConversationRow extends StatelessWidget {
   /// row honestly absent.
   final Future<bool> Function(String channelId, String? icon)? onSetIcon;
 
+  /// The add-members dialog lane (channels only); null keeps the menu
+  /// row honestly absent.
+  final void Function(ChannelInfo channel)? onManageMembers;
+
   final LaWorld? laWorld;
 
   /// Non-null for channel rows: they carry the rename/close/setIcon
@@ -285,14 +357,16 @@ final class _ConversationRow extends StatelessWidget {
   final ChannelInfo? channel;
 
   /// The row's right-click / long-press (the strip tab's menu pattern):
-  /// channels offer Rename, Change icon, Close and the miniwindow;
-  /// every other row offers the window presentation only. The kit menu
-  /// grammar (v6): rows carry their own activation, the menu closes on
-  /// choice, and the frozen `rooms.menu.*` keys ride the items.
+  /// channels offer Rename, Change icon, Add members, Close and the
+  /// miniwindow; every other row offers the window presentation only.
+  /// The kit menu grammar (v6): rows carry their own activation, the
+  /// menu closes on choice, and the frozen `rooms.menu.*` keys ride the
+  /// items.
   void _onContext(final BuildContext context, final Offset globalPosition) {
     final l10n = context.l10n;
     final channel = this.channel;
     final onSetIcon = this.onSetIcon;
+    final onManageMembers = this.onManageMembers;
     LaMenuItem item(
       final String keyValue,
       final String label,
@@ -320,6 +394,16 @@ final class _ConversationRow extends StatelessWidget {
             () {
               if (context.mounted) {
                 unawaited(_changeChannelIcon(context, channel, onSetIcon));
+              }
+            },
+          ),
+        if (channel != null && onManageMembers != null)
+          item(
+            'rooms.menu.members.${channel.channelId}',
+            l10n.roomsMenuMembers,
+            () {
+              if (context.mounted) {
+                onManageMembers(channel);
               }
             },
           ),

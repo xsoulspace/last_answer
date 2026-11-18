@@ -697,7 +697,15 @@ class SRu extends S {
   String get agentChatProviderHint => 'провайдер по умолчанию';
 
   @override
+  String get agentChatProviderEmptyHint =>
+      'Провайдеры не настроены — добавьте их в разделе «Провайдеры»';
+
+  @override
   String get agentChatModelHint => 'модель по умолчанию';
+
+  @override
+  String get agentChatModelEmptyHint =>
+      'Добавьте провайдера, чтобы выбрать модель по умолчанию';
 
   @override
   String get agentChatSystemPromptHint => 'системный промпт по умолчанию';
@@ -1040,6 +1048,76 @@ class SRu extends S {
   @override
   String get chatGptDocumentConsentRequired =>
       'Подтвердите использование облака для документа, аккаунта, модели и рабочего пространства перед отправкой.';
+
+  @override
+  String get grokSubscriptionTitle => 'Подписка Grok';
+
+  @override
+  String get grokContinue => 'Продолжить с Grok';
+
+  @override
+  String get grokDeviceSignIn => 'Код устройства';
+
+  @override
+  String get grokSignOut => 'Выйти';
+
+  @override
+  String get grokChooseAccount => 'Выберите аккаунт Grok';
+
+  @override
+  String get grokAccount => 'Аккаунт Grok';
+
+  @override
+  String get grokChooseModel => 'Выберите модель Grok';
+
+  @override
+  String get grokRefreshModels => 'Обновить модели';
+
+  @override
+  String get grokVerifyAccess => 'Проверить доступ';
+
+  @override
+  String get grokAccessUnchecked => 'Доступ не проверен';
+
+  @override
+  String get grokAccessVerified => 'Доступ проверен на этом устройстве';
+
+  @override
+  String get grokPlanPermissionRequired =>
+      'Токен этого аккаунта не включает доступ к плану.';
+
+  @override
+  String get grokWorking => 'Выполняется';
+
+  @override
+  String get grokRevocationUnconfirmed =>
+      'Удалённый выход не подтверждён. Локальные токены удалены.';
+
+  @override
+  String get grokConnectionError => 'Не удалось связаться с аккаунтом Grok.';
+
+  @override
+  String get grokDesktopOnly =>
+      'Вход в Grok доступен в приложении для компьютера.';
+
+  @override
+  String get grokSignInRequired =>
+      'Подключите аккаунт Grok и разрешите доступ к плану перед отправкой.';
+
+  @override
+  String get grokModelRequired => 'Выберите модель Grok перед отправкой.';
+
+  @override
+  String get grokDocumentConsentRequired =>
+      'Подтвердите использование облака для документа, аккаунта, модели и рабочего пространства перед отправкой.';
+
+  @override
+  String get grokClientNotRegistered =>
+      'У Last Answer ещё нет client id от xAI. Вход закрыт.';
+
+  @override
+  String get grokRegistrationHint =>
+      'Отправьте xAI referrer и redirect выше, чтобы зарегистрировать это приложение.';
 
   @override
   String get worldConversationChoose => 'Выберите разговор';
@@ -1985,6 +2063,79 @@ class SRu extends S {
   String get worldChatInfoTooltip => 'О канале';
 
   @override
+  String get worldChatMembersAdd => 'Добавить людей';
+
+  @override
+  String worldChatMembersAddTitle(String channel) {
+    return 'Добавить в $channel';
+  }
+
+  @override
+  String get worldChatMembersSearchHint => 'Фильтр людей';
+
+  @override
+  String worldChatMembersAddSelected(int count) {
+    return 'Добавить: $count';
+  }
+
+  @override
+  String worldChatMembersAddCount(int count, String channel) {
+    return 'Добавлено в $channel: $count';
+  }
+
+  @override
+  String get worldChatMembersNoCandidates => 'Все уже в этом канале';
+
+  @override
+  String get worldChatMemberRemoveTooltip => 'Удалить из канала';
+
+  @override
+  String worldChatMemberRemoveTitle(String name, String channel) {
+    return 'Удалить $name из $channel?';
+  }
+
+  @override
+  String worldChatMemberRemoveMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count сообщения',
+      many: '$count сообщений',
+      few: '$count сообщения',
+      one: '$count сообщение',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String worldChatMemberRemoveTasks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count выполняющиеся задачи',
+      many: '$count выполняющихся задач',
+      few: '$count выполняющиеся задачи',
+      one: '$count выполняющаяся задача',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get worldChatMemberRemoveNoTasks => 'нет выполняющихся';
+
+  @override
+  String get worldChatMemberRemoveNote =>
+      'Они перестанут получать сообщения этого канала. Выполняющиеся задачи durable в world и остаются у актора.';
+
+  @override
+  String worldChatMemberRemoved(String name, String channel) {
+    return '$name удалён из $channel';
+  }
+
+  @override
+  String get roomsMenuMembers => 'Добавить участников…';
+
+  @override
   String get worldChatChangeIcon => 'Сменить значок';
 
   @override
@@ -2016,6 +2167,15 @@ class SRu extends S {
 
   @override
   String get stripOverflowHint => 'Скрытые вкладки — открыть список';
+
+  @override
+  String get stripCloseAllTabs => 'Закрыть все вкладки';
+
+  @override
+  String get resizePaneHint => 'Потяните, чтобы изменить ширину панелей';
+
+  @override
+  String get resizeRoomsHint => 'Потяните, чтобы изменить ширину списка комнат';
 
   @override
   String get modelsProviders => 'Провайдеры';
@@ -2246,6 +2406,15 @@ class SRu extends S {
   String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';
 
   @override
+  String get actorsRetiredMark => 'отозван';
+
+  @override
+  String get actorsRetiredSection => 'Отозванные';
+
+  @override
+  String get actorsRevive => 'Вернуть';
+
+  @override
   String get actorsImageSpend => 'Расход изображений';
 
   @override
@@ -2266,14 +2435,7 @@ class SRu extends S {
 
   @override
   String get modelsClassSubscriptionAbsent =>
-      'прямых дорожек qwen / grok сегодня нет - план ChatGPT единственная subscription-дорожка';
-
-  @override
-  String get modelsClassOnDevice => 'On-device сервисы';
-
-  @override
-  String get modelsClassOnDeviceEmpty =>
-      'на этой машине нет on-device сервисов';
+      'прямой дорожки qwen сегодня нет. Grok — subscription-дорожка, и она закрыта, пока xAI не выдаст Last Answer client id.';
 
   @override
   String get modelsClassUnclassified => 'Неклассифицированные дорожки';
@@ -2296,6 +2458,141 @@ class SRu extends S {
   @override
   String get modelsChatGptSignedOut =>
       'выход выполнен - войдите через панель runtime agent-doc';
+
+  @override
+  String get modelsGrokPlan => 'план Grok';
+
+  @override
+  String get modelsGrokSignedOut =>
+      'выход выполнен - войдите через панель runtime agent-doc';
+
+  @override
+  String get modelsGrokAwaitingRegistration =>
+      'ожидает регистрации client id у xAI';
+
+  @override
+  String get modelsLocalCatalog => 'Локальные модели';
+
+  @override
+  String get modelsLocalDiskDownloaded => 'Скачана';
+
+  @override
+  String get modelsLocalDiskNot => 'Не скачана';
+
+  @override
+  String get modelsLocalMemLoaded => 'Загружена';
+
+  @override
+  String get modelsLocalMemUnloaded => 'Выгружена';
+
+  @override
+  String get modelsLocalDownload => 'Скачать';
+
+  @override
+  String get modelsLocalLoad => 'Загрузить';
+
+  @override
+  String get modelsLocalUnload => 'Выгрузить';
+
+  @override
+  String get modelsLocalDelete => 'Удалить';
+
+  @override
+  String get modelsLocalConsentTitle => 'Скачать локальную модель?';
+
+  @override
+  String modelsLocalConsentBody(String label, String size) {
+    return 'Модель $label (примерно $size) будет скачана из сети в локальный кэш моделей. Runtime никогда не скачивает модели сам.';
+  }
+
+  @override
+  String get modelsLocalConsentConfirm => 'Скачать';
+
+  @override
+  String get modelsLocalDeleteTitle => 'Удалить локальную модель?';
+
+  @override
+  String modelsLocalDeleteBody(String label) {
+    return 'Скачанные файлы модели $label будут удалены из локального кэша моделей. Удалить можно только модели, установленные менеджером.';
+  }
+
+  @override
+  String get modelsLocalDeleteRefused =>
+      'удаление отклонено - эта модель установлена не менеджером';
+
+  @override
+  String get modelsLocalPhaseChecking => 'проверка';
+
+  @override
+  String get modelsLocalPhaseDownloading => 'скачивание';
+
+  @override
+  String get modelsLocalPhaseLoading => 'загрузка';
+
+  @override
+  String get modelsLocalPhaseReady => 'готова';
+
+  @override
+  String get modelsLocalPhaseFailed => 'ошибка';
+
+  @override
+  String get modelsBudgetAvailable => 'доступно для локальных моделей';
+
+  @override
+  String get modelsBudgetFloor => 'свободный запас';
+
+  @override
+  String get modelsBudgetUnknown =>
+      'данные о памяти недоступны — load gate работает без датчика';
+
+  @override
+  String get modelsBudgetTotalUnknown =>
+      'общий объём памяти неизвестен — шкала по доступной памяти';
+
+  @override
+  String modelsBudgetNothingFits(String size, String label) {
+    return 'ни одна скачанная модель не помещается в доступную память — освободите $size, чтобы запустить $label';
+  }
+
+  @override
+  String modelsLocalFitReason(String size) {
+    return 'не хватает $size — выгрузите модель или освободите память';
+  }
+
+  @override
+  String get modelsLocalGenerating => 'генерация…';
+
+  @override
+  String modelsLocalTokPerSec(String speed) {
+    return '≈$speed ток/с';
+  }
+
+  @override
+  String get modelsLocalDetails => 'Подробнее';
+
+  @override
+  String get modelsLocalDetailsDisk => 'диск';
+
+  @override
+  String get modelsLocalDetailsMemory => 'память';
+
+  @override
+  String get modelsLocalDetailsSizeOnDisk => 'размер на диске';
+
+  @override
+  String get modelsLocalDetailsPath => 'путь снапшота';
+
+  @override
+  String get modelsLocalDetailsLastGeneration => 'последняя генерация';
+
+  @override
+  String get modelsLocalDetailsLastError => 'последняя ошибка';
+
+  @override
+  String get modelsLocalDetailsUsedBy => 'используется';
+
+  @override
+  String get modelsBuiltinsNoLifecycle => 'всегда активна';
 
   @override
   String get modelsFieldCapabilities => 'capabilities';
@@ -2397,4 +2694,52 @@ class SRu extends S {
 
   @override
   String get selectionSelectAll => 'Выбрать всё';
+
+  @override
+  String get worldChatPermsAccess => 'Доступ';
+
+  @override
+  String get worldChatPermsRead => 'Чтение';
+
+  @override
+  String get worldChatPermsSay => 'Письмо';
+
+  @override
+  String get worldChatPermsManage => 'Управление';
+
+  @override
+  String get worldChatPermsScope => 'Рабочая область';
+
+  @override
+  String get worldChatPermsScopeNone => 'нет';
+
+  @override
+  String get worldChatPermsScopeClear => 'Убрать';
+
+  @override
+  String get worldChatPermsScopeBind => 'Привязать…';
+
+  @override
+  String get worldChatPermsGrant => 'Выдать…';
+
+  @override
+  String get worldChatPermsRevoke => 'Отозвать';
+
+  @override
+  String get worldChatPermsKind => 'Тип';
+
+  @override
+  String get worldChatPermsRoot => 'Корень';
+
+  @override
+  String get worldChatPermsSubpath => 'Подпуть';
+
+  @override
+  String get worldChatPermsCaps => 'Права';
+
+  @override
+  String get worldChatPermsApply => 'Применить';
+
+  @override
+  String get worldChatPermsRootRequired => 'укажите корень';
 }

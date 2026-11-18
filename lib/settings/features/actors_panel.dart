@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/brain_health_dot.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 
 /// ADR 0023 §1a — the Settings actors pane: where a human mints actor
@@ -107,6 +109,31 @@ class _ActorsPanelState extends State<ActorsPanel> {
                   defaultOpenRouterModel: _defaultOpenRouterModel(context),
                 ),
             const _CreateActorForm(),
+            // RETIRED VISIBILITY (2026-11-18): retirement tombstones the
+            // roster, so this pane went silent about retired actors —
+            // an invisible retirement is a lie of absence. The Retired
+            // section names them (facts verbatim) with the one-tap
+            // Revive — the UI face of ADR 0120's revival law.
+            if (service.retiredRows.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                context.l10n.actorsRetiredSection,
+                key: const ValueKey('actors.retired.section'),
+                style: theme.micro.copyWith(
+                  letterSpacing: 1.2,
+                  fontWeight: FontWeight.w600,
+                  color: theme.inkMuted,
+                ),
+              ),
+              const SizedBox(height: 4),
+              for (final entry in service.retiredRows.entries)
+                _RetiredActorRow(
+                  key: ValueKey('actors.retired.${entry.key}'),
+                  actorId: entry.key,
+                  record: entry.value,
+                  service: service,
+                ),
+            ],
           ],
         ],
       ),
@@ -228,6 +255,7 @@ class _ActorRowState extends State<_ActorRow> {
                       context.read<WorldStateService?>()?.generativeDecls ??
                       const [],
                   defaultOpenRouterModel: widget.defaultOpenRouterModel,
+                  subscriptionModels: subscriptionModelsOf(context),
                 ),
                 tiersForBrain: (final ref) => reasoningTiersForBrainRef(
                   ref,
@@ -277,6 +305,121 @@ class _ActorRowState extends State<_ActorRow> {
   }
 }
 
+/// One RETIRED actor row (the Retired section, 2026-11-18): the
+/// display name, the durable facts verbatim (retiredAt · retireReason
+/// — journal field names, never localized), and the one-tap Revive
+/// through [RealmChatService.reviveActor]. A refusal renders verbatim
+/// in the row's outcome line; a success lets the service's
+/// notification move the actor back into the live roster (and out of
+/// this section).
+class _RetiredActorRow extends StatefulWidget {
+  const _RetiredActorRow({
+    required this.actorId,
+    required this.record,
+    required this.service,
+    super.key,
+  });
+
+  final String actorId;
+
+  /// The retired row's durable facts (retiredAt, retireReason).
+  final Map<String, Object?> record;
+
+  final RealmChatService service;
+
+  @override
+  State<_RetiredActorRow> createState() => _RetiredActorRowState();
+}
+
+class _RetiredActorRowState extends State<_RetiredActorRow> {
+  /// The last revive's honest outcome line (the bounce verbatim; null
+  /// on success — the row's disappearance IS the outcome).
+  String? _bounce;
+
+  Future<void> _revive() async {
+    final receipt = await widget.service.reviveActor(widget.actorId);
+    if (!mounted) return;
+    setState(() {
+      _bounce = receipt['ok'] == true
+          ? null
+          : '${receipt['bounce'] ?? 'revive_refused'}';
+    });
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final theme = context.laUi;
+    final id = widget.actorId;
+    final record = widget.record;
+    final name =
+        '${record['displayName'] ?? ''}'.trim().isNotEmpty
+            ? '${record['displayName']}'
+            : actorDisplayFallback(id);
+    final facts = [
+      '${record['retiredAt'] ?? ''}',
+      if (record['retireReason'] != null) '${record['retireReason']}',
+    ].where((final line) => line.isNotEmpty).join(' · ');
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Opacity(
+                opacity: 0.5,
+                child: ActorAvatar(
+                  profile: ActorProfile(actorId: id, displayName: name),
+                  size: 18,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.compact.copyWith(color: theme.inkMuted),
+                    ),
+                    if (facts.isNotEmpty)
+                      Text(
+                        facts,
+                        key: ValueKey('actors.retired.facts.$id'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.micro.copyWith(color: theme.inkMuted),
+                      ),
+                  ],
+                ),
+              ),
+              LaButton(
+                key: ValueKey('actors.revive.$id'),
+                variant: LaButtonVariant.ghost,
+                size: LaButtonSize.sm,
+                dense: true,
+                onPressed: () => unawaited(_revive()),
+                label: context.l10n.actorsRevive,
+              ),
+            ],
+          ),
+          if (_bounce != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 26, top: 2),
+              child: Text(
+                _bounce!,
+                key: ValueKey('actors.revive.outcome.$id'),
+                style: theme.micro.copyWith(color: theme.danger),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 /// The inline mint form: name + brain (+ role), then Create.
 class _CreateActorForm extends StatefulWidget {
   const _CreateActorForm();
@@ -304,6 +447,7 @@ class _CreateActorFormState extends State<_CreateActorForm> {
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
       paletteRungs:
           context.read<WorldStateService?>()?.generativeDecls ?? const [],
+      subscriptionModels: subscriptionModelsOf(context),
     );
     final effective = _brainRef ?? (options.isEmpty ? null : options.first.ref);
     final canCreate = _name.text.trim().isNotEmpty && effective != null;

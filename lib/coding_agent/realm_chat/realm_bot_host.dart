@@ -44,8 +44,8 @@ const _transcriptPageLimit = 128;
 /// remote assumption (256k). Pure, so the law tests without a host.
 ContextProfile botContextProfileFor(final String brainRef) =>
     brainRef.trim().startsWith('local:')
-        ? const ContextProfile(windowTokens: 32000)
-        : const ContextProfile.defaults();
+    ? const ContextProfile(windowTokens: 32000)
+    : const ContextProfile.defaults();
 
 /// How many recent thread beats the echo guard compares against.
 const echoGuardWindow = 6;
@@ -164,8 +164,10 @@ final class RealmBotHost {
   RealmBotHost({
     required this.world,
     required this.humanActorId,
-    required this.resolveOpenRouterApiKey, this.resolveCast,
+    required this.resolveOpenRouterApiKey,
+    this.resolveCast,
     this.resolveCredential,
+    this.resolveSubscription,
     this.daemonOwnsActor,
     this.debugBrainOverride,
     this.onChanged,
@@ -215,6 +217,10 @@ final class RealmBotHost {
 
   /// G6 — credential resolution for palette rungs (env name → value).
   final String? Function(String envName)? resolveCredential;
+
+  /// Subscription providers (ADR 0031). Null refuses every
+  /// `subscription:` ref — the actor names nothing this host can run.
+  final ResolveSubscription? resolveSubscription;
 
   final _loops = <String, _BotLoop>{};
 
@@ -266,6 +272,7 @@ final class RealmBotHost {
             resolveOpenRouterApiKey: resolveOpenRouterApiKey,
             resolveCast: resolveCast,
             resolveCredential: resolveCredential,
+            resolveSubscription: resolveSubscription,
           );
       if (brain == null) continue;
       wanted.add(actor.actorId);
@@ -325,6 +332,20 @@ final class RealmBotHost {
 final class _WakeLoop {
   _WakeLoop({required this.host}) : _bornAt = DateTime.now().toUtc();
   final RealmBotHost host;
+
+  /// ADR 0147 — the channel-policy admission test: a thread with no
+  /// `access` key admits everyone (today's law); a `members`-read or
+  /// `members`-say thread admits only its participants — a bot outside
+  /// them gets neither the beat nor a say that would refuse.
+  static bool _threadAdmits(Map<String, Object?> thread, String actorId) {
+    final access = thread['access'];
+    final read = access is Map ? '${access['read'] ?? 'realm'}' : 'realm';
+    final say = access is Map ? '${access['say'] ?? 'realm'}' : 'realm';
+    if (read != 'members' && say != 'members') return true;
+    final participants = (thread['participants'] as List? ?? const <Object?>[])
+        .cast<String>();
+    return participants.contains(actorId);
+  }
 
   /// Beats older than the loop's birth never dispatch (a restart never
   /// re-answers history, independent of cursor seeding order).
@@ -431,11 +452,22 @@ final class _WakeLoop {
             final author = beat['author']! as String;
             final at = DateTime.tryParse(beat['at'] as String? ?? '');
             if (at != null && at.isBefore(_bornAt)) continue;
+            // ADR 0147 — the channel-policy wake filter: a bot that may
+            // not READ the thread (closed channel, non-member) or may
+            // not SAY in it (members-say, non-member) is never woken to
+            // reply — waking it would either leak the beat or make its
+            // reply refuse. One row read per beat (the projection's
+            // cursor-fed cache); absent key → the open law, unchanged.
+            final threadRow = await host.world.projection.threadRow(threadId);
             _dispatches++;
             host.onWake?.call([beat]);
             for (final loop in host._loops.values) {
               if (loop.isStopped || loop.profile.actorId == author) continue;
               if (!addressed.contains(loop.profile.actorId)) continue;
+              if (threadRow != null &&
+                  !_threadAdmits(threadRow, loop.profile.actorId)) {
+                continue;
+              }
               // Serialize generation: one worker at a time keeps the
               // MLX engine honest and replies ordered.
               await loop.handleBeat(beat);
@@ -681,10 +713,17 @@ final class _BotLoop {
       return;
     } on BrainGenerationFailed catch (error) {
       _failureStreak++;
+      // The code alone was the 2026-11-18 blind spot: `native_engine`
+      // names the LANE, the message names the REASON (the client's
+      // StateError text — load refusal numbers, native error). The
+      // message rides the narration truncated; the room reads why.
+      final reason = error.message.length <= 140
+          ? error.message
+          : '${error.message.substring(0, 140)}…';
       _setStatus(
         _failureStreak >= 3
-            ? 'failed: ${error.code}'
-            : 'degraded: ${error.code}',
+            ? 'failed: ${error.code} · $reason'
+            : 'degraded: ${error.code} · $reason',
       );
       return;
     } on Object {

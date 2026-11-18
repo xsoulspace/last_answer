@@ -157,6 +157,103 @@ void main() {
     );
   }, timeout: const Timeout(Duration(minutes: 2)));
 
+  test('setChannelMembers: the row write IS the membership — add/remove '
+      'round trip, human permanence, honest refusals', () async {
+    final chat = await _openChat('members');
+    addTearDown(chat.dispose);
+    final worker = (await chat.service.createActor(
+      displayName: 'Worker A',
+      kind: ActorKind.model,
+      brainRef: '',
+    ))!;
+    final peer = (await chat.service.createActor(
+      displayName: 'Worker B',
+      kind: ActorKind.model,
+      brainRef: '',
+    ))!;
+    final human = chat.humanId;
+    final design =
+        (await chat.service.createChannel('design', memberIds: [
+          worker.actorId,
+        ]))!;
+    // Baseline: the creation member set with the human folded in.
+    expect(
+      design.memberIds,
+      <String>[...<String>[human, worker.actorId]..sort()],
+    );
+
+    // Success notifies, dedupes, and lands in the ROW's participants
+    // (ADR 0146: participants IS the membership — the registry mirror
+    // rode the W3 flip, no registry row exists).
+    var notifications = 0;
+    chat.service.addListener(() => notifications++);
+    expect(
+      await chat.service.setChannelMembers(
+        channelId: design.channelId,
+        memberIds: [worker.actorId, peer.actorId, worker.actorId],
+      ),
+      isTrue,
+    );
+    expect(notifications, greaterThan(0));
+    final added = chat.service.channelByThreadId(design.threadId)!;
+    expect(
+      added.memberIds,
+      <String>[...<String>[human, worker.actorId, peer.actorId]..sort()],
+    );
+    final threadRow = await chat.world.store.read('threads', design.threadId);
+    expect(threadRow?['participants'], added.memberIds);
+    expect(await chat.world.store.read('channels', design.channelId), isNull,
+        reason: 'the mirror rode the W3 flip');
+
+    // The human is PERMANENT in channels (owner law, 2026-11-18): a set
+    // without the human folds them back in.
+    expect(
+      await chat.service.setChannelMembers(
+        channelId: design.channelId,
+        memberIds: <String>[peer.actorId],
+      ),
+      isTrue,
+    );
+    final minusWorker = chat.service.channelByThreadId(design.threadId)!;
+    expect(minusWorker.memberIds, contains(human));
+    expect(minusWorker.memberIds, isNot(contains(worker.actorId)));
+
+    // BOTH id spellings resolve (the threadId-as-id channel).
+    expect(
+      await chat.service.setChannelMembers(
+        channelId: design.threadId,
+        memberIds: <String>[worker.actorId, peer.actorId],
+      ),
+      isTrue,
+    );
+    expect(
+      chat.service.channelByThreadId(design.threadId)!.memberIds,
+      <String>[...<String>[human, worker.actorId, peer.actorId]..sort()],
+    );
+
+    // An unknown id answers false — honest absence, never a throw.
+    expect(
+      await chat.service.setChannelMembers(
+        channelId: 'channel-000000000000',
+        memberIds: <String>[peer.actorId],
+      ),
+      isFalse,
+    );
+
+    // An empty set is legal: the human-only channel (the seed's shape).
+    expect(
+      await chat.service.setChannelMembers(
+        channelId: design.channelId,
+        memberIds: const <String>[],
+      ),
+      isTrue,
+    );
+    expect(
+      chat.service.channelByThreadId(design.threadId)!.memberIds,
+      <String>[human],
+    );
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
   test('closeChannel: archives without destroying; the selection '
       "releases only for the closed channel's own thread", () async {
     final chat = await _openChat('close');
@@ -727,5 +824,30 @@ void main() {
     row = await chat.world.store.read('threads', design.threadId);
     expect(row?.containsKey('icon'), isFalse);
     expect(chat.service.channels.single.icon, isNull);
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('ADR 0146 W3 dormancy: the fallback cache and the registry '
+      'collection stay empty; the row view carries the channel', () async {
+    final chat = await _openChat('dormancy');
+    addTearDown(chat.dispose);
+    // The boot is the dormancy gate: ensureReady ran the heal (a
+    // no-op scan over the empty collection) and left the W3 flip
+    // standing.
+    await chat.service.ensureReady();
+    final design = (await chat.service.createChannel('design'))!;
+
+    // The flip: the LEGACY fallback cache answers EMPTY...
+    expect(chat.service.registryChannels, isEmpty);
+    // ...and the retained `channels` collection stays unwritten (the
+    // row IS the channel — nothing mirrored, nothing deleted).
+    expect(await chat.world.store.scan('channels'), isEmpty);
+
+    // The row view still carries the channel from its own row — the
+    // UI's truth never depended on the dormant registry.
+    expect(chat.service.channels, hasLength(1));
+    expect(chat.service.channels.single.name, 'design');
+    expect(chat.service.channels.single.threadId, design.threadId);
+    expect(chat.service.channels.single.channelId, design.threadId);
+    expect(chat.service.channelByAnyId(design.threadId)?.name, 'design');
   }, timeout: const Timeout(Duration(minutes: 2)));
 }

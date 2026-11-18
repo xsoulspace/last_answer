@@ -7,6 +7,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_profile_editor.dart';
 import 'package:lastanswer/coding_agent/realm_chat/beat_linkify.dart';
+import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
@@ -15,6 +16,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/shell/landing_inbox.dart';
@@ -22,7 +24,7 @@ import 'package:lastanswer/shell/project_scope_picker.dart';
 import 'package:lastanswer/shell/shell_scope.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
-    show mediaAttachmentOf, resolveConversationMediaPath;
+    show ActorGrantCaps, ActorScopeGrant, grantScopePathOf, mediaAttachmentOf, resolveConversationMediaPath;
 
 /// ADR 0024 — the world chat surface: the human-facing projection of the
 /// realm's durable threads. Text-native, one grid: ONE focused
@@ -1789,6 +1791,7 @@ class _ConversationPaneState extends State<_ConversationPane> {
     if (!mounted) return;
     setState(() {});
   }
+
   /// everything-from-LA decision): [RealmChatService.grantAccess] runs
   /// the host's canonical `grantProjectAccess` with the VERIFY re-read,
   /// and only a VERIFIED grant retries the refused order — exactly
@@ -2481,33 +2484,41 @@ class _ConversationHeaderState extends State<_ConversationHeader> {
       return;
     }
     setState(() {
+      // The base-type law for floats: this card rides an overlay, above
+      // LaChrome's body DefaultTextStyle — MaterialApp's error style (the
+      // yellow double underline) would otherwise bleed into its texts
+      // (the kit's LaDialog law, applied app-side).
+      final theme = context.laUi;
       _cardEntry = OverlayEntry(
-        builder: (final overlayContext) => Stack(
-          children: [
-            Positioned.fill(
-              child: ModalBarrier(
-                color: const Color(0x00000000),
-                onDismiss: () {
-                  if (mounted) setState(_removeCard);
-                },
-              ),
-            ),
-            Positioned.fill(
-              child: CompositedTransformFollower(
-                link: _cardLink,
-                // The HUD's identity cluster sits at the LEFT edge, so
-                // the card hangs from its bottom-left corner rightward
-                // (the right-anchored recipe belongs to the picker on
-                // the strip's right edge — one law, two edges).
-                targetAnchor: Alignment.bottomLeft,
-                offset: const Offset(0, 6),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: _ActorCard(header: widget, onClose: _removeCard),
+        builder: (final overlayContext) => DefaultTextStyle(
+          style: theme.body,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ModalBarrier(
+                  color: const Color(0x00000000),
+                  onDismiss: () {
+                    if (mounted) setState(_removeCard);
+                  },
                 ),
               ),
-            ),
-          ],
+              Positioned.fill(
+                child: CompositedTransformFollower(
+                  link: _cardLink,
+                  // The HUD's identity cluster sits at the LEFT edge, so
+                  // the card hangs from its bottom-left corner rightward
+                  // (the right-anchored recipe belongs to the picker on
+                  // the strip's right edge — one law, two edges).
+                  targetAnchor: Alignment.bottomLeft,
+                  offset: const Offset(0, 6),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: _ActorCard(header: widget, onClose: _removeCard),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       Overlay.of(context).insert(_cardEntry!);
@@ -3079,6 +3090,7 @@ class _ActorCardState extends State<_ActorCard> {
               brainOptions: availableBrainOptions(
                 defaultOpenRouterModel: _defaultOpenRouterModel(context),
                 paletteRungs: worldState?.generativeDecls ?? const [],
+                subscriptionModels: subscriptionModelsOf(context),
               ),
               tiersForBrain: (final ref) => reasoningTiersForBrainRef(
                 ref,
@@ -3484,10 +3496,7 @@ class _MessageRowState extends State<_MessageRow> {
     // the world home; absolute v1 records as-is) — unresolvable HERE
     // renders the honest placeholder, never a guess.
     String? mediaRoot(Object? path) => path is String
-        ? resolveConversationMediaPath(
-            path,
-            worldHome: widget.mediaWorldHome,
-          )
+        ? resolveConversationMediaPath(path, worldHome: widget.mediaWorldHome)
         : null;
     final mediaCards = [
       for (final entry in widget.attachments)
@@ -3822,9 +3831,7 @@ class _WorkThreadCard extends StatelessWidget {
                       link.projectRoot.isEmpty
                           ? l10n.worldChatThreadKind
                           : l10n.worldChatWorkThreadKind,
-                      style: laUi.micro.copyWith(
-                        color: context.shellMuted,
-                      ),
+                      style: laUi.micro.copyWith(color: context.shellMuted),
                     ),
                     const Spacer(),
                     _StripButton(
@@ -4157,10 +4164,7 @@ class _MentionRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            item.kind.name,
-            style: LaTokens.mono(9.5, context.la.inkQuiet),
-          ),
+          Text(item.kind.name, style: LaTokens.mono(9.5, context.la.inkQuiet)),
         ],
       ),
     ),
@@ -4222,9 +4226,7 @@ class _AttachDialogState extends State<_AttachDialog> {
             children: [
               Text(
                 l10n.worldChatAttach,
-                style: laUi.body.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: laUi.body.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               LaField(
@@ -4244,9 +4246,7 @@ class _AttachDialogState extends State<_AttachDialog> {
                         child: Text(
                           l10n.worldChatNoMatches,
                           textAlign: TextAlign.center,
-                          style: laUi.micro.copyWith(
-                            color: context.shellMuted,
-                          ),
+                          style: laUi.micro.copyWith(color: context.shellMuted),
                         ),
                       )
                     : ListView(
@@ -4422,6 +4422,7 @@ class _ChannelMetaRow extends StatelessWidget {
         context: context,
         builder: (final _) => _ChannelPermissionsDialog(
           service: service,
+          channel: channel,
           memberIds: participants,
         ),
       );
@@ -4433,7 +4434,7 @@ class _ChannelMetaRow extends StatelessWidget {
     alignment: Alignment.topRight,
     builder: (final dialogContext) => _ChannelMembersDialog(
       service: service,
-      memberIds: participants,
+      channel: channel,
       onTapMember: (final actorId) {
         Navigator.of(dialogContext).pop();
         onTapActor?.call(actorId);
@@ -4488,19 +4489,50 @@ class _ChannelMetaRow extends StatelessWidget {
   }
 }
 
-/// The channel's permissions dialog (the view_people grant-row pattern
-/// over the service's own verbs): every member's durable grant set
-/// rendered verbatim (the host's projection — ink is data, paths are
-/// facts), plus the realm's pending access requests with the one-tap
-/// approve ([RealmChatService.grantAccess], whose VERIFY re-read is the
-/// honest outcome). Calm chrome: mono rows, no ceremony.
+/// The channel's permissions dialog — ADR 0147: the channel's whole
+/// permission fact in one calm surface (mono rows, no ceremony).
+///
+/// * ACCESS — the thread row's `access` policy as quiet strip toggles
+///   over [RealmChatService.setChannelAccess]: `read`/`say` ∈ {realm,
+///   members} (a CLOSED channel — read: members — hides its beats from
+///   non-members; joining rides the request plane) and `manage` ∈
+///   {realm, members, owners} (the default `realm` is today's ungated
+///   law — the values are FACTS and stay unlocalized mono, like
+///   `granted`/`pending`). The owners list renders verbatim; it is
+///   verb-managed (realm_channel_access {action: policy}), not a UI
+///   editor — yet.
+/// * WORK SCOPE — the channel's `workScope` (kind/root/subpath/caps)
+///   verbatim with Clear, and Bind… over the shared project scope
+///   picker: every member DERIVES the scope as a grant while a member
+///   (the Discord-side model, owner decision 2026-11-18), and leaving
+///   sheds it with nothing to chase. The seal stays the sandbox
+///   (ADR 0129) — the scope only widens what members may seal into.
+/// * MEMBERS' GRANTS — every member's effective scope grants
+///   ([RealmChatService.listScopeGrants]: legacy ∪ ledger ∪ conferred,
+///   caps + provenance named) with per-row Revoke, and the realm's
+///   pending access requests with the one-tap approve (the pre-0147
+///   behavior, preserved).
+/// * GRANT — a member row's "grant…" affordance opens the compact form
+///   (kind project/folder, root prefilled from the scope picker,
+///   subpath, caps checkboxes, optional image.spend ceiling) over
+///   [RealmChatService.grantScope] — folder grain included, the ask
+///   that started ADR 0147.
+///
+/// Keys: `worldchat.meta.perms.dialog` (the box), the existing
+/// `worldchat.meta.perms.grants.<id>` grant rows, `.pending.<i>` /
+/// `.approve.<i>` request rows, `.outcome`, `.close`; the new
+/// `.access.<key>.<value>` policy toggles, `.scope.*` work-scope rows,
+/// `.ledger.<id>.<n>` member scope rows with `.ledger.<id>.<n>.revoke`,
+/// and the `.grant.*` form keys.
 class _ChannelPermissionsDialog extends StatefulWidget {
   const _ChannelPermissionsDialog({
     required this.service,
+    required this.channel,
     required this.memberIds,
   });
 
   final RealmChatService service;
+  final ChannelInfo channel;
   final List<String> memberIds;
 
   @override
@@ -4508,11 +4540,36 @@ class _ChannelPermissionsDialog extends StatefulWidget {
       _ChannelPermissionsDialogState();
 }
 
+/// The discrete cap choices the grant form offers (the vocabulary is
+/// the harness's ActorGrantCaps; the value-bearing `image.spend:<usd>`
+/// rides its own numeric field).
+const _kGrantCapChoices = <String>[
+  'fs.read',
+  'fs.write',
+  'fs.run',
+  'vcs.commit',
+  'world.verbs',
+  'channel.manage',
+  'palette.apply',
+  'models.selfbind',
+];
+
 class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
-  Map<String, List<String>> _grants = const <String, List<String>>{};
+  Map<String, Object?> _access = const <String, Object?>{};
+  Map<String, Object?>? _workScope;
+  Map<String, List<ActorScopeGrant>> _scopes =
+      const <String, List<ActorScopeGrant>>{};
   List<Map<String, Object?>> _pending = const <Map<String, Object?>>[];
   var _loading = true;
   var _busy = false;
+
+  /// The grant form: which member it edits, its fields, its caps.
+  String? _grantingFor;
+  var _formKind = 'project';
+  final _formRoot = TextEditingController();
+  final _formSubpath = TextEditingController();
+  final _formSpend = TextEditingController();
+  final _formCaps = <String>{'fs.read'};
 
   /// The last action's honest outcome line (the host's own message,
   /// verbatim — never a paraphrase, never a guess).
@@ -4524,12 +4581,29 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
     unawaited(_reload());
   }
 
+  @override
+  void dispose() {
+    _formRoot.dispose();
+    _formSubpath.dispose();
+    _formSpend.dispose();
+    super.dispose();
+  }
+
   Future<void> _reload() async {
-    final grants = <String, List<String>>{};
+    final scopes = <String, List<ActorScopeGrant>>{};
     var pending = const <Map<String, Object?>>[];
+    Map<String, Object?> access = const <String, Object?>{};
+    Map<String, Object?>? workScope;
     try {
+      final world = widget.service.world;
+      final row = world == null
+          ? null
+          : await world.store.read('threads', widget.channel.threadId);
+      access = (row?['access'] as Map?)?.cast<String, Object?>() ??
+          const <String, Object?>{};
+      workScope = (row?['workScope'] as Map?)?.cast<String, Object?>();
       for (final id in widget.memberIds) {
-        grants[id] = await widget.service.listGrants(id);
+        scopes[id] = await widget.service.listScopeGrants(id);
       }
       pending = await widget.service.pendingAccessRequests();
     } on Object catch (error) {
@@ -4539,10 +4613,144 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
     }
     if (!mounted) return;
     setState(() {
-      _grants = grants;
+      _access = access;
+      _workScope = workScope;
+      _scopes = scopes;
       _pending = pending;
       _loading = false;
     });
+  }
+
+  Future<void> _setPolicy(final String key, final String value) async {
+    setState(() => _busy = true);
+    final channelId = widget.channel.channelId;
+    final ok = switch (key) {
+      'read' => await widget.service.setChannelAccess(
+        channelId: channelId,
+        read: value,
+      ),
+      'say' => await widget.service.setChannelAccess(
+        channelId: channelId,
+        say: value,
+      ),
+      _ => await widget.service.setChannelAccess(
+        channelId: channelId,
+        manage: value,
+      ),
+    };
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = ok ? null : (widget.service.error ?? 'policy_refused');
+    });
+    await _reload();
+  }
+
+  Future<void> _bindScope() async {
+    final l10n = context.l10n;
+    final root = await pickProjectScope(
+      context,
+      service: widget.service,
+      title: l10n.worldChatPermsScopeBind,
+      optionKeyPrefix: 'worldchat.meta.perms.scope.option',
+      listKey: 'worldchat.meta.perms.scope.options',
+    );
+    if (root == null || root.isEmpty) return;
+    final ok = await widget.service.setChannelWorkScope(
+      channelId: widget.channel.channelId,
+      kind: 'project',
+      root: root,
+    );
+    if (!mounted) return;
+    setState(() {
+      _outcome = ok ? null : (widget.service.error ?? 'scope_refused');
+    });
+    await _reload();
+  }
+
+  Future<void> _clearScope() async {
+    final ok = await widget.service.setChannelWorkScope(
+      channelId: widget.channel.channelId,
+      kind: null,
+      root: null,
+    );
+    if (!mounted) return;
+    setState(() {
+      _outcome = ok ? null : (widget.service.error ?? 'scope_refused');
+    });
+    await _reload();
+  }
+
+  void _openGrantForm(final String actorId) {
+    setState(() {
+      _grantingFor = actorId;
+      _formKind = 'project';
+      _formRoot.clear();
+      _formSubpath.clear();
+      _formSpend.clear();
+      _formCaps
+        ..clear()
+        ..add('fs.read');
+    });
+  }
+
+  Future<void> _pickFormRoot() async {
+    final l10n = context.l10n;
+    final root = await pickProjectScope(
+      context,
+      service: widget.service,
+      title: l10n.worldChatPermsRoot,
+      optionKeyPrefix: 'worldchat.meta.perms.grant.root.option',
+      listKey: 'worldchat.meta.perms.grant.root.options',
+    );
+    if (root == null || root.isEmpty) return;
+    _formRoot.text = root;
+  }
+
+  Future<void> _applyGrant() async {
+    final l10n = context.l10n;
+    final actor = _grantingFor;
+    final root = _formRoot.text.trim();
+    if (actor == null) return;
+    if (root.isEmpty) {
+      setState(() => _outcome = l10n.worldChatPermsRootRequired);
+      return;
+    }
+    final subpath = _formKind == 'folder'
+        ? _formSubpath.text.trim()
+        : null;
+    final caps = _formCaps.toList()..sort();
+    final spend = double.tryParse(_formSpend.text.trim().replaceAll(',', '.'));
+    if (spend != null && spend > 0) caps.add('image.spend:$spend');
+    setState(() => _busy = true);
+    final result = await widget.service.grantScope(
+      actorId: actor,
+      kind: _formKind,
+      root: root,
+      subpath: (subpath == null || subpath.isEmpty) ? null : subpath,
+      caps: caps.isEmpty ? null : caps,
+    );
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = result.message;
+      if (result.granted) _grantingFor = null;
+    });
+    await _reload();
+  }
+
+  Future<void> _revoke(final String actorId, final String path) async {
+    setState(() => _busy = true);
+    final result = await widget.service.revokeScope(
+      actorId: actorId,
+      path: path,
+    );
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      _outcome = result.message;
+    });
+    await _reload();
   }
 
   Future<void> _approve(final Map<String, Object?> row) async {
@@ -4559,6 +4767,50 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
     await _reload();
   }
 
+  /// One policy strip row: the label, then the options as quiet mono
+  /// toggles — the CURRENT value renders as plain fact text (selected
+  /// states are facts, not buttons), the others as strip buttons.
+  Widget _policyRow(
+    final BuildContext context, {
+    required final String label,
+    required final String key,
+    required final String current,
+    required final List<String> options,
+  }) {
+    String optionKey(final String value) =>
+        'worldchat.meta.perms.access.$key.$value';
+    return Padding(
+      key: ValueKey('worldchat.meta.perms.access.$key'),
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 64,
+            child: Text(label, style: context.laUi.compact),
+          ),
+          const SizedBox(width: 8),
+          for (final option in options)
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: current == option
+                  ? Text(
+                      option,
+                      key: ValueKey('${optionKey(option)}.on'),
+                      style: LaTokens.mono(10.5, context.la.ink),
+                    )
+                  : _StripButton(
+                      keyName: optionKey(option),
+                      label: option,
+                      onTap: _busy ? () {} : () => unawaited(
+                        _setPolicy(key, option),
+                      ),
+                    ),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
@@ -4566,8 +4818,14 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
     final service = widget.service;
     String nameOf(final String id) =>
         service.roster?.get(id)?.displayName ?? actorDisplayFallback(id);
+    final read = '${_access['read'] ?? 'realm'}';
+    final say = '${_access['say'] ?? 'realm'}';
+    final manage = '${_access['manage'] ?? 'realm'}';
+    final owners = (_access['owners'] as List? ?? const <Object?>[])
+        .cast<String>()
+        .toList()..sort();
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 460, maxHeight: 520),
+      constraints: const BoxConstraints(maxWidth: 520, maxHeight: 620),
       child: LaBox(
         key: const ValueKey('worldchat.meta.perms.dialog'),
         color: context.shellRaised,
@@ -4587,9 +4845,7 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                   children: [
                     Text(
                       l10n.worldChatPermsTitle,
-                      style: laUi.body.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: laUi.body.copyWith(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
                     Flexible(
@@ -4597,15 +4853,127 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         children: [
-                          for (final id in widget.memberIds)
+                          // ---- ACCESS ----
+                          Text(
+                            l10n.worldChatPermsAccess,
+                            style: LaTokens.mono(10.5, context.la.inkMuted),
+                          ),
+                          const SizedBox(height: 2),
+                          _policyRow(
+                            context,
+                            label: l10n.worldChatPermsRead,
+                            key: 'read',
+                            current: read,
+                            options: const ['realm', 'members'],
+                          ),
+                          _policyRow(
+                            context,
+                            label: l10n.worldChatPermsSay,
+                            key: 'say',
+                            current: say,
+                            options: const ['realm', 'members'],
+                          ),
+                          _policyRow(
+                            context,
+                            label: l10n.worldChatPermsManage,
+                            key: 'manage',
+                            current: manage,
+                            options: const ['realm', 'members', 'owners'],
+                          ),
+                          if (owners.isNotEmpty)
+                            Padding(
+                              key: const ValueKey(
+                                'worldchat.meta.perms.owners',
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 3,
+                              ),
+                              child: Text(
+                                owners.map(nameOf).join(', '),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: LaTokens.mono(
+                                  10.5,
+                                  context.la.inkMuted,
+                                ),
+                              ),
+                            ),
+                          // ---- WORK SCOPE ----
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.worldChatPermsScope,
+                            style: LaTokens.mono(10.5, context.la.inkMuted),
+                          ),
+                          const SizedBox(height: 2),
+                          if (_workScope == null)
+                            Text(
+                              l10n.worldChatPermsScopeNone,
+                              key: const ValueKey(
+                                'worldchat.meta.perms.scope.none',
+                              ),
+                              style: LaTokens.mono(10.5, context.la.inkMuted),
+                            )
+                          else
+                            Padding(
+                              key: const ValueKey(
+                                'worldchat.meta.perms.scope.bound',
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 3,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      [
+                                        '${_workScope!['kind'] ?? 'project'}',
+                                        grantScopePathOf(_workScope!),
+                                        if (_workScope!['caps'] is List)
+                                          (_workScope!['caps']! as List)
+                                              .join(' '),
+                                      ].join(' '),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: LaTokens.mono(
+                                        10.5,
+                                        context.la.ink,
+                                      ),
+                                    ),
+                                  ),
+                                  _StripButton(
+                                    keyName:
+                                        'worldchat.meta.perms.scope.clear',
+                                    label: l10n.worldChatPermsScopeClear,
+                                    danger: true,
+                                    onTap: _busy
+                                        ? () {}
+                                        : () => unawaited(_clearScope()),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: _StripButton(
+                                keyName: 'worldchat.meta.perms.scope.bind',
+                                label: l10n.worldChatPermsScopeBind,
+                                onTap: _busy
+                                    ? () {}
+                                    : () => unawaited(_bindScope()),
+                              ),
+                            ),
+                          ),
+                          // ---- MEMBERS' GRANTS ----
+                          const SizedBox(height: 8),
+                          for (final id in widget.memberIds) ...[
                             Padding(
                               key: ValueKey('worldchat.meta.perms.grants.$id'),
-                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.only(top: 6),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width: 120,
+                                  Expanded(
                                     child: Text(
                                       nameOf(id),
                                       maxLines: 1,
@@ -4613,20 +4981,276 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
                                       style: laUi.compact,
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Text(
-                                      (_grants[id] ?? const <String>[]).isEmpty
-                                          ? '—'
-                                          : (_grants[id]!).join('\n'),
-                                      style: LaTokens.mono(
-                                        10.5,
-                                        context.la.ink,
+                                  _StripButton(
+                                    keyName:
+                                        'worldchat.meta.perms.grant.$id',
+                                    label: l10n.worldChatPermsGrant,
+                                    onTap: _busy
+                                        ? () {}
+                                        : () => _openGrantForm(id),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if ((_scopes[id] ?? const <ActorScopeGrant>[])
+                                .isEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                child: Text(
+                                  '—',
+                                  style: LaTokens.mono(
+                                    10.5,
+                                    context.la.inkMuted,
+                                  ),
+                                ),
+                              )
+                            else
+                              for (var i = 0; i < _scopes[id]!.length; i++)
+                                Padding(
+                                  key: ValueKey(
+                                    'worldchat.meta.perms.ledger.$id.$i',
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 2,
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          [
+                                            _scopes[id]![i].path,
+                                            if (_scopes[id]![i].caps != null)
+                                              _scopes[id]![i].caps!.join(' '),
+                                            if (_scopes[id]![i].via != null)
+                                              _scopes[id]![i].via!,
+                                          ].join('  '),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: LaTokens.mono(
+                                            10.5,
+                                            context.la.ink,
+                                          ),
+                                        ),
                                       ),
+                                      _StripButton(
+                                        keyName:
+                                        'worldchat.meta.perms.ledger'
+                                        '.$id.$i.revoke',
+                                        label: l10n.worldChatPermsRevoke,
+                                        danger: true,
+                                        onTap: _busy
+                                            ? () {}
+                                            : () => unawaited(
+                                              _revoke(id, _scopes[id]![i].path),
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          ],
+                          if (_grantingFor != null) ...[
+                            const SizedBox(height: 8),
+                            Container(
+                              key: const ValueKey(
+                                'worldchat.meta.perms.grant.form',
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: context.shellHairline,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${l10n.worldChatPermsGrant}'
+                                    ' · ${nameOf(_grantingFor!)}',
+                                    style: laUi.compact,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        l10n.worldChatPermsKind,
+                                        style: laUi.compact,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      for (final kind in const [
+                                        'project',
+                                        'folder',
+                                      ])
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 6,
+                                          ),
+                                          child: _formKind == kind
+                                              ? Text(
+                                                  kind,
+                                                  key: ValueKey(
+                                                    'worldchat.meta.perms'
+                                                    '.grant.kind.$kind.on',
+                                                  ),
+                                                  style: LaTokens.mono(
+                                                    10.5,
+                                                    context.la.ink,
+                                                  ),
+                                                )
+                                              : _StripButton(
+                                                  keyName:
+                                                      'worldchat.meta.perms'
+                                                      '.grant.kind.$kind',
+                                                  label: kind,
+                                                  onTap: () => setState(
+                                                    () => _formKind = kind,
+                                                  ),
+                                                ),
+                                        ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        l10n.worldChatPermsRoot,
+                                        style: laUi.compact,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: LaField(
+                                          key: const ValueKey(
+                                            'worldchat.meta.perms.grant.root',
+                                          ),
+                                          controller: _formRoot,
+                                          placeholder: '/path/to/project',
+                                          style: LaTokens.mono(
+                                            10.5,
+                                            context.la.ink,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      _StripButton(
+                                        keyName:
+                                        'worldchat.meta.perms'
+                                        '.grant.root.pick',
+                                        label: '…',
+                                        onTap: _busy
+                                            ? () {}
+                                            : () => unawaited(_pickFormRoot()),
+                                      ),
+                                    ],
+                                  ),
+                                  if (_formKind == 'folder') ...[
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          l10n.worldChatPermsSubpath,
+                                          style: laUi.compact,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: LaField(
+                                            key: const ValueKey(
+                                          'worldchat.meta.perms'
+                                          '.grant.subpath',
+                                            ),
+                                            controller: _formSubpath,
+                                            placeholder: 'packages/app',
+                                            style: LaTokens.mono(
+                                              10.5,
+                                              context.la.ink,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    l10n.worldChatPermsCaps,
+                                    style: laUi.compact,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Wrap(
+                                    spacing: 6,
+                                    runSpacing: 4,
+                                    children: [
+                                      for (final cap in _kGrantCapChoices)
+                                        _formCaps.contains(cap)
+                                            ? Text(
+                                                cap,
+                                                key: ValueKey(
+                                                  'worldchat.meta.perms'
+                                                  '.grant.cap.$cap.on',
+                                                ),
+                                                style: LaTokens.mono(
+                                                  10.5,
+                                                  context.la.ink,
+                                                ),
+                                              )
+                                            : _StripButton(
+                                              keyName:
+                                                  'worldchat.meta.perms'
+                                                  '.grant.cap.$cap',
+                                              label: cap,
+                                              onTap: () => setState(
+                                                () => _formCaps.add(cap),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        ActorGrantCaps.imageSpendPrefix,
+                                        style: LaTokens.mono(
+                                          10.5,
+                                          context.la.inkMuted,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: LaField(
+                                          key: const ValueKey(
+                                            'worldchat.meta.perms.grant.spend',
+                                          ),
+                                          controller: _formSpend,
+                                          placeholder: '—',
+                                          style: LaTokens.mono(
+                                            10.5,
+                                            context.la.ink,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: LaButton(
+                                      key: const ValueKey(
+                                        'worldchat.meta.perms.grant.apply',
+                                      ),
+                                      variant: LaButtonVariant.primary,
+                                      size: LaButtonSize.sm,
+                                      onPressed: _busy
+                                          ? null
+                                          : () => unawaited(_applyGrant()),
+                                      label: l10n.worldChatPermsApply,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
+                          ],
                           if (_pending.isNotEmpty) ...[
                             const SizedBox(height: 8),
                             Text(
@@ -4700,79 +5324,318 @@ class _ChannelPermissionsDialogState extends State<_ChannelPermissionsDialog> {
   }
 }
 
-/// The channel's members popover: the participant list as a small
-/// top-right panel; one tap closes it and hands the actor id to the
-/// host's [WorldChatSurface.onTapActor] callback.
-class _ChannelMembersDialog extends StatelessWidget {
+/// The channel's members popover — the MEMBERSHIP MANAGER (one fact,
+/// one surface): the member list, the quiet per-row removal verb
+/// (non-human members only — the human is PERMANENT in channels), the
+/// add CTA over the shared [ChannelMemberPicker], and the mono outcome
+/// line carrying the verb's named refusals verbatim. A member row's
+/// tap still closes the popover into the actor's info surface (the
+/// Wave E law); the removal verb rides beside it, never through it.
+///
+/// Keys: `worldchat.meta.members.popover` (the box),
+/// `worldchat.meta.member.<id>` (the row tap — unchanged),
+/// `worldchat.meta.member.<id>.remove` (the removal verb),
+/// `worldchat.meta.members.add` (the CTA), `worldchat.meta.members.
+/// pick|pick.search|pick.row.<id>|pick.back|pick.confirm` (the picker
+/// state) and `worldchat.meta.members.outcome` (the outcome line).
+class _ChannelMembersDialog extends StatefulWidget {
   const _ChannelMembersDialog({
     required this.service,
-    required this.memberIds,
+    required this.channel,
     required this.onTapMember,
   });
 
   final RealmChatService service;
-  final List<String> memberIds;
+  final ChannelInfo channel;
   final ValueChanged<String> onTapMember;
+
+  @override
+  State<_ChannelMembersDialog> createState() => _ChannelMembersDialogState();
+}
+
+class _ChannelMembersDialogState extends State<_ChannelMembersDialog> {
+  var _picking = false;
+  final Set<String> _picked = <String>{};
+  String? _outcome;
+  var _outcomeError = false;
 
   @override
   Widget build(final BuildContext context) {
     final laUi = context.laUi;
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 260, maxHeight: 360),
-      child: LaBox(
-        key: const ValueKey('worldchat.meta.members.popover'),
-        color: context.shellRaised,
-        floating: true,
-        radius: BorderRadius.circular(ShellTokens.radius + 2),
-        border: BorderSide(color: context.shellHairline),
-        // The kit dialog insets 24 all around; the Material draft's
-        // 110px top inset rides the extra 86 here.
-        margin: const EdgeInsets.only(top: 86),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-          child: ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            children: [
-              for (final id in memberIds)
-                LaPressable(
-                  key: ValueKey('worldchat.meta.member.$id'),
-                  onTap: () => onTapMember(id),
-                  scaleOnPress: false,
-                  radius: BorderRadius.circular(ShellTokens.radius),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 6,
-                  ),
-                  child: Row(
-                    children: [
-                      ActorAvatar(
-                        profile:
-                            service.roster?.get(id) ??
-                            ActorProfile(
-                              actorId: id,
-                              displayName: actorDisplayFallback(id),
-                            ),
-                        size: 18,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          service.roster?.get(id)?.displayName ??
-                              actorDisplayFallback(id),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: laUi.compact,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
+    return ListenableBuilder(
+      listenable: widget.service,
+      builder: (final context, final _) {
+        // The channel re-reads per build: a membership change (this
+        // popover's own verb, or an agent's through the MCP verb)
+        // lands here without a stale list.
+        final channel =
+            widget.service.channelByThreadId(widget.channel.threadId) ??
+            widget.channel;
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 280, maxHeight: 360),
+          child: LaBox(
+            key: const ValueKey('worldchat.meta.members.popover'),
+            color: context.shellRaised,
+            floating: true,
+            radius: BorderRadius.circular(ShellTokens.radius + 2),
+            border: BorderSide(color: context.shellHairline),
+            // The kit dialog insets 24 all around; the Material draft's
+            // 110px top inset rides the extra 86 here.
+            margin: const EdgeInsets.only(top: 86),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+              child: _picking
+                  ? _pickerBody(context, channel)
+                  : _listBody(context, channel),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// The member list: the count fact on top, one row per member, the
+  /// add CTA at the end, the outcome line under it.
+  Widget _listBody(final BuildContext context, final ChannelInfo channel) {
+    final l10n = context.l10n;
+    final laUi = context.laUi;
+    final roster = widget.service.roster;
+    final human = widget.service.humanActorId;
+    final members = channel.memberIds;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+          child: Text(
+            l10n.worldChatMembers(members.length),
+            style: laUi.compact.copyWith(color: context.shellMuted),
           ),
         ),
-      ),
+        Flexible(
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: members.length,
+            itemBuilder: (final context, final index) =>
+                _memberRow(context, channel, members[index], roster, human),
+          ),
+        ),
+        const SizedBox(height: 4),
+        // The add CTA (the access-request grammar): quiet accent text
+        // with a 13px plus, swapping the body to the picker state.
+        LaPressable(
+          key: const ValueKey('worldchat.meta.members.add'),
+          radius: BorderRadius.circular(6),
+          scaleOnPress: false,
+          onTap: () => setState(() {
+            _picking = true;
+            _picked.clear();
+          }),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            child: Row(
+              children: [
+                Icon(Icons.add, size: 13, color: context.shellMuted),
+                const SizedBox(width: 6),
+                Text(
+                  l10n.worldChatMembersAdd,
+                  style: laUi.micro.copyWith(
+                    color: context.la.accent,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (_outcome != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+            child: Text(
+              _outcome!,
+              key: const ValueKey('worldchat.meta.members.outcome'),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: LaTokens.mono(
+                10,
+                _outcomeError ? context.la.danger : context.la.inkMuted,
+              ),
+            ),
+          ),
+      ],
     );
+  }
+
+  /// One member row: the tap-into-actor pressable (the frozen Wave E
+  /// key) with the quiet removal verb beside it — never through it.
+  /// Human members carry no removal verb: permanence is the owner law.
+  Widget _memberRow(
+    final BuildContext context,
+    final ChannelInfo channel,
+    final String id,
+    final ActorRoster? roster,
+    final String? human,
+  ) {
+    final profile =
+        roster?.get(id) ??
+        ActorProfile(actorId: id, displayName: actorDisplayFallback(id));
+    final removable = profile.kind != ActorKind.human && id != human;
+    return Row(
+      children: [
+        Expanded(
+          child: LaPressable(
+            key: ValueKey('worldchat.meta.member.$id'),
+            onTap: () => widget.onTapMember(id),
+            scaleOnPress: false,
+            radius: BorderRadius.circular(ShellTokens.radius),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Row(
+              children: [
+                ActorAvatar(profile: profile, size: 18),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    profile.displayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.laUi.compact,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (removable)
+          LaButton.icon(
+            key: ValueKey('worldchat.meta.member.$id.remove'),
+            tooltip: context.l10n.worldChatMemberRemoveTooltip,
+            size: LaButtonSize.sm,
+            icon: Icon(Icons.close, size: 14, color: context.shellMuted),
+            onPressed: () =>
+                unawaited(_removeMember(context, channel, id, profile)),
+          ),
+      ],
+    );
+  }
+
+  /// Removal rides the shared confirm (the losses dialog: history +
+  /// running tasks, world truth) and renders the outcome verbatim —
+  /// `ok` becomes the removed line, a refusal the service's named
+  /// string, a cancel nothing at all.
+  Future<void> _removeMember(
+    final BuildContext context,
+    final ChannelInfo channel,
+    final String actorId,
+    final ActorProfile profile,
+  ) async {
+    final result = await confirmChannelRemoval(
+      context,
+      service: widget.service,
+      channel: channel,
+      actorId: actorId,
+    );
+    if (!mounted) return;
+    if (result == null) return;
+    setState(() {
+      _outcomeError = result != 'ok';
+      _outcome = result == 'ok'
+          ? context.l10n.worldChatMemberRemoved(
+              profile.displayName,
+              '#${channel.name}',
+            )
+          : result;
+    });
+  }
+
+  /// The picker state: the shared [ChannelMemberPicker] over the
+  /// not-yet-members, a back affordance, and the Add-N confirm.
+  Widget _pickerBody(final BuildContext context, final ChannelInfo channel) {
+    final l10n = context.l10n;
+    final members = channel.memberIds.toSet();
+    final candidates = <ActorProfile>[
+      for (final actor in widget.service.roster?.all ?? const <ActorProfile>[])
+        if (actor.kind != ActorKind.human && !members.contains(actor.actorId))
+          actor,
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+          child: Text(
+            l10n.worldChatMembersAddTitle('#${channel.name}'),
+            style: context.laUi.compact.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Flexible(
+          child: ChannelMemberPicker(
+            key: const ValueKey('worldchat.meta.members.pick'),
+            searchKey: const ValueKey('worldchat.meta.members.pick.search'),
+            rowKeyPrefix: 'worldchat.meta.members.pick.row',
+            candidates: candidates,
+            selected: _picked,
+            onToggle: (final actorId) => setState(() {
+              if (_picked.contains(actorId)) {
+                _picked.remove(actorId);
+              } else {
+                _picked.add(actorId);
+              }
+            }),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            LaButton(
+              key: const ValueKey('worldchat.meta.members.pick.back'),
+              variant: LaButtonVariant.ghost,
+              size: LaButtonSize.sm,
+              onPressed: () => setState(() => _picking = false),
+              label: l10n.worldChatCancel,
+            ),
+            const Spacer(),
+            LaButton(
+              key: const ValueKey('worldchat.meta.members.pick.confirm'),
+              variant: LaButtonVariant.primary,
+              size: LaButtonSize.sm,
+              onPressed: _picked.isEmpty
+                  ? null
+                  : () => unawaited(_addPicked(channel)),
+              label: l10n.worldChatMembersAddSelected(_picked.length),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// The add confirm: the merged set through the service verb, then
+  /// back to the list with the outcome line (the list itself rebuilds
+  /// off the service notification).
+  Future<void> _addPicked(final ChannelInfo channel) async {
+    final l10n = context.l10n;
+    final count = _picked.length;
+    final ok = await widget.service.setChannelMembers(
+      channelId: channel.channelId,
+      memberIds: [...channel.memberIds, ..._picked],
+    );
+    if (!mounted) return;
+    setState(() {
+      if (ok) {
+        _picking = false;
+        _picked.clear();
+        _outcomeError = false;
+        _outcome = l10n.worldChatMembersAddCount(count, '#${channel.name}');
+      } else {
+        _outcomeError = true;
+        _outcome = widget.service.error ?? 'add_refused';
+      }
+    });
   }
 }
 
@@ -4866,9 +5729,7 @@ class _ChannelInfoDialogState extends State<_ChannelInfoDialog> {
             children: [
               Text(
                 '#${channel.name}',
-                style: laUi.body.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: laUi.body.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               for (final (label, value) in facts)

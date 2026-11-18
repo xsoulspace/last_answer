@@ -325,7 +325,8 @@ harness asks (harness e2ed92a9). The laws it established:
    remote providers / local server (loopback endpoints — the
    ollama-class lanes ride openai_compatible over 127.0.0.1 by the
    parser's own loopback allowance) / direct subscription (the ChatGPT
-   plan; qwen/grok direct lanes named absent) / on-device services
+   plan; the Grok plan is a subscription lane closed until xAI issues a
+   client id, ADR 0030; the qwen direct lane stays absent) / on-device services
    (AFM, laya, MLX — read-only facts, the composition root owns those
    bindings). `jev` reads remote; the word "builtin" never reaches the
    UI except as the unclassified fallback for a name the mirror does

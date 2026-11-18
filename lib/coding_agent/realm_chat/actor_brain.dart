@@ -28,6 +28,11 @@
 ///   `openai_compatible` or `openrouter` provider rides the hosted wire
 ///   with the palette's base_url. An entry the palette does not declare
 ///   resolves to null — the ref names nothing this world serves.
+/// - `subscription:<provider-id>/<model-id>` — a subscription provider
+///   (ADR 0031: ChatGPT plan, Grok plan). The model is this actor's.
+///   The device account is resolved at generate time and is never
+///   written back as a global selected model. A provider this device
+///   cannot run (signed out, plan off, unknown id) resolves to null.
 ///
 /// Local casts are deliberately first-class: small context windows are
 /// the designed-for condition. Their engine lives on ONE persistent
@@ -45,6 +50,7 @@ import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:http/http.dart' as http;
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
+import 'package:lastanswer/shell/models/local_runtime_ledger.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
@@ -287,6 +293,14 @@ String? readInferenceCredential(
   return null;
 }
 
+/// Builds the inference client for one actor's subscription model.
+/// Null means this device cannot run that provider and model (the
+/// account is absent, the plan is off, or the id is not a subscription
+/// provider). The returned factory is called when the brain generates,
+/// so a later token refresh is the client's own.
+typedef ResolveSubscription =
+    InferenceClient Function()? Function(String providerId, String model);
+
 /// Resolves a brainRef to a live brain, or null when the ref names
 /// nothing this build can run.
 ///
@@ -300,6 +314,7 @@ ActorBrain? resolveBrain(
   String? loraRoot,
   CastBrainDecl? Function(String entryId)? resolveCast,
   String? Function(String envName)? resolveCredential,
+  ResolveSubscription? resolveSubscription,
 }) {
   final ref = brainRef.trim();
   if (ref.startsWith('cast:')) {
@@ -328,6 +343,20 @@ ActorBrain? resolveBrain(
       resolveApiKey: () => credentialEnv == null
           ? null
           : (resolveCredential ?? readInferenceCredential)(credentialEnv),
+    );
+  }
+  final subscription = parseSubscriptionBrainRef(ref);
+  if (subscription != null) {
+    final create = resolveSubscription?.call(
+      subscription.providerId,
+      subscription.model,
+    );
+    if (create == null) return null;
+    return SubscriptionBrain(
+      providerId: subscription.providerId,
+      model: subscription.model,
+      reasoningOverride: brainParam(ref, 'reasoning'),
+      createClient: create,
     );
   }
   final local = parseLocalBrainRef(ref);
@@ -383,16 +412,42 @@ List<({String ref, String label})> availableBrainOptions({
   required String defaultOpenRouterModel,
   List<CachedQwen3Snapshot> Function()? discoverQwen3Variants,
   List<CastBrainDecl> paletteRungs = const [],
+  List<({String providerId, String model, String label})> subscriptionModels =
+      const [],
+  bool Function()? lfm2Discoverable,
 }) {
   final variants = discoverQwen3Variants != null
       ? discoverQwen3Variants()
       : (mlxSupported
             ? listCachedQwen3Snapshots()
             : const <CachedQwen3Snapshot>[]);
+  // `local:qwen` names the default 0.6B 4-bit snapshot specifically, so
+  // the rung only lists when that snapshot is DISCOVERABLE (weights
+  // resolve — the 2026-11-18 dangling-blob law): an option whose load
+  // can only answer `snapshot absent` is a lie, not a choice. Once the
+  // manager installs the 0.6B again, discovery names it and the rung
+  // returns.
+  final defaultQwenDiscoverable = variants.any(
+    (final v) => v.refName == 'qwen3-0.6b',
+  );
+  // The LFM rung rides the SAME honesty law as the qwen default (the
+  // 2026-11-18 dangling-blob law's lfm twin): an option whose load can
+  // only answer `lfm2 snapshot absent` is a lie, not a choice. The
+  // manager's LFM2.5 install (the shared hub cache IS the lane's
+  // provisioning) makes it discoverable and the rung returns. The
+  // probe is injectable (tests never touch a real $HOME).
+  bool defaultLfm2Discoverable() {
+    if (Platform.environment.containsKey('FLUTTER_TEST')) return false;
+    return resolveLfm2SnapshotDir(null) != null;
+  }
+
+  final lfmDiscoverable =
+      mlxSupported && (lfm2Discoverable ?? defaultLfm2Discoverable)();
   return [
     if (mlxSupported) ...[
-      (ref: 'local:qwen', label: 'Qwen3 · local (MLX)'),
-      (ref: 'local:lfm', label: 'LFM 2.5 · local (MLX)'),
+      if (defaultQwenDiscoverable)
+        (ref: 'local:qwen', label: 'Qwen3 · local (MLX)'),
+      if (lfmDiscoverable) (ref: 'local:lfm', label: 'LFM 2.5 · local (MLX)'),
       for (final variant in variants)
         if (variant.refName != 'qwen3-0.6b')
           (
@@ -406,26 +461,49 @@ List<({String ref, String label})> availableBrainOptions({
         label: 'OpenRouter · $defaultOpenRouterModel',
       ),
     ],
-    // The discovered palette's generative rungs (G6): the world is the
-    // source of models; the picker lists what it declares. The label is
-    // the model's spoken name (the brain-policy vocabulary law,
-    // 2026-11-16 — no palette words on user surfaces); the entry id
-    // stays the stable handle agents reference.
+    // The discovered palette's generative rungs (G6) — REMOTE casts
+    // only. A builtin-transport rung rides the flip: the local MLX
+    // lanes are already listed above with their spoken labels (the
+    // plain `Qwen` / `LFM` rung entries duplicated them — the 2026-11-18
+    // dedupe law), and the daemon-served builtins (AFM, laya) answer
+    // nothing in-app (the unknown-local-cast black-hole law, N2) —
+    // listing what the runtime cannot run here is a lie, not a choice.
     for (final rung in paletteRungs)
-      (
-        ref: 'cast:${rung.id}',
-        label: brainModelLabel(id: rung.id, model: rung.model),
-      ),
+      if (rung.transport != 'builtin')
+        (
+          ref: 'cast:${rung.id}',
+          label: brainModelLabel(id: rung.id, model: rung.model),
+        ),
+    // Subscription providers (ADR 0031). Each signed-in plan contributes
+    // its own models; two actors can name two models of one plan, or
+    // two different plans, without a shared selected-model pointer.
+    for (final entry in subscriptionModels)
+      if (entry.providerId.isNotEmpty && entry.model.isNotEmpty)
+        (
+          ref: subscriptionBrainRef(entry.providerId, entry.model),
+          label: entry.label.isEmpty
+              ? brainModelLabel(id: entry.providerId, model: entry.model)
+              : entry.label,
+        ),
   ];
 }
 
-/// `qwen3-1.7b` → `Qwen3 1.7B`; `qwen3-0.6b-bf16` → `Qwen3 0.6B bf16`.
+/// `qwen3-1.7b` → `Qwen3 1.7B`; `qwen3-0.6b-bf16` → `Qwen3 0.6B bf16`;
+/// the dotted family carries its own prefix: `qwen3.5-0.8b` →
+/// `Qwen3.5 0.8B` (a naive `qwen3-` strip would garble it into
+/// "Qwen3 5-0.8B").
 String _qwen3VariantLabel(CachedQwen3Snapshot variant) {
-  final tail = variant.refName.substring('qwen3-'.length);
+  const families = ['qwen3.5-', 'qwen3-'];
+  final family = families.firstWhere(
+    variant.refName.startsWith,
+    orElse: () => 'qwen3-',
+  );
+  final tail = variant.refName.substring(family.length);
   final parts = tail.split('-');
   final size = parts.first.toUpperCase();
   final rest = parts.skip(1).join(' ');
-  return rest.isEmpty ? 'Qwen3 $size' : 'Qwen3 $size $rest';
+  final base = family == 'qwen3.5-' ? 'Qwen3.5' : 'Qwen3';
+  return rest.isEmpty ? '$base $size' : '$base $size $rest';
 }
 
 /// Local MLX casts are a macOS/Metal capability.
@@ -498,16 +576,39 @@ final class _LocalCastBrain implements ActorBrain {
     required String system,
     required List<BrainTurn> turns,
   }) async {
-    final reply = await _engineHost.generate(
-      cast: cast,
-      system: system,
-      turns: turns,
-      temperature: temperature,
-      repetitionPenalty: repetitionPenalty,
-      loraPath: loraPath,
-      loraScale: loraScale,
-    );
-    return _checkedReply(reply);
+    // The observation seam (2026-11-18 ledger law): the generate is
+    // timed at its only host-side boundary, so the models surface can
+    // show the run in flight and the last speed without any engine
+    // change. Tokens are the reply-text estimate (the FFI carries no
+    // counter) — the ledger renders it with the "≈" that honesty
+    // requires.
+    final ledger = LocalRuntimeLedger.instance;
+    final watch = Stopwatch()..start();
+    ledger.beginRun(cast);
+    try {
+      final reply = await _engineHost.generate(
+        cast: cast,
+        system: system,
+        turns: turns,
+        temperature: temperature,
+        repetitionPenalty: repetitionPenalty,
+        loraPath: loraPath,
+        loraScale: loraScale,
+      );
+      final text = _checkedReply(reply);
+      watch.stop();
+      ledger.endRun(cast, tokens: approxTokens(text), elapsed: watch.elapsed);
+      return text;
+    } on Object catch (error) {
+      watch.stop();
+      ledger.failRun(cast, switch (error) {
+        final BrainGenerationFailed failed =>
+          '${failed.code} · ${failed.message}',
+        final BrainUnavailable unavailable => unavailable.reason,
+        _ => '$error',
+      });
+      rethrow;
+    }
   }
 }
 
@@ -559,6 +660,50 @@ final class OpenRouterBrain implements ActorBrain {
         temperature: defaultChatTemperature,
         repetitionPenalty: null,
         // Wave N2: the per-actor level rides the ref grammar.
+        reasoningEffort: reasoningOverride,
+      ),
+    );
+    return _checkedResult(result);
+  }
+}
+
+/// One actor speaking through a signed-in subscription provider.
+/// The model is the actor's brainRef. The account is the device's,
+/// read when the client is created, and selecting this model does not
+/// change any other actor's model.
+final class SubscriptionBrain implements ActorBrain {
+  SubscriptionBrain({
+    required this.providerId,
+    required this.model,
+    required this.createClient,
+    this.reasoningOverride,
+  });
+
+  final String providerId;
+  final String model;
+  final InferenceClient Function() createClient;
+  final String? reasoningOverride;
+  InferenceClient? _client;
+
+  @override
+  String get ref => subscriptionBrainRef(providerId, model);
+
+  @override
+  String get label => brainModelLabel(id: providerId, model: model);
+
+  InferenceClient _effectiveClient() => _client ??= createClient();
+
+  @override
+  Future<String> generate({
+    required String system,
+    required List<BrainTurn> turns,
+  }) async {
+    final result = await _effectiveClient().infer(
+      _renderRequest(
+        system: system,
+        turns: turns,
+        temperature: defaultChatTemperature,
+        repetitionPenalty: null,
         reasoningEffort: reasoningOverride,
       ),
     );
@@ -811,8 +956,9 @@ final class BrainEngineServer {
         _engineReply(
           id: id is int ? id : null,
           code: 'engine_busy',
-          message: 'the local engine lane is saturated '
-          '(${_queue.length} queued); back off and retry',
+          message:
+              'the local engine lane is saturated '
+              '(${_queue.length} queued); back off and retry',
           retryable: false,
         ),
       );

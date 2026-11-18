@@ -1,9 +1,22 @@
 # Conversation spaces consolidation — kind + attributes into the thread row
 
-Status: PROPOSAL (owner review). Precedents: LA ADR 0024 (channel registry),
+Status: EXECUTED (W1+W2 landed 2026-11-16; W3 flip + work-thread twin
+executed 2026-11-17). Precedents: LA ADR 0024 (channel registry),
 ADR 0129 (work threads), harness ADR 0144 (spaces layer), ADR 0145 (declared
 thread kind), ADR 0028 (absorb-not-rename). Companion to
-`docs/design/ecsly-boards-extraction.md`.
+`docs/design/ecsly-boards-extraction.md`; the execution record is
+appended to harness ADR 0146.
+
+Execution summary: the thread row is the one authority per channel
+fact (`topic` IS the name, `participants` IS the membership,
+`icon`/`archived`/`parentThreadId` ride the row; `channelId` retires
+for new channels). `kChannelRegistryReadsOn`/`kWorkThreadRegistryReadsOn`
+stand `false` — the registries are the retained legacy collections +
+the flip-back mechanism: reads and mirror writes dormant while the
+constants stand, the collections never deleted. The idempotent heal
+(`migrateIntoRows`) runs at every boot before any read, so legacy
+`channel:<channelId>` references and pre-window rows keep resolving
+through the healed rows.
 
 ## The law this serves
 

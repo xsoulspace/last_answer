@@ -226,6 +226,25 @@ void main() {
   });
 
   group('availableBrainOptions', () {
+    test('the lfm rung rides the discovery law: listed only when the '
+        'LFM2.5 snapshot is discoverable (injectable — no real cache)', () {
+      final listed = availableBrainOptions(
+        defaultOpenRouterModel: '',
+        discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
+        lfm2Discoverable: () => true,
+      );
+      if (!mlxSupported) return;
+      expect(listed.map((final o) => o.ref), contains('local:lfm'));
+      // The hermetic default: the probe never touches a real cache in
+      // the test lane, so the rung stays absent — an option whose load
+      // can only answer `lfm2 snapshot absent` is a lie.
+      final hermetic = availableBrainOptions(
+        defaultOpenRouterModel: '',
+        discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
+      );
+      expect(hermetic.map((final o) => o.ref), isNot(contains('local:lfm')));
+    });
+
     test('shape holds: ref + label pairs, openrouter entry present', () {
       final options = availableBrainOptions(
         defaultOpenRouterModel: 'meta-llama/llama-3',
@@ -292,6 +311,30 @@ void main() {
         (final o) => o.ref == 'local:qwen3-0.6b-bf16',
       );
       expect(bf16.label, contains('bf16'));
+    });
+
+    test('the dotted Qwen3.5 family labels correctly (not "Qwen3 '
+        '5-0.8B")', () {
+      final options = availableBrainOptions(
+        defaultOpenRouterModel: '',
+        discoverQwen3Variants: () => const <CachedQwen3Snapshot>[
+          CachedQwen3Snapshot(
+            refName: 'qwen3.5-0.8b',
+            paramLabel: '0.8B',
+            snapshotDir: '/hub/qwen3.5-0.8b/snapshots/x',
+          ),
+        ],
+      );
+      if (!mlxSupported) return;
+      final dotted = options.firstWhere(
+        (final o) => o.ref == 'local:qwen3.5-0.8b',
+      );
+      // The owner's display law (2026-11-17): the dotted family's own
+      // prefix strips — a naive `qwen3-` cut garbled the label into
+      // "Qwen3 5-0.8B".
+      expect(dotted.label, contains('Qwen3.5'));
+      expect(dotted.label, contains('0.8B'));
+      expect(dotted.label, isNot(contains('5-0.8B')));
     });
   });
 

@@ -1,5 +1,6 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
 import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/agent_config/grok_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/common_imports.dart';
 
@@ -124,6 +125,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const ChatGptSubscriptionPane(),
+        const GrokSubscriptionPane(),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
           child: Row(
@@ -409,6 +411,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
                     : null,
                 expand: true,
                 placeholder: context.l10n.agentChatProviderHint,
+                emptyHint: context.l10n.agentChatProviderEmptyHint,
                 items: [
                   for (final id in _providerControllers.keys)
                     LaSelectItem(value: id, label: id),
@@ -427,6 +430,7 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
                     : null,
                 expand: true,
                 placeholder: context.l10n.agentChatModelHint,
+                emptyHint: context.l10n.agentChatModelEmptyHint,
                 items: [
                   for (final model in _modelsOf(_chat.defaultProvider))
                     LaSelectItem(value: model, label: model),

@@ -696,7 +696,15 @@ class SIt extends S {
   String get agentChatProviderHint => 'provider predefinito';
 
   @override
+  String get agentChatProviderEmptyHint =>
+      'Nessun provider configurato — aggiungine uno alla sezione Provider';
+
+  @override
   String get agentChatModelHint => 'modello predefinito';
+
+  @override
+  String get agentChatModelEmptyHint =>
+      'Aggiungi un provider per scegliere il modello predefinito';
 
   @override
   String get agentChatSystemPromptHint => 'prompt di sistema predefinito';
@@ -1039,6 +1047,76 @@ class SIt extends S {
   @override
   String get chatGptDocumentConsentRequired =>
       'Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.';
+
+  @override
+  String get grokSubscriptionTitle => 'Abbonamento Grok';
+
+  @override
+  String get grokContinue => 'Continua con Grok';
+
+  @override
+  String get grokDeviceSignIn => 'Usa un codice dispositivo';
+
+  @override
+  String get grokSignOut => 'Esci';
+
+  @override
+  String get grokChooseAccount => 'Scegli un account Grok';
+
+  @override
+  String get grokAccount => 'Account Grok';
+
+  @override
+  String get grokChooseModel => 'Scegli un modello Grok';
+
+  @override
+  String get grokRefreshModels => 'Aggiorna modelli';
+
+  @override
+  String get grokVerifyAccess => 'Verifica accesso';
+
+  @override
+  String get grokAccessUnchecked => 'Accesso non verificato';
+
+  @override
+  String get grokAccessVerified => 'Accesso verificato su questo dispositivo';
+
+  @override
+  String get grokPlanPermissionRequired =>
+      'Il token di questo account non include l’accesso al piano.';
+
+  @override
+  String get grokWorking => 'Operazione in corso';
+
+  @override
+  String get grokRevocationUnconfirmed =>
+      'La disconnessione remota non è confermata. I token locali sono stati rimossi.';
+
+  @override
+  String get grokConnectionError => 'Impossibile raggiungere l’account Grok.';
+
+  @override
+  String get grokDesktopOnly =>
+      'L’accesso a Grok è disponibile nell’app desktop.';
+
+  @override
+  String get grokSignInRequired =>
+      'Collega un account Grok e abilita l’accesso al piano prima di inviare.';
+
+  @override
+  String get grokModelRequired => 'Scegli un modello Grok prima di inviare.';
+
+  @override
+  String get grokDocumentConsentRequired =>
+      'Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.';
+
+  @override
+  String get grokClientNotRegistered =>
+      'Last Answer non ha ancora un client id xAI. L’accesso resta chiuso.';
+
+  @override
+  String get grokRegistrationHint =>
+      'Invia a xAI il referrer e il redirect sopra, così può registrare questa app.';
 
   @override
   String get worldConversationChoose => 'Scegli una conversazione';
@@ -1983,6 +2061,75 @@ class SIt extends S {
   String get worldChatInfoTooltip => 'Informazioni sul canale';
 
   @override
+  String get worldChatMembersAdd => 'Aggiungi persone';
+
+  @override
+  String worldChatMembersAddTitle(String channel) {
+    return 'Aggiungi a $channel';
+  }
+
+  @override
+  String get worldChatMembersSearchHint => 'Filtra persone';
+
+  @override
+  String worldChatMembersAddSelected(int count) {
+    return 'Aggiungi $count';
+  }
+
+  @override
+  String worldChatMembersAddCount(int count, String channel) {
+    return '$count aggiunti a $channel';
+  }
+
+  @override
+  String get worldChatMembersNoCandidates => 'Tutti sono già in questo canale';
+
+  @override
+  String get worldChatMemberRemoveTooltip => 'Rimuovi dal canale';
+
+  @override
+  String worldChatMemberRemoveTitle(String name, String channel) {
+    return 'Rimuovere $name da $channel?';
+  }
+
+  @override
+  String worldChatMemberRemoveMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messaggi',
+      one: '$count messaggio',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String worldChatMemberRemoveTasks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count attività in corso',
+      one: '$count attività in corso',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get worldChatMemberRemoveNoTasks => 'nessuna in corso';
+
+  @override
+  String get worldChatMemberRemoveNote =>
+      'Non riceveranno più i messaggi di questo canale. Le attività in corso sono durable nel world e restano con l\'attore.';
+
+  @override
+  String worldChatMemberRemoved(String name, String channel) {
+    return '$name rimosso da $channel';
+  }
+
+  @override
+  String get roomsMenuMembers => 'Aggiungi membri…';
+
+  @override
   String get worldChatChangeIcon => 'Cambia icona';
 
   @override
@@ -2014,6 +2161,16 @@ class SIt extends S {
 
   @override
   String get stripOverflowHint => 'Schede nascoste — apri l\'elenco';
+
+  @override
+  String get stripCloseAllTabs => 'Chiudi tutte le schede';
+
+  @override
+  String get resizePaneHint => 'Trascina per ridimensionare i pannelli';
+
+  @override
+  String get resizeRoomsHint =>
+      'Trascina per ridimensionare l\'elenco delle stanze';
 
   @override
   String get modelsProviders => 'Provider';
@@ -2245,6 +2402,15 @@ class SIt extends S {
       'ritirato - la riga durevole conserva la sua storia:';
 
   @override
+  String get actorsRetiredMark => 'ritirato';
+
+  @override
+  String get actorsRetiredSection => 'Ritirati';
+
+  @override
+  String get actorsRevive => 'Riattiva';
+
+  @override
   String get actorsImageSpend => 'Spesa immagini';
 
   @override
@@ -2265,14 +2431,7 @@ class SIt extends S {
 
   @override
   String get modelsClassSubscriptionAbsent =>
-      'le corsie dirette qwen / grok non esistono oggi - il piano ChatGPT è l unica corsia subscription';
-
-  @override
-  String get modelsClassOnDevice => 'Servizi on-device';
-
-  @override
-  String get modelsClassOnDeviceEmpty =>
-      'nessun servizio on-device su questa macchina';
+      'la corsia diretta qwen non esiste oggi. Grok è una corsia subscription e resta chiusa finché xAI non rilascia un client id a Last Answer.';
 
   @override
   String get modelsClassUnclassified => 'Corsie non classificate';
@@ -2295,6 +2454,141 @@ class SIt extends S {
   @override
   String get modelsChatGptSignedOut =>
       'non autenticato - accedi dal pannello runtime dell agent-doc';
+
+  @override
+  String get modelsGrokPlan => 'piano Grok';
+
+  @override
+  String get modelsGrokSignedOut =>
+      'non autenticato - accedi dal pannello runtime dell agent-doc';
+
+  @override
+  String get modelsGrokAwaitingRegistration =>
+      'in attesa della registrazione client xAI';
+
+  @override
+  String get modelsLocalCatalog => 'Modelli locali';
+
+  @override
+  String get modelsLocalDiskDownloaded => 'Scaricato';
+
+  @override
+  String get modelsLocalDiskNot => 'Non scaricato';
+
+  @override
+  String get modelsLocalMemLoaded => 'Caricato';
+
+  @override
+  String get modelsLocalMemUnloaded => 'Non caricato';
+
+  @override
+  String get modelsLocalDownload => 'Scarica';
+
+  @override
+  String get modelsLocalLoad => 'Carica';
+
+  @override
+  String get modelsLocalUnload => 'Espelli';
+
+  @override
+  String get modelsLocalDelete => 'Elimina';
+
+  @override
+  String get modelsLocalConsentTitle => 'Scaricare il modello locale?';
+
+  @override
+  String modelsLocalConsentBody(String label, String size) {
+    return 'Scarica $label (circa $size) dalla rete nella cache dei modelli locali. Il runtime non scarica mai da solo.';
+  }
+
+  @override
+  String get modelsLocalConsentConfirm => 'Scarica';
+
+  @override
+  String get modelsLocalDeleteTitle => 'Eliminare il modello locale?';
+
+  @override
+  String modelsLocalDeleteBody(String label) {
+    return 'Elimina i file scaricati di $label dalla cache dei modelli locali. Solo i modelli installati dal manager possono essere eliminati.';
+  }
+
+  @override
+  String get modelsLocalDeleteRefused =>
+      'eliminazione rifiutata - questo modello non e stato installato dal manager';
+
+  @override
+  String get modelsLocalPhaseChecking => 'verifica';
+
+  @override
+  String get modelsLocalPhaseDownloading => 'scaricamento';
+
+  @override
+  String get modelsLocalPhaseLoading => 'caricamento';
+
+  @override
+  String get modelsLocalPhaseReady => 'pronto';
+
+  @override
+  String get modelsLocalPhaseFailed => 'fallito';
+
+  @override
+  String get modelsBudgetAvailable => 'disponibile per i modelli locali';
+
+  @override
+  String get modelsBudgetFloor => 'tenuta libera (margine)';
+
+  @override
+  String get modelsBudgetUnknown =>
+      'dati di memoria non disponibili — il load gate gira senza sensore';
+
+  @override
+  String get modelsBudgetTotalUnknown =>
+      'memoria totale sconosciuta — la barra scala sulla memoria disponibile';
+
+  @override
+  String modelsBudgetNothingFits(String size, String label) {
+    return 'nessun modello scaricato entra nella memoria disponibile — libera $size per eseguire $label';
+  }
+
+  @override
+  String modelsLocalFitReason(String size) {
+    return 'mancano $size — scarica un modello o libera memoria';
+  }
+
+  @override
+  String get modelsLocalGenerating => 'generazione…';
+
+  @override
+  String modelsLocalTokPerSec(String speed) {
+    return '≈$speed tok/s';
+  }
+
+  @override
+  String get modelsLocalDetails => 'Dettagli';
+
+  @override
+  String get modelsLocalDetailsDisk => 'disco';
+
+  @override
+  String get modelsLocalDetailsMemory => 'memoria';
+
+  @override
+  String get modelsLocalDetailsSizeOnDisk => 'dimensione su disco';
+
+  @override
+  String get modelsLocalDetailsPath => 'percorso snapshot';
+
+  @override
+  String get modelsLocalDetailsLastGeneration => 'ultima generazione';
+
+  @override
+  String get modelsLocalDetailsLastError => 'ultimo errore';
+
+  @override
+  String get modelsLocalDetailsUsedBy => 'usato da';
+
+  @override
+  String get modelsBuiltinsNoLifecycle => 'sempre attivo';
 
   @override
   String get modelsFieldCapabilities => 'capabilities';
@@ -2396,4 +2690,52 @@ class SIt extends S {
 
   @override
   String get selectionSelectAll => 'Seleziona tutto';
+
+  @override
+  String get worldChatPermsAccess => 'Accesso';
+
+  @override
+  String get worldChatPermsRead => 'Lettura';
+
+  @override
+  String get worldChatPermsSay => 'Scrittura';
+
+  @override
+  String get worldChatPermsManage => 'Gestione';
+
+  @override
+  String get worldChatPermsScope => 'Ambito di lavoro';
+
+  @override
+  String get worldChatPermsScopeNone => 'nessuno';
+
+  @override
+  String get worldChatPermsScopeClear => 'Rimuovi';
+
+  @override
+  String get worldChatPermsScopeBind => 'Collega…';
+
+  @override
+  String get worldChatPermsGrant => 'Concedi…';
+
+  @override
+  String get worldChatPermsRevoke => 'Revoca';
+
+  @override
+  String get worldChatPermsKind => 'Tipo';
+
+  @override
+  String get worldChatPermsRoot => 'Radice';
+
+  @override
+  String get worldChatPermsSubpath => 'Sottopercorso';
+
+  @override
+  String get worldChatPermsCaps => 'Permessi';
+
+  @override
+  String get worldChatPermsApply => 'Applica';
+
+  @override
+  String get worldChatPermsRootRequired => 'radice obbligatoria';
 }

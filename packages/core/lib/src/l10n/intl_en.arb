@@ -885,10 +885,6 @@
   "@modelsDaemonDown": {
     "description": "Models header fact."
   },
-  "modelsDaemonStale": "binary stale",
-  "@modelsDaemonStale": {
-    "description": "Models header fact: rebuilt after the resident booted."
-  },
   "modelsSchedulerLive": "scheduler live",
   "@modelsSchedulerLive": {
     "description": "Models header fact: the supervised realm scheduler (delegation claimant) is running."
@@ -897,29 +893,9 @@
   "@modelsSchedulerDown": {
     "description": "Models header fact: no supervised realm scheduler — delegated tasks would sit queued."
   },
-  "modelsEditPalette": "Edit palette",
-  "@modelsEditPalette": {
-    "description": "Opens the palette JSON editor."
-  },
-  "modelsValidate": "Validate",
-  "@modelsValidate": {
-    "description": "Editor: dry-run the harness parser."
-  },
-  "modelsSave": "Save",
-  "@modelsSave": {
-    "description": "Editor: validated write with a .bak sibling."
-  },
-  "modelsClose": "Close",
-  "@modelsClose": {
-    "description": "Editor: close the dialog."
-  },
   "modelsTelemetry": "Recent dispatches",
   "@modelsTelemetry": {
     "description": "Models: per-actor tool-loop telemetry section."
-  },
-  "modelsChipLocal": "local",
-  "@modelsChipLocal": {
-    "description": "Rung chip: a builtin local lane."
   },
   "commandPaletteHint": "Search views, people and actions…",
   "@commandPaletteHint": {
@@ -1337,10 +1313,6 @@
   "@modelsProviders": {
     "description": "Models view: providers section label."
   },
-  "modelsEditProviders": "Edit providers",
-  "@modelsEditProviders": {
-    "description": "Models view: opens the provider editor."
-  },
   "modelsNoProviders": "no providers declared",
   "@modelsNoProviders": {
     "description": "Models view: empty providers state."
@@ -1369,10 +1341,6 @@
   "@modelsAddModel": {
     "description": "Provider editor: add model row."
   },
-  "modelsRenameModel": "Rename model",
-  "@modelsRenameModel": {
-    "description": "Provider editor: rename model row."
-  },
   "modelsEditAction": "edit",
   "@modelsEditAction": {
     "description": "Provider editor: inline edit verb."
@@ -1380,10 +1348,6 @@
   "modelsRemoveAction": "remove",
   "@modelsRemoveAction": {
     "description": "Provider editor: inline remove verb."
-  },
-  "modelsRenameAction": "rename",
-  "@modelsRenameAction": {
-    "description": "Provider editor: inline rename verb."
   },
   "modelsConfirm": "Confirm",
   "@modelsConfirm": {
@@ -1416,10 +1380,6 @@
   "modelsTransportLabel": "transport",
   "@modelsTransportLabel": {
     "description": "Provider editor: transport chip label."
-  },
-  "modelsEnvPrefix": "env:",
-  "@modelsEnvPrefix": {
-    "description": "Provider editor: credential env name prefix."
   },
   "modelsProviderIdHint": "provider id",
   "@modelsProviderIdHint": {
@@ -1485,27 +1445,11 @@
   "@modelsJsonInvalid": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
   },
-  "modelsFieldMaxTokens": "max_tokens",
-  "@modelsFieldMaxTokens": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsFieldMaxOutputTokens": "max_output_tokens",
-  "@modelsFieldMaxOutputTokens": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsFieldReasoningEffort": "reasoning_effort",
-  "@modelsFieldReasoningEffort": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsFieldIncludeReasoning": "include_reasoning",
-  "@modelsFieldIncludeReasoning": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
   "modelsBuiltinLaneLocal": "built-in local MLX lane (on-device)",
   "@modelsBuiltinLaneLocal": {
     "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
   },
-  "modelsBuiltinLaneDecision": "built-in local decision lane (loopback)",
+  "modelsBuiltinLaneDecision": "local decision lane — served by the laya-serve sidecar + its fetched model",
   "@modelsBuiltinLaneDecision": {
     "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
   },
@@ -1523,10 +1467,6 @@
   },
   "modelsReasoningNoLane": "no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·",
   "@modelsReasoningNoLane": {
-    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
-  },
-  "modelsReasoningTitle": "reasoning effort",
-  "@modelsReasoningTitle": {
     "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
   },
   "actorsMessage": "Message",
@@ -1805,8 +1745,12 @@
   "modelsBudgetNothingFits": "no downloaded model fits the memory available right now — free {size} more to run {label}",
   "@modelsBudgetNothingFits": {
     "placeholders": {
-      "size": {"type": "String"},
-      "label": {"type": "String"}
+      "size": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
     },
     "description": "Local model budget v3 2026-11-18: the machine verdict said ONCE above the rows when every downloaded-but-unloaded entry misses its fit."
   },
@@ -1858,17 +1802,15 @@
   },
   "modelsLocalDetailsLastError": "last error",
   "modelsLocalDetailsUsedBy": "used by",
-  "@modelsLocalDetailsUsedBy": {"description": "Local models v3 2026-11-18 (en): the detail sheet's bound-actors row."},
+  "@modelsLocalDetailsUsedBy": {
+    "description": "Local models v3 2026-11-18 (en): the detail sheet's bound-actors row."
+  },
   "@modelsLocalDetailsLastError": {
     "description": "Local models v3 2026-11-18: the detail sheet's last-failure row, verbatim."
   },
   "modelsBuiltinsNoLifecycle": "always-on",
   "@modelsBuiltinsNoLifecycle": {
     "description": "Local models v3 2026-11-18: the AFM chip's exemption note in the built-ins footer."
-  },
-  "modelsFieldCapabilities": "capabilities",
-  "@modelsFieldCapabilities": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
   },
   "modelsEditModel": "Edit model",
   "@modelsEditModel": {

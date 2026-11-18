@@ -1802,31 +1802,13 @@ class SIt extends S {
   String get modelsDaemonDown => 'daemon fermo';
 
   @override
-  String get modelsDaemonStale => 'binario obsoleto';
-
-  @override
   String get modelsSchedulerLive => 'scheduler attivo';
 
   @override
   String get modelsSchedulerDown => 'scheduler fermo';
 
   @override
-  String get modelsEditPalette => 'Modifica palette';
-
-  @override
-  String get modelsValidate => 'Valida';
-
-  @override
-  String get modelsSave => 'Salva';
-
-  @override
-  String get modelsClose => 'Chiudi';
-
-  @override
   String get modelsTelemetry => 'Dispatch recenti';
-
-  @override
-  String get modelsChipLocal => 'locale';
 
   @override
   String get commandPaletteHint => 'Cerca viste, persone e azioni…';
@@ -2176,9 +2158,6 @@ class SIt extends S {
   String get modelsProviders => 'Provider';
 
   @override
-  String get modelsEditProviders => 'Modifica provider';
-
-  @override
   String get modelsNoProviders => 'nessun provider dichiarato';
 
   @override
@@ -2200,16 +2179,10 @@ class SIt extends S {
   String get modelsAddModel => 'Aggiungi modello';
 
   @override
-  String get modelsRenameModel => 'Rinomina modello';
-
-  @override
   String get modelsEditAction => 'modifica';
 
   @override
   String get modelsRemoveAction => 'rimuovi';
-
-  @override
-  String get modelsRenameAction => 'rinomina';
 
   @override
   String get modelsConfirm => 'Conferma';
@@ -2234,9 +2207,6 @@ class SIt extends S {
 
   @override
   String get modelsTransportLabel => 'trasporto';
-
-  @override
-  String get modelsEnvPrefix => 'env:';
 
   @override
   String get modelsProviderIdHint => 'id provider';
@@ -2294,24 +2264,12 @@ class SIt extends S {
       'JSON non valido — il candidato mantiene l\'ultima forma valida';
 
   @override
-  String get modelsFieldMaxTokens => 'max_tokens';
-
-  @override
-  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
-
-  @override
-  String get modelsFieldReasoningEffort => 'reasoning_effort';
-
-  @override
-  String get modelsFieldIncludeReasoning => 'include_reasoning';
-
-  @override
   String get modelsBuiltinLaneLocal =>
       'corsia MLX locale integrata (on-device)';
 
   @override
   String get modelsBuiltinLaneDecision =>
-      'corsia decisionale locale integrata (loopback)';
+      'corsia decisionale locale — servita dal sidecar laya-serve e dal suo modello scaricato';
 
   @override
   String get modelsBuiltinLaneAfm =>
@@ -2328,9 +2286,6 @@ class SIt extends S {
   @override
   String get modelsReasoningNoLane =>
       'nessuna corsia di reasoning - il trasporto non dichiara livelli di effort (una dichiarazione verrebbe rifiutata come reasoning_effort_unsupported) ·';
-
-  @override
-  String get modelsReasoningTitle => 'sforzo di reasoning';
 
   @override
   String get actorsMessage => 'Messaggio';
@@ -2589,9 +2544,6 @@ class SIt extends S {
 
   @override
   String get modelsBuiltinsNoLifecycle => 'sempre attivo';
-
-  @override
-  String get modelsFieldCapabilities => 'capabilities';
 
   @override
   String get modelsEditModel => 'Modifica modello';

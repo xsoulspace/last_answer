@@ -1,5 +1,15 @@
 # Models management refactor — analysis & design (2026-11-14)
 
+> **Currency note (2026-11-18):** this document is the dated analysis +
+> wave log for the LENSES refactor (catalog / bindings / observe). The
+> LOCAL-MODELS story has since moved and changed shape — the merged
+> "Local models" section, the memory-map bar, the one-line rows, the
+> LFM2.5 lifecycle and the fit-at-the-verb law live in
+> [models-local-manager.md](models-local-manager.md) (v3/v3.1). The
+> wave-N "on-device services" section class this doc describes was
+> merged away; history here is preserved as-is.
+
+
 Owner ask: analyse how the Models interface is made, think critically about how it
 should be refactored so providers and models are easy to **create, edit, observe,
 stop** — with a hierarchy (providers first, then models) — informed by how

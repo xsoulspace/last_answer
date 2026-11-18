@@ -79,10 +79,13 @@ renders `Qwen3.5 0.8B · local (MLX)` correctly).
 Widget keys: `models.local.<refName>.row/.install/.delete/.progress` —
 the agent UI contract.
 
-## Out of scope (v1)
+## Out of scope (v1) — and what moved
 
-Live HF search, user-pasted repo ids, LFM2 catalog entries (the LFM
-lane's own provisioning), MLX convert-on-install, daemon-side installs.
+Live HF search and user-pasted repo ids remain out of scope. MOVED IN
+since: the LFM2.5 catalog entry (v3.1 — the `local:lfm` lane's own
+provisioning). NEW OPEN CANDIDATE: the Laya checkpoint row (see v3.1 —
+needs the cache-root decision). Still out: MLX convert-on-install,
+daemon-side installs.
 
 ## v3 — the one-surface redesign (2026-11-18, owner-approved)
 
@@ -155,12 +158,26 @@ is there no place to start any model?"); phase 3 (used-by + motion).
   `tool/lfm25_runtime_probe.dart` — load → generate ("Paris…") →
   twin-load drives the SAME engine → unload → reload → sampled rung
   served → unload.
-- **Laya stays exempt — honestly.** Analysis: `laya` is a
-  DAEMON-SERVED builtin (`resolveBrain` returns null in-app; the
-  weights are the daemon artifact's business, not the app's hub
-  cache), so a download verb here would be a lie. AFM likewise
-  (Apple-provided, no lifecycle). The footer chips + tooltips carry
-  that.
+- **Laya's exemption is a PROVISIONING gap, not a nature (corrected
+  2026-11-18 after the owner's challenge — the first v3.1 wording was
+  WRONG):** the `laya` decision lane's brain IS an HF-downloaded
+  model — the `laya-mlx` checkpoint (ModernBERT-large + decision
+  head) at `~/.cache/xsoulspace/laya-mlx` (`LAYA_MODEL_DIR`
+  override; `NativeLayaDecisionEngine.load`, fetched from HF
+  `aac6fef/laya-mlx` — the runtime never downloads). The lane is
+  SERVED out-of-app by the `laya-serve` sidecar
+  (`LayaServeRuntime` attaches to its health endpoint; the in-app
+  brain answers nothing while no sidecar runs), which is why the
+  first draft mislabeled it "daemon-served" — the ECS daemon
+  artifact (the harness's AOT `ecsaid` snapshot) is a different
+  thing entirely. So a fresh install needs TWO provisions the app
+  does not own yet: the checkpoint and a running sidecar. A Laya
+  DISK-lifecycle row (Download/Delete for the checkpoint + the
+  endpoint's health as the second stage) is the honest follow-up —
+  it needs a decision: teach `NativeLayaDecisionEngine` to accept
+  the hub-cache layout (the LFM law) or teach the installer a second
+  cache root (`~/.cache/xsoulspace`). AFM stays exempt for real
+  (Apple-provided, no download, no lifecycle).
 - **The verdict is actionable.** "reserved floor" → "kept free
   (headroom)" — it is the load gate's incident floor (memory the
   gate refuses to touch, the 2026-11-14 crash law), said in human

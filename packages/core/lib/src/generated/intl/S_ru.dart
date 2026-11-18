@@ -1805,31 +1805,13 @@ class SRu extends S {
   String get modelsDaemonDown => 'демон не запущен';
 
   @override
-  String get modelsDaemonStale => 'бинарник устарел';
-
-  @override
   String get modelsSchedulerLive => 'планировщик активен';
 
   @override
   String get modelsSchedulerDown => 'планировщик не запущен';
 
   @override
-  String get modelsEditPalette => 'Правка палитры';
-
-  @override
-  String get modelsValidate => 'Проверить';
-
-  @override
-  String get modelsSave => 'Сохранить';
-
-  @override
-  String get modelsClose => 'Закрыть';
-
-  @override
   String get modelsTelemetry => 'Недавние отправки';
-
-  @override
-  String get modelsChipLocal => 'локальная';
 
   @override
   String get commandPaletteHint => 'Поиск: виды, люди, действия…';
@@ -2181,9 +2163,6 @@ class SRu extends S {
   String get modelsProviders => 'Провайдеры';
 
   @override
-  String get modelsEditProviders => 'Редактировать провайдеров';
-
-  @override
   String get modelsNoProviders => 'провайдеры не объявлены';
 
   @override
@@ -2205,16 +2184,10 @@ class SRu extends S {
   String get modelsAddModel => 'Добавить модель';
 
   @override
-  String get modelsRenameModel => 'Переименовать модель';
-
-  @override
   String get modelsEditAction => 'изменить';
 
   @override
   String get modelsRemoveAction => 'удалить';
-
-  @override
-  String get modelsRenameAction => 'переименовать';
 
   @override
   String get modelsConfirm => 'Подтвердить';
@@ -2239,9 +2212,6 @@ class SRu extends S {
 
   @override
   String get modelsTransportLabel => 'транспорт';
-
-  @override
-  String get modelsEnvPrefix => 'env:';
 
   @override
   String get modelsProviderIdHint => 'id провайдера';
@@ -2299,24 +2269,12 @@ class SRu extends S {
       'невалидный JSON — кандидат сохраняет последнюю валидную форму';
 
   @override
-  String get modelsFieldMaxTokens => 'max_tokens';
-
-  @override
-  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
-
-  @override
-  String get modelsFieldReasoningEffort => 'reasoning_effort';
-
-  @override
-  String get modelsFieldIncludeReasoning => 'include_reasoning';
-
-  @override
   String get modelsBuiltinLaneLocal =>
       'встроенная локальная дорожка MLX (на устройстве)';
 
   @override
   String get modelsBuiltinLaneDecision =>
-      'встроенная локальная дорожка решений (loopback)';
+      'локальная дорожка решений — обслуживается sidecar laya-serve и её загруженной моделью';
 
   @override
   String get modelsBuiltinLaneAfm =>
@@ -2333,9 +2291,6 @@ class SRu extends S {
   @override
   String get modelsReasoningNoLane =>
       'нет дорожки reasoning - транспорт не объявляет уровни effort (объявление будет отклонено как reasoning_effort_unsupported) ·';
-
-  @override
-  String get modelsReasoningTitle => 'уровень reasoning';
 
   @override
   String get actorsMessage => 'Написать';
@@ -2593,9 +2548,6 @@ class SRu extends S {
 
   @override
   String get modelsBuiltinsNoLifecycle => 'всегда активна';
-
-  @override
-  String get modelsFieldCapabilities => 'capabilities';
 
   @override
   String get modelsEditModel => 'Изменить модель';

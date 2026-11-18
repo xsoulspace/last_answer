@@ -808,7 +808,7 @@
   "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsBuiltinLaneLocal": "corsia MLX locale integrata (on-device)",
   "@modelsBuiltinLaneLocal": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
-  "modelsBuiltinLaneDecision": "corsia decisionale locale integrata (loopback)",
+  "modelsBuiltinLaneDecision": "corsia decisionale locale — servita dal sidecar laya-serve e dal suo modello scaricato",
   "@modelsBuiltinLaneDecision": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
   "modelsBuiltinLaneAfm": "corsia Apple Foundation integrata (on-device, specifica Apple)",
   "@modelsBuiltinLaneAfm": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
@@ -969,10 +969,14 @@
   "@modelsBudgetTotalUnknown": {"description": "Local model budget 2026-11-18: the honest note when the sensor sees available but not total memory."},
   "modelsBudgetNothingFits": "nessun modello scaricato entra nella memoria disponibile — libera {size} per eseguire {label}",
   "@modelsBudgetNothingFits": {"description": "Local models v3 2026-11-18 (it)."},
-    "placeholders": {
-      "size": {"type": "String"},
-      "label": {"type": "String"}
+  "placeholders": {
+    "size": {
+      "type": "String"
     },
+    "label": {
+      "type": "String"
+    }
+  },
   "modelsLocalFitReason": "mancano {size} — scarica un modello o libera memoria",
   "@modelsLocalFitReason": {
     "description": "Local models v3 2026-11-18 (it).",

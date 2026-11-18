@@ -331,9 +331,12 @@ ActorBrain? resolveBrain(
       );
     }
     if (decl.transport == 'builtin') {
-      // The other builtins (afm, laya, the hosted jev/open_router) are
-      // DAEMON-SERVED lanes: in-app silence while the daemon sleeps,
-      // never a fake client (the unknown_local_cast black hole, N2).
+      // The other builtins are OUT-OF-APP lanes: `afm` is Apple-provided;
+      // `laya` is the System-One decision lane served by the laya-serve
+      // SIDECAR (its laya-mlx checkpoint lives under
+      // ~/.cache/xsoulspace — fetched from HF, not installed by this
+      // app). In-app silence while no sidecar answers — never a fake
+      // client (the unknown_local_cast black hole, N2).
       return null;
     }
     final credentialEnv = decl.credentialEnv;
@@ -465,8 +468,9 @@ List<({String ref, String label})> availableBrainOptions({
     // only. A builtin-transport rung rides the flip: the local MLX
     // lanes are already listed above with their spoken labels (the
     // plain `Qwen` / `LFM` rung entries duplicated them — the 2026-11-18
-    // dedupe law), and the daemon-served builtins (AFM, laya) answer
-    // nothing in-app (the unknown-local-cast black-hole law, N2) —
+    // dedupe law), and the out-of-app builtins (AFM; laya via the
+    // laya-serve sidecar) answer nothing in-app (the
+    // unknown-local-cast black-hole law, N2) —
     // listing what the runtime cannot run here is a lie, not a choice.
     for (final rung in paletteRungs)
       if (rung.transport != 'builtin')

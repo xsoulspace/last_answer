@@ -811,7 +811,7 @@
   "@modelsFieldIncludeReasoning": {"description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."},
   "modelsBuiltinLaneLocal": "встроенная локальная дорожка MLX (на устройстве)",
   "@modelsBuiltinLaneLocal": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
-  "modelsBuiltinLaneDecision": "встроенная локальная дорожка решений (loopback)",
+  "modelsBuiltinLaneDecision": "локальная дорожка решений — обслуживается sidecar laya-serve и её загруженной моделью",
   "@modelsBuiltinLaneDecision": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
   "modelsBuiltinLaneAfm": "встроенная дорожка Apple Foundation (на устройстве, специфична для Apple)",
   "@modelsBuiltinLaneAfm": {"description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."},
@@ -972,10 +972,14 @@
   "@modelsBudgetTotalUnknown": {"description": "Local model budget 2026-11-18: the honest note when the sensor sees available but not total memory."},
   "modelsBudgetNothingFits": "ни одна скачанная модель не помещается в доступную память — освободите {size}, чтобы запустить {label}",
   "@modelsBudgetNothingFits": {"description": "Local models v3 2026-11-18 (ru)."},
-    "placeholders": {
-      "size": {"type": "String"},
-      "label": {"type": "String"}
+  "placeholders": {
+    "size": {
+      "type": "String"
     },
+    "label": {
+      "type": "String"
+    }
+  },
   "modelsLocalFitReason": "не хватает {size} — выгрузите модель или освободите память",
   "@modelsLocalFitReason": {
     "description": "Local models v3 2026-11-18 (ru).",

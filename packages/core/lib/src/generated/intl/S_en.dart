@@ -1789,31 +1789,13 @@ class SEn extends S {
   String get modelsDaemonDown => 'daemon down';
 
   @override
-  String get modelsDaemonStale => 'binary stale';
-
-  @override
   String get modelsSchedulerLive => 'scheduler live';
 
   @override
   String get modelsSchedulerDown => 'scheduler down';
 
   @override
-  String get modelsEditPalette => 'Edit palette';
-
-  @override
-  String get modelsValidate => 'Validate';
-
-  @override
-  String get modelsSave => 'Save';
-
-  @override
-  String get modelsClose => 'Close';
-
-  @override
   String get modelsTelemetry => 'Recent dispatches';
-
-  @override
-  String get modelsChipLocal => 'local';
 
   @override
   String get commandPaletteHint => 'Search views, people and actions…';
@@ -2161,9 +2143,6 @@ class SEn extends S {
   String get modelsProviders => 'Providers';
 
   @override
-  String get modelsEditProviders => 'Edit providers';
-
-  @override
   String get modelsNoProviders => 'no providers declared';
 
   @override
@@ -2185,16 +2164,10 @@ class SEn extends S {
   String get modelsAddModel => 'Add model';
 
   @override
-  String get modelsRenameModel => 'Rename model';
-
-  @override
   String get modelsEditAction => 'edit';
 
   @override
   String get modelsRemoveAction => 'remove';
-
-  @override
-  String get modelsRenameAction => 'rename';
 
   @override
   String get modelsConfirm => 'Confirm';
@@ -2219,9 +2192,6 @@ class SEn extends S {
 
   @override
   String get modelsTransportLabel => 'transport';
-
-  @override
-  String get modelsEnvPrefix => 'env:';
 
   @override
   String get modelsProviderIdHint => 'provider id';
@@ -2279,23 +2249,11 @@ class SEn extends S {
       'invalid JSON — the candidate keeps its last valid shape';
 
   @override
-  String get modelsFieldMaxTokens => 'max_tokens';
-
-  @override
-  String get modelsFieldMaxOutputTokens => 'max_output_tokens';
-
-  @override
-  String get modelsFieldReasoningEffort => 'reasoning_effort';
-
-  @override
-  String get modelsFieldIncludeReasoning => 'include_reasoning';
-
-  @override
   String get modelsBuiltinLaneLocal => 'built-in local MLX lane (on-device)';
 
   @override
   String get modelsBuiltinLaneDecision =>
-      'built-in local decision lane (loopback)';
+      'local decision lane — served by the laya-serve sidecar + its fetched model';
 
   @override
   String get modelsBuiltinLaneAfm =>
@@ -2311,9 +2269,6 @@ class SEn extends S {
   @override
   String get modelsReasoningNoLane =>
       'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·';
-
-  @override
-  String get modelsReasoningTitle => 'reasoning effort';
 
   @override
   String get actorsMessage => 'Message';
@@ -2572,9 +2527,6 @@ class SEn extends S {
 
   @override
   String get modelsBuiltinsNoLifecycle => 'always-on';
-
-  @override
-  String get modelsFieldCapabilities => 'capabilities';
 
   @override
   String get modelsEditModel => 'Edit model';

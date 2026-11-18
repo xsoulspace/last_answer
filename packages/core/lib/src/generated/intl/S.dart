@@ -3303,12 +3303,6 @@ abstract class S {
   /// **'daemon down'**
   String get modelsDaemonDown;
 
-  /// Models header fact: rebuilt after the resident booted.
-  ///
-  /// In en, this message translates to:
-  /// **'binary stale'**
-  String get modelsDaemonStale;
-
   /// Models header fact: the supervised realm scheduler (delegation claimant) is running.
   ///
   /// In en, this message translates to:
@@ -3321,41 +3315,11 @@ abstract class S {
   /// **'scheduler down'**
   String get modelsSchedulerDown;
 
-  /// Opens the palette JSON editor.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit palette'**
-  String get modelsEditPalette;
-
-  /// Editor: dry-run the harness parser.
-  ///
-  /// In en, this message translates to:
-  /// **'Validate'**
-  String get modelsValidate;
-
-  /// Editor: validated write with a .bak sibling.
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get modelsSave;
-
-  /// Editor: close the dialog.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get modelsClose;
-
   /// Models: per-actor tool-loop telemetry section.
   ///
   /// In en, this message translates to:
   /// **'Recent dispatches'**
   String get modelsTelemetry;
-
-  /// Rung chip: a builtin local lane.
-  ///
-  /// In en, this message translates to:
-  /// **'local'**
-  String get modelsChipLocal;
 
   /// The ⌘K palette's field hint.
   ///
@@ -3963,12 +3927,6 @@ abstract class S {
   /// **'Providers'**
   String get modelsProviders;
 
-  /// Models view: opens the provider editor.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit providers'**
-  String get modelsEditProviders;
-
   /// Models view: empty providers state.
   ///
   /// In en, this message translates to:
@@ -4011,12 +3969,6 @@ abstract class S {
   /// **'Add model'**
   String get modelsAddModel;
 
-  /// Provider editor: rename model row.
-  ///
-  /// In en, this message translates to:
-  /// **'Rename model'**
-  String get modelsRenameModel;
-
   /// Provider editor: inline edit verb.
   ///
   /// In en, this message translates to:
@@ -4028,12 +3980,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'remove'**
   String get modelsRemoveAction;
-
-  /// Provider editor: inline rename verb.
-  ///
-  /// In en, this message translates to:
-  /// **'rename'**
-  String get modelsRenameAction;
 
   /// Provider editor: confirm button.
   ///
@@ -4082,12 +4028,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'transport'**
   String get modelsTransportLabel;
-
-  /// Provider editor: credential env name prefix.
-  ///
-  /// In en, this message translates to:
-  /// **'env:'**
-  String get modelsEnvPrefix;
 
   /// Provider editor: id field hint.
   ///
@@ -4185,30 +4125,6 @@ abstract class S {
   /// **'invalid JSON — the candidate keeps its last valid shape'**
   String get modelsJsonInvalid;
 
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'max_tokens'**
-  String get modelsFieldMaxTokens;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'max_output_tokens'**
-  String get modelsFieldMaxOutputTokens;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'reasoning_effort'**
-  String get modelsFieldReasoningEffort;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'include_reasoning'**
-  String get modelsFieldIncludeReasoning;
-
   /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
   ///
   /// In en, this message translates to:
@@ -4218,7 +4134,7 @@ abstract class S {
   /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
   ///
   /// In en, this message translates to:
-  /// **'built-in local decision lane (loopback)'**
+  /// **'local decision lane — served by the laya-serve sidecar + its fetched model'**
   String get modelsBuiltinLaneDecision;
 
   /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
@@ -4244,12 +4160,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·'**
   String get modelsReasoningNoLane;
-
-  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
-  ///
-  /// In en, this message translates to:
-  /// **'reasoning effort'**
-  String get modelsReasoningTitle;
 
   /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
   ///
@@ -4718,12 +4628,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'always-on'**
   String get modelsBuiltinsNoLifecycle;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'capabilities'**
-  String get modelsFieldCapabilities;
 
   /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
   ///

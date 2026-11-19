@@ -11,7 +11,7 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_workbench/behaviour_connection.dart';
 import 'package:lastanswer/ui_workbench/workbench_harness_tools.dart';
 import 'package:lastanswer/ui_workbench/workbench_investigation.dart';
-import 'package:lastanswer/ui_workbench/workbench_scene.dart';
+import 'package:lastanswer/ecs_plugins/scene/workbench_scene.dart';
 import 'package:lastanswer/ui_workbench/workbench_strings.dart';
 import 'package:lastanswer/ui_workspaces/workspace.dart';
 import 'package:lastanswer/ui_workspaces/workspace_files_tab.dart';

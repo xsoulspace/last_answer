@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/browser/browser_address.dart';
-import 'package:lastanswer/browser/browser_bridge.dart';
-import 'package:lastanswer/browser/browser_engine.dart';
+import 'package:lastanswer/ui_browser/browser_address.dart';
+import 'package:lastanswer/ui_browser/browser_bridge.dart';
+import 'package:lastanswer/ui_browser/browser_engine.dart';
 
 /// A fake engine: it records what the window asked for and never touches a
 /// platform view.

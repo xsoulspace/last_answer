@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
-import 'package:lastanswer/workbench/workbench_screen.dart';
+import 'package:lastanswer/ui_workbench/workbench_mcp_tools.dart';
+import 'package:lastanswer/ui_workbench/workbench_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

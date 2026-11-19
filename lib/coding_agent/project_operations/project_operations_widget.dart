@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/browser/browser_entry.dart';
+import 'package:lastanswer/ui_browser/browser_entry.dart';
 import 'package:oka_core/project_operations.dart' show ProjectOperationKind;
 import 'package:lastanswer/coding_agent/project_operations/project_operations_session.dart';
 

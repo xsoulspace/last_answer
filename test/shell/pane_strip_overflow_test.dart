@@ -25,9 +25,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/pane_strip.dart';
-import 'package:lastanswer/shell/shell_layout.dart';
-import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/ui_shell/pane_strip.dart';
+import 'package:lastanswer/ui_shell/shell_layout.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
 
 /// 30 distinct tab ids (`tab.0` … `tab.29`).
 List<String> _tabs(final int count) => <String>[

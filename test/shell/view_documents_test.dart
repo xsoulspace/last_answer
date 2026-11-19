@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/shell/view_documents.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
+import 'package:lastanswer/ui_shell/view_documents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 

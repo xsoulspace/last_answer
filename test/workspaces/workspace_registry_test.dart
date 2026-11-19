@@ -7,8 +7,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/workspaces/workspace.dart';
-import 'package:lastanswer/workspaces/workspace_registry.dart';
+import 'package:lastanswer/ui_workspaces/workspace.dart';
+import 'package:lastanswer/ui_workspaces/workspace_registry.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/note/note_asset_store.dart';
-import 'package:lastanswer/settings/settings.dart';
+import 'package:lastanswer/ui_settings/ui_settings.dart';
 import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 
 class NoteViewBlocDto {

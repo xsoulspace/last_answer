@@ -3,7 +3,7 @@
 // durable record roundtrip. Pure Dart — no store, no bindings.
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/workspaces/workspace.dart';
+import 'package:lastanswer/ui_workspaces/workspace.dart';
 
 Workspace _workspace({
   final String name = 'Orbit',

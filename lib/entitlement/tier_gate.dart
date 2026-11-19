@@ -18,7 +18,7 @@ library;
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
-import 'package:lastanswer/ui_pay/paywall_flow.dart';
+import 'package:lastanswer/ui_paywall/paywall_flow.dart';
 
 /// PROVISIONAL FREE cast limit — N is TBD with the owner (plan v5 4b);
 /// 5 is the named default until the product owner pins the number

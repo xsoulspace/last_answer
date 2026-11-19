@@ -8,7 +8,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 
 import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 
-import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
 
 void main() {
   group('conversation mapping', () {

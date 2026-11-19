@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:http/http.dart' as http;
-import 'package:lastanswer/doc/acp_agent_runtime.dart';
-import 'package:lastanswer/settings/features/storage_backends_state.dart';
+import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
+import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:universal_io/io.dart';
 
 /// What THIS device can host for the fleet — the multiplayer

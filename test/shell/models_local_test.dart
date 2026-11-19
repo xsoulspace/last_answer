@@ -42,9 +42,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/models/local_models_state.dart';
-import 'package:lastanswer/shell/models/models_view.dart';
-import 'package:lastanswer/shell/models/models_widgets.dart';
+import 'package:lastanswer/ui_models/local_models_state.dart';
+import 'package:lastanswer/ui_models/models_view.dart';
+import 'package:lastanswer/ui_models/models_widgets.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 

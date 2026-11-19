@@ -10,8 +10,8 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/shell/models/local_models_state.dart';
-import 'package:lastanswer/shell/models/local_runtime_ledger.dart';
+import 'package:lastanswer/ui_models/local_models_state.dart';
+import 'package:lastanswer/ui_models/local_runtime_ledger.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 
 void main() {

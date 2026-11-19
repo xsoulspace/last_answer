@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/automations/supervisor_agent_client.dart';
+import 'package:lastanswer/ui_automations/supervisor_agent_client.dart';
 
 void main() {
   group('HarnessWorldAgentClient', () {

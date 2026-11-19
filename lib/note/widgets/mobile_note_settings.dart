@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/settings/settings.dart';
+import 'package:lastanswer/ui_settings/ui_settings.dart';
 
 class MobileNoteSettingsMenu extends HookWidget {
   const MobileNoteSettingsMenu({

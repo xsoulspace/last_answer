@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/doc/acp_agent_runtime.dart';
-import 'package:lastanswer/doc/acp_agent_runtime_registry.dart';
+import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
+import 'package:lastanswer/ui_documents/acp_agent_runtime_registry.dart';
 
 class _RecordingSink implements StringSink {
   final lines = <String>[];

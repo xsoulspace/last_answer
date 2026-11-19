@@ -15,10 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
-import 'package:lastanswer/shell/surfaces.dart';
-import 'package:lastanswer/workspaces/workspace_notifier.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
+import 'package:lastanswer/ui_shell/shell_theme.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
+import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 

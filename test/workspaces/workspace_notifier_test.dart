@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/workspaces/workspace_notifier.dart';
+import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 void main() {

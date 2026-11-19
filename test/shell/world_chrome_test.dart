@@ -7,9 +7,9 @@ import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/landing_inbox.dart';
-import 'package:lastanswer/shell/models/models_view.dart';
-import 'package:lastanswer/shell/status_edge.dart';
+import 'package:lastanswer/ui_shell/landing_inbox.dart';
+import 'package:lastanswer/ui_models/models_view.dart';
+import 'package:lastanswer/ui_shell/status_edge.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 
 import 'hermetic_world_state.dart';

@@ -3,11 +3,11 @@ import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/doc/code_view.dart';
-import 'package:lastanswer/doc/doc_view.dart';
+import 'package:lastanswer/ui_documents/code_view.dart';
+import 'package:lastanswer/ui_documents/doc_view.dart';
 import 'package:lastanswer/idea/idea_view.dart';
 import 'package:lastanswer/note/note_view.dart';
-import 'package:lastanswer/settings/views/changelog_view.dart';
+import 'package:lastanswer/ui_settings/views/changelog_view.dart';
 import 'package:lastanswer/widgets/legacy_kit/legacy_kit.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 

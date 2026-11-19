@@ -16,9 +16,9 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/ui_shell/shell_theme.dart';
 
-import 'package:lastanswer/shell/view_people.dart';
+import 'package:lastanswer/ui_shell/view_people.dart';
 
 void main() {
   // Wave 3A — the people view's quiet narration line under each bot row

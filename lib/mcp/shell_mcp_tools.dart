@@ -8,7 +8,7 @@
 // a release tree carries nothing). No shell mounted = an honest named
 // refusal (`shell_bridge_absent`), never a guess, never a silent no-op.
 // Debug/profile only (mounted in main(), the realmChatMcpEntries lane).
-import 'package:lastanswer/shell/app_shell.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// The mounted shell's bridge; null while no AppShell is mounted.

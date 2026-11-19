@@ -13,7 +13,7 @@
 //      action) with the next move named in the message.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/browser/browser_mcp_tools.dart';
+import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';

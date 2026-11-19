@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/agent_config/agent_config_persistence.dart';
-import 'package:lastanswer/agent_config/agent_config_persistence_io.dart';
-import 'package:lastanswer/doc/acp_session_reference_store.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config_persistence_io.dart';
+import 'package:lastanswer/ui_documents/acp_session_reference_store.dart';
 import 'package:xsoulspace_inference_acp/xsoulspace_inference_acp.dart';
 
 final class _Memory implements AgentConfigPersistence {

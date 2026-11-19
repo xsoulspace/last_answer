@@ -5,7 +5,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/app_shell.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'hermetic_world_state.dart';

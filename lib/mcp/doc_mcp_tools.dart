@@ -1,4 +1,4 @@
-import 'package:lastanswer/doc/doc_view.dart';
+import 'package:lastanswer/ui_documents/doc_view.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// MCP tool entries that let an agent inspect and drive the recursive

@@ -1,6 +1,6 @@
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/doc/chat_permission_policy.dart';
+import 'package:lastanswer/ui_documents/chat_permission_policy.dart';
 import 'package:xsoulspace_permission_core/xsoulspace_permission_core.dart';
 
 AcpPermissionRequest requestOf(final String kind) => AcpPermissionRequest(

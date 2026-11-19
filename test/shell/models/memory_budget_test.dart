@@ -21,9 +21,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/models/local_models_state.dart';
-import 'package:lastanswer/shell/models/memory_budget.dart';
-import 'package:lastanswer/shell/models/memory_budget_bar.dart';
+import 'package:lastanswer/ui_models/local_models_state.dart';
+import 'package:lastanswer/ui_models/memory_budget.dart';
+import 'package:lastanswer/ui_models/memory_budget_bar.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 
 Widget _wrap(final Widget child) => MaterialApp(

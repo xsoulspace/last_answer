@@ -15,7 +15,7 @@ import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_transport.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/doc/acp_agent_runtime.dart';
+import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 
 /// A scripted [AcpBridgeTransport]: records prompts, replays queued
 /// update scripts per turn, and lets the test emit permission requests.

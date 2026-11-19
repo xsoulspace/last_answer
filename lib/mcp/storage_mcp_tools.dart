@@ -4,7 +4,7 @@ import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dar
     if (dart.library.io)
         'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
     as external_worlds;
-import 'package:lastanswer/settings/features/features.dart';
+import 'package:lastanswer/ui_settings/features/features.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// MCP tool entries that let an agent drive the storage backends

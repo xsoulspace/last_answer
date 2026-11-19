@@ -14,7 +14,7 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/actor_info_surface.dart';
+import 'package:lastanswer/ui_shell/actor_info_surface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

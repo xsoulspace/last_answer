@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/shell/miniwindows/mini_window.dart';
+import 'package:lastanswer/ui_shell/miniwindows/mini_window.dart';
 
 MiniWindowSpec _spec(
   final String id, {

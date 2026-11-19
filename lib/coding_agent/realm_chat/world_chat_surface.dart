@@ -1,7 +1,7 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
-import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/media_asset_card.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
@@ -20,10 +20,10 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
-import 'package:lastanswer/shell/landing_inbox.dart';
-import 'package:lastanswer/shell/project_scope_picker.dart';
-import 'package:lastanswer/shell/shell_scope.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/ui_shell/landing_inbox.dart';
+import 'package:lastanswer/ui_shell/project_scope_picker.dart';
+import 'package:lastanswer/ui_shell/shell_scope.dart';
+import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show
         ActorGrantCaps,

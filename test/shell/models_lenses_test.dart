@@ -28,9 +28,9 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/models/local_models_state.dart';
-import 'package:lastanswer/shell/models/models_view.dart';
-import 'package:lastanswer/shell/models/palette_candidate.dart';
+import 'package:lastanswer/ui_models/local_models_state.dart';
+import 'package:lastanswer/ui_models/models_view.dart';
+import 'package:lastanswer/ui_models/palette_candidate.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 

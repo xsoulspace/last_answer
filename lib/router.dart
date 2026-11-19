@@ -4,10 +4,10 @@ import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/home/project_route.dart';
 import 'package:lastanswer/home/project_view.dart';
 import 'package:lastanswer/other/other.dart';
-import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/ui_pay/paywall_flow.dart';
-import 'package:lastanswer/ui_pay/paywall_screen.dart';
-import 'package:lastanswer/workbench/workbench_screen.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
+import 'package:lastanswer/ui_paywall/paywall_flow.dart';
+import 'package:lastanswer/ui_paywall/paywall_screen.dart';
+import 'package:lastanswer/ui_workbench/workbench_screen.dart';
 
 final appRouter = GoRouter(
   redirect: _handleRootRedirect,

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/browser/browser_address.dart';
+import 'package:lastanswer/ui_browser/browser_address.dart';
 
 void main() {
   group('parseBrowserAddress', () {

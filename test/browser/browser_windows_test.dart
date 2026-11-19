@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/browser/browser_bridge.dart';
-import 'package:lastanswer/browser/browser_engine.dart';
-import 'package:lastanswer/browser/browser_windows.dart';
+import 'package:lastanswer/ui_browser/browser_bridge.dart';
+import 'package:lastanswer/ui_browser/browser_engine.dart';
+import 'package:lastanswer/ui_browser/browser_windows.dart';
 
 final class _Engine implements BrowserEngine {
   final loaded = <Uri>[];

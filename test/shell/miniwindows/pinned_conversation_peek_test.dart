@@ -14,7 +14,7 @@ import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/pinned_conversation_peek.dart';
+import 'package:lastanswer/ui_shell/pinned_conversation_peek.dart';
 
 /// One hermetic peek fixture: a disposable world, a service over it,
 /// and the DM thread the peek watches.

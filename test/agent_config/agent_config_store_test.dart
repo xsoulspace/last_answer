@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/agent_config/agent_config_persistence.dart';
-import 'package:lastanswer/agent_config/agent_platform_config.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
 
 final class InMemoryAgentConfigPersistence implements AgentConfigPersistence {
   String? contents;

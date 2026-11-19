@@ -16,8 +16,8 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/la_world/la_world.dart';
 import 'package:lastanswer/la_world/la_world_components.dart';
-import 'package:lastanswer/shell/action_bar.dart';
-import 'package:lastanswer/shell/shell_layout.dart';
+import 'package:lastanswer/ui_shell/action_bar.dart';
+import 'package:lastanswer/ui_shell/shell_layout.dart';
 
 Future<void> _pumpBar(
   final WidgetTester tester, {

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
 
 /// Builds the registry's inspector spec inside a Material + l10n tree
 /// (the shell's own shape: titles resolve against `context.l10n` at

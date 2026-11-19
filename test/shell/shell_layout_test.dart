@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/shell/shell_layout.dart';
-import 'package:lastanswer/shell/surfaces.dart';
+import 'package:lastanswer/ui_shell/shell_layout.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
 
 /// DESIGN.md v2 tab-law gate: the pane-group layout model — groups own
 /// strips, splits move the active tab into a new group, folds merge

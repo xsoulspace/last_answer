@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/automations/supervisor_service_io.dart';
-import 'package:lastanswer/automations/supervisor_view.dart';
+import 'package:lastanswer/ui_automations/supervisor_service_io.dart';
+import 'package:lastanswer/ui_automations/supervisor_view.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';

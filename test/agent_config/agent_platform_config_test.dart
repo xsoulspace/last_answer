@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/agent_config/agent_platform_config.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
 
 void main() {
   group('AgentPlatformConfig JSON', () {

@@ -15,7 +15,7 @@ import 'dart:async' show StreamSubscription, Timer, unawaited;
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/agent_config/agent_config.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/coding_agent/realm_chat/actor_bindings_fold.dart';
@@ -25,7 +25,7 @@ import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
-import 'package:lastanswer/settings/features/storage_backends_state.dart';
+import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// The durable-conversation projection + bot runtime for one app run.

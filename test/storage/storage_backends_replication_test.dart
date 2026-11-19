@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/settings/features/features.dart';
+import 'package:lastanswer/ui_settings/features/features.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

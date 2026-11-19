@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/browser/browser_strings.dart';
+import 'package:lastanswer/ui_browser/browser_strings.dart';
 
 void main() {
   test('strings follow the locale', () {

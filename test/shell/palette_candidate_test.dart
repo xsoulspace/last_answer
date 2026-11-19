@@ -7,7 +7,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/shell/models/palette_candidate.dart';
+import 'package:lastanswer/ui_models/palette_candidate.dart';
 
 /// The fixture wire document: two providers, three cast rows (one
 /// primary, one builtin), the host parser's own key vocabulary.

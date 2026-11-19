@@ -6,9 +6,9 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/shell/miniwindows/mini_window.dart';
+import 'package:lastanswer/ui_shell/miniwindows/mini_window.dart';
 
-import 'package:lastanswer/shell/miniwindows/mini_window_persistence.dart';
+import 'package:lastanswer/ui_shell/miniwindows/mini_window_persistence.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 

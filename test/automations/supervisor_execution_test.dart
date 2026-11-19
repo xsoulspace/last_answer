@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/automations/supervisor_execution.dart';
+import 'package:lastanswer/ui_automations/supervisor_execution.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:resource_composition/resource_composition.dart';
 

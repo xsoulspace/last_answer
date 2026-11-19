@@ -4,7 +4,7 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:lastanswer/doc/openrouter_doc_inference_port.dart';
+import 'package:lastanswer/ui_documents/openrouter_doc_inference_port.dart';
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
 
 http.Response _completion({

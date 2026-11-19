@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/coding_agent/mesh_task_board.dart';
-import 'package:lastanswer/settings/features/mesh_sync_participants.dart';
+import 'package:lastanswer/ui_settings/features/mesh_sync_participants.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
 /// ADR 0028 — the versioned absorption window that renamed the mesh task

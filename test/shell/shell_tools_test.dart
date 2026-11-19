@@ -15,10 +15,10 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/mcp/shell_mcp_tools.dart';
-import 'package:lastanswer/settings/settings.dart';
-import 'package:lastanswer/shell/app_shell.dart';
-import 'package:lastanswer/shell/surfaces.dart';
-import 'package:lastanswer/workspaces/workspace_notifier.dart';
+import 'package:lastanswer/ui_settings/ui_settings.dart';
+import 'package:lastanswer/ui_shell/app_shell.dart';
+import 'package:lastanswer/ui_shell/surfaces.dart';
+import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'hermetic_world_state.dart';

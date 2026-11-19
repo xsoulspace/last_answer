@@ -30,7 +30,7 @@ import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/shell_theme.dart';
+import 'package:lastanswer/ui_shell/shell_theme.dart';
 
 /// The searchable member picker: the creation dialog's checkbox list
 /// (LaRow + LaCheckbox) with a filter field on top — the 2000-actor

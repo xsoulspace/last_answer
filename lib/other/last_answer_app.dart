@@ -9,7 +9,7 @@ import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/other/feedback.dart';
 import 'package:lastanswer/router.dart';
-import 'package:lastanswer/settings/features/features.dart';
+import 'package:lastanswer/ui_settings/features/features.dart';
 
 class LastAnswerApp extends StatelessWidget {
   const LastAnswerApp({super.key});

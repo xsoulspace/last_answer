@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/bootstrap.dart';
-import 'package:lastanswer/browser/browser_mcp_tools.dart';
+import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';

@@ -64,7 +64,7 @@ Future<void> main(List<String> arguments) async {
     '${candidate.path}/.dart_tool/package_graph.json',
   ).writeAsString(jsonEncode(graph));
   await File('${candidate.path}/lib/main.dart').writeAsString(
-    "import 'package:lastanswer/workbench/workbench_candidate_main.dart' as candidate;\n"
+    "import 'package:lastanswer/ui_workbench/workbench_candidate_main.dart' as candidate;\n"
     'Future<void> main() => candidate.main();\n',
   );
   for (final name in ['MainFlutterWindow.swift', 'AppDelegate.swift']) {

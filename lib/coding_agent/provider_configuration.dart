@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lastanswer/agent_config/agent_platform_config.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Device-local configuration for a hosted coding provider. Document payloads

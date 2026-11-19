@@ -24,11 +24,11 @@ import 'package:core/core.dart';
 import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
 import 'package:lastanswer/coding_agent/device_capabilities.dart';
 import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
-import 'package:lastanswer/doc/acp_agent_runtime.dart';
+import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 import 'package:lastanswer/mcp/chatgpt_mcp_tools.dart';
 import 'package:lastanswer/mcp/grok_mcp_tools.dart';
 import 'package:lastanswer/router.dart';
-import 'package:lastanswer/workbench/workbench_mcp_tools.dart';
+import 'package:lastanswer/ui_workbench/workbench_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// One published intent, as data — the vocabulary a controller reads.

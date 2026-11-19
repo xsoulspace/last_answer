@@ -50,7 +50,7 @@ import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:http/http.dart' as http;
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
-import 'package:lastanswer/shell/models/local_runtime_ledger.dart';
+import 'package:lastanswer/ui_models/local_runtime_ledger.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';

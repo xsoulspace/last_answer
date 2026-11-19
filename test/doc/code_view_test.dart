@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/doc/code_view.dart';
+import 'package:lastanswer/ui_documents/code_view.dart';
 
 /// 2a — the code format's laws: the language is DERIVED from the
 /// filename (never stored twice), the content rides the doc's first

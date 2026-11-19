@@ -11,205 +11,186 @@ article *stage-2 structure* in
 `~/xs/articles/articles/2025_feb_flutter_app_architecture`, instantiated by
 `~/xs/car_vs_walk_game` — whose `docs/ARCHITECTURE.md` is the template this file
 follows): **the file system must speak the domain**. A reader understands the
-app from the folder tree alone — not from generic `widgets/` + `services/`
-buckets, and not from one mega-folder that accumulates whatever has no home.
-The prefix on a folder is the layer law: `data_*` folders live beneath the UI
-and never import it; `ui_*` folders are experience domains; unprefixed folders
-inside a data layer are shared facilities, not domains.
+app from the folder tree alone. The prefix on a folder is the layer law:
+`ui_*` folders are experience domains (imports point down toward data);
+`data_agents/` is the remote-API layer; the realm backend subjects —
+`journal/`, `world/`, `chat/`, `ecs_plugins/` — sit at lib ROOT, unwrapped,
+so they stay easy to reach and to scale (owner law 2026-11-19: "journal, world,
+chat, ecs_plugins at root — that's the whole point of the article: easy
+access, easy to understand and scale").
 
 ## 1. Layer stack (imports point DOWN only)
 
 ```
-packages/headless_core →  packages/core, la_world, la_locale, la_ui →  ui_* domains →  entries/bootstrap
-      (pure domain)        (Flutter services, the World,       (shell, settings,     (main.dart,
-                            localization, the kit)               automations, …)       router.dart)
+packages/headless_core →  packages/core, la_locale, la_ui  →  realm backend          →  ui_* domains  →  ui_root
+      (pure domain)        (Flutter services, l10n, kit)      (journal, world,          (shell, settings,  (bootstrap,
+                                                              chat, ecs_plugins,        automations,       router,
+                                                              data_agents)              documents, …)      common_imports)
 ```
 
 - **`packages/headless_core` is the data_models layer** — pure Dart, no Flutter
-  (ADR 0002). 31 lib files already honor it; everything domain-shaped and
-  Flutter-free belongs there or beneath it.
-- **`la_world/` is the data_local_api analog** — the realm's local backend: the
-  ONE ecsly `World` assembly point, fed by the realm journal fold; its
-  components/resources are the state layer; its fixed-step systems animate the
-  creature layer. Systems are business logic, components the schema, actions
-  the use cases (same reading as car_vs_walk_game's sim).
+  (ADR 0002).
+- **The realm backend is four ROOT folders** (no wrapper, owner law):
+  - `journal/` — services over the append-only journal + the mesh durability
+    lane (`mesh/`). The ONE authority's app-side API.
+  - `world/` — the ONE in-process ecsly World: assembly, components, journal
+    feed, creatures. Files carry the ecsly anatomy in their names.
+  - `chat/` — the chat experience domain (surface + actor widgets); its
+    services live in `journal/`, its plugin shim in `ecs_plugins/conversation/`.
+  - `ecs_plugins/` — one subfolder per consumed ecsly plugin (`boards/`,
+    `conversation/`, `scene/`, `world_sync/`).
+  - `data_agents/` — the agent APIs (the data_remote_api analog): harness,
+    acp, subscriptions, supervised, meaning, product, config.
 - **`packages/la_ui` is the component kit** — the ONE source of interactive
   chrome (DESIGN v6, CI-enforced by `just ui-gates`).
-- **`shell/` is chrome, never a domain.** Features reach it through the
-  surface registry (`lib/shell/surfaces.dart`); the registry is the manifest.
+- **`packages/la_locale`** — the localization facility (arbs + generated S).
+- **`ui_shell/` is chrome, never a domain.** Features reach it through the
+  surface registry (`lib/ui_shell/surfaces.dart`).
 
 Verified invariants (re-check after any move):
 
-- `headless_core` imports nothing from `lib/`, `packages/core`, or any `ui_*`.
-- `la_world` imports no `ui_*` folder and no widget code.
-- Features never import `shell/` — shell reaches features through the registry
-  only, never the reverse. (Today 8 statements in `coding_agent` violate this —
-  `world_chat_surface`, `actor_brain`, `brain_health_dot`, `channel_members_ui`,
-  `agent_mcp_tools` — named violations, fix scheduled before the shell rename.)
-- `la_world` never imports feature folders. (Today `la_world_feed` and
-  `la_world_components` import `realm_chat/world_state_service.dart` — the
-  projection imports the feature that feeds it. Fix: realm publishes the state
-  interface; the fold consumes the interface, not the folder.)
+- `headless_core` imports nothing from `lib/` or any `ui_*`.
+- `world/` and `ecs_plugins/` are the ONLY homes of `package:ecsly` kernel
+  imports; `ecsly_flutter` selector reads are legal in any widget code.
+- UI domains never import each other's internals — cross-domain sharing goes
+  through barrels, and data sharing goes to the backend folders (the article's
+  rule: reuse only widgets, never share domain data).
+- Features never import `ui_shell/` internals — the registry is the manifest.
+  (`lib/coding_agent.dart` is a re-export barrel kept only so pre-split
+  callers compile; new code never imports it.)
 
-## 2. Folder map (target grammar; as-built status marked)
+Known inversion, fix scheduled: `world/world_feed.dart` and
+`world_components.dart` import `journal/world_state_service.dart` — the
+projection should consume an interface, not the service (realm publishes
+state; the fold folds the interface).
+
+## 2. Folder map (as-built 2026-11-19)
 
 ```
 lib/
 ├── main.dart / main_prod.dart / headless_main.dart   # entries (debug, prod, headless CLI)
 ├── bootstrap.dart / router.dart / app_scaffold.dart /
-│   common_imports.dart                               # ui_root role lives in root files
-├── core/                       # (PENDING gather) crash/, entitlement/, shared scaffolds:
-│                               #   framework-side, not tied to any domain
-├── la_world/                   # data_local_api analog (name kept — it speaks the domain)
-│   │                           #   la_world.dart, la_world_components, la_world_feed, creatures
-│   └── realm_*  (PENDING)      # realm domains move in over time (see migration notes)
-├── coding_agent/               # the agents domain (as-built mega-folder; split PENDING)
-│   │                           #   the coding_agent.dart barrel is the compressed reader
-│   │                           #   path and stays stable while the split lands
-│   ├── realm_chat/             # → la_world (PENDING) — world chat, actors, brains, spaces
-│   ├── world_inspector/        # inspector domain (PENDING own folder)
-│   ├── acp_bridge/             # external ACP agents as actors (as-built)
-│   ├── boards                  # mesh board replicas + bridge (→ la_world PENDING)
-│   ├── chatgpt_*/ grok_*       # subscription gateways (dedup PENDING → one shared gateway,
-│   │                           #   provider configs per ADR 0031)
-│   ├── meaning_*, product_*    # experiment flow; product operations (as-built)
-│   └── project_operations/     # LIVE files only: entry/session/widget (tombstones deleted)
-├── automations/                # (as-built 2026-11-19) supervisor + declared automations
-├── shell/                      # ui_shell (rename PENDING): rail, rooms column, strips,
-│   │                           #   palette, surfaces.dart = THE surface registry, status edge
-│   └── models/                 # ui_models (move PENDING): the Models surface (DESIGN v5)
-├── doc/                        # ui_documents (rename PENDING): editor + inference ports
-├── browser/                    # ui_browser (rename PENDING)
-├── settings/                   # ui_settings (rename PENDING): section registry
-│                               #   (settings_sections.dart), one-scroll + TOC (as-built)
-├── mcp/                        # ui_debug analog (keeps name — it speaks the domain):
-│                               #   agent-facing MCP tools, debug-build only
-├── workbench/                  # ui_workbench (rename PENDING): 3D workbench scene
-├── workspaces/                 # workspace registry domain (ADR 0026)
-├── home/ idea/ note/           # LEGACY (quarantine → lib/legacy/ PENDING): frozen, do not grow
-└── widgets/legacy_kit/         # legacy kit (same quarantine): live refs only from legacy surfaces
+│   common_imports.dart / coding_agent.dart           # root files (the latter: legacy re-export barrel)
+├── journal/                    # realm journal backend + mesh/ durability lane
+├── world/                      # the ecsly World: world.dart, world_components.dart,
+│                               #   world_feed.dart, creatures.dart, creature_mark.dart
+├── chat/                       # the chat experience domain (surface + actor widgets)
+├── ecs_plugins/                # boards/ · conversation/ · scene/ · world_sync/
+├── data_agents/                # harness/ · acp/ · subscriptions/ · supervised/ ·
+│                               #   meaning/ · product/ · config/ · project_operations/
+├── ui_root/                    # app assembly (last_answer_app, loading, theme bridge)
+├── ui_shell/                   # chrome: rail, rooms column, strips, palette, registry
+├── ui_models/                  # Models surface + agent_config/ document
+├── ui_settings/                # section-registry settings experience
+├── ui_automations/             # supervisor + declared automations surface
+├── ui_documents/               # doc editor, inference ports, agent-doc surface + MCP
+├── ui_browser/                 # embedded browser windows
+├── ui_workbench/               # 3D workbench screen (scene binding in ecs_plugins/scene/)
+├── ui_inspector/               # world inspector surfaces (page, tools, seats, bindings)
+├── ui_boards/                  # planning board surface
+├── ui_paywall/                 # paywall flow
+├── ui_onboarding/              # first-run + intro
+├── ui_workspaces/              # workspace registry domain (ADR 0026)
+├── ui_legacy/                  # FROZEN: home/ · idea/ · note/ · legacy_kit/
+├── mcp/                        # agent-facing MCP tools, debug builds (ui_debug analog)
+└── crash/ + entitlement/       # small unprefixed facilities (no lib/core: would
+                                #   shadow package:core)
 ```
 
-Workspace packages (not under `lib/`, same law): `packages/headless_core`
-(pure domain), `packages/core` (Flutter services/theming — slims toward
-headless_core per ADR 0002), `packages/la_locale` (localization facility: the
-three `intl_{en,it,ru}.arb` sources + the `flutter gen-l10n` output — the
-generated `S` classes are never hand-edited, `just gen-l10n` regenerates;
-intl_utils is retired), `packages/la_ui` (component kit). `packages/`
-also hosts non-app deployables (`server/`, `tg_last_answer_bot/`, `landing/`)
-that share no code path with the app — placement decision pending owner call.
+Workspace packages (same law): `packages/headless_core` (pure domain),
+`packages/core` (Flutter services/theming), `packages/la_locale`
+(localization), `packages/la_ui` (component kit). `packages/` also hosts
+non-app deployables (`server/`, `tg_last_answer_bot/`, `landing/`) —
+placement decision pending owner call.
 
 ## 3. The laws
 
-**Prefix grammar.** New folders follow the `data_*` / `ui_*` grammar:
-`data_*` = layers beneath the UI (data models, local API), `ui_*` = experience
-domains, `ui_root` = start-up assembly. Inside a data layer, `city_*`-style
-domain prefixes mark domains that own a manifest row; unprefixed folders are
-shared facilities. Existing folders keep their names until their staged rename
-lands — the map above is the contract, not yet the tree.
+**Prefix grammar.** `ui_*` = experience domains; the realm backend = the four
+root subjects (`journal`, `world`, `chat`, `ecs_plugins`) + `data_agents`;
+unprefixed folders are facilities. Files inside backend folders carry the
+ecscy anatomy in their names (`world_components.dart`, `world_feed.dart`,
+`*_systems.dart`) — never generic `components/` + `systems/` buckets.
 
 **Barrels are the public API.** Every top-level folder (and workspace package)
 has one barrel; cross-folder imports go through the barrel; deep imports are
-legal only within the same folder. A file move inside a folder must never
-break another domain. `common_imports.dart` is the optional root barrel
-(article vocabulary — kept).
+legal only within the same folder. `common_imports.dart` is the root barrel.
 
 **`{DOMAIN}_KNOWLEDGE.md` per domain.** Named after and aligned with its
-folder (`REALM_CHAT_KNOWLEDGE.md` in `realm_chat/`). One short section: what
-the domain owns, its key types, how to extend it. Name-aligned so file search
-and agent context-fetch find it fast.
+folder. One short section: what the domain owns, key files, how to extend.
 
-**Birth law.** New surface = new folder + `{DOMAIN}_KNOWLEDGE.md` + one row in
-the surface registry (`lib/shell/surfaces.dart`). New realm domain = new folder
-+ knowledge file + wiring added ONLY at the layer root (the world assembly /
-plugin manifest — the `simulation_plugin.dart` pattern: a manifest, not a
-bundle; cross-domain orchestration lives at the layer root, never inside a
-domain folder).
+**Birth law.** New surface = new `ui_<name>/` folder + knowledge file + one
+row in the surface registry. New backend capability = a file in its root
+subject (or a new root subject the owner names) + knowledge entry; cross-domain
+orchestration lives at the layer root, never inside a domain folder.
 
-**State placement — there is no `data_states/` folder, by owner law
-(2026-11-19).** With ecsly + ecsly_flutter in the stack, resources / commands
-ARE the state layer. World state = ecsly resources and components in
-`la_world/` (or harness-side equivalents); app-global runtime state = providers
-owned by their domain folder and exposed through that domain's barrel; state
-two domains need moves to the data layer (`la_world`, `headless_core`), never
-into another UI domain. This is why `settings/features/` holding the mesh
-relay host and supervisor services was drift — they are domains, and they now
-live in `lib/automations/`.
+**State placement — no `data_states/` folder, by owner law.** With ecsly +
+ecsly_flutter, resources/commands ARE the state layer. World state = ecsly
+resources/components in `world/`; app-global runtime state = providers owned
+by their domain folder, exposed via that domain's barrel; state two domains
+need moves to the backend folders, never into another UI domain.
 
-**ecsly funneling.** `package:ecsly` (the kernel) is imported only where a
-World is assembled: `la_world/` plus declared bridges (`mesh_board_bridge`,
-`workbench_scene` — pending funnel). `ecsly_flutter` selector reads
-(`EcsWorldSelector`, `selectEcsComponent`) are legal in any widget code. ECS
-plugins are installed at the assembly point, never lazily inside a widget
-build.
+**ecsly funneling.** `package:ecsly` (kernel) is imported only in `world/`
+and `ecs_plugins/`. ECS plugins install at the assembly point, never lazily
+inside a widget build.
 
-**Shell is chrome.** Features never import `shell/`. The rail, rooms column,
-tab strips, palette and status edge are presentation of registry-registered
-surfaces; a feature that needs a shell affordance registers a surface, it does
-not reach into chrome.
+**Shell is chrome.** Features never import `ui_shell/` internals; the surface
+registry is the manifest.
 
-**Flutter-free domain.** `headless_core` stays Flutter-widget-free so the
-domain runs headless (tests, CLI, tooling). `dart:ui` geometry types are
-acceptable; `package:flutter/` widgets are not.
+**Flutter-free domain.** `headless_core` stays Flutter-widget-free.
 
-**Legacy quarantine.** `home/`, `idea/`, `note/`, `widgets/legacy_kit/` are
-frozen: no new code, no new imports from outside the quarantine, retirement
-only through the explicit user-visible migration ADR 0002 requires (ideas and
-notes hold real user data — read old format until migration runs; never delete
-storage on open). Quarantine entries today: `router.dart`, `shell/view_documents.dart`,
-`settings` exports (projects_export_import_buttons).
+**Legacy quarantine.** `ui_legacy/` is frozen: no new code, no new importers
+from outside; retirement only through the explicit user-visible migration
+ADR 0002 requires (ideas and notes hold real user data — read old format
+until migration runs; never delete storage on open).
 
-**Gates carry the mechanical laws.** The UI law is CI-enforced (`just ui-gates`,
-the Material allowlist). The import-direction laws above are procedural until
-promoted into a matching gate alongside it — promotion is earned by repetition,
-per the generational ladder (re-check after any move until then).
+**Gates carry the mechanical laws.** UI law is CI-enforced (`just ui-gates`).
+The import-direction laws above are procedural until promoted into a matching
+gate — promotion earned by repetition, per the generational ladder.
 
 ## 4. Where new code goes (decision list)
 
 | New thing | Home |
 | --- | --- |
-| A realm/actor/chat behavior over the world | its realm domain folder (→ `la_world/`): systems/components + wiring at the layer root |
-| A UI experience (screen, flow, surface) | `ui_<name>/` domain folder: `{flow}/` + `{flow}_screen.dart` + `{feature_name}/` anatomy, `{DOMAIN}_KNOWLEDGE.md`, one registry row |
-| A reusable interactive component | `packages/la_ui` (the only chrome carrier) |
-| A serializable domain value type | `packages/headless_core` (pure Dart) |
+| A realm/journal behavior (chat verbs, projections) | `journal/` |
+| A UI experience (screen, flow, surface) | `ui_<name>/` domain folder + registry row |
+| A chat-domain widget | `chat/` |
+| World/component/system for the ecsly World | `world/` (anatomy-named file) |
+| A consumed ecsly plugin's integration | `ecs_plugins/<plugin>/` |
+| An agent transport / API client | `data_agents/<concern>/` |
+| A reusable interactive component | `packages/la_ui` |
+| A serializable domain value type | `packages/headless_core` |
 | An agent-facing tool | `lib/mcp/` (+ fmtk registration) |
-| An app-wide runtime provider owned by a domain | that domain's folder, exposed via its barrel (never a `data_states/` folder) |
-| Flutter-side service theming/l10n glue | `packages/core` |
-| App start-up/bootstrap | root files (`bootstrap.dart`, `router.dart`) — the ui_root role |
-| A debug panel / agent surface | its owning domain's debug contribution, registered where the owner registers |
+| App start-up/bootstrap | `ui_root/` + root files |
+| Localization strings | `packages/la_locale/lib/src/l10n/` + `just gen-l10n` |
 
 ## 5. Deleted drift, do not resurrect
 
-- `lib/firebase_options.dart` (fully commented; Firebase re-enable starts from
-  git history, not from an empty file).
-- `lib/coding_agent/project_operations/{project_operations, project_operation_controller,
-  project_operation_profile, project_operation_profiles, project_browser_session}.dart`
-  — tombstone re-exports of `package:oka_core/project_operations.dart`
-  (ADR 0050 moved shared project execution to Oka); import `oka_core` directly.
-- `packages/move_to/` — unreferenced purchases/ads staging package; ADR 0050
-  made it dead. Recoverable from git history.
-- `tool/*.dill` build artifacts; `.DS_Store` files.
-
-Pending cleanup (needs owner/lane coordination, not executed here):
-`lib/other/feedback.dart` (Wiredash body commented out; still referenced by
-`settings_screen.dart` and `last_answer_app.dart`), `packages/shared_models`
-off the `common_imports.dart` barrel (near-legacy, 2 app refs).
+- `lib/coding_agent/` mega-folder (dissolved 2026-11-19 — `lib/coding_agent.dart`
+  is a re-export barrel only; new code never imports it).
+- `lib/other/`, `lib/ui/`, `lib/widgets/` (dissolved — ui_root/ui_onboarding/
+  world/ui_root; the kit is `packages/la_ui`).
+- `lib/firebase_options.dart`; the `project_operations` tombstones;
+  `packages/move_to/`; `tool/*.dill`; `.DS_Store`.
+- `packages/core/lib/src/generated/intl/*` + the `flutter_intl:` config
+  (localization moved to `packages/la_locale`; intl_utils retired).
+- Pending cleanup (needs lane coordination): `ui_root/feedback.dart` (Wiredash
+  body commented), `packages/shared_models` off the barrel.
 
 ## 6. History
 
-2026-11-19 — law written from the architecture-cleanup analysis. References:
-the owner's Feb-2025 article (stage-2 structure — the source of the prefix
-grammar, cited by name in car_vs_walk_game's recovered `ECSLY_MIGRATION.md`),
-`car_vs_walk_game/docs/ARCHITECTURE.md` (the template), the
-generational-architecture ladder (moves and falsifiers). Physical migration
-status is marked inline (PENDING) and ordered: (1) this hygiene pass +
-contract, (2) `coding_agent` split behind its barrel, (3) surface realignment
-(renames + `lib/automations` pattern applied), (4) inversion fixes, (5)
-legacy quarantine + ADR 0002 data-policy finish, (6) gateway dedup +
-satellite-package decisions.
+2026-11-19 — law written from the architecture-cleanup analysis, then applied
+physically in the same day's restructure: ui_ renames (shell, settings,
+automations, doc, browser, workbench, workspaces, ui_pay→ui_paywall;
+shell/models + agent_config → ui_models), other/ui dissolved, ui_legacy
+quarantine, coding_agent dissolved into journal/world/chat/ecs_plugins/
+data_agents/ui_inspector/ui_boards behind the re-export barrel, world
+flattened to the ecsly anatomy, workbench scene → ecs_plugins/scene.
+References: the owner's Feb-2025 article (stage-2 grammar), the owner's
+root-folder law ("journal, world, chat, ecs_plugins at root"),
+`car_vs_walk_game/docs/ARCHITECTURE.md` (template), the generational-
+architecture ladder (moves and falsifiers).
 
-Falsifiers: if the split domain folders go un-entered because agents only
-use the barrel, the split over-shotted — compress back. If this file drifts
-doc-ahead-of-tree beyond one release cycle (the reference repo's known
-failure mode), the import-direction gate gets promoted from prose to CI
-sooner.
+Falsifiers: if the split domain folders go un-entered because agents only use
+barrels, the split over-shotted — compress back. If this file drifts
+doc-ahead-of-tree beyond one release cycle, the import-direction gate gets
+promoted from prose to CI.

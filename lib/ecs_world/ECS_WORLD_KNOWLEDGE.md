@@ -1,4 +1,4 @@
-# WORLD_KNOWLEDGE.md
+# ECS_WORLD_KNOWLEDGE.md
 
 **Owns:** the ONE in-process ecsly World — assembly, components, journal feed,
 creature layer. The ecsly anatomy, visible in file names: `world.dart`

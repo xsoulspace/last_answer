@@ -13,7 +13,7 @@
 library;
 
 import 'package:ecsly/ecsly.dart';
-import 'package:lastanswer/journal/world_state_service.dart'
+import 'package:lastanswer/data_journal/world_state_service.dart'
     show ActorTelemetry;
 
 /// One `threads` row: a room (DM, channel, or plain thread).

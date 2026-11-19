@@ -5,7 +5,7 @@ import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/meaning/meaning_experiment_controller.dart';
 import 'package:lastanswer/data_agents/config/permission_doc_router.dart';

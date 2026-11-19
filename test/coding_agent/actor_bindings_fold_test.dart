@@ -5,7 +5,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/actor_bindings_fold.dart';
+import 'package:lastanswer/data_journal/actor_bindings_fold.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 void main() {

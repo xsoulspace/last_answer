@@ -33,24 +33,24 @@
 library;
 
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/chat/actor_avatar.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
-import 'package:lastanswer/chat/actor_presence.dart';
-import 'package:lastanswer/chat/actor_profile_editor.dart';
-import 'package:lastanswer/chat/actor_status.dart';
-import 'package:lastanswer/chat/brain_health_dot.dart';
-import 'package:lastanswer/journal/palette_lanes.dart';
-import 'package:lastanswer/journal/realm_bot_host.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
+import 'package:lastanswer/ui_chat/actor_status.dart';
+import 'package:lastanswer/ui_chat/brain_health_dot.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/world/creatures.dart';
-import 'package:lastanswer/world/world.dart';
+import 'package:lastanswer/ecs_world/creatures.dart';
+import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ui_shell/project_scope_picker.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-import 'package:lastanswer/world/creature_mark.dart';
+import 'package:lastanswer/ecs_world/creature_mark.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show ActorScopeGrant;
 

@@ -21,8 +21,8 @@
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
-import 'package:lastanswer/world/creatures.dart';
-import 'package:lastanswer/world/world_components.dart';
+import 'package:lastanswer/ecs_world/creatures.dart';
+import 'package:lastanswer/ecs_world/world_components.dart';
 
 /// The reactive projection world. Owns the ecsly [World], its Flutter
 /// binding ([EcsController]) and the row indexes (component-object

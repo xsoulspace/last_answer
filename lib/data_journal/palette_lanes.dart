@@ -22,7 +22,7 @@
 /// must not inherit a false lane claim).
 library;
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 
 /// The family of a composition-root built-in lane.
 enum BuiltinLaneFamily {

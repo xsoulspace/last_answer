@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
-import 'package:lastanswer/journal/realm_bot_host.dart';
-import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 
 /// G6 — the `cast:` brainRef grammar (the discovered palette as a bot
 /// brain) and the defer-to-daemon law (one answerer per actor).

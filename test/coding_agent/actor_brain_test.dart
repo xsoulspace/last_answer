@@ -1,8 +1,8 @@
 import 'dart:io' show Directory, File;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
-import 'package:lastanswer/journal/palette_lanes.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart'
     show CachedQwen3Snapshot;
 

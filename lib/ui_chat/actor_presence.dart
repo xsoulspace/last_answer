@@ -25,7 +25,7 @@ library;
 import 'package:core/core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
 
 /// One actor's folded work state — the manager's triage vocabulary.
 ///

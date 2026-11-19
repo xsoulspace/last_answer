@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/chat/palette_health.dart';
-import 'package:lastanswer/journal/realm_world.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/ui_chat/palette_health.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/data_agents/supervised/supervised_world.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';

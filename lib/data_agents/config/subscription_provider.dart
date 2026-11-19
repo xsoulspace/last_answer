@@ -14,7 +14,7 @@ import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dar
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
-import 'package:lastanswer/journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:provider/provider.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 

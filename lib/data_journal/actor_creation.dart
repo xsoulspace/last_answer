@@ -12,8 +12,8 @@
 /// context column's actor panel and the Settings actors pane).
 library;
 
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 
 /// Raised when an edit names an actor the roster does not know — the
 /// named refusal (never an implicit mint of a dead id).

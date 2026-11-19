@@ -42,8 +42,8 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb, visibleForTesting;
-import 'package:lastanswer/journal/kernel_conversation.dart';
-import 'package:lastanswer/journal/realm_world_root_io.dart'
+import 'package:lastanswer/data_journal/kernel_conversation.dart';
+import 'package:lastanswer/data_journal/realm_world_root_io.dart'
     if (dart.library.js_interop) 'realm_world_root_stub.dart'
     as world_root;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';

@@ -10,9 +10,9 @@
 /// `miniwindow.peek.<threadId>` and `miniwindow.peek.<threadId>.beat.<n>`.
 library;
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 
-import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
 

@@ -8,8 +8,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/chat/actor_presence.dart';
-import 'package:lastanswer/journal/realm_bot_host.dart';
+import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
 
 void main() {
   group('deriveActorPresence — the precedence law', () {

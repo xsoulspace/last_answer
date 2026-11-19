@@ -25,10 +25,10 @@
 /// standalone dialog family) and `rail.pick.actor.<id>` (creation).
 library;
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 

@@ -22,9 +22,9 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// One hermetic room: a world, a service, a realm-sealed parent thread

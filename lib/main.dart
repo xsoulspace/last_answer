@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lastanswer/bootstrap.dart';
 import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
 import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
-import 'package:lastanswer/chat/realm_chat_mcp_tools.dart';
+import 'package:lastanswer/ui_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';

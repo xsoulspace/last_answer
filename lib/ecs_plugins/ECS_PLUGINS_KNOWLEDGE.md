@@ -7,6 +7,6 @@ PlanningBoardReplica/Controller), `conversation/` (ecsly_conversation shim),
 (ecsly_world_sync mounts — grows here).
 
 **How to extend:** a newly consumed plugin gets a subfolder + a section here;
-kernel imports stay inside this folder and `world/`. Replica/store laws
+kernel imports stay inside this folder and `ecs_world/`. Replica/store laws
 (snapshot discipline, HLC, absorption windows) are pinned by the tests that
 cover each replica.

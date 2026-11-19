@@ -25,8 +25,8 @@
 /// clean candidate adopts the new truth; a dirty one keeps its edits).
 library;
 
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_models/catalog_lens.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';

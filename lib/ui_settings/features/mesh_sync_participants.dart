@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';

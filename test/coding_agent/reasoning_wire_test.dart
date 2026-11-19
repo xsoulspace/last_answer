@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 
 const _decl = CastBrainDecl(
   id: 'modelscope_qwen38max',

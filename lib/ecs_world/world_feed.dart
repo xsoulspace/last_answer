@@ -14,10 +14,10 @@ library;
 
 import 'dart:async';
 
-import 'package:lastanswer/journal/world_state_service.dart'
+import 'package:lastanswer/data_journal/world_state_service.dart'
     show ActorTelemetry;
-import 'package:lastanswer/world/world.dart';
-import 'package:lastanswer/world/world_components.dart';
+import 'package:lastanswer/ecs_world/world.dart';
+import 'package:lastanswer/ecs_world/world_components.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// The journal collections LaWorld folds. Anything else in the journal

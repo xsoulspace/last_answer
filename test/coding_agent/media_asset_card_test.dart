@@ -10,7 +10,7 @@ library;
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/chat/media_asset_card.dart';
+import 'package:lastanswer/ui_chat/media_asset_card.dart';
 
 const header = 'asset-media v1 mime=image/png bytes=312 width=1024 '
     'height=768 alt=none rev=0123456789abcdef by=scout '

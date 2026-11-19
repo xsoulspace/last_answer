@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:la_ui/la_ui.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/ui_inspector/external_worlds_io.dart'
     as external_worlds;

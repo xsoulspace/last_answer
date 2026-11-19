@@ -10,5 +10,5 @@ library;
 export 'data_agents/harness/harness_host.dart';
 export 'data_agents/harness/harness_session_controller.dart';
 export 'data_agents/harness/turn_queue.dart';
-export 'journal/actor_roster.dart';
+export 'data_journal/actor_roster.dart';
 export 'ui_documents/agent_doc_surface.dart';

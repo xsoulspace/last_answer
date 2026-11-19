@@ -32,7 +32,7 @@ import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/data_agents/config/permission_doc_router.dart';
-import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
+import 'package:lastanswer/data_journal/mesh/mesh_storage_service.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';

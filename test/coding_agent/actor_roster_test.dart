@@ -10,10 +10,10 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 
 DateTime _at(final int millis) =>

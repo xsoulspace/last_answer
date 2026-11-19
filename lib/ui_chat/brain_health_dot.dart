@@ -8,7 +8,7 @@
 /// no verdict, no chrome.
 library;
 
-import 'package:lastanswer/chat/palette_health.dart';
+import 'package:lastanswer/ui_chat/palette_health.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 

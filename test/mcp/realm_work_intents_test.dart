@@ -10,10 +10,10 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/chat/realm_chat_mcp_tools.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/ui_chat/realm_chat_mcp_tools.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 AgentCallEntry _entry(final String name) =>

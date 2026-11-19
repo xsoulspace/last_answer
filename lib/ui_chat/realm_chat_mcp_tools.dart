@@ -5,8 +5,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 
 /// The app's live world-chat service, registered by the shell on attach.

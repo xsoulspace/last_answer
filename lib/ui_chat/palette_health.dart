@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 
 /// ADR 0119 — the ecsai daemon's palette-health status file, read for the
 /// People panel's brain badge: one entry per palette cast with its

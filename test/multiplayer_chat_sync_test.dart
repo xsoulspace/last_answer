@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
+import 'package:lastanswer/data_journal/mesh/mesh_storage_service.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
 /// Multiplayer-chat convergence proof (the recommendation this gate

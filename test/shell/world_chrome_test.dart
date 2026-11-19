@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/chat/palette_health.dart';
-import 'package:lastanswer/journal/realm_world.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/ui_chat/palette_health.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/landing_inbox.dart';
 import 'package:lastanswer/ui_models/models_view.dart';

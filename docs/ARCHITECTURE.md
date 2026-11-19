@@ -14,7 +14,7 @@ follows): **the file system must speak the domain**. A reader understands the
 app from the folder tree alone. The prefix on a folder is the layer law:
 `ui_*` folders are experience domains (imports point down toward data);
 `data_agents/` is the remote-API layer; the realm backend subjects —
-`journal/`, `world/`, `chat/`, `ecs_plugins/` — sit at lib ROOT, unwrapped,
+`data_journal/`, `ecs_world/`, `ui_chat/`, `ecs_plugins/` — sit at lib ROOT, unwrapped,
 so they stay easy to reach and to scale (owner law 2026-11-19: "journal, world,
 chat, ecs_plugins at root — that's the whole point of the article: easy
 access, easy to understand and scale").
@@ -31,12 +31,12 @@ packages/headless_core →  packages/core, la_locale, la_ui  →  realm backend 
 - **`packages/headless_core` is the data_models layer** — pure Dart, no Flutter
   (ADR 0002).
 - **The realm backend is four ROOT folders** (no wrapper, owner law):
-  - `journal/` — services over the append-only journal + the mesh durability
+  - `data_journal/` — services over the append-only journal + the mesh durability
     lane (`mesh/`). The ONE authority's app-side API.
-  - `world/` — the ONE in-process ecsly World: assembly, components, journal
+  - `ecs_world/` — the ONE in-process ecsly World: assembly, components, journal
     feed, creatures. Files carry the ecsly anatomy in their names.
-  - `chat/` — the chat experience domain (surface + actor widgets); its
-    services live in `journal/`, its plugin shim in `ecs_plugins/conversation/`.
+  - `ui_chat/` — the chat experience domain (surface + actor widgets); its
+    services live in `data_journal/`, its plugin shim in `ecs_plugins/conversation/`.
   - `ecs_plugins/` — one subfolder per consumed ecsly plugin (`boards/`,
     `conversation/`, `scene/`, `world_sync/`).
   - `data_agents/` — the agent APIs (the data_remote_api analog): harness,
@@ -50,7 +50,7 @@ packages/headless_core →  packages/core, la_locale, la_ui  →  realm backend 
 Verified invariants (re-check after any move):
 
 - `headless_core` imports nothing from `lib/` or any `ui_*`.
-- `world/` and `ecs_plugins/` are the ONLY homes of `package:ecsly` kernel
+- `ecs_world/` and `ecs_plugins/` are the ONLY homes of `package:ecsly` kernel
   imports; `ecsly_flutter` selector reads are legal in any widget code.
 - UI domains never import each other's internals — cross-domain sharing goes
   through barrels, and data sharing goes to the backend folders (the article's
@@ -71,10 +71,10 @@ lib/
 ├── main.dart / main_prod.dart / headless_main.dart   # entries (debug, prod, headless CLI)
 ├── bootstrap.dart / router.dart / app_scaffold.dart /
 │   common_imports.dart / coding_agent.dart           # root files (the latter: legacy re-export barrel)
-├── journal/                    # realm journal backend + mesh/ durability lane
-├── world/                      # the ecsly World: world.dart, world_components.dart,
+├── data_journal/               # realm journal backend + mesh/ durability lane
+├── ecs_world/                  # the ecsly World: world.dart, world_components.dart,
 │                               #   world_feed.dart, creatures.dart, creature_mark.dart
-├── chat/                       # the chat experience domain (surface + actor widgets)
+├── ui_chat/                    # the chat experience domain (surface + actor widgets)
 ├── ecs_plugins/                # boards/ · conversation/ · scene/ · world_sync/
 ├── data_agents/                # harness/ · acp/ · subscriptions/ · supervised/ ·
 │                               #   meaning/ · product/ · config/ · project_operations/
@@ -106,7 +106,7 @@ placement decision pending owner call.
 ## 3. The laws
 
 **Prefix grammar.** `ui_*` = experience domains; the realm backend = the four
-root subjects (`journal`, `world`, `chat`, `ecs_plugins`) + `data_agents`;
+root subjects (`data_journal`, `ecs_world`, `ui_chat`, `ecs_plugins`) + `data_agents`;
 unprefixed folders are facilities. Files inside backend folders carry the
 ecscy anatomy in their names (`world_components.dart`, `world_feed.dart`,
 `*_systems.dart`) — never generic `components/` + `systems/` buckets.
@@ -125,11 +125,11 @@ orchestration lives at the layer root, never inside a domain folder.
 
 **State placement — no `data_states/` folder, by owner law.** With ecsly +
 ecsly_flutter, resources/commands ARE the state layer. World state = ecsly
-resources/components in `world/`; app-global runtime state = providers owned
+resources/components in `ecs_world/`; app-global runtime state = providers owned
 by their domain folder, exposed via that domain's barrel; state two domains
 need moves to the backend folders, never into another UI domain.
 
-**ecsly funneling.** `package:ecsly` (kernel) is imported only in `world/`
+**ecsly funneling.** `package:ecsly` (kernel) is imported only in `ecs_world/`
 and `ecs_plugins/`. ECS plugins install at the assembly point, never lazily
 inside a widget build.
 
@@ -151,10 +151,10 @@ gate — promotion earned by repetition, per the generational ladder.
 
 | New thing | Home |
 | --- | --- |
-| A realm/journal behavior (chat verbs, projections) | `journal/` |
+| A realm/journal behavior (chat verbs, projections) | `data_journal/` |
 | A UI experience (screen, flow, surface) | `ui_<name>/` domain folder + registry row |
-| A chat-domain widget | `chat/` |
-| World/component/system for the ecsly World | `world/` (anatomy-named file) |
+| A chat-domain widget | `ui_chat/` |
+| World/component/system for the ecsly World | `ecs_world/` (anatomy-named file) |
 | A consumed ecsly plugin's integration | `ecs_plugins/<plugin>/` |
 | An agent transport / API client | `data_agents/<concern>/` |
 | A reusable interactive component | `packages/la_ui` |
@@ -178,11 +178,13 @@ gate — promotion earned by repetition, per the generational ladder.
 
 ## 6. History
 
+2026-11-19 late — prefixes completed per owner: journal→data_journal,
+world→ecs_world, chat→ui_chat; ecs_plugins + data_agents already prefixed.
 2026-11-19 — law written from the architecture-cleanup analysis, then applied
 physically in the same day's restructure: ui_ renames (shell, settings,
 automations, doc, browser, workbench, workspaces, ui_pay→ui_paywall;
 shell/models + agent_config → ui_models), other/ui dissolved, ui_legacy
-quarantine, coding_agent dissolved into journal/world/chat/ecs_plugins/
+quarantine, coding_agent dissolved into data_journal/ecs_world/ui_chat/ecs_plugins/
 data_agents/ui_inspector/ui_boards behind the re-export barrel, world
 flattened to the ecsly anatomy, workbench scene → ecs_plugins/scene.
 References: the owner's Feb-2025 article (stage-2 grammar), the owner's

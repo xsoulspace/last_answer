@@ -1,12 +1,12 @@
 import 'package:ecsly_flutter/ecsly_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/world_state_service.dart'
+import 'package:lastanswer/data_journal/world_state_service.dart'
     show ActorTelemetry;
-import 'package:lastanswer/world/creatures.dart';
-import 'package:lastanswer/world/world.dart';
-import 'package:lastanswer/world/world_components.dart';
-import 'package:lastanswer/world/creature_mark.dart';
+import 'package:lastanswer/ecs_world/creatures.dart';
+import 'package:lastanswer/ecs_world/world.dart';
+import 'package:lastanswer/ecs_world/world_components.dart';
+import 'package:lastanswer/ecs_world/creature_mark.dart';
 
 /// 3d — the creature layer's laws: species are deterministic identity,
 /// moods are DERIVED from honest facts (never invented), the derivation

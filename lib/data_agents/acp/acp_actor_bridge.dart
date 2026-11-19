@@ -39,8 +39,8 @@ import 'dart:async';
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 
 /// The bridge's lifecycle word (observability rows read it; the runtime
 /// underneath keeps its own status — this is the BRIDGE's seat).

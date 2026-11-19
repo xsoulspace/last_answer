@@ -16,15 +16,15 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
-import 'package:lastanswer/journal/actor_bindings_fold.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
-import 'package:lastanswer/journal/actor_creation.dart';
+import 'package:lastanswer/data_journal/actor_bindings_fold.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/data_journal/actor_creation.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
-import 'package:lastanswer/journal/realm_bot_host.dart';
-import 'package:lastanswer/journal/realm_world.dart';
-import 'package:lastanswer/journal/work_thread_spawn.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/data_journal/work_thread_spawn.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

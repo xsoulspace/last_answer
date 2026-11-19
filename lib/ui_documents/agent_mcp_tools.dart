@@ -4,7 +4,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/data_agents/config/permission_doc_router.dart';
 import 'package:lastanswer/data_agents/product/product_agent_mcp_tools.dart';
-import 'package:lastanswer/journal/mesh/live_mesh_service.dart';
+import 'package:lastanswer/data_journal/mesh/live_mesh_service.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';

@@ -13,11 +13,11 @@
 /// — the persistence and the loop rebuild live there, not here.
 library;
 
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/chat/actor_brain.dart';
-import 'package:lastanswer/chat/avatar_picker.dart';
-import 'package:lastanswer/chat/brain_health_dot.dart';
-import 'package:lastanswer/journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/avatar_picker.dart';
+import 'package:lastanswer/ui_chat/brain_health_dot.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/common_imports.dart';
 
 /// The editor's agent-contract widget keys (DESIGN §6) — shared by both

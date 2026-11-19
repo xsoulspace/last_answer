@@ -2,8 +2,8 @@ import 'package:la_locale/la_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/journal/actor_roster.dart';
-import 'package:lastanswer/chat/actor_profile_editor.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
 
 void main() {
   // ADR 0143 — the Brain override card: Automatic vs the actor's own

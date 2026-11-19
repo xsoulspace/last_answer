@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
 import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
-import 'package:lastanswer/chat/realm_chat_mcp_tools.dart';
+import 'package:lastanswer/ui_chat/realm_chat_mcp_tools.dart';
 import 'package:lastanswer/ui_inspector/scripted_session_handle.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';

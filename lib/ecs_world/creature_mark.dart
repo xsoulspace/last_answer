@@ -28,8 +28,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import 'package:lastanswer/chat/actor_avatar.dart';
-import 'package:lastanswer/world/creatures.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ecs_world/creatures.dart';
 
 /// The creature's calm-mark: a small [CustomPaint] being whose pose is
 /// a pure function of ([actorId], [mood], phase). Quiet by law — it

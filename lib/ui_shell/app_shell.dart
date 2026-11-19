@@ -45,7 +45,7 @@ import 'package:headless_core/headless_core.dart' as hc;
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 
@@ -59,23 +59,23 @@ import 'package:lastanswer/data_agents/config/permission_doc_router.dart';
 
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 
-import 'package:lastanswer/chat/actor_avatar.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
 
-import 'package:lastanswer/chat/channel_members_ui.dart';
+import 'package:lastanswer/ui_chat/channel_members_ui.dart';
 
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 
-import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 
 import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/world/world.dart';
+import 'package:lastanswer/ecs_world/world.dart';
 
-import 'package:lastanswer/world/world_feed.dart';
+import 'package:lastanswer/ecs_world/world_feed.dart';
 
 import 'package:lastanswer/ui_settings/ui_settings.dart';
 

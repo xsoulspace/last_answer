@@ -35,9 +35,9 @@ import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart
 import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
-import 'package:lastanswer/journal/palette_lanes.dart';
-import 'package:lastanswer/journal/realm_chat_service.dart';
-import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';

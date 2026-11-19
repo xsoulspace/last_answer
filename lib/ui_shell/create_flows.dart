@@ -13,13 +13,13 @@ import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
 
-import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_journal/actor_roster.dart';
 
-import 'package:lastanswer/chat/actor_picker.dart';
+import 'package:lastanswer/ui_chat/actor_picker.dart';
 
-import 'package:lastanswer/chat/channel_members_ui.dart';
+import 'package:lastanswer/ui_chat/channel_members_ui.dart';
 
-import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/supervised_world_io.dart';
+import 'package:lastanswer/data_agents/supervised/supervised_world_io.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 
 /// Leg B gap G1 — the durable delegation lane's claimant pump: the

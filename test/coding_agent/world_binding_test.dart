@@ -3,10 +3,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_binding_sheet.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_seat_io.dart';
+import 'package:lastanswer/ui_inspector/world_binding.dart';
+import 'package:lastanswer/ui_inspector/world_binding_sheet.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
+import 'package:lastanswer/ui_inspector/world_seat_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/trace.dart';

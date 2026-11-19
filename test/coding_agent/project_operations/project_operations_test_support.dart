@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:lastanswer/coding_agent/project_operations/project_operations_session.dart';
+import 'package:lastanswer/data_agents/project_operations/project_operations_session.dart';
 import 'package:oka_core/oka_core.dart'
     show
         BoundedRunCause,

@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/product_dart_runtime.dart';
-import 'package:lastanswer/coding_agent/runtime_sha256.dart';
+import 'package:lastanswer/data_agents/product/product_dart_runtime.dart';
+import 'package:lastanswer/data_agents/config/runtime_sha256.dart';
 import 'package:xsoulspace_agentic_host/meaning_span_preview.dart';
 
 void main() {

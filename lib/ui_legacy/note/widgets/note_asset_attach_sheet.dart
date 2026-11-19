@@ -1,7 +1,7 @@
 // ignore: depend_on_referenced_packages -- resolved transitively via core
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lastanswer/coding_agent/image_generation_service.dart';
+import 'package:lastanswer/data_agents/config/image_generation_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_legacy/note/note_asset_store.dart';
 import 'package:lastanswer/ui_legacy/note/widgets/image_prompt_dialog.dart';

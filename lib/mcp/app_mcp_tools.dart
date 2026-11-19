@@ -21,9 +21,9 @@
 library;
 
 import 'package:core/core.dart';
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-import 'package:lastanswer/coding_agent/device_capabilities.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/data_agents/config/device_capabilities.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 import 'package:lastanswer/mcp/chatgpt_mcp_tools.dart';
 import 'package:lastanswer/mcp/grok_mcp_tools.dart';

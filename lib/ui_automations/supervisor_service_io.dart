@@ -7,8 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:lastanswer/ui_automations/supervisor_agent_client.dart';
 import 'package:lastanswer/ui_automations/supervisor_execution.dart';
 import 'package:lastanswer/ui_automations/supervisor_view.dart';
-import 'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_seats.dart';
+import 'package:lastanswer/ui_inspector/external_worlds_io.dart';
+import 'package:lastanswer/ui_inspector/world_seats.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:path_provider/path_provider.dart';
 

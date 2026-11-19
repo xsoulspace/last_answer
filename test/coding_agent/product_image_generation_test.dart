@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart' as http_testing;
-import 'package:lastanswer/coding_agent/image_generation_service.dart';
-import 'package:lastanswer/coding_agent/product_cloud_resource.dart';
+import 'package:lastanswer/data_agents/config/image_generation_service.dart';
+import 'package:lastanswer/data_agents/product/product_cloud_resource.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 void main() {

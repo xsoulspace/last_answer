@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
+import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io)
-        'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
+        'package:lastanswer/ui_inspector/external_worlds_io.dart'
     as external_worlds;
 import 'package:lastanswer/ui_settings/features/features.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';

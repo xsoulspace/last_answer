@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_model_picker.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_work_verbs.dart';
+import 'package:lastanswer/ui_inspector/world_model_picker.dart';
+import 'package:lastanswer/ui_inspector/world_work_verbs.dart';
 
 /// LA AS A SEAT, v3 (ADR 0118): the human can make the world WORK.
 ///

@@ -1,20 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
-import 'package:lastanswer/coding_agent/chatgpt_gateway_contract.dart';
-import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
-import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
-import 'package:lastanswer/coding_agent/grok_credentials.dart';
-import 'package:lastanswer/coding_agent/grok_harness_binding.dart';
-import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
-import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/subscription_provider.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_contract.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
+import 'package:lastanswer/chat/actor_brain.dart';
+import 'package:lastanswer/journal/palette_lanes.dart';
+import 'package:lastanswer/journal/realm_bot_host.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 import 'chatgpt_credentials_test.dart' show SecureMemory;

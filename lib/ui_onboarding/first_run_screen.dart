@@ -27,11 +27,11 @@ library;
 import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
-import 'package:lastanswer/coding_agent/subscription_provider.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/chat/actor_brain.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/world_state_service.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart' show kViewLayoutPrefsKey;
 import 'package:lastanswer/ui_shell/shell_layout.dart';

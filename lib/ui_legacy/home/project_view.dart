@@ -1,7 +1,7 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/chat/world_chat_surface.dart';
+import 'package:lastanswer/ui_inspector/world_conversation_view.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_documents/code_view.dart';
 import 'package:lastanswer/ui_documents/doc_view.dart';

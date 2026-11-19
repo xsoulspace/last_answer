@@ -1,4 +1,4 @@
-import 'package:lastanswer/coding_agent/image_generation_service.dart';
+import 'package:lastanswer/data_agents/config/image_generation_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_legacy/note/image_edit_ops.dart';
 import 'package:lastanswer/ui_legacy/note/note_asset_store.dart';

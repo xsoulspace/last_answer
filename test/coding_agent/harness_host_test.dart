@@ -13,8 +13,8 @@ import 'dart:io';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
-import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show jevDecisionBinding;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'

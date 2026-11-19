@@ -11,9 +11,9 @@
 library;
 
 
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/world/ecs/creatures.dart';
+import 'package:lastanswer/world/creatures.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/world/creature_mark.dart';

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/product_candidate_verification.dart';
-import 'package:lastanswer/coding_agent/product_dart_runtime.dart';
+import 'package:lastanswer/data_agents/product/product_candidate_verification.dart';
+import 'package:lastanswer/data_agents/product/product_dart_runtime.dart';
 
 void main() {
   final bundle = Directory(

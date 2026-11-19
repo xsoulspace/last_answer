@@ -6,8 +6,8 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
 import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
-import 'package:lastanswer/coding_agent/grok_credentials.dart';
-import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:xsoulspace_inference_xai/xsoulspace_inference_xai.dart';
 
 import '../coding_agent/chatgpt_credentials_test.dart' show SecureMemory;

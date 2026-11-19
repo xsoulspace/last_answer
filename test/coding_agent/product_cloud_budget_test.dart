@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/product_cloud_resource.dart';
+import 'package:lastanswer/data_agents/product/product_cloud_resource.dart';
 
 void main() {
   test(

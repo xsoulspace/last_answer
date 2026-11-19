@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config_settings_pane.dart';
-import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

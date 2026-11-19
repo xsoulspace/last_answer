@@ -10,12 +10,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/world/ecs/la_world.dart';
-import 'package:lastanswer/world/ecs/la_world_components.dart';
+import 'package:lastanswer/world/world.dart';
+import 'package:lastanswer/world/world_components.dart';
 import 'package:lastanswer/ui_shell/action_bar.dart';
 import 'package:lastanswer/ui_shell/shell_layout.dart';
 

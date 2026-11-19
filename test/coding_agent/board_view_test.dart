@@ -3,8 +3,8 @@ import 'package:ecsly_boards/ecsly_boards.dart' show BoardTaskStatus;
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/board_view.dart';
-import 'package:lastanswer/coding_agent/planning_board_controller.dart';
+import 'package:lastanswer/ui_boards/board_view.dart';
+import 'package:lastanswer/ecs_plugins/boards/planning_board_controller.dart';
 
 /// The boards view (stage 4): every op through the real
 /// `ecsly_boards` substrate, keyed for the agent contract (DESIGN law:

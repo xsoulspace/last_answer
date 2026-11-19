@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/ui_settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_mesh/universal_storage_mesh.dart';
 import 'package:universal_storage_mesh_transport/universal_storage_mesh_transport.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:lastanswer/coding_agent/headless_product_cli.dart';
+import 'package:lastanswer/data_agents/harness/headless_product_cli.dart';
 
 /// Native Flutter entrypoint: registered plugins retain the ordinary app's
 /// protected account store. No widget tree or second agent loop is created.

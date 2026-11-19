@@ -21,11 +21,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -7,7 +7,7 @@
 // skips worlds that cannot honestly serve a paired device.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
+import 'package:lastanswer/ui_inspector/paired_worlds.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

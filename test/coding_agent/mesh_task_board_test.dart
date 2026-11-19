@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 
 /// Unit contract tests for [MeshTaskBoard]: the op-mapping discipline
 /// (one LWW op per field change), two-board convergence, the HLC

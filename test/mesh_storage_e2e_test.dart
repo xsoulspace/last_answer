@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
 import 'package:universal_storage_mesh_transport/'
     'universal_storage_mesh_transport.dart';
 

@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/world/ecs/la_world.dart';
-import 'package:lastanswer/world/ecs/la_world_components.dart';
-import 'package:lastanswer/world/ecs/la_world_feed.dart';
+import 'package:lastanswer/world/world.dart';
+import 'package:lastanswer/world/world_components.dart';
+import 'package:lastanswer/world/world_feed.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// 1a — LaWorld: the journal folds into the in-process ecsly World

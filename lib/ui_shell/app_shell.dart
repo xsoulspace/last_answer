@@ -43,39 +43,39 @@ import 'package:flutter/foundation.dart'
 
 import 'package:headless_core/headless_core.dart' as hc;
 
-import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 
-import 'package:lastanswer/coding_agent/actor_roster.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
 
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 
-import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 
-import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 
-import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_experiment_entry.dart';
 
-import 'package:lastanswer/coding_agent/permission_doc_router.dart';
+import 'package:lastanswer/data_agents/config/permission_doc_router.dart';
 
-import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
+import 'package:lastanswer/chat/actor_avatar.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/channel_members_ui.dart';
+import 'package:lastanswer/chat/channel_members_ui.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/journal/world_state_service.dart';
 
-import 'package:lastanswer/coding_agent/subscription_provider.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/world/ecs/la_world.dart';
+import 'package:lastanswer/world/world.dart';
 
-import 'package:lastanswer/world/ecs/la_world_feed.dart';
+import 'package:lastanswer/world/world_feed.dart';
 
 import 'package:lastanswer/ui_settings/ui_settings.dart';
 

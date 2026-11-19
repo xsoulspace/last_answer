@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 void main() {

@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/chat/actor_brain.dart';
+import 'package:lastanswer/journal/realm_bot_host.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 
 /// A scripted brain: every generate() parks a completer the test settles
 /// (with a reply text or an error), so the narration phases are

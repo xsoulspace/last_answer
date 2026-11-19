@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
+import 'package:lastanswer/chat/palette_health.dart';
 
 void main() {
   late Directory scratch;

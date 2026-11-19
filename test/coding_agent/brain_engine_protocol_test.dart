@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:isolate' show RawReceivePort, SendPort;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
+import 'package:lastanswer/chat/actor_brain.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart'
     show LoraAttachableInferenceClient, NativeLoraAttachment;

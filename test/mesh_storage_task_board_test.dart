@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/mesh_task_board.dart';
-import 'package:lastanswer/ui_settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
+import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
 /// Mesh integration tests for the task-board seam (the roster pattern,

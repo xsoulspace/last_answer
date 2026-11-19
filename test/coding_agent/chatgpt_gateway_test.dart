@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
-import 'package:lastanswer/coding_agent/chatgpt_gateway_io.dart';
-import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_io.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_openai/chatgpt_auth.dart';
 

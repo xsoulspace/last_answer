@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_bot_host.dart';
+import 'package:lastanswer/journal/realm_bot_host.dart';
 
 void main() {
   // The echo guard's window logic, extracted pure so it tests without a

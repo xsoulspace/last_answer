@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/planning_board_replica.dart';
+import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';
 
 /// The planning board's sync lane: the replica contract (ops, board
 /// order, restore) and two-replica convergence over one exchange —

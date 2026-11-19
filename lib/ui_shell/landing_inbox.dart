@@ -12,10 +12,10 @@ library;
 
 import 'dart:convert';
 
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/world/ecs/creatures.dart';
+import 'package:lastanswer/world/creatures.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_shell/status_edge.dart' show HealthDot;
 import 'package:lastanswer/world/creature_mark.dart';

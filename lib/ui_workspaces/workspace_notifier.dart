@@ -13,7 +13,7 @@ library;
 
 import 'package:flutter/foundation.dart';
 
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 import 'package:lastanswer/ui_workspaces/workspace.dart';
 import 'package:lastanswer/ui_workspaces/workspace_registry.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';

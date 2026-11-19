@@ -5,10 +5,10 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
-import 'package:lastanswer/coding_agent/harness_session_controller.dart';
-import 'package:lastanswer/coding_agent/product_coding_change_view.dart';
-import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
+import 'package:lastanswer/data_agents/product/product_coding_change_view.dart';
+import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';
 
 void main() {

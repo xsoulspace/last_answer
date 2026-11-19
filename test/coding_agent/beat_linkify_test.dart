@@ -5,7 +5,7 @@
 // dead link. The suite pins the PURE scan: the oracle is a fixture
 // set, no service, no widgets.
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/realm_chat/beat_linkify.dart';
+import 'package:lastanswer/journal/beat_linkify.dart';
 
 void main() {
   // The fixture world's live objects: two known threads (a minted

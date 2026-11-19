@@ -15,7 +15,7 @@
 /// uses `shell.people.access.*`.
 library;
 
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_workspaces/workspace.dart';

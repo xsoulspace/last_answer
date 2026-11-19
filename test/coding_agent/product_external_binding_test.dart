@@ -1,7 +1,7 @@
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
-import 'package:lastanswer/coding_agent/harness_session_controller.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 
 void main() {
   test(

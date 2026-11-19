@@ -4,7 +4,7 @@
 // unpaired peers out.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_settings/features/live_mesh_service.dart';
+import 'package:lastanswer/journal/mesh/live_mesh_service.dart';
 import 'package:universal_storage_mesh_transport/universal_storage_mesh_transport.dart';
 
 Future<void> _until(final bool Function() probe) async {

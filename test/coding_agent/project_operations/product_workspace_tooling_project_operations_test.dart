@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
+import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 import 'package:oka_core/project_operations.dart';
 
 void main() {

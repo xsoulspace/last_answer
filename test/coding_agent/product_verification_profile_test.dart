@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/product_workspace_tooling.dart';
+import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 
 void main() {
   test('existing profile preserves dependency-free verifier composition', () {

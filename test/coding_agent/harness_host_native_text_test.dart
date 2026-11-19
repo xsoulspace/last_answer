@@ -1,4 +1,4 @@
-import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:test/test.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
 

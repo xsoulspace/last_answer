@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_experiment_controller.dart';
 
 void main() {
   test('missing compact preview contract refuses without dispatch', () async {

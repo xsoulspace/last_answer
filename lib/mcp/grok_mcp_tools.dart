@@ -1,4 +1,4 @@
-import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:lastanswer/router.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:provider/provider.dart';

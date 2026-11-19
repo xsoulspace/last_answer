@@ -9,11 +9,11 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/world_inspector/external_worlds_stub.dart'
+import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io)
-        'package:lastanswer/coding_agent/world_inspector/external_worlds_io.dart'
+        'package:lastanswer/ui_inspector/external_worlds_io.dart'
     as external_worlds;
-import 'package:lastanswer/coding_agent/world_inspector/paired_worlds.dart';
+import 'package:lastanswer/ui_inspector/paired_worlds.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/chatgpt_gateway_contract.dart';
-import 'package:lastanswer/coding_agent/grok_gateway_contract.dart';
-import 'package:lastanswer/coding_agent/grok_harness_binding.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_contract.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_gateway_contract.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_xai/xsoulspace_inference_xai.dart';
 

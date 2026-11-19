@@ -7,9 +7,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_presence.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/chat/actor_avatar.dart';
+import 'package:lastanswer/chat/actor_presence.dart';
 
 /// Independent FNV-1a reimplementation — pins the hash algorithm behind
 /// `actorColor`/`actorIdenticon`, so avatars stay identical across

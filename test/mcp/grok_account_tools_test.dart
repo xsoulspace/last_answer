@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/grok_credentials.dart';
-import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:lastanswer/mcp/grok_mcp_tools.dart';
 
 import '../coding_agent/chatgpt_credentials_test.dart' show SecureMemory;

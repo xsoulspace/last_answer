@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
-import 'package:lastanswer/coding_agent/realm_chat/kernel_conversation.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/journal/actor_creation.dart';
+import 'package:lastanswer/journal/kernel_conversation.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 Future<Directory> _hermeticHome() async {

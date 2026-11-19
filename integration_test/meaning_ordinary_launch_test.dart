@@ -5,8 +5,8 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/main.dart' as app;
 import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
-import 'package:lastanswer/coding_agent/chatgpt_gateway_contract.dart';
-import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_contract.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_openai/chatgpt_auth.dart';
 

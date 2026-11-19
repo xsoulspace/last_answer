@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/mesh_board_bridge.dart';
-import 'package:lastanswer/coding_agent/mesh_task_board.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_board_bridge.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 
 /// The bridge, headless (the boards program, stage 2): the claim → run
 /// → settle discipline over a REAL replica and a scripted runner — the

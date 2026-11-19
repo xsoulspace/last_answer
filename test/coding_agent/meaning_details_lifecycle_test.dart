@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/coding_agent/meaning_experiment_view.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_experiment_view.dart';
 
 void main() {
   testWidgets(

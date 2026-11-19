@@ -16,7 +16,7 @@ import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/coding_agent/coding_agent.dart';
+import 'package:lastanswer/coding_agent.dart';
 
 import 'pump_until.dart';
 import 'scripted_write_mover.dart';

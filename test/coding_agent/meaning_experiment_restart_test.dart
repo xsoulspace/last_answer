@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
-import 'package:lastanswer/coding_agent/meaning_experiment_controller.dart';
-import 'package:lastanswer/coding_agent/meaning_greeting_binding.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_experiment_controller.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_greeting_binding.dart';
 
 import 'meaning_native_test_composition.dart';
 

@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:lastanswer/coding_agent/chatgpt_credentials.dart';
-import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
 import 'package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart';
 

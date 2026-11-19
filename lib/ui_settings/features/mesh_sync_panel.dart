@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/features/features.dart';
-import 'package:lastanswer/ui_settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
 import 'package:qr/qr.dart';
 
 export 'mesh_qr_scan_page.dart' show MeshQrScanPage;

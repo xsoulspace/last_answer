@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/agent_doc_surface.dart';
-import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

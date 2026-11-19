@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/harness_host.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';

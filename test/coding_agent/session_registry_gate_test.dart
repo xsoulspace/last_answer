@@ -17,8 +17,8 @@ import 'dart:io';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
-import 'package:lastanswer/coding_agent/coding_agent.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:lastanswer/coding_agent.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

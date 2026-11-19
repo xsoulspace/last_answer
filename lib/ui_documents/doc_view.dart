@@ -1,5 +1,5 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:uuid/uuid.dart';
 

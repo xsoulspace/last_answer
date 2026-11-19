@@ -21,11 +21,11 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_creation.dart';
-import 'package:lastanswer/coding_agent/realm_chat/conversation_spaces.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/journal/actor_creation.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 
 /// One hermetic chat world: a disposable home, a realm world over it,
 /// and a READY service bound through the debug seams (bot dispatcher

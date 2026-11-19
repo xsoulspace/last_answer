@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/meaning_experiment_entry.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_experiment_entry.dart';
 
 void main() {
   test(

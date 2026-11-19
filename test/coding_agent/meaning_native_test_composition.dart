@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lastanswer/coding_agent/meaning_greeting_binding.dart';
+import 'package:lastanswer/data_agents/meaning/meaning_greeting_binding.dart';
 
 String get meaningComponentDart {
   final configured = Platform.environment['HARNESS_TEST_DART'];

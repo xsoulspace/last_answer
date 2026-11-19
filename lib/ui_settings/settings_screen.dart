@@ -1,7 +1,7 @@
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/actor_avatar.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/chat/actor_avatar.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/ui_legacy/home/widgets/widgets.dart';

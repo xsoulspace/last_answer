@@ -14,11 +14,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
-import 'package:lastanswer/coding_agent/agent_mcp_tools.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_mcp_tools.dart';
-import 'package:lastanswer/coding_agent/world_inspector/scripted_session_handle.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_inspector_pane.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:lastanswer/chat/realm_chat_mcp_tools.dart';
+import 'package:lastanswer/ui_inspector/scripted_session_handle.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';
 import 'package:lastanswer/mcp/storage_mcp_tools.dart';

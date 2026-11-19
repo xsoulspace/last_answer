@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/chatgpt_harness_binding.dart';
-import 'package:lastanswer/coding_agent/desired_coding_model.dart';
-import 'package:lastanswer/coding_agent/provider_configuration.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
+import 'package:lastanswer/data_agents/config/desired_coding_model.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class _MemorySecureValues implements SecureValueStore {

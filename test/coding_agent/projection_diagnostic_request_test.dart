@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/headless_product_cli.dart';
+import 'package:lastanswer/data_agents/harness/headless_product_cli.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 void main() {

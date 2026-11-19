@@ -4,10 +4,10 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_binding.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_conversation_view.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_inspector_tools.dart';
-import 'package:lastanswer/coding_agent/world_inspector/world_seats.dart';
+import 'package:lastanswer/ui_inspector/world_binding.dart';
+import 'package:lastanswer/ui_inspector/world_conversation_view.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
+import 'package:lastanswer/ui_inspector/world_seats.dart';
 
 const _conversation = 'assignment:human';
 const _task = 'application-change';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:lastanswer/ui_settings/features/mesh_storage_service.dart';
+import 'package:lastanswer/journal/mesh/mesh_storage_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_git_offline/universal_storage_git_offline.dart';

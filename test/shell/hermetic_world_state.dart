@@ -1,4 +1,4 @@
-import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
+import 'package:lastanswer/journal/world_state_service.dart';
 
 /// The shell tests' hermetic world read model: the doctor probe is a
 /// fixed map, the world home AND the device home point at directories

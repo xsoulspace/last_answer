@@ -12,12 +12,12 @@ import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/media_asset_card.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_media.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
-import 'package:lastanswer/coding_agent/realm_chat/world_chat_surface.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/chat/media_asset_card.dart';
+import 'package:lastanswer/journal/realm_chat_media.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
+import 'package:lastanswer/chat/world_chat_surface.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'

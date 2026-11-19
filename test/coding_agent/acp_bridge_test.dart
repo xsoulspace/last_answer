@@ -9,12 +9,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent/acp_bridge/acp_actor_bridge.dart';
-import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_registry.dart';
-import 'package:lastanswer/coding_agent/acp_bridge/acp_bridge_transport.dart';
-import 'package:lastanswer/coding_agent/actor_roster.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
-import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
+import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
+import 'package:lastanswer/journal/actor_roster.dart';
+import 'package:lastanswer/journal/realm_chat_service.dart';
+import 'package:lastanswer/journal/realm_world.dart';
 import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 
 /// A scripted [AcpBridgeTransport]: records prompts, replays queued

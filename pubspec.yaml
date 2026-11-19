@@ -72,6 +72,8 @@ dependencies:
   image: ^4.2.0
   image_picker: ^1.1.2
   la_ui:
+  # Workspace sibling: the localization package (arbs + generated S classes).
+  la_locale:
   life_hooks: ^0.3.0
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6

@@ -9,6 +9,9 @@ environment:
 resolution: workspace
 
 dependencies:
+  # la_locale: the S classes + arbs live in the workspace sibling package;
+  # re-exported through the core barrel (flutter gen-l10n owns the output).
+  la_locale:
   la_ui:
   archive: ^4.1.2
   collection: ^1.19.1
@@ -94,7 +97,9 @@ flutter_gen:
     enabled: true
 
 flutter:
-  generate: true
+  # Localization generation moved to packages/la_locale (flutter gen-l10n there);
+  # this package no longer hosts the synthetic localizations step.
+  generate: false
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -152,7 +157,3 @@ fonts:
   - family: NotoSans
     fonts:
       - asset: google_fonts/NotoSans-Regular.ttf
-flutter_intl:
-  enabled: true
-  arb_dir: lib/src/l10n
-  output_dir: lib/src/generated

@@ -33,6 +33,7 @@
 /// exceptions.
 library;
 
+import 'package:lastanswer/automations/automations.dart';
 import 'package:lastanswer/browser/browser_strings.dart';
 import 'package:lastanswer/browser/workspace_browser.dart';
 import 'package:lastanswer/coding_agent/actor_roster.dart';
@@ -124,6 +125,12 @@ const String kDocumentsSurfaceId = 'documents';
 /// active view instead of pushing a route (the embedded seam closes
 /// through the view, never through `Navigator.pop`).
 const String kSettingsSurfaceId = 'settings';
+
+/// The Automations surface's id (ADR 0032): the device's declared
+/// automations — run-state is not a preference, so the supervisor pane
+/// moved out of Settings into its own surface, opened from
+/// `rail.automations`, the `+` picker and the palette.
+const String kAutomationsSurfaceId = 'automations';
 
 /// The RETIRED picker-tab's surface id (WAVE 4T's browser model: the
 /// `+` opened the picker AS A TAB). DESIGN.md v2 made the picker an
@@ -543,6 +550,12 @@ SurfaceRegistry buildShellSurfaces(
       },
     ),
     icon: Icons.settings_outlined,
+  ),
+  kAutomationsSurfaceId: SurfaceSpec(
+    id: kAutomationsSurfaceId,
+    title: context.l10n.supervisorSectionTitle,
+    builder: (final tabContext) => const AutomationsSurface(),
+    icon: Icons.bolt_outlined,
   ),
   // The new-tab picker is an anchored MENU (new_tab_menu.dart), not a
   // surface: the registry has no `newtab` entry any more.

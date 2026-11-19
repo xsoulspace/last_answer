@@ -19,6 +19,11 @@ The product direction (see `docs/decisions/0012-writable-agent-doc-and-acp-clien
   document is a writable shared workspace for humans and agents; ACP
   client-to-agent comes first, remote collaboration and external operator
   ingress are staged. Value paths + non-goals live there.
+- **Architecture law**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — the
+  folder map and naming grammar (`data_*`/`ui_*` prefixes, domain folders +
+  `{DOMAIN}_KNOWLEDGE.md`, barrels as the public API, state placement via
+  ecsly resources — no `data_states/`). Where another doc disagrees about
+  code organization, that file wins. Read it before creating any folder.
 - **Design law**: [docs/DESIGN.md](docs/DESIGN.md) — document-first,
   text-native surfaces on one grid (Tufte × Müller-Brockmann), ink is
   data, the human is sovereign, widget keys are the agent's UI contract.
@@ -49,7 +54,10 @@ Prefer `just` recipes over raw commands where available.
 - Follow `analysis_options.yaml`; run `just fix` after edits.
 - Regenerate code with `just gen` after changing models; don't hand-edit `*.g.dart` / `*.freezed.dart`.
 - Keep changes minimal and consistent with existing architecture in `lib/` and `packages/core`.
-- Update translations when touching user-facing strings (EN/IT/RU).
+- Update translations when touching user-facing strings: the three arbs in
+  `packages/l10n/lib/src/l10n/` (EN/IT/RU), then `just gen-l10n`. The
+  generated `S` classes are never hand-edited; see
+  [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Respect the license: PolyForm Noncommercial 1.0.0 — don't add code incompatible with it.
 
 ## Stewardship protocol

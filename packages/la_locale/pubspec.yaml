@@ -1,0 +1,21 @@
+name: la_locale
+description: Last Answer localization — the arb sources and the generated S classes
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ^3.12.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+flutter:
+  # Enables `flutter gen-l10n` for this package (outputs land in
+  # lib/src/generated per l10n.yaml; committed after `just gen-l10n`).
+  generate: true

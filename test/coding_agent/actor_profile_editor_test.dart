@@ -1,4 +1,4 @@
-import 'package:core/src/generated/intl/S.dart';
+import 'package:la_locale/la_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';

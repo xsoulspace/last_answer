@@ -1,13 +1,19 @@
 import 'package:lastanswer/agent_config/agent_config.dart';
-import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
-import 'package:lastanswer/agent_config/grok_subscription_pane.dart';
-import 'package:lastanswer/coding_agent/provider_configuration.dart';
 import 'package:lastanswer/common_imports.dart';
 
-/// The user-friendly wrapper over the one agent config document
-/// (Zed-parity): register ACP agent servers, set provider keys/env vars,
-/// list models, pick chat defaults. Edits accumulate in a draft and land in
-/// the file on SAVE — file and UI edit the same document, never diverge.
+/// The user-friendly wrapper over the agent-servers half of the one
+/// agent config document (Zed-parity): register ACP agent servers
+/// (`command`/`args`/`env`). Edits accumulate in a draft and land in
+/// the file on SAVE — file and UI edit the same document, never
+/// diverge.
+///
+/// ADR 0032 — this pane used to also edit inference providers, chat
+/// defaults and the subscription plans; ALL of that lives in the
+/// Models surface now (the world palette is the dispatch truth, the
+/// subscription panes ride their catalog rows). The stored
+/// `providers`/`chat` entries keep their read-only fallback role (the
+/// brain pickers' hosted-model derivation) — this pane no longer
+/// writes them.
 ///
 /// DESIGN.md discipline: a pane, not a page; label gutter + mono fields;
 /// hairlines separate regions; no cards/chips; every actionable element
@@ -16,7 +22,7 @@ class AgentConfigSettingsPane extends StatefulWidget {
   const AgentConfigSettingsPane({this.closeOnSave = true, super.key});
 
   /// True when shown modally (save closes the sheet); false when embedded
-  /// as a settings-screen tab (save stays put).
+  /// as a settings section (save stays put).
   final bool closeOnSave;
 
   /// Re-opens the pane as a modal sheet from any surface (chat toolbar,
@@ -45,21 +51,14 @@ class AgentConfigSettingsPane extends StatefulWidget {
 
 class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   AgentConfigStore get _store => context.read<AgentConfigStore>();
-  ProviderConfigurationStore get _providerKeys =>
-      context.read<ProviderConfigurationStore>();
 
-  late AgentPlatformConfig _draft;
   final _serverControllers = <String, _ServerFields>{};
-  final _providerControllers = <String, _ProviderFields>{};
-  late _ChatFields _chat;
-  final Map<String, bool> _storedKeys = {};
   String? _saveError;
 
   @override
   void initState() {
     super.initState();
     _resetFromStore();
-    unawaited(_refreshStoredKeys());
   }
 
   void _resetFromStore() {
@@ -70,22 +69,9 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
         for (final entry in _draft.agentServers.entries)
           entry.key: _ServerFields(entry.value),
       });
-    _providerControllers
-      ..clear()
-      ..addAll({
-        for (final entry in _draft.providers.entries)
-          entry.key: _ProviderFields(entry.value),
-      });
-    _chat = _ChatFields(_draft.chat);
   }
 
-  Future<void> _refreshStoredKeys() async {
-    for (final id in _draft.providers.keys) {
-      final stored = await _providerKeys.hasProviderKey(id);
-      if (!mounted) return;
-      setState(() => _storedKeys[id] = stored);
-    }
-  }
+  late AgentPlatformConfig _draft;
 
   Future<void> _save() async {
     try {
@@ -96,17 +82,10 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
               if (entry.key.trim().isNotEmpty)
                 entry.key: entry.value.toConfig(),
           },
-          providers: {
-            for (final entry in _providerControllers.entries)
-              if (entry.key.trim().isNotEmpty)
-                entry.key: entry.value.toConfig(),
-          },
-          chat: _chat.toConfig(),
         ),
       );
       if (!mounted) return;
       setState(() => _saveError = null);
-      await _refreshStoredKeys();
       if (mounted && widget.closeOnSave) Navigator.of(context).maybePop();
     } on Object catch (error) {
       if (!mounted) return;
@@ -117,15 +96,13 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   @override
   Widget build(final BuildContext context) {
     final theme = context.laUi;
-    // Self-scrolling: the pane must not overflow any host (sheet, tab,
-    // narrow window) as rows are added.
+    // Self-scrolling: the pane must not overflow any host (sheet,
+    // section, narrow window) as rows are added.
     return SingleChildScrollView(
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const ChatGptSubscriptionPane(),
-        const GrokSubscriptionPane(),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
           child: Row(
@@ -155,10 +132,6 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
           ),
         const _PaneDivider(),
         _agentsSection(theme),
-        const _PaneDivider(),
-        _providersSection(theme),
-        const _PaneDivider(),
-        _chatSection(theme),
         if (_saveError != null)
           Padding(
             padding: const EdgeInsets.all(16),
@@ -272,199 +245,6 @@ class _AgentConfigSettingsPaneState extends State<AgentConfigSettingsPane> {
   );
 
   // ------------------------------------------------------------------
-  // PROVIDERS
-  // ------------------------------------------------------------------
-
-  Widget _providersSection(final LaUiTheme theme) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
-      children: [
-        Text(
-          context.l10n.agentProvidersSection.toUpperCase(),
-          style: _sectionLabel(theme),
-        ),
-        for (final entry in _providerControllers.entries)
-          _providerRow(theme, entry.key, entry.value),
-      ],
-    ),
-  );
-
-  Widget _providerRow(
-    final LaUiTheme theme,
-    final String id,
-    final _ProviderFields fields,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    spacing: 6,
-    children: [
-      Row(
-        children: [
-          SizedBox(
-            width: 92,
-            child: Text(id, style: _mono(theme)),
-          ),
-          const Spacer(),
-          if (_storedKeys[id] ?? false)
-            Text(
-              context.l10n.agentProviderKeyStored,
-              key: Key('agent_config.provider.$id.stored'),
-              style: theme.compact,
-            ),
-        ],
-      ),
-      Row(
-        spacing: 8,
-        children: [
-          Expanded(
-            child: LaField(
-              key: Key('agent_config.provider.$id.key'),
-              controller: fields.key,
-              obscureText: true,
-              style: _mono(theme),
-              placeholder: context.l10n.agentProviderKeyHint,
-              placeholderStyle: _mono(theme, color: theme.inkQuiet),
-              onSubmitted: (final value) async {
-                if (value.trim().isEmpty) return;
-                await _providerKeys.writeProviderKey(id, value.trim());
-                fields.key.clear();
-                await _refreshStoredKeys();
-              },
-            ),
-          ),
-          if (_storedKeys[id] ?? false)
-            LaButton.icon(
-              key: Key('agent_config.provider.$id.key.clear'),
-              size: LaButtonSize.sm,
-              tooltip: context.l10n.agentProviderKeyRemove,
-              onPressed: () async {
-                await _providerKeys.removeProviderKey(id);
-                await _refreshStoredKeys();
-              },
-              icon: const Icon(Icons.close, size: 16),
-            ),
-        ],
-      ),
-      Row(
-        spacing: 8,
-        children: [
-          Expanded(
-            child: _field(
-              theme,
-              key: Key('agent_config.provider.$id.env_name'),
-              controller: fields.apiKeyEnv,
-              hint: context.l10n.agentProviderEnvHint,
-                ),
-          ),
-          Expanded(
-            child: _field(
-              theme,
-              key: Key('agent_config.provider.$id.base_url'),
-              controller: fields.baseUrl,
-              hint: context.l10n.agentProviderBaseUrlHint,
-                ),
-          ),
-        ],
-      ),
-      _field(
-        theme,
-        key: Key('agent_config.provider.$id.models'),
-        controller: fields.models,
-        hint: context.l10n.agentProviderModelsHint,
-        maxLines: 3,
-      ),
-      _field(
-        theme,
-        key: Key('agent_config.provider.$id.default_model'),
-        controller: fields.defaultModel,
-        hint: context.l10n.agentProviderDefaultModelHint,
-      ),
-    ],
-  );
-
-  // ------------------------------------------------------------------
-  // CHAT DEFAULTS
-  // ------------------------------------------------------------------
-
-  Widget _chatSection(final LaUiTheme theme) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
-      children: [
-        Text(
-          context.l10n.agentChatDefaultsSection.toUpperCase(),
-          style: _sectionLabel(theme),
-        ),
-        Row(
-          spacing: 8,
-          children: [
-            Expanded(
-              child: LaSelect<String>(
-                key: const Key('agent_config.chat.provider'),
-                // A fresh config has no default; the value must be null
-                // (not '') when it is not among the items, or the dropdown
-                // asserts — found live on web.
-                value: _providerControllers.containsKey(_chat.defaultProvider)
-                    ? _chat.defaultProvider
-                    : null,
-                expand: true,
-                placeholder: context.l10n.agentChatProviderHint,
-                emptyHint: context.l10n.agentChatProviderEmptyHint,
-                items: [
-                  for (final id in _providerControllers.keys)
-                    LaSelectItem(value: id, label: id),
-                ],
-                onChanged: (final value) =>
-                    setState(() => _chat.defaultProvider = value ?? ''),
-              ),
-            ),
-            Expanded(
-              child: LaSelect<String>(
-                key: const Key('agent_config.chat.model'),
-                value: _modelsOf(
-                  _chat.defaultProvider,
-                ).contains(_chat.defaultModel)
-                    ? _chat.defaultModel
-                    : null,
-                expand: true,
-                placeholder: context.l10n.agentChatModelHint,
-                emptyHint: context.l10n.agentChatModelEmptyHint,
-                items: [
-                  for (final model in _modelsOf(_chat.defaultProvider))
-                    LaSelectItem(value: model, label: model),
-                ],
-                onChanged: (final value) =>
-                    setState(() => _chat.defaultModel = value ?? ''),
-              ),
-            ),
-          ],
-        ),
-        LaField(
-          key: const Key('agent_config.chat.system_prompt'),
-          controller: _chat.systemPrompt,
-          minLines: 2,
-          maxLines: 5,
-          style: _mono(theme),
-          placeholder: context.l10n.agentChatSystemPromptHint,
-          placeholderStyle: _mono(theme, color: theme.inkQuiet),
-        ),
-      ],
-    ),
-  );
-
-  List<String> _modelsOf(final String providerId) {
-    final fields = _providerControllers[providerId];
-    if (fields == null) return const [];
-    return fields
-        .toConfig()
-        .models
-        .where((model) => model.isNotEmpty)
-        .toList();
-  }
-
-  // ------------------------------------------------------------------
   // shared quiet widgets (no chrome — label + hairline underline)
   // ------------------------------------------------------------------
 
@@ -527,50 +307,7 @@ final class _ServerFields {
       for (final line in env.text.split('\n'))
         if (line.contains('='))
           line.substring(0, line.indexOf('=')).trim(): line
-              .substring(line.indexOf('=') + 1)
-              .trim(),
+              .substring(line.indexOf('=') + 1).trim(),
     },
-  );
-}
-
-final class _ProviderFields {
-  _ProviderFields(ProviderConfig config)
-    : apiKeyEnv = TextEditingController(text: config.apiKeyEnv),
-      baseUrl = TextEditingController(text: config.baseUrl),
-      models = TextEditingController(text: config.models.join('\n')),
-      defaultModel = TextEditingController(text: config.defaultModel);
-
-  final TextEditingController key = TextEditingController();
-  final TextEditingController apiKeyEnv;
-  final TextEditingController baseUrl;
-  final TextEditingController models;
-  final TextEditingController defaultModel;
-
-  ProviderConfig toConfig() => ProviderConfig(
-    apiKeyEnv: apiKeyEnv.text.trim(),
-    baseUrl: baseUrl.text.trim(),
-    models: models.text
-        .split('\n')
-        .map((m) => m.trim())
-        .where((m) => m.isNotEmpty)
-        .toList(),
-    defaultModel: defaultModel.text.trim(),
-  );
-}
-
-final class _ChatFields {
-  _ChatFields(ChatConfig config)
-    : defaultProvider = config.defaultProvider,
-      defaultModel = config.defaultModel,
-      systemPrompt = TextEditingController(text: config.systemPrompt);
-
-  String defaultProvider;
-  String defaultModel;
-  final TextEditingController systemPrompt;
-
-  ChatConfig toConfig() => ChatConfig(
-    defaultProvider: defaultProvider,
-    defaultModel: defaultModel,
-    systemPrompt: systemPrompt.text,
   );
 }

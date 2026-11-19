@@ -1,0 +1,13 @@
+# The ONE localization toolchain (replaces the retired intl_utils /
+# flutter_intl config that lived in packages/core/pubspec.yaml and crashed
+# on this arb format). Regenerate after editing the arbs:
+#   just gen-l10n    (runs: cd packages/la_locale && fvm flutter gen-l10n)
+# The generated files are NEVER hand-edited — hand edits live only in the
+# three intl_{en,it,ru}.arb sources.
+arb-dir: lib/src/l10n
+template-arb-file: intl_en.arb
+output-localization-file: S.dart
+output-class: S
+nullable-getter: false
+output-dir: lib/src/generated
+untranslated-messages-file: untranslated.txt

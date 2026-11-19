@@ -4,6 +4,7 @@ export 'src/data_repositories/data_repositories.dart';
 export 'src/data_sources/data_sources.dart';
 export 'src/foundation/foundation.dart';
 export 'src/generated/generated.dart';
+export 'package:la_locale/la_locale.dart';
 export 'src/router_paths.dart';
 export 'src/services/services.dart';
 export 'src/state/state.dart';

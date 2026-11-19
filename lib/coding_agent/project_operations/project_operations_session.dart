@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/coding_agent/project_operations/project_operations.dart';
+// Shared project execution is owned by Oka (ADR 0050); the in-repo tombstone
+// re-exports were deleted (docs/ARCHITECTURE.md §5) — import oka_core directly.
+import 'package:oka_core/project_operations.dart';
 import 'package:oka_core/oka_core.dart' show ProcessLeaseRegistry;
 
 /// The state of the project's declaration.

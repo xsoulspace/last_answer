@@ -953,6 +953,11 @@ class _AppShellState extends State<AppShell> {
   void _openSettings() =>
       _onLayoutChanged(_routeOpen(_layout, kSettingsSurfaceId));
 
+  /// ADR 0032 — the automations surface opens as a tab of the active
+  /// group, through the ONE router like every surface (no exceptions).
+  void _openAutomations() =>
+      _onLayoutChanged(_routeOpen(_layout, kAutomationsSurfaceId));
+
   /// The status edge's backend click (phase 1d): the Models surface
   /// opens as a tab of the ACTIVE group (any pane may host any surface).
   void _openModelsTab() =>
@@ -1223,6 +1228,15 @@ class _AppShellState extends State<AppShell> {
         group: 'views',
         icon: Icons.settings_outlined,
         run: _openSettings,
+      ),
+      CommandEntry(
+        id: 'view.$kAutomationsSurfaceId',
+        label:
+            surfaces[kAutomationsSurfaceId]?.title ??
+            l10n.supervisorSectionTitle,
+        group: 'views',
+        icon: Icons.bolt_outlined,
+        run: _openAutomations,
       ),
       for (final actor in _service.roster?.all ?? const <ActorProfile>[])
         CommandEntry(
@@ -1582,6 +1596,14 @@ class _AppShellState extends State<AppShell> {
             icon: Icons.settings_outlined,
             onTap: () => tap(_openSettings),
           ),
+          NewTabRow(
+            key: 'newtab.entry.$kAutomationsSurfaceId',
+            label:
+                surfaces[kAutomationsSurfaceId]?.title ??
+                l10n.supervisorSectionTitle,
+            icon: Icons.bolt_outlined,
+            onTap: () => tap(_openAutomations),
+          ),
         ],
       ),
       NewTabSection(
@@ -1845,6 +1867,8 @@ class _AppShellState extends State<AppShell> {
                                               layout: _layout,
                                               actorsDocked: roomsDocked,
                                               onToggleActors: _toggleRoomsDock,
+                                              onOpenAutomations:
+                                                  _openAutomations,
                                               onOpenSettings: _openSettings,
                                               onOpenPalette: _openPalette,
                                             ),

@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/coding_agent/product_candidate_verification.dart';
-import 'package:lastanswer/coding_agent/project_operations/project_operations.dart';
+// Shared project execution is owned by Oka (ADR 0050) — import it directly;
+// the in-repo tombstone re-exports were deleted (docs/ARCHITECTURE.md §5).
+import 'package:oka_core/project_operations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 import 'package:xsoulspace_agentic_harness/workspace_api.dart'

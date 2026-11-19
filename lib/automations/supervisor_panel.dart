@@ -1,0 +1,1096 @@
+import 'package:lastanswer/automations/supervisor_agent_client.dart';
+import 'package:lastanswer/automations/supervisor_service.dart';
+import 'package:lastanswer/automations/supervisor_view.dart';
+import 'package:lastanswer/common_imports.dart';
+
+/// The device's declared automations, grouped the way a person thinks
+/// about them — Services (always on), Schedules (jobs), Agents (agent
+/// tasks) — each row a human phrase plus its week at a glance. Authoring
+/// happens in one sheet, one or two taps per decision; everything writes
+/// validated plan documents (oka ADR-0041 §6). Running remains the
+/// converge/resident rung's business, never this pane's.
+class SupervisorPanel extends StatefulWidget {
+  const SupervisorPanel({super.key});
+
+  @override
+  State<SupervisorPanel> createState() => _SupervisorPanelState();
+}
+
+class _SupervisorPanelState extends State<SupervisorPanel> {
+  SupervisorService? _service;
+  Future<SupervisorView>? _view;
+
+  /// The opened project — the app's own source for WHICH world this
+  /// device is authorized to use. Captured, not read from a dead
+  /// context: the pane may be rebuilt while the execution lives on.
+  OpenedProjectNotifier? _projects;
+
+  /// The seat-backed client for that world, and the exact reason there
+  /// is none. The seat is the app's existing one — this pane only holds
+  /// it and releases it.
+  SupervisorAgentClientResolution? _client;
+  Future<SupervisorAgentClientResolution>? _resolving;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_prepare());
+  }
+
+  @override
+  void dispose() {
+    // The client lifecycle ends with the pane that earned the seat.
+    unawaited(_client?.release?.call());
+    super.dispose();
+  }
+
+  Future<void> _prepare() async {
+    // Read the app's own source of the authorized world BEFORE the first
+    // await: a context read across an async gap is a dead context.
+    _projects = context.read<OpenedProjectNotifier>();
+    final service = await SupervisorService.forDevice();
+    if (service.executionSupported) {
+      service.prepareExecution(agentClientResolver: _resolveAgentClient);
+    }
+    if (!mounted) return;
+    setState(() {
+      _service = service;
+      _view = service.load();
+    });
+    // Ask the world what it serves NOW, so the pane states the exact
+    // capability (or the exact refusal) before anyone runs anything.
+    unawaited(_resolveAgentClient());
+  }
+
+  /// The app's EXISTING harness client for the world this device is
+  /// authorized to use: the world the open project is bound to (the user
+  /// chose it; nothing is hardcoded). No new world, no new identity, no
+  /// credentials here — the seat comes from the app's own bridge.
+  ///
+  /// The answer is either the client or the EXACT reason there is none.
+  /// It never claims the delegation is qualified.
+  Future<SupervisorAgentClientResolution> _resolveAgentClient() {
+    final pending = _resolving;
+    if (pending != null) return pending;
+    final resolution = _resolve();
+    _resolving = resolution;
+    return resolution.whenComplete(() => _resolving = null);
+  }
+
+  Future<SupervisorAgentClientResolution> _resolve() async {
+    final service = _service;
+    if (service == null) {
+      return const SupervisorAgentClientResolution.refused(
+        'the supervisor service is not ready',
+      );
+    }
+    final cached = _client;
+    if (cached != null && cached.available) return cached;
+    final worldId = _authorizedWorldId();
+    if (worldId == null || worldId.isEmpty) {
+      const refusal = SupervisorAgentClientResolution.refused(
+        'no world is bound to the open project — an agent automation needs a '
+        'world that serves a seat',
+      );
+      if (mounted) setState(() => _client = refusal);
+      return refusal;
+    }
+    final resolution = await SupervisorService.resolveAgentClient(
+      worldId: worldId,
+    );
+    if (mounted) setState(() => _client = resolution);
+    return resolution;
+  }
+
+  /// The world the open project is bound to — the app's own notion of
+  /// the authorized world. Null when the open project binds none.
+  String? _authorizedWorldId() =>
+      SupervisorService.authorizedWorldId(_projects?.value.value);
+
+  Future<void> _refresh() {
+    final service = _service;
+    if (service == null) return Future<void>.value();
+    // The load starts OUTSIDE setState: a closure that returns a Future
+    // trips Flutter's setState assert and the update never lands.
+    final future = service.load();
+    setState(() {
+      _view = future;
+    });
+    return future;
+  }
+
+  Future<void> _save(final SupervisorAutomationDraft draft) async {
+    final service = _service;
+    if (service == null) return;
+    try {
+      await service.saveAutomation(draft);
+    } on Object catch (error) {
+      if (!mounted) return;
+      LaToast.show(context, message: '$error');
+    }
+    await _refresh();
+  }
+
+  Future<void> _delete(final SupervisorAutomationView automation) async {
+    final service = _service;
+    final plan = automation.plan;
+    if (service == null || plan == null) return;
+    await service.deleteAutomation(plan: plan, id: automation.id);
+    await _refresh();
+  }
+
+  Future<void> _openEditor([final SupervisorAutomationView? existing]) async {
+    if (!mounted) return;
+    final l10n = context.l10n;
+    final result = await showLaSheet<_EditorOutcome>(
+      context: context,
+      builder: (final context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.viewInsetsOf(context).bottom,
+        ),
+        child: _AutomationEditorSheet(
+          existing: existing,
+          title: existing == null
+              ? l10n.supervisorSectionAdd
+              : l10n.supervisorSectionEdit,
+        ),
+      ),
+    );
+    if (result == null || !mounted) return;
+    switch (result.action) {
+      case _EditorAction.save:
+        await _save(result.draft!);
+      case _EditorAction.delete:
+        await _delete(existing!);
+    }
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.supervisorSectionTitle,
+                style: context.laUi.emphasis,
+              ),
+            ),
+            LaButton.icon(
+              size: LaButtonSize.sm,
+              tooltip: l10n.supervisorSectionAdd,
+              onPressed: () => unawaited(_openEditor()),
+              icon: const Icon(Icons.add, size: 18),
+            ),
+            LaButton.icon(
+              size: LaButtonSize.sm,
+              tooltip: l10n.supervisorSectionRefresh,
+              onPressed: _refresh,
+              icon: const Icon(Icons.refresh, size: 18),
+            ),
+          ],
+        ),
+        if (_service?.execution case final execution?)
+          ListenableBuilder(
+            listenable: execution,
+            builder: (final context, final child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.supervisorExecutionAppOpen),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
+                      onPressed: execution.running
+                          ? null
+                          : () => unawaited(execution.run()),
+                      icon: const Icon(Icons.play_arrow, size: 16),
+                      label: l10n.supervisorExecutionRun,
+                    ),
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
+                      onPressed: () {
+                        if (execution.enabled) {
+                          execution.pause();
+                        } else {
+                          execution.enable();
+                        }
+                      },
+                      icon: Icon(
+                        execution.enabled ? Icons.pause : Icons.schedule,
+                        size: 16,
+                      ),
+                      label: execution.enabled
+                          ? l10n.supervisorExecutionPause
+                          : l10n.supervisorExecutionEnable,
+                    ),
+                    if (execution.running)
+                      LaButton(
+                        variant: LaButtonVariant.ghost,
+                        onPressed: execution.cancel,
+                        label: l10n.supervisorExecutionCancel,
+                      ),
+                    LaButton(
+                      variant: LaButtonVariant.ghost,
+                      onPressed: () => unawaited(execution.stop()),
+                      icon: const Icon(Icons.stop, size: 16),
+                      label: l10n.supervisorExecutionStop,
+                    ),
+                  ],
+                ),
+                if (execution.lastError case final error?)
+                  LaSelectableText(
+                    error,
+                    style: TextStyle(color: context.laUi.danger),
+                  ),
+                if (_client?.refusal case final refusal?)
+                  LaSelectableText(
+                    refusal,
+                    style: TextStyle(color: context.laUi.danger),
+                  ),
+                if (execution.lastReport case final report?)
+                  LaSelectableText(report),
+                for (final entry in execution.logLines.entries)
+                  if (entry.value.isNotEmpty)
+                    LaSelectableText('${entry.key}\n${entry.value.join('\n')}'),
+              ],
+            ),
+          ),
+        FutureBuilder<SupervisorView>(
+          future: _view,
+          builder: (final context, final snapshot) {
+            final view = snapshot.data;
+            if (view == null) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Center(child: LaSpinner(size: 24)),
+              );
+            }
+            if (!view.supported) {
+              return Text(
+                l10n.supervisorSectionUnsupported,
+                style: context.laUi.compact,
+              );
+            }
+            if (view.automations.isEmpty && view.corruptRecords.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  l10n.supervisorSectionEmpty,
+                  style: context.laUi.compact,
+                ),
+              );
+            }
+            final services = <SupervisorAutomationView>[];
+            final schedules = <SupervisorAutomationView>[];
+            final agents = <SupervisorAutomationView>[];
+            for (final automation in view.automations) {
+              if (automation.isAgent) {
+                agents.add(automation);
+              } else if (automation.shape == 'service') {
+                services.add(automation);
+              } else {
+                schedules.add(automation);
+              }
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _group(l10n.supervisorGroupServices, services),
+                _group(l10n.supervisorGroupSchedules, schedules),
+                _group(l10n.supervisorGroupAgents, agents),
+                for (final corrupt in view.corruptRecords)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Text(
+                      corrupt,
+                      style: context.laUi.compact.copyWith(
+                        color: context.laUi.danger,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _group(final String title, final List<SupervisorAutomationView> rows) {
+    if (rows.isEmpty) return const SizedBox.shrink();
+    final outline = context.laUi.inkQuiet;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 6, bottom: 2),
+          child: Text(
+            title.toUpperCase(),
+            style: context.laUi.micro.copyWith(
+              color: outline,
+              fontSize: 10,
+              letterSpacing: 0.6,
+            ),
+          ),
+        ),
+        for (final automation in rows)
+          _AutomationRow(
+            automation: automation,
+            onEdit: automation.plan == null
+                ? null
+                : () => unawaited(_openEditor(automation)),
+          ),
+      ],
+    );
+  }
+}
+
+class _AutomationRow extends StatelessWidget {
+  const _AutomationRow({required this.automation, this.onEdit});
+
+  final SupervisorAutomationView automation;
+  final VoidCallback? onEdit;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final color = automation.drifted
+        ? context.laUi.danger
+        : automation.present
+        ? context.laUi.accent
+        : context.laUi.inkQuiet;
+    final row = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.circle, size: 10, color: color),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(automation.id, style: context.laUi.body),
+                    Text(
+                      _metaText(l10n),
+                      style: context.laUi.compact.copyWith(
+                        color: context.laUi.inkQuiet,
+                      ),
+                    ),
+                    if (automation.isAgent &&
+                        (automation.instructions ?? '').isNotEmpty)
+                      Text(
+                        automation.instructions!
+                            .split('\n')
+                            .firstWhere(
+                              (final line) => line.trim().isNotEmpty,
+                              orElse: () => '',
+                            )
+                            .trim(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.laUi.compact.copyWith(
+                          color: context.laUi.inkQuiet,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (automation.drifted)
+                Text(
+                  l10n.supervisorSectionDrifted,
+                  style: context.laUi.compact.copyWith(
+                    color: context.laUi.danger,
+                  ),
+                ),
+              if (onEdit != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Icon(
+                    Icons.edit_outlined,
+                    size: 16,
+                    color: context.laUi.inkQuiet,
+                  ),
+                ),
+            ],
+          ),
+          if (automation.intervalSeconds != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: _ScheduleStrip(
+                periodSeconds: automation.intervalSeconds!,
+                atMinutes: automation.atMinutes,
+              ),
+            ),
+        ],
+      ),
+    );
+    if (onEdit == null) return row;
+    return LaPressable(
+      onTap: onEdit,
+      radius: context.laUi.smallRadius,
+      child: row,
+    );
+  }
+
+  /// The human schedule phrase: "Always on", "Daily at 03:00",
+  /// "Every 3 days at 03:00", "Every 6 hours", "On demand".
+  String _metaText(final S l10n) {
+    if (!automation.isAgent && automation.shape == 'service') {
+      return l10n.supervisorSectionKindService;
+    }
+    return _intervalText(l10n);
+  }
+
+  String _intervalText(final S l10n) {
+    final interval = automation.intervalSeconds;
+    if (interval == null) return l10n.supervisorSectionOnDemand;
+    final at = automation.atMinutes == null
+        ? null
+        : _clock(automation.atMinutes!);
+    if (interval == 86400) {
+      return at == null
+          ? l10n.supervisorScheduleDaily
+          : l10n.supervisorScheduleDailyAt(at);
+    }
+    if (interval == 604800) return l10n.supervisorScheduleWeekly;
+    if (interval % 86400 == 0) {
+      final phrase = l10n.supervisorScheduleEveryDays(interval ~/ 86400);
+      return at == null ? phrase : '$phrase ${l10n.supervisorScheduleAt(at)}';
+    }
+    if (interval % 3600 == 0) {
+      return l10n.supervisorScheduleEveryHours(interval ~/ 3600);
+    }
+    if (interval >= 60) {
+      return l10n.supervisorScheduleEveryMinutes(interval ~/ 60);
+    }
+    return l10n.supervisorScheduleEveryMinutes(1);
+  }
+
+  static String _clock(final int minutes) {
+    final hour = (minutes ~/ 60).toString().padLeft(2, '0');
+    final minute = (minutes % 60).toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+}
+
+/// The schedule as a small calendar: the next seven days, dots on days
+/// with planned runs. Present-grade projection — computed from the
+/// declared period (and wall-clock anchor when set); the converge rung
+/// owns actual firings (ADR-0040/0042).
+class _ScheduleStrip extends StatelessWidget {
+  const _ScheduleStrip({required this.periodSeconds, this.atMinutes});
+
+  final int periodSeconds;
+  final int? atMinutes;
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final outline = context.laUi.inkQuiet;
+    final schedule = _PlannedSchedule(
+      periodSeconds: periodSeconds,
+      atMinutes: atMinutes,
+    );
+    final first = schedule.firstRun;
+    final style = context.laUi.compact;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            for (var day = 0; day < 7; day++)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: _DayCell(
+                    date: DateTime(
+                      schedule.today.year,
+                      schedule.today.month,
+                      schedule.today.day + day,
+                    ),
+                    runs: schedule.runsPerDay(day),
+                    outline: outline,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        if (first != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            l10n.supervisorSectionNextRun(_formatTime(first)),
+            style: style.copyWith(color: outline),
+          ),
+        ],
+      ],
+    );
+  }
+
+  String _formatTime(final DateTime time) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final day = DateTime(time.year, time.month, time.day);
+    final clock = _clockOf(time);
+    final days = day.difference(today).inDays;
+    if (days <= 0) return clock;
+    if (days == 1) return '+1d $clock';
+    return '+${days}d $clock';
+  }
+
+  static String _clockOf(final DateTime time) =>
+      '${time.hour.toString().padLeft(2, '0')}:'
+      '${time.minute.toString().padLeft(2, '0')}';
+}
+
+/// Day cell: weekday letter, day number, one dot per planned run
+/// (capped; dense schedules show a full bar).
+class _DayCell extends StatelessWidget {
+  const _DayCell({
+    required this.date,
+    required this.runs,
+    required this.outline,
+  });
+
+  final DateTime date;
+  final int runs;
+  final Color outline;
+
+  static const _weekdayLetters = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  @override
+  Widget build(final BuildContext context) {
+    final now = DateTime.now();
+    final isToday =
+        date.day == now.day && date.month == now.month && date.year == now.year;
+    final style = context.laUi.compact;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isToday ? outline : outline.withValues(alpha: 0.25),
+        ),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Column(
+        children: [
+          Text(
+            _weekdayLetters[date.weekday - 1],
+            style: style.copyWith(color: outline, fontSize: 9),
+          ),
+          Text(
+            '${date.day}',
+            style: style.copyWith(
+              color: outline,
+              fontSize: 10,
+              fontWeight: isToday ? FontWeight.bold : null,
+            ),
+          ),
+          const SizedBox(height: 2),
+          if (runs == 0)
+            const SizedBox(height: 4)
+          else if (runs <= 4)
+            for (var i = 0; i < runs; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0.5),
+                child: Icon(Icons.circle, size: 3, color: outline),
+              )
+          else
+            Container(
+              width: 12,
+              height: 3,
+              decoration: BoxDecoration(
+                color: outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Prospective run times for an interval schedule, anchored at "now"
+/// (plus the wall-clock anchor when set). Pure date math.
+final class _PlannedSchedule {
+  _PlannedSchedule({required int periodSeconds, this.atMinutes})
+    : period = Duration(seconds: periodSeconds);
+
+  final Duration period;
+  final int? atMinutes;
+
+  bool get _anchored =>
+      atMinutes != null &&
+      period >= const Duration(days: 1) &&
+      period.inSeconds % 86400 == 0;
+
+  int get _cadenceDays => period.inDays;
+
+  DateTime get today {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  DateTime? _todayAtAnchor() {
+    final anchor = atMinutes;
+    if (anchor == null) return null;
+    return DateTime(
+      today.year,
+      today.month,
+      today.day,
+      anchor ~/ 60,
+      anchor % 60,
+    );
+  }
+
+  /// The next planned run after "now" (null only for non-positive
+  /// periods, which validated plans reject).
+  DateTime? get firstRun {
+    if (period <= Duration.zero) return null;
+    if (!_anchored) return DateTime.now().add(period);
+    final slot = _todayAtAnchor()!;
+    final cadence = Duration(days: _cadenceDays);
+    if (slot.isAfter(DateTime.now())) return slot;
+    return slot.add(cadence);
+  }
+
+  List<DateTime> upcoming(final int count) {
+    final first = firstRun;
+    if (first == null) return const <DateTime>[];
+    final step = _anchored ? Duration(days: _cadenceDays) : period;
+    final runs = <DateTime>[first];
+    for (var i = 1; i < count; i++) {
+      runs.add(runs.last.add(step));
+    }
+    return runs;
+  }
+
+  /// How many runs land on `today + [dayOffset]`, capped at 5 (5+ means
+  /// "dense": the strip renders a bar instead of dots).
+  int runsPerDay(final int dayOffset) {
+    if (period <= Duration.zero) return 0;
+    if (_anchored) {
+      final first = firstRun!;
+      final day = today.add(Duration(days: dayOffset));
+      final span = day.difference(DateTime(first.year, first.month, first.day));
+      return span.inDays >= 0 && span.inDays % _cadenceDays == 0 ? 1 : 0;
+    }
+    final dayStart = today.add(Duration(days: dayOffset));
+    final dayEnd = dayStart.add(const Duration(days: 1));
+    var time = DateTime.now().add(period);
+    var runs = 0;
+    final horizon = dayStart.add(const Duration(days: 7));
+    while (time.isBefore(dayEnd) && time.isBefore(horizon)) {
+      if (!time.isBefore(dayStart)) runs++;
+      if (runs >= 5) return runs;
+      time = time.add(period);
+    }
+    return runs;
+  }
+}
+
+enum _EditorAction { save, delete }
+
+final class _EditorOutcome {
+  const _EditorOutcome.save(this.draft) : action = _EditorAction.save;
+  const _EditorOutcome.delete() : action = _EditorAction.delete, draft = null;
+
+  final _EditorAction action;
+  final SupervisorAutomationDraft? draft;
+}
+
+/// Add/edit sheet: what it is (command or agent task), when it runs
+/// (one schedule row, human units, optional wall-clock anchor), and
+/// what it does. Submits a typed draft; the service owns validation
+/// and the plan-document write.
+class _AutomationEditorSheet extends StatefulWidget {
+  const _AutomationEditorSheet({required this.title, this.existing});
+
+  final String title;
+  final SupervisorAutomationView? existing;
+
+  @override
+  State<_AutomationEditorSheet> createState() => _AutomationEditorSheetState();
+}
+
+class _AutomationEditorSheetState extends State<_AutomationEditorSheet> {
+  late final TextEditingController _name;
+  late final TextEditingController _command;
+  late final TextEditingController _args;
+  late final TextEditingController _instructions;
+  late final TextEditingController _interval;
+  late final TextEditingController _at;
+  late bool _isAgent;
+  late bool _isService;
+  late bool _repeating;
+  late int _intervalUnit; // 60 (min) | 3600 (h) | 86400 (d)
+
+  bool get _editing => widget.existing != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final existing = widget.existing;
+    _name = TextEditingController(text: existing?.id ?? '');
+    _command = TextEditingController(text: existing?.command ?? '');
+    _args = TextEditingController(text: existing?.args ?? '');
+    _instructions = TextEditingController(text: existing?.instructions ?? '');
+    _isAgent = existing?.isAgent ?? false;
+    _isService = (existing?.shape ?? 'service') != 'job' && !_isAgent;
+    final interval = existing?.intervalSeconds;
+    _repeating = interval != null;
+    final split = _splitPeriod(interval ?? 86400);
+    _interval = TextEditingController(text: '${split.$1}');
+    _intervalUnit = split.$2;
+    _at = TextEditingController(
+      text: existing?.atMinutes == null ? '' : _clock(existing!.atMinutes!),
+    );
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _command.dispose();
+    _args.dispose();
+    _instructions.dispose();
+    _interval.dispose();
+    _at.dispose();
+    super.dispose();
+  }
+
+  static (int, int) _splitPeriod(final int seconds) {
+    if (seconds % 86400 == 0) return (seconds ~/ 86400, 86400);
+    if (seconds % 3600 == 0) return (seconds ~/ 3600, 3600);
+    return (seconds, 60);
+  }
+
+  static String _clock(final int minutes) {
+    final hour = (minutes ~/ 60).toString().padLeft(2, '0');
+    final minute = (minutes % 60).toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
+  /// Agent tasks are jobs regardless of the stale service flag: the
+  /// schedule surfaces follow what the user is editing, not the kind
+  /// toggle left over from create-init.
+  bool get _isJob => _isAgent || !_isService;
+
+  int? get _periodSeconds {
+    if (!_isJob) return null;
+    if (!_repeating) return null;
+    final value = int.tryParse(_interval.text.trim());
+    if (value == null || value <= 0) return null;
+    return value * _intervalUnit;
+  }
+
+  int? get _atMinutes {
+    final text = _at.text.trim();
+    if (text.isEmpty) return null;
+    final match = RegExp(r'^(\d{1,2}):(\d{2})$').firstMatch(text);
+    if (match == null) return null;
+    final hour = int.parse(match.group(1)!);
+    final minute = int.parse(match.group(2)!);
+    if (hour > 23 || minute > 59) return null;
+    return hour * 60 + minute;
+  }
+
+  bool get _canSave {
+    final id = _name.text.trim();
+    if (id.isEmpty || id.contains('/') || id.contains('..')) return false;
+    final period = _periodSeconds;
+    if (_isJob && _repeating && period == null) return false;
+    if (_isJob && _repeating && _at.text.trim().isNotEmpty) {
+      if (_atMinutes == null) return false;
+    }
+    if (_isAgent && _instructions.text.trim().isEmpty) return false;
+    return true;
+  }
+
+  Future<void> _submit() async {
+    if (!_canSave) return;
+    final id = _name.text.trim();
+    if (!mounted) return;
+    Navigator.of(context).pop(
+      _EditorOutcome.save(
+        SupervisorAutomationDraft(
+          id: id,
+          isService: !_isAgent && _isService,
+          command: _isAgent ? null : _command.text.trim(),
+          args: _isAgent ? null : _args.text.trim(),
+          intervalSeconds: _periodSeconds,
+          atMinutes: _periodSeconds != null ? _atMinutes : null,
+          isAgent: _isAgent,
+          instructions: _isAgent ? _instructions.text.trim() : null,
+          plan: widget.existing?.plan,
+          revision: widget.existing?.revision ?? 0,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmDelete() async {
+    final l10n = context.l10n;
+    final existing = widget.existing;
+    if (existing == null) return;
+    final confirmed = await showLaConfirm(
+      context,
+      title: l10n.delete,
+      cancelLabel: l10n.cancel,
+      confirmLabel: l10n.confirm,
+      destructive: true,
+      message: l10n.supervisorSectionDeleteWarn(existing.id),
+    );
+    if (!confirmed || !mounted) return;
+    Navigator.of(context).pop(const _EditorOutcome.delete());
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final outline = context.laUi.inkQuiet;
+    final period = _periodSeconds;
+    final existing = widget.existing;
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 16,
+        bottom: MediaQuery.paddingOf(context).bottom + 16,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.title, style: context.laUi.emphasis),
+            const SizedBox(height: 12),
+            LaField(
+              controller: _name,
+              enabled: !_editing,
+              placeholder: l10n.supervisorSectionName,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _segment(
+                  selected: !_isAgent,
+                  icon: Icons.terminal,
+                  label: l10n.supervisorSectionKindCommand,
+                  onTap: () => setState(() => _isAgent = false),
+                ),
+                const SizedBox(width: 4),
+                _segment(
+                  selected: _isAgent,
+                  icon: Icons.auto_awesome,
+                  label: l10n.supervisorSectionKindAgent,
+                  onTap: () => setState(() => _isAgent = true),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (!_isAgent) ...[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _segment(
+                    selected: _isService,
+                    icon: Icons.play_circle_outline,
+                    label: l10n.supervisorSectionKindService,
+                    onTap: () => setState(() => _isService = true),
+                  ),
+                  const SizedBox(width: 4),
+                  _segment(
+                    selected: !_isService,
+                    icon: Icons.schedule,
+                    label: l10n.supervisorSectionKindJob,
+                    onTap: () => setState(() => _isService = false),
+                  ),
+                ],
+              ),
+            ] else ...[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _segment(
+                    selected: !_repeating,
+                    label: l10n.supervisorSectionOnDemand,
+                    onTap: () => setState(() => _repeating = false),
+                  ),
+                  const SizedBox(width: 4),
+                  _segment(
+                    selected: _repeating,
+                    label: l10n.supervisorSectionRepeating,
+                    onTap: () => setState(() => _repeating = true),
+                  ),
+                ],
+              ),
+            ],
+            if (_isJob && _repeating) ...[
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Text(l10n.supervisorSectionEvery),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 64,
+                    child: LaField(
+                      controller: _interval,
+                      keyboardType: TextInputType.number,
+                      onChanged: (_) => setState(() {}),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  LaSelect<int>(
+                    value: _intervalUnit,
+                    minWidth: 120,
+                    items: [
+                      LaSelectItem(
+                        value: 60,
+                        label: l10n.supervisorSectionUnitMinutes,
+                      ),
+                      LaSelectItem(
+                        value: 3600,
+                        label: l10n.supervisorSectionUnitHours,
+                      ),
+                      LaSelectItem(
+                        value: 86400,
+                        label: l10n.supervisorSectionUnitDays,
+                      ),
+                    ],
+                    onChanged: (final unit) =>
+                        setState(() => _intervalUnit = unit ?? 60),
+                  ),
+                ],
+              ),
+              if (_intervalUnit == 86400) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text(l10n.supervisorSectionAnchorAt),
+                    const SizedBox(width: 8),
+                    SizedBox(
+                      width: 110,
+                      child: LaField(
+                        controller: _at,
+                        keyboardType: TextInputType.datetime,
+                        onChanged: (_) => setState(() {}),
+                        placeholder: '03:00',
+                        errorText:
+                            _at.text.trim().isNotEmpty && _atMinutes == null
+                            ? l10n.supervisorSectionTimeHint
+                            : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+              if (period != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  l10n.supervisorSectionSchedule,
+                  style: context.laUi.emphasis,
+                ),
+                const SizedBox(height: 6),
+                _ScheduleStrip(
+                  periodSeconds: period,
+                  atMinutes: _intervalUnit == 86400 ? _atMinutes : null,
+                ),
+              ],
+            ],
+            if (_isAgent) ...[
+              const SizedBox(height: 12),
+              LaTextArea(
+                controller: _instructions,
+                maxLines: 6,
+                onChanged: (_) => setState(() {}),
+                placeholder: l10n.supervisorSectionInstructionsHint,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.supervisorSectionInstructions,
+                style: context.laUi.compact,
+              ),
+            ] else ...[
+              const SizedBox(height: 12),
+              LaField(
+                controller: _command,
+                placeholder: l10n.supervisorSectionCommandHint,
+              ),
+              const SizedBox(height: 4),
+              Text(l10n.supervisorSectionCommand, style: context.laUi.compact),
+              const SizedBox(height: 8),
+              LaField(
+                controller: _args,
+                placeholder: l10n.supervisorSectionArgs,
+              ),
+            ],
+            if (existing != null) ...[
+              const SizedBox(height: 10),
+              Text(
+                l10n.supervisorSectionStats(
+                  existing.present
+                      ? l10n.supervisorSectionStateActive
+                      : l10n.supervisorSectionStateIdle,
+                  existing.restartCount ?? 0,
+                  existing.lastRun ?? '—',
+                ),
+                style: context.laUi.compact.copyWith(color: outline),
+              ),
+            ],
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                LaButton(
+                  variant: LaButtonVariant.primary,
+                  onPressed: _canSave ? () => unawaited(_submit()) : null,
+                  label: l10n.save,
+                ),
+                const SizedBox(width: 8),
+                LaButton(
+                  variant: LaButtonVariant.ghost,
+                  onPressed: () => Navigator.of(context).pop(),
+                  label: l10n.cancel,
+                ),
+                const Spacer(),
+                if (_editing)
+                  LaButton(
+                    variant: LaButtonVariant.destructiveGhost,
+                    onPressed: () => unawaited(_confirmDelete()),
+                    label: l10n.delete,
+                  ),
+              ],
+            ),
+            Text(
+              l10n.supervisorSectionAuthorHint,
+              style: context.laUi.compact.copyWith(color: outline),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// The kit has no SegmentedButton: the brief's mapped equivalent is a
+  /// row of LaButtons — the selected one primary, the rest ghost.
+  Widget _segment({
+    required final bool selected,
+    required final String label,
+    required final VoidCallback onTap,
+    final IconData? icon,
+  }) => LaButton(
+    variant: selected ? LaButtonVariant.primary : LaButtonVariant.ghost,
+    icon: icon == null ? null : Icon(icon, size: 14),
+    label: label,
+    size: LaButtonSize.sm,
+    onPressed: onTap,
+  );
+}

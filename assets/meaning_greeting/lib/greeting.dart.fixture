@@ -1,3 +1,0 @@
-const kGreeting = 'Hello';
-
-String greeting(String name) => '$kGreeting, $name!';

@@ -9,9 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Web parity: the pane renders identically over the prefs-backed store —
 /// this is the configuration a fresh web user has (defaults, nothing
-/// saved). Regression: the chat-defaults dropdowns asserted on the empty
-/// initial value ("There should be exactly one item with [DropdownButton]'s
-/// value") — found on web.
+/// saved). ADR 0032: the pane is the AGENT SERVERS editor only — the
+/// providers/chat-defaults/subscription editing moved to the Models
+/// surface, so the retired chat-defaults dropdown regression test went
+/// with them.
 final class InMemoryAgentConfigPersistence implements AgentConfigPersistence {
   String? contents;
 
@@ -45,7 +46,7 @@ void main() {
   });
 
   testWidgets(
-    'fresh config (no chat defaults) renders without dropdown assertions',
+    'fresh config renders the servers section with no save pending',
     (tester) async {
       final store = AgentConfigStore(
         persistence: InMemoryAgentConfigPersistence(),
@@ -54,11 +55,13 @@ void main() {
       await tester.pumpWidget(_wrap(store));
       await tester.pumpAndSettle();
 
+      expect(find.byKey(const Key('agent_config.server.add')), findsOneWidget);
+      expect(find.byKey(const Key('agent_config.save')), findsOneWidget);
+      // The duplicated provider/chat-defaults editing is gone (ADR 0032).
       expect(
         find.byKey(const Key('agent_config.chat.provider')),
-        findsOneWidget,
+        findsNothing,
       );
-      expect(find.byKey(const Key('agent_config.chat.model')), findsOneWidget);
     },
   );
 

@@ -1,18 +1,23 @@
 /// DESIGN.md v2, cut to the bone (owner law 2026-11-10, the chat-first
-/// projection): the action bar is THREE buttons — `rail.search` (the
-/// ⌘K palette), `rail.actors` (toggles the docked ROOMS COLUMN and
-/// wears the total-unread badge) and `rail.settings` (the gear). The
-/// nine kind buttons retired with their cycling law: views open from
-/// the strip's + picker and the palette, and room navigation lives in
-/// the rooms column — which is chrome like VSCode's sidebar, never a
-/// tab and never a surface (the tabs+views law, shell.views.v4).
+/// projection; amended by ADR 0032 — automations earned the fourth
+/// slot the same way models earned its surface: a distinct top-level
+/// mode, never a settings row): the action bar is FOUR buttons —
+/// `rail.search` (the ⌘K palette), `rail.actors` (toggles the docked
+/// ROOMS COLUMN and wears the total-unread badge), `rail.automations`
+/// (the device's declared automations — run-state is not a preference)
+/// and `rail.settings` (the gear). The nine kind buttons retired with
+/// their cycling law: views open from the strip's + picker and the
+/// palette, and room navigation lives in the rooms column — which is
+/// chrome like VSCode's sidebar, never a tab and never a surface (the
+/// tabs+views law, shell.views.v4).
 ///
 /// Widget keys are the agent's UI contract (DESIGN §6), kept on the
-/// rail's grammar: `rail.search`, `rail.actors`, `rail.settings`,
-/// `rail.unread.actors`. Lights gutter law v2 (Wave D): the rail is
-/// ALWAYS the window's leftmost chrome, so on macOS it ALWAYS owns the
-/// traffic-light gutter (`rail.lightsGutter`) — docked or not; the
-/// rooms column's head and the strips' heads are gutter-free.
+/// rail's grammar: `rail.search`, `rail.actors`, `rail.automations`,
+/// `rail.settings`, `rail.unread.actors`. Lights gutter law v2 (Wave
+/// D): the rail is ALWAYS the window's leftmost chrome, so on macOS it
+/// ALWAYS owns the traffic-light gutter (`rail.lightsGutter`) — docked
+/// or not; the rooms column's head and the strips' heads are
+/// gutter-free.
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
@@ -32,12 +37,14 @@ import 'package:lastanswer/shell/surfaces.dart';
 import 'package:lastanswer/shell/window_drag.dart';
 
 /// The shell's left edge: search first, the actors (rooms-column)
-/// toggle beside it, the settings gear last (the cut bar's anatomy).
+/// toggle beside it, automations and the settings gear last (the cut
+/// bar's anatomy, ADR 0032's fourth button).
 final class ActionBar extends StatelessWidget {
   const ActionBar({
     required this.layout,
     required this.actorsDocked,
     required this.onToggleActors,
+    required this.onOpenAutomations,
     required this.onOpenSettings,
     required this.onOpenPalette,
     super.key,
@@ -52,13 +59,15 @@ final class ActionBar extends StatelessWidget {
   final bool actorsDocked;
 
   final VoidCallback onToggleActors;
+  final VoidCallback onOpenAutomations;
   final VoidCallback onOpenSettings;
   final VoidCallback onOpenPalette;
 
   @override
   Widget build(final BuildContext context) {
-    final settingsActive =
-        kindOfSurfaceId(layout.activeSurfaceId) == kSettingsSurfaceId;
+    final kind = kindOfSurfaceId(layout.activeSurfaceId);
+    final automationsActive = kind == kAutomationsSurfaceId;
+    final settingsActive = kind == kSettingsSurfaceId;
     return Container(
       key: const ValueKey('shell.actionBar'),
       width: ShellTokens.actionBarWidth,
@@ -108,6 +117,15 @@ final class ActionBar extends StatelessWidget {
             badge: const _TotalUnreadBadge(),
           ),
           const Spacer(),
+          _BarButton(
+            key: const ValueKey('rail.automations'),
+            semanticsLabel: 'rail.automations',
+            tooltip: context.l10n.railAutomations,
+            icon: Icons.bolt_outlined,
+            active: automationsActive,
+            onTap: onOpenAutomations,
+          ),
+          const SizedBox(height: 8),
           _BarButton(
             key: const ValueKey('rail.settings'),
             semanticsLabel: 'rail.settings',

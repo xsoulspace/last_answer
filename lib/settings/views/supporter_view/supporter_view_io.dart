@@ -128,19 +128,30 @@ class _FadeIn extends StatefulWidget {
 }
 
 class _FadeInState extends State<_FadeIn> {
+  Timer? _timer;
   bool _visible = false;
 
   @override
   void initState() {
     super.initState();
-    unawaited(_start());
+    if (widget.delay > Duration.zero) {
+      // A cancellable timer, not an awaited Future.delayed: a section
+      // disposed mid-fade (the settings filter) must not leave a
+      // pending timer behind.
+      _timer = Timer(widget.delay, _reveal);
+    } else {
+      _visible = true;
+    }
   }
 
-  Future<void> _start() async {
-    if (widget.delay > Duration.zero) {
-      await Future<void>.delayed(widget.delay);
-    }
+  void _reveal() {
     if (mounted) setState(() => _visible = true);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override

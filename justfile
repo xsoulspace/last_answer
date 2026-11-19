@@ -28,6 +28,11 @@ use-firebase-account:
     firebase login:use
 gen:
     dart run build_runner build --enable-experiment=inline-class
+
+# Regenerate the S classes from the arb sources (packages/la_locale).
+# The generated files are never hand-edited; edit the arbs instead.
+gen-l10n:
+    cd packages/la_locale && fvm flutter gen-l10n
 gen-rewrite:
     dart run build_runner build --delete-conflicting-outputs --enable-experiment=inline-class
 gen-rewrite-core:

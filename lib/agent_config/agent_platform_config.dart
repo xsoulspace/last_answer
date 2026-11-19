@@ -7,6 +7,12 @@
 /// `settings.json` under `agent_servers`. The settings pane edits the SAME
 /// document, so file and UI never diverge.
 ///
+/// ADR 0032 (2026-11-19): the LIVE editor is the agent-servers section
+/// only — provider/model/chat-default editing moved to the Models
+/// surface (the world palette is the dispatch truth). The stored
+/// `providers`/`chat` entries remain a READ-ONLY fallback (the brain
+/// pickers' hosted-model derivation) until a named sunset.
+///
 /// Secrets are deliberately NOT stored here: provider API keys live in the
 /// platform secure store (entered in the UI) or in an environment variable
 /// named by [ProviderConfig.apiKeyEnv] — never in a file that may be synced

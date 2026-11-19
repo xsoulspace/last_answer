@@ -1,0 +1,1517 @@
+{
+  "language": "Lingua",
+  "frequentlyUsed": "Usato frequentemente",
+  "search": "Кicerca",
+  "writeAnAnswer": "Scrivi una risposta",
+  "charactersLimit": "Limite di caratteri",
+  "changeLog": "Cosa c'è di nuovo",
+  "username": "Nome utente",
+  "loading": "Caricamento",
+  "email": "E-mail",
+  "deleteMyAccount": "Eliminare l'account",
+  "danger": "Pericolo",
+  "esc": "ESC",
+  "charactersLimitForNewNotesDesription": "Quando imposti il limite, tutte le nuove note avranno questo limite. E se hai bisogno di andare off-limit per una nota, impostala nelle impostazioni delle note.",
+  "charactersUnlimited": "Altro",
+  "writeANote": "Scrivi una nota",
+  "madeWithLoveAndFlutter": "Made with Flutter ❤ and Open Source Libraries",
+  "feedbackTextWithEmail": "o inviare un messaggio a idea@xsoulspace.dev",
+  "niceDayWish": "Grazie per aver utilizzato questa app e buona giornata, piena di idee e ispirazione!:)",
+  "privacyPolicy": "Politica sulla riservatezza",
+  "termsAndConditions": "Termini & Condizioni",
+  "joinDiscord": "Unisciti a Discord",
+  "pleaseNotice": "Si prega di notare",
+  "appInfo": "Last Answer",
+  "appVersion": "Versione dell'app: {version}, build: {buildNumber}",
+  "wordNew": "Nuovo",
+  "theme": "Tema",
+  "projectsDirection": "Note direzione",
+  "themeSystem": "Auto",
+  "themeDark": "Buia",
+  "themeLight": "Leggera",
+  "yes": "Si",
+  "no": "No",
+  "settings": "Impostazioni",
+  "settingsSectionYou": "Tu",
+  "settingsSectionAppearance": "Aspetto",
+  "settingsSectionNotes": "Note",
+  "settingsSectionData": "Dati e sincronizzazione",
+  "settingsSectionAgents": "Agenti",
+  "settingsSectionAbout": "Informazioni",
+  "settingsJumpHint": "Vai a un’impostazione…",
+  "noteSettings": "Impostazioni nota",
+  "noProjectsYet": "Nessun progetto ancora.",
+  "whatsYourIdea": "Qual è la tua idea?",
+  "createIdeaHelperText": "Crea tutorial",
+  "lastAnswer": "Last Answer",
+  "idea": "Idea",
+  "note": "Nota",
+  "chat": "Chat",
+  "answer": "Risposta",
+  "subscription": "Abbonamento",
+  "freeSubscription": "Gratuito",
+  "patronSubscription": "Patron",
+  "myAccount": "Account",
+  "generalSettingsFullTitle": "Impostazioni generali",
+  "generalSettingsShortTitle": "General",
+  "cancel": "Cancella",
+  "close": "Chiudi",
+  "delete": "Elimina",
+  "deleteThisNote": "Elimina questa nota",
+  "areYouSure": "Sei sicuro?",
+  "willBeLost": "{title} sarà perso per sempre",
+  "philosophyInspirationTitle": "Ispirazione",
+  "philosophyAbstractWhatElse": "Cos'altro?",
+  "philosophyAbstractFiveWhyesWhat": "Puoi usare: \"Cinque perché\"",
+  "philosophyAbstractFiveWhyesWhy": "Perché puoi usare questa tecnica se hai un problema o un'idea, che deve essere esplorata più a fondo. Metodo di esplorazione spesso chiamato anche esplorazione \"causa ed effetto\". Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Five_whys",
+  "philosophyAbstractPDSAWhy": "Perché è la tecnica più universale. Non pone domande solide, come in \"Cinque perché\", ma il metodo può aiutare non solo a fare l'esplorazione di idee, ma a comprendere i problemi dell'intera area. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/PDCA",
+  "philosophyAbstractPDSAWhat": "Puoi usare: \"PDCA/PDSA (Plan-Do-Check/Study-Act): ciclo Shewhart-Deming\" ",
+  "philosophyAbstractSixSigmaWhy": "Perché se il tuo problema o idea ha origine nella produzione/trasporto, questo metodo aiuterà sicuramente a sviluppare o migliorare il processo o il prodotto aziendale. Vedi di più sulla tecnica su wiki: https://en.wikipedia.org/wiki/Six_Sigma",
+  "philosophyAbstractSixSigmaWhat": "Puoi usare: \"Six Sigma\"",
+  "about": "Informazioni",
+  "aboutAbstractWhatFor": "Per che cosa?",
+  "aboutAbstractWhatForDescription": "Questa app è progettata per risolvere l'espressione delle idee quando è più necessario; per risolvere la complessità e la comprensione dei pensieri durante la gestione del progetto e solo per facilitare la reciproca condivisione e comprensione delle idee.",
+  "aboutAbstractHowDescription": "Puoi utilizzare la sezione Ispirazione per trarre ispirazione su come può essere utilizzata questa app e quali tecniche possono essere applicate.",
+  "aboutAbstractIdeasImprovementsBugs": "Idee Miglioramenti Bug?",
+  "supporterDaysLeft": "Giorni di supporto rimasti",
+  "youCanSupportAppDevelopment": "Puoi iniziare a sostenere lo sviluppo dell'app guardando la breve pubblicità qui sotto. Questo mi aiuterà a migliorare l'app e renderla migliore.",
+  "youUsedThisAppFor": "Hai usato questa app per",
+  "days": "giorni",
+  "andHaveSupported": "e ha supportato",
+  "unfortunatelyThisPlatformHasNoAbilitiesToSupport": "Purtroppo, questa piattaforma al momento non ha la possibilità di supportare l'app:)",
+  "butYouCanGoTo": "Ma tu puoi andare",
+  "toTheWebsite": "sul sito web:)",
+  "whatSupporterDaysMeans": "Cosa significa \"Supporter Days\"?",
+  "supporterDaysAre": "Supporter Days sono i giorni dati all'utente dell'applicazione per sostenere il progetto. Ogni volta che l'utente utilizza l'applicazione, viene detratto un Supporter Day (solo una volta al giorno, indipendentemente da quante volte l'utente apre l'applicazione in un giorno) e aggiunto ai Giorni supportati (il numero totale di giorni in cui la persona ha supportato il progetto). Se l'utente non ha mai aperto l'applicazione, i giorni non vengono detratti. :)",
+  "supporterDaysMainFunctionality": "La funzionalità principale di Supporter Days non influisce su nulla, ma in futuro fornirà l'opportunità di utilizzare funzionalità aggiuntive dell'applicazione - quindi per me la cosa più importante è che in nessun caso la funzionalità principale di aggiunta/modifica delle note e delle idee venga bloccata, e tutto il resto sono solo bonus se una persona decide di sostenere il progetto :)",
+  "toGetSupporterDays": "Per ottenere i Supporter Days, l'utente può premere il pulsante \"guarda la pubblicità\" e dopo aver guardato la pubblicità (farò degli esperimenti, ma per ora sono 60 secondi), gli verranno assegnati 7 Supporter Days.",
+  "watchAd": "Guarda la pubblicità",
+  "adPleaseNote": "Si prega di notare: Attualmente la pubblicità funziona solo su Google Chrome e Firefox. Safari sta bloccando la pubblicità, quindi al momento non funziona.",
+  "exportImportData": "Backup",
+  "fileSaved": "File salvato 🎉",
+  "load": "Carica",
+  "confirm": "Conferma",
+  "confirmProjectsOwerwrite": "Conferma sovrascrittura progetti",
+  "projectsFromFileRestored": "Progetti ripristinati dal file 🎉",
+  "beCarefulItsInreversableAction": "Attenzione, è un'azione non reversibile",
+  "byLoadingFileWarning": "Caricando questo file sovrascriverai tutti i progetti attuali nell'app. \nAttenzione, è un'azione non reversibile",
+  "rewardForAdThankYou": "🎉🎉🎉 Congratulazioni - ${days} giorni di Supporter Days sono stati aggiunti:) 🎉🎉🎉 Grazie per il tuo supporto!",
+  "yourProjectWasCopiedToClipboard": "Your project was copied to clipboard 🎉",
+  "allProjectsWereCopiedToClipboard": "All projects were copied to clipboard 🎉",
+  "applyTimestamp": "Applica timestamp",
+  "restoreFromFile": "Ripristina da file",
+  "saveToFile": "Salva su file",
+  "copyAllProjectsToClipboard": "Copy to clipboard",
+  "getAllProjectsFromClipboard": "Restore from clipboard",
+  "searchProjects": "Search projects",
+  "addProjects": "Add projects",
+  "create": "Create",
+  "edit": "Edit",
+  "folder": "Folder",
+  "folderName": "Folder name",
+  "projects": "Projects",
+  "save": "Save",
+  "folders": "Folders",
+  "limitReached": "Limit reached",
+  "createFolder": "Create folder",
+  "deleteFolder": "Delete folder?",
+  "folderDeletionWillNotDeleteProjects": "\nL'eliminazione di questa cartella non elimina alcuna Nota o Idea.",
+  "useFoldersForNotes": "Usa 🗂️ Cartelle per Note e Idee per organizzarle rapidamente.",
+  "youCanCreateUpTo": "\n\nPuoi creare fino a {foldersLimit} cartelle.",
+  "clickToEditFolders": "Fai clic per modificare le cartelle",
+  "all": "All",
+  "githubSync": "Sincronizzazione GitHub",
+  "connectGithub": "Collega GitHub…",
+  "disconnectGithub": "Disconnetti GitHub",
+  "githubConnected": "GitHub collegato",
+  "githubConnectFailed": "Impossibile collegare GitHub: {error}",
+  "@githubConnectFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseRepository": "Scegli repository",
+  "createNewRepository": "Crea nuovo repository",
+  "repoNameHint": "nome-repository",
+  "subdirectory": "Sottocartella",
+  "backupToGithub": "Backup su GitHub",
+  "restoreFromGithub": "Ripristina da GitHub",
+  "githubBackupDone": "Salvato su GitHub ✓",
+  "githubRestoreDone": "Ripristinato da GitHub ✓",
+  "pasteTokenInstead": "Incolla un token",
+  "tokenGuideTitle": "Crea un token fine-grained",
+  "tokenStep1": "1. Apri github.com ed effettua il login.",
+  "tokenStep2": "2. Premi «Generate new token» nella pagina dei token (pulsante sotto).",
+  "tokenStep3": "3. Repository access → «Only select repositories» → scegli il repo delle note.",
+  "tokenStep4": "4. Permissions → Contents → «Read and write». Nient’altro.",
+  "tokenStep5": "5. Imposta una scadenza, genera e incolla il token qui.",
+  "tokenFieldLabel": "Token (ghu_… / github_pat_…)",
+  "connectWithToken": "Collega",
+  "openGithubTokens": "Apri la pagina dei token GitHub",
+  "manageTokens": "Gestisci / revoca i token",
+  "storage": "Archiviazione",
+  "storageSectionHint": "Le note sono sempre salvate nel database locale su questo dispositivo. Attiva qui sotto altri posti in cui tenere copie sincronizzate: ognuno aggiunge un backup e possono essere combinati. Contrassegnane uno come primario (★): i ripristini lo usano per impostazione predefinita.",
+  "storageLocalDb": "Database locale",
+  "storageLocalDbHint": "Sempre attivo. Veloce e privato: i dati non lasciano mai questo dispositivo.",
+  "storageFilesystem": "Cartella su questo dispositivo",
+  "storageFilesystemHint": "Mantiene una copia in una cartella a tua scelta: facile da aprire con qualsiasi file manager o da includere nei tuoi backup.",
+  "storageGitOffline": "Cartella Git (offline)",
+  "storageGitOfflineHint": "Mantiene una copia in un repository Git locale: ogni backup è versionato, quindi puoi vedere la cronologia e tornare indietro. Non serve un account.",
+  "storageGithubOption": "GitHub",
+  "storageGithubOptionHint": "Copia privata nel cloud nel tuo repository GitHub: protegge dalla perdita del dispositivo. Configurala nella sezione “GitHub Sync” qui sotto.",
+  "storagePrimary": "Archiviazione primaria: i ripristini la usano per impostazione predefinita",
+  "storageSetAsPrimary": "Usa come primaria",
+  "storageFolderPathLabel": "Percorso della cartella",
+  "storageGitPathLabel": "Percorso della cartella del repository",
+  "storagePathHint": "La cartella viene creata automaticamente se non esiste ancora.",
+  "storageBackupNow": "Salva copia ora",
+  "storageRestoreNow": "Ripristina dalla copia",
+  "storageBackupDone": "Copia salvata ✓",
+  "storageRestoreDone": "Ripristinato ✓",
+  "storageNoBackupFound": "Nessun backup trovato in questa posizione.",
+  "storageOperationFailed": "Operazione di archiviazione non riuscita",
+  "storageOpenGithubSetup": "Apri le impostazioni GitHub",
+  "storageNotAvailable": "Non disponibile su questa piattaforma",
+  "storageMeshTitle": "Sincronizza tra dispositivi",
+  "storageMeshHint": "Collega i tuoi dispositivi direttamente via Wi‑Fi — niente account, niente cloud. Mostra un codice, scansionalo, fatto.",
+  "storageMeshBecomeMain": "Usa questo dispositivo come principale",
+  "storageMeshJoinWithCode": "Ho un codice di abbinamento",
+  "storageMeshWaitingHint": "Tieni aperta questa schermata. Sul secondo dispositivo tocca “{joinWithCode}” e scansiona questo codice o incollalo.",
+  "@storageMeshWaitingHint": {
+    "placeholders": {
+      "joinWithCode": {
+        "type": "String"
+      }
+    }
+  },
+  "storageMeshCopyCode": "Copia il codice",
+  "storageMeshCodeCopied": "Codice di abbinamento copiato",
+  "storageMeshPasteTitle": "Incolla il codice di abbinamento",
+  "storageMeshScanQr": "Scansiona il codice QR",
+  "storageMeshConnectButton": "Connetti",
+  "storageMeshMainBadge": "Dispositivo principale",
+  "storageMeshJoinedStatus": "Connesso al dispositivo principale. Le note si sincronizzano automaticamente finché entrambi sono sulla stessa rete.",
+  "storageMeshConnectedCount": "Dispositivi connessi: {count}",
+  "@storageMeshConnectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "storageMeshSyncNow": "Sincronizza ora",
+  "storageMeshSyncDone": "Dispositivi sincronizzati ✓",
+  "storageMeshPairingFailed": "Impossibile connettersi: {error}",
+  "@storageMeshPairingFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "storageMeshAdvanced": "Impostazioni avanzate (debug)",
+  "liveSharingTitle": "Condividi la mia attività in diretta",
+  "liveSharingSubtitle": "I dispositivi collegati vedono su cosa stai lavorando (documento e attività, mai il contenuto). Gli agenti sono sempre visibili per te. Nulla lascia questo dispositivo finché non attivi l'opzione.",
+  "storageMeshUnpair": "Disaccoppia i dispositivi",
+  "tokenSafety": "Sicurezza: il token è archiviato solo su questo dispositivo nell’archivio sicuro del sistema operativo e inviato solo ad api.github.com. Concedi l’accesso solo ai repository necessari, imposta una scadenza breve e revocalo quando vuoi dalle impostazioni GitHub. Sei responsabile dei token che crei: non possiamo recuperarli o reimpostarli.",
+  "allow": "Consenti",
+  "deny": "Nega",
+  "reject": "Rifiuta",
+  "retry": "Riprova",
+  "copy": "Copia",
+  "discuss": "Discuti",
+  "desktopOnly": "solo desktop",
+  "agentSettingsTitle": "Agenti",
+  "agentConfigUnreadable": "Configurazione illeggibile, uso i valori predefiniti: {error}",
+  "agentServersSection": "Server agenti",
+  "agentServerAdd": "Aggiungi server",
+  "agentServersEmptyHint": "Nessun server personalizzato. Gli agenti noti (Gemini CLI, Codex CLI, Pi, Claude Code ACP) vengono rilevati automaticamente su desktop.",
+  "agentServerNameHint": "nome",
+  "agentServerCommandHint": "comando",
+  "agentServerRemove": "Rimuovi server",
+  "agentServerArgsHint": "argomenti (separati da virgola)",
+  "agentServerEnvHint": "env — NOME=valore per riga, $VAR viene espanso dall'ambiente",
+  "agentProvidersSection": "Provider",
+  "agentProviderKeyStored": "chiave salvata su questo dispositivo",
+  "agentProviderKeyHint": "Chiave API (salvata nell'archivio sicuro)",
+  "agentProviderKeyRemove": "Rimuovi chiave salvata",
+  "agentProviderEnvHint": "variabile d'ambiente della chiave",
+  "agentProviderBaseUrlHint": "URL di base",
+  "agentProviderModelsHint": "modelli (uno per riga)",
+  "agentProviderDefaultModelHint": "modello predefinito",
+  "agentChatDefaultsSection": "Predefiniti chat",
+  "agentChatProviderHint": "provider predefinito",
+  "agentChatProviderEmptyHint": "Nessun provider configurato — aggiungine uno alla sezione Provider",
+  "agentChatModelHint": "modello predefinito",
+  "agentChatModelEmptyHint": "Aggiungi un provider per scegliere il modello predefinito",
+  "agentChatSystemPromptHint": "prompt di sistema predefinito",
+  "agentChatNoTransport": "scegli un agente o un modello sopra",
+  "agentChatAcpDesktopOnly": "Gli agenti ACP richiedono un desktop",
+  "agentChatNoAgentDetected": "nessun agente ACP rilevato",
+  "agentChatMissingKey": "Nessuna chiave API per questo provider — aggiungine una nelle impostazioni Agenti e Modelli.",
+  "agentChatConsentDeclined": "Uso del cloud rifiutato per questo documento.",
+  "agentChatConsentTitle": "Inviare questa conversazione al cloud?",
+  "agentChatConsentBody": "Il testo della conversazione verrà inviato a {provider} usando {model}. Vale solo per questo documento.",
+  "agentChatSystemPromptTitle": "Prompt di sistema per questo documento",
+  "agentChatCloudLabel": "cloud · {label}",
+  "agentChatStatusReady": "pronto",
+  "agentChatStatusStarting": "avvio",
+  "agentChatStatusError": "errore",
+  "agentChatStatusStopped": "fermo",
+  "agentChatStatusIdle": "inattivo",
+  "agentChatPickTransport": "Seleziona agente o modello",
+  "agentChatUseLocalExecutable": "Usa eseguibile locale",
+  "agentChatInstallTitle": "Installa un agente ACP",
+  "agentChatRecheck": "Ricontrolla",
+  "agentChatExecutableNotFound": "Eseguibile non trovato",
+  "agentChatAuthRequired": "Autenticazione richiesta — l'agente gestisce il proprio accesso. Segui l'indicazione qui sotto e invia di nuovo.",
+  "worldBindingSheetTitle": "Connetti a un mondo",
+  "worldBindingEmbedded": "Questa app (mondo integrato)",
+  "worldBindingEmbeddedSubtitle": "L'agente harness in esecuzione dentro Last Answer",
+  "worldBindingNoWorlds": "Nessun mondo trovato — associa un dispositivo o aggiungi un endpoint.",
+  "worldBindingManual": "Aggiungi endpoint…",
+  "worldBindingManualHint": "http://host:port",
+  "worldBindingEndpointLabel": "Endpoint",
+  "worldBindingInvalidEndpoint": "Inserisci un endpoint http(s) valido",
+  "worldBindingSeat": "seat",
+  "worldBindingReadOnly": "sola lettura",
+  "agentChatWorkspaceTooltip": "Cartella di lavoro dell'agente",
+  "agentChatPickWorkspace": "Scegli la cartella di lavoro dell'agente",
+  "agentChatContextReset": "Il processo dell'agente è stato riavviato — i messaggi precedenti sono solo cronologia.",
+  "supervisorSectionTitle": "Automazioni",
+  "supervisorSectionEmpty": "Nessuna automazione dichiarata su questo dispositivo.",
+  "supervisorSectionUnsupported": "Le automazioni non sono disponibili su questa piattaforma.",
+  "supervisorSectionRefresh": "Aggiorna lo stato delle automazioni",
+  "supervisorSectionDrifted": "modificata — convergenza in attesa",
+  "supervisorSectionAdd": "Nuova automazione",
+  "supervisorSectionEdit": "Modifica automazione",
+  "supervisorSectionName": "Nome",
+  "supervisorSectionKindService": "Sempre attivo",
+  "supervisorSectionKindJob": "Pianificato",
+  "supervisorSectionOnDemand": "Su richiesta",
+  "supervisorSectionRepeating": "Ripetuto",
+  "supervisorSectionEvery": "Ogni",
+  "supervisorSectionUnitMinutes": "minuti",
+  "supervisorSectionUnitHours": "ore",
+  "supervisorSectionUnitDays": "giorni",
+  "supervisorSectionCommand": "Comando",
+  "supervisorSectionArgs": "Argomenti",
+  "supervisorSectionCommandHint": "Solo desktop, es. /usr/bin/backup",
+  "supervisorSectionSchedule": "Pianificazione",
+  "supervisorSectionNextRun": "prossima esecuzione: {time}",
+  "supervisorSectionDeleteWarn": "Rimuovere \"{name}\" dai piani di questo dispositivo?",
+  "supervisorSectionAuthorHint": "Salvato come piano su questo dispositivo. Viene eseguito quando il supervisor converge.",
+  "storageMeshNotSharing": "Condivisione non attiva",
+  "storageMeshStartSharing": "Avvia condivisione",
+  "supervisorGroupServices": "Servizi",
+  "supervisorGroupSchedules": "Pianificazioni",
+  "supervisorGroupAgents": "Agenti",
+  "supervisorSectionKindCommand": "Comando",
+  "supervisorSectionKindAgent": "Attività agente",
+  "supervisorSectionInstructions": "Istruzioni",
+  "supervisorSectionInstructionsHint": "Cosa deve fare l'agente",
+  "supervisorSectionAnchorAt": "alle",
+  "supervisorSectionTimeHint": "HH:mm, es. 03:00",
+  "supervisorScheduleDaily": "Ogni giorno",
+  "supervisorScheduleDailyAt": "Ogni giorno alle {time}",
+  "supervisorScheduleWeekly": "Ogni settimana",
+  "supervisorScheduleEveryDays": "Ogni {n} giorni",
+  "supervisorScheduleEveryHours": "Ogni {n} ore",
+  "supervisorScheduleEveryMinutes": "Ogni {n} minuti",
+  "supervisorScheduleAt": "alle {time}",
+  "supervisorSectionStats": "{state} · riavvii {count} · ultima esecuzione {last}",
+  "supervisorSectionStateActive": "Attiva",
+  "supervisorSectionStateIdle": "Non ancora eseguita",
+  "storageMeshPermissionBlocked": "macOS ha bloccato l'accesso alla cartella note. Consenti a Last Answer in Impostazioni di sistema → Privacy e sicurezza → File e cartelle, quindi riprova.",
+  "storageMeshRetrySharing": "Riprova",
+  "agentCodeChange": "Modifica al codice",
+  "chatGptSubscriptionTitle": "Piano ChatGPT",
+  "chatGptContinue": "Continua con ChatGPT",
+  "chatGptSignOut": "Esci",
+  "chatGptUsage": "Utilizzo e accesso delle app",
+  "chatGptChooseAccount": "Scegli un account",
+  "chatGptAccount": "Account",
+  "chatGptChooseModel": "Scegli un modello",
+  "chatGptRefreshModels": "Aggiorna modelli",
+  "chatGptVerifyAccess": "Verifica accesso al modello",
+  "chatGptAccessUnchecked": "Account connesso. Accesso al modello non ancora verificato.",
+  "chatGptAccessVerified": "Accesso al modello verificato.",
+  "chatGptPlanPermissionRequired": "Consenti a questa app di usare il tuo piano nelle impostazioni di ChatGPT.",
+  "chatGptWorking": "Operazione in corso…",
+  "chatGptRevocationUnconfirmed": "Disconnessione remota non confermata. Disconnetti l’app nelle impostazioni di ChatGPT.",
+  "chatGptConnectionError": "Connessione a ChatGPT non completata. Riprova o controlla l’accesso dell’app nelle impostazioni di ChatGPT.",
+  "chatGptDesktopOnly": "L’accesso a ChatGPT è disponibile nell’app desktop.",
+  "chatGptSignInRequired": "Collega un account ChatGPT e abilita l’accesso al piano prima di inviare.",
+  "chatGptModelRequired": "Scegli un modello ChatGPT prima di inviare.",
+  "chatGptDocumentConsentRequired": "Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.",
+  "grokSubscriptionTitle": "Abbonamento Grok",
+  "grokContinue": "Continua con Grok",
+  "grokDeviceSignIn": "Usa un codice dispositivo",
+  "grokSignOut": "Esci",
+  "grokChooseAccount": "Scegli un account Grok",
+  "grokAccount": "Account Grok",
+  "grokChooseModel": "Scegli un modello Grok",
+  "grokRefreshModels": "Aggiorna modelli",
+  "grokVerifyAccess": "Verifica accesso",
+  "grokAccessUnchecked": "Accesso non verificato",
+  "grokAccessVerified": "Accesso verificato su questo dispositivo",
+  "grokPlanPermissionRequired": "Il token di questo account non include l’accesso al piano.",
+  "grokWorking": "Operazione in corso",
+  "grokRevocationUnconfirmed": "La disconnessione remota non è confermata. I token locali sono stati rimossi.",
+  "grokConnectionError": "Impossibile raggiungere l’account Grok.",
+  "grokDesktopOnly": "L’accesso a Grok è disponibile nell’app desktop.",
+  "grokSignInRequired": "Collega un account Grok e abilita l’accesso al piano prima di inviare.",
+  "grokModelRequired": "Scegli un modello Grok prima di inviare.",
+  "grokDocumentConsentRequired": "Conferma l’uso del cloud per documento, account, modello e spazio di lavoro prima di inviare.",
+  "grokClientNotRegistered": "Last Answer non ha ancora un client id xAI. L’accesso resta chiuso.",
+  "grokRegistrationHint": "Invia a xAI il referrer e il redirect sopra, così può registrare questa app.",
+  "worldConversationChoose": "Scegli una conversazione",
+  "worldConversationHint": "Parla in questa conversazione del mondo",
+  "worldConversationSend": "Invia al mondo",
+  "worldConversationReconnect": "Riconnetti",
+  "worldConversationPublic": "I messaggi sono visibili ai partecipanti di questo mondo.",
+  "worldTaskPermission": "Permesso per attività",
+  "worldTaskPermissionHint": "Scegli un'attività, un attore e i file esatti. Il mondo verifica e registra questo permesso; le modifiche richiedono comunque verifica e supportano Annulla.",
+  "worldTaskTarget": "Attività",
+  "worldTaskActor": "ID attore",
+  "worldTaskPaths": "Percorsi relativi esatti, uno per riga",
+  "worldTaskMinutes": "Validità (minuti)",
+  "worldTaskRequired": "Obbligatorio",
+  "worldTaskRevoke": "Revoca",
+  "worldTaskAuthorize": "Autorizza attività",
+  "supervisorExecutionRun": "Esegui automazioni dichiarate",
+  "supervisorExecutionEnable": "Attiva pianificazioni",
+  "supervisorExecutionPause": "Sospendi pianificazioni",
+  "supervisorExecutionCancel": "Annulla esecuzione in corso",
+  "supervisorExecutionAppOpen": "Le automazioni vengono eseguite solo mentre Last Answer è aperto.",
+  "supervisorExecutionStop": "Ferma attività avviate",
+  "worldChatUnsupported": "La chat del mondo richiede un filesystem locale (desktop).",
+  "worldChatNewConversation": "Nuova conversazione",
+  "worldChatTopicLabel": "Argomento",
+  "worldChatTopicHint": "Di cosa parla questa conversazione?",
+  "worldChatNoActorsYet": "Ancora nessun attore — creane uno in Impostazioni → Agenti e modelli.",
+  "worldChatOpen": "Apri",
+  "worldChatCancel": "Annulla",
+  "worldChatConversations": "Conversazioni",
+  "worldChatNoConversations": "Ancora nessuna conversazione.",
+  "worldChatCloseTooltip": "Chiudi conversazione",
+  "worldChatUnreadDivider": "{count, plural, one{{count} nuovo} other{{count} nuovi}}",
+  "worldChatBeatReply": "Rispondi",
+  "worldChatBeatDetails": "Dettagli del messaggio",
+  "worldChatReplyingTo": "In risposta a {name}",
+  "worldChatCancelReply": "Annulla risposta",
+  "worldChatPickHint": "Scegli una conversazione o iniziane una nuova.",
+  "worldChatFirstWord": "Di' la prima parola — gli attori di questa conversazione la sentiranno.",
+  "worldChatLoadOlder": "Carica messaggi precedenti",
+  "worldChatJumpToLatest": "Vai all'ultimo",
+  "worldChatComposerHint": "Scrivi alla conversazione…",
+  "worldChatSend": "Invia",
+  "worldChatParticipants": "{count, plural, one{{count} partecipante} other{{count} partecipanti}}",
+  "worldChatBeats": "{count} messaggi",
+  "worldChatMenuMessageActor": "Scrivi a un attore…",
+  "worldChatMenuNewChannel": "Nuovo canale…",
+  "worldChatMenuNewWorkspace": "Nuova area di lavoro…",
+  "worldChatPickActorTitle": "Scrivi a un attore",
+  "worldChatSearchActors": "Cerca attori…",
+  "worldChatNoMatchingActors": "Nessun attore corrispondente.",
+  "worldChatNewChannelTitle": "Nuovo canale",
+  "worldChatChannelNameLabel": "Nome del canale",
+  "worldChatChannelNameHint": "es. design-crit",
+  "worldChatChannelCreate": "Crea",
+  "worldChatChannelNameTaken": "Esiste già un canale con questo nome.",
+  "worldChatNewWorkspaceTitle": "Nuova area di lavoro",
+  "worldChatWorkspaceNameLabel": "Nome",
+  "worldChatWorkspaceNameHint": "es. lancio Orbit",
+  "worldChatWorkspaceAddFolder": "Aggiungi cartella…",
+  "worldChatWorkspaceCreate": "Crea",
+  "worldChatMessageHint": "Scrivi a {name}…",
+  "worldChatMembers": "{count, plural, one{{count} membro} other{{count} membri}}",
+  "actorsNoneYet": "Ancora nessun attore — crea il primo qui sotto.",
+  "actorsCreateActor": "Crea attore",
+  "actorsNameLabel": "Nome dell'attore",
+  "actorsNameHint": "es. Toby Researcher",
+  "actorsBrainLabel": "Cervello",
+  "actorsBrainSet": "Set di brain",
+  "actorsBrainSetOwn": "Set proprio",
+  "actorsBrainSetAuto": "Automatico — segue la politica del mondo",
+  "actorsBrainSetAdd": "Aggiungi modello",
+  "actorsSelfBind": "Può cambiare il proprio brain",
+  "actorsSelfBindHint": "Entro il proprio set, da solo",
+  "actorsRoleLabel": "Ruolo (opzionale)",
+  "actorsRoleHint": "es. assistente di ricerca",
+  "firstRunTitle": "Incontra il tuo primo attore",
+  "firstRunSubtitle": "Tutto qui inizia da una conversazione. Dai al tuo primo attore un nome, una persona facoltativa e un cervello — ti saluterà in un messaggio diretto, e potrai cambiare tutto in seguito.",
+  "firstRunNameLabel": "Nome",
+  "firstRunNameHint": "es. Toby",
+  "firstRunPersonaLabel": "Persona (facoltativa)",
+  "firstRunPersonaHint": "Come dovrebbe pensare e parlare questo attore?",
+  "firstRunBrainLabel": "Cervello",
+  "firstRunNoBrains": "Nessun cervello disponibile su questo dispositivo per ora. Puoi saltare e creare un attore più tardi dalle Impostazioni.",
+  "firstRunCreate": "Crea e inizia a chattare",
+  "firstRunCreating": "Creazione dell'attore…",
+  "firstRunSkip": "Salta per ora",
+  "firstRunCreateFailed": "Impossibile creare l'attore: {error}",
+  "@firstRunCreateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "firstRunGreeting": "Ciao — sono {name}, il tuo primo attore. Vivo nel mondo di questo workspace: scrivimi qui e ti risponderò. Puoi cambiare il mio nome, la persona o il cervello in qualsiasi momento nelle Impostazioni.",
+  "@firstRunGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsWorldInspector": "Ispettore del mondo",
+  "newTabPageTitle": "Nuova scheda",
+  "newTabHintConversations": "La superficie del mondo — canali e conversazioni dirette.",
+  "newTabHintBrowser": "Sfoglia i file del workspace e il web.",
+  "newTabHintInspector": "Osserva mondi e lavoro degli attori.",
+  "newTabHintFilesystem": "Sfoglia l'albero delle cartelle e i file del workspace.",
+  "newTabHintPeople": "Gli attori del realm: presenza, profili, modifica in linea.",
+  "viewFilesystemTitle": "File",
+  "viewPinTooltip": "Fissa la vista",
+  "viewUnpinTooltip": "Sblocca la vista",
+  "viewDockRestoreTooltip": "Mostra le viste fissate",
+  "railActors": "Attori",
+  "railAutomations": "Automazioni",
+  "railChannels": "Canali",
+  "railRowMiniwindow": "Apri in mini-finestra",
+  "railDirect": "DIRETTE",
+  "railProjects": "PROGETTI",
+  "railWorkspaces": "Aree di lavoro",
+  "railWorkspaceEmptyTree": "L'albero dei file arriverà qui.",
+  "railSearchHint": "Cerca attori, canali, aree di lavoro…",
+  "railAddTooltip": "Nuovo",
+  "railNoMatches": "Nessun risultato.",
+  "roomsSectionDms": "Messaggi diretti",
+  "roomsSectionRooms": "Stanze",
+  "roomsRenameChannelTitle": "Rinomina canale",
+  "roomsRenameAction": "Rinomina",
+  "roomsCloseChannel": "Chiudi canale",
+  "worldChatSelectFromRail": "Seleziona una conversazione dalla barra laterale.",
+  "contextTopic": "ARGOMENTO",
+  "contextParticipants": "PARTECIPANTI",
+  "contextMembers": "Membri",
+  "contextShowTooltip": "Mostra contesto",
+  "contextHideTooltip": "Nascondi contesto",
+  "contextTabPeople": "Persone",
+  "contextTabTerminal": "Terminale",
+  "contextTabThreads": "Thread",
+  "contextFilesEmpty": "I file dell'area di lavoro arriveranno qui.",
+  "contextTerminalEmpty": "Il terminale arriverà qui.",
+  "contextThreadsEmpty": "I thread dell'harness arriveranno qui.",
+  "contextBackToConversation": "Torna alla conversazione",
+  "contextBrain": "CERVELLO",
+  "contextSampling": "CAMPIONAMENTO",
+  "contextPersona": "PERSONA",
+  "contextNoBrain": "Nessun cervello associato.",
+  "contextPersonaEmpty": "Nessuna persona — sintetizzata da nome e ruolo.",
+  "actorsEditTooltip": "Modifica attore",
+  "actorsSaveChanges": "Salva modifiche",
+  "actorsDiscardChanges": "Scarta modifiche",
+  "actorsPersonaLabel": "Prompt della persona",
+  "actorsPersonaHint": "Inviato verbatim come prompt di sistema quando l'attore parla; vuoto = sintetizzato da nome e ruolo.",
+  "actorsTemperatureLabel": "Temperatura",
+  "actorsRepetitionLabel": "Penalità di ripetizione",
+  "actorsSamplingHint": "Parametri di campionamento per i cervelli locali; vuoto = predefiniti della chat.",
+  "workspacesFilesEmpty": "Ancora nessuna area di lavoro — aggiungine una dalla barra.",
+  "workspacesFilesNoFolders": "Ancora nessuna cartella — aggiungi cartelle a questa area di lavoro.",
+  "viewBoardsTitle": "Bacheche",
+  "newTabHintBoards": "Piani, bacheche e scomposizione.",
+  "boardsTitle": "Piani",
+  "boardsAddCardHint": "aggiungi a {column}…",
+  "boardsAddStepHint": "aggiungi un passo…",
+  "boardsMoveTooltip": "sposta in {column}",
+  "boardsSettleTooltip": "segna come fatto",
+  "boardsDecomposeTooltip": "aggiungi un passo",
+  "unknownSurfaceTitle": "Superficie sconosciuta",
+  "railViews": "Viste",
+  "railViewSwitchTooltip": "Cambia vista",
+  "statusEdgeWorldLive": "mondo attivo",
+  "statusEdgeWorldLiveStale": "mondo attivo · binario obsoleto",
+  "statusEdgeWorldDown": "mondo fermo",
+  "statusEdgeWorldArming": "avvio del mondo…",
+  "statusEdgeArmFailed": "avvio fallito · {reason}",
+  "statusEdgeArm": "Avvia",
+  "statusEdgeNoPalette": "nessuna palette dichiarata",
+  "statusEdgePaletteRefused": "palette rifiutata",
+  "statusEdgePrimary": "primario {rung}",
+  "statusEdgeVia": "via {rung}",
+  "statusEdgeMeshOff": "mesh disattiva",
+  "statusEdgeMeshMain": "mesh principale",
+  "statusEdgeMeshJoined": "mesh connessa",
+  "statusEdgeMeshJoining": "mesh in connessione",
+  "statusEdgeAttention": "attenzione: {count}",
+  "statusEdgeAttentionWaiting": "attenzione: {permissions} permessi, {running} in corso",
+  "edgeArmWorld": "Avvia il mondo",
+  "edgeArming": "Avvio…",
+  "edgeStopWorld": "Ferma",
+  "edgeRestartWorld": "Riavvia",
+  "inboxPermissions": "Permessi",
+  "inboxRunning": "In coda e in corso",
+  "inboxVerdicts": "Ultimi verdetti",
+  "inboxThreads": "Conversazioni recenti",
+  "inboxEmpty": "Nessuna decisione in attesa",
+  "inboxDeny": "Nega",
+  "inboxAllow": "Consenti",
+  "inboxWorldDown": "Il mondo ecsai non è in esecuzione",
+  "inboxWorldArming": "Avvio del mondo…",
+  "inboxWorldArmFailed": "Avvio fallito",
+  "viewModelsTitle": "Modelli",
+  "modelsNoPalette": "Nessun modello dichiarato per questo mondo",
+  "modelsLocalCatalog": "Modelli locali",
+  "modelsLadderAdd": "Aggiungi modello",
+  "modelsLadderRemove": "Rimuovi dai modelli",
+  "modelsLadderAddTitle": "Aggiungi un modello alla scaletta",
+  "modelsLadderProvider": "provider",
+  "modelsLadderModel": "id del modello",
+  "modelsPolicySection": "Modelli",
+  "modelsPolicyHint": "Provati dall'alto in basso — quando uno è giù o bloccato, subentra il successivo.",
+  "modelsPolicyFirst": "pensa per primo",
+  "modelsPolicyFallback": "se {model} è fermo o bloccato",
+  "modelsSystemLanes": "Lane di sistema",
+  "modelsSystemLanesHint": "Le decisioni rapide del mondo — lasciale stare",
+  "modelsActorsMore": "+{count} altri",
+  "modelsEscalatedTo": "bloccato → provato {model}",
+  "modelsDaemonLive": "daemon attivo",
+  "modelsDaemonDown": "daemon fermo",
+  "modelsDaemonStale": "binario obsoleto",
+  "modelsSchedulerLive": "scheduler attivo",
+  "modelsSchedulerDown": "scheduler fermo",
+  "modelsEditPalette": "Modifica palette",
+  "modelsValidate": "Valida",
+  "modelsSave": "Salva",
+  "modelsClose": "Chiudi",
+  "modelsTelemetry": "Dispatch recenti",
+  "modelsChipLocal": "locale",
+  "commandPaletteHint": "Cerca viste, persone e azioni…",
+  "commandPaletteViews": "Viste",
+  "commandPalettePeople": "Persone",
+  "commandPaletteChannels": "Canali",
+  "commandPaletteActions": "Azioni",
+  "viewDocumentsTitle": "Documenti",
+  "documentsNewAgentDoc": "Nuovo doc agente",
+  "documentsNewCodeFile": "Nuovo file di codice",
+  "documentsEmpty": "Nessun documento — crea il primo doc agente",
+  "documentsMissing": "Questo documento non è nell'elenco caricato",
+  "threadsWorld": "Thread del mondo",
+  "threadsSessions": "Lavoro degli attori",
+  "threadsEmpty": "Nessun thread — gli attori e i canali della rail li avviano",
+  "boardsMeshTasks": "Task mesh",
+  "actionLandingInbox": "Posta in arrivo",
+  "newTabSectionOpen": "Apri",
+  "newTabSectionRooms": "Stanze",
+  "newTabSectionInstances": "Nuova istanza",
+  "newTabSectionCreate": "Crea",
+  "newTabSectionRunway": "Formati in arrivo — diventeranno schede quando il formato arriva",
+  "newTabBrowserInstance": "Browser · nuova finestra",
+  "newTabRunwayImage": "editor immagini · generazione",
+  "newTabRunwayVideo": "video · timeline di generazione",
+  "newTabRunwayAudio": "audio · multitraccia",
+  "stripBack": "Indietro",
+  "stripForward": "Avanti",
+  "stripSplit": "Dividi — due schede insieme",
+  "stripFold": "Ricomponi — torna a un riquadro",
+  "worldChatActorCard": "Scheda attore",
+  "worldChatScopeArm": "Aggancia a un'area di lavoro",
+  "worldChatScopeDismiss": "Rimuovi l'area di lavoro",
+  "worldChatScopePickTitle": "Invia l'ordine di lavoro a un'area di lavoro",
+  "worldChatScopeEmpty": "Nessun progetto disponibile — aggiungi prima una cartella di lavoro o concedi l'accesso.",
+  "worldChatWorkOrderHint": "Scrivi l'ordine di lavoro…",
+  "worldChatWorkThreadOpened": "Thread di lavoro aperto · {name}",
+  "worldChatWorkOrderSent": "Ordine di lavoro inviato · {name}",
+  "worldChatWorkThreadKind": "thread di lavoro",
+  "worldChatGrantNeeded": "Serve l'accesso al progetto",
+  "worldChatWorkOrderRefused": "Ordine di lavoro rifiutato",
+  "worldChatGrantAction": "Concedi accesso",
+  "worldChatGrantGranting": "Concessione…",
+  "contextProjectAccess": "ACCESSO AI PROGETTI",
+  "contextNoProjectGrants": "Nessun progetto concesso.",
+  "contextRequestAccess": "Richiedi accesso…",
+  "contextRequestAccessTitle": "Richiedi accesso a un progetto",
+  "contextAccessRequested": "Richiesta registrata — in attesa di approvazione.",
+  "contextPendingAccess": "RICHIESTE IN SOSPESO",
+  "contextApprove": "Approva",
+  "roomsExplainDms": "Messaggi diretti — thread privati con un attore",
+  "@roomsExplainDms": {
+    "description": "Rooms column: tooltip explaining the Direct messages section."
+  },
+  "roomsExplainChannels": "Canali — stanze di gruppo con nome e cronologia condivisa",
+  "@roomsExplainChannels": {
+    "description": "Rooms column: tooltip explaining the Channels section."
+  },
+  "roomsExplainRooms": "Stanze — thread osservabili tra attori; partecipi menzionandoli",
+  "@roomsExplainRooms": {
+    "description": "Rooms column: tooltip explaining the Rooms section."
+  },
+  "roomsKindChannel": "Canale",
+  "@roomsKindChannel": {
+    "description": "Rooms column: kind word on a channel row mark."
+  },
+  "roomsKindRoom": "Stanza",
+  "@roomsKindRoom": {
+    "description": "Rooms column: kind word on a room row mark."
+  },
+  "roomsSetIconAction": "Cambia icona…",
+  "@roomsSetIconAction": {
+    "description": "Channel row context menu: opens the change-icon dialog."
+  },
+  "roomsSetIconTitle": "Cambia l'icona del canale",
+  "@roomsSetIconTitle": {
+    "description": "Change-icon dialog title."
+  },
+  "roomsIconClear": "Azzera icona",
+  "@roomsIconClear": {
+    "description": "Change-icon dialog: clears back to the # mark."
+  },
+  "roomsIconCustomLabel": "Oppure un carattere / emoji",
+  "@roomsIconCustomLabel": {
+    "description": "Change-icon dialog: label of the custom glyph field."
+  },
+  "worldChatAttach": "Allega o menziona",
+  "@worldChatAttach": {
+    "description": "Composer: attach/mention button tooltip."
+  },
+  "worldChatAttachSearchHint": "Cerca persone, canali, stanze, documenti…",
+  "@worldChatAttachSearchHint": {
+    "description": "Attach dialog: search field hint."
+  },
+  "worldChatAttachWorkOrder": "Ordine di lavoro…",
+  "@worldChatAttachWorkOrder": {
+    "description": "Attach dialog: opens the ADR 0129 scope picker."
+  },
+  "worldChatAttachPlugins": "Plugin",
+  "@worldChatAttachPlugins": {
+    "description": "Attach dialog: plugins row (honest absence today)."
+  },
+  "worldChatAttachMcpServers": "Server MCP",
+  "@worldChatAttachMcpServers": {
+    "description": "Attach dialog: MCP servers row (honest absence today)."
+  },
+  "worldChatAttachNoneYet": "non ancora",
+  "@worldChatAttachNoneYet": {
+    "description": "Attach dialog: trailing note on absent attach kinds."
+  },
+  "worldChatRemoveAttachment": "Rimuovi allegato",
+  "@worldChatRemoveAttachment": {
+    "description": "Composer: staged-image chip's remove button tooltip (the messenger staging strip)."
+  },
+  "worldChatNoMatches": "Nessun risultato",
+  "@worldChatNoMatches": {
+    "description": "Attach dialog / mention overlay: empty filter result."
+  },
+  "worldChatThreadsToggle": "Thread",
+  "@worldChatThreadsToggle": {
+    "description": "Channel header: threads browser toggle label."
+  },
+  "worldChatThreadsGroup": "Thread",
+  "@worldChatThreadsGroup": {
+    "description": "Channel view threads browser: the work threads group label."
+  },
+  "worldChatRoomsGroup": "Stanze",
+  "@worldChatRoomsGroup": {
+    "description": "Channel view threads browser: the watchable rooms group label."
+  },
+  "worldChatThreadsEmpty": "Ancora nessun thread.",
+  "@worldChatThreadsEmpty": {
+    "description": "Channel view threads browser: the quiet empty line."
+  },
+  "worldChatSessionKindMark": "sessione",
+  "@worldChatSessionKindMark": {
+    "description": "Threads browser: the quiet kind mark on a declared session row (ADR 0145)."
+  },
+  "worldChatPermsTooltip": "Permessi",
+  "@worldChatPermsTooltip": {
+    "description": "Composer meta row: permissions button tooltip."
+  },
+  "worldChatPermsTitle": "Permessi del canale",
+  "@worldChatPermsTitle": {
+    "description": "Composer meta row: permissions dialog title."
+  },
+  "worldChatMembersTooltip": "Membri",
+  "@worldChatMembersTooltip": {
+    "description": "Composer meta row: members button tooltip."
+  },
+  "worldChatInfoTooltip": "Informazioni sul canale",
+  "@worldChatInfoTooltip": {
+    "description": "Composer meta row: channel info button tooltip."
+  },
+  "worldChatMembersAdd": "Aggiungi persone",
+  "worldChatMembersAddTitle": "Aggiungi a {channel}",
+  "worldChatMembersSearchHint": "Filtra persone",
+  "worldChatMembersAddSelected": "Aggiungi {count}",
+  "worldChatMembersAddCount": "{count} aggiunti a {channel}",
+  "worldChatMembersNoCandidates": "Tutti sono già in questo canale",
+  "worldChatMemberRemoveTooltip": "Rimuovi dal canale",
+  "worldChatMemberRemoveTitle": "Rimuovere {name} da {channel}?",
+  "worldChatMemberRemoveMessages": "{count, plural, one{{count} messaggio} other{{count} messaggi}}",
+  "worldChatMemberRemoveTasks": "{count, plural, one{{count} attività in corso} other{{count} attività in corso}}",
+  "worldChatMemberRemoveNoTasks": "nessuna in corso",
+  "worldChatMemberRemoveNote": "Non riceveranno più i messaggi di questo canale. Le attività in corso sono durable nel world e restano con l'attore.",
+  "worldChatMemberRemoved": "{name} rimosso da {channel}",
+  "roomsMenuMembers": "Aggiungi membri…",
+  "worldChatChangeIcon": "Cambia icona",
+  "@worldChatChangeIcon": {
+    "description": "Channel info dialog: icon row label."
+  },
+  "worldChatIconViaColumn": "L'icona del canale si cambia dal menu della colonna stanze (Wave D).",
+  "@worldChatIconViaColumn": {
+    "description": "Channel info dialog: honest tooltip on the icon row."
+  },
+  "worldChatBeatEdit": "Modifica",
+  "@worldChatBeatEdit": {
+    "description": "Beat hover cluster: edit action (own beats, gap-disabled)."
+  },
+  "worldChatBeatNewThread": "Nuovo thread",
+  "@worldChatBeatNewThread": {
+    "description": "Beat hover cluster: start a child thread."
+  },
+  "worldChatBeatDelete": "Elimina",
+  "@worldChatBeatDelete": {
+    "description": "Beat menu: delete action (gap-disabled)."
+  },
+  "worldChatBeatMenu": "Azioni sul messaggio",
+  "@worldChatBeatMenu": {
+    "description": "Beat hover cluster: menu button tooltip."
+  },
+  "worldChatEditGap": "I beat sono append-only nel journal; il verbo di modifica è dell'harness e non è ancora esposto.",
+  "@worldChatEditGap": {
+    "description": "Edit action tooltip naming the harness-owned verb gap."
+  },
+  "worldChatDeleteGap": "Il journal è append-only; il verbo di eliminazione è dell'harness e non è ancora esposto.",
+  "@worldChatDeleteGap": {
+    "description": "Delete action tooltip naming the harness-owned verb gap."
+  },
+  "worldChatThreadKind": "Thread",
+  "@worldChatThreadKind": {
+    "description": "Work-card kind word for a conversational child thread (no project seal)."
+  },
+  "stripOverflowHint": "Schede nascoste — apri l'elenco",
+  "@stripOverflowHint": {
+    "description": "Tab strip: overflow control tooltip."
+  },
+  "stripCloseAllTabs": "Chiudi tutte le schede",
+  "@stripCloseAllTabs": {
+    "description": "Tab strip: context-menu row that closes every open tab in every group."
+  },
+  "resizePaneHint": "Trascina per ridimensionare i pannelli",
+  "@resizePaneHint": {
+    "description": "Pane seam drag handle: hint for the drag-to-resize affordance between pane groups."
+  },
+  "resizeRoomsHint": "Trascina per ridimensionare l'elenco delle stanze",
+  "@resizeRoomsHint": {
+    "description": "Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge."
+  },
+  "modelsProviders": "Provider",
+  "@modelsProviders": {
+    "description": "Models view: providers section label."
+  },
+  "modelsEditProviders": "Modifica provider",
+  "@modelsEditProviders": {
+    "description": "Models view: opens the provider editor."
+  },
+  "modelsNoProviders": "nessun provider dichiarato",
+  "@modelsNoProviders": {
+    "description": "Models view: empty providers state."
+  },
+  "modelsCountSuffix": "modelli",
+  "@modelsCountSuffix": {
+    "description": "Models view: count suffix on a provider row."
+  },
+  "modelsContextTier": "ctx",
+  "@modelsContextTier": {
+    "description": "Models view: context-tier label."
+  },
+  "modelsNoModels": "nessun modello dichiarato",
+  "@modelsNoModels": {
+    "description": "Models view: empty model list."
+  },
+  "modelsAddProvider": "Aggiungi provider",
+  "@modelsAddProvider": {
+    "description": "Provider editor: add row."
+  },
+  "modelsEditProvider": "Modifica provider",
+  "@modelsEditProvider": {
+    "description": "Provider editor: dialog title."
+  },
+  "modelsAddModel": "Aggiungi modello",
+  "@modelsAddModel": {
+    "description": "Provider editor: add model row."
+  },
+  "modelsRenameModel": "Rinomina modello",
+  "@modelsRenameModel": {
+    "description": "Provider editor: rename model row."
+  },
+  "modelsEditAction": "modifica",
+  "@modelsEditAction": {
+    "description": "Provider editor: inline edit verb."
+  },
+  "modelsRemoveAction": "rimuovi",
+  "@modelsRemoveAction": {
+    "description": "Provider editor: inline remove verb."
+  },
+  "modelsRenameAction": "rinomina",
+  "@modelsRenameAction": {
+    "description": "Provider editor: inline rename verb."
+  },
+  "modelsConfirm": "Conferma",
+  "@modelsConfirm": {
+    "description": "Provider editor: confirm button."
+  },
+  "modelsCancel": "Annulla",
+  "@modelsCancel": {
+    "description": "Provider editor: cancel button."
+  },
+  "modelsPropose": "Proponi",
+  "@modelsPropose": {
+    "description": "Provider editor: validate candidate."
+  },
+  "modelsApply": "Applica",
+  "@modelsApply": {
+    "description": "Provider editor: owner apply."
+  },
+  "modelsUnsavedChanges": "modifiche non salvate",
+  "@modelsUnsavedChanges": {
+    "description": "Provider editor: dirty-state note."
+  },
+  "modelsInSync": "sincronizzato con la palette attiva",
+  "@modelsInSync": {
+    "description": "Provider editor: clean-state note."
+  },
+  "modelsRestartRequired": "riavvio necessario",
+  "@modelsRestartRequired": {
+    "description": "Provider editor: apply outcome note."
+  },
+  "modelsTransportLabel": "trasporto",
+  "@modelsTransportLabel": {
+    "description": "Provider editor: transport chip label."
+  },
+  "modelsEnvPrefix": "env:",
+  "@modelsEnvPrefix": {
+    "description": "Provider editor: credential env name prefix."
+  },
+  "modelsProviderIdHint": "id provider",
+  "@modelsProviderIdHint": {
+    "description": "Provider editor: id field hint."
+  },
+  "modelsModelIdHint": "id modello",
+  "@modelsModelIdHint": {
+    "description": "Provider editor: model id field hint."
+  },
+  "modelsBaseUrlHint": "base_url (https o http loopback)",
+  "@modelsBaseUrlHint": {
+    "description": "Provider editor: base_url field hint."
+  },
+  "modelsCredentialEnvHint": "credential_env (NOME di variabile d'ambiente)",
+  "@modelsCredentialEnvHint": {
+    "description": "Provider editor: credential_env field hint."
+  },
+  "modelsRefusalEmptyId": "l'id non può essere vuoto",
+  "@modelsRefusalEmptyId": {
+    "description": "Provider editor: empty-id refusal."
+  },
+  "modelsRefusalDuplicateProvider": "esiste già un provider con id",
+  "@modelsRefusalDuplicateProvider": {
+    "description": "Provider editor: duplicate provider refusal."
+  },
+  "modelsRefusalDuplicateModel": "il provider dichiara già il modello",
+  "@modelsRefusalDuplicateModel": {
+    "description": "Provider editor: duplicate model refusal."
+  },
+  "modelsRefusalIdImmutable": "l'id del provider è immutabile — referenziato dal cast:",
+  "@modelsRefusalIdImmutable": {
+    "description": "Provider editor: immutable id refusal."
+  },
+  "modelsRefusalProviderInUse": "impossibile rimuovere il provider — referenziato dal cast:",
+  "@modelsRefusalProviderInUse": {
+    "description": "Provider editor: provider-in-use refusal."
+  },
+  "modelsRefusalModelInUse": "impossibile rimuovere il modello — referenziato dal cast:",
+  "@modelsRefusalModelInUse": {
+    "description": "Provider editor: model-in-use refusal."
+  },
+  "modelsRefusalNoSeat": "il seat del realm non è pronto — i verbi della palette lo richiedono",
+  "@modelsRefusalNoSeat": {
+    "description": "Provider editor: seat-absent refusal."
+  },
+  "modelsJsonToggle": "JSON",
+  "@modelsJsonToggle": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsJsonInvalid": "JSON non valido — il candidato mantiene l'ultima forma valida",
+  "@modelsJsonInvalid": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsFieldMaxTokens": "max_tokens",
+  "@modelsFieldMaxTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsFieldMaxOutputTokens": "max_output_tokens",
+  "@modelsFieldMaxOutputTokens": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsFieldReasoningEffort": "reasoning_effort",
+  "@modelsFieldReasoningEffort": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsFieldIncludeReasoning": "include_reasoning",
+  "@modelsFieldIncludeReasoning": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsBuiltinLaneLocal": "corsia MLX locale integrata (on-device)",
+  "@modelsBuiltinLaneLocal": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsBuiltinLaneDecision": "corsia decisionale locale — servita dal sidecar laya-serve e dal suo modello scaricato",
+  "@modelsBuiltinLaneDecision": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsBuiltinLaneAfm": "corsia Apple Foundation integrata (on-device, specifica Apple)",
+  "@modelsBuiltinLaneAfm": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsBuiltinLaneOpenRouter": "corsia OpenRouter integrata (hosted)",
+  "@modelsBuiltinLaneOpenRouter": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsBuiltinLaneUnknown": "corsia integrata (del composition root)",
+  "@modelsBuiltinLaneUnknown": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsReasoningNoLane": "nessuna corsia di reasoning - il trasporto non dichiara livelli di effort (una dichiarazione verrebbe rifiutata come reasoning_effort_unsupported) ·",
+  "@modelsReasoningNoLane": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "modelsReasoningTitle": "sforzo di reasoning",
+  "@modelsReasoningTitle": {
+    "description": "Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration)."
+  },
+  "actorsMessage": "Messaggio",
+  "@actorsMessage": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
+  "actorsRemove": "Rimuovi actor",
+  "@actorsRemove": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
+  "actorsRemoveConfirm": "Ritira la riga durevole ed elimina il profilo roster di",
+  "@actorsRemoveConfirm": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
+  "actorsNewActor": "Nuovo actor",
+  "@actorsNewActor": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
+  "actorsCreate": "Crea",
+  "@actorsCreate": {
+    "description": "Wave N1 2026-11-16 (actor equality: message/remove/mint verbs)."
+  },
+  "actorsAvatar": "Avatar",
+  "@actorsAvatar": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsAvatarHint": "emoji o carattere",
+  "@actorsAvatarHint": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsAvatarClear": "Pulisci",
+  "@actorsAvatarClear": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsReasoning": "livello di reasoning",
+  "@actorsReasoning": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsReasoningNoLane": "questa corsia del brain non dichiara livelli di effort",
+  "@actorsReasoningNoLane": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsReasoningDaemonNote": "il dispatch in-app rispetta questo livello; il dispatch del daemon legge il reasoning per modello finché la richiesta harness non arriva",
+  "@actorsReasoningDaemonNote": {
+    "description": "Wave N2 2026-11-16 (actor avatars + per-actor reasoning level)."
+  },
+  "actorsYourProfile": "Il tuo profilo",
+  "@actorsYourProfile": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
+  "actorsYou": "tu",
+  "@actorsYou": {
+    "description": "Wave N3 2026-11-16 (human self-profile entry)."
+  },
+  "inboxQueuedReason": "in coda - in attesa di uno scheduler: arma il world",
+  "@inboxQueuedReason": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxTaskDetail": "Dettaglio task",
+  "@inboxTaskDetail": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxTaskCancel": "Annulla task",
+  "@inboxTaskCancel": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxTaskEvents": "eventi di controllo",
+  "@inboxTaskEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxTaskNoEvents": "nessun evento di controllo",
+  "@inboxTaskNoEvents": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxDurableQueue": "coda durevole",
+  "@inboxDurableQueue": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "inboxBoardsQueueNote": "la coda durevole dei task non è su questa board (il feed harness non è cablato) - la gestisce l inbox",
+  "@inboxBoardsQueueNote": {
+    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
+  },
+  "actorsRetiredNote": "ritirato - la riga durevole conserva la sua storia:",
+  "@actorsRetiredNote": {
+    "description": "Wave N5b 2026-11-16 (retired actors name their retirement)."
+  },
+  "actorsRetiredMark": "ritirato",
+  "@actorsRetiredMark": {
+    "description": "Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view)."
+  },
+  "actorsRetiredSection": "Ritirati",
+  "@actorsRetiredSection": {
+    "description": "Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane)."
+  },
+  "actorsRevive": "Riattiva",
+  "@actorsRevive": {
+    "description": "Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives)."
+  },
+  "actorsImageSpend": "Spesa immagini",
+  "@actorsImageSpend": {
+    "description": "La spesa immagini per attore (ledger): costo confermato, chiamate, immagini; una chiamata rifiutata conta senza spendere.."
+  },
+  "modelsClassRemote": "Provider remoti",
+  "@modelsClassRemote": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassRemoteEmpty": "nessun provider remoto dichiarato",
+  "@modelsClassRemoteEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassLocalServer": "Server locale (loopback)",
+  "@modelsClassLocalServer": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassLocalServerEmpty": "nessun server locale connesso - una corsia tipo ollama dichiara un provider openai_compatible con base_url loopback",
+  "@modelsClassLocalServerEmpty": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassSubscription": "Subscription diretta",
+  "@modelsClassSubscription": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassSubscriptionAbsent": "la corsia diretta qwen non esiste oggi. Grok è una corsia subscription e resta chiusa finché xAI non rilascia un client id a Last Answer.",
+  "@modelsClassSubscriptionAbsent": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassUnclassified": "Corsie non classificate",
+  "@modelsClassUnclassified": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsSettingsAdd": "aggiungi",
+  "@modelsSettingsAdd": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsSettingsFreeKey": "chiave libera",
+  "@modelsSettingsFreeKey": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsSettingsUnconsumed": "non consumato",
+  "@modelsSettingsUnconsumed": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsSettingsRemove": "rimuovi impostazione",
+  "@modelsSettingsRemove": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsChatGptPlan": "piano ChatGPT",
+  "@modelsChatGptPlan": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsChatGptSignedOut": "non autenticato - accedi dal pannello runtime dell agent-doc",
+  "@modelsChatGptSignedOut": {
+    "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsGrokPlan": "piano Grok",
+  "@modelsGrokPlan": {
+    "description": "Grok subscription catalog row. ADR 0030."
+  },
+  "modelsGrokSignedOut": "non autenticato - accedi dal pannello runtime dell agent-doc",
+  "@modelsGrokSignedOut": {
+    "description": "Grok subscription catalog row when the account is signed out."
+  },
+  "modelsGrokAwaitingRegistration": "in attesa della registrazione client xAI",
+  "@modelsGrokAwaitingRegistration": {
+    "description": "Grok subscription catalog row before xAI issues a client id."
+  },
+  "modelsLocalDiskDownloaded": "Scaricato",
+  "@modelsLocalDiskDownloaded": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
+  },
+  "modelsLocalDiskNot": "Non scaricato",
+  "@modelsLocalDiskNot": {
+    "description": "Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet."
+  },
+  "modelsLocalMemLoaded": "Caricato",
+  "@modelsLocalMemLoaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it)."
+  },
+  "modelsLocalMemUnloaded": "Non caricato",
+  "@modelsLocalMemUnloaded": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM."
+  },
+  "modelsLocalDownload": "Scarica",
+  "@modelsLocalDownload": {
+    "description": "Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog)."
+  },
+  "modelsLocalLoad": "Carica",
+  "@modelsLocalLoad": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row."
+  },
+  "modelsLocalUnload": "Espelli",
+  "@modelsLocalUnload": {
+    "description": "Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row (eject from RAM)."
+  },
+  "modelsLocalDelete": "Elimina",
+  "@modelsLocalDelete": {
+    "description": "Local model manager 2026-11-18: the row's delete verb (manager-installed entries only)."
+  },
+  "modelsLocalConsentTitle": "Scaricare il modello locale?",
+  "@modelsLocalConsentTitle": {
+    "description": "Local model manager 2026-11-18: the install consent dialog's title."
+  },
+  "modelsLocalConsentBody": "Scarica {label} (circa {size}) dalla rete nella cache dei modelli locali. Il runtime non scarica mai da solo.",
+  "@modelsLocalConsentBody": {
+    "description": "Local model manager 2026-11-18: the install consent dialog's body (names the model, the size, the network fact).",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalConsentConfirm": "Scarica",
+  "@modelsLocalConsentConfirm": {
+    "description": "Local model manager 2026-11-18: the consent dialog's confirm verb."
+  },
+  "modelsLocalDeleteTitle": "Eliminare il modello locale?",
+  "@modelsLocalDeleteTitle": {
+    "description": "Local model manager 2026-11-18: the delete confirm dialog's title."
+  },
+  "modelsLocalDeleteBody": "Elimina i file scaricati di {label} dalla cache dei modelli locali. Solo i modelli installati dal manager possono essere eliminati.",
+  "@modelsLocalDeleteBody": {
+    "description": "Local model manager 2026-11-18: the delete confirm dialog's body.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalDeleteRefused": "eliminazione rifiutata - questo modello non e stato installato dal manager",
+  "@modelsLocalDeleteRefused": {
+    "description": "Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker)."
+  },
+  "modelsLocalPhaseChecking": "verifica",
+  "@modelsLocalPhaseChecking": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseDownloading": "scaricamento",
+  "@modelsLocalPhaseDownloading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseLoading": "caricamento",
+  "@modelsLocalPhaseLoading": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseReady": "pronto",
+  "@modelsLocalPhaseReady": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word."
+  },
+  "modelsLocalPhaseFailed": "fallito",
+  "@modelsLocalPhaseFailed": {
+    "description": "Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix)."
+  },
+  "modelsBudgetUsed": "in uso",
+  "@modelsBudgetUsed": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's working-set legend label."
+  },
+  "modelsBudgetCached": "cache rilasciabile",
+  "@modelsBudgetCached": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's file-cache legend label."
+  },
+  "modelsBudgetFree": "libera",
+  "@modelsBudgetFree": {
+    "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's free-pages legend label."
+  },
+  "modelsBudgetPolicy": "la policy di caricamento tiene liberi {floor} — disponibili per caricamenti locali {available}",
+  "@modelsBudgetPolicy": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      }
+    },
+    "description": "Local model budget v3.3 2026-11-19: the policy line under the bar."
+  },
+  "modelsBudgetUnknown": "dati di memoria non disponibili — il load gate gira senza sensore",
+  "@modelsBudgetUnknown": {
+    "description": "Local model budget 2026-11-18: the honest degraded line when the memory sensor yields no facts."
+  },
+  "modelsBudgetTotalUnknown": "memoria totale sconosciuta — la barra scala sulla memoria disponibile",
+  "@modelsBudgetTotalUnknown": {
+    "description": "Local model budget 2026-11-18: the honest note when the sensor sees available but not total memory."
+  },
+  "modelsBudgetNothingFits": "nessun modello scaricato entra nella memoria disponibile — libera {size} per eseguire {label}",
+  "@modelsBudgetNothingFits": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "placeholders": {
+    "size": {
+      "type": "String"
+    },
+    "label": {
+      "type": "String"
+    }
+  },
+  "modelsLocalFitReason": "mancano {size} — scarica un modello o libera memoria",
+  "@modelsLocalFitReason": {
+    "description": "Local models v3 2026-11-18 (it).",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalGenerating": "generazione…",
+  "@modelsLocalGenerating": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalTokPerSec": "≈{speed} tok/s",
+  "@modelsLocalTokPerSec": {
+    "description": "Local models v3 2026-11-18 (it).",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalDetails": "Dettagli",
+  "@modelsLocalDetails": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsDisk": "disco",
+  "@modelsLocalDetailsDisk": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsMemory": "memoria",
+  "@modelsLocalDetailsMemory": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsSidecar": "servito dal sidecar laya-serve — nessuna residenza in-app",
+  "@modelsLocalDetailsSidecar": {
+    "description": "Local models v3.3 2026-11-19 (it)."
+  },
+  "modelsLocalDetailsSizeOnDisk": "dimensione su disco",
+  "@modelsLocalDetailsSizeOnDisk": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsPath": "percorso snapshot",
+  "@modelsLocalDetailsPath": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsLastGeneration": "ultima generazione",
+  "@modelsLocalDetailsLastGeneration": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsLocalDetailsLastError": "ultimo errore",
+  "modelsLocalDetailsUsedBy": "usato da",
+  "@modelsLocalDetailsUsedBy": {
+    "description": "Local models v3 2026-11-18 (it): the detail sheet's bound-actors row."
+  },
+  "modelsBudgetSwap": "scritto su swap",
+  "@modelsBudgetSwap": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "modelsBudgetSwapNote": "la macchina sta facendo swap — un caricamento aggiungerà pressione",
+  "@modelsBudgetSwapNote": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "modelsConfigRootEdit": "radice di configurazione…",
+  "@modelsConfigRootEdit": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "modelsConfigRootTitle": "radice di configurazione ecsai",
+  "@modelsConfigRootTitle": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "modelsConfigRootHint": "Da dove si legge .xsoulspace/config.json. Vuoto = radice del realm del daemon, altrimenti ~/.xsoulspace globale. Last Answer non deve mai dipendere da un checkout di sviluppo.",
+  "@modelsConfigRootHint": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "modelsConfigRootSave": "Salva",
+  "@modelsConfigRootSave": {
+    "description": "Local models v3.2 2026-11-18 (it)."
+  },
+  "@modelsLocalDetailsLastError": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsBuiltinsNoLifecycle": "sempre attivo",
+  "@modelsBuiltinsNoLifecycle": {
+    "description": "Local models v3 2026-11-18 (it)."
+  },
+  "modelsFieldCapabilities": "capabilities",
+  "@modelsFieldCapabilities": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsEditModel": "Modifica modello",
+  "@modelsEditModel": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsMoveUp": "sali nella scala di escalation",
+  "@modelsMoveUp": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsMoveDown": "scendi nella scala di escalation",
+  "@modelsMoveDown": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsSessionPrefix": "sessione:",
+  "@modelsSessionPrefix": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsSessionClear": "svuota",
+  "@modelsSessionClear": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsRestartPending": "palette applicata — il daemon la associa al riavvio",
+  "@modelsRestartPending": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsRestartNow": "Riavvia ora",
+  "@modelsRestartNow": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsUnbound": "attori non associati",
+  "@modelsUnbound": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "modelsRefusalBadNumber": "non è un numero — il campo mantiene l'ultimo valore",
+  "@modelsRefusalBadNumber": {
+    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
+  },
+  "attachImage": "Aggiungi immagine",
+  "@attachImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "takePhoto": "Scatta una foto",
+  "@takePhoto": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "chooseImage": "Scegli immagine",
+  "@chooseImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "generateImage": "Genera immagine",
+  "@generateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "editImage": "Modifica immagine",
+  "@editImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "captionImage": "Didascalia",
+  "@captionImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "altTextHint": "Descrivi l'immagine (testo alt)",
+  "@altTextHint": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "removeImage": "Rimuovi immagine",
+  "@removeImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "imageAddedToNote": "Immagine aggiunta",
+  "@imageAddedToNote": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "imageGenerationPrompt": "Descrivi l'immagine da generare…",
+  "@imageGenerationPrompt": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "imageGenerationFailed": "Generazione immagine non riuscita",
+  "@imageGenerationFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "imageEditFailed": "Modifica non riuscita",
+  "@imageEditFailed": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "generatingImage": "Generazione…",
+  "@generatingImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "annotateImage": "Annota",
+  "@annotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "saveImageCopy": "Salva copia",
+  "@saveImageCopy": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "rotateImage": "Ruota",
+  "@rotateImage": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "cropSquare": "Ritaglia quadrato",
+  "@cropSquare": {
+    "description": "Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images."
+  },
+  "selectionCut": "Taglia",
+  "selectionCopy": "Copia",
+  "selectionPaste": "Incolla",
+  "selectionSelectAll": "Seleziona tutto",
+  "worldChatPermsAccess": "Accesso",
+  "worldChatPermsRead": "Lettura",
+  "worldChatPermsSay": "Scrittura",
+  "worldChatPermsManage": "Gestione",
+  "worldChatPermsScope": "Ambito di lavoro",
+  "worldChatPermsScopeNone": "nessuno",
+  "worldChatPermsScopeClear": "Rimuovi",
+  "worldChatPermsScopeBind": "Collega…",
+  "worldChatPermsGrant": "Concedi…",
+  "worldChatPermsRevoke": "Revoca",
+  "worldChatPermsKind": "Tipo",
+  "worldChatPermsRoot": "Radice",
+  "worldChatPermsSubpath": "Sottopercorso",
+  "worldChatPermsCaps": "Permessi",
+  "worldChatPermsApply": "Applica",
+  "worldChatPermsRootRequired": "radice obbligatoria",
+  "viewActorsTitle": "Attori",
+  "actorsSearchHint": "Cerca attori…",
+  "actorsSearchEmpty": "Nessun attore corrisponde",
+  "actorsShowRetired": "Mostra ritirati",
+  "actorsHideRetired": "Nascondi ritirati",
+  "actorsStatusWorking": "attivo",
+  "actorsStatusIdle": "in pausa",
+  "actorsStatusFailed": "in errore",
+  "roomsFilterHint": "Filtra",
+  "actorInfoNowSection": "Adesso"
+}

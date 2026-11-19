@@ -1,0 +1,5080 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'S_en.dart';
+import 'S_it.dart';
+import 'S_ru.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of S
+/// returned by `S.of(context)`.
+///
+/// Applications need to include `S.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'generated/S.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: S.localizationsDelegates,
+///   supportedLocales: S.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the S.supportedLocales
+/// property.
+abstract class S {
+  S(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static S of(BuildContext context) {
+    return Localizations.of<S>(context, S)!;
+  }
+
+  static const LocalizationsDelegate<S> delegate = _SDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('it'),
+    Locale('ru'),
+  ];
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @writeAnAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Write an answer'**
+  String get writeAnAnswer;
+
+  /// No description provided for @writeANote.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a note'**
+  String get writeANote;
+
+  /// No description provided for @subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// No description provided for @freeSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get freeSubscription;
+
+  /// No description provided for @patronSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Patron'**
+  String get patronSubscription;
+
+  /// No description provided for @myAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get myAccount;
+
+  /// No description provided for @changeLog.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get changeLog;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'E-mail'**
+  String get email;
+
+  /// No description provided for @deleteMyAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteMyAccount;
+
+  /// No description provided for @danger.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger'**
+  String get danger;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loading;
+
+  /// No description provided for @esc.
+  ///
+  /// In en, this message translates to:
+  /// **'ESC'**
+  String get esc;
+
+  /// No description provided for @generalSettingsFullTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General Settings'**
+  String get generalSettingsFullTitle;
+
+  /// No description provided for @generalSettingsShortTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get generalSettingsShortTitle;
+
+  /// No description provided for @charactersLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Characters limit'**
+  String get charactersLimit;
+
+  /// No description provided for @charactersLimitForNewNotesDesription.
+  ///
+  /// In en, this message translates to:
+  /// **'When you set the limit, all new notes will have this limit. And if you will need to go-off limit for one note - just set it inside note settings.'**
+  String get charactersLimitForNewNotesDesription;
+
+  /// No description provided for @charactersUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get charactersUnlimited;
+
+  /// No description provided for @madeWithLoveAndFlutter.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with Flutter ❤ and Open Source Libraries'**
+  String get madeWithLoveAndFlutter;
+
+  /// No description provided for @feedbackTextWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'or send a message to idea@xsoulspace.dev'**
+  String get feedbackTextWithEmail;
+
+  /// No description provided for @niceDayWish.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for using this app and have a nice day, full of ideas and inspiration!:)'**
+  String get niceDayWish;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @joinDiscord.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Discord'**
+  String get joinDiscord;
+
+  /// No description provided for @pleaseNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please notice'**
+  String get pleaseNotice;
+
+  /// No description provided for @appInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Answer'**
+  String get appInfo;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'App version: {version}, build: {buildNumber}'**
+  String appVersion(Object buildNumber, Object version);
+
+  /// No description provided for @frequentlyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently used'**
+  String get frequentlyUsed;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get themeSystem;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @projectsDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes direction'**
+  String get projectsDirection;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @settingsSectionYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get settingsSectionYou;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsSectionNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get settingsSectionNotes;
+
+  /// No description provided for @settingsSectionData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data & sync'**
+  String get settingsSectionData;
+
+  /// No description provided for @settingsSectionAgents.
+  ///
+  /// In en, this message translates to:
+  /// **'Agents'**
+  String get settingsSectionAgents;
+
+  /// No description provided for @settingsSectionAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsSectionAbout;
+
+  /// No description provided for @settingsJumpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to a setting…'**
+  String get settingsJumpHint;
+
+  /// No description provided for @noteSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Note settings'**
+  String get noteSettings;
+
+  /// No description provided for @wordNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get wordNew;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @noProjectsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No projects yet.'**
+  String get noProjectsYet;
+
+  /// No description provided for @createIdeaHelperText.
+  ///
+  /// In en, this message translates to:
+  /// **'Create tutorial'**
+  String get createIdeaHelperText;
+
+  /// No description provided for @whatsYourIdea.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your idea?'**
+  String get whatsYourIdea;
+
+  /// No description provided for @lastAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Answer'**
+  String get lastAnswer;
+
+  /// No description provided for @idea.
+  ///
+  /// In en, this message translates to:
+  /// **'Idea'**
+  String get idea;
+
+  /// No description provided for @note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
+  /// No description provided for @chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chat;
+
+  /// No description provided for @answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get answer;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @aboutAbstractWhatFor.
+  ///
+  /// In en, this message translates to:
+  /// **'What for?'**
+  String get aboutAbstractWhatFor;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @deleteThisNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this note'**
+  String get deleteThisNote;
+
+  /// No description provided for @areYouSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get areYouSure;
+
+  /// No description provided for @willBeLost.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} will be lost forever'**
+  String willBeLost(Object title);
+
+  /// No description provided for @philosophyInspirationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspiration'**
+  String get philosophyInspirationTitle;
+
+  /// No description provided for @philosophyAbstractWhatElse.
+  ///
+  /// In en, this message translates to:
+  /// **'What else?'**
+  String get philosophyAbstractWhatElse;
+
+  /// No description provided for @philosophyAbstractFiveWhyesWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'You can use: \"Five whys\"'**
+  String get philosophyAbstractFiveWhyesWhat;
+
+  /// No description provided for @philosophyAbstractFiveWhyesWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Because, you can use this technique if you have a problem or idea, which needs to be explored more deeply. Method of exploration also often named as \"cause and effect\" exploration. See more about the technique at wiki: https://en.wikipedia.org/wiki/Five_whys'**
+  String get philosophyAbstractFiveWhyesWhy;
+
+  /// No description provided for @philosophyAbstractPDSAWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Because it most universal technique. It does not solid questions, as in \"Five Whys\", but the method can help not just make idea exploration, but to understand whole area problems. See more about the technique at wiki:  https://en.wikipedia.org/wiki/PDCA'**
+  String get philosophyAbstractPDSAWhy;
+
+  /// No description provided for @philosophyAbstractPDSAWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'You can use: \"PDCA/PDSA (Plan-Do-Check/Study-Act): Shewhart-Deming cycle\" '**
+  String get philosophyAbstractPDSAWhat;
+
+  /// No description provided for @philosophyAbstractSixSigmaWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Because if your problem or idea has manufacture/transport origin, this method will certanly helps to develop or imporve business process or product. See more about the technique at wiki:  https://en.wikipedia.org/wiki/Six_Sigma'**
+  String get philosophyAbstractSixSigmaWhy;
+
+  /// No description provided for @philosophyAbstractSixSigmaWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'You can use: \"Six Sigma\"'**
+  String get philosophyAbstractSixSigmaWhat;
+
+  /// No description provided for @aboutAbstractWhatForDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is designed to solve ideas expression when it needed most; to solve complexity and thoughts understanding during project management and just to make easier each other ideas sharing & understanding.'**
+  String get aboutAbstractWhatForDescription;
+
+  /// No description provided for @aboutAbstractHowDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can use Inspiration section to get inspiration of how this app can be used and which techniques can be applied.'**
+  String get aboutAbstractHowDescription;
+
+  /// No description provided for @aboutAbstractIdeasImprovementsBugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas Improvements Bugs?'**
+  String get aboutAbstractIdeasImprovementsBugs;
+
+  /// No description provided for @supporterDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter days left'**
+  String get supporterDaysLeft;
+
+  /// No description provided for @youCanSupportAppDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'You can start supporting the app development by watching short ad below. This will help me to improve the app and make it better.'**
+  String get youCanSupportAppDevelopment;
+
+  /// No description provided for @youUsedThisAppFor.
+  ///
+  /// In en, this message translates to:
+  /// **'You used this app for'**
+  String get youUsedThisAppFor;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @andHaveSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'and have supported'**
+  String get andHaveSupported;
+
+  /// No description provided for @unfortunatelyThisPlatformHasNoAbilitiesToSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfortunately, this platform has no abilities to support the app, yet:)'**
+  String get unfortunatelyThisPlatformHasNoAbilitiesToSupport;
+
+  /// No description provided for @butYouCanGoTo.
+  ///
+  /// In en, this message translates to:
+  /// **'But you can go'**
+  String get butYouCanGoTo;
+
+  /// No description provided for @toTheWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'to the website:)'**
+  String get toTheWebsite;
+
+  /// No description provided for @whatSupporterDaysMeans.
+  ///
+  /// In en, this message translates to:
+  /// **'What \"Suppoter Days\" means?'**
+  String get whatSupporterDaysMeans;
+
+  /// No description provided for @supporterDaysAre.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporter Days are the days given to the user of the application for supporting the project. Every time the user uses the application, one Supporter Day is deducted (only once per day, regardless of how many times the user opens the application in a day) and added to Supported Days (the total number of days the person has supported the project). If the user has never opened the application, the days are not deducted :)'**
+  String get supporterDaysAre;
+
+  /// No description provided for @supporterDaysMainFunctionality.
+  ///
+  /// In en, this message translates to:
+  /// **'The main functionality of Supporter Days does not affect anything, but in the future, they will provide the opportunity to use additional features of the application - so for me, the most important thing is that under no circumstances will the main functionality of adding/editing notes and ideas be blocked, and everything else is just bonuses if a person decides to support the project :)'**
+  String get supporterDaysMainFunctionality;
+
+  /// No description provided for @toGetSupporterDays.
+  ///
+  /// In en, this message translates to:
+  /// **'To get Supporter Days, the user can press the \"watch ad\" button and after watching the advertisement (I will experiment, but for now it\'s 60 seconds), and it will reward as 7 Supporter Days.'**
+  String get toGetSupporterDays;
+
+  /// No description provided for @watchAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad'**
+  String get watchAd;
+
+  /// No description provided for @adPleaseNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Please note: Ad curently works only in Google Chrome and Firefox. Safari is blocking the ad, so currently it is not working.'**
+  String get adPleaseNote;
+
+  /// No description provided for @exportImportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get exportImportData;
+
+  /// No description provided for @fileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved 🎉'**
+  String get fileSaved;
+
+  /// No description provided for @load.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get load;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmProjectsOwerwrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm projects owerwrite'**
+  String get confirmProjectsOwerwrite;
+
+  /// No description provided for @projectsFromFileRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects from file restored 🎉'**
+  String get projectsFromFileRestored;
+
+  /// No description provided for @beCarefulItsInreversableAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Be careful, it is not reversable action'**
+  String get beCarefulItsInreversableAction;
+
+  /// No description provided for @byLoadingFileWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'By loading this file you will overwrite all current projects in the app. \nBe careful, it is not reversable action'**
+  String get byLoadingFileWarning;
+
+  /// No description provided for @rewardForAdThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉🎉🎉 Congratulations - \${days} days of Supporter Days have added:) 🎉🎉🎉 Thank you for your support!'**
+  String rewardForAdThankYou(Object days);
+
+  /// No description provided for @yourProjectWasCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Your project was copied to clipboard 🎉'**
+  String get yourProjectWasCopiedToClipboard;
+
+  /// No description provided for @allProjectsWereCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'All projects were copied to clipboard 🎉'**
+  String get allProjectsWereCopiedToClipboard;
+
+  /// No description provided for @applyTimestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply timestamp'**
+  String get applyTimestamp;
+
+  /// No description provided for @restoreFromFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from file'**
+  String get restoreFromFile;
+
+  /// No description provided for @saveToFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to file'**
+  String get saveToFile;
+
+  /// No description provided for @copyAllProjectsToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy to clipboard'**
+  String get copyAllProjectsToClipboard;
+
+  /// No description provided for @getAllProjectsFromClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from clipboard'**
+  String get getAllProjectsFromClipboard;
+
+  /// No description provided for @searchProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Search projects'**
+  String get searchProjects;
+
+  /// No description provided for @addProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Add projects'**
+  String get addProjects;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @folder.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder'**
+  String get folder;
+
+  /// No description provided for @folderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder name'**
+  String get folderName;
+
+  /// No description provided for @projects.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get projects;
+
+  /// No description provided for @folders.
+  ///
+  /// In en, this message translates to:
+  /// **'Folders'**
+  String get folders;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @limitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit reached'**
+  String get limitReached;
+
+  /// No description provided for @createFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create folder'**
+  String get createFolder;
+
+  /// No description provided for @deleteFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete folder?'**
+  String get deleteFolder;
+
+  /// No description provided for @folderDeletionWillNotDeleteProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'\nDeletion of this Folder doesn\'t delete any Note or Idea.'**
+  String get folderDeletionWillNotDeleteProjects;
+
+  /// No description provided for @useFoldersForNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 🗂️Folders for Notes and Ideas to quickly organize them.'**
+  String get useFoldersForNotes;
+
+  /// No description provided for @youCanCreateUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'\n\nYou can create up to {foldersLimit} Folders.'**
+  String youCanCreateUpTo(Object foldersLimit);
+
+  /// No description provided for @clickToEditFolders.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to edit Folders'**
+  String get clickToEditFolders;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @githubSync.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Sync'**
+  String get githubSync;
+
+  /// No description provided for @connectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect GitHub…'**
+  String get connectGithub;
+
+  /// No description provided for @disconnectGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect GitHub'**
+  String get disconnectGithub;
+
+  /// No description provided for @githubConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub connected'**
+  String get githubConnected;
+
+  /// No description provided for @githubConnectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect GitHub: {error}'**
+  String githubConnectFailed(String error);
+
+  /// No description provided for @chooseRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose repository'**
+  String get chooseRepository;
+
+  /// No description provided for @createNewRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new repository'**
+  String get createNewRepository;
+
+  /// No description provided for @repoNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'repository-name'**
+  String get repoNameHint;
+
+  /// No description provided for @subdirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Subdirectory'**
+  String get subdirectory;
+
+  /// No description provided for @backupToGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up to GitHub'**
+  String get backupToGithub;
+
+  /// No description provided for @restoreFromGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from GitHub'**
+  String get restoreFromGithub;
+
+  /// No description provided for @githubBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backed up to GitHub ✓'**
+  String get githubBackupDone;
+
+  /// No description provided for @githubRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored from GitHub ✓'**
+  String get githubRestoreDone;
+
+  /// No description provided for @pasteTokenInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a token instead'**
+  String get pasteTokenInstead;
+
+  /// No description provided for @tokenGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a fine-grained token'**
+  String get tokenGuideTitle;
+
+  /// No description provided for @tokenStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Open github.com and sign in.'**
+  String get tokenStep1;
+
+  /// No description provided for @tokenStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Click “Generate new token” on the token page (button below).'**
+  String get tokenStep2;
+
+  /// No description provided for @tokenStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Repository access → “Only select repositories” → pick your notes repo.'**
+  String get tokenStep3;
+
+  /// No description provided for @tokenStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Permissions → Contents → “Read and write”. Nothing else.'**
+  String get tokenStep4;
+
+  /// No description provided for @tokenStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Set an expiry date, generate, copy the token here.'**
+  String get tokenStep5;
+
+  /// No description provided for @tokenFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Token (ghu_… / github_pat_…)'**
+  String get tokenFieldLabel;
+
+  /// No description provided for @connectWithToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connectWithToken;
+
+  /// No description provided for @openGithubTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub token page'**
+  String get openGithubTokens;
+
+  /// No description provided for @manageTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage / revoke tokens'**
+  String get manageTokens;
+
+  /// No description provided for @storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storage;
+
+  /// No description provided for @storageSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your notes always live in the local database on this device. Turn on any other places below to keep extra synced copies — each one adds a backup; they can be combined. Mark one as primary (★): restores use it by default.'**
+  String get storageSectionHint;
+
+  /// No description provided for @storageLocalDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Local database'**
+  String get storageLocalDb;
+
+  /// No description provided for @storageLocalDbHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on. Fast and private — data never leaves this device.'**
+  String get storageLocalDbHint;
+
+  /// No description provided for @storageFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder on this device'**
+  String get storageFilesystem;
+
+  /// No description provided for @storageFilesystemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a folder you choose — easy to open with any file manager or include in your own backups.'**
+  String get storageFilesystemHint;
+
+  /// No description provided for @storageGitOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Git folder (offline)'**
+  String get storageGitOffline;
+
+  /// No description provided for @storageGitOfflineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps a copy in a local Git repository — every backup is versioned, so you can see history and roll back. No account needed.'**
+  String get storageGitOfflineHint;
+
+  /// No description provided for @storageGithubOption.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub'**
+  String get storageGithubOption;
+
+  /// No description provided for @storageGithubOptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Private cloud copy in your own GitHub repository — protects against device loss. Set it up in the “GitHub Sync” section below.'**
+  String get storageGithubOptionHint;
+
+  /// No description provided for @storagePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary storage — restores use it by default'**
+  String get storagePrimary;
+
+  /// No description provided for @storageSetAsPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as primary'**
+  String get storageSetAsPrimary;
+
+  /// No description provided for @storageFolderPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder path'**
+  String get storageFolderPathLabel;
+
+  /// No description provided for @storageGitPathLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repository folder path'**
+  String get storageGitPathLabel;
+
+  /// No description provided for @storagePathHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The folder is created automatically if it doesn\'t exist yet.'**
+  String get storagePathHint;
+
+  /// No description provided for @storageBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get storageBackupNow;
+
+  /// No description provided for @storageRestoreNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from copy'**
+  String get storageRestoreNow;
+
+  /// No description provided for @storageBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved ✓'**
+  String get storageBackupDone;
+
+  /// No description provided for @storageRestoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored ✓'**
+  String get storageRestoreDone;
+
+  /// No description provided for @storageNoBackupFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup found in this location yet.'**
+  String get storageNoBackupFound;
+
+  /// No description provided for @storageOperationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage operation failed'**
+  String get storageOperationFailed;
+
+  /// No description provided for @storageOpenGithubSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Open GitHub settings'**
+  String get storageOpenGithubSetup;
+
+  /// No description provided for @storageNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available on this platform'**
+  String get storageNotAvailable;
+
+  /// No description provided for @storageMeshTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync between devices'**
+  String get storageMeshTitle;
+
+  /// No description provided for @storageMeshHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your devices directly over Wi‑Fi — no account, no cloud. Show one code, scan it, done.'**
+  String get storageMeshHint;
+
+  /// No description provided for @storageMeshBecomeMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this device as main'**
+  String get storageMeshBecomeMain;
+
+  /// No description provided for @storageMeshJoinWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'I have a pairing code'**
+  String get storageMeshJoinWithCode;
+
+  /// No description provided for @storageMeshWaitingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this screen open. On your second device tap “{joinWithCode}” and scan this code or paste it.'**
+  String storageMeshWaitingHint(String joinWithCode);
+
+  /// No description provided for @storageMeshCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get storageMeshCopyCode;
+
+  /// No description provided for @storageMeshCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing code copied'**
+  String get storageMeshCodeCopied;
+
+  /// No description provided for @storageMeshPasteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste pairing code'**
+  String get storageMeshPasteTitle;
+
+  /// No description provided for @storageMeshScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code'**
+  String get storageMeshScanQr;
+
+  /// No description provided for @storageMeshConnectButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get storageMeshConnectButton;
+
+  /// No description provided for @storageMeshMainBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Main device'**
+  String get storageMeshMainBadge;
+
+  /// No description provided for @storageMeshJoinedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to your main device. Notes sync automatically while both are on the same network.'**
+  String get storageMeshJoinedStatus;
+
+  /// No description provided for @storageMeshConnectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected devices: {count}'**
+  String storageMeshConnectedCount(int count);
+
+  /// No description provided for @storageMeshSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get storageMeshSyncNow;
+
+  /// No description provided for @storageMeshSyncDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices synced ✓'**
+  String get storageMeshSyncDone;
+
+  /// No description provided for @storageMeshPairingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect: {error}'**
+  String storageMeshPairingFailed(String error);
+
+  /// No description provided for @storageMeshAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced settings (debug)'**
+  String get storageMeshAdvanced;
+
+  /// No description provided for @liveSharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my activity live'**
+  String get liveSharingTitle;
+
+  /// No description provided for @liveSharingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paired devices see what you\'re working on (doc + activity, never content). Agents are always visible to you. Nothing leaves this device until you turn this on.'**
+  String get liveSharingSubtitle;
+
+  /// No description provided for @storageMeshUnpair.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpair devices'**
+  String get storageMeshUnpair;
+
+  /// No description provided for @tokenSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety: the token is stored only on this device in OS secure storage and is sent only to api.github.com. Give it access only to the repositories you need, set a short expiry, and revoke it any time from your GitHub settings. You are responsible for the tokens you create — we cannot recover or reset them.'**
+  String get tokenSafety;
+
+  /// No description provided for @allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
+
+  /// No description provided for @deny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get deny;
+
+  /// No description provided for @reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @discuss.
+  ///
+  /// In en, this message translates to:
+  /// **'Discuss'**
+  String get discuss;
+
+  /// No description provided for @desktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'desktop only'**
+  String get desktopOnly;
+
+  /// No description provided for @agentSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Agents'**
+  String get agentSettingsTitle;
+
+  /// No description provided for @agentConfigUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'Config unreadable, defaults in use: {error}'**
+  String agentConfigUnreadable(String error);
+
+  /// No description provided for @agentServersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent servers'**
+  String get agentServersSection;
+
+  /// No description provided for @agentServerAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add server'**
+  String get agentServerAdd;
+
+  /// No description provided for @agentServersEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No custom servers. Known agents (Gemini CLI, Codex CLI, Pi, Claude Code ACP) are discovered automatically on desktop.'**
+  String get agentServersEmptyHint;
+
+  /// No description provided for @agentServerNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name'**
+  String get agentServerNameHint;
+
+  /// No description provided for @agentServerCommandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'command'**
+  String get agentServerCommandHint;
+
+  /// No description provided for @agentServerRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove server'**
+  String get agentServerRemove;
+
+  /// No description provided for @agentServerArgsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'arguments (comma-separated)'**
+  String get agentServerArgsHint;
+
+  /// No description provided for @agentServerEnvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'env — NAME=value per line, \$VAR expands from process environment'**
+  String get agentServerEnvHint;
+
+  /// No description provided for @agentProvidersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get agentProvidersSection;
+
+  /// No description provided for @agentProviderKeyStored.
+  ///
+  /// In en, this message translates to:
+  /// **'key stored on this device'**
+  String get agentProviderKeyStored;
+
+  /// No description provided for @agentProviderKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'API key (stored in secure storage)'**
+  String get agentProviderKeyHint;
+
+  /// No description provided for @agentProviderKeyRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove stored key'**
+  String get agentProviderKeyRemove;
+
+  /// No description provided for @agentProviderEnvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'key env var'**
+  String get agentProviderEnvHint;
+
+  /// No description provided for @agentProviderBaseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'base URL'**
+  String get agentProviderBaseUrlHint;
+
+  /// No description provided for @agentProviderModelsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'models (one per line)'**
+  String get agentProviderModelsHint;
+
+  /// No description provided for @agentProviderDefaultModelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default model'**
+  String get agentProviderDefaultModelHint;
+
+  /// No description provided for @agentChatDefaultsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat defaults'**
+  String get agentChatDefaultsSection;
+
+  /// No description provided for @agentChatProviderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default provider'**
+  String get agentChatProviderHint;
+
+  /// No description provided for @agentChatProviderEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers configured — add one under Providers'**
+  String get agentChatProviderEmptyHint;
+
+  /// No description provided for @agentChatModelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default model'**
+  String get agentChatModelHint;
+
+  /// No description provided for @agentChatModelEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a provider to choose a default model'**
+  String get agentChatModelEmptyHint;
+
+  /// No description provided for @agentChatSystemPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'default system prompt'**
+  String get agentChatSystemPromptHint;
+
+  /// No description provided for @agentChatNoTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'pick an agent or model above'**
+  String get agentChatNoTransport;
+
+  /// No description provided for @agentChatAcpDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'ACP agents need a desktop device'**
+  String get agentChatAcpDesktopOnly;
+
+  /// No description provided for @agentChatNoAgentDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'no ACP agent detected'**
+  String get agentChatNoAgentDetected;
+
+  /// No description provided for @agentChatMissingKey.
+  ///
+  /// In en, this message translates to:
+  /// **'No API key for this provider — add one in Agents & Models settings.'**
+  String get agentChatMissingKey;
+
+  /// No description provided for @agentChatConsentDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud use declined for this document.'**
+  String get agentChatConsentDeclined;
+
+  /// No description provided for @agentChatConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send this conversation to the cloud?'**
+  String get agentChatConsentTitle;
+
+  /// No description provided for @agentChatConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The conversation text will be sent to {provider} using {model}. Remembered for this document only.'**
+  String agentChatConsentBody(String provider, String model);
+
+  /// No description provided for @agentChatSystemPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System prompt for this document'**
+  String get agentChatSystemPromptTitle;
+
+  /// No description provided for @agentChatCloudLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'cloud · {label}'**
+  String agentChatCloudLabel(String label);
+
+  /// No description provided for @agentChatStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'ready'**
+  String get agentChatStatusReady;
+
+  /// No description provided for @agentChatStatusStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'starting'**
+  String get agentChatStatusStarting;
+
+  /// No description provided for @agentChatStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'error'**
+  String get agentChatStatusError;
+
+  /// No description provided for @agentChatStatusStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'stopped'**
+  String get agentChatStatusStopped;
+
+  /// No description provided for @agentChatStatusIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'idle'**
+  String get agentChatStatusIdle;
+
+  /// No description provided for @agentChatPickTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select agent or model'**
+  String get agentChatPickTransport;
+
+  /// No description provided for @agentChatUseLocalExecutable.
+  ///
+  /// In en, this message translates to:
+  /// **'Use local executable'**
+  String get agentChatUseLocalExecutable;
+
+  /// No description provided for @agentChatInstallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Install an ACP agent'**
+  String get agentChatInstallTitle;
+
+  /// No description provided for @agentChatRecheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Recheck'**
+  String get agentChatRecheck;
+
+  /// No description provided for @agentChatExecutableNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Executable not found'**
+  String get agentChatExecutableNotFound;
+
+  /// No description provided for @agentChatAuthRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication required — the agent owns its own sign-in. Follow the hint below, then send again.'**
+  String get agentChatAuthRequired;
+
+  /// No description provided for @worldBindingSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to a world'**
+  String get worldBindingSheetTitle;
+
+  /// No description provided for @worldBindingEmbedded.
+  ///
+  /// In en, this message translates to:
+  /// **'This app (embedded world)'**
+  String get worldBindingEmbedded;
+
+  /// No description provided for @worldBindingEmbeddedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The agent harness running inside Last Answer'**
+  String get worldBindingEmbeddedSubtitle;
+
+  /// No description provided for @worldBindingNoWorlds.
+  ///
+  /// In en, this message translates to:
+  /// **'No worlds discovered — pair a device or add an endpoint.'**
+  String get worldBindingNoWorlds;
+
+  /// No description provided for @worldBindingManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Add endpoint…'**
+  String get worldBindingManual;
+
+  /// No description provided for @worldBindingManualHint.
+  ///
+  /// In en, this message translates to:
+  /// **'http://host:port'**
+  String get worldBindingManualHint;
+
+  /// No description provided for @worldBindingEndpointLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Endpoint'**
+  String get worldBindingEndpointLabel;
+
+  /// No description provided for @worldBindingInvalidEndpoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid http(s) endpoint'**
+  String get worldBindingInvalidEndpoint;
+
+  /// No description provided for @worldBindingSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'seat'**
+  String get worldBindingSeat;
+
+  /// No description provided for @worldBindingReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'read-only'**
+  String get worldBindingReadOnly;
+
+  /// No description provided for @agentChatWorkspaceTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent working folder'**
+  String get agentChatWorkspaceTooltip;
+
+  /// No description provided for @agentChatPickWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the agent\'s working folder'**
+  String get agentChatPickWorkspace;
+
+  /// No description provided for @agentChatContextReset.
+  ///
+  /// In en, this message translates to:
+  /// **'The agent process restarted — earlier messages are history only.'**
+  String get agentChatContextReset;
+
+  /// No description provided for @supervisorSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automations'**
+  String get supervisorSectionTitle;
+
+  /// No description provided for @supervisorSectionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No automations declared on this device yet.'**
+  String get supervisorSectionEmpty;
+
+  /// No description provided for @supervisorSectionUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Automations are not available on this platform.'**
+  String get supervisorSectionUnsupported;
+
+  /// No description provided for @supervisorSectionRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh automation state'**
+  String get supervisorSectionRefresh;
+
+  /// No description provided for @supervisorSectionDrifted.
+  ///
+  /// In en, this message translates to:
+  /// **'changed — converge pending'**
+  String get supervisorSectionDrifted;
+
+  /// No description provided for @supervisorSectionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New automation'**
+  String get supervisorSectionAdd;
+
+  /// No description provided for @supervisorSectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit automation'**
+  String get supervisorSectionEdit;
+
+  /// No description provided for @supervisorSectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get supervisorSectionName;
+
+  /// No description provided for @supervisorSectionKindService.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on'**
+  String get supervisorSectionKindService;
+
+  /// No description provided for @supervisorSectionKindJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get supervisorSectionKindJob;
+
+  /// No description provided for @supervisorSectionOnDemand.
+  ///
+  /// In en, this message translates to:
+  /// **'On demand'**
+  String get supervisorSectionOnDemand;
+
+  /// No description provided for @supervisorSectionRepeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeating'**
+  String get supervisorSectionRepeating;
+
+  /// No description provided for @supervisorSectionEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Every'**
+  String get supervisorSectionEvery;
+
+  /// No description provided for @supervisorSectionUnitMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get supervisorSectionUnitMinutes;
+
+  /// No description provided for @supervisorSectionUnitHours.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get supervisorSectionUnitHours;
+
+  /// No description provided for @supervisorSectionUnitDays.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get supervisorSectionUnitDays;
+
+  /// No description provided for @supervisorSectionCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Command'**
+  String get supervisorSectionCommand;
+
+  /// No description provided for @supervisorSectionArgs.
+  ///
+  /// In en, this message translates to:
+  /// **'Arguments'**
+  String get supervisorSectionArgs;
+
+  /// No description provided for @supervisorSectionCommandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Desktop only, e.g. /usr/bin/backup'**
+  String get supervisorSectionCommandHint;
+
+  /// No description provided for @supervisorSectionSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get supervisorSectionSchedule;
+
+  /// No description provided for @supervisorSectionNextRun.
+  ///
+  /// In en, this message translates to:
+  /// **'next run: {time}'**
+  String supervisorSectionNextRun(String time);
+
+  /// No description provided for @supervisorSectionDeleteWarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove \"{name}\" from this device\'s plans?'**
+  String supervisorSectionDeleteWarn(String name);
+
+  /// No description provided for @supervisorSectionAuthorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved as a plan on this device. It runs when the supervisor converges.'**
+  String get supervisorSectionAuthorHint;
+
+  /// No description provided for @storageMeshNotSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sharing right now'**
+  String get storageMeshNotSharing;
+
+  /// No description provided for @storageMeshStartSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Start sharing'**
+  String get storageMeshStartSharing;
+
+  /// No description provided for @supervisorGroupServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get supervisorGroupServices;
+
+  /// No description provided for @supervisorGroupSchedules.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules'**
+  String get supervisorGroupSchedules;
+
+  /// No description provided for @supervisorGroupAgents.
+  ///
+  /// In en, this message translates to:
+  /// **'Agents'**
+  String get supervisorGroupAgents;
+
+  /// No description provided for @supervisorSectionKindCommand.
+  ///
+  /// In en, this message translates to:
+  /// **'Command'**
+  String get supervisorSectionKindCommand;
+
+  /// No description provided for @supervisorSectionKindAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent task'**
+  String get supervisorSectionKindAgent;
+
+  /// No description provided for @supervisorSectionInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions'**
+  String get supervisorSectionInstructions;
+
+  /// No description provided for @supervisorSectionInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What the agent should do'**
+  String get supervisorSectionInstructionsHint;
+
+  /// No description provided for @supervisorSectionAnchorAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at'**
+  String get supervisorSectionAnchorAt;
+
+  /// No description provided for @supervisorSectionTimeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'HH:mm, e.g. 03:00'**
+  String get supervisorSectionTimeHint;
+
+  /// No description provided for @supervisorScheduleDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get supervisorScheduleDaily;
+
+  /// No description provided for @supervisorScheduleDailyAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily at {time}'**
+  String supervisorScheduleDailyAt(String time);
+
+  /// No description provided for @supervisorScheduleWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get supervisorScheduleWeekly;
+
+  /// No description provided for @supervisorScheduleEveryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} days'**
+  String supervisorScheduleEveryDays(int n);
+
+  /// No description provided for @supervisorScheduleEveryHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} hours'**
+  String supervisorScheduleEveryHours(int n);
+
+  /// No description provided for @supervisorScheduleEveryMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {n} minutes'**
+  String supervisorScheduleEveryMinutes(int n);
+
+  /// No description provided for @supervisorScheduleAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at {time}'**
+  String supervisorScheduleAt(String time);
+
+  /// No description provided for @supervisorSectionStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{state} · restarts {count} · last run {last}'**
+  String supervisorSectionStats(String state, int count, String last);
+
+  /// No description provided for @supervisorSectionStateActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get supervisorSectionStateActive;
+
+  /// No description provided for @supervisorSectionStateIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not running yet'**
+  String get supervisorSectionStateIdle;
+
+  /// No description provided for @storageMeshPermissionBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS blocked access to your notes folder. Allow Last Answer under System Settings → Privacy & Security → Files and Folders, then try again.'**
+  String get storageMeshPermissionBlocked;
+
+  /// No description provided for @storageMeshRetrySharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get storageMeshRetrySharing;
+
+  /// No description provided for @agentCodeChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Code change'**
+  String get agentCodeChange;
+
+  /// No description provided for @chatGptSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT plan'**
+  String get chatGptSubscriptionTitle;
+
+  /// No description provided for @chatGptContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with ChatGPT'**
+  String get chatGptContinue;
+
+  /// No description provided for @chatGptSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get chatGptSignOut;
+
+  /// No description provided for @chatGptUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage and app access'**
+  String get chatGptUsage;
+
+  /// No description provided for @chatGptChooseAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an account'**
+  String get chatGptChooseAccount;
+
+  /// No description provided for @chatGptAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get chatGptAccount;
+
+  /// No description provided for @chatGptChooseModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a model'**
+  String get chatGptChooseModel;
+
+  /// No description provided for @chatGptRefreshModels.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh models'**
+  String get chatGptRefreshModels;
+
+  /// No description provided for @chatGptVerifyAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check model access'**
+  String get chatGptVerifyAccess;
+
+  /// No description provided for @chatGptAccessUnchecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Account connected. Model access has not been checked.'**
+  String get chatGptAccessUnchecked;
+
+  /// No description provided for @chatGptAccessVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Model access verified.'**
+  String get chatGptAccessVerified;
+
+  /// No description provided for @chatGptPlanPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow this app to use your ChatGPT plan in ChatGPT settings.'**
+  String get chatGptPlanPermissionRequired;
+
+  /// No description provided for @chatGptWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working…'**
+  String get chatGptWorking;
+
+  /// No description provided for @chatGptRevocationUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote sign-out could not be confirmed. Disconnect the app in ChatGPT settings.'**
+  String get chatGptRevocationUnconfirmed;
+
+  /// No description provided for @chatGptConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'The ChatGPT connection could not be completed. Try again or check app access in ChatGPT settings.'**
+  String get chatGptConnectionError;
+
+  /// No description provided for @chatGptDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT sign-in is available in the desktop app.'**
+  String get chatGptDesktopOnly;
+
+  /// No description provided for @chatGptSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect a ChatGPT account and enable plan access before sending.'**
+  String get chatGptSignInRequired;
+
+  /// No description provided for @chatGptModelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a ChatGPT model before sending.'**
+  String get chatGptModelRequired;
+
+  /// No description provided for @chatGptDocumentConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
+  String get chatGptDocumentConsentRequired;
+
+  /// No description provided for @grokSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok subscription'**
+  String get grokSubscriptionTitle;
+
+  /// No description provided for @grokContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Grok'**
+  String get grokContinue;
+
+  /// No description provided for @grokDeviceSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a device code'**
+  String get grokDeviceSignIn;
+
+  /// No description provided for @grokSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get grokSignOut;
+
+  /// No description provided for @grokChooseAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok account'**
+  String get grokChooseAccount;
+
+  /// No description provided for @grokAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok account'**
+  String get grokAccount;
+
+  /// No description provided for @grokChooseModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok model'**
+  String get grokChooseModel;
+
+  /// No description provided for @grokRefreshModels.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh models'**
+  String get grokRefreshModels;
+
+  /// No description provided for @grokVerifyAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify access'**
+  String get grokVerifyAccess;
+
+  /// No description provided for @grokAccessUnchecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Access not checked'**
+  String get grokAccessUnchecked;
+
+  /// No description provided for @grokAccessVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Access verified on this device'**
+  String get grokAccessVerified;
+
+  /// No description provided for @grokPlanPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This account\'s token does not include plan access.'**
+  String get grokPlanPermissionRequired;
+
+  /// No description provided for @grokWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get grokWorking;
+
+  /// No description provided for @grokRevocationUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote sign-out was not confirmed. Local tokens were removed.'**
+  String get grokRevocationUnconfirmed;
+
+  /// No description provided for @grokConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'The Grok account could not be reached.'**
+  String get grokConnectionError;
+
+  /// No description provided for @grokDesktopOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok sign-in is available in the desktop app.'**
+  String get grokDesktopOnly;
+
+  /// No description provided for @grokSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect a Grok account and enable plan access before sending.'**
+  String get grokSignInRequired;
+
+  /// No description provided for @grokModelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Grok model before sending.'**
+  String get grokModelRequired;
+
+  /// No description provided for @grokDocumentConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm cloud use for this document, account, model and workspace before sending.'**
+  String get grokDocumentConsentRequired;
+
+  /// No description provided for @grokClientNotRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Answer does not have an xAI client id yet. Sign-in stays closed.'**
+  String get grokClientNotRegistered;
+
+  /// No description provided for @grokRegistrationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Send xAI the referrer and redirect above so it can register this app.'**
+  String get grokRegistrationHint;
+
+  /// No description provided for @worldConversationChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a conversation'**
+  String get worldConversationChoose;
+
+  /// No description provided for @worldConversationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk in this world conversation'**
+  String get worldConversationHint;
+
+  /// No description provided for @worldConversationSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to world'**
+  String get worldConversationSend;
+
+  /// No description provided for @worldConversationReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get worldConversationReconnect;
+
+  /// No description provided for @worldConversationPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages are visible to participants in this world.'**
+  String get worldConversationPublic;
+
+  /// No description provided for @worldTaskPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Task permission'**
+  String get worldTaskPermission;
+
+  /// No description provided for @worldTaskPermissionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose one task, actor and exact files. The world checks and records this permission; changes still require verification and support Undo.'**
+  String get worldTaskPermissionHint;
+
+  /// No description provided for @worldTaskTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get worldTaskTarget;
+
+  /// No description provided for @worldTaskActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor ID'**
+  String get worldTaskActor;
+
+  /// No description provided for @worldTaskPaths.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact relative file paths, one per line'**
+  String get worldTaskPaths;
+
+  /// No description provided for @worldTaskMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid for (minutes)'**
+  String get worldTaskMinutes;
+
+  /// No description provided for @worldTaskRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get worldTaskRequired;
+
+  /// No description provided for @worldTaskRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get worldTaskRevoke;
+
+  /// No description provided for @worldTaskAuthorize.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorize task'**
+  String get worldTaskAuthorize;
+
+  /// No description provided for @supervisorExecutionRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Run declared automations'**
+  String get supervisorExecutionRun;
+
+  /// No description provided for @supervisorExecutionEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable schedules'**
+  String get supervisorExecutionEnable;
+
+  /// No description provided for @supervisorExecutionPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause schedules'**
+  String get supervisorExecutionPause;
+
+  /// No description provided for @supervisorExecutionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel running pass'**
+  String get supervisorExecutionCancel;
+
+  /// No description provided for @supervisorExecutionAppOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution runs only while Last Answer is open.'**
+  String get supervisorExecutionAppOpen;
+
+  /// No description provided for @supervisorExecutionStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop owned work'**
+  String get supervisorExecutionStop;
+
+  /// No description provided for @worldChatUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The world chat needs a local filesystem (desktop).'**
+  String get worldChatUnsupported;
+
+  /// No description provided for @worldChatNewConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'New conversation'**
+  String get worldChatNewConversation;
+
+  /// No description provided for @worldChatTopicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get worldChatTopicLabel;
+
+  /// No description provided for @worldChatTopicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What is this conversation about?'**
+  String get worldChatTopicHint;
+
+  /// No description provided for @worldChatNoActorsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors yet — create one in Settings → Agents & Models.'**
+  String get worldChatNoActorsYet;
+
+  /// No description provided for @worldChatOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get worldChatOpen;
+
+  /// No description provided for @worldChatCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get worldChatCancel;
+
+  /// No description provided for @worldChatConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversations'**
+  String get worldChatConversations;
+
+  /// No description provided for @worldChatNoConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet.'**
+  String get worldChatNoConversations;
+
+  /// No description provided for @worldChatCloseTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Close conversation'**
+  String get worldChatCloseTooltip;
+
+  /// No description provided for @worldChatUnreadDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} new} other{{count} new}}'**
+  String worldChatUnreadDivider(int count);
+
+  /// No description provided for @worldChatBeatReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get worldChatBeatReply;
+
+  /// No description provided for @worldChatBeatDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat details'**
+  String get worldChatBeatDetails;
+
+  /// No description provided for @worldChatReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String worldChatReplyingTo(String name);
+
+  /// No description provided for @worldChatCancelReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reply'**
+  String get worldChatCancelReply;
+
+  /// No description provided for @worldChatPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a conversation, or start a new one.'**
+  String get worldChatPickHint;
+
+  /// No description provided for @worldChatFirstWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Say the first word — actors in this conversation will hear it.'**
+  String get worldChatFirstWord;
+
+  /// No description provided for @worldChatLoadOlder.
+  ///
+  /// In en, this message translates to:
+  /// **'Load older messages'**
+  String get worldChatLoadOlder;
+
+  /// No description provided for @worldChatJumpToLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to latest'**
+  String get worldChatJumpToLatest;
+
+  /// No description provided for @worldChatComposerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write to the conversation…'**
+  String get worldChatComposerHint;
+
+  /// No description provided for @worldChatSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get worldChatSend;
+
+  /// No description provided for @worldChatParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} participant} other{{count} participants}}'**
+  String worldChatParticipants(int count);
+
+  /// No description provided for @worldChatBeats.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} beats'**
+  String worldChatBeats(int count);
+
+  /// No description provided for @worldChatMenuMessageActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Message an actor…'**
+  String get worldChatMenuMessageActor;
+
+  /// No description provided for @worldChatMenuNewChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'New channel…'**
+  String get worldChatMenuNewChannel;
+
+  /// No description provided for @worldChatMenuNewWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'New workspace…'**
+  String get worldChatMenuNewWorkspace;
+
+  /// No description provided for @worldChatPickActorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message an actor'**
+  String get worldChatPickActorTitle;
+
+  /// No description provided for @worldChatSearchActors.
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors…'**
+  String get worldChatSearchActors;
+
+  /// No description provided for @worldChatNoMatchingActors.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching actors.'**
+  String get worldChatNoMatchingActors;
+
+  /// No description provided for @worldChatNewChannelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New channel'**
+  String get worldChatNewChannelTitle;
+
+  /// No description provided for @worldChatChannelNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel name'**
+  String get worldChatChannelNameLabel;
+
+  /// No description provided for @worldChatChannelNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. design-crit'**
+  String get worldChatChannelNameHint;
+
+  /// No description provided for @worldChatChannelCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get worldChatChannelCreate;
+
+  /// No description provided for @worldChatChannelNameTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'A channel with this name already exists.'**
+  String get worldChatChannelNameTaken;
+
+  /// No description provided for @worldChatNewWorkspaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New workspace'**
+  String get worldChatNewWorkspaceTitle;
+
+  /// No description provided for @worldChatWorkspaceNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get worldChatWorkspaceNameLabel;
+
+  /// No description provided for @worldChatWorkspaceNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Orbit launch'**
+  String get worldChatWorkspaceNameHint;
+
+  /// No description provided for @worldChatWorkspaceAddFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add folder…'**
+  String get worldChatWorkspaceAddFolder;
+
+  /// No description provided for @worldChatWorkspaceCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get worldChatWorkspaceCreate;
+
+  /// No description provided for @worldChatMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Message {name}…'**
+  String worldChatMessageHint(String name);
+
+  /// No description provided for @worldChatMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} member} other{{count} members}}'**
+  String worldChatMembers(int count);
+
+  /// No description provided for @actorsNoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors yet — create the first one below.'**
+  String get actorsNoneYet;
+
+  /// No description provided for @actorsCreateActor.
+  ///
+  /// In en, this message translates to:
+  /// **'Create actor'**
+  String get actorsCreateActor;
+
+  /// No description provided for @actorsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor name'**
+  String get actorsNameLabel;
+
+  /// No description provided for @actorsNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Toby Researcher'**
+  String get actorsNameHint;
+
+  /// No description provided for @actorsBrainLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain'**
+  String get actorsBrainLabel;
+
+  /// No description provided for @actorsBrainSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain set'**
+  String get actorsBrainSet;
+
+  /// No description provided for @actorsBrainSetOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Own set'**
+  String get actorsBrainSetOwn;
+
+  /// No description provided for @actorsBrainSetAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic — follows the world policy'**
+  String get actorsBrainSetAuto;
+
+  /// No description provided for @actorsBrainSetAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get actorsBrainSetAdd;
+
+  /// No description provided for @actorsSelfBind.
+  ///
+  /// In en, this message translates to:
+  /// **'May switch its own brain'**
+  String get actorsSelfBind;
+
+  /// No description provided for @actorsSelfBindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Within its set, on its own'**
+  String get actorsSelfBindHint;
+
+  /// No description provided for @actorsRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Role (optional)'**
+  String get actorsRoleLabel;
+
+  /// No description provided for @actorsRoleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. research assistant'**
+  String get actorsRoleHint;
+
+  /// No description provided for @firstRunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet your first actor'**
+  String get firstRunTitle;
+
+  /// No description provided for @firstRunSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything here starts from a conversation. Give your first actor a name, an optional persona and a brain — it will greet you in a direct message, and you can change everything later.'**
+  String get firstRunSubtitle;
+
+  /// No description provided for @firstRunNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get firstRunNameLabel;
+
+  /// No description provided for @firstRunNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Toby'**
+  String get firstRunNameHint;
+
+  /// No description provided for @firstRunPersonaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Persona (optional)'**
+  String get firstRunPersonaLabel;
+
+  /// No description provided for @firstRunPersonaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How should this actor think and speak?'**
+  String get firstRunPersonaHint;
+
+  /// No description provided for @firstRunBrainLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain'**
+  String get firstRunBrainLabel;
+
+  /// No description provided for @firstRunNoBrains.
+  ///
+  /// In en, this message translates to:
+  /// **'No brains are available on this device yet. You can skip for now and create an actor later from Settings.'**
+  String get firstRunNoBrains;
+
+  /// No description provided for @firstRunCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and start chatting'**
+  String get firstRunCreate;
+
+  /// No description provided for @firstRunCreating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating your actor…'**
+  String get firstRunCreating;
+
+  /// No description provided for @firstRunSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get firstRunSkip;
+
+  /// No description provided for @firstRunCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the actor: {error}'**
+  String firstRunCreateFailed(String error);
+
+  /// No description provided for @firstRunGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello — I\'m {name}, your first actor. I live in this workspace\'s world: write to me here and I\'ll answer. You can change my name, persona or brain any time in Settings.'**
+  String firstRunGreeting(String name);
+
+  /// No description provided for @settingsWorldInspector.
+  ///
+  /// In en, this message translates to:
+  /// **'World inspector'**
+  String get settingsWorldInspector;
+
+  /// No description provided for @newTabPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New tab'**
+  String get newTabPageTitle;
+
+  /// No description provided for @newTabHintConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'The world face — channels and direct threads.'**
+  String get newTabHintConversations;
+
+  /// No description provided for @newTabHintBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the workspace\'s files and the web.'**
+  String get newTabHintBrowser;
+
+  /// No description provided for @newTabHintInspector.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch worlds and actor work.'**
+  String get newTabHintInspector;
+
+  /// No description provided for @newTabHintFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the workspace\'s folder tree and files.'**
+  String get newTabHintFilesystem;
+
+  /// No description provided for @newTabHintPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'The realm\'s actors: presence, profiles, inline editing.'**
+  String get newTabHintPeople;
+
+  /// No description provided for @viewFilesystemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get viewFilesystemTitle;
+
+  /// No description provided for @viewPinTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin view'**
+  String get viewPinTooltip;
+
+  /// No description provided for @viewUnpinTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin view'**
+  String get viewUnpinTooltip;
+
+  /// No description provided for @viewDockRestoreTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pinned views'**
+  String get viewDockRestoreTooltip;
+
+  /// No description provided for @railActors.
+  ///
+  /// In en, this message translates to:
+  /// **'Actors'**
+  String get railActors;
+
+  /// No description provided for @railAutomations.
+  ///
+  /// In en, this message translates to:
+  /// **'Automations'**
+  String get railAutomations;
+
+  /// No description provided for @railChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get railChannels;
+
+  /// No description provided for @railRowMiniwindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in miniwindow'**
+  String get railRowMiniwindow;
+
+  /// No description provided for @railDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'DIRECT'**
+  String get railDirect;
+
+  /// No description provided for @railProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'PROJECTS'**
+  String get railProjects;
+
+  /// No description provided for @railWorkspaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspaces'**
+  String get railWorkspaces;
+
+  /// No description provided for @railWorkspaceEmptyTree.
+  ///
+  /// In en, this message translates to:
+  /// **'The file tree lands here.'**
+  String get railWorkspaceEmptyTree;
+
+  /// No description provided for @railSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors, channels, workspaces…'**
+  String get railSearchHint;
+
+  /// No description provided for @railAddTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get railAddTooltip;
+
+  /// No description provided for @railNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches.'**
+  String get railNoMatches;
+
+  /// No description provided for @roomsSectionDms.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messages'**
+  String get roomsSectionDms;
+
+  /// No description provided for @roomsSectionRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get roomsSectionRooms;
+
+  /// No description provided for @roomsRenameChannelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename channel'**
+  String get roomsRenameChannelTitle;
+
+  /// No description provided for @roomsRenameAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get roomsRenameAction;
+
+  /// No description provided for @roomsCloseChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close channel'**
+  String get roomsCloseChannel;
+
+  /// No description provided for @worldChatSelectFromRail.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a conversation from the rail.'**
+  String get worldChatSelectFromRail;
+
+  /// No description provided for @contextTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'TOPIC'**
+  String get contextTopic;
+
+  /// No description provided for @contextParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'PARTICIPANTS'**
+  String get contextParticipants;
+
+  /// No description provided for @contextMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get contextMembers;
+
+  /// No description provided for @contextShowTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show context'**
+  String get contextShowTooltip;
+
+  /// No description provided for @contextHideTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide context'**
+  String get contextHideTooltip;
+
+  /// No description provided for @contextTabPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get contextTabPeople;
+
+  /// No description provided for @contextTabTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal'**
+  String get contextTabTerminal;
+
+  /// No description provided for @contextTabThreads.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get contextTabThreads;
+
+  /// No description provided for @contextFilesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspace files land here.'**
+  String get contextFilesEmpty;
+
+  /// No description provided for @contextTerminalEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'A terminal lands here.'**
+  String get contextTerminalEmpty;
+
+  /// No description provided for @contextThreadsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The harness threads land here.'**
+  String get contextThreadsEmpty;
+
+  /// No description provided for @contextBackToConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the conversation'**
+  String get contextBackToConversation;
+
+  /// No description provided for @contextBrain.
+  ///
+  /// In en, this message translates to:
+  /// **'BRAIN'**
+  String get contextBrain;
+
+  /// No description provided for @contextSampling.
+  ///
+  /// In en, this message translates to:
+  /// **'SAMPLING'**
+  String get contextSampling;
+
+  /// No description provided for @contextPersona.
+  ///
+  /// In en, this message translates to:
+  /// **'PERSONA'**
+  String get contextPersona;
+
+  /// No description provided for @contextNoBrain.
+  ///
+  /// In en, this message translates to:
+  /// **'No brain bound.'**
+  String get contextNoBrain;
+
+  /// No description provided for @contextPersonaEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No persona — synthesized from the name and role.'**
+  String get contextPersonaEmpty;
+
+  /// No description provided for @actorsEditTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit actor'**
+  String get actorsEditTooltip;
+
+  /// No description provided for @actorsSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get actorsSaveChanges;
+
+  /// No description provided for @actorsDiscardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get actorsDiscardChanges;
+
+  /// No description provided for @actorsPersonaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Persona prompt'**
+  String get actorsPersonaLabel;
+
+  /// No description provided for @actorsPersonaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent verbatim as the system prompt when this actor speaks; empty = synthesized from name and role.'**
+  String get actorsPersonaHint;
+
+  /// No description provided for @actorsTemperatureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get actorsTemperatureLabel;
+
+  /// No description provided for @actorsRepetitionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repetition penalty'**
+  String get actorsRepetitionLabel;
+
+  /// No description provided for @actorsSamplingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sampling overrides for local brains; empty = the chat defaults.'**
+  String get actorsSamplingHint;
+
+  /// No description provided for @workspacesFilesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No workspaces yet — add one from the rail.'**
+  String get workspacesFilesEmpty;
+
+  /// No description provided for @workspacesFilesNoFolders.
+  ///
+  /// In en, this message translates to:
+  /// **'No folders yet — add folders to this workspace.'**
+  String get workspacesFilesNoFolders;
+
+  /// The boards view's tab title (plans and delegation on one substrate).
+  ///
+  /// In en, this message translates to:
+  /// **'Boards'**
+  String get viewBoardsTitle;
+
+  /// The new-tab picker hint for the boards view.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans, boards and decomposition.'**
+  String get newTabHintBoards;
+
+  /// The boards view's in-page header.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get boardsTitle;
+
+  /// The lane composer hint.
+  ///
+  /// In en, this message translates to:
+  /// **'add to {column}…'**
+  String boardsAddCardHint(Object column);
+
+  /// The decomposition composer hint.
+  ///
+  /// In en, this message translates to:
+  /// **'add a step…'**
+  String get boardsAddStepHint;
+
+  /// The lane-move button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'move to {column}'**
+  String boardsMoveTooltip(Object column);
+
+  /// The settle-done button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'settle done'**
+  String get boardsSettleTooltip;
+
+  /// The decompose toggle tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'add a step'**
+  String get boardsDecomposeTooltip;
+
+  /// No description provided for @unknownSurfaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown surface'**
+  String get unknownSurfaceTitle;
+
+  /// No description provided for @railViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get railViews;
+
+  /// No description provided for @railViewSwitchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch view'**
+  String get railViewSwitchTooltip;
+
+  /// Status edge: the ecsai daemon is live.
+  ///
+  /// In en, this message translates to:
+  /// **'world live'**
+  String get statusEdgeWorldLive;
+
+  /// Status edge: daemon live but its binary predates the last build.
+  ///
+  /// In en, this message translates to:
+  /// **'world live · binary stale'**
+  String get statusEdgeWorldLiveStale;
+
+  /// Status edge: no daemon is live.
+  ///
+  /// In en, this message translates to:
+  /// **'world down'**
+  String get statusEdgeWorldDown;
+
+  /// Status edge: the supervised converge is running.
+  ///
+  /// In en, this message translates to:
+  /// **'world arming…'**
+  String get statusEdgeWorldArming;
+
+  /// Status edge: the converge failed, named.
+  ///
+  /// In en, this message translates to:
+  /// **'arm failed · {reason}'**
+  String statusEdgeArmFailed(Object reason);
+
+  /// Status edge: the one-click arm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm'**
+  String get statusEdgeArm;
+
+  /// Status edge: no config declares a model palette.
+  ///
+  /// In en, this message translates to:
+  /// **'no palette declared'**
+  String get statusEdgeNoPalette;
+
+  /// Status edge: the palette document failed to parse.
+  ///
+  /// In en, this message translates to:
+  /// **'palette refused'**
+  String get statusEdgePaletteRefused;
+
+  /// Status edge: the declared primary generative rung.
+  ///
+  /// In en, this message translates to:
+  /// **'primary {rung}'**
+  String statusEdgePrimary(Object rung);
+
+  /// Status edge: the session's chosen delegation rung.
+  ///
+  /// In en, this message translates to:
+  /// **'via {rung}'**
+  String statusEdgeVia(Object rung);
+
+  /// Status edge: the app mesh has no role.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh off'**
+  String get statusEdgeMeshOff;
+
+  /// Status edge: this device hosts the mesh relay.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh main'**
+  String get statusEdgeMeshMain;
+
+  /// Status edge: joined another device's relay, connected.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh joined'**
+  String get statusEdgeMeshJoined;
+
+  /// Status edge: joined role, relay not connected yet.
+  ///
+  /// In en, this message translates to:
+  /// **'mesh joining'**
+  String get statusEdgeMeshJoining;
+
+  /// Status edge: open permissions + running tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'attention: {count}'**
+  String statusEdgeAttention(Object count);
+
+  /// Status edge: a human decision waits.
+  ///
+  /// In en, this message translates to:
+  /// **'attention: {permissions} permissions, {running} running'**
+  String statusEdgeAttentionWaiting(Object permissions, Object running);
+
+  /// One-click daemon arm (G2).
+  ///
+  /// In en, this message translates to:
+  /// **'Arm world'**
+  String get edgeArmWorld;
+
+  /// The arm converge is running.
+  ///
+  /// In en, this message translates to:
+  /// **'Arming…'**
+  String get edgeArming;
+
+  /// Stops the supervised daemon.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get edgeStopWorld;
+
+  /// Verified stop, then one converge pass.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get edgeRestartWorld;
+
+  /// Landing inbox: open permission round-trips (reject-first).
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get inboxPermissions;
+
+  /// Landing inbox: queued/running durable tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued & running'**
+  String get inboxRunning;
+
+  /// Landing inbox: the newest terminal truths.
+  ///
+  /// In en, this message translates to:
+  /// **'Last verdicts'**
+  String get inboxVerdicts;
+
+  /// Landing inbox: the five most recent threads.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent threads'**
+  String get inboxThreads;
+
+  /// Landing inbox: the all-quiet row.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention'**
+  String get inboxEmpty;
+
+  /// The reject-first default action.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get inboxDeny;
+
+  /// The deliberate allow action.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get inboxAllow;
+
+  /// Landing inbox: daemon-down row.
+  ///
+  /// In en, this message translates to:
+  /// **'The ecsai world is not running'**
+  String get inboxWorldDown;
+
+  /// Landing inbox: converge running.
+  ///
+  /// In en, this message translates to:
+  /// **'Arming the world…'**
+  String get inboxWorldArming;
+
+  /// Landing inbox: converge failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm failed'**
+  String get inboxWorldArmFailed;
+
+  /// The Models surface title.
+  ///
+  /// In en, this message translates to:
+  /// **'Models'**
+  String get viewModelsTitle;
+
+  /// Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs).
+  ///
+  /// In en, this message translates to:
+  /// **'No models declared for this world'**
+  String get modelsNoPalette;
+
+  /// Models v4.1 2026-11-19: the on-machine checkpoints section — download/remove, start/stop per checkpoint (the restored provisioning surface).
+  ///
+  /// In en, this message translates to:
+  /// **'Local models'**
+  String get modelsLocalCatalog;
+
+  /// Models v4.1 2026-11-19: the ladder's add verb — declares a generative cast from a provider model.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get modelsLadderAdd;
+
+  /// Models v4.1 2026-11-19: the ladder row's remove verb (declared entries only — builtin lanes are the composition root's).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from models'**
+  String get modelsLadderRemove;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a model to the ladder'**
+  String get modelsLadderAddTitle;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's provider field.
+  ///
+  /// In en, this message translates to:
+  /// **'provider'**
+  String get modelsLadderProvider;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's model-id field (the cast id derives from it).
+  ///
+  /// In en, this message translates to:
+  /// **'model id'**
+  String get modelsLadderModel;
+
+  /// Models merge 2026-11-19: the ONE section title — the ladder of models in priority order.
+  ///
+  /// In en, this message translates to:
+  /// **'Models'**
+  String get modelsPolicySection;
+
+  /// Models merge 2026-11-19: the ladder's one-line explanation under the section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tried top-down — when one is down or stuck, the next takes over.'**
+  String get modelsPolicyHint;
+
+  /// Policy row sentence: position 1 is the world default.
+  ///
+  /// In en, this message translates to:
+  /// **'thinks first'**
+  String get modelsPolicyFirst;
+
+  /// No description provided for @modelsPolicyFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'if {model} is down or stuck'**
+  String modelsPolicyFallback(String model);
+
+  /// Models: the collapsed decision-role section (the world's own quick decisions).
+  ///
+  /// In en, this message translates to:
+  /// **'System lanes'**
+  String get modelsSystemLanes;
+
+  /// System lanes: the one-sentence explainer.
+  ///
+  /// In en, this message translates to:
+  /// **'The world\'s own quick decisions — leave these alone'**
+  String get modelsSystemLanesHint;
+
+  /// No description provided for @modelsActorsMore.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String modelsActorsMore(int count);
+
+  /// Observe ledger: the dispatch escalated from a stalled rung to the named model (ADR 0122 promotion, narrated).
+  ///
+  /// In en, this message translates to:
+  /// **'stalled → tried {model}'**
+  String modelsEscalatedTo(String model);
+
+  /// Models header fact.
+  ///
+  /// In en, this message translates to:
+  /// **'daemon live'**
+  String get modelsDaemonLive;
+
+  /// Models header fact.
+  ///
+  /// In en, this message translates to:
+  /// **'daemon down'**
+  String get modelsDaemonDown;
+
+  /// Models header fact: the supervised realm scheduler (delegation claimant) is running.
+  ///
+  /// In en, this message translates to:
+  /// **'scheduler live'**
+  String get modelsSchedulerLive;
+
+  /// Models header fact: no supervised realm scheduler — delegated tasks would sit queued.
+  ///
+  /// In en, this message translates to:
+  /// **'scheduler down'**
+  String get modelsSchedulerDown;
+
+  /// Models: per-actor tool-loop telemetry section.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent dispatches'**
+  String get modelsTelemetry;
+
+  /// The ⌘K palette's field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search views, people and actions…'**
+  String get commandPaletteHint;
+
+  /// Palette group: the rail's views.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get commandPaletteViews;
+
+  /// Palette group: actors.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get commandPalettePeople;
+
+  /// Palette group: channels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get commandPaletteChannels;
+
+  /// Palette group: shell actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get commandPaletteActions;
+
+  /// The Documents view title.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get viewDocumentsTitle;
+
+  /// The Documents view's creation affordance.
+  ///
+  /// In en, this message translates to:
+  /// **'New agent doc'**
+  String get documentsNewAgentDoc;
+
+  /// The code format's creation affordance (2a): documents view button and picker row share it.
+  ///
+  /// In en, this message translates to:
+  /// **'New code file'**
+  String get documentsNewCodeFile;
+
+  /// The Documents view's empty grid.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet — create the first agent doc'**
+  String get documentsEmpty;
+
+  /// A doc tab whose id the registry page does not carry.
+  ///
+  /// In en, this message translates to:
+  /// **'This document is not in the loaded list'**
+  String get documentsMissing;
+
+  /// Threads view: the realm thread section.
+  ///
+  /// In en, this message translates to:
+  /// **'World threads'**
+  String get threadsWorld;
+
+  /// Threads view: the live agent-work registry section. 1c vocabulary law: 'sessions' are an implementation detail; the UX says actor work.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor work'**
+  String get threadsSessions;
+
+  /// Threads view: the quiet empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'No threads yet — the rail\'s actors and channels start them'**
+  String get threadsEmpty;
+
+  /// Boards view: the mesh task settle section.
+  ///
+  /// In en, this message translates to:
+  /// **'Mesh tasks'**
+  String get boardsMeshTasks;
+
+  /// Palette action: the Conversations landing inbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing inbox'**
+  String get actionLandingInbox;
+
+  /// No description provided for @newTabSectionOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get newTabSectionOpen;
+
+  /// No description provided for @newTabSectionRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get newTabSectionRooms;
+
+  /// No description provided for @newTabSectionInstances.
+  ///
+  /// In en, this message translates to:
+  /// **'New instance'**
+  String get newTabSectionInstances;
+
+  /// No description provided for @newTabSectionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get newTabSectionCreate;
+
+  /// No description provided for @newTabSectionRunway.
+  ///
+  /// In en, this message translates to:
+  /// **'Format runway — registers as tabs when the format lands'**
+  String get newTabSectionRunway;
+
+  /// No description provided for @newTabBrowserInstance.
+  ///
+  /// In en, this message translates to:
+  /// **'Browser · new window'**
+  String get newTabBrowserInstance;
+
+  /// No description provided for @newTabRunwayImage.
+  ///
+  /// In en, this message translates to:
+  /// **'image editor · generation'**
+  String get newTabRunwayImage;
+
+  /// No description provided for @newTabRunwayVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'video · generation timeline'**
+  String get newTabRunwayVideo;
+
+  /// No description provided for @newTabRunwayAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'audio · multitrack'**
+  String get newTabRunwayAudio;
+
+  /// No description provided for @stripBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get stripBack;
+
+  /// No description provided for @stripForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward'**
+  String get stripForward;
+
+  /// No description provided for @stripSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Split — two tabs at once'**
+  String get stripSplit;
+
+  /// No description provided for @stripFold.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold split — back to one pane'**
+  String get stripFold;
+
+  /// No description provided for @worldChatActorCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Actor card'**
+  String get worldChatActorCard;
+
+  /// Composer scope toggle (ADR 0129): arms one workspace root so the next send is a work order.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope to workspace'**
+  String get worldChatScopeArm;
+
+  /// Dismisses the armed scope chip; Send returns to the plain say.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the workspace scope'**
+  String get worldChatScopeDismiss;
+
+  /// The project scope picker's dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the work order to a workspace'**
+  String get worldChatScopePickTitle;
+
+  /// The scope picker's empty state: no grants and no workspace folders.
+  ///
+  /// In en, this message translates to:
+  /// **'No project scopes yet — add a workspace folder or grant access first.'**
+  String get worldChatScopeEmpty;
+
+  /// Composer hint while a workspace scope is armed.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the work order…'**
+  String get worldChatWorkOrderHint;
+
+  /// Transient status after a FRESH work thread spawned.
+  ///
+  /// In en, this message translates to:
+  /// **'Work thread opened · {name}'**
+  String worldChatWorkThreadOpened(String name);
+
+  /// Transient status after an order reused the existing work thread.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order sent · {name}'**
+  String worldChatWorkOrderSent(String name);
+
+  /// The work-thread card's kind word (never color/icon alone).
+  ///
+  /// In en, this message translates to:
+  /// **'work thread'**
+  String get worldChatWorkThreadKind;
+
+  /// Spawn-refusal card title for project_not_granted.
+  ///
+  /// In en, this message translates to:
+  /// **'Project access needed'**
+  String get worldChatGrantNeeded;
+
+  /// Spawn-refusal card title for every other named refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order refused'**
+  String get worldChatWorkOrderRefused;
+
+  /// The refusal card's one-tap grant action.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant access'**
+  String get worldChatGrantAction;
+
+  /// The one-tap grant's busy label.
+  ///
+  /// In en, this message translates to:
+  /// **'Granting…'**
+  String get worldChatGrantGranting;
+
+  /// People view: the project access section label.
+  ///
+  /// In en, this message translates to:
+  /// **'PROJECT ACCESS'**
+  String get contextProjectAccess;
+
+  /// People view: the actor holds no project grants.
+  ///
+  /// In en, this message translates to:
+  /// **'No project grants.'**
+  String get contextNoProjectGrants;
+
+  /// People view: the request-access affordance.
+  ///
+  /// In en, this message translates to:
+  /// **'Request access…'**
+  String get contextRequestAccess;
+
+  /// People view: the request-access picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Request access to a project'**
+  String get contextRequestAccessTitle;
+
+  /// People view: status after a request was durably recorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Request recorded — pending approval.'**
+  String get contextAccessRequested;
+
+  /// People view: the realm-wide pending requests sublabel (human card).
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING REQUESTS'**
+  String get contextPendingAccess;
+
+  /// People view: approves one pending project-access request.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get contextApprove;
+
+  /// Rooms column: tooltip explaining the Direct messages section.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messages — private threads with one actor'**
+  String get roomsExplainDms;
+
+  /// Rooms column: tooltip explaining the Channels section.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels — named group rooms with shared history'**
+  String get roomsExplainChannels;
+
+  /// Rooms column: tooltip explaining the Rooms section.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms — watchable actor threads; join by addressing'**
+  String get roomsExplainRooms;
+
+  /// Rooms column: kind word on a channel row mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel'**
+  String get roomsKindChannel;
+
+  /// Rooms column: kind word on a room row mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Room'**
+  String get roomsKindRoom;
+
+  /// Channel row context menu: opens the change-icon dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Change icon…'**
+  String get roomsSetIconAction;
+
+  /// Change-icon dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Change channel icon'**
+  String get roomsSetIconTitle;
+
+  /// Change-icon dialog: clears back to the # mark.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear icon'**
+  String get roomsIconClear;
+
+  /// Change-icon dialog: label of the custom glyph field.
+  ///
+  /// In en, this message translates to:
+  /// **'Or one character / emoji'**
+  String get roomsIconCustomLabel;
+
+  /// Composer: attach/mention button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach or mention'**
+  String get worldChatAttach;
+
+  /// Attach dialog: search field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search people, channels, rooms, docs…'**
+  String get worldChatAttachSearchHint;
+
+  /// Attach dialog: opens the ADR 0129 scope picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Work order…'**
+  String get worldChatAttachWorkOrder;
+
+  /// Attach dialog: plugins row (honest absence today).
+  ///
+  /// In en, this message translates to:
+  /// **'Plugins'**
+  String get worldChatAttachPlugins;
+
+  /// Attach dialog: MCP servers row (honest absence today).
+  ///
+  /// In en, this message translates to:
+  /// **'MCP servers'**
+  String get worldChatAttachMcpServers;
+
+  /// Attach dialog: trailing note on absent attach kinds.
+  ///
+  /// In en, this message translates to:
+  /// **'none yet'**
+  String get worldChatAttachNoneYet;
+
+  /// Composer: staged-image chip's remove button tooltip (the messenger staging strip).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove attachment'**
+  String get worldChatRemoveAttachment;
+
+  /// Attach dialog / mention overlay: empty filter result.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches'**
+  String get worldChatNoMatches;
+
+  /// Channel header: threads browser toggle label.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get worldChatThreadsToggle;
+
+  /// Channel view threads browser: the work threads group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get worldChatThreadsGroup;
+
+  /// Channel view threads browser: the watchable rooms group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get worldChatRoomsGroup;
+
+  /// Channel view threads browser: the quiet empty line.
+  ///
+  /// In en, this message translates to:
+  /// **'No threads yet.'**
+  String get worldChatThreadsEmpty;
+
+  /// Threads browser: the quiet kind mark on a declared session row (ADR 0145).
+  ///
+  /// In en, this message translates to:
+  /// **'session'**
+  String get worldChatSessionKindMark;
+
+  /// Composer meta row: permissions button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get worldChatPermsTooltip;
+
+  /// Composer meta row: permissions dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel permissions'**
+  String get worldChatPermsTitle;
+
+  /// Composer meta row: members button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get worldChatMembersTooltip;
+
+  /// Composer meta row: channel info button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel info'**
+  String get worldChatInfoTooltip;
+
+  /// Members popover: the add-members affordance (popover CTA and people view section verb).
+  ///
+  /// In en, this message translates to:
+  /// **'Add people'**
+  String get worldChatMembersAdd;
+
+  /// Members picker: title naming the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to {channel}'**
+  String worldChatMembersAddTitle(String channel);
+
+  /// Members picker: the search field's placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter people'**
+  String get worldChatMembersSearchHint;
+
+  /// Members picker: the confirm button's label.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {count}'**
+  String worldChatMembersAddSelected(int count);
+
+  /// Members popover: the outcome line after an add.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} added to {channel}'**
+  String worldChatMembersAddCount(int count, String channel);
+
+  /// Members picker: honest empty state when no actor can be added.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone is already in this channel'**
+  String get worldChatMembersNoCandidates;
+
+  /// Members popover / actor info: the per-channel removal affordance tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from channel'**
+  String get worldChatMemberRemoveTooltip;
+
+  /// Removal confirm: names the actor and the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from {channel}?'**
+  String worldChatMemberRemoveTitle(String name, String channel);
+
+  /// Removal confirm: the information loss — the channel's history size.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} message} other{{count} messages}}'**
+  String worldChatMemberRemoveMessages(int count);
+
+  /// Removal confirm: the durable tasks currently addressed to the actor.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} running task} other{{count} running tasks}}'**
+  String worldChatMemberRemoveTasks(int count);
+
+  /// Removal confirm: the tasks row when nothing is addressed to the actor.
+  ///
+  /// In en, this message translates to:
+  /// **'none running'**
+  String get worldChatMemberRemoveNoTasks;
+
+  /// Removal confirm: the honest note under the loss rows.
+  ///
+  /// In en, this message translates to:
+  /// **'They stop receiving this channel\'s messages. Running tasks are world-durable and stay with the actor.'**
+  String get worldChatMemberRemoveNote;
+
+  /// Members popover: the outcome line after a removal.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed from {channel}'**
+  String worldChatMemberRemoved(String name, String channel);
+
+  /// Rooms column context menu: open the channel's members picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Add members…'**
+  String get roomsMenuMembers;
+
+  /// Channel info dialog: icon row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Change icon'**
+  String get worldChatChangeIcon;
+
+  /// Channel info dialog: honest tooltip on the icon row.
+  ///
+  /// In en, this message translates to:
+  /// **'The channel icon changes with the rooms column menu (Wave D).'**
+  String get worldChatIconViaColumn;
+
+  /// Beat hover cluster: edit action (own beats, gap-disabled).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get worldChatBeatEdit;
+
+  /// Beat hover cluster: start a child thread.
+  ///
+  /// In en, this message translates to:
+  /// **'New thread'**
+  String get worldChatBeatNewThread;
+
+  /// Beat menu: delete action (gap-disabled).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get worldChatBeatDelete;
+
+  /// Beat hover cluster: menu button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Message actions'**
+  String get worldChatBeatMenu;
+
+  /// Edit action tooltip naming the harness-owned verb gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Beats are append-only in the journal; the edit verb is harness-owned and not exposed yet.'**
+  String get worldChatEditGap;
+
+  /// Delete action tooltip naming the harness-owned verb gap.
+  ///
+  /// In en, this message translates to:
+  /// **'The journal is append-only; the delete verb is harness-owned and not exposed yet.'**
+  String get worldChatDeleteGap;
+
+  /// Work-card kind word for a conversational child thread (no project seal).
+  ///
+  /// In en, this message translates to:
+  /// **'Thread'**
+  String get worldChatThreadKind;
+
+  /// Tab strip: overflow control tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden tabs — open the list'**
+  String get stripOverflowHint;
+
+  /// Tab strip: context-menu row that closes every open tab in every group.
+  ///
+  /// In en, this message translates to:
+  /// **'Close all tabs'**
+  String get stripCloseAllTabs;
+
+  /// Pane seam drag handle: hint for the drag-to-resize affordance between pane groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to resize the panes'**
+  String get resizePaneHint;
+
+  /// Rooms column drag handle: hint for the drag-to-resize affordance at the room list's right edge.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to resize the room list'**
+  String get resizeRoomsHint;
+
+  /// Models view: providers section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get modelsProviders;
+
+  /// Models view: empty providers state.
+  ///
+  /// In en, this message translates to:
+  /// **'no providers declared'**
+  String get modelsNoProviders;
+
+  /// Models view: count suffix on a provider row.
+  ///
+  /// In en, this message translates to:
+  /// **'models'**
+  String get modelsCountSuffix;
+
+  /// Models view: context-tier label.
+  ///
+  /// In en, this message translates to:
+  /// **'ctx'**
+  String get modelsContextTier;
+
+  /// Models view: empty model list.
+  ///
+  /// In en, this message translates to:
+  /// **'no models declared'**
+  String get modelsNoModels;
+
+  /// Provider editor: add row.
+  ///
+  /// In en, this message translates to:
+  /// **'Add provider'**
+  String get modelsAddProvider;
+
+  /// Provider editor: dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit provider'**
+  String get modelsEditProvider;
+
+  /// Provider editor: add model row.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get modelsAddModel;
+
+  /// Provider editor: inline edit verb.
+  ///
+  /// In en, this message translates to:
+  /// **'edit'**
+  String get modelsEditAction;
+
+  /// Provider editor: inline remove verb.
+  ///
+  /// In en, this message translates to:
+  /// **'remove'**
+  String get modelsRemoveAction;
+
+  /// Provider editor: confirm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get modelsConfirm;
+
+  /// Provider editor: cancel button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get modelsCancel;
+
+  /// Provider editor: validate candidate.
+  ///
+  /// In en, this message translates to:
+  /// **'Propose'**
+  String get modelsPropose;
+
+  /// Provider editor: owner apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get modelsApply;
+
+  /// Provider editor: dirty-state note.
+  ///
+  /// In en, this message translates to:
+  /// **'unsaved changes'**
+  String get modelsUnsavedChanges;
+
+  /// Provider editor: clean-state note.
+  ///
+  /// In en, this message translates to:
+  /// **'in sync with the live palette'**
+  String get modelsInSync;
+
+  /// Provider editor: apply outcome note.
+  ///
+  /// In en, this message translates to:
+  /// **'restart required'**
+  String get modelsRestartRequired;
+
+  /// Provider editor: transport chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'transport'**
+  String get modelsTransportLabel;
+
+  /// Provider editor: id field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'provider id'**
+  String get modelsProviderIdHint;
+
+  /// Provider editor: model id field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'model id'**
+  String get modelsModelIdHint;
+
+  /// Provider editor: base_url field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'base_url (https, or http loopback)'**
+  String get modelsBaseUrlHint;
+
+  /// Provider editor: credential_env field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'credential_env (an env NAME)'**
+  String get modelsCredentialEnvHint;
+
+  /// Provider editor: empty-id refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the id must not be empty'**
+  String get modelsRefusalEmptyId;
+
+  /// Provider editor: duplicate provider refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'a provider already exists with id'**
+  String get modelsRefusalDuplicateProvider;
+
+  /// Provider editor: duplicate model refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the provider already declares model'**
+  String get modelsRefusalDuplicateModel;
+
+  /// Provider editor: immutable id refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'provider id is immutable — referenced by cast:'**
+  String get modelsRefusalIdImmutable;
+
+  /// Provider editor: provider-in-use refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'cannot remove provider — referenced by cast:'**
+  String get modelsRefusalProviderInUse;
+
+  /// Provider editor: model-in-use refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'cannot remove model — referenced by cast:'**
+  String get modelsRefusalModelInUse;
+
+  /// Provider editor: seat-absent refusal.
+  ///
+  /// In en, this message translates to:
+  /// **'the realm seat is not ready — the palette verbs need it'**
+  String get modelsRefusalNoSeat;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get modelsJsonToggle;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'invalid JSON — the candidate keeps its last valid shape'**
+  String get modelsJsonInvalid;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in local MLX lane (on-device)'**
+  String get modelsBuiltinLaneLocal;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'local decision lane — served by the laya-serve sidecar + its fetched model'**
+  String get modelsBuiltinLaneDecision;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in Apple Foundation lane (on-device, Apple-specific)'**
+  String get modelsBuiltinLaneAfm;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in OpenRouter lane (hosted)'**
+  String get modelsBuiltinLaneOpenRouter;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'built-in lane (composition-root owned)'**
+  String get modelsBuiltinLaneUnknown;
+
+  /// Models wave M 2026-11-15 (lane truth + Zed-law reasoning configuration).
+  ///
+  /// In en, this message translates to:
+  /// **'no reasoning lane - the transport declares no effort tiers (a declaration would refuse as reasoning_effort_unsupported) ·'**
+  String get modelsReasoningNoLane;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get actorsMessage;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove actor'**
+  String get actorsRemove;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Retire the durable row and delete the roster profile of'**
+  String get actorsRemoveConfirm;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'New actor'**
+  String get actorsNewActor;
+
+  /// Wave N1 2026-11-16 (actor equality: message/remove/mint verbs).
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get actorsCreate;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get actorsAvatar;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'emoji or character'**
+  String get actorsAvatarHint;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get actorsAvatarClear;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'reasoning level'**
+  String get actorsReasoning;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'this brain lane declares no effort tiers'**
+  String get actorsReasoningNoLane;
+
+  /// Wave N2 2026-11-16 (actor avatars + per-actor reasoning level).
+  ///
+  /// In en, this message translates to:
+  /// **'in-app dispatch honors this level; daemon dispatch reads reasoning per-model until the harness ask lands'**
+  String get actorsReasoningDaemonNote;
+
+  /// Wave N3 2026-11-16 (human self-profile entry).
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile'**
+  String get actorsYourProfile;
+
+  /// Wave N3 2026-11-16 (human self-profile entry).
+  ///
+  /// In en, this message translates to:
+  /// **'you'**
+  String get actorsYou;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'queued - waiting for a scheduler: arm the world'**
+  String get inboxQueuedReason;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'Task detail'**
+  String get inboxTaskDetail;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel task'**
+  String get inboxTaskCancel;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'control events'**
+  String get inboxTaskEvents;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'no control events yet'**
+  String get inboxTaskNoEvents;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'durable queue'**
+  String get inboxDurableQueue;
+
+  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
+  ///
+  /// In en, this message translates to:
+  /// **'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it'**
+  String get inboxBoardsQueueNote;
+
+  /// Wave N5b 2026-11-16 (retired actors name their retirement).
+  ///
+  /// In en, this message translates to:
+  /// **'retired - the durable row keeps its history:'**
+  String get actorsRetiredNote;
+
+  /// Retired visibility 2026-11-18: the short mark on a retired actor's row (rooms column, people view).
+  ///
+  /// In en, this message translates to:
+  /// **'retired'**
+  String get actorsRetiredMark;
+
+  /// Retired visibility 2026-11-18: the section label listing retired actors (people view, settings actors pane).
+  ///
+  /// In en, this message translates to:
+  /// **'Retired'**
+  String get actorsRetiredSection;
+
+  /// Retired visibility 2026-11-18: the revive verb on a retired actor (ADR 0120 revival law - a fresh ensure revives).
+  ///
+  /// In en, this message translates to:
+  /// **'Revive'**
+  String get actorsRevive;
+
+  /// The durable per-actor image spend (ledger slice 1+2): settled cost, calls, images; a refused call counts without spending..
+  ///
+  /// In en, this message translates to:
+  /// **'Image spend'**
+  String get actorsImageSpend;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Remote providers'**
+  String get modelsClassRemote;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'no declared remote providers'**
+  String get modelsClassRemoteEmpty;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Local server (loopback)'**
+  String get modelsClassLocalServer;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'no local server connected - an ollama-class lane declares an openai_compatible provider with a loopback base_url'**
+  String get modelsClassLocalServerEmpty;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Direct subscription'**
+  String get modelsClassSubscription;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.'**
+  String get modelsClassSubscriptionAbsent;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'Unclassified lanes'**
+  String get modelsClassUnclassified;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'add'**
+  String get modelsSettingsAdd;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'free key'**
+  String get modelsSettingsFreeKey;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'unconsumed'**
+  String get modelsSettingsUnconsumed;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'remove setting'**
+  String get modelsSettingsRemove;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT plan'**
+  String get modelsChatGptPlan;
+
+  /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
+  ///
+  /// In en, this message translates to:
+  /// **'signed out - sign in from the agent-doc runtime pane'**
+  String get modelsChatGptSignedOut;
+
+  /// Grok subscription catalog row. ADR 0030.
+  ///
+  /// In en, this message translates to:
+  /// **'Grok plan'**
+  String get modelsGrokPlan;
+
+  /// Grok subscription catalog row when the account is signed out.
+  ///
+  /// In en, this message translates to:
+  /// **'signed out - sign in from the agent-doc runtime pane'**
+  String get modelsGrokSignedOut;
+
+  /// Grok subscription catalog row before xAI issues a client id.
+  ///
+  /// In en, this message translates to:
+  /// **'awaiting xAI client registration'**
+  String get modelsGrokAwaitingRegistration;
+
+  /// Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded'**
+  String get modelsLocalDiskDownloaded;
+
+  /// Two-stage rows 2026-11-18: the DISK stage chip — nothing on disk yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not downloaded'**
+  String get modelsLocalDiskNot;
+
+  /// Two-stage rows 2026-11-18: the MEMORY stage chip — the weights sit in RAM (only a runtime-present lane renders it).
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded'**
+  String get modelsLocalMemLoaded;
+
+  /// Two-stage rows 2026-11-18: the MEMORY stage chip — the weights are out of RAM.
+  ///
+  /// In en, this message translates to:
+  /// **'Unloaded'**
+  String get modelsLocalMemUnloaded;
+
+  /// Two-stage rows 2026-11-18: the DISK verb (renames the old install verb; still behind the consent dialog).
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get modelsLocalDownload;
+
+  /// Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-unloaded row.
+  ///
+  /// In en, this message translates to:
+  /// **'Load'**
+  String get modelsLocalLoad;
+
+  /// Two-stage rows 2026-11-18: the MEMORY verb for a downloaded-loaded row.
+  ///
+  /// In en, this message translates to:
+  /// **'Unload'**
+  String get modelsLocalUnload;
+
+  /// Local model manager 2026-11-18: the row's delete verb (manager-installed entries only).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get modelsLocalDelete;
+
+  /// Local model manager 2026-11-18: the install consent dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Download local model?'**
+  String get modelsLocalConsentTitle;
+
+  /// Local model manager 2026-11-18: the install consent dialog's body (names the model, the size, the network fact).
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads {label} (approx. {size}) over the network into the local model cache. The runtime never downloads on its own.'**
+  String modelsLocalConsentBody(String label, String size);
+
+  /// Local model manager 2026-11-18: the consent dialog's confirm verb.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get modelsLocalConsentConfirm;
+
+  /// Local model manager 2026-11-18: the delete confirm dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete local model?'**
+  String get modelsLocalDeleteTitle;
+
+  /// Local model manager 2026-11-18: the delete confirm dialog's body.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes the downloaded files of {label} from the local model cache. Only manager-installed models can be deleted.'**
+  String modelsLocalDeleteBody(String label);
+
+  /// Local model manager 2026-11-18: the honest refusal when the installer declines (no manager marker).
+  ///
+  /// In en, this message translates to:
+  /// **'delete refused - this model was not installed by the manager'**
+  String get modelsLocalDeleteRefused;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'checking'**
+  String get modelsLocalPhaseChecking;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'downloading'**
+  String get modelsLocalPhaseDownloading;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'loading'**
+  String get modelsLocalPhaseLoading;
+
+  /// Local model manager 2026-11-18: the provisioning phase word.
+  ///
+  /// In en, this message translates to:
+  /// **'ready'**
+  String get modelsLocalPhaseReady;
+
+  /// Local model manager 2026-11-18: the provisioning phase word (also the error line's prefix).
+  ///
+  /// In en, this message translates to:
+  /// **'failed'**
+  String get modelsLocalPhaseFailed;
+
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's working-set legend label (anonymous + wired + compressor — Activity Monitor's App/Wired/Compressed).
+  ///
+  /// In en, this message translates to:
+  /// **'in use'**
+  String get modelsBudgetUsed;
+
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's file-cache legend label (file-backed pages — Activity Monitor's Cached Files).
+  ///
+  /// In en, this message translates to:
+  /// **'reclaimable cache'**
+  String get modelsBudgetCached;
+
+  /// Local model budget v3.3 2026-11-18: the segmented RAM bar's free-pages legend label (free + speculative).
+  ///
+  /// In en, this message translates to:
+  /// **'free'**
+  String get modelsBudgetFree;
+
+  /// Local model budget v3.3 2026-11-18: the policy line under the bar — the load gate's headroom floor and today's actionable answer (caution-colored when nothing fits).
+  ///
+  /// In en, this message translates to:
+  /// **'load policy keeps {floor} free — available for local loads {available}'**
+  String modelsBudgetPolicy(String floor, String available);
+
+  /// Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts.
+  ///
+  /// In en, this message translates to:
+  /// **'memory facts unavailable — the load gate runs sensor-absent'**
+  String get modelsBudgetUnknown;
+
+  /// Local model budget v3 2026-11-18: the honest note when the sensor sees available but not total memory.
+  ///
+  /// In en, this message translates to:
+  /// **'total memory unknown — the bar scales to available memory'**
+  String get modelsBudgetTotalUnknown;
+
+  /// Local model budget v3 2026-11-18: the machine verdict said ONCE above the rows when every downloaded-but-unloaded entry misses its fit.
+  ///
+  /// In en, this message translates to:
+  /// **'no downloaded model fits the memory available right now — free {size} more to run {label}'**
+  String modelsBudgetNothingFits(String size, String label);
+
+  /// Local model budget v3 2026-11-18: the quiet reason line under a row whose Load verb the fit disables (the gate's own arithmetic).
+  ///
+  /// In en, this message translates to:
+  /// **'needs {size} more — unload a model or free memory'**
+  String modelsLocalFitReason(String size);
+
+  /// Local models v3 2026-11-18: the row status while a generation runs (the ledger's in-flight answer).
+  ///
+  /// In en, this message translates to:
+  /// **'generating…'**
+  String get modelsLocalGenerating;
+
+  /// Local models v3 2026-11-18: the row status after a run — the approximate decode speed (the ledger's estimate, honestly marked ≈).
+  ///
+  /// In en, this message translates to:
+  /// **'≈{speed} tok/s'**
+  String modelsLocalTokPerSec(String speed);
+
+  /// Local models v3 2026-11-18: the ⋯ menu's details entry (the sheet with the sensed facts).
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get modelsLocalDetails;
+
+  /// Local models v3 2026-11-18: the detail sheet's disk-state row.
+  ///
+  /// In en, this message translates to:
+  /// **'disk'**
+  String get modelsLocalDetailsDisk;
+
+  /// Local models v3 2026-11-18: the detail sheet's memory-state row.
+  ///
+  /// In en, this message translates to:
+  /// **'memory'**
+  String get modelsLocalDetailsMemory;
+
+  /// Local models v3.3 2026-11-19: the disk-only row's memory fact — the decision checkpoint serves out-of-process through the laya-serve sidecar.
+  ///
+  /// In en, this message translates to:
+  /// **'served by the laya-serve sidecar — no in-app residency'**
+  String get modelsLocalDetailsSidecar;
+
+  /// Local models v3 2026-11-18: the detail sheet's SENSED size row (a walk of the snapshot dir, never the approximation).
+  ///
+  /// In en, this message translates to:
+  /// **'size on disk'**
+  String get modelsLocalDetailsSizeOnDisk;
+
+  /// Local models v3 2026-11-18: the detail sheet's snapshot path row.
+  ///
+  /// In en, this message translates to:
+  /// **'snapshot path'**
+  String get modelsLocalDetailsPath;
+
+  /// Local models v3 2026-11-18: the detail sheet's last-generation row (≈speed or generating…).
+  ///
+  /// In en, this message translates to:
+  /// **'last generation'**
+  String get modelsLocalDetailsLastGeneration;
+
+  /// Local models v3 2026-11-18: the detail sheet's last-failure row, verbatim.
+  ///
+  /// In en, this message translates to:
+  /// **'last error'**
+  String get modelsLocalDetailsLastError;
+
+  /// Local models v3 2026-11-18 (en): the detail sheet's bound-actors row.
+  ///
+  /// In en, this message translates to:
+  /// **'used by'**
+  String get modelsLocalDetailsUsedBy;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'swapped to disk'**
+  String get modelsBudgetSwap;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'the machine is swapping — a load will add pressure'**
+  String get modelsBudgetSwapNote;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'config root…'**
+  String get modelsConfigRootEdit;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'ecsai config root'**
+  String get modelsConfigRootTitle;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'Where .xsoulspace/config.json is read from. Empty = the daemon\'s realm root, else the global ~/.xsoulspace. Last Answer should never depend on a development checkout.'**
+  String get modelsConfigRootHint;
+
+  /// Local models v3.2 2026-11-18 (en).
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get modelsConfigRootSave;
+
+  /// Local models v3 2026-11-18: the AFM chip's exemption note in the built-ins footer.
+  ///
+  /// In en, this message translates to:
+  /// **'always-on'**
+  String get modelsBuiltinsNoLifecycle;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit model'**
+  String get modelsEditModel;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'move up the escalation ladder'**
+  String get modelsMoveUp;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'move down the escalation ladder'**
+  String get modelsMoveDown;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'session:'**
+  String get modelsSessionPrefix;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'clear'**
+  String get modelsSessionClear;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'palette landed — the daemon binds it at restart'**
+  String get modelsRestartPending;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'Restart now'**
+  String get modelsRestartNow;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'unbound actors'**
+  String get modelsUnbound;
+
+  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
+  ///
+  /// In en, this message translates to:
+  /// **'not a number — the field keeps its last value'**
+  String get modelsRefusalBadNumber;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Add image'**
+  String get attachImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get takePhoto;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get chooseImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate image'**
+  String get generateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit image'**
+  String get editImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption'**
+  String get captionImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the image (alt text)'**
+  String get altTextHint;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove image'**
+  String get removeImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Image added'**
+  String get imageAddedToNote;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the image to generate…'**
+  String get imageGenerationPrompt;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Image generation failed'**
+  String get imageGenerationFailed;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit failed'**
+  String get imageEditFailed;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating…'**
+  String get generatingImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Annotate'**
+  String get annotateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Save copy'**
+  String get saveImageCopy;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get rotateImage;
+
+  /// Native image assets Wave D (LA ADR 0029): note attachments, deterministic edits, generative images.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop square'**
+  String get cropSquare;
+
+  /// No description provided for @selectionCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut'**
+  String get selectionCut;
+
+  /// No description provided for @selectionCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get selectionCopy;
+
+  /// No description provided for @selectionPaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
+  String get selectionPaste;
+
+  /// No description provided for @selectionSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get selectionSelectAll;
+
+  /// Permissions dialog: the access-policy section label (read/say/manage strips).
+  ///
+  /// In en, this message translates to:
+  /// **'Access'**
+  String get worldChatPermsAccess;
+
+  /// Permissions dialog: the read-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get worldChatPermsRead;
+
+  /// Permissions dialog: the say-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Say'**
+  String get worldChatPermsSay;
+
+  /// Permissions dialog: the manage-policy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get worldChatPermsManage;
+
+  /// Permissions dialog: the channel work-scope section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Work scope'**
+  String get worldChatPermsScope;
+
+  /// Permissions dialog: the unbound work-scope fact.
+  ///
+  /// In en, this message translates to:
+  /// **'none'**
+  String get worldChatPermsScopeNone;
+
+  /// Permissions dialog: clear the channel work scope.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get worldChatPermsScopeClear;
+
+  /// Permissions dialog: bind a work scope to the channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bind…'**
+  String get worldChatPermsScopeBind;
+
+  /// Permissions dialog: per-member grant affordance and form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant…'**
+  String get worldChatPermsGrant;
+
+  /// Permissions dialog: revoke one scope grant row.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get worldChatPermsRevoke;
+
+  /// Grant form: project/folder kind row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind'**
+  String get worldChatPermsKind;
+
+  /// Grant form: the canonical root path row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Root'**
+  String get worldChatPermsRoot;
+
+  /// Grant form: the folder subpath row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Subpath'**
+  String get worldChatPermsSubpath;
+
+  /// Grant form: the capability checkboxes row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Caps'**
+  String get worldChatPermsCaps;
+
+  /// Grant form: the apply button.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply grant'**
+  String get worldChatPermsApply;
+
+  /// Grant form: honest refusal when the root field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'root is required'**
+  String get worldChatPermsRootRequired;
+
+  /// Actors manager 2026-11-18: the People surface's title and roster section label (the world-scoped actor manager).
+  ///
+  /// In en, this message translates to:
+  /// **'Actors'**
+  String get viewActorsTitle;
+
+  /// Actors manager 2026-11-18: the search field's placeholder (filters names and ids).
+  ///
+  /// In en, this message translates to:
+  /// **'Search actors…'**
+  String get actorsSearchHint;
+
+  /// Actors manager 2026-11-18: the honest empty state when the search matches nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No actors match'**
+  String get actorsSearchEmpty;
+
+  /// Retired visibility 2026-11-18: the toggle tooltip when the retired section is hidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Show retired'**
+  String get actorsShowRetired;
+
+  /// Retired visibility 2026-11-18: the toggle tooltip when the retired section is shown (shown-muted is the default).
+  ///
+  /// In en, this message translates to:
+  /// **'Hide retired'**
+  String get actorsHideRetired;
+
+  /// Actor status fold 2026-11-18: the word for a live reply cycle or running tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'working'**
+  String get actorsStatusWorking;
+
+  /// Actor status fold 2026-11-18: the word for the quiet awake normal.
+  ///
+  /// In en, this message translates to:
+  /// **'idle'**
+  String get actorsStatusIdle;
+
+  /// Actor status fold 2026-11-18: the word for a failed cycle or status.
+  ///
+  /// In en, this message translates to:
+  /// **'failed'**
+  String get actorsStatusFailed;
+
+  /// Rooms column 2026-11-18: the DMs section's compact filter field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get roomsFilterHint;
+
+  /// Actor info surface 2026-11-18: the live presence section's label (status word, narration, running tasks).
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get actorInfoNowSection;
+}
+
+class _SDelegate extends LocalizationsDelegate<S> {
+  const _SDelegate();
+
+  @override
+  Future<S> load(Locale locale) {
+    return SynchronousFuture<S>(lookupS(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['en', 'it', 'ru'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_SDelegate old) => false;
+}
+
+S lookupS(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'en':
+      return SEn();
+    case 'it':
+      return SIt();
+    case 'ru':
+      return SRu();
+  }
+
+  throw FlutterError(
+    'S.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}

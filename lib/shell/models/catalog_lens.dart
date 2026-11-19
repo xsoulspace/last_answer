@@ -31,6 +31,8 @@ library;
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:lastanswer/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/agent_config/grok_subscription_pane.dart';
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
@@ -616,8 +618,8 @@ final class _CatalogLensState extends State<CatalogLens> {
           'models.class.subscription',
           context.l10n.modelsClassSubscription,
           children: [
-            _subscriptionRow(context),
-            _grokSubscriptionRow(context),
+            ..._subscriptionRow(context),
+            ..._grokSubscriptionRow(context),
             _emptyNote(context, context.l10n.modelsClassSubscriptionAbsent),
           ],
         ),
@@ -1308,107 +1310,160 @@ final class _CatalogLensState extends State<CatalogLens> {
     final segment = model.contains('/') ? model.split('/').last : model;
     final slug = segment
         .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9.]+'), '_')
+        .replaceAll(RegExp('[^a-z0-9.]+'), '_')
         .replaceAll(RegExp(r'^_+|_+$'), '');
     return slug.isEmpty ? model : slug;
   }
 
   /// The ChatGPT plan row. The runtime pane owns sign-in.
-  Widget _subscriptionRow(final BuildContext context) {
+  /// One subscription lane row (ADR 0031/0032): the status at rest, and
+  /// the FULL management pane (sign-in, accounts, model select) one tap
+  /// below the row that owns it — the spreadsheet law. The panes moved
+  /// here from the settings agent tab; they render nothing when this
+  /// platform has no subscription controller.
+  List<Widget> _subscriptionRow(final BuildContext context) {
     final la = context.la;
     final controller = context.read<ChatGptSubscriptionController?>();
     final profile = controller?.activeProfile;
     final signedIn = profile?.signedIn == true;
-    return Container(
-      key: const ValueKey('models.subscription.chatgpt'),
-      padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
-      child: Row(
-        children: [
-          HealthDot(status: signedIn ? 'ok' : 'unknown', size: 8),
-          const SizedBox(width: 9),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final expanded = _expanded.contains('subscription:chatgpt');
+    return <Widget>[
+      Semantics(
+        key: const ValueKey('models.subscription.chatgpt'),
+        button: true,
+        expanded: expanded,
+        label: 'models.subscription.chatgpt',
+        hint: 'openai_chatgpt_plan',
+        child: LaPressable(
+          onTap: controller == null ? null : () => _toggle('subscription:chatgpt'),
+          radius: context.laUi.smallRadius,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
+            child: Row(
               children: [
-                Text(
-                  'openai_chatgpt_plan',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: LaTokens.mono(11, la.inkMuted),
-                ),
-                Text(
-                  signedIn
-                      ? '${context.l10n.modelsChatGptPlan} · '
-                            '${profile?.model ?? ''}'
-                      : context.l10n.modelsChatGptSignedOut,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.laUi.micro.copyWith(
-                    fontSize: 10,
-                    color: la.inkQuiet,
+                HealthDot(status: signedIn ? 'ok' : 'unknown', size: 8),
+                const SizedBox(width: 9),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'openai_chatgpt_plan',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: LaTokens.mono(11, la.inkMuted),
+                      ),
+                      Text(
+                        signedIn
+                            ? '${context.l10n.modelsChatGptPlan} · '
+                                  '${profile?.model ?? ''}'
+                            : context.l10n.modelsChatGptSignedOut,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.laUi.micro.copyWith(
+                          fontSize: 10,
+                          color: la.inkQuiet,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                ModelsChip(
+                  label: laneClassChipLabel(LaneClass.subscription),
+                  color: la.inkQuiet,
+                  mono: true,
+                ),
+                const SizedBox(width: 6),
+                Icon(
+                  expanded ? Icons.expand_less : Icons.expand_more,
+                  size: 14,
+                  color: la.inkQuiet,
                 ),
               ],
             ),
           ),
-          ModelsChip(
-            label: laneClassChipLabel(LaneClass.subscription),
-            color: la.inkQuiet,
-            mono: true,
-          ),
-        ],
+        ),
       ),
-    );
+      if (expanded && controller != null)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 2, 12, 8),
+          child: ChatGptSubscriptionPane(controller: controller),
+        ),
+    ];
   }
 
-  Widget _grokSubscriptionRow(final BuildContext context) {
+  List<Widget> _grokSubscriptionRow(final BuildContext context) {
     final la = context.la;
     final controller = context.read<GrokSubscriptionController?>();
     final profile = controller?.activeProfile;
     final signedIn = profile?.signedIn == true;
     final awaiting = controller?.registered == false;
-    return Container(
-      key: const ValueKey('models.subscription.grok'),
-      padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
-      child: Row(
-        children: [
-          HealthDot(status: signedIn ? 'ok' : 'unknown', size: 8),
-          const SizedBox(width: 9),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final expanded = _expanded.contains('subscription:grok');
+    return <Widget>[
+      Semantics(
+        key: const ValueKey('models.subscription.grok'),
+        button: true,
+        expanded: expanded,
+        label: 'models.subscription.grok',
+        hint: 'xai_grok_plan',
+        child: LaPressable(
+          onTap: controller == null ? null : () => _toggle('subscription:grok'),
+          radius: context.laUi.smallRadius,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
+            child: Row(
               children: [
-                Text(
-                  'xai_grok_plan',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: LaTokens.mono(11, la.inkMuted),
-                ),
-                Text(
-                  signedIn
-                      ? '${context.l10n.modelsGrokPlan} · '
-                            '${profile?.model ?? ''}'
-                      : awaiting
-                      ? context.l10n.modelsGrokAwaitingRegistration
-                      : context.l10n.modelsGrokSignedOut,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.laUi.micro.copyWith(
-                    fontSize: 10,
-                    color: la.inkQuiet,
+                HealthDot(status: signedIn ? 'ok' : 'unknown', size: 8),
+                const SizedBox(width: 9),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'xai_grok_plan',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: LaTokens.mono(11, la.inkMuted),
+                      ),
+                      Text(
+                        signedIn
+                            ? '${context.l10n.modelsGrokPlan} · '
+                                  '${profile?.model ?? ''}'
+                            : awaiting
+                            ? context.l10n.modelsGrokAwaitingRegistration
+                            : context.l10n.modelsGrokSignedOut,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.laUi.micro.copyWith(
+                          fontSize: 10,
+                          color: la.inkQuiet,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                ModelsChip(
+                  label: laneClassChipLabel(LaneClass.subscription),
+                  color: la.inkQuiet,
+                  mono: true,
+                ),
+                const SizedBox(width: 6),
+                Icon(
+                  expanded ? Icons.expand_less : Icons.expand_more,
+                  size: 14,
+                  color: la.inkQuiet,
                 ),
               ],
             ),
           ),
-          ModelsChip(
-            label: laneClassChipLabel(LaneClass.subscription),
-            color: la.inkQuiet,
-            mono: true,
-          ),
-        ],
+        ),
       ),
-    );
+      if (expanded && controller != null)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 2, 12, 8),
+          child: GrokSubscriptionPane(controller: controller),
+        ),
+    ];
   }
 
   /// One on-device service row: the harness-owned lane as a read-only

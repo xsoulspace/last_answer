@@ -1,1 +1,0 @@
-export 'intl/S.dart';

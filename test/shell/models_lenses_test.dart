@@ -21,9 +21,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:lastanswer/coding_agent/actor_roster.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_health.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
@@ -32,9 +30,9 @@ import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/local_models_state.dart';
 import 'package:lastanswer/shell/models/models_view.dart';
+import 'package:lastanswer/shell/models/palette_candidate.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
-import 'package:lastanswer/shell/models/palette_candidate.dart';
 
 /// One hermetic installer: no hub reads, nothing installed — the
 /// fixtures must never see the operator's real cache (the merged
@@ -731,7 +729,7 @@ void main() {
 
   group('the ladder is manageable (2026-11-19)', () {
     testWidgets('the add verb declares a generative cast from a '
-        'provider model — it lands at the ladder\'s foot as dirty, and '
+        "provider model — it lands at the ladder's foot as dirty, and "
         'revert takes it back', (final tester) async {
       await mount(tester);
 

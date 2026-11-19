@@ -1,10 +1,12 @@
-// DESIGN.md v2, cut to the bone (owner law 2026-11-10) — the action bar
-// is THREE buttons: rail.search (the palette trigger), rail.actors (the
-// rooms-column dock toggle, selected while docked, wearing the total
-// unread badge) and rail.settings. The nine kind buttons retired with
-// their cycling law. The badge keeps the 1g LaWorld contract (ported
-// from the retired kind-button test): it totals every room the member
-// has not read; the receipt clears it; no LaWorld = honest absence.
+// DESIGN.md v2, cut to the bone (owner law 2026-11-10; ADR 0032's
+// amendment) — the action bar is FOUR buttons: rail.search (the
+// palette trigger), rail.actors (the rooms-column dock toggle,
+// selected while docked, wearing the total unread badge),
+// rail.automations (the device's declared automations) and
+// rail.settings. The nine kind buttons retired with their cycling
+// law. The badge keeps the 1g LaWorld contract (ported from the
+// retired kind-button test): it totals every room the member has not
+// read; the receipt clears it; no LaWorld = honest absence.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -38,6 +40,7 @@ Future<void> _pumpBar(
             layout: layout ?? ShellLayout.defaultLayout(),
             actorsDocked: actorsDocked,
             onToggleActors: () => toggled.add(actorsDocked),
+            onOpenAutomations: () {},
             onOpenSettings: () {},
             onOpenPalette: () {},
           ),
@@ -49,7 +52,7 @@ Future<void> _pumpBar(
 }
 
 void main() {
-  testWidgets('the cut bar: THREE buttons on the rail.* key contract, '
+  testWidgets('the cut bar: FOUR buttons on the rail.* key contract, '
       'no kind buttons; the actors button reports its toggle', (
     final tester,
   ) async {
@@ -57,6 +60,7 @@ void main() {
     await _pumpBar(tester, toggled: toggled);
     expect(find.byKey(const ValueKey('rail.search')), findsOneWidget);
     expect(find.byKey(const ValueKey('rail.actors')), findsOneWidget);
+    expect(find.byKey(const ValueKey('rail.automations')), findsOneWidget);
     expect(find.byKey(const ValueKey('rail.settings')), findsOneWidget);
     // The kind buttons retired — the vocabulary must not linger.
     expect(

@@ -261,12 +261,12 @@ void main() {
       RealmWorld.debugDeviceHome = temp.path;
       worldHome = '${temp.path}/worlds/local';
       Directory('$worldHome/.xsoulspace').createSync(recursive: true);
-      File(
-        '$worldHome/.xsoulspace/config.json',
-      ).writeAsStringSync(jsonEncode(_paletteDoc()));
+      // The global-config law (2026-11-19): the DEVICE home carries the
+      // palette (and the ladder) — the default file the chain reads.
       Directory('${temp.path}/.xsoulspace').createSync(recursive: true);
       File('${temp.path}/.xsoulspace/config.json').writeAsStringSync(
         jsonEncode({
+          'model_palette': _paletteDoc()['model_palette'],
           'realm_actor_escalation': {
             'modelscope_qwen38max': 'openrouter_deepseek',
           },
@@ -314,8 +314,6 @@ void main() {
 
       // The refactor's IA: the ladder lives in the BINDINGS lens, the
       // health detail and the daemon verbs in OBSERVE.
-      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
-      await tester.pump();
 
       expect(
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
@@ -345,19 +343,26 @@ void main() {
       // qwen rides a policy row, laya's own chip shows expanded.
       expect(find.text('primary'), findsNothing);
       expect(find.text('thinks first'), findsOneWidget);
-      expect(find.textContaining('is down or stuck'), findsNWidgets(2));
+      // The ladder's hint + the two fallback sentences all speak the
+      // fallback (the merged surface added the hint line).
+      expect(find.textContaining('is down or stuck'), findsNWidgets(3));
       expect(find.text('on-device'), findsNWidgets(2));
 
-      // The OBSERVE lens carries the health ledger (verbatim detail)
-      // and the daemon's process verbs.
-      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      // The Observe absorption (2026-11-19): the health verdict rides
+      // the row's chip — tap it open for the verbatim detail.
+      await tester.tap(
+        find.byKey(const ValueKey('models.rung.openrouter_deepseek.health')),
+      );
       await tester.pump();
       // The failed primary's health detail is visible BEFORE any send.
       expect(find.textContaining('transport_http_403'), findsOneWidget);
       // The local lane's honesty: the weights fact, never a dead toggle.
+      await tester.tap(find.byKey(const ValueKey('models.rung.qwen.health')));
+      await tester.pump();
       expect(find.textContaining('never downloads'), findsOneWidget);
-      // A live daemon offers restart/stop; the Pro-gated editor entry
-      // is RETIRED (the harness's owner-only apply is the single gate).
+      // The daemon strip rides the header on every lens: a live daemon
+      // offers restart/stop (the Pro-gated editor entry is RETIRED —
+      // the harness's owner-only apply is the single gate).
       expect(find.byKey(const ValueKey('models.restart')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsOneWidget);
     });
@@ -366,11 +371,9 @@ void main() {
         'states (G1)', (final tester) async {
       await mountModels(tester);
 
-      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
-      await tester.pump();
-
       // No supervisor record for this hermetic world home: the row is
-      // honestly DOWN — a delegated task would sit `queued`.
+      // honestly DOWN — a delegated task would sit `queued`. The strip
+      // rides the header (the Observe absorption) — no lens switch.
       expect(find.byKey(const ValueKey('models.scheduler')), findsOneWidget);
       expect(find.text('scheduler down'), findsOneWidget);
 
@@ -411,8 +414,6 @@ void main() {
     ) async {
       await mountModels(tester);
 
-      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
-      await tester.pump();
       await tester.tap(
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
       );
@@ -422,8 +423,15 @@ void main() {
       // A decision rung is data, not a delegation choice — it lives
       // under System lanes now, and a system-lane row is not tappable
       // at all.
-      await tester.tap(find.byKey(const ValueKey('models.systemLanes')));
+      final expander = find.byKey(const ValueKey('models.systemLanes'));
+      await tester.ensureVisible(expander);
+      await tester.pumpAndSettle();
+      await tester.tap(expander);
       await tester.pump();
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('models.systemLane.laya')),
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const ValueKey('models.systemLane.laya')));
       await tester.pump();
       expect(world.selectedRungId, 'modelscope_qwen38max');
@@ -436,7 +444,10 @@ void main() {
       RealmWorld.debugDeviceHome = temp.path;
       worldHome = '${temp.path}/worlds/local';
       Directory('$worldHome/.xsoulspace').createSync(recursive: true);
-      File('$worldHome/.xsoulspace/config.json').writeAsStringSync(
+      // The malformed palette rides the DEVICE home (the global-config
+      // law: the default file the chain reads).
+      Directory('${temp.path}/.xsoulspace').createSync(recursive: true);
+      File('${temp.path}/.xsoulspace/config.json').writeAsStringSync(
         jsonEncode({
           'model_palette': {
             'providers': {
@@ -469,9 +480,8 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('palette_unknown_transport'), findsOneWidget);
-      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
-      await tester.pump();
-      // A dead daemon offers the arm, never the stop.
+      // The daemon strip rides the header: a dead daemon offers the
+      // arm, never the stop.
       expect(find.byKey(const ValueKey('models.arm')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsNothing);
     });

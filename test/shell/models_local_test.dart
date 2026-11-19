@@ -39,6 +39,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/shell/models/local_models_state.dart';
@@ -180,10 +181,17 @@ void main() {
     final bool withRuntime = true,
   }) async {
     temp = Directory.systemTemp.createTempSync('models_local_');
+    // Hermetic by the GLOBAL-CONFIG LAW (2026-11-19): the chain reads
+    // the DEVICE home (pinned here — never the operator's real global
+    // file) + this test's override; the world home keeps only the
+    // journal fixture.
+    RealmWorld.debugDeviceHome = temp.path;
+    addTearDown(() => RealmWorld.debugDeviceHome = null);
     final worldHome = '${temp.path}/worlds/local';
     Directory('$worldHome/.xsoulspace').createSync(recursive: true);
+    Directory('${temp.path}/.xsoulspace').createSync(recursive: true);
     File(
-      '$worldHome/.xsoulspace/config.json',
+      '${temp.path}/.xsoulspace/config.json',
     ).writeAsStringSync(jsonEncode(_paletteDoc()));
     world = WorldStateService(
       debugDoctor: (_) => <String, Object?>{
@@ -232,11 +240,12 @@ void main() {
         240,
         scrollable: find.byType(Scrollable).last,
       );
-    } else {
-      await tester.ensureVisible(finder);
     }
+    // The merged surface can host the SAME verb twice (the ladder's
+    // slot door + the catalog row) — the first is the same verb.
+    await tester.ensureVisible(finder.first);
     await tester.pumpAndSettle();
-    await tester.tap(finder);
+    await tester.tap(finder.first);
     await tester.pump();
     if (settle) {
       await tester.pumpAndSettle();
@@ -254,7 +263,7 @@ void main() {
         'standalone qwen lane row does not exist', (final tester) async {
       await mount(tester);
 
-      expect(find.text('Local models'), findsOneWidget);
+      expect(find.text('Models'), findsOneWidget);
       expect(find.byKey(const ValueKey('models.class.onDevice')), findsNothing);
       expect(find.byKey(const ValueKey('models.onDevice.qwen')), findsNothing);
       // The exact standalone lane label is gone; the checkpoints keep
@@ -321,45 +330,75 @@ void main() {
         findsOneWidget,
       );
 
-      // The built-in lane chip rides INSIDE the merged section's
-      // footer, after the checkpoints (the fixture's `laya` cast).
-      final layaRow = find.descendant(
+      // The one-place-per-model law (2026-11-19): laya's brain is a
+      // SYSTEM lane, and its checkpoint's download door rides the
+      // collapsed line — the old lane chip is gone.
+      final layaDoor = find.descendant(
         of: section,
-        matching: find.byKey(const ValueKey('models.onDevice.laya')),
+        matching: find.byKey(const ValueKey('models.local.laya-mlx.download')),
       );
       await tester.scrollUntilVisible(
-        layaRow,
+        layaDoor.first,
         240,
         scrollable: find.byType(Scrollable).last,
       );
       await tester.pumpAndSettle();
-      expect(layaRow, findsOneWidget);
-      expect(find.text('Laya'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: section,
+          matching: find.byKey(const ValueKey('models.onDevice.laya')),
+        ),
+        findsNothing,
+      );
+      expect(layaDoor, findsNWidgets(2));
     });
 
-    testWidgets('the curated rows render the one-line anatomy: name, '
-        'metadata, status word, primary verb', (final tester) async {
+    testWidgets('the qwen ladder row renders the merged anatomy: the '
+        'slot name + status word + download door, and its expansion '
+        'carries the family checkpoints with full metadata', (
+      final tester,
+    ) async {
       await mount(tester);
 
-      expect(find.text('Local models'), findsOneWidget);
+      expect(find.text('Models'), findsOneWidget);
+      final qwenRow = find.byKey(const ValueKey('models.rung.qwen'));
       await tester.scrollUntilVisible(
-        find.byKey(const ValueKey('models.local.$ref06.row')),
+        qwenRow,
+        240,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tester.pumpAndSettle();
+      // Nothing installed: the alias is the honest slot name, the
+      // status word says so, the door is the first family checkpoint's
+      // download (the add-from-catalog law).
+      expect(find.text('Qwen'), findsOneWidget);
+      expect(find.text('Not downloaded'), findsNWidgets(7));
+      expect(
+        find.byKey(const ValueKey('models.local.$ref06.download')),
+        findsNWidgets(2),
+      );
+
+      // The catalog section below carries every checkpoint as a full
+      // row — metadata and all (the restored provisioning surface).
+      final checkpoint = find.byKey(const ValueKey('models.local.$ref06.row'));
+      await tester.scrollUntilVisible(
+        checkpoint,
         240,
         scrollable: find.byType(Scrollable).last,
       );
       await tester.pumpAndSettle();
       expect(find.text('Qwen3 0.6B'), findsOneWidget);
-      // The metadata is one quiet mono line (params · quant · size).
-      expect(find.textContaining('0.6B · 4bit ·'), findsOneWidget);
-      // Nothing downloaded yet: every row reads the quiet status word,
-      // and no fit warning exists (the verdict lives at the verb).
-      expect(find.text('Not downloaded'), findsNWidgets(5));
+      // The metadata repeats nothing the title says (the de-duplication
+      // law): the line is `quant · size` — the params live in "Qwen3
+      // 0.6B" already.
+      expect(find.textContaining('4bit · 400 MB'), findsOneWidget);
+      expect(find.textContaining('0.6B · 4bit'), findsNothing);
+      // Nothing downloaded anywhere: the six catalog rows + the qwen
+      // ladder slot all read the quiet status word, and no fit warning
+      // exists (the verdict lives at the verb).
+      expect(find.text('Not downloaded'), findsNWidgets(7));
       expect(find.text('Downloaded'), findsNothing);
       expect(find.textContaining('needs'), findsNothing);
-      expect(
-        find.byKey(const ValueKey('models.local.$ref06.download')),
-        findsOneWidget,
-      );
     });
 
     testWidgets('the consent law: the Download tap opens the dialog '
@@ -389,7 +428,8 @@ void main() {
         const ProvisionProgress(phase: ProvisionPhase.downloading, percent: 40),
       );
       await tester.pump();
-      expect(find.text('downloading 40%'), findsOneWidget);
+      // Both surfaces stream the same progress (ladder + row).
+      expect(find.text('downloading 40%'), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.progress')),
         findsOneWidget,
@@ -405,12 +445,20 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.text('downloading 200 MB / 400 MB'), findsOneWidget);
+      expect(find.text('downloading 200 MB / 400 MB'), findsNWidgets(2));
 
       await fake.finish(repo06);
       await tester.pumpAndSettle();
-      expect(find.text('Downloaded'), findsOneWidget);
-      expect(find.text('Not downloaded'), findsNWidgets(4));
+      // The ladder row (below the catalog now) carries the same state
+      // word — bring it into the viewport so both surfaces count.
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('models.rung.qwen')),
+        240,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Downloaded'), findsNWidgets(2));
+      expect(find.text('Not downloaded'), findsNWidgets(5));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.download')),
         findsNothing,
@@ -420,7 +468,7 @@ void main() {
       // the disk truth.
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.unload')),
@@ -436,7 +484,7 @@ void main() {
       await settleTap(tester, 'models.local.$ref06.consent.cancel');
 
       expect(fake.consentSeen, isFalse);
-      expect(find.text('Not downloaded'), findsNWidgets(5));
+      expect(find.text('Not downloaded'), findsNWidgets(7));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.progress')),
         findsNothing,
@@ -451,7 +499,7 @@ void main() {
       await local.refresh();
       await tester.pumpAndSettle();
 
-      expect(find.text('Downloaded'), findsOneWidget);
+      expect(find.text('Downloaded'), findsNWidgets(2));
       // Delete lives in the ⋯ overflow (v3: one primary verb on the
       // row, the destructive verb behind the menu).
       await settleTap(tester, 'models.local.$ref06.menu');
@@ -460,10 +508,10 @@ void main() {
       await settleTap(tester, 'models.local.$ref06.delete.confirm');
 
       expect(find.text('Downloaded'), findsNothing);
-      expect(find.text('Not downloaded'), findsNWidgets(5));
+      expect(find.text('Not downloaded'), findsNWidgets(7));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.download')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
     });
 
@@ -485,10 +533,72 @@ void main() {
       expect(find.text('failed: install_failed:disk_full'), findsOneWidget);
       expect(
         find.byKey(const ValueKey('models.local.$ref06.download')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.progress')),
+        findsNothing,
+      );
+    });
+
+    testWidgets('the laya lane is DISK-ONLY (2026-11-19): its '
+        'checkpoint downloads from the collapsed system-lane line, and '
+        'no Load/Unload ever — the decision brain serves through the '
+        'laya-serve sidecar', (final tester) async {
+      await mount(tester);
+
+      // The collapsed lane line carries the download door — the same
+      // consent law as every row (dialog → confirm → stream).
+      expect(
+        find.byKey(const ValueKey('models.local.laya-mlx.download')),
+        findsNWidgets(2),
+      );
+      await settleTap(tester, 'models.local.laya-mlx.download');
+      expect(find.text('Download local model?'), findsOneWidget);
+      await settleTap(
+        tester,
+        'models.local.laya-mlx.consent.confirm',
+        settle: false,
+      );
+      expect(fake.consentSeen, isTrue);
+      await fake.finish('aac6fef/laya-mlx');
+      await tester.pumpAndSettle();
+
+      // Installed: expand the system lanes — the lane row reads the
+      // checkpoint truth (Downloaded) and STILL carries no memory
+      // stage: the runtime is present, the load verb is not.
+      final expander = find.byKey(const ValueKey('models.systemLanes'));
+      // The install shrank the collapsed line, which can pull the
+      // expander ABOVE the viewport — ensureVisible walks either way.
+      await tester.ensureVisible(expander);
+      await tester.pumpAndSettle();
+      expect(expander, findsOneWidget, reason: 'the expander survives');
+      await tester.tap(expander, warnIfMissed: false);
+      await tester.pump();
+      final laneRow = find.byKey(const ValueKey('models.systemLane.laya'));
+      await tester.ensureVisible(laneRow);
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(of: laneRow, matching: find.text('Laya')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: laneRow, matching: find.text('Downloaded')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.laya-mlx.load')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('models.local.laya-mlx.unload')),
+        findsNothing,
+      );
+      // The noFit aggregate never names the laya checkpoint (it
+      // claims no RAM; on this healthy fixture nothing fits-warning
+      // exists at all).
+      expect(
+        find.byKey(const ValueKey('models.local.budget.noFit')),
         findsNothing,
       );
     });
@@ -532,6 +642,17 @@ void main() {
       await local.refresh();
       await tester.pumpAndSettle();
 
+      // The 1.7B is a NON-default family checkpoint: its row lives in
+      // the qwen brain's expansion (open the health chip's door).
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('models.rung.qwen')),
+        240,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('models.rung.qwen.health')));
+      await tester.pumpAndSettle();
+
       final load17 = find.byKey(
         const ValueKey('models.local.Qwen3-1.7B-4bit.load'),
       );
@@ -542,28 +663,52 @@ void main() {
       );
       await tester.pumpAndSettle();
       // The machine verdict, said ONCE and ACTIONABLE: it names the
-      // next runnable step (the entry closest to fitting).
+      // next runnable step (the entry closest to fitting). The verdict
+      // rides the LOCAL section's bar — bring it back into view (the
+      // lazy list drops off-screen children).
+      final bar = find.byKey(const ValueKey('models.local.budget.bar'));
+      // The bar sits ABOVE the row we just visited: a lazily-built
+      // list unmounted it — fling UP until it remounts (ensureVisible
+      // cannot walk to an unmounted widget).
+      var attempts = 0;
+      while (bar.evaluate().isEmpty && attempts < 30) {
+        await tester.fling(
+          find.byType(Scrollable).last,
+          const Offset(0, 300),
+          10,
+        );
+        await tester.pumpAndSettle();
+        attempts++;
+      }
+      await tester.ensureVisible(bar);
+      await tester.pumpAndSettle();
       expect(
         find.byKey(const ValueKey('models.local.budget.noFit')),
         findsOneWidget,
       );
+      // The aggregate's sentence names the gap (the note's key IS its
+      // text — ModelsNote mounts ValueKey on the Text). The row's own
+      // reason line asserts below via its fitReason key: both surfaces
+      // say the same thing, one scroll position apart.
       expect(
         find.textContaining('free 256 MB more to run Qwen3 1.7B'),
         findsOneWidget,
       );
-      // The verb is visible but disabled; the reason names the gap.
-      expect(load17, findsOneWidget);
+      // The verb is visible but disabled on BOTH surfaces (the 1.7B
+      // is the brain's ACTIVE checkpoint now — the only installed one
+      // — so the ladder row carries it too); the reason names the gap.
+      expect(load17, findsNWidgets(2));
       final button = tester.widget<ModelsButton>(
-        find.ancestor(of: load17, matching: find.byType(ModelsButton)),
+        find.ancestor(of: load17.first, matching: find.byType(ModelsButton)),
       );
       expect(button.disabled, isTrue);
       expect(
         find.byKey(const ValueKey('models.local.Qwen3-1.7B-4bit.fitReason')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
-      expect(find.textContaining('needs 256 MB more'), findsOneWidget);
+      expect(find.textContaining('needs 256 MB more'), findsNWidgets(2));
       // A disabled verb does not drive the runtime.
-      await tester.tap(load17, warnIfMissed: false);
+      await tester.tap(load17.first, warnIfMissed: false);
       await tester.pump();
       expect(fakeRuntime.loadCalls, 0);
 
@@ -593,9 +738,12 @@ void main() {
     testWidgets('the status word and verb sets follow the disk/memory '
         'state combination', (final tester) async {
       await mount(tester);
+      // The 0.6B IS the qwen brain's slot: its lifecycle renders on
+      // the LADDER row (models.rung.qwen), not a standalone checkpoint
+      // row (the merge law).
       Future<void> showRow() async {
         await tester.scrollUntilVisible(
-          find.byKey(const ValueKey('models.local.$ref06.row')),
+          find.byKey(const ValueKey('models.rung.qwen')),
           240,
           scrollable: find.byType(Scrollable).last,
         );
@@ -605,14 +753,14 @@ void main() {
       // NOT DOWNLOADED: quiet status word, ONE verb (Download) — no
       // Load/Unload.
       await showRow();
-      final row06 = find.byKey(const ValueKey('models.local.$ref06.row'));
+      final row06 = find.byKey(const ValueKey('models.rung.qwen'));
       expect(
         find.descendant(of: row06, matching: find.text('Not downloaded')),
         findsOneWidget,
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.download')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
@@ -635,7 +783,7 @@ void main() {
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.unload')),
@@ -658,7 +806,7 @@ void main() {
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.unload')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
@@ -674,12 +822,12 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.scrollUntilVisible(
-        find.byKey(const ValueKey('models.local.$ref06.row')),
+        find.byKey(const ValueKey('models.rung.qwen')),
         240,
         scrollable: find.byType(Scrollable).last,
       );
       await tester.pumpAndSettle();
-      expect(find.text('Downloaded'), findsOneWidget);
+      expect(find.text('Downloaded'), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
         findsNothing,
@@ -715,7 +863,8 @@ void main() {
       // The v3 verb crossfade (200ms) keeps the outgoing set mounted —
       // advance the clock past it; the spinner itself never settles.
       await tester.pump(const Duration(milliseconds: 300));
-      expect(find.byType(LaSpinner), findsOneWidget);
+      // Both surfaces spin (the ladder row + the catalog row).
+      expect(find.byType(LaSpinner), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
         findsNothing,
@@ -727,19 +876,19 @@ void main() {
       gate.complete();
       await tester.pumpAndSettle();
       expect(fakeRuntime.loadCalls, 1);
-      expect(find.text('Loaded'), findsOneWidget);
+      expect(find.text('Loaded'), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.unload')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
 
       // Unload flips the row back through the same verbs.
       await settleTap(tester, 'models.local.$ref06.unload');
       expect(fakeRuntime.unloadCalls, 1);
-      expect(find.text('Downloaded'), findsOneWidget);
+      expect(find.text('Downloaded'), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
       expect(
         find.byKey(const ValueKey('models.local.$ref06.unload')),
@@ -754,10 +903,10 @@ void main() {
       await settleTap(tester, 'models.local.$ref06.load', settle: false);
       await tester.pumpAndSettle();
       expect(find.text('failed: gate_refused'), findsOneWidget);
-      expect(find.text('Downloaded'), findsOneWidget);
+      expect(find.text('Downloaded'), findsNWidgets(2));
       expect(
         find.byKey(const ValueKey('models.local.$ref06.load')),
-        findsOneWidget,
+        findsNWidgets(2),
       );
     });
 
@@ -802,9 +951,18 @@ void main() {
 
   group('the config-root option (v3.2)', () {
     test('the override leads the candidates: a pinned root wins over '
-        'the world walk-up, and null returns to the defaults', () async {
+        'the device global, and null returns to the default', () async {
       final tmp = await Directory.systemTemp.createTemp('la_cfg_root_');
       addTearDown(() => tmp.deleteSync(recursive: true));
+      // Hermetic device home (the global-config law's seam): a decoy
+      // global config so the default candidate resolves to IT, never
+      // to the operator's real file or the override root.
+      RealmWorld.debugDeviceHome = tmp.path;
+      addTearDown(() => RealmWorld.debugDeviceHome = null);
+      Directory('${tmp.path}/.xsoulspace').createSync(recursive: true);
+      File(
+        '${tmp.path}/.xsoulspace/config.json',
+      ).writeAsStringSync(jsonEncode(_paletteDoc()));
       final cfgRoot = '${tmp.path}/my-configs';
       Directory('$cfgRoot/.xsoulspace').createSync(recursive: true);
       File(
@@ -813,10 +971,10 @@ void main() {
 
       final world = WorldStateService(debugWorldHome: '${tmp.path}/worlds');
       addTearDown(world.dispose);
-      // The default (no override): the world-home walk-up finds NOTHING
-      // (the fixture config lives only under the override root), so the
-      // header names the last-resort global candidate, not the fixture.
+      // The default (no override): the pinned DEVICE global wins —
+      // never the override root.
       await world.refresh();
+      expect(world.paletteConfigPath, contains(tmp.path));
       expect(world.paletteConfigPath, isNot(contains('my-configs')));
 
       // The override pins the read — the ACTIVE path shows verbatim.
@@ -825,7 +983,7 @@ void main() {
       world.configRootOverride = cfgRoot;
       await waitForContains(world, 'my-configs');
       expect(world.palette, isNotNull);
-      // Setting null returns to the defaults.
+      // Setting null returns to the default.
       world.configRootOverride = null;
       for (var i = 0; i < 50; i++) {
         await Future<void>.delayed(const Duration(milliseconds: 10));

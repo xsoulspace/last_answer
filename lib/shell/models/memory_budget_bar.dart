@@ -108,7 +108,7 @@ final class MemoryBudgetBar extends StatelessWidget {
       );
     }
     final floor = kLocalModelLoadFloorMegabytes;
-    final mib = 1024 * 1024;
+    const mib = 1024 * 1024;
     final cached = current.cachedMegabytes ?? 0;
     final free = current.freeMegabytes;
     final availableForLoads = math.max(0, current.availableMegabytes - floor);
@@ -116,11 +116,10 @@ final class MemoryBudgetBar extends StatelessWidget {
     // falls back to the composite (total − available) and the bar says
     // so. Null on a total-less sensor too — the fallback bar scales to
     // available alone.
-    final used =
-        current.usedMegabytes ??
-        (current.totalMegabytes == null
-            ? null
-            : math.max(0, current.totalMegabytes! - current.availableMegabytes));
+    final total = current.totalMegabytes;
+    final used = current.usedMegabytes ?? (total == null
+        ? null
+        : math.max(0, total - current.availableMegabytes));
 
     // Carve the loaded models OUT of the working set (clamped to what
     // is actually resident — a sensor race never draws a negative
@@ -231,7 +230,22 @@ final class MemoryBudgetBar extends StatelessWidget {
                           ),
                         );
                       }
-                      return Row(children: children);
+                      // The segment run scales down AS A WHOLE (the
+                      // daemon-cluster law): a mid-animation rebuild
+                      // can transiently exceed the usable span (a gap
+                      // disappears while widths tween) — an overflow
+                      // is an error, never a layout.
+                      return FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        // The height is BOUNDED here (the segments'
+                        // inner infinity needs a finite parent — the
+                        // invisible-bar class of bug).
+                        child: SizedBox(
+                          height: 12,
+                          child: Row(children: children),
+                        ),
+                      );
                     },
                   ),
                 ),

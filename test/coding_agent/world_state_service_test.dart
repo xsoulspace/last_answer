@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -128,14 +129,40 @@ void main() {
     );
   }
 
-  WorldStateService buildService({
+  Future<WorldStateService> buildService({
     final Map<String, Object?> Function(String)? doctorOverride,
-  }) => WorldStateService(
-    store: store,
-    health: PaletteHealthStore(resolveHome: () => deviceHome.path),
-    debugDoctor: doctorOverride ?? (_) => doctor(),
-    debugWorldHome: worldHome,
-  );
+    // The global-config law (2026-11-19): the discovery chain reads
+    // [override, device-global]. The palette-staging tests point the
+    // OVERRIDE at the staged root — the legitimate way a workspace
+    // config applies now; `stagedRoot: false` keeps the global-only
+    // default.
+    final bool stagedRoot = true,
+  }) async {
+    final service = WorldStateService(
+      store: store,
+      health: PaletteHealthStore(resolveHome: () => deviceHome.path),
+      debugDoctor: doctorOverride ?? (_) => doctor(),
+      debugWorldHome: worldHome,
+    );
+    if (stagedRoot) {
+      // The setter fires its own refresh; wait for ITS completion
+      // (one listener notification) so the test's own refresh is not
+      // guard-coalesced away — the race the models_local poll names.
+      final settled = Completer<void>();
+      void listener() {
+        if (!settled.isCompleted) settled.complete();
+      }
+
+      service.addListener(listener);
+      service.configRootOverride = configRoot;
+      await settled.future.timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {},
+      );
+      service.removeListener(listener);
+    }
+    return service;
+  }
 
   setUp(() async {
     tempRoot = Directory.systemTemp.createTempSync('world_state_test');
@@ -153,8 +180,10 @@ void main() {
     );
     writeGlobalConfig();
     writeHealth();
-    // The authority row's configurationRoot — the daemon's own fallback
-    // source, and the discovery chain's first candidate.
+    // The authority row's configurationRoot — the daemon's deployment
+    // fallback, and since the 2026-11-19 global-config law NO LONGER a
+    // candidate in LA's own discovery chain (staged roots apply via
+    // the override).
     await store.transact((tx) {
       tx.put('coordination', 'authority', <String, Object?>{
         'state': 'granted',
@@ -211,7 +240,7 @@ void main() {
 
   group('the daemon truth (the doctor probe, G2)', () {
     test('live/pid/stale come from the doctor report', () async {
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       expect(service.daemonLive, isTrue);
@@ -221,14 +250,14 @@ void main() {
     });
 
     test('a dead daemon renders down, never an error surface', () async {
-      final service = buildService(doctorOverride: (_) => doctor(live: false));
+      final service = await buildService(doctorOverride: (_) => doctor(live: false));
       await service.refresh();
 
       expect(service.daemonLive, isFalse);
     });
 
     test('the arm refuses by name when the AOT artifact is absent', () async {
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       final report = await service.armWorld();
@@ -274,7 +303,7 @@ void main() {
         schedulerRecord(pid: pid), // the test process: alive
         scope: registry.scopeFor(worldHome),
       );
-      final service = buildService()..debugSupervisorRegistry = registry;
+      final service = await buildService()..debugSupervisorRegistry = registry;
       await service.refresh();
 
       expect(service.schedulerLive, isTrue);
@@ -293,7 +322,7 @@ void main() {
     });
 
     test('no record: the scheduler is honestly down, never an error', () async {
-      final service = buildService(
+      final service = await buildService(
         doctorOverride: (_) => doctor(root: configRoot),
       )..debugSupervisorRegistry = MachineRegistry(
         root: '${tempRoot.path}/oka-empty',
@@ -312,7 +341,7 @@ void main() {
       // pkgs/xsoulspace_agentic_afm/bin/realm_scheduler.dart.
       final fakeHarness = '${tempRoot.path}/harness-checkout';
       Directory(fakeHarness).createSync(recursive: true);
-      final service = buildService(
+      final service = await buildService(
         doctorOverride: (_) => doctor(
           exePresent: true,
           exePath: '$fakeHarness/build/ecsai_daemon.exe',
@@ -338,7 +367,7 @@ void main() {
     });
 
     test('the arm refuses by name when no harness root was resolved', () async {
-      final service = buildService(
+      final service = await buildService(
         doctorOverride: (_) => doctor(exePresent: true),
       );
       await service.refresh();
@@ -354,7 +383,7 @@ void main() {
     });
 
     test('the daemon artifact is still the FIRST refusal', () async {
-      final service = buildService(
+      final service = await buildService(
         doctorOverride: (_) => doctor(root: configRoot),
       );
       await service.refresh();
@@ -368,9 +397,10 @@ void main() {
   });
 
   group('the palette is DISCOVERED, never hardcoded (the Zed rule)', () {
-    test('the authority configurationRoot wins the chain', () async {
+    test('the override leads the chain: the staged root wins over the '
+        'global file', () async {
       writePaletteConfig(configRoot, paletteDoc());
-      final service = buildService();
+      final service = await buildService(); // stagedRoot → the override law
       await service.refresh();
 
       expect(service.paletteConfigPath, '$configRoot/.xsoulspace/config.json');
@@ -386,28 +416,35 @@ void main() {
       ]);
     });
 
-    test('without an authority row the world-home walk-up finds it', () async {
-      // A fresh store with NO authority row.
-      final bareStore = RealmControlStore(
-        Directory('${tempRoot.path}/coordination2')
-          ..createSync(recursive: true),
+    test('the DEVICE GLOBAL is the default read (the 2026-11-19 law): '
+        'no override, no authority row, no walk-up', () async {
+      // The global config gains the palette (merged beside the
+      // escalation ladder the ladder test reads).
+      Directory('${deviceHome.path}/.xsoulspace').createSync(recursive: true);
+      File(
+        '${deviceHome.path}/.xsoulspace/config.json',
+      ).writeAsStringSync(
+        jsonEncode({
+          'realm_actor_escalation': <String, String>{
+            'modelscope_qwen38max': 'openrouter_deepseek',
+            'qwen': 'modelscope_qwen38max',
+          },
+          ...paletteDoc(),
+        }),
       );
-      writePaletteConfig(worldHome, paletteDoc());
-      final service = WorldStateService(
-        store: bareStore,
-        health: PaletteHealthStore(resolveHome: () => deviceHome.path),
-        debugDoctor: (_) => doctor(),
-        debugWorldHome: worldHome,
-      );
+      final service = await buildService(stagedRoot: false);
       await service.refresh();
 
-      expect(service.paletteConfigPath, '$worldHome/.xsoulspace/config.json');
+      expect(
+        service.paletteConfigPath,
+        '${deviceHome.path}/.xsoulspace/config.json',
+      );
       expect(service.rungs, hasLength(6));
     });
 
     test('health and ladder merge onto the declaration', () async {
       writePaletteConfig(configRoot, paletteDoc());
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       final healthy = service.rungs.firstWhere(
@@ -446,7 +483,7 @@ void main() {
     });
 
     test('no config declares a palette: an honest empty, no default', () async {
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       expect(service.palette, isNull);
@@ -464,7 +501,7 @@ void main() {
           'cast': <Object?>[],
         },
       });
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       expect(service.palette, isNull);
@@ -475,7 +512,7 @@ void main() {
       'the delegation rung is a session choice, not a config write',
       () async {
         writePaletteConfig(configRoot, paletteDoc());
-        final service = buildService();
+        final service = await buildService();
         await service.refresh();
         var notified = 0;
         service.addListener(() => notified++);
@@ -493,7 +530,7 @@ void main() {
   group('the editor writes the REAL document (G7 first step)', () {
     test('a valid save lands with a .bak and re-reads the rungs', () async {
       writePaletteConfig(configRoot, paletteDoc());
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       final edited = paletteDoc();
@@ -521,7 +558,7 @@ void main() {
 
     test('malformed JSON is refused before any write', () async {
       writePaletteConfig(configRoot, paletteDoc());
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
       final before = File(
         '$configRoot/.xsoulspace/config.json',
@@ -540,7 +577,7 @@ void main() {
       'a structurally invalid palette is refused by the harness code',
       () async {
         writePaletteConfig(configRoot, paletteDoc());
-        final service = buildService();
+        final service = await buildService();
         await service.refresh();
 
         final refusal = service.savePaletteJson(
@@ -561,7 +598,7 @@ void main() {
   group('the journal projections (tasks, telemetry, attention)', () {
     test('running tasks sort first; terminals carry their summary', () async {
       writePaletteConfig(configRoot, paletteDoc());
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
 
       expect(service.tasks, hasLength(2));
@@ -584,7 +621,7 @@ void main() {
     test(
       'telemetry keeps the newest row per actor with its cache rate',
       () async {
-        final service = buildService();
+        final service = await buildService();
         await service.refresh();
 
         final scout = service.telemetryByActor['scout']!;
@@ -603,7 +640,7 @@ void main() {
     );
 
     test('attention = open permissions + running tasks', () async {
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
       expect(service.attentionCount, 1);
 
@@ -625,7 +662,7 @@ void main() {
   group('task honesty (wave N5)', () {
     test('detail verbatim, events raw, cancel through the queue verb',
         () async {
-      final service = buildService();
+      final service = await buildService();
       await service.refresh();
       // Admit through the queue's OWN verb: the row shape is the
       // queue's contract, not a test fixture guess.

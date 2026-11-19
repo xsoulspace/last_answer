@@ -28,11 +28,9 @@ library;
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/shell/models/bindings_lens.dart';
 import 'package:lastanswer/shell/models/catalog_lens.dart';
 import 'package:lastanswer/shell/models/local_models_state.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
-import 'package:lastanswer/shell/models/observe_lens.dart';
 import 'package:lastanswer/shell/models/package_local_model_runtime.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
@@ -41,8 +39,6 @@ import 'package:lastanswer/shell/shell_theme.dart';
 /// run and subtitles (identity + count + chevron), and the facts move
 /// into the expanded block — one tree, three form factors.
 const double kModelsCompactWidth = 640;
-
-enum ModelsLens { catalog, bindings, observe }
 
 /// The realm chat service's palette verbs as the candidate's lane.
 final class _ServicePaletteLane implements PaletteVerbLane {
@@ -90,7 +86,6 @@ final class ModelsView extends StatefulWidget {
 }
 
 final class _ModelsViewState extends State<ModelsView> {
-  ModelsLens _lens = ModelsLens.catalog;
   PaletteCandidateModel? _model;
   LocalModelsState? _ownedLocalModels;
   bool _restartPending = false;
@@ -233,7 +228,7 @@ final class _ModelsViewState extends State<ModelsView> {
   /// revision arms the banner (off the model's own notification, never
   /// as a builder side effect); the banner rides until the daemon's
   /// pid changes (the restart's own evidence) or the owner restarts
-  /// from the Observe lens.
+  /// from the daemon strip.
   void _onModelChanged() {
     final outcome = _model?.applyOutcome;
     if (outcome == null || outcome['ok'] != true) return;
@@ -264,29 +259,9 @@ final class _ModelsViewState extends State<ModelsView> {
               children: [
                 Row(
                   children: [
-                    // A narrow split pane wraps the switcher instead
-                    // of overflowing it (a RenderFlex overflow is an
-                    // error, never a layout).
-                    Flexible(
-                      child: Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          for (final lens in ModelsLens.values)
-                            _LensButton(
-                              lens: lens,
-                              selected: _lens == lens,
-                              label: switch (lens) {
-                                ModelsLens.catalog => l10n.modelsLensCatalog,
-                                ModelsLens.bindings => l10n.modelsLensBindings,
-                                ModelsLens.observe => l10n.modelsLensObserve,
-                              },
-                              onTap: () => setState(() => _lens = lens),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 6),
+                    // The lens switcher is GONE (2026-11-19, the merge
+                    // law): one Models surface — the ladder (priority,
+                    // health, cache) + the providers' config beneath it.
                     if (widget.world.paletteConfigPath case final path?)
                       Flexible(
                         child: Text(
@@ -307,6 +282,10 @@ final class _ModelsViewState extends State<ModelsView> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 8),
+                // The daemon strip (the Observe absorption): the world
+                // process's facts + verbs, above every lens.
+                _DaemonStrip(world: widget.world),
                 const SizedBox(height: 8),
                 if (widget.world.paletteAbsence case final refusal?)
                   ModelsRefusalNote(
@@ -357,29 +336,16 @@ final class _ModelsViewState extends State<ModelsView> {
               padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
               child: model == null
                   ? const SizedBox.shrink()
-                  : switch (_lens) {
-                      ModelsLens.catalog => CatalogLens(
-                        model: model,
-                        world: widget.world,
-                        compact: compact,
-                        localModels: _localModels,
-                      ),
-                      ModelsLens.bindings => BindingsLens(
-                        model: model,
-                        world: widget.world,
-                        compact: compact,
-                        service: _service,
-                      ),
-                      ModelsLens.observe => ObserveLens(
-                        world: widget.world,
-                        compact: compact,
-                        service: _service,
-                      ),
-                    },
+                  : CatalogLens(
+                      model: model,
+                      world: widget.world,
+                      compact: compact,
+                      localModels: _localModels,
+                      service: _service,
+                    ),
             ),
           ),
           if (model != null &&
-              _lens != ModelsLens.observe &&
               (model.dirty ||
                   model.refusal != null ||
                   model.receipt != null ||
@@ -391,62 +357,101 @@ final class _ModelsViewState extends State<ModelsView> {
   }
 }
 
-/// The lens switcher's segmented button: one height, the selected lens
-/// rides the raised fill (the ONE-shadow law's flat-at-rest family).
-final class _LensButton extends StatelessWidget {
-  const _LensButton({
-    required this.lens,
-    required this.selected,
-    required this.label,
-    required this.onTap,
-  });
+/// The daemon strip (2026-11-19, the Observe absorption): the world
+/// process's facts + verbs as ONE slim header row — live/pid, the
+/// scheduler leg, and Restart/Stop (or Arm when down). It sits above
+/// every lens because it is about the daemon, not about a model.
+final class _DaemonStrip extends StatelessWidget {
+  const _DaemonStrip({required this.world});
 
-  final ModelsLens lens;
-  final bool selected;
-  final String label;
-  final VoidCallback onTap;
+  final WorldStateService world;
 
   @override
   Widget build(final BuildContext context) {
     final la = context.la;
-    return Semantics(
-      button: true,
-      selected: selected,
-      label: 'models.lens.${lens.name}',
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          key: ValueKey('models.lens.${lens.name}'),
-          behavior: HitTestBehavior.opaque,
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-            decoration: BoxDecoration(
-              color: selected
-                  ? la.ink.withValues(alpha: 0.10)
-                  : la.ink.withValues(alpha: 0.04),
-              borderRadius: BorderRadius.circular(6),
+    final l10n = context.l10n;
+    return Container(
+      key: const ValueKey('models.daemonStrip'),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: context.shellRaised,
+        borderRadius: BorderRadius.circular(ShellTokens.radius),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  world.daemonLive
+                      ? world.daemonPid == null
+                            ? l10n.modelsDaemonLive
+                            : '${l10n.modelsDaemonLive} · '
+                                  'pid ${world.daemonPid}'
+                      : l10n.modelsDaemonDown,
+                  key: const ValueKey('models.daemon'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.laUi.compact.copyWith(
+                    color: world.daemonLive ? null : la.caution,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  world.schedulerLive
+                      ? world.schedulerPid == null
+                            ? l10n.modelsSchedulerLive
+                            : '${l10n.modelsSchedulerLive} · '
+                                  'pid ${world.schedulerPid}'
+                      : l10n.modelsSchedulerDown,
+                  key: const ValueKey('models.scheduler'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.laUi.micro.copyWith(
+                    color: world.schedulerLive ? la.inkQuiet : la.caution,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
             ),
-            // Padding, NOT Center/alignment: both expand to the
-            // incoming max width under bounded-loose constraints (the
-            // Wrap), stretching every pill to the pane (live-caught
-            // via the widget inspector, 2026-11-15).
-            child: Text(
-              label,
-              // One line: a crushed Wrap cell must move the pill to its
-              // own run, never break the word inside it (live-caught
-              // reverify, 2026-11-17).
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.fade,
-              style: context.laUi.micro.copyWith(
-                fontSize: 11,
-                fontWeight: selected ? FontWeight.w600 : null,
-                color: selected ? la.ink : la.inkMuted,
+          ),
+          Flexible(
+            // A narrow split pane scales the verb cluster as a whole
+            // instead of overflowing (the daemon-cluster law).
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!world.daemonLive)
+                    ModelsButton(
+                      keyName: 'models.arm',
+                      label: world.armState == WorldArmState.arming
+                          ? l10n.edgeArming
+                          : l10n.edgeArmWorld,
+                      busy: world.armState == WorldArmState.arming,
+                      onTap: () => unawaited(world.armWorld()),
+                    )
+                  else ...[
+                    ModelsButton(
+                      keyName: 'models.restart',
+                      label: l10n.edgeRestartWorld,
+                      onTap: () => unawaited(world.restartWorld()),
+                    ),
+                    const SizedBox(width: 6),
+                    ModelsButton(
+                      keyName: 'models.stop',
+                      label: l10n.edgeStopWorld,
+                      onTap: () => unawaited(world.stopWorld()),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

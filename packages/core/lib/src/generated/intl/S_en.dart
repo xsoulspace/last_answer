@@ -1737,7 +1737,29 @@ class SEn extends S {
   String get modelsNoPalette => 'No models declared for this world';
 
   @override
-  String get modelsPolicySection => 'Brain policy';
+  String get modelsLocalCatalog => 'Local models';
+
+  @override
+  String get modelsLadderAdd => 'Add model';
+
+  @override
+  String get modelsLadderRemove => 'Remove from models';
+
+  @override
+  String get modelsLadderAddTitle => 'Add a model to the ladder';
+
+  @override
+  String get modelsLadderProvider => 'provider';
+
+  @override
+  String get modelsLadderModel => 'model id';
+
+  @override
+  String get modelsPolicySection => 'Models';
+
+  @override
+  String get modelsPolicyHint =>
+      'Tried top-down — when one is down or stuck, the next takes over.';
 
   @override
   String get modelsPolicyFirst => 'thinks first';
@@ -2218,15 +2240,6 @@ class SEn extends S {
       'the realm seat is not ready — the palette verbs need it';
 
   @override
-  String get modelsLensCatalog => 'Catalog';
-
-  @override
-  String get modelsLensBindings => 'Bindings';
-
-  @override
-  String get modelsLensObserve => 'Observe';
-
-  @override
   String get modelsJsonToggle => 'JSON';
 
   @override
@@ -2390,9 +2403,6 @@ class SEn extends S {
       'awaiting xAI client registration';
 
   @override
-  String get modelsLocalCatalog => 'Local models';
-
-  @override
   String get modelsLocalDiskDownloaded => 'Downloaded';
 
   @override
@@ -2504,6 +2514,10 @@ class SEn extends S {
   String get modelsLocalDetailsMemory => 'memory';
 
   @override
+  String get modelsLocalDetailsSidecar =>
+      'served by the laya-serve sidecar — no in-app residency';
+
+  @override
   String get modelsLocalDetailsSizeOnDisk => 'size on disk';
 
   @override
@@ -2562,12 +2576,6 @@ class SEn extends S {
 
   @override
   String get modelsRestartNow => 'Restart now';
-
-  @override
-  String get modelsHealthSection => 'Health';
-
-  @override
-  String get modelsLedgerSection => 'Dispatch ledger';
 
   @override
   String get modelsUnbound => 'unbound actors';

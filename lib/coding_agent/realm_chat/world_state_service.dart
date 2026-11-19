@@ -4,15 +4,18 @@
 /// Models surface render.
 ///
 /// Dynamic by law (the owner's Zed rule): the model palette is NEVER a
-/// hardcoded cast. It is DISCOVERED from the config chain the harness
-/// itself reads — the realm authority row's `configurationRoot`, then
-/// the nearest `.xsoulspace/config.json` walking up from the world home,
-/// then the device-global file — and parsed with the harness's OWN
-/// parser (`parsePaletteConfig`), so a refusal is the harness's named
-/// code, verbatim. Health merges from the daemon's `palette_health.json`
-/// (ADR 0119); the escalation ladder from `realm_actor_escalation`;
-/// tasks and telemetry from the realm journal the app already holds a
-/// store on; permissions and verdicts from the live session registry.
+/// hardcoded cast. It is DISCOVERED from the config chain — the user's
+/// explicit config-root override, else the device-global
+/// `~/.xsoulspace/config.json` (the owner's 2026-11-19 law: ALWAYS the
+/// global config by default; a local config is preserved for
+/// overrides, so LA never follows a checkout's file, the daemon's
+/// authority row, or an ancestor walk-up) — and parsed with the
+/// harness's OWN parser (`parsePaletteConfig`), so a refusal is the
+/// harness's named code, verbatim. Health merges from the daemon's
+/// `palette_health.json` (ADR 0119); the escalation ladder from
+/// `realm_actor_escalation`; tasks and telemetry from the realm journal
+/// the app already holds a store on; permissions and verdicts from the
+/// live session registry.
 ///
 /// Process telemetry + read-only journal projections, never world
 /// authority: every absence degrades to a named quiet state, and the
@@ -267,16 +270,22 @@ final class WorldStateService extends ChangeNotifier {
     PaletteHealthStore? health,
     this.debugDoctor,
     this.debugWorldHome,
+    this.debugDeviceHome,
   }) : _health = health ?? PaletteHealthStore() {
     unawaited(_loadConfigRoot());
   }
 
-  /// The user-chosen config root (2026-11-18 v3.2, the owner's law):
-  /// where `.xsoulspace/config.json` is read from FIRST. Null = the
-  /// daemon's realm root, else the global `$HOME/.xsoulspace` — Last
-  /// Answer must never SILENTLY depend on a development checkout (the
-  /// harness repo), which is exactly what an ECSAID_ROOT-pinned daemon
-  /// made it do. Persisted across runs.
+  /// The device home the config chain reads (tests pin it so the
+  /// operator's real global file never leaks into a fixture — the
+  /// production answer is [RealmWorld.deviceHome]).
+  final String? debugDeviceHome;
+
+  /// The user-chosen config root (2026-11-18 v3.2, refined by the
+  /// owner's 2026-11-19 law): where `.xsoulspace/config.json` is read
+  /// from FIRST. Null = the device-global `~/.xsoulspace` — ALWAYS the
+  /// default; a workspace-local config applies only through this
+  /// explicit override, never by walking up or by following the
+  /// daemon's authority row. Persisted across runs.
   static const String _configRootPrefsKey = 'ecsai.configRootOverride';
   String? _configRootOverride;
   String? get configRootOverride => _configRootOverride;
@@ -623,7 +632,6 @@ final class WorldStateService extends ChangeNotifier {
     try {
       _refreshDaemon();
       await _refreshJournal();
-      await _refreshAuthority();
       _refreshPalette();
       _refreshSessions();
     } on Object catch (error) {
@@ -963,11 +971,12 @@ final class WorldStateService extends ChangeNotifier {
     _rungs = _mergeRungs(_palette!, _health.entries, _ladder);
   }
 
-  /// Walks the harness's own config chain and returns the winning file
-  /// path plus its raw `model_palette` object: the authority row's
-  /// `configurationRoot` first (the daemon's fallback source), then the
-  /// nearest workspace file walking up from the world home, then the
-  /// device-global config.
+  /// Walks the config chain (the owner's law, 2026-11-19: ALWAYS the
+  /// global config by default — a local config is preserved for
+  /// overrides) and returns the winning file path plus its raw
+  /// `model_palette` object. LA never follows a checkout's local
+  /// config: neither the daemon's authority row (it used to drag the
+  /// app into a dev tree) nor an ancestor walk-up of the world home.
   (String, Map<String, Object?>)? _discoverPaletteConfig() {
     for (final candidate in _configCandidates()) {
       final json = _readJsonMap(candidate);
@@ -981,8 +990,8 @@ final class WorldStateService extends ChangeNotifier {
 
   List<String> _configCandidates() {
     final candidates = <String>[];
-    // The user's choice leads (the option exists exactly so the app can
-    // be pointed AWAY from a checkout).
+    // 1. The user's explicit choice — the override is exactly how a
+    //    workspace-local config applies (its documented purpose).
     final override = _configRootOverride;
     if (override != null && override.isNotEmpty) {
       final root = override.endsWith('/.xsoulspace')
@@ -990,46 +999,16 @@ final class WorldStateService extends ChangeNotifier {
           : override;
       candidates.add('$root/.xsoulspace/config.json');
     }
-    final authorityRoot = _configurationRoot;
-    if (authorityRoot != null && authorityRoot.isNotEmpty) {
-      candidates.add('$authorityRoot/.xsoulspace/config.json');
-    }
-    final home = worldHome;
-    if (home != null && home.isNotEmpty) {
-      var dir = Directory(home).absolute.path;
-      while (true) {
-        candidates.add('$dir/.xsoulspace/config.json');
-        final parent = Directory(dir).parent.path;
-        if (parent == dir) break;
-        dir = parent;
-      }
-    }
-    candidates.add('${RealmWorld.deviceHome()}/.xsoulspace/config.json');
+    // 2. The device-global config — THE default. The harness's own
+    //    palette chain reads the same file (palette_config.dart).
+    candidates.add('${_deviceHome()}/.xsoulspace/config.json');
     return candidates;
   }
 
-  String? _configurationRoot;
-
-  /// The realm authority row's `configurationRoot` (the journal record
-  /// the daemon itself falls back to, `durable_seat_host.dart`): read
-  /// once per journal refresh so the palette discovery follows the
-  /// realm, not a guess.
-  Future<void> _refreshAuthority() async {
-    final store = _store;
-    if (store == null) return;
-    try {
-      final row = await store.read('coordination', 'authority');
-      final root = row?['configurationRoot'];
-      _configurationRoot = root is String && root.isNotEmpty ? root : null;
-    } on Object {
-      _configurationRoot = null;
-    }
-  }
+  String _deviceHome() => debugDeviceHome ?? RealmWorld.deviceHome();
 
   Map<String, String> _readLadder() {
-    final json = _readJsonMap(
-      '${RealmWorld.deviceHome()}/.xsoulspace/config.json',
-    );
+    final json = _readJsonMap('${_deviceHome()}/.xsoulspace/config.json');
     final raw = json?['realm_actor_escalation'];
     if (raw is! Map) return const {};
     return Map.unmodifiable(<String, String>{

@@ -31,8 +31,18 @@ final class PackageLocalModelRuntime implements LocalModelRuntime {
   /// to the lfm engine family, everything else stays qwen).
   bool _isLfm(final MlxModelCatalogEntry entry) => entry.family == 'lfm2.5';
 
+  /// The disk-only families (2026-11-19, the laya row): a decision
+  /// checkpoint serves out-of-process through the laya-serve sidecar —
+  /// it must never reach the in-app engine registry.
+  bool _isDiskOnly(final MlxModelCatalogEntry entry) =>
+      localModelDiskOnly(entry);
+
   @override
   bool isLoaded(final MlxModelCatalogEntry entry) {
+    // The disk-only law: no in-app residency, ever (a decision
+    // checkpoint routed into the qwen engine would be a type error the
+    // native layer would answer obscurely — answer honestly instead).
+    if (_isDiskOnly(entry)) return false;
     final dir = _dirOf(entry);
     if (dir == null) return false;
     final runtime = MlxModelRuntime.instance;
@@ -41,6 +51,7 @@ final class PackageLocalModelRuntime implements LocalModelRuntime {
 
   @override
   Future<void> load(final MlxModelCatalogEntry entry) async {
+    if (_isDiskOnly(entry)) return;
     final dir = _dirOf(entry);
     if (dir == null) return;
     final runtime = MlxModelRuntime.instance;
@@ -49,6 +60,7 @@ final class PackageLocalModelRuntime implements LocalModelRuntime {
 
   @override
   Future<void> unload(final MlxModelCatalogEntry entry) async {
+    if (_isDiskOnly(entry)) return;
     final dir = _dirOf(entry);
     if (dir == null) return;
     // The dfp unload is synchronous.

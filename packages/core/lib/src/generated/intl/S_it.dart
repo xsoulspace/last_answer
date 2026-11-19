@@ -1750,7 +1750,29 @@ class SIt extends S {
   String get modelsNoPalette => 'Nessun modello dichiarato per questo mondo';
 
   @override
-  String get modelsPolicySection => 'Politica dei brain';
+  String get modelsLocalCatalog => 'Modelli locali';
+
+  @override
+  String get modelsLadderAdd => 'Aggiungi modello';
+
+  @override
+  String get modelsLadderRemove => 'Rimuovi dai modelli';
+
+  @override
+  String get modelsLadderAddTitle => 'Aggiungi un modello alla scaletta';
+
+  @override
+  String get modelsLadderProvider => 'provider';
+
+  @override
+  String get modelsLadderModel => 'id del modello';
+
+  @override
+  String get modelsPolicySection => 'Modelli';
+
+  @override
+  String get modelsPolicyHint =>
+      'Provati dall\'alto in basso — quando uno è giù o bloccato, subentra il successivo.';
 
   @override
   String get modelsPolicyFirst => 'pensa per primo';
@@ -2233,15 +2255,6 @@ class SIt extends S {
       'il seat del realm non è pronto — i verbi della palette lo richiedono';
 
   @override
-  String get modelsLensCatalog => 'Catalogo';
-
-  @override
-  String get modelsLensBindings => 'Associazioni';
-
-  @override
-  String get modelsLensObserve => 'Osserva';
-
-  @override
   String get modelsJsonToggle => 'JSON';
 
   @override
@@ -2407,9 +2420,6 @@ class SIt extends S {
       'in attesa della registrazione client xAI';
 
   @override
-  String get modelsLocalCatalog => 'Modelli locali';
-
-  @override
   String get modelsLocalDiskDownloaded => 'Scaricato';
 
   @override
@@ -2521,6 +2531,10 @@ class SIt extends S {
   String get modelsLocalDetailsMemory => 'memoria';
 
   @override
+  String get modelsLocalDetailsSidecar =>
+      'servito dal sidecar laya-serve — nessuna residenza in-app';
+
+  @override
   String get modelsLocalDetailsSizeOnDisk => 'dimensione su disco';
 
   @override
@@ -2579,12 +2593,6 @@ class SIt extends S {
 
   @override
   String get modelsRestartNow => 'Riavvia ora';
-
-  @override
-  String get modelsHealthSection => 'Salute';
-
-  @override
-  String get modelsLedgerSection => 'Registro dispatch';
 
   @override
   String get modelsUnbound => 'attori non associati';

@@ -432,6 +432,58 @@ final class PaletteCandidateModel extends ChangeNotifier {
     }
   }
 
+  /// Removes a cast entry (the ladder's remove verb, 2026-11-19): the
+  /// composition root's builtin lanes are NOT removable (the daemon
+  /// owns them — the refusal names the lane); a declared entry leaves
+  /// the ladder and the primary mark re-syncs to the order.
+  bool removeCast(final String castId) {
+    final list = cast;
+    final at = list.indexWhere(
+      (final entry) => entry is Map && entry['id'] == castId,
+    );
+    if (at < 0) return _refuse(CandidateRefusal('emptyId', refs: [castId]));
+    final row = list[at];
+    if (row is Map && row['builtin'] == true) {
+      return _refuse(CandidateRefusal('builtinCast', refs: [castId]));
+    }
+    list.removeAt(at);
+    _syncPrimaryToOrder();
+    return _land();
+  }
+
+  /// Adds a generative cast entry at the ladder's foot (the add verb,
+  /// 2026-11-19): the id must be unique across the cast, the provider
+  /// must be declared. The entry carries no primary mark — the sync
+  /// keeps position 1 the default.
+  bool addCast({
+    required final String id,
+    required final String provider,
+    required final String model,
+    final String role = 'generative',
+  }) {
+    if (id.isEmpty || model.isEmpty) {
+      return _refuse(const CandidateRefusal('emptyId'));
+    }
+    if (provider.isEmpty || !providers.containsKey(provider)) {
+      return _refuse(CandidateRefusal('unknownProvider', refs: [provider]));
+    }
+    final list = cast;
+    final duplicate = list.any(
+      (final entry) => entry is Map && entry['id'] == id,
+    );
+    if (duplicate) {
+      return _refuse(CandidateRefusal('duplicateCast', refs: [id]));
+    }
+    list.add(<Object?, Object?>{
+      'id': id,
+      'provider': provider,
+      'model': model,
+      'role': role,
+    });
+    _syncPrimaryToOrder();
+    return _land();
+  }
+
   /// The JSON lane: the raw document view (the Zed rule). A decode
   /// failure or a non-object root is a named refusal — the candidate
   /// keeps its last valid shape, never a half-parse.

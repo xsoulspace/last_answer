@@ -831,9 +831,37 @@
   "@modelsNoPalette": {
     "description": "Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs)."
   },
-  "modelsPolicySection": "Brain policy",
+  "modelsLocalCatalog": "Local models",
+  "@modelsLocalCatalog": {
+    "description": "Models v4.1 2026-11-19: the on-machine checkpoints section — download/remove, start/stop per checkpoint (the restored provisioning surface)."
+  },
+  "modelsLadderAdd": "Add model",
+  "@modelsLadderAdd": {
+    "description": "Models v4.1 2026-11-19: the ladder's add verb — declares a generative cast from a provider model."
+  },
+  "modelsLadderRemove": "Remove from models",
+  "@modelsLadderRemove": {
+    "description": "Models v4.1 2026-11-19: the ladder row's remove verb (declared entries only — builtin lanes are the composition root's)."
+  },
+  "modelsLadderAddTitle": "Add a model to the ladder",
+  "@modelsLadderAddTitle": {
+    "description": "Models v4.1 2026-11-19: the add-model dialog's title."
+  },
+  "modelsLadderProvider": "provider",
+  "@modelsLadderProvider": {
+    "description": "Models v4.1 2026-11-19: the add-model dialog's provider field."
+  },
+  "modelsLadderModel": "model id",
+  "@modelsLadderModel": {
+    "description": "Models v4.1 2026-11-19: the add-model dialog's model-id field (the cast id derives from it)."
+  },
+  "modelsPolicySection": "Models",
   "@modelsPolicySection": {
-    "description": "Models: the world default order section (the old generative-rungs list, rendered as sentences)."
+    "description": "Models merge 2026-11-19: the ONE section title — the ladder of models in priority order."
+  },
+  "modelsPolicyHint": "Tried top-down — when one is down or stuck, the next takes over.",
+  "@modelsPolicyHint": {
+    "description": "Models merge 2026-11-19: the ladder's one-line explanation under the section title."
   },
   "modelsPolicyFirst": "thinks first",
   "@modelsPolicyFirst": {
@@ -1424,18 +1452,6 @@
   "@modelsRefusalNoSeat": {
     "description": "Provider editor: seat-absent refusal."
   },
-  "modelsLensCatalog": "Catalog",
-  "@modelsLensCatalog": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensBindings": "Bindings",
-  "@modelsLensBindings": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensObserve": "Observe",
-  "@modelsLensObserve": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
   "modelsJsonToggle": "JSON",
   "@modelsJsonToggle": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
@@ -1632,10 +1648,6 @@
   "@modelsGrokAwaitingRegistration": {
     "description": "Grok subscription catalog row before xAI issues a client id."
   },
-  "modelsLocalCatalog": "Local models",
-  "@modelsLocalCatalog": {
-    "description": "Local model manager 2026-11-18 (docs/design/models-local-manager.md): the merged local-models section header (downloadable checkpoints + on-device services)."
-  },
   "modelsLocalDiskDownloaded": "Downloaded",
   "@modelsLocalDiskDownloaded": {
     "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
@@ -1803,6 +1815,10 @@
   "@modelsLocalDetailsMemory": {
     "description": "Local models v3 2026-11-18: the detail sheet's memory-state row."
   },
+  "modelsLocalDetailsSidecar": "served by the laya-serve sidecar — no in-app residency",
+  "@modelsLocalDetailsSidecar": {
+    "description": "Local models v3.3 2026-11-19: the disk-only row's memory fact — the decision checkpoint serves out-of-process through the laya-serve sidecar."
+  },
   "modelsLocalDetailsSizeOnDisk": "size on disk",
   "@modelsLocalDetailsSizeOnDisk": {
     "description": "Local models v3 2026-11-18: the detail sheet's SENSED size row (a walk of the snapshot dir, never the approximation)."
@@ -1877,14 +1893,6 @@
   },
   "modelsRestartNow": "Restart now",
   "@modelsRestartNow": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsHealthSection": "Health",
-  "@modelsHealthSection": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLedgerSection": "Dispatch ledger",
-  "@modelsLedgerSection": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
   },
   "modelsUnbound": "unbound actors",

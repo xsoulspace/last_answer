@@ -92,6 +92,75 @@ final class PackageLocalModelInstaller implements LocalModelInstaller {
 String localModelRefName(final MlxModelCatalogEntry entry) =>
     entry.repoId.split('/').last;
 
+/// The DISK-ONLY families (2026-11-19, the laya lifecycle row): the
+/// decision brain serves out-of-process through the laya-serve sidecar,
+/// so its checkpoint row has no in-app memory stage — no Load/Unload
+/// verbs, no fit verdict (the sidecar's RAM is the sidecar's), no
+/// budget-bar segment. The Download/Delete disk stage stays full.
+bool localModelDiskOnly(final MlxModelCatalogEntry entry) =>
+    entry.family == 'laya';
+
+/// The brain family a ladder cast serves (the checkpoint-family law):
+/// the `qwen` brain resolves the Qwen3/Qwen3.5 checkpoints (catalog
+/// order IS the resolution order — the first installed one), `lfm` the
+/// LFM2.5 family, `laya` the laya family. Empty for anything else (a
+/// declared brain has no local checkpoints).
+Set<String> castFamilies(final String castId) => switch (castId) {
+  'qwen' => const <String>{'qwen3', 'qwen3.5'},
+  'lfm' => const <String>{'lfm2.5'},
+  'laya' => const <String>{'laya'},
+  _ => const <String>{},
+};
+
+/// The checkpoint a ladder row NAMES (2026-11-19, the owner's alias
+/// law): a local brain's row speaks the MODEL it serves — the first
+/// INSTALLED catalog entry of the brain's family, in catalog order
+/// (the same order the brain's own resolution follows) — so the row
+/// reads "LFM 2.5 1.2B", never the bare `lfm` alias. Null when nothing
+/// is installed: the row falls back to the lane's human name, which
+/// there is the honest "empty slot" name.
+MlxModelCatalogEntry? installedEntryForCast(
+  final LocalModelsState local,
+  final String castId,
+) {
+  final families = castFamilies(castId);
+  if (families.isEmpty) return null;
+  for (final entry in local.catalog) {
+    if (families.contains(entry.family) && local.stateOf(entry).installed) {
+      return entry;
+    }
+  }
+  return null;
+}
+
+/// Every catalog entry of a brain's family (the checkpoint family):
+/// the qwen brain's expansion lists its non-default checkpoints here —
+/// installed or not — so "add a model from the catalog" lives on the
+/// brain's row.
+List<MlxModelCatalogEntry> familyEntriesForCast(
+  final LocalModelsState local,
+  final String castId,
+) {
+  final families = castFamilies(castId);
+  if (families.isEmpty) return const <MlxModelCatalogEntry>[];
+  return <MlxModelCatalogEntry>[
+    for (final entry in local.catalog)
+      if (families.contains(entry.family)) entry,
+  ];
+}
+
+/// The builtin rungs whose brain the catalog OWNS (the one-place-per-
+/// model law, 2026-11-19): `qwen` (absorbed in v3), `lfm` (the LFM 2.5
+/// checkpoint row) and `laya` (the disk-only checkpoint row) render NO
+/// lane chip in the catalog footer — the row IS the model's place, and
+/// a second chip was the model's name twice. AFM stays a chip: it has
+/// no lifecycle and no catalog row (the Apple edge case).
+const Set<String> kCatalogOwnedBuiltinRungs = <String>{
+  'qwen',
+  'lfm',
+  'laya',
+};
+
 /// The entry's candidate BRAIN cast names (2026-11-18 ledger law): the
 /// discovery ref the brain grammar speaks (`qwen3.5-0.8b` — lowercased,
 /// quant tag stripped) plus the bare default alias when this entry IS

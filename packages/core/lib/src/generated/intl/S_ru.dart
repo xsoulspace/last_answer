@@ -1753,7 +1753,29 @@ class SRu extends S {
   String get modelsNoPalette => 'Для этого мира не объявлено ни одной модели';
 
   @override
-  String get modelsPolicySection => 'Политика мозгов';
+  String get modelsLocalCatalog => 'Локальные модели';
+
+  @override
+  String get modelsLadderAdd => 'Добавить модель';
+
+  @override
+  String get modelsLadderRemove => 'Убрать из моделей';
+
+  @override
+  String get modelsLadderAddTitle => 'Добавить модель в порядок';
+
+  @override
+  String get modelsLadderProvider => 'провайдер';
+
+  @override
+  String get modelsLadderModel => 'id модели';
+
+  @override
+  String get modelsPolicySection => 'Модели';
+
+  @override
+  String get modelsPolicyHint =>
+      'Перебор сверху вниз — когда одна недоступна или зависла, вступает следующая.';
 
   @override
   String get modelsPolicyFirst => 'думает первым';
@@ -2238,15 +2260,6 @@ class SRu extends S {
       'seat realm не готов — он нужен глаголам палитры';
 
   @override
-  String get modelsLensCatalog => 'Каталог';
-
-  @override
-  String get modelsLensBindings => 'Биндинги';
-
-  @override
-  String get modelsLensObserve => 'Наблюдение';
-
-  @override
   String get modelsJsonToggle => 'JSON';
 
   @override
@@ -2411,9 +2424,6 @@ class SRu extends S {
       'ожидает регистрации client id у xAI';
 
   @override
-  String get modelsLocalCatalog => 'Локальные модели';
-
-  @override
   String get modelsLocalDiskDownloaded => 'Скачана';
 
   @override
@@ -2525,6 +2535,10 @@ class SRu extends S {
   String get modelsLocalDetailsMemory => 'память';
 
   @override
+  String get modelsLocalDetailsSidecar =>
+      'обслуживается сайдкаром laya-serve — без резидентности в приложении';
+
+  @override
   String get modelsLocalDetailsSizeOnDisk => 'размер на диске';
 
   @override
@@ -2583,12 +2597,6 @@ class SRu extends S {
 
   @override
   String get modelsRestartNow => 'Перезапустить сейчас';
-
-  @override
-  String get modelsHealthSection => 'Здоровье';
-
-  @override
-  String get modelsLedgerSection => 'Журнал диспетчеризаций';
 
   @override
   String get modelsUnbound => 'непривязанные актёры';

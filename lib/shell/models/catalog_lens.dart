@@ -34,6 +34,7 @@ import 'dart:math' as math;
 import 'package:lastanswer/coding_agent/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/grok_subscription_controller.dart';
 import 'package:lastanswer/coding_agent/realm_chat/palette_lanes.dart';
+import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/settings/features/storage_backends_state.dart';
@@ -43,6 +44,7 @@ import 'package:lastanswer/shell/models/memory_budget.dart';
 import 'package:lastanswer/shell/models/memory_budget_bar.dart';
 import 'package:lastanswer/shell/models/models_widgets.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
+import 'package:lastanswer/shell/models/policy_components.dart';
 import 'package:lastanswer/shell/shell_theme.dart';
 import 'package:lastanswer/shell/status_edge.dart' show HealthDot;
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
@@ -137,6 +139,7 @@ final class CatalogLens extends StatefulWidget {
     required this.world,
     required this.compact,
     required this.localModels,
+    this.service,
     super.key,
   });
 
@@ -149,12 +152,21 @@ final class CatalogLens extends StatefulWidget {
   /// ModelsView; tests inject a fake-installer state.
   final LocalModelsState localModels;
 
+  /// The realm chat service (the actor→brain bindings the ladder rows'
+  /// actor chips + cache chips read). Null in hermetic tests.
+  final RealmChatService? service;
+
   @override
   State<CatalogLens> createState() => _CatalogLensState();
 }
 
 final class _CatalogLensState extends State<CatalogLens> {
   final Set<String> _expanded = <String>{};
+
+  /// The ladder casts whose history expansion is open (the Observe
+  /// absorption's doors — distinct from [_expanded], the provider
+  /// blocks).
+  final Set<String> _ladderExpanded = <String>{};
   _FormState? _form;
   bool _jsonMode = false;
 
@@ -483,12 +495,6 @@ final class _CatalogLensState extends State<CatalogLens> {
       for (final rung in widget.world.rungs)
         if (rung.builtin) rung,
     ];
-    final onDevice = <WorldRung>[
-      for (final rung in builtins)
-        if (rung.id != 'qwen' &&
-            classOfBuiltin(builtinLaneFamily(rung.id)) == LaneClass.onDevice)
-          rung,
-    ];
     final unclassified = <WorldRung>[
       for (final rung in builtins)
         if (classOfBuiltin(builtinLaneFamily(rung.id)) ==
@@ -508,38 +514,10 @@ final class _CatalogLensState extends State<CatalogLens> {
       key: const ValueKey('models.providers'),
       padding: EdgeInsets.zero,
       children: [
-        _classSection(
-          context,
-          'models.class.remote',
-          context.l10n.modelsClassRemote,
-          children: [
-            if (remote.isEmpty)
-              _emptyNote(context, context.l10n.modelsClassRemoteEmpty)
-            else
-              for (final id in remote) ..._providerBlock(context, id),
-          ],
-        ),
-        _classSection(
-          context,
-          'models.class.localServer',
-          context.l10n.modelsClassLocalServer,
-          children: [
-            if (loopback.isEmpty)
-              _emptyNote(context, context.l10n.modelsClassLocalServerEmpty)
-            else
-              for (final id in loopback) ..._providerBlock(context, id),
-          ],
-        ),
-        _classSection(
-          context,
-          'models.class.subscription',
-          context.l10n.modelsClassSubscription,
-          children: [
-            _subscriptionRow(context),
-            _grokSubscriptionRow(context),
-            _emptyNote(context, context.l10n.modelsClassSubscriptionAbsent),
-          ],
-        ),
+        // The LOCAL CATALOG (the restored provisioning surface,
+        // 2026-11-19 v4.1 — the owner's "the old correct UI where the
+        // user downloads/removes, starts/stops local models"): every
+        // checkpoint is a row with its full lifecycle, no folding.
         _classSection(
           context,
           'models.class.localModels',
@@ -552,10 +530,6 @@ final class _CatalogLensState extends State<CatalogLens> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // The budget bar LEADS the section (2026-11-18) and
-                    // v3 makes it the MAP: each loaded model owns a
-                    // labeled segment (tap-through selects the row) and
-                    // a generating model's segment pulses.
                     MemoryBudgetBar(
                       facts: local.memoryFacts,
                       loaded: <LoadedModelSegment>[
@@ -579,12 +553,6 @@ final class _CatalogLensState extends State<CatalogLens> {
                         }
                       },
                     ),
-                    // The machine verdict, said ONCE and made
-                    // ACTIONABLE (2026-11-18 v3.1, the owner's "why is
-                    // there no place to start any model"): the floor is
-                    // the gate's headroom, and the line names the
-                    // next runnable step — how much to free for the
-                    // downloaded model closest to fitting.
                     if (_closestUnfitEntry(local) case (
                       final entry,
                       final fit,
@@ -618,25 +586,39 @@ final class _CatalogLensState extends State<CatalogLens> {
                 );
               },
             ),
-            // The built-in lanes close the merged section as a FOOTER
-            // (the owner's 2026-11-18 merge law, v3 shape): they are
-            // not lifecycle rows — one quiet chip per lane, the
-            // sentence on the tooltip, AFM visibly exempt from the
-            // load/download story. The `qwen` lane chip is ABSENT on
-            // purpose: it IS the checkpoints above.
-            if (onDevice.isNotEmpty)
-              Padding(
-                key: const ValueKey('models.local.builtins'),
-                padding: const EdgeInsets.only(top: 8),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: [
-                    for (final rung in onDevice)
-                      _builtinLaneChip(context, rung),
-                  ],
-                ),
-              ),
+          ],
+        ),
+        ..._ladderSection(context),
+        _classSection(
+          context,
+          'models.class.remote',
+          context.l10n.modelsClassRemote,
+          children: [
+            if (remote.isEmpty)
+              _emptyNote(context, context.l10n.modelsClassRemoteEmpty)
+            else
+              for (final id in remote) ..._providerBlock(context, id),
+          ],
+        ),
+        _classSection(
+          context,
+          'models.class.localServer',
+          context.l10n.modelsClassLocalServer,
+          children: [
+            if (loopback.isEmpty)
+              _emptyNote(context, context.l10n.modelsClassLocalServerEmpty)
+            else
+              for (final id in loopback) ..._providerBlock(context, id),
+          ],
+        ),
+        _classSection(
+          context,
+          'models.class.subscription',
+          context.l10n.modelsClassSubscription,
+          children: [
+            _subscriptionRow(context),
+            _grokSubscriptionRow(context),
+            _emptyNote(context, context.l10n.modelsClassSubscriptionAbsent),
           ],
         ),
         if (unclassified.isNotEmpty)
@@ -676,6 +658,660 @@ final class _CatalogLensState extends State<CatalogLens> {
     padding: const EdgeInsets.fromLTRB(0, 2, 0, 6),
     child: Text(text, style: LaTokens.mono(10, context.la.inkQuiet)),
   );
+
+  /// The checkpoint rows in lifecycle order (loaded → downloaded →
+  /// not installed; the repo id breaks ties — List.sort is unstable).
+  List<MlxModelCatalogEntry> _sortedLocalEntries(
+    final LocalModelsState local,
+  ) {
+    int rank(final MlxModelCatalogEntry entry) {
+      if (local.stateOf(entry).installed && local.isLoaded(entry)) return 0;
+      if (local.stateOf(entry).installed) return 1;
+      return 2;
+    }
+
+    return local.catalog.toList()
+      ..sort(
+        (final a, final b) =>
+            (rank(a) - rank(b)) != 0
+            ? rank(a) - rank(b)
+            : a.repoId.compareTo(b.repoId),
+      );
+  }
+
+  // ---- the Models ladder (2026-11-19, the merge law) ----
+  //
+  // ONE list where a model is ONE row: the position IS the priority
+  // (the world tries top-down and falls back when a brain is down or
+  // stuck), the health + cache chips ride the row (the Observe
+  // absorption), and a local brain's row speaks the MODEL it serves —
+  // the installed checkpoint's display label, never the bare cast
+  // alias — with its lifecycle verb inline. The budget bar leads: it
+  // is the machine map the local rows draw against.
+
+  /// The whole ladder section: hint, budget bar + the machine verdict,
+  /// the ordered rows, the unbound door, the system lanes.
+  List<Widget> _ladderSection(final BuildContext context) {
+    final local = widget.localModels;
+    final l10n = context.l10n;
+    final cast = _model.cast.whereType<Map<Object?, Object?>>().toList();
+    final generative = <Map<Object?, Object?>>[
+      for (final entry in cast)
+        if (entry['role'] == 'generative') entry,
+    ];
+    final decision = <Map<Object?, Object?>>[
+      for (final entry in cast)
+        if (entry['role'] != 'generative') entry,
+    ];
+    final telemetry = groupTelemetryByCast(widget.world, widget.service);
+    final labels = <String>[
+      for (final entry in generative) _brainTitle(entry),
+    ];
+    return <Widget>[
+      Padding(
+        key: const ValueKey('models.class.localModels'),
+        padding: const EdgeInsets.only(bottom: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // The section header carries the ADD verb (the owner's flow:
+            // add a model, then manage its priority) — a declared
+            // provider model lands at the ladder's foot as generative.
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(l10n.modelsPolicySection, style: shellSectionLabel(context)),
+                  ),
+                  ModelsButton(
+                    keyName: 'models.ladder.add',
+                    label: l10n.modelsLadderAdd,
+                    onTap: () => unawaited(_askAddCast(context)),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              l10n.modelsPolicyHint,
+              style: LaTokens.mono(10, context.la.inkQuiet),
+            ),
+            const SizedBox(height: 6),
+            // The ladder rides the LOCAL state (the alias titles +
+            // lifecycle read the install states) AND the candidate.
+            ListenableBuilder(
+              listenable: local,
+              builder: (final context, final _) {
+                final liveLabels = <String>[
+                  for (final entry in generative) _brainTitle(entry),
+                ];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < generative.length; i++)
+                      _ladderRow(
+                        context,
+                        generative[i],
+                        i,
+                        liveLabels,
+                        generative,
+                        telemetry,
+                      ),
+                    if (telemetry['unbound']
+                        case final unbound? when unbound.isNotEmpty)
+                      _unboundRow(context, unbound),
+                  ],
+                );
+              },
+            ),
+            if (_model.refusal case final refusal?)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: ModelsNote(
+                  keyName: 'models.refusal.ladder',
+                  text: refusalText(context, refusal),
+                  color: context.la.caution,
+                ),
+              ),
+            if (widget.world.selectedRungId case final session?)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  ModelsChip(
+                    label: '${l10n.modelsSessionPrefix} $session',
+                    color: context.la.accent,
+                    mono: true,
+                  ),
+                  const SizedBox(width: 8),
+                  ModelsButton(
+                    keyName: 'models.session.clear',
+                    label: l10n.modelsSessionClear,
+                    onTap: () => widget.world.selectRung(null),
+                  ),
+                ],
+              ),
+            ),
+            if (decision.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              SystemLanes(
+                entries: decision,
+                compact: widget.compact,
+                world: widget.world,
+                localModels: widget.localModels,
+                onAskInstall: _askInstall,
+                onAskDelete: _askDelete,
+              ),
+            ],
+          ],
+        ),
+      ),
+    ];
+  }
+
+  /// The row's spoken name (the alias law, 2026-11-19): a declared
+  /// entry speaks its declared model; a local lane speaks the installed
+  /// checkpoint's display label — "LFM 2.5 1.2B", never the bare `lfm`.
+  String _brainTitle(final Map<Object?, Object?> entry) {
+    final id = '${entry['id']}';
+    if (entry['builtin'] == true) {
+      return installedEntryForCast(widget.localModels, id)?.label ??
+          brainModelLabel(id: id);
+    }
+    return brainModelLabel(
+      id: id,
+      model: entry['model'] is String ? entry['model']! as String : null,
+    );
+  }
+
+  /// One ladder row: position, health, the model's name, the behavior
+  /// sentence, the lane chip, the health + cache chips, the actor chips
+  /// and the order verbs — plus, for a local brain, its checkpoint's
+  /// lifecycle (status word + one verb) inline. Tapping a health/cache
+  /// chip opens the history expansion; a local brain's expansion also
+  /// lists its family's other checkpoints (the "add from catalog" door).
+  Widget _ladderRow(
+    final BuildContext context,
+    final Map<Object?, Object?> entry,
+    final int index,
+    final List<String> labels,
+    final List<Map<Object?, Object?>> generative,
+    final Map<String, List<ActorTelemetry>> telemetry,
+  ) {
+    final count = generative.length;
+    final la = context.la;
+    final laUi = context.laUi;
+    final l10n = context.l10n;
+    final local = widget.localModels;
+    final id = '${entry['id']}';
+    final rung = widget.world.rungs.where((final r) => r.id == id).firstOrNull;
+    final label = labels[index];
+    final isBuiltin = entry['builtin'] == true;
+    final active = isBuiltin ? installedEntryForCast(local, id) : null;
+    final ref = active == null ? null : localModelRefName(active);
+    final installed = active != null && local.stateOf(active).installed;
+    final loaded = installed && local.isLoaded(active);
+    final run = active == null ? null : localRunForEntry(active);
+    final generating = loaded && (run?.running ?? false);
+    final diskOnly = active != null && localModelDiskOnly(active);
+    final fit = active == null
+        ? const LocalModelFit.unknown()
+        : local.fitOf(active);
+    final busy = active != null && local.isBusy(active);
+    final loadBlocked =
+        installed &&
+        !loaded &&
+        !diskOnly &&
+        local.hasRuntime &&
+        !fit.unknown &&
+        !fit.fitsNow;
+    final actors = <String>[
+      for (final binding
+          in (widget.service?.brainCasts ?? const <String, String>{}).entries)
+        if (binding.value == id) binding.key,
+    ];
+    final history = telemetry[id] ?? const <ActorTelemetry>[];
+    final open = _ladderExpanded.contains(id);
+    final selected = ref != null && local.selectedRef == ref;
+    // The empty-slot law: a local brain with NOTHING installed still
+    // offers its first family checkpoint's download — the "add a model
+    // from the catalog" door lives on the brain's row.
+    final slotEntry = active ??
+        (isBuiltin
+            ? (familyEntriesForCast(local, id).isEmpty
+                  ? null
+                  : familyEntriesForCast(local, id).first)
+            : null);
+    final slotRef = slotEntry == null ? null : localModelRefName(slotEntry);
+    // The empty slot still speaks: 'Not downloaded' is the honest
+    // state of a provisionable brain with nothing installed.
+    final statusText = active == null
+        ? (slotEntry != null ? l10n.modelsLocalDiskNot : null)
+        : generating
+        ? l10n.modelsLocalGenerating
+        : loaded
+        ? switch (run?.lastTokensPerSecond) {
+            final speed? => l10n.modelsLocalTokPerSec(_speedLabel(speed)),
+            _ => l10n.modelsLocalMemLoaded,
+          }
+        : installed
+        ? l10n.modelsLocalDiskDownloaded
+        : l10n.modelsLocalDiskNot;
+    return Column(
+      key: ValueKey('models.rung.$id'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Semantics(
+          button: true,
+          label: 'models.rung.$id',
+          hint: id,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: selected
+                  ? la.accent.withValues(alpha: 0.05)
+                  : null,
+              borderRadius: selected ? BorderRadius.circular(6) : null,
+            ),
+            child: ShellRow(
+              height: 44,
+              selected: index == 0,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              onTap: () => widget.world.selectRung(
+                widget.world.selectedRungId == id ? null : id,
+              ),
+              child: LayoutBuilder(
+                builder: (final context, final constraints) {
+                  final tight = widget.compact || constraints.maxWidth < 420;
+                  final divergesFromAdjacency =
+                      index + 1 < count &&
+                      rung?.ladderNext != null &&
+                      rung!.ladderNext != '${generative[index + 1]['id']}';
+                  return Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Text(
+                          '${index + 1}',
+                          style: LaTokens.mono(10, la.inkQuiet),
+                        ),
+                      ),
+                      HealthDot(
+                        status: rung?.healthStatus ?? 'unknown',
+                        size: 8,
+                      ),
+                      const SizedBox(width: 9),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              label,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: laUi.compact.copyWith(
+                                fontWeight: index == 0 ? FontWeight.w600 : null,
+                              ),
+                            ),
+                            // The subtitle is the row's ENGINE truth: a
+                            // local lane names the lane sentence (the
+                            // lane-mirror law), a declared row names the
+                            // raw entry id — the stable handle agents
+                            // and refs name.
+                            if (!tight)
+                              Text(
+                                isBuiltin
+                                    ? builtinLaneSentence(context, id)
+                                    : id,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: laUi.micro.copyWith(
+                                  fontSize: 10,
+                                  color: la.inkQuiet,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      // The lifecycle inline (the merge law): a local
+                      // brain's row carries its checkpoint's state word
+                      // + ONE verb, the same keys the catalog rows used.
+                      // Nothing installed: the slot keeps its download
+                      // door (keyed by the first family checkpoint).
+                      if (active == null &&
+                          slotEntry != null &&
+                          !busy &&
+                          local.installingRef != slotRef) ...[
+                        if (statusText != null && !tight)
+                          Text(
+                            statusText,
+                            maxLines: 1,
+                            style: LaTokens.mono(10, la.inkMuted),
+                          ),
+                        ModelsButton(
+                          keyName: 'models.local.$slotRef.download',
+                          label: l10n.modelsLocalDownload,
+                          onTap: () =>
+                              unawaited(_askInstall(context, slotEntry)),
+                        ),
+                      ]
+                      else if (active != null && !busy) ...[
+                        if (statusText != null && !tight)
+                          Text(
+                            statusText,
+                            maxLines: 1,
+                            style: LaTokens.mono(
+                              10,
+                              loaded ? la.accent : la.inkMuted,
+                            ),
+                          ),
+                        if (!installed)
+                          ModelsButton(
+                            keyName: 'models.local.$ref.download',
+                            label: l10n.modelsLocalDownload,
+                            onTap: () =>
+                                unawaited(_askInstall(context, active)),
+                          )
+                        else ...[
+                          if (local.hasRuntime && !diskOnly)
+                            ModelsButton(
+                              keyName: loaded
+                                  ? 'models.local.$ref.unload'
+                                  : 'models.local.$ref.load',
+                              label: loaded
+                                  ? l10n.modelsLocalUnload
+                                  : l10n.modelsLocalLoad,
+                              disabled: loadBlocked,
+                              onTap: () => unawaited(
+                                loaded
+                                    ? local.unloadEntry(active)
+                                    : local.loadEntry(active),
+                              ),
+                            ),
+                          ModelsButton(
+                            keyName: 'models.local.$ref.menu',
+                            label: '⋯',
+                            onTap: () => _openRowMenu(context, active),
+                          ),
+                        ],
+                      ]
+                      // During its download the row IS the progress
+                      // (the phase word + percent — the consent law's
+                      // continuation, the old catalog row's shape).
+                      // The download happens for the slot OR the
+                      // active checkpoint — the progress rides the row
+                      // either way (the consent law's continuation).
+                      else if (local.installingRef != null &&
+                          (local.installingRef == ref ||
+                              local.installingRef == slotRef))
+                        Text(
+                          // NO key here: the catalog row owns the
+                          // canonical keyed progress (a second widget
+                          // with the same key would collide).
+                          local.progress == null
+                              ? '…'
+                              : _progressLine(context, local.progress!),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: LaTokens.mono(10, la.inkMuted),
+                        )
+                      else if (busy)
+                        const LaSpinner(size: 11, strokeWidth: 1.5),
+                      // The sentence + chip run scale down AS A WHOLE
+                      // (the daemon-cluster law — an overflow is an
+                      // error, never a layout).
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (!tight)
+                                Text(
+                                  policySentenceFor(context, index, labels),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: laUi.micro.copyWith(
+                                    fontSize: 10,
+                                    color: la.inkQuiet,
+                                  ),
+                                ),
+                              ModelsChip(
+                                label: laneClassChipLabel(
+                                  isBuiltin
+                                      ? classOfBuiltin(builtinLaneFamily(id))
+                                      : classOfProvider(
+                                          '${providerOf(
+                                            _model,
+                                            entry,
+                                          )?['transport'] ?? ''}',
+                                          '${providerOf(
+                                            _model,
+                                            entry,
+                                          )?['base_url'] ?? ''}',
+                                        ),
+                                ),
+                                color: la.inkQuiet,
+                                mono: true,
+                              ),
+                              if (!tight && rung != null)
+                                BrainHealthChip(
+                                  rung: rung,
+                                  open: open,
+                                  onToggle: () => setState(
+                                    () => open
+                                        ? _ladderExpanded.remove(id)
+                                        : _ladderExpanded.add(id),
+                                  ),
+                                ),
+                              BrainCacheChip(
+                                castId: id,
+                                rows: history,
+                                open: open,
+                                onToggle: () => setState(
+                                  () => open
+                                      ? _ladderExpanded.remove(id)
+                                      : _ladderExpanded.add(id),
+                                ),
+                              ),
+                              if (!tight && divergesFromAdjacency)
+                                ModelsChip(
+                                  label: '→ ${rung.ladderNext}',
+                                  color: la.caution,
+                                  mono: true,
+                                ),
+                              if (!tight)
+                                for (final actor in actors.take(kMaxActorChips))
+                                  ModelsChip(
+                                    label: actor,
+                                    color: la.inkQuiet,
+                                    mono: true,
+                                  ),
+                              if (!tight && actors.length > kMaxActorChips)
+                                ModelsChip(
+                                  label: l10n.modelsActorsMore(
+                                    actors.length - kMaxActorChips,
+                                  ),
+                                  color: la.inkQuiet,
+                                  mono: true,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (count > 1) ...[
+                        const SizedBox(width: 6),
+                        LadderVerb(
+                          keyName: 'models.cast.$id.up',
+                          icon: Icons.arrow_upward_outlined,
+                          tooltip: l10n.modelsMoveUp,
+                          enabled: index > 0,
+                          onTap: () => _moveCast(id, index - 1, generative),
+                        ),
+                        LadderVerb(
+                          keyName: 'models.cast.$id.down',
+                          icon: Icons.arrow_downward_outlined,
+                          tooltip: l10n.modelsMoveDown,
+                          enabled: index < count - 1,
+                          onTap: () => _moveCast(id, index + 1, generative),
+                        ),
+                      ],
+                      // The REMOVE verb (the ladder is manageable, the
+                      // owner's 2026-11-19 law): declared entries leave
+                      // the models; the composition root's builtin
+                      // lanes do not (the daemon owns them).
+                      if (!isBuiltin) ...[
+                        const SizedBox(width: 6),
+                        ModelsButton(
+                          keyName: 'models.cast.$id.remove',
+                          label: '⋯',
+                          onTap: () => _openCastMenu(context, id),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        // The fit reason rides its verb (fit AT the verb, the v3 law).
+        if (loadBlocked)
+          Padding(
+            padding: const EdgeInsets.only(left: 24, top: 2),
+            child: Text(
+              l10n.modelsLocalFitReason(
+                formatModelBytes((fit.missingMegabytes ?? 0) * 1024 * 1024),
+              ),
+              key: ValueKey('models.local.$ref.fitReason'),
+              style: LaTokens.mono(10, la.inkQuiet),
+            ),
+          ),
+        if (open) ...[
+          if (rung != null)
+            BrainHistoryExpansion(
+              rung: rung,
+              rows: history,
+              world: widget.world,
+            ),
+          // The family's other checkpoints (the "add from catalog"
+          // door for a brain with several): full lifecycle rows, the
+          // same keys the catalog section used.
+          for (final familyEntry in familyEntriesForCast(local, id))
+            if (familyEntry != active) _localModelRow(context, familyEntry),
+        ],
+      ],
+    );
+  }
+
+  /// Moves the generative entry [id] to subset position [targetSubset]
+  /// (the persisted cast list interleaves decision rows — the subset
+  /// index resolves to full-list positions).
+  void _moveCast(
+    final String id,
+    final int targetSubset,
+    final List<Map<Object?, Object?>> generative,
+  ) {
+    final cast = _model.cast.whereType<Map<Object?, Object?>>().toList();
+    var seen = -1;
+    for (var i = 0; i < cast.length; i++) {
+      if (cast[i]['role'] == 'generative') {
+        seen++;
+        if (seen == targetSubset) {
+          _model.moveCast(id, i);
+          return;
+        }
+      }
+    }
+  }
+
+  /// The unbound actors' door: one quiet row whose expansion carries
+  /// their request rows verbatim (they are nobody's model row, but
+  /// their requests are world truth).
+  Widget _unboundRow(
+    final BuildContext context,
+    final List<ActorTelemetry> unbound,
+  ) {
+    final open = _ladderExpanded.contains('unbound');
+    return Column(
+      key: const ValueKey('models.rung.unbound'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            children: [
+              const SizedBox(width: 17),
+              Expanded(
+                child: Text(
+                  context.l10n.modelsUnbound,
+                  style: context.laUi.micro.copyWith(
+                    fontSize: 10,
+                    color: context.la.inkQuiet,
+                  ),
+                ),
+              ),
+              BrainCacheChip(
+                castId: 'unbound',
+                rows: unbound,
+                open: open,
+                onToggle: () => setState(
+                  () => open
+                      ? _ladderExpanded.remove('unbound')
+                      : _ladderExpanded.add('unbound'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (open)
+          BrainHistoryExpansion(
+            rung: const WorldRung(
+              id: 'unbound',
+              role: 'generative',
+              primary: false,
+              builtin: false,
+            ),
+            rows: unbound,
+            world: widget.world,
+          ),
+      ],
+    );
+  }
+
+  /// The ADD verb (the owner's flow: add a model, then manage its
+  /// priority): a declared provider + a model id become a generative
+  /// cast at the ladder's foot. The candidate stays dirty until the
+  /// propose/apply lane lands it (the restart banner then rides).
+  Future<void> _askAddCast(final BuildContext context) async {
+    final providers = _model.providers.keys.toList()..sort();
+    if (providers.isEmpty) return;
+    final ok = await showLaDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => _AddCastDialog(
+        providers: providers,
+        onConfirm:
+            (final provider, final model) => _model.addCast(
+              id: _castIdFromModel(model),
+              provider: provider,
+              model: model,
+            ),
+      ),
+    );
+  }
+
+  /// The cast id from a model string: the last path segment, slugified
+  /// (lowercase, non-alphanumeric runs → dashes) — the same shape the
+  /// agent refs speak.
+  String _castIdFromModel(final String model) {
+    final segment = model.contains('/') ? model.split('/').last : model;
+    final slug = segment
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9.]+'), '_')
+        .replaceAll(RegExp(r'^_+|_+$'), '');
+    return slug.isEmpty ? model : slug;
+  }
 
   /// The ChatGPT plan row. The runtime pane owns sign-in.
   Widget _subscriptionRow(final BuildContext context) {
@@ -861,10 +1497,13 @@ final class _CatalogLensState extends State<CatalogLens> {
     // (single-sourced floor) says a load would miss — Load renders
     // disabled and the quiet reason line names the gap. The verb stays
     // honest to the same math the runtime enforces; nothing here
-    // invents a second gate.
+    // invents a second gate. A disk-only row (the laya checkpoint) has
+    // no memory stage at all — no verb, no verdict.
+    final diskOnly = localModelDiskOnly(entry);
     final loadBlocked =
         installed &&
         !loaded &&
+        !diskOnly &&
         local.hasRuntime &&
         !fit.unknown &&
         !fit.fitsNow;
@@ -879,10 +1518,20 @@ final class _CatalogLensState extends State<CatalogLens> {
         ? l10n.modelsLocalDiskDownloaded
         : l10n.modelsLocalDiskNot;
     final statusColor = loaded ? la.accent : la.inkMuted;
+    // The metadata repeats nothing the title already says (2026-11-19,
+    // the owner's de-duplication law): "Qwen3.5 0.8B" needs no second
+    // "0.8B" — the line is `quant · size`, plus the param tag only
+    // when the title does not carry it (Laya → "ModernBERT-L").
+    final paramsInLabel = entry.label
+        .toLowerCase()
+        .contains(entry.paramLabel.toLowerCase());
     final metaText = installing && progress != null
         ? _progressLine(context, progress)
-        : '${entry.paramLabel} · ${entry.quant} · '
-              '${formatModelBytes(entry.approxDownloadBytes)}';
+        : [
+            if (!paramsInLabel) entry.paramLabel,
+            entry.quant,
+            formatModelBytes(entry.approxDownloadBytes),
+          ].join(' · ');
     return Container(
       key: ValueKey('models.local.$ref.row'),
       padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
@@ -939,7 +1588,11 @@ final class _CatalogLensState extends State<CatalogLens> {
                         onTap: () => unawaited(_askInstall(context, entry)),
                       )
                     else ...[
-                      if (local.hasRuntime)
+                      // The memory stage exists only for in-app engine
+                      // families (the disk-only law: the laya
+                      // checkpoint serves through the sidecar, so its
+                      // row stops at the disk stage).
+                      if (local.hasRuntime && !diskOnly)
                         ModelsButton(
                           keyName: loaded
                               ? 'models.local.$ref.unload'
@@ -1060,25 +1713,6 @@ final class _CatalogLensState extends State<CatalogLens> {
   /// installed — the lifecycle's natural reading order. List.sort is
   /// not stable, so the repo id is the tiebreak (the catalog order is
   /// its own deterministic sequence).
-  List<MlxModelCatalogEntry> _sortedLocalEntries(final LocalModelsState local) {
-    int rank(final MlxModelCatalogEntry entry) {
-      final installed = local.stateOf(entry).installed;
-      return installed && local.isLoaded(entry)
-          ? 0
-          : installed
-          ? 1
-          : 2;
-    }
-
-    final entries =
-        <(int, MlxModelCatalogEntry)>[
-          for (final entry in local.catalog) (rank(entry), entry),
-        ]..sort((final a, final b) {
-          final byRank = a.$1.compareTo(b.$1);
-          return byRank != 0 ? byRank : a.$2.repoId.compareTo(b.$2.repoId);
-        });
-    return <MlxModelCatalogEntry>[for (final (_, entry) in entries) entry];
-  }
 
   /// The machine's next runnable step (2026-11-18 v3.1): when EVERY
   /// downloaded-but-unloaded entry misses its fit on today's memory,
@@ -1093,6 +1727,9 @@ final class _CatalogLensState extends State<CatalogLens> {
       for (final entry in local.catalog)
         if (local.stateOf(entry).installed &&
             local.hasRuntime &&
+            // A disk-only checkpoint never claims RAM (the laya law):
+            // it cannot be the lever the aggregate names.
+            !localModelDiskOnly(entry) &&
             !local.isLoaded(entry) &&
             !local.fitOf(entry).unknown)
           (entry, local.fitOf(entry)),
@@ -1107,53 +1744,30 @@ final class _CatalogLensState extends State<CatalogLens> {
 
   /// The built-in lane chip (v3 footer): dot + display name, the
   /// sentence on the tooltip, AFM visibly exempt from the lifecycle.
-  /// NOT a lifecycle row — these lanes have no Download/Load story
-  /// (AFM is always-on; Laya is the loopback composition lane; LFM 2.5
-  /// lazy-loads inside its own lane and joins the checkpoint story
-  /// when it enters the catalog).
-  Widget _builtinLaneChip(final BuildContext context, final WorldRung rung) {
-    final la = context.la;
-    final family = builtinLaneFamily(rung.id);
-    final afm = family == BuiltinLaneFamily.appleFoundation;
-    return LaTooltip(
-      message: builtinLaneSentence(context, rung.id),
-      child: Container(
-        key: ValueKey('models.onDevice.${rung.id}'),
-        // A cap, not a wish: on a crushed pane the chip shrinks and
-        // the suffix ellipsizes instead of overflowing the footer.
-        constraints: const BoxConstraints(maxWidth: 220),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          color: la.inkQuiet.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(4),
+  /// NOT a lifecycle row — the lane BINDINGS have no Download/Load
+  /// story (AFM is always-on; Laya is the sidecar-composition lane,
+  /// whose CHECKPOINT lives in the catalog above as the disk-only row;
+  /// LFM 2.5 lazy-loads inside its own lane and its checkpoint row
+  /// joined the catalog in v3).
+
+  /// The declared ladder row's `⋯`: Remove from models (the candidate
+  /// removeCast; the dirty bar proposes and applies it).
+  void _openCastMenu(final BuildContext context, final String id) {
+    final box = context.findRenderObject()! as RenderBox;
+    final anchor = box.localToGlobal(
+      Offset(math.max(0, box.size.width - 180), box.size.height),
+    );
+    showLaMenuAt(
+      context,
+      globalPosition: anchor,
+      entries: [
+        LaMenuItem(
+          key: ValueKey('models.cast.$id.removeItem'),
+          label: context.l10n.modelsLadderRemove,
+          destructive: true,
+          onPressed: () => _model.removeCast(id),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            HealthDot(status: rung.healthStatus),
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                builtinLaneDisplayName(rung.id),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: LaTokens.mono(10, la.inkMuted),
-              ),
-            ),
-            if (afm) ...[
-              const SizedBox(width: 4),
-              Flexible(
-                child: Text(
-                  context.l10n.modelsBuiltinsNoLifecycle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: LaTokens.mono(9, la.inkQuiet),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
+      ],
     );
   }
 
@@ -1914,7 +2528,13 @@ final class _LocalModelDetails extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ListenableBuilder(
-    listenable: LocalRuntimeLedger.instance,
+    // The ledger (last generation) AND the actor roster (used-by):
+    // both move while the sheet is open (2026-11-19 refresh law — the
+    // sheet was reading the roster once at open and going stale).
+    listenable: Listenable.merge(<Listenable>[
+      LocalRuntimeLedger.instance,
+      StorageBackendsNotifier.instance,
+    ]),
     builder: (final context, final _) {
       final l10n = context.l10n;
       final state = local.stateOf(entry);
@@ -1934,7 +2554,9 @@ final class _LocalModelDetails extends StatelessWidget {
           _localDetailRow(
             context,
             l10n.modelsLocalDetailsMemory,
-            !local.hasRuntime
+            localModelDiskOnly(entry)
+                ? l10n.modelsLocalDetailsSidecar
+                : !local.hasRuntime
                 ? '—'
                 : loaded
                 ? l10n.modelsLocalMemLoaded
@@ -2027,3 +2649,83 @@ Widget _localDetailRow(
 String _detailSpeedLabel(final double tokensPerSecond) => tokensPerSecond >= 10
     ? tokensPerSecond.round().toString()
     : tokensPerSecond.toStringAsFixed(1);
+
+/// The add-model dialog (the ladder's add verb): pick a declared
+/// provider, name the model — the cast id derives from the model
+/// (slugified) and the entry lands at the ladder's foot as generative.
+/// Confirm drives the candidate's addCast; the dirty bar proposes and
+/// applies it (the restart banner rides the apply).
+final class _AddCastDialog extends StatefulWidget {
+  const _AddCastDialog({
+    required this.providers,
+    required this.onConfirm,
+  });
+
+  final List<String> providers;
+  final bool Function(String provider, String model) onConfirm;
+
+  @override
+  State<_AddCastDialog> createState() => _AddCastDialogState();
+}
+
+final class _AddCastDialogState extends State<_AddCastDialog> {
+  late String _provider = widget.providers.first;
+  final TextEditingController _modelCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    _modelCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final l10n = context.l10n;
+    final model = _modelCtrl.text.trim();
+    return LaDialog(
+      titleText: l10n.modelsLadderAddTitle,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          LaSelect<String>(
+            value: _provider,
+            onChanged: (final value) {
+              if (value != null) setState(() => _provider = value);
+            },
+            items: [
+              for (final provider in widget.providers)
+                LaSelectItem(value: provider, label: provider),
+            ],
+          ),
+          const SizedBox(height: 10),
+          LaField(
+            key: const ValueKey('models.ladder.add.model'),
+            controller: _modelCtrl,
+            placeholder: l10n.modelsLadderModel,
+            onChanged: (_) => setState(() {}),
+          ),
+        ],
+      ),
+      actions: [
+        LaButton(
+          key: const ValueKey('models.ladder.add.cancel'),
+          variant: LaButtonVariant.ghost,
+          onPressed: () => Navigator.of(context).pop(false),
+          label: l10n.modelsCancel,
+        ),
+        LaButton(
+          key: const ValueKey('models.ladder.add.confirm'),
+          variant: LaButtonVariant.primary,
+          onPressed: model.isEmpty
+              ? null
+              : () async {
+                  final ok = widget.onConfirm(_provider, model);
+                  Navigator.of(context).pop(ok);
+                },
+          label: l10n.modelsLadderAdd,
+        ),
+      ],
+    );
+  }
+}

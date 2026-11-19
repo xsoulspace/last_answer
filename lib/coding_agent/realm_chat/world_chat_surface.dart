@@ -1334,24 +1334,15 @@ class _ConversationPaneState extends State<_ConversationPane> {
   /// pdf is not an error, it is not an image); a drop that staged
   /// nothing names the refusal honestly beside the composer.
   Future<void> _stageDroppedFiles(final List<DropItem> files) async {
-    debugPrint('DROP-STAGE called files=${files.length}'); // TEMP
     final world = service.world;
     final target = _ownThreadPane ? _paneThreadId : service.activeThreadId;
-    if (world == null || target == null || files.isEmpty) {
-      debugPrint(
-        'DROP-STAGE guard: world=${world != null} target=$target',
-      ); // TEMP
-      return;
-    }
+    if (world == null || target == null || files.isEmpty) return;
     final share = RealmChatMediaShare(worldHome: Directory(world.worldHome));
     var staged = 0;
     for (final item in files) {
       if (item is DropItemDirectory) continue;
       try {
         final bytes = await item.readAsBytes();
-        debugPrint(
-          'DROP-STAGE read bytes=${bytes.length} name=${item.name}',
-        ); // TEMP
         final entry = await share.buildFromBytes(
           bytes: bytes,
           threadId: target,
@@ -1361,7 +1352,6 @@ class _ConversationPaneState extends State<_ConversationPane> {
         // video/audio entry is not staged (the beat vocabulary keeps
         // media v1 image-first).
         final mime = '${entry['mimeType']}';
-        debugPrint('DROP-STAGE sniff mime=$mime'); // TEMP
         if (!mime.startsWith('image/')) continue;
         if (!mounted) return;
         setState(
@@ -1370,12 +1360,9 @@ class _ConversationPaneState extends State<_ConversationPane> {
           ),
         );
         staged++;
-        debugPrint('DROP-STAGE staged=$staged'); // TEMP
-      } on RealmMediaShareException catch (error) {
-        debugPrint('DROP-STAGE skip: ${error.code}'); // TEMP PROBE
+      } on RealmMediaShareException {
         continue; // not a media file — skipped, never a crash
-      } on Exception catch (error) {
-        debugPrint('DROP-STAGE error: $error'); // TEMP PROBE
+      } on Exception {
         continue; // an unreadable drop item — skipped honestly
       }
     }
@@ -2448,7 +2435,6 @@ class _ConversationPaneState extends State<_ConversationPane> {
             onDragEntered: (final _) => setState(() => _dropHover = true),
             onDragExited: (final _) => setState(() => _dropHover = false),
             onDragDone: (final details) {
-              debugPrint('DROP-DONE files=${details.files.length}'); // TEMP
               if (_dropHover) setState(() => _dropHover = false);
               unawaited(_stageDroppedFiles(details.files));
             },

@@ -561,7 +561,14 @@
   "inboxWorldArmFailed": "Avvio fallito",
   "viewModelsTitle": "Modelli",
   "modelsNoPalette": "Nessun modello dichiarato per questo mondo",
-  "modelsPolicySection": "Politica dei brain",
+  "modelsLocalCatalog": "Modelli locali",
+  "modelsLadderAdd": "Aggiungi modello",
+  "modelsLadderRemove": "Rimuovi dai modelli",
+  "modelsLadderAddTitle": "Aggiungi un modello alla scaletta",
+  "modelsLadderProvider": "provider",
+  "modelsLadderModel": "id del modello",
+  "modelsPolicySection": "Modelli",
+  "modelsPolicyHint": "Provati dall'alto in basso — quando uno è giù o bloccato, subentra il successivo.",
   "modelsPolicyFirst": "pensa per primo",
   "modelsPolicyFallback": "se {model} è fermo o bloccato",
   "modelsSystemLanes": "Lane di sistema",
@@ -929,18 +936,6 @@
   "@modelsRefusalNoSeat": {
     "description": "Provider editor: seat-absent refusal."
   },
-  "modelsLensCatalog": "Catalogo",
-  "@modelsLensCatalog": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensBindings": "Associazioni",
-  "@modelsLensBindings": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensObserve": "Osserva",
-  "@modelsLensObserve": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
   "modelsJsonToggle": "JSON",
   "@modelsJsonToggle": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
@@ -1157,10 +1152,6 @@
   "@modelsGrokAwaitingRegistration": {
     "description": "Grok subscription catalog row before xAI issues a client id."
   },
-  "modelsLocalCatalog": "Modelli locali",
-  "@modelsLocalCatalog": {
-    "description": "Local model manager 2026-11-18: the merged local-models section header (downloadable checkpoints + on-device services)."
-  },
   "modelsLocalDiskDownloaded": "Scaricato",
   "@modelsLocalDiskDownloaded": {
     "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
@@ -1328,6 +1319,10 @@
   "@modelsLocalDetailsMemory": {
     "description": "Local models v3 2026-11-18 (it)."
   },
+  "modelsLocalDetailsSidecar": "servito dal sidecar laya-serve — nessuna residenza in-app",
+  "@modelsLocalDetailsSidecar": {
+    "description": "Local models v3.3 2026-11-19 (it)."
+  },
   "modelsLocalDetailsSizeOnDisk": "dimensione su disco",
   "@modelsLocalDetailsSizeOnDisk": {
     "description": "Local models v3 2026-11-18 (it)."
@@ -1406,14 +1401,6 @@
   },
   "modelsRestartNow": "Riavvia ora",
   "@modelsRestartNow": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsHealthSection": "Salute",
-  "@modelsHealthSection": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLedgerSection": "Registro dispatch",
-  "@modelsLedgerSection": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
   },
   "modelsUnbound": "attori non associati",

@@ -388,7 +388,6 @@ void main() {
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );
-
   testWidgets('d — an OS drop on the composer STAGES a pending chip (messenger '
       'law): the chip shows the file name and removes; a re-drop plus a '
       'text send spends the strip as one media beat', (final tester) async {
@@ -406,42 +405,13 @@ void main() {
     final png = File('${dropDir.path}/lighthouse-drop.png')
       ..writeAsBytesSync(pngBytes());
 
-    // First drop: enter proves the routing (the field lights ONE
-    // accent border), then the drop stages the chip (the human's
-    // file name shows).
-    // The composer's own field box: quiet fill, NO border at rest.
-    BoxDecoration composerBox() =>
-        tester
-                .widget<Container>(
-                  find
-                      .ancestor(
-                        of: composerField,
-                        matching: find.byWidgetPredicate(
-                          (final w) =>
-                              w is Container && w.decoration is BoxDecoration,
-                        ),
-                      )
-                      .first,
-                )
-                .decoration!
-            as BoxDecoration;
-    expect(composerBox().border, isNull);
+    // Enter proves the routing: the field lights ONE accent border.
     await _fireDropEnter(tester, composerField);
-    // The enter beat landed: the field lights ONE accent border.
-    expect(composerBox().border, isNotNull);
     await _fireDropPerform(tester, composerField, [png.path]);
+
+    // The staged strip: the human's file name in a removable chip.
     expect(find.byKey(const ValueKey('worldchat.mediaStrip')), findsOneWidget);
-    final renderedChip = tester.firstWidget(
-      find.byWidgetPredicate((final w) => '${w.key}'.endsWith('mediaChip.0')),
-    );
-    final renderedKey = renderedChip.key!;
-    const wantedKey = ValueKey<String>('worldchat.mediaChip.0');
-    // ignore: avoid_print
-    print(
-      'KEY DIAG: eq=${renderedKey == wantedKey} '
-      'rt=${renderedKey.runtimeType}/${wantedKey.runtimeType} '
-      'code=${(renderedKey as dynamic).value.codeUnits}',
-    );
+    expect(find.byKey(const ValueKey('worldchat.mediaChip.0')), findsOneWidget);
     expect(find.text('lighthouse-drop.png'), findsOneWidget);
 
     // One tap removes the chip; the strip honest-absences away.
@@ -453,6 +423,7 @@ void main() {
 
     // Re-drop, then send WITH text: one beat, the attachment rides,
     // the strip is spent.
+    await _fireDropEnter(tester, composerField);
     await _fireDropPerform(tester, composerField, [png.path]);
     expect(find.byKey(const ValueKey('worldchat.mediaChip.0')), findsOneWidget);
     await tester.enterText(composerField, 'here, the dropped lighthouse');

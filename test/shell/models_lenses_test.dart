@@ -30,8 +30,29 @@ import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/shell/models/local_models_state.dart';
 import 'package:lastanswer/shell/models/models_view.dart';
+import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
+import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 import 'package:lastanswer/shell/models/palette_candidate.dart';
+
+/// One hermetic installer: no hub reads, nothing installed — the
+/// fixtures must never see the operator's real cache (the merged
+/// surface's slot door reflects install state).
+final class _HermeticInstaller implements LocalModelInstaller {
+  @override
+  InstalledState stateOf(final MlxModelCatalogEntry entry) =>
+      const InstalledState(installed: false);
+
+  @override
+  Stream<ProvisionProgress> install(
+    final MlxModelCatalogEntry entry, {
+    required final bool userConsent,
+  }) => const Stream.empty();
+
+  @override
+  Future<bool> delete(final MlxModelCatalogEntry entry) async => false;
+}
 
 Widget _wrap(final Widget child) => MaterialApp(
   // The kit overlay host (same shape as last_answer_app.dart):
@@ -99,7 +120,11 @@ void main() {
     RealmWorld.debugDeviceHome = temp.path;
     worldHome = '${temp.path}/worlds/local';
     Directory('$worldHome/.xsoulspace').createSync(recursive: true);
-    File('$worldHome/.xsoulspace/config.json').writeAsStringSync(
+    // The fixture config rides the DEVICE home (the global-config
+    // law: that is the default file the chain reads — the old
+    // world-home walk-up is gone).
+    Directory('${temp.path}/.xsoulspace').createSync(recursive: true);
+    File('${temp.path}/.xsoulspace/config.json').writeAsStringSync(
       jsonEncode(_paletteDoc()),
     );
     Directory('${temp.path}/.xsoulspace').createSync(recursive: true);
@@ -155,7 +180,15 @@ void main() {
       expect(chat.isReady, isTrue, reason: chat.error);
     });
 
-    await tester.pumpWidget(_wrap(ModelsView(world: world, service: chat)));
+    final localModels = LocalModelsState(
+      installer: _HermeticInstaller(),
+      readMemoryFacts: () async => null,
+    );
+    addTearDown(localModels.dispose);
+    await localModels.refresh();
+    await tester.pumpWidget(
+      _wrap(ModelsView(world: world, service: chat, localModels: localModels)),
+    );
     await tester.pump();
     addTearDown(() {
       RealmWorld.debugDeviceHome = null;
@@ -224,6 +257,10 @@ void main() {
         scrollable: find.byType(Scrollable).last,
       );
     }
+    // "Built" is not "visible": a widget at the viewport's edge eats
+    // taps — always settle it fully on-screen.
+    await tester.ensureVisible(finder);
+    await tester.pumpAndSettle();
     expect(finder, findsOneWidget);
   }
 
@@ -284,9 +321,11 @@ void main() {
         'models with the verbs on the owning row', (final tester) async {
       await mount(tester);
 
-      expect(
-        find.byKey(const ValueKey('models.lens.catalog')),
-        findsOneWidget,
+      // The provider sections sit below the ladder + the catalog (the
+      // merged surface's order) — bring them into the lazy viewport.
+      await see(
+        tester,
+        find.byKey(const ValueKey('models.provider.modelscope')),
       );
       expect(
         find.byKey(const ValueKey('models.provider.modelscope')),
@@ -334,6 +373,7 @@ void main() {
         'drop out of the row (the count stays)', (final tester) async {
       await mount(tester);
 
+      await see(tester, find.text('openai_compatible'));
       expect(find.text('openai_compatible'), findsOneWidget);
       expect(find.text('MODELSCOPE_API_KEY'), findsOneWidget);
 
@@ -363,8 +403,7 @@ void main() {
       await settleTap(tester, 'models.form.confirm');
       // The nested table hides the model verbs one level down: expand
       // the provider row first (the spreadsheet law).
-      await tester.tap(find.byKey(const ValueKey('models.provider.groq')));
-      await tester.pump();
+      await settleTap(tester, 'models.provider.groq');
       await settleTap(tester, 'models.model.groq.add');
       await enter(tester, 'models.form.id', 'llama-3.3-70b-versatile');
       await settleTap(tester, 'models.setting.add.max_tokens');
@@ -394,6 +433,10 @@ void main() {
     testWidgets('the image capability toggles land on the model row '
         '(the binding-consumed pair)', (final tester) async {
       await mount(tester);
+      await see(
+        tester,
+        find.byKey(const ValueKey('models.provider.modelscope')),
+      );
 
       // The fixture's modelscope provider hosts the image model row — the
       // provider is already declared, only the model is added.
@@ -496,6 +539,9 @@ void main() {
       await enter(tester, 'models.form.id', 'ollama');
       await enter(tester, 'models.form.baseUrl', 'http://127.0.0.1:11434/v1');
       await settleTap(tester, 'models.form.confirm');
+      // The merged surface's ladder leads; the provider sections sit
+      // below — bring the local-server one into the lazy viewport.
+      await see(tester, find.byKey(const ValueKey('models.class.localServer')));
       expect(
         find.byKey(const ValueKey('models.class.localServer')),
         findsOneWidget,
@@ -510,8 +556,8 @@ void main() {
 
       // The dynamic editor: a free key rides verbatim, marked
       // unconsumed (declared, tolerated by the parser, read by nobody).
-      await tester.tap(find.byKey(const ValueKey('models.provider.ollama')));
-      await tester.pump();
+      await see(tester, find.byKey(const ValueKey('models.provider.ollama')));
+      await settleTap(tester, 'models.provider.ollama');
       await settleTap(tester, 'models.model.ollama.add');
       await enter(tester, 'models.form.id', 'llama3');
       await enter(tester, 'models.setting.add.free', 'num_ctx');
@@ -527,13 +573,15 @@ void main() {
       await endClean(tester);
     });
 
-    testWidgets('the merged local-models section (2026-11-18): the '
-        'service rows and the checkpoint rows share ONE section and '
-        'the standalone qwen lane row is gone', (final tester) async {
+    testWidgets('the merged MODELS section (2026-11-19): the ladder '
+        'rows carry priority + lifecycle in ONE place — the standalone '
+        'checkpoint rows and the lane chips are folded into their '
+        'brains', (final tester) async {
       await mount(tester);
 
-      // The merged section title.
-      expect(find.text('Local models'), findsOneWidget);
+      // The merged section title + the ladder's one-line explanation.
+      expect(find.text('Models'), findsOneWidget);
+      expect(find.textContaining('Tried top-down'), findsOneWidget);
       // The old on-device section does not exist; the `qwen` lane row
       // is absorbed (its id stays in Bindings/Observe).
       expect(
@@ -546,26 +594,38 @@ void main() {
       );
 
       final section = find.byKey(const ValueKey('models.class.localModels'));
-      // The fixture's AFM builtin rides the merged section as a
-      // service row, next to the downloadable checkpoints.
+      // AFM is a LADDER ROW now (priority position 7 in the fixture):
+      // the old lane chip is gone.
+      expect(
+        find.byKey(const ValueKey('models.onDevice.apple_foundation_afm')),
+        findsNothing,
+      );
       final afm = find.descendant(
         of: section,
-        matching: find.byKey(
-          const ValueKey('models.onDevice.apple_foundation_afm'),
-        ),
+        matching: find.byKey(const ValueKey('models.rung.apple_foundation_afm')),
       );
       await see(tester, afm);
-      final checkpoint = find.descendant(
+      // The checkpoint row folded into its brain: the qwen row hosts
+      // the default checkpoint's download verb (the alias law's title
+      // names the model — nothing installed, so the slot name shows).
+      final qwen = find.descendant(
         of: section,
-        matching: find.byKey(
-          const ValueKey('models.local.Qwen3-0.6B-4bit.row'),
-        ),
+        matching: find.byKey(const ValueKey('models.rung.qwen')),
       );
-      await see(tester, checkpoint);
+      await see(tester, qwen);
+      expect(
+        find.descendant(
+          of: qwen,
+          matching: find.byKey(
+            const ValueKey('models.local.Qwen3-0.6B-4bit.download'),
+          ),
+        ),
+        findsOneWidget,
+      );
 
       await endClean(tester);
     });
-  group('the bindings lens', () {
+  group('the models ladder (the merged surface)', () {
     testWidgets('the lane chip is the FAMILY truth: builtin never means '
         'local by default (jev rides the hosted OpenRouter lane, afm '
         'the Apple-specific one, qwen the local MLX one)', (
@@ -573,12 +633,13 @@ void main() {
     ) async {
       await mount(tester);
 
-      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
-      await tester.pump();
-
       // jev is a decision role: it lives under System lanes now
-      // (collapsed by default — expand it first).
-      await tester.tap(find.byKey(const ValueKey('models.systemLanes')));
+      // (collapsed by default, at the ladder's foot — bring the
+      // expander into view, then expand it).
+      final expander = find.byKey(const ValueKey('models.systemLanes'));
+      await tester.ensureVisible(expander);
+      await tester.pumpAndSettle();
+      await tester.tap(expander);
       await tester.pump();
       final jev = find.byKey(const ValueKey('models.systemLane.jev'));
       expect(jev, findsOneWidget);
@@ -616,8 +677,6 @@ void main() {
         'carries the default (the radio is gone)', (final tester) async {
       await mount(tester);
 
-      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
-      await tester.pump();
       expect(
         find.byKey(const ValueKey('models.rung.modelscope_qwen38max')),
         findsOneWidget,
@@ -659,9 +718,7 @@ void main() {
       await mount(tester);
       world.selectRung('qwen');
       await tester.pump();
-
-      await tester.tap(find.byKey(const ValueKey('models.lens.bindings')));
-      await tester.pump();
+      await see(tester, find.text('session: qwen'));
       expect(find.text('session: qwen'), findsOneWidget);
 
       await tester.tap(find.byKey(const ValueKey('models.session.clear')));
@@ -672,9 +729,85 @@ void main() {
     });
   });
 
-  group('the observe lens', () {
-    testWidgets('daemon card, verbatim health ledger and the per-model '
-        'dispatch ledger (unbound groups honestly)', (final tester) async {
+  group('the ladder is manageable (2026-11-19)', () {
+    testWidgets('the add verb declares a generative cast from a '
+        'provider model — it lands at the ladder\'s foot as dirty, and '
+        'revert takes it back', (final tester) async {
+      await mount(tester);
+
+      await settleTap(tester, 'models.ladder.add');
+      expect(find.text('Add a model to the ladder'), findsOneWidget);
+      // The provider picker defaults to the first declared provider.
+      await enter(tester, 'models.ladder.add.model', 'Qwen3.9 Test');
+      await settleTap(tester, 'models.ladder.add.confirm');
+
+      final cast = (PaletteCandidateModel.debugLastCandidate!['cast']!
+          as List).whereType<Map<Object?, Object?>>().toList();
+      final last = cast.last;
+      expect(last['id'], 'qwen3.9_test');
+      expect(last['provider'], 'modelscope');
+      expect(last['model'], 'Qwen3.9 Test');
+      expect(last['role'], 'generative');
+      expect(find.text('unsaved changes'), findsOneWidget);
+
+      // The revert takes it back (the dirty bar's escape hatch).
+      await barTap(tester, 'models.cancel');
+      final live = PaletteCandidateModel.debugLastCandidate!;
+      expect(
+        (live['cast']! as List).whereType<Map<Object?, Object?>>().any(
+              (final entry) => entry['id'] == 'qwen3.9_test',
+            ),
+        isFalse,
+      );
+
+      await endClean(tester);
+    });
+
+    testWidgets('the remove verb drops a declared cast — a builtin lane '
+        'refuses (the composition root owns it)', (final tester) async {
+      await mount(tester);
+
+      // The remove door lives in the row's ⋯ overflow. The row sits
+      // deep in the merged list — fling down until the lazy viewport
+      // builds it (scrollUntilVisible's small drags can stall here).
+      final remove = find.byKey(
+        const ValueKey('models.cast.openrouter_deepseek.remove'),
+      );
+      var attempts = 0;
+      while (remove.evaluate().isEmpty && attempts < 30) {
+        await tester.fling(
+          find.byType(Scrollable).last,
+          const Offset(0, -300),
+          10,
+        );
+        await tester.pumpAndSettle();
+        attempts++;
+      }
+      await tester.ensureVisible(remove);
+      await tester.pumpAndSettle();
+      await tester.tap(remove);
+      await tester.pump();
+      await settleTap(
+        tester,
+        'models.cast.openrouter_deepseek.removeItem',
+      );
+
+      final cast = (PaletteCandidateModel.debugLastCandidate!['cast']!
+          as List).whereType<Map<Object?, Object?>>().toList();
+      expect(
+        cast.any((final entry) => entry['id'] == 'openrouter_deepseek'),
+        isFalse,
+      );
+      expect(find.text('unsaved changes'), findsOneWidget);
+
+      await endClean(tester);
+    });
+  });
+
+  group('the observe absorption (2026-11-19)', () {
+    testWidgets('the daemon strip rides the header; the health + cache '
+        'chips live on the rows and open the history expansion (unbound '
+        'keeps its honest door)', (final tester) async {
       await mount(tester);
       world.debugTelemetryOverride = <String, ActorTelemetry>{
         'cache-probe': const ActorTelemetry(
@@ -686,38 +819,54 @@ void main() {
           at: '2026-11-15T00:00:00Z',
         ),
       };
-
-      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      // The override has no notify: force the ladder's rebuild.
+      await world.refresh();
       await tester.pump();
 
-      expect(find.byKey(const ValueKey('models.daemonCard')), findsOneWidget);
+      // The daemon strip: on every lens, in the header.
+      expect(find.byKey(const ValueKey('models.daemonStrip')), findsOneWidget);
+      expect(find.byKey(const ValueKey('models.daemon')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.restart')), findsOneWidget);
       expect(find.byKey(const ValueKey('models.stop')), findsOneWidget);
-      // The health ledger renders the daemon's verdict VERBATIM — the
-      // cooldown/named-skip visibility the old worst-of merge hid.
+
+      // The rows carry the doors: the health chip opens the verbatim
+      // verdict (the cooldown/named-skip visibility the old worst-of
+      // merge hid). The ladder sits below the catalog — bring the row
+      // into the lazy viewport first.
+      await see(
+        tester,
+        find.byKey(const ValueKey('models.rung.openrouter_deepseek')),
+      );
+      await tester.tap(
+        find.byKey(const ValueKey('models.rung.openrouter_deepseek.health')),
+      );
+      await tester.pumpAndSettle();
       expect(
-        find.byKey(const ValueKey('models.health.openrouter_deepseek')),
+        find.byKey(
+          const ValueKey('models.rung.openrouter_deepseek.history'),
+        ),
         findsOneWidget,
       );
       expect(find.textContaining('transport_http_403'), findsOneWidget);
-      expect(find.textContaining('never downloads'), findsOneWidget);
-      // The ledger keys on the model; an unbound actor says so.
-      expect(
-        find.byKey(const ValueKey('models.ledger.unbound')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('models.ledger.unbound.cache-probe')),
-        findsOneWidget,
-      );
+
+      // An unbound actor is nobody's model row, but its requests stay
+      // world truth: the unbound door carries its history.
+      expect(find.byKey(const ValueKey('models.rung.unbound')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('models.rung.unbound.cache')));
+      await tester.pumpAndSettle();
       expect(find.text('2r'), findsOneWidget);
       expect(find.text('cache 47%'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('models.rung.unbound.history')),
+        findsOneWidget,
+      );
 
       await endClean(tester);
     });
 
-    testWidgets('an escalation narrates the promotion: stalled → tried '
-        '<model> (the world says what it did)', (final tester) async {
+    testWidgets('an escalation narrates the promotion in the history '
+        'expansion: stalled → tried <model> (the world says what it did)',
+        (final tester) async {
       await mount(tester);
 
       // The daemon records the flattened `escalatedFrom` tag on the
@@ -734,14 +883,33 @@ void main() {
           at: '2026-11-16T00:00:00Z',
         ),
       };
-
-      await tester.tap(find.byKey(const ValueKey('models.lens.observe')));
+      // The override has no notify: force the ladder's rebuild.
+      await world.refresh();
       await tester.pump();
 
+      // The unbound door sits at the ladder's foot — the lazy list
+      // builds it only once scrolled in.
+      await see(tester, find.byKey(const ValueKey('models.rung.unbound')));
+      await tester.tap(find.byKey(const ValueKey('models.rung.unbound.cache')));
+      await tester.pumpAndSettle();
+
       // modelscope_qwen38max declares model Qwen3.8-Max-Preview → the
-      // spoken name (the brain-policy vocabulary law).
-      expect(find.textContaining('stalled → tried'), findsOneWidget);
-      expect(find.textContaining('Qwen3.8 Max Preview'), findsOneWidget);
+      // spoken name (the brain-policy vocabulary law). The narration
+      // lives IN the expansion (the row itself names the model too —
+      // scope the assertion to the opened history).
+      final history = find.byKey(const ValueKey('models.rung.unbound.history'));
+      expect(history, findsOneWidget);
+      expect(
+        find.descendant(of: history, matching: find.textContaining('stalled → tried')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: history,
+          matching: find.textContaining('Qwen3.8 Max Preview'),
+        ),
+        findsOneWidget,
+      );
 
       await endClean(tester);
     });

@@ -564,7 +564,14 @@
   "inboxWorldArmFailed": "Сбой запуска",
   "viewModelsTitle": "Модели",
   "modelsNoPalette": "Для этого мира не объявлено ни одной модели",
-  "modelsPolicySection": "Политика мозгов",
+  "modelsLocalCatalog": "Локальные модели",
+  "modelsLadderAdd": "Добавить модель",
+  "modelsLadderRemove": "Убрать из моделей",
+  "modelsLadderAddTitle": "Добавить модель в порядок",
+  "modelsLadderProvider": "провайдер",
+  "modelsLadderModel": "id модели",
+  "modelsPolicySection": "Модели",
+  "modelsPolicyHint": "Перебор сверху вниз — когда одна недоступна или зависла, вступает следующая.",
   "modelsPolicyFirst": "думает первым",
   "modelsPolicyFallback": "если {model} недоступен или застрял",
   "modelsSystemLanes": "Системные каналы",
@@ -932,18 +939,6 @@
   "@modelsRefusalNoSeat": {
     "description": "Provider editor: seat-absent refusal."
   },
-  "modelsLensCatalog": "Каталог",
-  "@modelsLensCatalog": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensBindings": "Биндинги",
-  "@modelsLensBindings": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLensObserve": "Наблюдение",
-  "@modelsLensObserve": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
   "modelsJsonToggle": "JSON",
   "@modelsJsonToggle": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
@@ -1160,10 +1155,6 @@
   "@modelsGrokAwaitingRegistration": {
     "description": "Grok subscription catalog row before xAI issues a client id."
   },
-  "modelsLocalCatalog": "Локальные модели",
-  "@modelsLocalCatalog": {
-    "description": "Local model manager 2026-11-18: the merged local-models section header (downloadable checkpoints + on-device services)."
-  },
   "modelsLocalDiskDownloaded": "Скачана",
   "@modelsLocalDiskDownloaded": {
     "description": "Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk."
@@ -1331,6 +1322,10 @@
   "@modelsLocalDetailsMemory": {
     "description": "Local models v3 2026-11-18 (ru)."
   },
+  "modelsLocalDetailsSidecar": "обслуживается сайдкаром laya-serve — без резидентности в приложении",
+  "@modelsLocalDetailsSidecar": {
+    "description": "Local models v3.3 2026-11-19 (ru)."
+  },
   "modelsLocalDetailsSizeOnDisk": "размер на диске",
   "@modelsLocalDetailsSizeOnDisk": {
     "description": "Local models v3 2026-11-18 (ru)."
@@ -1405,14 +1400,6 @@
   },
   "modelsRestartNow": "Перезапустить сейчас",
   "@modelsRestartNow": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsHealthSection": "Здоровье",
-  "@modelsHealthSection": {
-    "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
-  },
-  "modelsLedgerSection": "Журнал диспетчеризаций",
-  "@modelsLedgerSection": {
     "description": "Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger)."
   },
   "modelsUnbound": "непривязанные актёры",

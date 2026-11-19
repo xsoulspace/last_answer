@@ -3219,11 +3219,53 @@ abstract class S {
   /// **'No models declared for this world'**
   String get modelsNoPalette;
 
-  /// Models: the world default order section (the old generative-rungs list, rendered as sentences).
+  /// Models v4.1 2026-11-19: the on-machine checkpoints section — download/remove, start/stop per checkpoint (the restored provisioning surface).
   ///
   /// In en, this message translates to:
-  /// **'Brain policy'**
+  /// **'Local models'**
+  String get modelsLocalCatalog;
+
+  /// Models v4.1 2026-11-19: the ladder's add verb — declares a generative cast from a provider model.
+  ///
+  /// In en, this message translates to:
+  /// **'Add model'**
+  String get modelsLadderAdd;
+
+  /// Models v4.1 2026-11-19: the ladder row's remove verb (declared entries only — builtin lanes are the composition root's).
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from models'**
+  String get modelsLadderRemove;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a model to the ladder'**
+  String get modelsLadderAddTitle;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's provider field.
+  ///
+  /// In en, this message translates to:
+  /// **'provider'**
+  String get modelsLadderProvider;
+
+  /// Models v4.1 2026-11-19: the add-model dialog's model-id field (the cast id derives from it).
+  ///
+  /// In en, this message translates to:
+  /// **'model id'**
+  String get modelsLadderModel;
+
+  /// Models merge 2026-11-19: the ONE section title — the ladder of models in priority order.
+  ///
+  /// In en, this message translates to:
+  /// **'Models'**
   String get modelsPolicySection;
+
+  /// Models merge 2026-11-19: the ladder's one-line explanation under the section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tried top-down — when one is down or stuck, the next takes over.'**
+  String get modelsPolicyHint;
 
   /// Policy row sentence: position 1 is the world default.
   ///
@@ -4074,24 +4116,6 @@ abstract class S {
   /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
   ///
   /// In en, this message translates to:
-  /// **'Catalog'**
-  String get modelsLensCatalog;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'Bindings'**
-  String get modelsLensBindings;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'Observe'**
-  String get modelsLensObserve;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
   /// **'JSON'**
   String get modelsJsonToggle;
 
@@ -4383,12 +4407,6 @@ abstract class S {
   /// **'awaiting xAI client registration'**
   String get modelsGrokAwaitingRegistration;
 
-  /// Local model manager 2026-11-18 (docs/design/models-local-manager.md): the merged local-models section header (downloadable checkpoints + on-device services).
-  ///
-  /// In en, this message translates to:
-  /// **'Local models'**
-  String get modelsLocalCatalog;
-
   /// Two-stage rows 2026-11-18: the DISK stage chip — the weights sit on disk.
   ///
   /// In en, this message translates to:
@@ -4581,6 +4599,12 @@ abstract class S {
   /// **'memory'**
   String get modelsLocalDetailsMemory;
 
+  /// Local models v3.3 2026-11-19: the disk-only row's memory fact — the decision checkpoint serves out-of-process through the laya-serve sidecar.
+  ///
+  /// In en, this message translates to:
+  /// **'served by the laya-serve sidecar — no in-app residency'**
+  String get modelsLocalDetailsSidecar;
+
   /// Local models v3 2026-11-18: the detail sheet's SENSED size row (a walk of the snapshot dir, never the approximation).
   ///
   /// In en, this message translates to:
@@ -4694,18 +4718,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Restart now'**
   String get modelsRestartNow;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'Health'**
-  String get modelsHealthSection;
-
-  /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
-  ///
-  /// In en, this message translates to:
-  /// **'Dispatch ledger'**
-  String get modelsLedgerSection;
 
   /// Models refactor 2026-11-14 (lenses / nested catalog table / observe ledger).
   ///

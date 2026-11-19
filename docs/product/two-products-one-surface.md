@@ -16,7 +16,7 @@ harness world. For an ordinary user it reads like a normal messenger and
 notes app: you write, you ask an agent, it answers.
 
 - The agent conversation is the harness-backed grid
-  (`lib/coding_agent/agent_doc_surface.dart`). There is no separate chat
+  (`lib/ui_documents/agent_doc_surface.dart`). There is no separate chat
   product. "Ask an agent" lands on the grid.
 - The harness stays invisible. Beats, verdicts, permissions and spend are
   collapsed layers, never mandatory reading for writing a note (DESIGN §10).
@@ -60,7 +60,7 @@ contains, and never changes who may act on it.
 | Workshop foundation: trace DTO v2, `world-at-T` checkpoint/replay, bounded rendering, exploded layers                                | **Planned, not shipped**                | PLAN.md Phase 3 |
 | Concurrent candidates: N live candidates from one request                                                                            | **Planned, not shipped**                | PLAN.md Phase 4 |
 
-The bubble chat (`lib/doc/chat_document_view.dart`) and its
+The bubble chat (already removed — `chat_document_view.dart` deleted in commit 01606956) and its
 direct-to-provider resolver are deleted. `DocFormatIds.chat` survives as
 opaque legacy metadata and opens the harness-backed grid; its tree mechanic
 migrates into the grid, which already carries it (ADR 0010 D2, ADR 0019 §2).

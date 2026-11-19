@@ -28,7 +28,7 @@ The product direction (see `docs/decisions/0012-writable-agent-doc-and-acp-clien
   text-native surfaces on one grid (Tufte × Müller-Brockmann), ink is
   data, the human is sovereign, widget keys are the agent's UI contract.
   Binding for ALL product UI; the agent-doc surface
-  (`lib/coding_agent/agent_doc_surface.dart`) is the reference
+  (`lib/ui_documents/agent_doc_surface.dart`) is the reference
   implementation. Read it before building any new view.
 
 ## Tech stack

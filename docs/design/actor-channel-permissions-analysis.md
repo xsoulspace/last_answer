@@ -33,7 +33,7 @@ permission and other permissions, large and small, so any local work can be dele
 | **Per-actor model policy** (ADR 0143) | `realm_actors.brainSet`, `selfBind` | Per actor, models only | `updateActor` verb |
 | **Per-actor image spend ceiling** (LA ADR 0029) | `realm_actor_image_budget_usd` | Per actor, numeric | `image_budget_exhausted` refusal |
 | **Path-scoped task consent** | `conventional_task_consent` config (`task_consent.dart:26-80`) | Per-workspace CONFIG, not per-actor: `writablePaths`, authorizers, lifetime | Fail-closed against `writablePaths` |
-| **Per-chat ACP stance** | `ChatPermissionPolicy` (`lib/doc/chat_permission_policy.dart:17-113`, fresh, no other callers) | Per chat: `ask`/`workspaceEdits`/`fullAccess` | Client-side policy decides ACP `request_permission` |
+| **Per-chat ACP stance** | `ChatPermissionPolicy` (`lib/ui_documents/chat_permission_policy.dart:17-113`, fresh, no other callers) | Per chat: `ask`/`workspaceEdits`/`fullAccess` | Client-side policy decides ACP `request_permission` |
 | **Permission inbox** | `world_state_service.dart:1040-1088` + landing/status-edge render | Session permission requests with `answer(allow)` | Reject-first for ACP bridges |
 
 ### What does NOT exist (the gaps this work fills)

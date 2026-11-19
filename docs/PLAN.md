@@ -83,7 +83,7 @@ include an adapter whose effective write authority cannot be enforced and
 tested. AFM bridge bundling is required when AFM is included. A hosted-only preview must
 explicitly select its hosted provider and disable unavailable AFM. Replace stale failure claims only
 with current evidence; the binding callback already exists in
-`lib/home/project_view.dart` and must be regression-checked, not reimplemented.
+`lib/ui_legacy/home/project_view.dart` and must be regression-checked, not reimplemented.
 
 Gate: documented checkout/bootstrap/build/launch commands work without
 undocumented absolute-path dependencies or, for included AFM, shell-only
@@ -286,9 +286,10 @@ that either exists.
 Status: landed in the tree; NOT live-proven against a running world.
 
 Retire the bubble chat as a second product and route every agent entry to
-the harness-backed grid. Remove `lib/doc/chat_document_view.dart` and its
-dispatch from `lib/home/project_view.dart`; "ask an agent" lands on
-`lib/coding_agent/agent_doc_surface.dart`. Absorb the tree mechanic the
+the harness-backed grid. DONE: `chat_document_view.dart` and its dispatch
+were already deleted (commit 01606956); "ask an agent" lands on
+`lib/ui_documents/agent_doc_surface.dart`. The `test/doc/chat_document_view_test.dart`
+retirement also already happened (file gone). Absorb the tree mechanic the
 chat surface proved — child-thread navigation on a selected span — into the
 grid, as ADR 0010 D2 already requires. On the grid, ship the Simple
 profile: setup (workspace, backend, API key) is never the first screen, it
@@ -301,8 +302,8 @@ entry from any creation or document path lands on the grid; a bound document
 opens on the document with setup collapsed and its binding state readable on
 the status rule; a selected span on the grid still opens a child thread with
 an explicit conclusion. Extend
-`test/coding_agent/coding_agent_screen_test.dart`; retire
-`test/doc/chat_document_view_test.dart` with the surface it covers.
+`test/coding_agent/coding_agent_screen_test.dart` (still present); the
+chat_document_view test is already retired.
 
 ### Phase 2 — seat work verbs
 

@@ -112,7 +112,7 @@ mechanism, a product surface over existing verbs.
 ## Stage C — components (landed) and the selector migration (deliberately not taken)
 
 **Landed**: the policy surface's reusable atoms extracted into
-[lib/shell/models/policy_components.dart](../../../lib/shell/models/policy_components.dart)
+[lib/ui_models/policy_components.dart](../../../lib/ui_models/policy_components.dart)
 — `policySentenceFor` (the behavior sentence the actor card can speak
 too) and `EscalationNarration` (the promotion chip); both lenses use
 them. `BrainOverrideCard` exists as the Brain-set section of the shared

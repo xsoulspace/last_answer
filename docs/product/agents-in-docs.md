@@ -86,7 +86,7 @@ Original plan (superseded by the landed state above):
 
 - `ProjectModel.doc` `formatId: 'agent'`: workspace set (start: one),
   roster, board, batched transcript blocks, permission log.
-- Move `lib/coding_agent/` machinery into a `DocFormatView`; the standalone
+- Move `lib/` machinery into a `DocFormatView`; the standalone
   screen path redirects to a doc. Proven behavior unchanged: embedded
   daemon, backend switch (AFM ⇄ OpenRouter), permission round-trip, verdict
   surfacing, snapshot restore.

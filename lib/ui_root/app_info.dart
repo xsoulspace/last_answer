@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' show showLicensePage;
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_legacy/legacy_kit/legacy_kit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 

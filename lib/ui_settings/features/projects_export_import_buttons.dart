@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_legacy/note/note_asset_store.dart';
+import 'package:lastanswer/data_journal/note_asset_store.dart';
 
 class ProjectsExportImportButtons extends StatelessWidget {
   const ProjectsExportImportButtons({super.key});

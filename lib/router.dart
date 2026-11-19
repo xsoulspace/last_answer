@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_legacy/home/project_route.dart';
-import 'package:lastanswer/ui_legacy/home/project_view.dart';
+import 'package:lastanswer/ui_documents/project_route.dart';
+import 'package:lastanswer/ui_documents/project_view.dart';
 import 'package:lastanswer/ui_root/loading_screen.dart';
 import 'package:lastanswer/ui_onboarding/intro_screen.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart';
@@ -35,26 +35,10 @@ final appRouter = GoRouter(
               ),
             ),
             AppRoute(
-              '/home/n/:noteId',
-              (final state) => ProjectRoute(
-                projectId: state.pathParameters['noteId']!,
-                projectType: ProjectTypes.note,
-                builder: (_, project) => ProjectView(project: project),
-              ),
-            ),
-            AppRoute(
               '/home/d/:docId',
               (final state) => ProjectRoute(
                 projectId: state.pathParameters['docId']!,
                 projectType: ProjectTypes.doc,
-                builder: (_, project) => ProjectView(project: project),
-              ),
-            ),
-            AppRoute(
-              '/home/i/:ideaId',
-              (final state) => ProjectRoute(
-                projectId: state.pathParameters['ideaId']!,
-                projectType: ProjectTypes.idea,
                 builder: (_, project) => ProjectView(project: project),
               ),
             ),

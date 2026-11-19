@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_legacy/home/project_route.dart';
+import 'package:lastanswer/ui_documents/project_route.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class SavedProjects implements ProjectsRepository {

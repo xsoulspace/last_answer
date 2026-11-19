@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:intl/intl.dart' as intl;
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_legacy/legacy_kit/legacy_kit.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 /// The community invite (was `DiscordButton` in the legacy kit).

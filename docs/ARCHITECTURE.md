@@ -91,7 +91,6 @@ lib/
 ├── ui_paywall/                 # paywall flow
 ├── ui_onboarding/              # first-run + intro
 ├── ui_workspaces/              # workspace registry domain (ADR 0026)
-├── ui_legacy/                  # FROZEN: home/ · idea/ · note/ · legacy_kit/
 ├── mcp/                        # agent-facing MCP tools, debug builds (ui_debug analog)
 └── crash/ + entitlement/       # small unprefixed facilities (no lib/core: would
                                 #   shadow package:core)
@@ -138,10 +137,15 @@ registry is the manifest.
 
 **Flutter-free domain.** `headless_core` stays Flutter-widget-free.
 
-**Legacy quarantine.** `ui_legacy/` is frozen: no new code, no new importers
-from outside; retirement only through the explicit user-visible migration
-ADR 0002 requires (ideas and notes hold real user data — read old format
-until migration runs; never delete storage on open).
+**Legacy retirement (2026-11-19, applied).** `ui_legacy/` is deleted. The
+ADR 0002 law held: zero data loss — the legacy rows, note-asset files and the
+`DbSaveModel` replication payload were never touched. The note/idea EDITORS
+are retired; opening a legacy row in the Documents grid converts it ON DEMAND
+into a doc (`ui_documents/legacy_project_migration.dart` — deterministic id
+`legacy-<type>-<id>`, idempotent, non-destructive, originals kept in every
+backup). Known follow-ups: grid still lists original rows next to their
+converted docs; note image files stay in the `note-assets/` plane
+(`data_journal/note_asset_store.dart`).
 
 **Gates carry the mechanical laws.** UI law is CI-enforced (`just ui-gates`).
 The import-direction laws above are procedural until promoted into a matching
@@ -169,6 +173,11 @@ gate — promotion earned by repetition, per the generational ladder.
   is a re-export barrel only; new code never imports it).
 - `lib/other/`, `lib/ui/`, `lib/widgets/` (dissolved — ui_root/ui_onboarding/
   world/ui_root; the kit is `packages/la_ui`).
+- `lib/ui_legacy/` (retired 2026-11-19 — editors deleted, load-bearing pieces
+  extracted: ScreenLayout/BottomSafeArea → `packages/la_ui`, ProjectRoute/
+  ProjectView/changelog → `ui_documents`, NoteAssetStore → `data_journal`,
+  ProjectsDirectionSwitch → `ui_settings/widgets`; /home/n + /home/i routes
+  dropped, /home/d + /home/changelog kept — MCP vocabulary depends on them).
 - `lib/firebase_options.dart`; the `project_operations` tombstones;
   `packages/move_to/`; `tool/*.dill`; `.DS_Store`.
 - `packages/core/lib/src/generated/intl/*` + the `flutter_intl:` config

@@ -1,16 +1,19 @@
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/ui_chat/world_chat_surface.dart';
-import 'package:lastanswer/ui_inspector/world_conversation_view.dart';
+import 'package:lastanswer/ui_chat/ui_chat.dart';
+import 'package:lastanswer/ui_inspector/ui_inspector.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_documents/changelog_view.dart';
 import 'package:lastanswer/ui_documents/code_view.dart';
 import 'package:lastanswer/ui_documents/doc_view.dart';
-import 'package:lastanswer/ui_legacy/idea/idea_view.dart';
-import 'package:lastanswer/ui_legacy/note/note_view.dart';
-import 'package:lastanswer/ui_settings/views/changelog_view.dart';
-import 'package:lastanswer/ui_legacy/legacy_kit/legacy_kit.dart';
+import 'package:lastanswer/ui_documents/legacy_project_migration.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
+/// The single doc→surface map (ADR 0010): every document variant renders
+/// through this host, served from `ui_documents` since the 2026-11-19
+/// folder-grammar restructure. Legacy note/idea rows no longer render their
+/// retired editors — opening one converts it ON DEMAND into a doc
+/// ([LegacyProjectMigration], idempotent, non-destructive per ADR 0002).
 class ProjectView extends StatelessWidget {
   const ProjectView({this.project, this.embedded = false, super.key});
 
@@ -39,54 +42,57 @@ class ProjectView extends StatelessWidget {
         : project!;
     final id = selected.id;
     return selected.map(
-      idea: (final idea) => IdeaView(idea: idea, key: ValueKey(id)),
-      note: (final note) => _frame(
-        context,
-        const _ProjectViewAppBar(),
-        NoteView(note: note, key: ValueKey(id)),
+      idea: (final idea) => _LegacyMigrationHost(
+        legacy: idea,
+        embedded: embedded,
+        key: ValueKey(id),
+      ),
+      note: (final note) => _LegacyMigrationHost(
+        legacy: note,
+        embedded: embedded,
+        key: ValueKey(id),
       ),
       changelog: (final changelog) => _frame(
         context,
         const _ChangelogViewAppBar(),
         const ChangelogView(),
       ),
-      doc: (final doc) => _frame(
-        context,
-        const _ProjectViewAppBar(),
-        // ADR 0023 — two surfaces: `chat` docs are the world conversation
-        // (durable realm threads + bots); `agent` docs stay the harness
-        // coding lane. ADR 0010 D2 metadata no longer mints a distinct
-        // surface, and the observability panes moved to Settings
-        // (world inspector, mesh tasks).
-        switch (doc.formatId) {
-          DocFormatIds.chat => WorldChatSurface(key: ValueKey(id)),
-          // 2a — the code format: one monospace artifact surface on
-          // the open registry (zero migration, the doc spine carries
-          // the content block).
-          DocFormatIds.code => CodeDocumentView(doc: doc, key: ValueKey(id)),
-          DocFormatIds.agent => doc.agent?.worldBinding != null
-              ? WorldConversationView(
-                  binding: doc.agent!.worldBinding!,
-                  key: ValueKey(
-                    '${id}_${doc.agent!.worldBinding!.worldId}',
-                  ),
-                )
-              : AgentDocSurface(
-                  doc: doc,
-                  key: ValueKey(id),
-                  // Persist workspace, check and backend through the
-                  // same composition point as the document listing.
-                  // Without this wiring the binding is lost on app
-                  // restart.
-                  onDocChanged: (final updated) => context
-                      .read<OpenedProjectNotifier>()
-                      .updateProject(updated),
-                ),
-          _ => _WorkbenchDocumentHost(doc: doc, key: ValueKey(id)),
-        },
-      ),
+      doc: (final doc) =>
+          _frame(context, const _ProjectViewAppBar(), _docSurface(context, doc)),
     );
   }
+
+  /// ADR 0023 — two surfaces: `chat` docs are the world conversation
+  /// (durable realm threads + bots); `agent` docs stay the harness
+  /// coding lane. ADR 0010 D2 metadata no longer mints a distinct
+  /// surface, and the observability panes moved to Settings
+  /// (world inspector, mesh tasks).
+  Widget _docSurface(final BuildContext context, final ProjectModelDoc doc) =>
+      switch (doc.formatId) {
+        DocFormatIds.chat => WorldChatSurface(key: ValueKey(doc.id)),
+        // 2a — the code format: one monospace artifact surface on
+        // the open registry (zero migration, the doc spine carries
+        // the content block).
+        DocFormatIds.code => CodeDocumentView(doc: doc, key: ValueKey(doc.id)),
+        DocFormatIds.agent => doc.agent?.worldBinding != null
+            ? WorldConversationView(
+                binding: doc.agent!.worldBinding!,
+                key: ValueKey(
+                  '${doc.id}_${doc.agent!.worldBinding!.worldId}',
+                ),
+              )
+            : AgentDocSurface(
+                doc: doc,
+                key: ValueKey(doc.id),
+                // Persist workspace, check and backend through the
+                // same composition point as the document listing.
+                // Without this wiring the binding is lost on app
+                // restart.
+                onDocChanged: (final updated) =>
+                    context.read<OpenedProjectNotifier>().updateProject(updated),
+              ),
+        _ => _WorkbenchDocumentHost(doc: doc, key: ValueKey(doc.id)),
+      };
 
   Widget _frame(
     final BuildContext context,
@@ -95,6 +101,50 @@ class ProjectView extends StatelessWidget {
   ) => embedded
       ? child
       : _AdaptiveView(appBar: appBar, child: child);
+}
+
+/// The ADR 0002 explicit migration made visible: converting a legacy
+/// note/idea shows an honest spinner, then the resulting doc surface. The
+/// original row is never mutated (see [LegacyProjectMigration]).
+class _LegacyMigrationHost extends StatelessWidget {
+  const _LegacyMigrationHost({
+    required this.legacy,
+    required this.embedded,
+    super.key,
+  });
+  final ProjectModel legacy;
+  final bool embedded;
+
+  @override
+  Widget build(final BuildContext context) {
+    final future = LegacyProjectMigration.migrateToDoc(
+      legacy,
+      repository: context.read<ProjectsRepository>(),
+      localizeQuestion: (final title) => title.localize(context),
+    );
+    return FutureBuilder<ProjectModelDoc>(
+      future: future,
+      builder: (final context, final snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: LaSpinner(size: 24));
+        }
+        final doc = snapshot.data;
+        if (doc == null) {
+          return Center(
+            child: Text(
+              switch (Localizations.localeOf(context).languageCode) {
+                'it' => 'Impossibile convertire questo elemento.',
+                'ru' => 'Не удалось преобразовать этот элемент.',
+                _ => 'This item could not be converted.',
+              },
+              key: const Key('project_view.migration_failed'),
+            ),
+          );
+        }
+        return ProjectView(project: doc, embedded: embedded);
+      },
+    );
+  }
 }
 
 class _AdaptiveView extends StatelessWidget {

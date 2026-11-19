@@ -23,6 +23,7 @@ export 'src/chrome.dart';
 export 'src/dialog.dart';
 export 'src/field.dart';
 export 'src/icons.dart';
+export 'src/layout.dart';
 export 'src/menu.dart';
 export 'src/motion.dart';
 export 'src/pill.dart';

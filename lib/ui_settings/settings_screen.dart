@@ -4,7 +4,7 @@ import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
-import 'package:lastanswer/ui_legacy/home/widgets/widgets.dart';
+import 'package:lastanswer/ui_settings/widgets/widgets.dart';
 import 'package:lastanswer/ui_root/app_info.dart';
 import 'package:lastanswer/ui_root/feedback.dart';
 import 'package:lastanswer/ui_settings/ui_settings.dart';
@@ -12,7 +12,6 @@ import 'package:lastanswer/ui_settings/settings_sections.dart';
 import 'package:lastanswer/ui_settings/views/supporter_view/supporter_view.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-import 'package:lastanswer/ui_legacy/legacy_kit/legacy_kit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 

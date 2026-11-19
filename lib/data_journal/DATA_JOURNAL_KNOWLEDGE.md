@@ -6,7 +6,7 @@ state projections, actor roster/bindings/creation, kernel conversation verbs,
 work-thread spawn, beat linkify, chat media, plus the mesh durability lane
 (`mesh/` — live mesh service, storage, relay host io/stub).
 
-**Key files:** `realm_chat_service.dart` (the verbs everything rides),
+**Key files:** `note_asset_store.dart` (the legacy note-image FILE plane: `note-assets/<noteId>/…`, mime sniff, containment guard, backup/restore sinks — survives the legacy-UI retirement), `realm_chat_service.dart` (the verbs everything rides),
 `world_state_service.dart` (presence/state fold), `kernel_conversation.dart`
 (ADR 0025 thread/beat verbs), `mesh/live_mesh_service.dart`.
 

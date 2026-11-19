@@ -1,5 +1,5 @@
 # Engine-host files exempt from the material-import gate (DESIGN.md v6
 # component-carrier law). Shrinking list — entries need a reason.
-lib/other/last_answer_app.dart   # MaterialApp engine host + localizations
-lib/workbench/workbench_candidate_main.dart  # isolated acceptance-shell runner (own MaterialApp, like main.dart)
-lib/other/app_info.dart   # showLicensePage: Material platform idiom, no kit equivalent (documented in-file)
+lib/ui_root/last_answer_app.dart   # MaterialApp engine host + localizations
+lib/ui_workbench/workbench_candidate_main.dart  # isolated acceptance-shell runner (own MaterialApp, like main.dart)
+lib/ui_root/app_info.dart   # showLicensePage: Material platform idiom, no kit equivalent (documented in-file)

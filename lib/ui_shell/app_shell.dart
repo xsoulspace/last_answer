@@ -73,9 +73,9 @@ import 'package:lastanswer/coding_agent/subscription_provider.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/la_world/la_world.dart';
+import 'package:lastanswer/world/ecs/la_world.dart';
 
-import 'package:lastanswer/la_world/la_world_feed.dart';
+import 'package:lastanswer/world/ecs/la_world_feed.dart';
 
 import 'package:lastanswer/ui_settings/ui_settings.dart';
 

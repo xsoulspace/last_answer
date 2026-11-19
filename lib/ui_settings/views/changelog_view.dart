@@ -1,5 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/ui_root/update_notification_dialog.dart';
 
 class ChangelogView extends StatelessWidget {
   const ChangelogView({super.key});

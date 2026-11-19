@@ -22,7 +22,7 @@ import 'package:lastanswer/coding_agent/realm_chat/actor_brain.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/realm_world.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/onboarding/first_run_screen.dart';
+import 'package:lastanswer/ui_onboarding/first_run_screen.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart' show kViewLayoutPrefsKey;
 
 import 'package:shared_preferences/shared_preferences.dart';

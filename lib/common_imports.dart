@@ -26,7 +26,7 @@ export 'package:gap/gap.dart';
 export 'package:go_router/go_router.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:la_ui/la_ui.dart';
-export 'package:lastanswer/ui/la_ui_bridge.dart';
+export 'package:lastanswer/ui_root/la_ui_bridge.dart';
 export 'package:provider/provider.dart';
 export 'package:recase/recase.dart';
 export 'package:rxdart/rxdart.dart';

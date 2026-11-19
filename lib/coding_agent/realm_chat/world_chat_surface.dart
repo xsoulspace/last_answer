@@ -19,7 +19,7 @@ import 'package:lastanswer/coding_agent/realm_chat/work_thread_spawn.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/coding_agent/subscription_provider.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/la_world/la_world.dart';
+import 'package:lastanswer/world/ecs/la_world.dart';
 import 'package:lastanswer/ui_shell/landing_inbox.dart';
 import 'package:lastanswer/ui_shell/project_scope_picker.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';

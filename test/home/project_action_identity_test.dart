@@ -3,8 +3,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/idea/idea_view_bloc.dart';
-import 'package:lastanswer/note/note_view_bloc.dart';
+import 'package:lastanswer/ui_legacy/idea/idea_view_bloc.dart';
+import 'package:lastanswer/ui_legacy/note/note_view_bloc.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class RecordedProjects extends ValueNotifier<ProjectsNotifierState>

@@ -13,10 +13,10 @@ library;
 
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/la_world/creatures.dart';
+import 'package:lastanswer/world/ecs/creatures.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-import 'package:lastanswer/ui/creature_mark.dart';
+import 'package:lastanswer/world/creature_mark.dart';
 
 /// The edge's height — one compact line, quieter than a tab strip.
 const double kStatusEdgeHeight = 26;

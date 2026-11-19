@@ -4,7 +4,7 @@
 // choice; the native gradle plugins remain wired for that day).
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/crash/crash_reports.dart';
-import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/ui_root/last_answer_app.dart';
 
 Future<void> bootstrap() async {
   final GlobalServicesInitializer initializer = GlobalServicesInitializerImpl();

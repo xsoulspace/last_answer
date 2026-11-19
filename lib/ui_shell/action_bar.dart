@@ -26,7 +26,7 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/la_world/la_world.dart';
+import 'package:lastanswer/world/ecs/la_world.dart';
 
 import 'package:lastanswer/ui_shell/shell_layout.dart';
 

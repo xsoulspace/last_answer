@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lastanswer/app_scaffold.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/home/project_route.dart';
-import 'package:lastanswer/home/project_view.dart';
-import 'package:lastanswer/other/other.dart';
+import 'package:lastanswer/ui_legacy/home/project_route.dart';
+import 'package:lastanswer/ui_legacy/home/project_view.dart';
+import 'package:lastanswer/ui_root/loading_screen.dart';
+import 'package:lastanswer/ui_onboarding/intro_screen.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart';
 import 'package:lastanswer/ui_paywall/paywall_flow.dart';
 import 'package:lastanswer/ui_paywall/paywall_screen.dart';

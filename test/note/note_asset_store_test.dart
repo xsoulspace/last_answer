@@ -12,7 +12,7 @@ import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/note/note_asset_store.dart';
+import 'package:lastanswer/ui_legacy/note/note_asset_store.dart';
 
 Uint8List pngBytes({int width = 64, int height = 48}) {
   final b = BytesBuilder();

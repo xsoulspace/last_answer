@@ -11,7 +11,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
-import 'package:lastanswer/note/image_edit_ops.dart';
+import 'package:lastanswer/ui_legacy/note/image_edit_ops.dart';
 
 /// A VALID png (real CRC — the deterministic ops DECODE, so the
 /// fixture must survive the image package's own checksum validation).

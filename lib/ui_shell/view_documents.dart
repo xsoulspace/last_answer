@@ -11,7 +11,7 @@
 library;
 
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/home/project_view.dart';
+import 'package:lastanswer/ui_legacy/home/project_view.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 

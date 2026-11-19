@@ -15,10 +15,10 @@ import 'dart:convert';
 import 'package:lastanswer/coding_agent/realm_chat/realm_chat_service.dart';
 import 'package:lastanswer/coding_agent/realm_chat/world_state_service.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/la_world/creatures.dart';
+import 'package:lastanswer/world/ecs/creatures.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_shell/status_edge.dart' show HealthDot;
-import 'package:lastanswer/ui/creature_mark.dart';
+import 'package:lastanswer/world/creature_mark.dart';
 
 /// The inbox's readable column (the Tufte measure — the shell never
 /// stretches text edge-to-edge).

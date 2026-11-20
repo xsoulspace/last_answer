@@ -19,7 +19,7 @@ library;
 
 import 'dart:async';
 
-import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
+import 'package:headless_core/headless_core.dart';
 
 /// One agent `session/request_permission`, bridged: the facts the 0c
 /// interrupt card renders (title/kind/details — journal facts from the

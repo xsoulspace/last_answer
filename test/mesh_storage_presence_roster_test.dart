@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/mesh/mesh_storage_service.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_mesh/universal_storage_mesh.dart';

@@ -18,7 +18,7 @@ library;
 import 'package:core/core.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:universal_io/io.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show AssetMediaProvenance;

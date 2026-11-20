@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/actor_creation.dart';
 import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
 import 'package:lastanswer/data_journal/realm_bot_host.dart';

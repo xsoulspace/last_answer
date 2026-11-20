@@ -36,7 +36,7 @@
 #           aws-region: us-west-2
 
 #       - name: Create passwords file
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         shell: bash
 #         env:
 #           SERVERPOD_PASSWORDS: ${{ secrets.SERVERPOD_PASSWORDS }}
@@ -46,11 +46,11 @@
 #           ls config/
 
 #       - name: Get Dart packages
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: dart pub get
 
 #       - name: Compile server
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: dart compile kernel bin/main.dart
 
 #       - name: Create CodeDeploy Deployment

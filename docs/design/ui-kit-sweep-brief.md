@@ -1,8 +1,8 @@
-# UI kit sweep brief — Material → `la_ui` (2026-11-16)
+# UI kit sweep brief — Material → `la_ui_kit` (2026-11-16)
 
 The contract for every sweep lane of the ui-kit-rewrite program
 (docs/design/ui-kit-rewrite-2026-11-16.md, DESIGN.md v6). Read this fully
-before editing. The kit source is `packages/la_ui/lib/src/*.dart` — it is
+before editing. The kit source is `packages/la_ui_kit/lib/src/*.dart` — it is
 small; when this brief is ambiguous, the source wins.
 
 ## Ground rules (every lane)
@@ -11,7 +11,7 @@ small; when this brief is ambiguous, the source wins.
    (`S.of(context).*`), callbacks, business logic and navigation are FROZEN.
    This is a component-layer replacement, never a behavior redesign.
 2. **Stay in your lane.** Do not edit files outside your assigned list.
-   Never edit: `lib/common_imports.dart`, `packages/la_ui/**`,
+   Never edit: `lib/common_imports.dart`, `packages/la_ui_kit/**`,
    `lib/_library/**`, `docs/**`. Do not add `import
    'package:flutter/material.dart'` anywhere; do not remove it from
    common_imports (the coordinator cuts it at the end).
@@ -41,7 +41,7 @@ small; when this brief is ambiguous, the source wins.
 
 ## Kit API cheat sheet
 
-All names come via `common_imports.dart` (it exports `package:la_ui/la_ui.dart`).
+All names come via `common_imports.dart` (it exports `package:la_ui_kit/la_ui_kit.dart`).
 
 ```dart
 // ── Buttons (md = 34px, sm = 28px) ────────────────────────────────

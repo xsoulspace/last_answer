@@ -31,7 +31,7 @@ library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 

@@ -4,7 +4,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';

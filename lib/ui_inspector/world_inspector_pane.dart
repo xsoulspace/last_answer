@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
 import 'package:lastanswer/data_journal/world_state_service.dart';

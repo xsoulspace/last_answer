@@ -1,0 +1,156 @@
+import 'dart:async';
+import 'dart:convert' show JsonDecoder, Utf8Decoder;
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_router/go_router.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_state_utils/xsoulspace_state_utils.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
+import 'package:lastanswer/ui_root/ui_root.dart';
+import 'package:lastanswer/data_monetization/data_monetization.dart';
+import 'package:lastanswer/foundation/foundation.dart';
+import 'user_repository.dart';
+import 'user_models.dart';
+import 'locales.dart';
+import 'locale_logic.dart';
+
+
+enum RemoteUserNotifierStatus { unauthenticated, authenticated }
+
+class UserNotifierDto {
+  UserNotifierDto(final BuildContext context)
+    : userRepository = context.read(),
+      purchasesNotifier = context.read(),
+      remoteUserNotifier = context.read(),
+      appFeaturesNotifier = context.read();
+  final UserRepository userRepository;
+  final PurchasesNotifier purchasesNotifier;
+  final RemoteUserNotifier remoteUserNotifier;
+  final AppFeaturesNotifier appFeaturesNotifier;
+}
+
+/// The UI locale, global by design: it OUTLIVES any one [UserNotifier]
+/// instance (its lifetime is the isolate's), so an instance must never
+/// dispose it — a UserNotifier.dispose that did made every later
+/// instance in the same isolate (a second test tree, a hot restart)
+/// crash with "used after being disposed".
+final uiLocaleNotifier = ValueNotifier(Locales.en);
+
+@resource
+class RemoteUserNotifier
+    extends ValueNotifier<LoadableContainer<RemoteUserModel>> {
+  // ignore: avoid_unused_constructor_parameters
+  RemoteUserNotifier(final BuildContext context)
+    : super(const LoadableContainer(value: RemoteUserModel.empty));
+  bool get isAuthorized => value.isLoaded && value.value.isNotEmpty;
+}
+
+class UserNotifier extends ValueNotifier<LoadableContainer<UserModel>> {
+  UserNotifier(final BuildContext context)
+    : dto = UserNotifierDto(context),
+      super(const LoadableContainer(value: UserModel.empty));
+  final UserNotifierDto dto;
+
+  Future<void> loadRemoteUser({final bool isAfterLogin = false}) async {
+    // if (isAfterLogin) await dto.userRepository.completeRemoteLogin();
+    // final user = await dto.userRepository.getRemoteUser();
+    // dto.remoteUserNotifier.setValue(LoadableContainer.loaded(user));
+  }
+
+  void logout() {
+    resetRemoteUser();
+    // unawaited(dto.userRepository.logout());
+  }
+
+  void resetRemoteUser() => dto.remoteUserNotifier.setValue(
+    const LoadableContainer(value: RemoteUserModel.empty),
+  );
+
+  bool get isLoaded => value.isLoaded;
+  bool get isLoading => value.isLoading;
+  UserModel get user => value.value;
+  UserSettingsModel get settings => user.settings;
+  ValueListenable<Locale> get locale => uiLocaleNotifier;
+  bool get hasCompletedOnboarding => user.hasCompletedOnboarding;
+  Future<void> onLoad({
+    required final LocalUserInitializer local,
+    required final RemoteUserInitializer remote,
+  }) async {
+    value = LoadableContainer.loaded(await dto.userRepository.getLocalUser());
+    await updateLocale(value.value.settings.locale);
+    await local.onUserLoad();
+    if (dto.appFeaturesNotifier.value.isRemoteServicesEnabled) {
+      await loadRemoteUser();
+    }
+  }
+
+  Future<void> deleteRemoteUser() async {
+    // await dto.userRepository.deleteRemoteUser();
+    resetRemoteUser();
+  }
+
+  /// Marks onboarding done and persists it through [UserRepository] —
+  /// the flag the first-run routing branch reads on every launch, so
+  /// the first-run flow shows exactly once. (Fixed 2026-11-07: this
+  /// used to copy the flag to itself, silently never completing.)
+  void completeOnboarding() => _updateUser(
+    (final user) => user.copyWith(hasCompletedOnboarding: true),
+  );
+  void updateCharactersLimitForNewNotes(final int newLimit) => _updateSettings(
+    (final settings) => settings.copyWith(charactersLimitForNewNotes: newLimit),
+  );
+  // ignore: avoid_positional_boolean_parameters
+  void updateUseTimestampForBackupFilename(final bool isEnabled) =>
+      _updateSettings(
+        (final settings) =>
+            settings.copyWith(useTimestampForBackupFilename: isEnabled),
+      );
+
+  void updateThemeMode(final ThemeMode? themeMode) {
+    if (themeMode == null) return;
+    _updateSettings(
+      (final settings) => settings.copyWith(themeMode: themeMode),
+    );
+  }
+
+  void updateIsProjectsReversed({required final bool isReversed}) =>
+      _updateSettings(
+        (final settings) =>
+            settings.copyWith(isProjectsListReversed: isReversed),
+      );
+
+  void disableRestrictions() => _updateSettings(
+    (final settings) => settings.copyWith(isSocialNetworksRestricted: false),
+  );
+
+  Future<void> updateLocale(final Locale? locale) async {
+    final result = await LocaleLogic().updateLocale(
+      newLocale: locale,
+      oldLocale: settings.locale,
+      uiLocale: uiLocaleNotifier.value,
+    );
+    if (result == null) return;
+    uiLocaleNotifier.value = result.uiLocale;
+    notifyListeners();
+    _updateSettings(
+      (final settings) => settings.copyWith(locale: result.updatedLocale),
+    );
+  }
+
+  void _updateSettings(
+    final UserSettingsModel Function(UserSettingsModel) updateSettings,
+  ) => _updateUser(
+    (final user) => user.copyWith(settings: updateSettings(settings)),
+  );
+  void updateLocalDbVersion(final LocalDbVersion dbVersion) =>
+      _updateUser((final user) => user.copyWith(localDbVersion: dbVersion));
+  void _updateUser(final UserModel Function(UserModel) updateUser) {
+    setValue(value.copyWith(value: updateUser(value.value)));
+    unawaited(dto.userRepository.putLocalUser(user: user));
+  }
+}

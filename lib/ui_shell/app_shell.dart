@@ -45,7 +45,7 @@ import 'package:headless_core/headless_core.dart' as hc;
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 
@@ -55,7 +55,6 @@ import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controlle
 
 import 'package:lastanswer/data_agents/meaning/meaning_experiment_entry.dart';
 
-import 'package:lastanswer/data_agents/config/permission_doc_router.dart';
 
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 
@@ -538,8 +537,9 @@ class _AppShellState extends State<AppShell> {
       // Multiplayer chat: chat docs route to the SAME mesh-attached
       // replica store (convergence over the LAN mesh), and the open chat
       // surface re-reads the fold after every cycle.
-      hc.MeshAwareDocumentRepository.replicaStoreGetter = () =>
-          StorageBackendsNotifier.instance.docReplicaStore;
+      context
+          .read<hc.DocReplicaStoreRef>()
+          .getter = () => StorageBackendsNotifier.instance.docReplicaStore;
       StorageBackendsNotifier.onSyncCycle = () {
         AgentDocSurface.debugSurface?.refreshAfterMeshSync();
       };

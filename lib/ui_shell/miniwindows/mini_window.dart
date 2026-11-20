@@ -12,7 +12,7 @@ library;
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 

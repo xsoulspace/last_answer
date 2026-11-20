@@ -1,0 +1,47 @@
+import 'dart:async';
+import 'dart:convert' show JsonDecoder, Utf8Decoder;
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_router/go_router.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
+import 'package:xsoulspace_state_utils/xsoulspace_state_utils.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
+import 'project_models.dart';
+import 'projects_repository.dart';
+
+part 'projects_paged_requests_builder.freezed.dart';
+
+@freezed
+abstract class RequestProjectsDto with _$RequestProjectsDto {
+  const factory RequestProjectsDto({
+    @Default('') final String search,
+    @Default([]) final List<ProjectTypes> types,
+    @Default(false) final bool isReversed,
+    @Default(ProjectTagModelId.empty) final ProjectTagModelId tagId,
+
+    /// Enabled to include changelog and other system "notes"
+    @Default(false) final bool shouldAddChangelog,
+  }) = _RequestProjectsDto;
+  const RequestProjectsDto._();
+  static const empty = RequestProjectsDto();
+  static const emptyForHome = RequestProjectsDto(shouldAddChangelog: true);
+  bool get isEmpty => search.isEmpty && types.isEmpty && tagId.isEmpty;
+}
+
+class ProjectsPagedDataRequestsBuilder
+    extends PagingControllerRequestsBuilder<ProjectModel> {
+  ProjectsPagedDataRequestsBuilder({required super.onLoadData});
+  factory ProjectsPagedDataRequestsBuilder.getAll({
+    required final ProjectsRepository projectsRepository,
+    required final ValueGetter<RequestProjectsDto> getDto,
+  }) => ProjectsPagedDataRequestsBuilder(
+    onLoadData: (final pageKey) => projectsRepository.getPaginated(
+      request: PaginatedPageRequestModel(data: getDto(), page: pageKey),
+    ),
+  );
+}

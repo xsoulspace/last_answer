@@ -7,8 +7,6 @@ environment:
 resolution: workspace
 
 dependencies:
-  core:
-    path: ../core
   serverpod_auth_client: ^3.4.11
   serverpod_client: ^3.4.11
   shared_models:

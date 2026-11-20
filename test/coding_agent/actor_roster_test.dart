@@ -10,7 +10,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';

@@ -16,7 +16,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/data_journal/actor_bindings_fold.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';

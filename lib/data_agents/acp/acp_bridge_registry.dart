@@ -26,7 +26,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
+import 'package:headless_core/headless_core.dart';
 
 /// The desktop gate's pure answer (pinned by tests): the bridge needs a
 /// native desktop platform (an ACP agent is a spawned local process) AND

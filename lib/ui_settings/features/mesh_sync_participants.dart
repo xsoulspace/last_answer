@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -14,24 +13,6 @@ import 'package:universal_storage_mesh/universal_storage_mesh.dart';
 /// All three fold the same way — durable kernel ops whose VV dedupe makes
 /// re-folding idempotent and delivery-order independent, so whole-file LWW
 /// on the storage seam cannot desync replicas.
-
-/// A [DocReplicaStore] riding the mesh: its batched flush ships the
-/// latest replica state before anti-entropy; [absorbRemote] folds what the
-/// exchange delivered; compaction follows the store's own policy.
-final class DocSyncParticipant implements MeshSyncParticipant {
-  const DocSyncParticipant(this.store);
-
-  final DocReplicaStore store;
-
-  @override
-  Future<void> flush(final StorageService storage) => store.flush();
-
-  @override
-  Future<void> absorb(final StorageService storage) => store.absorbRemote();
-
-  @override
-  Future<void> compact(final StorageService storage) => store.compactAll();
-}
 
 /// The actor roster (ADR 0007 §1): one whole file per replica under
 /// `actor_rosters/`, shipped and folded like any doc replica file.

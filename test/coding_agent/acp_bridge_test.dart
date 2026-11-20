@@ -12,10 +12,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 
 /// A scripted [AcpBridgeTransport]: records prompts, replays queued
 /// update scripts per turn, and lets the test emit permission requests.

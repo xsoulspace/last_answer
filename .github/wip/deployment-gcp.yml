@@ -59,7 +59,7 @@
 #           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
 
 #       - name: Create passwords file
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         shell: bash
 #         env:
 #           SERVERPOD_PASSWORDS: ${{ secrets.SERVERPOD_PASSWORDS }}
@@ -69,19 +69,19 @@
 #           ls config/
 
 #       - name: Configure Docker
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
 #       - name: Build the Docker image
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: "docker build -t $IMAGE_NAME ."
 
 #       - name: Tag the Docker image
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: docker tag $IMAGE_NAME ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPOSITORY }}/$IMAGE_NAME
 
 #       - name: Push Docker image
-#         working-directory: server_core_server
+#         working-directory: deployables/server
 #         run: docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPOSITORY }}/$IMAGE_NAME
 
 #       # Uncomment the following code to automatically restart the servers in the

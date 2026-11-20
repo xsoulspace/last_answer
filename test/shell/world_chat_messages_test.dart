@@ -19,7 +19,7 @@ library;
 import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';

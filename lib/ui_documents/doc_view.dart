@@ -227,11 +227,8 @@ class _DocViewState extends State<DocView> {
   Future<void> _climbUp() async {
     if (_path.length <= 1) return;
     final child = _path.last;
-    if (child.status == hc.DocumentStatus.open) {
-      final isEmpty = child.blocks.every((final b) => b.content.trim().isEmpty);
-      if (isEmpty) {
-        await _docRepo.delete(child.id);
-      }
+    if (hc.Discussions.shouldAbandonOnClimb(child)) {
+      await _docRepo.delete(child.id);
     }
     setState(() {
       _path.removeLast();
@@ -246,15 +243,11 @@ class _DocViewState extends State<DocView> {
     final blocks = _current.blocks;
     if (index < 0 || index >= blocks.length) return null;
     final block = blocks[index];
-    final now = DateTime.now();
-    final child = hc.DocumentNode(
-      id: _nextNodeId(),
-      createdAt: now,
-      updatedAt: now,
-      parentDocId: _current.id,
-      anchorSpan: hc.AnchorSpan(blockId: block.id),
-      spanSnapshot: block.content,
-      blocks: [hc.Block(id: _nextNodeId(), type: hc.BlockType.paragraph)],
+    final child = hc.Discussions.childNode(
+      parent: _current,
+      anchor: block,
+      newId: _nextNodeId,
+      now: DateTime.now(),
     );
     await _docRepo.save(child);
     await _openChild(child);

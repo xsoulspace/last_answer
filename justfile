@@ -42,15 +42,15 @@ gen-icons:
     dart run flutter_launcher_icons
 
 gen-server-types:
-    cd apps/core_server_server && serverpod generate
+    cd deployables/server && serverpod generate
 start-server-docker:
-    cd apps/core_server_server && docker-compose up --build --detach
+    cd deployables/server && docker-compose up --build --detach
 
 start-server-dart:
-    cd apps/core_server_server && dart bin/main.dart 
+    cd deployables/server && dart bin/main.dart
 
 start-server:
-    make start-server-docker && make start-server-dart
+    just start-server-docker && just start-server-dart
 
 build-web-pwa:
     flutter build web --csp --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite -t lib/main_prod.dart --pwa-strategy=offline-first && rm -rf release/web && mv build/web release
@@ -76,7 +76,12 @@ gate-shell *ARGS:
 smoke-chat *ARGS:
     fvm dart tool/smoke/chat_endless_smoke.dart {{ARGS}}
 
-# DESIGN.md v6 component-carrier law: la_ui stays material-free and lib/
+# DESIGN.md v6 component-carrier law: la_ui_kit stays material-free and lib/
 # imports material only via the allowlist (tool/ui_gate_allowlist.txt).
 ui-gates:
     fvm dart run tool/check_ui_gates.dart
+
+# ADR 0034 purity law for the headless CLI surface: bin/ runs plain Dart -
+# it may not import package:lastanswer or any Flutter library.
+bin-gates:
+    fvm dart tool/check_bin_gates.dart

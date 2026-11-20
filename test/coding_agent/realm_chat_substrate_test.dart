@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/actor_creation.dart';
-import 'package:lastanswer/data_journal/kernel_conversation.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

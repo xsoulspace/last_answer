@@ -3,7 +3,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io)
         'package:lastanswer/ui_inspector/external_worlds_io.dart'

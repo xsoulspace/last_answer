@@ -42,7 +42,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb, visibleForTesting;
-import 'package:lastanswer/data_journal/kernel_conversation.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/realm_world_root_io.dart'
     if (dart.library.js_interop) 'realm_world_root_stub.dart'
     as world_root;

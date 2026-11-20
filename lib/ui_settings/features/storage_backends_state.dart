@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_controller.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';

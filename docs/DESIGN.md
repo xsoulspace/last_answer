@@ -103,7 +103,7 @@
 >
 > **v6 amendment (2026-11-16, owner-directed "squircle + amend"):**
 > two law changes and one enforcement layer, landing with the
-> `packages/la_ui` kit rewrite (docs/design/ui-kit-rewrite-2026-11-16.md).
+> `packages/la_ui_kit` kit rewrite (docs/design/ui-kit-rewrite-2026-11-16.md).
 > **(1) Squircle law:** every rounded fill, control and floating
 > surface in the kit draws CONTINUOUS-curvature superellipse corners
 > (the Discord/iOS grammar) through the kit's `SquircleShape`;
@@ -117,7 +117,7 @@
 > BANNED in chrome; reduced-motion disables chrome motion too (the
 > creature layer keeps its own event budgets, unchanged). The gamified
 > dial stays two-layered: chrome motion is feedback, creatures are
-> life. **(3) Component-carrier law:** `packages/la_ui` is the ONE
+> life. **(3) Component-carrier law:** `packages/la_ui_kit` is the ONE
 > component carrier of this design law. Product surfaces compose kit
 > primitives (LaButton, LaField, LaMenu, LaSelect, LaDialog, LaToast,
 > LaTooltip, LaRow, LaSwitch/LaCheckbox, LaSpinner, LaPill, LaScaffold)
@@ -243,7 +243,7 @@ Sentence case is the default. Establish hierarchy through size, weight, and spac
 - Base spacing unit: 4 px. Common steps: 4, 8, 12, 16, 24, 32.
 - Navigator rows: 34–38 px, with a 28–32 px minimum interactive target only where density requires it; touch layouts use at least 44 px targets.
 - Region separators: one-pixel hairline. Use whitespace within a region and lines only between meaningful regions.
-- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. **v6: corners are continuous-curvature superellipses (squircles), drawn by the `la_ui` kit — not circular-arc radii.** Avoid pill shapes except for compact status tokens whose shape conveys a real state (v2: the rail's unread badge and the chat's jump-to-latest control are exactly such tokens — the exception, not a new freedom).
+- Controls and selected rows: 6–8 px corner radius. Floating windows and anchored menus: 10–12 px. **v6: corners are continuous-curvature superellipses (squircles), drawn by the `la_ui_kit` kit — not circular-arc radii.** Avoid pill shapes except for compact status tokens whose shape conveys a real state (v2: the rail's unread badge and the chat's jump-to-latest control are exactly such tokens — the exception, not a new freedom).
 - Pane edges align to one grid. Do not add nested cards to represent hierarchy; use indentation, typography, spacing, and selection.
 
 ### Elevation and motion

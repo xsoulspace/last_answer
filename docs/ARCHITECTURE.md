@@ -22,7 +22,7 @@ access, easy to understand and scale").
 ## 1. Layer stack (imports point DOWN only)
 
 ```
-packages/headless_core →  packages/core, la_locale, la_ui  →  realm backend          →  ui_* domains  →  ui_root
+packages/headless_core →  packages/core, la_locale, la_ui_kit  →  realm backend          →  ui_* domains  →  ui_root
       (pure domain)        (Flutter services, l10n, kit)      (journal, world,          (shell, settings,  (bootstrap,
                                                               chat, ecs_plugins,        automations,       router,
                                                               data_agents)              documents, …)      common_imports)
@@ -41,7 +41,7 @@ packages/headless_core →  packages/core, la_locale, la_ui  →  realm backend 
     `conversation/`, `scene/`, `world_sync/`).
   - `data_agents/` — the agent APIs (the data_remote_api analog): harness,
     acp, subscriptions, supervised, meaning, product, config.
-- **`packages/la_ui` is the component kit** — the ONE source of interactive
+- **`packages/la_ui_kit` is the component kit** — the ONE source of interactive
   chrome (DESIGN v6, CI-enforced by `just ui-gates`).
 - **`packages/la_locale`** — the localization facility (arbs + generated S).
 - **`ui_shell/` is chrome, never a domain.** Features reach it through the
@@ -98,7 +98,7 @@ lib/
 
 Workspace packages (same law): `packages/headless_core` (pure domain),
 `packages/core` (Flutter services/theming), `packages/la_locale`
-(localization), `packages/la_ui` (component kit). `packages/` also hosts
+(localization), `packages/la_ui_kit` (component kit). `packages/` also hosts
 non-app deployables (`server/`, `tg_last_answer_bot/`, `landing/`) —
 placement decision pending owner call.
 
@@ -161,7 +161,7 @@ gate — promotion earned by repetition, per the generational ladder.
 | World/component/system for the ecsly World | `ecs_world/` (anatomy-named file) |
 | A consumed ecsly plugin's integration | `ecs_plugins/<plugin>/` |
 | An agent transport / API client | `data_agents/<concern>/` |
-| A reusable interactive component | `packages/la_ui` |
+| A reusable interactive component | `packages/la_ui_kit` |
 | A serializable domain value type | `packages/headless_core` |
 | An agent-facing tool | `lib/mcp/` (+ fmtk registration) |
 | App start-up/bootstrap | `ui_root/` + root files |
@@ -172,9 +172,9 @@ gate — promotion earned by repetition, per the generational ladder.
 - `lib/coding_agent/` mega-folder (dissolved 2026-11-19 — `lib/coding_agent.dart`
   is a re-export barrel only; new code never imports it).
 - `lib/other/`, `lib/ui/`, `lib/widgets/` (dissolved — ui_root/ui_onboarding/
-  world/ui_root; the kit is `packages/la_ui`).
+  world/ui_root; the kit is `packages/la_ui_kit`).
 - `lib/ui_legacy/` (retired 2026-11-19 — editors deleted, load-bearing pieces
-  extracted: ScreenLayout/BottomSafeArea → `packages/la_ui`, ProjectRoute/
+  extracted: ScreenLayout/BottomSafeArea → `packages/la_ui_kit`, ProjectRoute/
   ProjectView/changelog → `ui_documents`, NoteAssetStore → `data_journal`,
   ProjectsDirectionSwitch → `ui_settings/widgets`; /home/n + /home/i routes
   dropped, /home/d + /home/changelog kept — MCP vocabulary depends on them).

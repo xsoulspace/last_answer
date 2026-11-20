@@ -25,7 +25,7 @@
 /// standalone dialog family) and `rail.pick.actor.<id>` (creation).
 library;
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';

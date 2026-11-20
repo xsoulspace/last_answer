@@ -23,7 +23,7 @@ library;
 import 'dart:async';
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_contract.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';

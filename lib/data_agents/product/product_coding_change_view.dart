@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:lastanswer/data_agents/meaning/meaning_experiment_view.dart';
 import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';

@@ -1,5 +1,5 @@
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';

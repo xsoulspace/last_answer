@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/data_agents/project_operations/project_operations_session.dart';
 import 'package:lastanswer/data_agents/project_operations/project_operations_widget.dart';
 import 'package:oka_core/oka_core.dart' show ProcessLeaseRegistry;

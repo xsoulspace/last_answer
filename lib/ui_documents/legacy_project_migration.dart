@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 
 /// The ADR 0002 "explicit, user-visible migration" for the legacy idea/note
 /// surfaces, in its smallest useful form: ON-DEMAND, IDEMPOTENT, NON-

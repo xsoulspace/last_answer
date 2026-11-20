@@ -21,8 +21,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_chat/actor_presence.dart';
 
 /// The curated avatar glyph vocabulary (the channel-icon law, wave

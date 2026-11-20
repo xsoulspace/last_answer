@@ -8,7 +8,7 @@
 // The injected service is REAL over a hermetic world (the repo's lane).
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';

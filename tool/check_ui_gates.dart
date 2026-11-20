@@ -1,7 +1,7 @@
 // UI gate — the DESIGN.md v6 component-carrier law, enforced.
 //
 // Gates (run from the repo root: `fvm dart run tool/check_ui_gates.dart`):
-//   1. packages/la_ui/lib/** must never import package:flutter/material.dart
+//   1. packages/la_ui_kit/lib/** must never import package:flutter/material.dart
 //      (the kit is widgets-layer only).
 //   2. lib/** must not import package:flutter/material.dart except:
 //        - files listed in tool/ui_gate_allowlist.txt (engine-host plumbing),
@@ -24,10 +24,10 @@ void main() {
   final allowlist = _loadAllowlist();
 
   // Gate 1: the kit itself.
-  for (final file in _dartFiles(Directory('packages/la_ui/lib'))) {
+  for (final file in _dartFiles(Directory('packages/la_ui_kit/lib'))) {
     for (final line in _importsOf(file)) {
       if (line.uri == 'package:flutter/material.dart') {
-        violations.add('${file.path}:${line.no}: la_ui must not import '
+        violations.add('${file.path}:${line.no}: la_ui_kit must not import '
             'material (component-carrier law)');
       }
     }
@@ -42,7 +42,7 @@ void main() {
         if (!line.isDataOnlyShow) {
           violations.add('${file.path}:${line.no}: material import outside '
               'the allowlist (add `show Icons` for glyphs, or migrate to '
-              'la_ui; allowlist: tool/ui_gate_allowlist.txt)');
+              'la_ui_kit; allowlist: tool/ui_gate_allowlist.txt)');
         }
       }
       for (final banned in _bannedDataDeps) {
@@ -55,7 +55,7 @@ void main() {
   }
 
   if (violations.isEmpty) {
-    stdout.writeln('ui gates: OK (la_ui material-free; lib/ imports gated)');
+    stdout.writeln('ui gates: OK (la_ui_kit material-free; lib/ imports gated)');
     exit(0);
   }
   stderr.writeln('ui gates: ${violations.length} violation(s)');

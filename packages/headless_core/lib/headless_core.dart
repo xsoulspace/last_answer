@@ -1,22 +1,21 @@
-/// Pure-Dart domain model and storage repositories for Last Answer.
+/// Pure-Dart domain model, replication, and agent transport for Last Answer.
 ///
-/// Implements the recursive document node model (ADR 0001) and the storage
-/// repositories behind it (ADR 0002). No Flutter dependencies — usable from
-/// the app, TUI, CLI, headless serve mode, and tests.
+/// Implements the recursive document node model (ADR 0001), the storage
+/// repositories behind it (ADR 0002), the doc↔op replication layer over the
+/// convergence kernel (ADR 0005), and the agent transports (ACP runtime,
+/// inference ports, permission routing). No Flutter dependencies — usable
+/// from the app, the headless `bin/` CLI, TUI/serve mode, and tests.
+///
+/// Folder grammar mirrors the app's (ARCHITECTURE.md): `data_models/` holds
+/// serializable domain value types, `data_replication/` the doc↔kernel
+/// layer, `data_storage/` the repository ladder, `data_agents/` the agent
+/// transports, `services/` the orchestration services, `workbench/` the
+/// workbench verbs. Barrels are the public API.
 library;
 
-export 'src/chat_document_service.dart';
-export 'src/doc_replica.dart';
-export 'src/doc_replica_store.dart';
-export 'src/document_agent_service.dart';
-export 'src/document_node.dart';
-export 'src/document_repository.dart';
-export 'src/fractional_order.dart';
-export 'src/headless_agent_harness.dart';
-export 'src/in_memory_document_repository.dart';
-export 'src/mesh_aware_document_repository.dart';
-export 'src/perm_request.dart';
-export 'src/replica_document_repository.dart';
-export 'src/storage_document_repository.dart';
-
-export 'src/workbench.dart';
+export 'data_agents/data_agents.dart';
+export 'data_models/data_models.dart';
+export 'data_replication/data_replication.dart';
+export 'data_storage/data_storage.dart';
+export 'services/services.dart';
+export 'workbench/workbench.dart'; // single-file folder: the file IS the barrel

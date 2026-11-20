@@ -11,29 +11,49 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+# HEADLESS_CORE_KNOWLEDGE.md
 
-## Features
+The pure-Dart domain core: the recursive document model (ADR 0001), its
+storage repositories (ADR 0002), the doc↔kernel replication layer (ADR 0005),
+and the agent transports (ACP runtime, inference ports, permission routing).
+**No Flutter dependencies** — consumed by the app (`lib/`, `packages/core`
+wiring), the headless `bin/` CLI (ADR 0034), and tests.
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## Folder grammar (mirrors lib/, ADR 0034)
 
-## Getting started
+| Folder                  | Owns                                                  | Key files                                                                                                                                                                                                                              |
+| ----------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lib/data_models/`      | Serializable domain value types                       | `document_node.dart` (ADR 0001), `perm_request.dart`, `actor_roster.dart` (ADR 0007), `harness_turn.dart`, `agent_doc_projections.dart`, `discussions.dart`                                                                            |
+| `lib/data_replication/` | The doc↔op layer over `universal_storage_convergence` | `doc_replica.dart` (ADR 0005 lane map — wire-stable, never rename casually), `doc_replica_store.dart`, `mesh_aware_document_repository.dart`, `doc_sync_participant.dart`                                                              |
+| `lib/data_storage/`     | The repository ladder                                 | `document_repository.dart` (interface), `storage_document_repository.dart`, `in_memory_document_repository.dart`                                                                                                                       |
+| `lib/data_agents/`      | Agent transports + the doc inference port             | `acp_agent_runtime.dart`, `acp_agent_runtime_registry.dart`, `doc_inference_port.dart` (ADR 0002 P5), `acp_doc_inference_port.dart`, `openrouter_doc_inference_port.dart`, `chat_permission_policy.dart`, `permission_doc_router.dart` |
+| `lib/services/`         | Orchestration over the domain                         | `chat_document_service.dart`, `document_agent_service.dart`, `headless_agent_harness.dart` (scripted engine), `kernel_conversation.dart` (ADR 0025 thread/beat verbs)                                                                  |
+| `lib/workbench/`        | Workbench verbs (proposal/adopt/undo)                 | `workbench.dart`                                                                                                                                                                                                                       |
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Barrels are the public API: each folder has one, and `lib/headless_core.dart`
+exports only the folder barrels. Deep imports across folders are illegal
+(relative imports reach only within a folder).
 
-## Usage
+## Laws
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+- **Flutter-free.** `package:flutter/` must never appear here (verify with
+  `grep -r "package:flutter/" lib/` — the bin-gates rule depends on it).
+- **Wire stability.** Lane registry names in `doc_replica.dart` and the
+  persisted JSON shapes are contracts across replicas; changes need an ADR
+  and a migration story.
+- **No app imports.** Nothing here imports `package:lastanswer` — the
+  dependency points the other way. App-side pure logic that the domain needs
+  moves HERE, not the reverse.
+- **Late-bound seams, never statics.** Mutable app wiring (e.g. the mesh
+  replica store arriving after the provider tree builds) is injected — see
+  `DocReplicaStoreRef`; no static getter seams.
 
-```dart
-const like = 'sample';
-```
+## How to extend
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- New serializable value type → `data_models/`.
+- New kernel-doc lane or sync behavior → `data_replication/` (+ ADR if the
+  wire shape changes).
+- New agent transport (a new backend) → `data_agents/` implementing
+  `DocInferencePort` or joining `AcpAgentRuntime`.
+- The scripted engine for tests/CLI is `HeadlessAgentHarness` +
+  `InMemoryDocumentRepository` (see `test/` for the construction recipe).

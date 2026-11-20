@@ -18,7 +18,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
-import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
+import 'package:headless_core/headless_core.dart';
 
 /// `session/new`, answering an advertised ACP auth method first when
 /// [authMethod] names one (e.g. `gemini-api-key`, resolved from the

@@ -10,7 +10,7 @@
 /// `miniwindow.peek.<threadId>` and `miniwindow.peek.<threadId>.beat.<n>`.
 library;
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 

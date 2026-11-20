@@ -1,4 +1,4 @@
-# UI kit rewrite — `la_ui` (2026-11-16)
+# UI kit rewrite — `la_ui_kit` (2026-11-16)
 
 Owner-directed program: replace the Material component layer with a
 widgets-layer-only kit that carries the DESIGN.md law (shadcn zinc
@@ -65,7 +65,7 @@ fields, ~44 ListTiles), and the genuinely custom new shell chrome
 - **Phase 6 (MaterialApp → WidgetsApp) deferred** — pure engine
   purity, real cost (localizations, page transitions), zero pixels.
 
-## 3. Architecture — `packages/la_ui`
+## 3. Architecture — `packages/la_ui_kit`
 
 Widgets-layer only: `flutter/widgets|painting|rendering|gestures|
 semantics|animation` + `flutter_portal` (Radix-portal equivalent,
@@ -129,7 +129,7 @@ event-motion hooks only; no ambient chrome loops.
 
 - **0** — kit skeleton: tokens, squircle, pressable, focus ring,
   button, row, hairline, scaffold/topbar; app wiring (LaUiTheme
-  registered in `material_theme.dart`, `la_ui` exported from
+  registered in `material_theme.dart`, `la_ui_kit` exported from
   `common_imports.dart`); CI gate script.
 - **0b** — full kit: field, menu/select, dialog/sheet, toast,
   tooltip, toggles, slider, progress, pill, scroll area.
@@ -151,7 +151,7 @@ event-motion hooks only; no ambient chrome loops.
 ## 5. Enforcement
 
 - `tool/check_ui_gates.dart` (just recipe): fails when
-  `packages/la_ui` imports material, or `lib/` imports material
+  `packages/la_ui_kit` imports material, or `lib/` imports material
   outside `docs`-recorded allowlist (`lib/main.dart`,
   `lib/main_prod.dart`, `lib/other/last_answer_app.dart`,
   `lib/router.dart`, `lib/app_scaffold.dart`, theme plumbing in
@@ -165,7 +165,7 @@ event-motion hooks only; no ambient chrome loops.
 
 - 2026-11-16: program opened; owner decisions squircle + v6 motion
   amendment; DESIGN.md amended; this doc landed.
-- 2026-11-16 (kit): `packages/la_ui` landed — 20 source files,
+- 2026-11-16 (kit): `packages/la_ui_kit` landed — 20 source files,
   widgets-layer only, 8/8 smoke tests, analyze clean. `LaUiThemeProvider`
   registered in the MaterialApp builder, fed by `laUiThemeFromPalette`
   (lib/ui/la_ui_bridge.dart). Root Scaffold sites (router.dart,
@@ -181,7 +181,7 @@ event-motion hooks only; no ambient chrome loops.
   `lib/widgets/legacy_kit/` functional-helper ports, blur-free).
 - 2026-11-16 (incident): one agent ran an unauthorized `git add -A &&
   git commit` (0deb48b1) mixing the owner's in-flight wave-2b work,
-  the kit, lane edits and `packages/la_ui/build/` artifacts. Undone
+  the kit, lane edits and `packages/la_ui_kit/build/` artifacts. Undone
   with `git reset --mixed HEAD~1`; all content intact; all lanes
   re-warned (A, B, D, pilot explicitly denied; suspicion falls on the
   failed lane-C run). Law restated: agents never write git; the
@@ -248,7 +248,7 @@ event-motion hooks only; no ambient chrome loops.
   Icons-only imports triaged (`show Icons` or removed); core fully
   decoupled from ui_kit (Toasts→LaToast, showWarningDialog→
   showLaConfirm). HARD CUTS: common_imports now exports widgets.dart +
-  la_ui + `material show Colors, Icons, ThemeMode` + CupertinoPageRoute;
+  la_ui_kit + `material show Colors, Icons, ThemeMode` + CupertinoPageRoute;
   blur/flutter_animate/ui_kit dependencies removed; `lib/_library/`
   and `packages/ui_kit/` DELETED; `just ui-gates` GREEN (allowlist:
   last_answer_app engine host, workbench_candidate_main acceptance

@@ -13,7 +13,7 @@ import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/ui_chat/actor_picker.dart';
 
@@ -23,7 +23,6 @@ import 'package:lastanswer/data_journal/realm_chat_service.dart';
 
 import 'package:lastanswer/common_imports.dart';
 
-import 'package:lastanswer/ui_documents/acp_agent_runtime.dart';
 
 import 'package:lastanswer/ui_workspaces/workspace.dart';
 

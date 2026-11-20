@@ -2,7 +2,7 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_chat/media_asset_card.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';

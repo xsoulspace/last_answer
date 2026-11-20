@@ -13,7 +13,7 @@
 /// — the persistence and the loop rebuild live there, not here.
 library;
 
-import 'package:lastanswer/data_journal/actor_roster.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_chat/avatar_picker.dart';
 import 'package:lastanswer/ui_chat/brain_health_dot.dart';

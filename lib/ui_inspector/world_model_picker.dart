@@ -9,7 +9,7 @@
 library;
 
 import 'package:flutter/widgets.dart';
-import 'package:la_ui/la_ui.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_inspector/world_work_verbs.dart';
 
 // DESIGN §3 reference constants (the agent-doc surface's own grid).

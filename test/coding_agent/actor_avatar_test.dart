@@ -4,7 +4,7 @@
 // independent FNV-1a reimplementation so a swap to a process-randomized
 // hash (String.hashCode) fails here — on every device.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:headless_core/headless_core.dart';

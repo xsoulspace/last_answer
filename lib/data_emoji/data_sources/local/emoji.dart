@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:shared_models/shared_models.dart';
 
 import 'package:lastanswer/foundation/generated/generated.dart';

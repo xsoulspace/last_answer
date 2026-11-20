@@ -1,4 +1,4 @@
-part of 'data_models.dart';
+part of 'project_models.dart';
 
 enum DbSaveVersion { v1 }
 

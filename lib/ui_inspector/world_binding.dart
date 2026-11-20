@@ -11,7 +11,7 @@
 /// needs sockets and lives behind the [world_seats] conditional import.
 library;
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/http_source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 

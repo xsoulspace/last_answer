@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' show AppExitResponse;
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lastanswer/ui_automations/supervisor_agent_client.dart';
 import 'package:lastanswer/ui_automations/supervisor_execution.dart';

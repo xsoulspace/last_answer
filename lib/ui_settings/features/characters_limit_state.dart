@@ -10,7 +10,7 @@ class CharactersLimitControllerDto {
 }
 
 @freezed
-class CharacterLimitState with _$CharacterLimitState {
+abstract class CharacterLimitState with _$CharacterLimitState {
   const factory CharacterLimitState({
     @Default('') final String value,
     @Default(false) final bool isEditing,

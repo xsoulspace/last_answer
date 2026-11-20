@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_automations/supervisor_agent_client.dart';
 import 'package:lastanswer/ui_automations/supervisor_execution_stub.dart';
 import 'package:lastanswer/ui_automations/supervisor_view.dart';

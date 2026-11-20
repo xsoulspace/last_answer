@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 part 'app_text_styles.dart';
 part 'design_tokens.dart';

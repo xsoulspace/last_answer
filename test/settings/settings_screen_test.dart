@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:core/core.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/ui_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';

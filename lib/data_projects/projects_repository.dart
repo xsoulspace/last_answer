@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' show ThemeMode, Colors, Icons, Brightness, MaterialLocalizations, GlobalMaterialLocalizations, DefaultMaterialLocalizations;
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart'
     as storage_backends;
 import 'package:provider/provider.dart';

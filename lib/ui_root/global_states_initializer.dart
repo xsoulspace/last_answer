@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_models/shared_models.dart';
@@ -10,7 +10,7 @@ import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 import 'package:lastanswer/common_imports.dart';
-import '../state/user_remote_initializer.dart';
+import 'user_remote_initializer.dart';
 
 class GlobalStatesInitializerDto {
   GlobalStatesInitializerDto({required this.context})

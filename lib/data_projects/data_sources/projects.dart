@@ -1,7 +1,7 @@
 import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
-import '../../project_models.dart';
+import '../project_models.dart';
 import 'package:lastanswer/common_imports.dart';
 
 abstract interface class ProjectsLocalDataSource {

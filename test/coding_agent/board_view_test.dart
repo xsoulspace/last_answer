@@ -1,6 +1,6 @@
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:ecsly_boards/ecsly_boards.dart' show BoardTaskStatus;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_boards/board_view.dart';

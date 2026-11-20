@@ -5,6 +5,7 @@
 // owns (`StorageBackendsNotifier.ensureMeshService`, swapped for an
 // in-memory replica through the notifier's `meshServiceOpener` test
 // seam) — no networking, real presence signing.
+import 'package:headless_core/headless_core.dart';
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';

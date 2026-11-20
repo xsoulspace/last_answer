@@ -9,8 +9,8 @@
 // The spy stands in for OpenedProjectNotifier's provider slot — the REAL
 // notifier's persistence cascade (ProjectsNotifier → LocalDb) is out of
 // scope here; what this pins is THE WIRING in lib/home/project_view.dart.
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/ui_documents/project_view.dart';

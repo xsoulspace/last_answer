@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' show Brightness, ColorScheme, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, MaterialLocalizations, TextTheme, Theme, ThemeData, ThemeMode;
 import 'package:go_router/go_router.dart';
 
 import 'package:lastanswer/common_imports.dart';

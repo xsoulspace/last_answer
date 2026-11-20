@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' show Brightness, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, MaterialLocalizations, ThemeMode, WidgetsBinding;
 // import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class PlatformInfo {

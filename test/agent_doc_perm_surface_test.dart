@@ -3,8 +3,8 @@
 // gutter, same reject-first ordering as local requests, answerable
 // through the REAL widget keys — no modals, no separate pane. The
 // decision is recorded as doc data (the answer op).
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';

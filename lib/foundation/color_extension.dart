@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' show Brightness, Color, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, MaterialColor, MaterialLocalizations, ThemeMode;
 
 extension ColorExt on Color {
   MaterialColor generateMaterialColor() => MaterialColor(toARGB32(), {

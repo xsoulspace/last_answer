@@ -10,7 +10,7 @@ library;
 import 'dart:convert';
 
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipEncoder;
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

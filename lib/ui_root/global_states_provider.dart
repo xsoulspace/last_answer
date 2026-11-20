@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:headless_core/headless_core.dart' as headless_core;
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';

@@ -25,7 +25,7 @@ library;
 
 import 'dart:convert';
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/ui_inspector/external_worlds_io.dart'
     as external_worlds;

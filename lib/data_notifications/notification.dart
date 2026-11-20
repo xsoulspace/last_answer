@@ -1,4 +1,4 @@
-part of 'data_models.dart';
+part of 'notification_models.dart';
 
 @freezed
 abstract class NotificationMessageModel with _$NotificationMessageModel {

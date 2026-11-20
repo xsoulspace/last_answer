@@ -15,7 +15,7 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/paired_worlds.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/http_source.dart';

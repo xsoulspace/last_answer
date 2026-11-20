@@ -1,4 +1,4 @@
-part of 'data_models.dart';
+part of 'project_models.dart';
 
 extension type const ProjectModelId(String value) {
   factory ProjectModelId.fromJson(String value) => ProjectModelId(value);

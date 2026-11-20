@@ -1,7 +1,6 @@
 part of 'user_models.dart';
 // ignore_for_file: invalid_annotation_target
 
-part of 'data_models.dart';
 
 enum LocalDbVersion {
   v3_16,

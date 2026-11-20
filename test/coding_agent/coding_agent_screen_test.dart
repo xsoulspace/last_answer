@@ -7,9 +7,9 @@
 // data). Everything through the REAL surface widgets — no protocol bypass.
 import 'dart:io';
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';

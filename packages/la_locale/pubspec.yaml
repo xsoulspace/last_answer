@@ -9,6 +9,8 @@ environment:
 resolution: workspace
 
 dependencies:
+  material_ui:
+  cupertino_ui:
   flutter:
     sdk: flutter
   flutter_localizations:

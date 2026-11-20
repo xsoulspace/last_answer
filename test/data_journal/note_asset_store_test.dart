@@ -10,7 +10,7 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/data_journal/note_asset_store.dart';
 

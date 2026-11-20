@@ -5,7 +5,7 @@
 /// import; web answers honest absence, never a compile error.
 library;
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_host/src/world_manifest.dart'

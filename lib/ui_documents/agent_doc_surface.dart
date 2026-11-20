@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:flutter/material.dart' show Icons;
+import 'package:material_ui/material_ui.dart' show Icons;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_core/headless_core.dart';
@@ -4245,6 +4245,165 @@ String _hm(final DateTime at) =>
 /// byte-for-byte).
 Map<String, Object?> meshTaskRecordJson(final MeshTaskRecord record) =>
     record.toJson();
+
+/// Task O — the peer-side SHADOW agent doc (T3 gate, DESIGN §6): what a
+/// paired peer projects when it OPENS a shared doc it does not own. No
+/// workspace, no daemon session — the host owns the world; the peer is a
+/// viewer/answerer:
+///
+/// - `agent_doc_state` falls back to this projection when no real surface
+///   is open, so the peer's state stops being an error envelope and
+///   carries the SHARED doc id, live mesh status, and the routed
+///   permission round-trips folded into the shared replica;
+/// - `agent_permission_answer` routes through [router] — the answer is a
+///   doc op on the SAME `perm/<requestId>` register; the host's future
+///   completes when the answer op folds back with the next sync cycle.
+class AgentDocShadow {
+  AgentDocShadow({
+    required this.docId,
+    required this.meshDocId,
+    required this.router,
+    this.roster,
+    final AgentDocMeshStatus Function(String channel)? statusFor,
+    final List<Map<String, Object?>> Function()? tasksFor,
+  }) : statusFor =
+           statusFor ??
+           // Default: the wiring when installed, else the honest zeros —
+           // a shadow with no reachable service must not fabricate a mesh.
+           ((final channel) =>
+               AgentDocSurface.meshWiring?.statusFor(channel) ??
+               const AgentDocMeshStatus()),
+       tasksFor =
+           tasksFor ??
+           // Default: the app wiring's board when installed, else no rows
+           // — a shadow without a reachable board projects an empty
+           // console, never an invented one.
+           (() {
+             final board = AgentDocSurface.meshWiring?.taskBoard?.call();
+             if (board == null) return const <Map<String, Object?>>[];
+             return [
+               for (final record in board.tasksFor(docId))
+                 meshTaskRecordJson(record),
+             ];
+           });
+
+  /// The SHARED project doc id — the exact id the host's surface reports
+  /// (the doc channel derives from it: `agent-<docId>`).
+  final String docId;
+
+  /// The deterministic mesh replica id of the shared doc (`agent-<docId>`
+  /// — the channel the host's surface joins on open).
+  final String meshDocId;
+
+  /// The peer's doc channel over the mesh-attached [DocReplicaStore]:
+  /// `pendingRemote` is what the peer may answer, `remoteEntries` what it
+  /// renders (one state, many projections, DESIGN §5).
+  final PermissionDocRouter router;
+
+  /// The device's synced roster — origin labels resolve through it when
+  /// one is available (ADR 0007: identity, never authority).
+  final ActorRoster? roster;
+
+  /// Reads the live mesh status for a doc channel. The app wiring takes
+  /// precedence when installed; the fallback (what `mesh_open_doc`
+  /// installs from the live service) keeps the projection self-sufficient
+  /// — the shadow must carry hosting/connected/peers/presence either way.
+  final AgentDocMeshStatus Function(String channel) statusFor;
+
+  /// PLAN 6.C — reads the mesh task console rows for [docId] (the shared
+  /// board when this device has one attached). The wiring-installed
+  /// closure takes precedence; the fallback reads the wiring's board so
+  /// the viewer projection stays self-sufficient either way.
+  final List<Map<String, Object?>> Function() tasksFor;
+
+  /// The viewer projection. Honest by construction: session-owned fields
+  /// (sessionId, turns, transcript) stay empty — the peer runs no daemon
+  /// session; turn ops are not yet synced (v1), so `turnCount` is 0.
+  AgentDocDebugState toDebugState() => AgentDocDebugState(
+    docId: docId,
+    // Viewer markers: no workspace is bound (DESIGN §6), no check
+    // override, and the runtime profile is the doc surface's default —
+    // the peer runs no daemon of its own.
+    workspaces: const [],
+    backend: const HarnessHostConfig().backend,
+    pendingPermissionTitle: router.pendingRemote().firstOrNull?.title,
+    remotePermissions: router.remoteEntries(),
+    meshStatus: statusFor(meshDocId),
+    actors: roster?.all ?? const [],
+    // PLAN 6.C — the console rows fold in on the peer too (viewer safety:
+    // the shadow READS the board; it never claims or runs requests).
+    tasks: tasksFor(),
+    viewer: true,
+  );
+
+  /// Task O (P1) — answers the FIRST pending REMOTE permission through
+  /// the doc (reject-first is the law; deny-by-default preserved). The
+  /// answer op lands in the shared replica; the host's future completes
+  /// when it folds back with the next mesh sync cycle.
+  Future<({bool ok, String message})> answerRemotePermission({
+    required final bool allow,
+  }) async {
+    final pending = router.pendingRemote().firstOrNull;
+    if (pending == null) {
+      return (ok: false, message: 'no pending remote permission request.');
+    }
+    try {
+      await router.answerRequest(requestId: pending.requestId, allow: allow);
+    } on Object catch (error) {
+      return (ok: false, message: 'remote permission answer refused: $error');
+    }
+    return (
+      ok: true,
+      message:
+          '${allow ? 'allowed' : 'rejected'}: ${pending.title} '
+          '(the answer ships as a doc op with the next sync cycle).',
+    );
+  }
+}
+
+/// Task H — the app wiring contract between the doc surface and the live
+/// mesh replica (installed by the app shell; see
+/// [AgentDocSurface.meshWiring]).
+class AgentDocMeshWiring {
+  const AgentDocMeshWiring({
+    required this.routerFor,
+    required this.joinDoc,
+    required this.leaveDoc,
+    required this.statusFor,
+    this.taskBoard,
+    this.selfPeerId,
+    this.autoRunRemoteTasks = true,
+  });
+
+  /// Builds the doc channel for remote permission routing over the
+  /// mesh-attached [DocReplicaStore]. Throws when the mesh replica is not
+  /// live on this device — the surface surfaces the failure in-flow.
+  final PermissionDocRouter Function(NodeId docId) routerFor;
+
+  /// Joins [docId]'s presence channel (doc opened).
+  final Future<void> Function(String docId) joinDoc;
+
+  /// Leaves [docId]'s presence channel (doc closed).
+  final Future<void> Function(String docId) leaveDoc;
+
+  /// Reads the mesh status for [docId]'s channel.
+  final AgentDocMeshStatus Function(String docId) statusFor;
+
+  /// PLAN 6.C — the shared mesh task board attached to the live mesh
+  /// replica, null when none is attached (console verbs refuse honestly
+  /// and the surface's auto-run stays dormant).
+  final MeshTaskBoard? Function()? taskBoard;
+
+  /// PLAN 6.C — THIS device's mesh peer id: the identity the board's
+  /// `pendingRequestsFor(selfPeerId:)` filter uses so a device never
+  /// auto-runs its own dispatches. Null when no replica is live.
+  final String? Function()? selfPeerId;
+
+  /// PLAN 6.C — whether the host surface converts remote board requests
+  /// into local delegated turns (the host side of the console). Default
+  /// true; tests disable it to pin the shadow/peer behavior.
+  final bool autoRunRemoteTasks;
+}
 
 /// The honest empty state (Phase 1.5): an agent doc with no bound
 /// workspace instructs the human — quiet numbered lines on the grid.

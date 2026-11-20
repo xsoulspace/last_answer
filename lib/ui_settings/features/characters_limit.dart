@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/features/characters_limit_state.dart';
 

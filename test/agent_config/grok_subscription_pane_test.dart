@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';

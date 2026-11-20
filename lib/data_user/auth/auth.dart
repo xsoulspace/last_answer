@@ -1,2 +1,2 @@
 export 'auth_provider.dart';
-export 'widgets/widgets.dart';
+export 'providers/google_auth_provider.dart';

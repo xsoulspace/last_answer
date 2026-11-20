@@ -19,7 +19,7 @@
 /// (d) the channel meta row follows each pane's OWN channel.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';

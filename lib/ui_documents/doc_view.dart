@@ -277,7 +277,7 @@ class _DocViewState extends State<DocView> {
   /// Asks the inference port to rewrite the parent's anchored block using the
   /// current discussion child as context, then writes the result into the head.
   Future<void> _rewriteHeadFromDiscussion() async {
-    final port = context.read<DocInferencePort?>();
+    final port = context.read<hc.DocInferencePort?>();
     if (port == null) return;
     final parentIndex = _path.length - 2;
     final parent = _path[parentIndex];
@@ -301,8 +301,8 @@ class _DocViewState extends State<DocView> {
     await _docRepo.save(updatedParent);
   }
 
-  List<ChatMessage> _buildRewritePrompt(final hc.Block headBlock) => [
-    const ChatMessage(
+  List<hc.ChatMessage> _buildRewritePrompt(final hc.Block headBlock) => [
+    const hc.ChatMessage(
       role: 'system',
       content:
           'You are rewriting one block of a design document. The user '
@@ -310,7 +310,7 @@ class _DocViewState extends State<DocView> {
           'block to reflect that conclusion. Output only the rewritten block '
           'text, nothing else.',
     ),
-    ChatMessage(
+    hc.ChatMessage(
       role: 'user',
       content:
           'Original block:\n${headBlock.content}\n\n'
@@ -335,7 +335,7 @@ class _DocViewState extends State<DocView> {
   }
 
   Future<void> _onAskAi() async {
-    final port = context.read<DocInferencePort?>();
+    final port = context.read<hc.DocInferencePort?>();
     if (port == null) {
       LaToast.show(context, message: 'No provider configured');
       return;
@@ -372,7 +372,7 @@ class _DocViewState extends State<DocView> {
   /// once, then one durable block replace). No port, no focused block,
   /// or no selection = a named absence, never a silent no-op.
   Future<void> _onTransformSelection({required final bool expand}) async {
-    final port = context.read<DocInferencePort?>();
+    final port = context.read<hc.DocInferencePort?>();
     if (port == null) {
       LaToast.show(context, message: 'No provider configured');
       return;
@@ -393,7 +393,7 @@ class _DocViewState extends State<DocView> {
     final selected = selection.textInside(controller.text);
     final buffer = StringBuffer();
     await for (final token in port.chat([
-      ChatMessage(
+      hc.ChatMessage(
         role: 'system',
         content: expand
             ? 'You expand and clarify a passage of a document. Keep its '
@@ -404,7 +404,7 @@ class _DocViewState extends State<DocView> {
                   'facts, keeping its language. Output ONLY the summary, '
                   'nothing else.',
       ),
-      ChatMessage(role: 'user', content: selected),
+      hc.ChatMessage(role: 'user', content: selected),
     ])) {
       buffer.write(token);
     }
@@ -457,14 +457,14 @@ class _DocViewState extends State<DocView> {
     LaToast.show(context, message: 'Sent to the room');
   }
 
-  List<ChatMessage> _buildPromptMessages() {
-    final messages = <ChatMessage>[
+  List<hc.ChatMessage> _buildPromptMessages() {
+    final messages = <hc.ChatMessage>[
       for (final block in _current.blocks)
         if (block.content.trim().isNotEmpty)
-          ChatMessage(role: 'user', content: block.content),
+          hc.ChatMessage(role: 'user', content: block.content),
     ];
     return messages.isEmpty
-        ? [const ChatMessage(role: 'user', content: '')]
+        ? [const hc.ChatMessage(role: 'user', content: '')]
         : messages;
   }
 

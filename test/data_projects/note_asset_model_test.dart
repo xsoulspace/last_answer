@@ -7,7 +7,7 @@ library;
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

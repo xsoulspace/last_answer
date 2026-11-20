@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert' show JsonDecoder, Utf8Decoder;
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' show Brightness, BuildContext, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, Locale, MaterialLocalizations, ThemeMode;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';

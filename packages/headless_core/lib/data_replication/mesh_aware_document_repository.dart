@@ -1,31 +1,20 @@
 import 'doc_replica_store.dart';
 import '../data_models/document_node.dart';
-
-/// Late-bound live replica-store reference. The provider tree builds
-/// before the mesh; the mesh owner fills [getter] on pairing so every
-/// repository wired with this reference routes to the replica once it
-/// exists. Explicit, injectable, no static state: a CLI passes a real
-/// store (or leaves the reference empty for plain local storage). Null
-/// getter or null answer = the plain local path.
-final class DocReplicaStoreRef {
-  DocReplicaStore? Function()? getter;
-
-  DocReplicaStore? call() => getter?.call();
-}
-
-/// Late-bound live replica-store reference. The provider tree builds
-/// before the mesh; the mesh owner fills [getter] on pairing so every
-/// repository wired with this reference routes to the replica once it
-/// exists. Explicit, injectable, no static state: a CLI passes a real
-/// store (or leaves the reference empty for plain local storage). Null
-/// getter or null answer = the plain local path.
-final class DocReplicaStoreRef {
-  DocReplicaStore? Function()? getter;
-
-  DocReplicaStore? call() => getter?.call();
-}
 import '../data_storage/document_repository.dart';
 import 'replica_document_repository.dart';
+
+
+/// Late-bound live replica-store reference. The provider tree builds
+/// before the mesh; the mesh owner fills [getter] on pairing so every
+/// repository wired with this reference routes to the replica once it
+/// exists. Explicit, injectable, no static state: a CLI passes a real
+/// store (or leaves the reference empty for plain local storage). Null
+/// getter or null answer = the plain local path.
+final class DocReplicaStoreRef {
+  DocReplicaStore? Function()? getter;
+
+  DocReplicaStore? call() => getter?.call();
+}
 
 /// A [DocumentRepository] that routes to the LIVE mesh replica store when
 /// one is attached (docs converge across devices over the LAN mesh), and

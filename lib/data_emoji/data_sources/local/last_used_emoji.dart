@@ -3,6 +3,7 @@ import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../interfaces/interfaces.dart';
 import 'local.dart';
+import 'package:lastanswer/foundation/foundation.dart';
 
 final class LastUsedEmojiLocalDataSourceImpl
     implements LastUsedEmojiLocalDataSource {

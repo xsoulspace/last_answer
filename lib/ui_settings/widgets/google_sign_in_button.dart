@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 // import 'package:serverpod_auth_client/module.dart';
 // import 'package:serverpod_auth_google_flutter/serverpod_auth_google_flutter.dart';
 
-import '../../../../core.dart';
-import '../providers/providers.dart';
+import 'package:lastanswer/foundation/foundation.dart';
+import 'package:lastanswer/data_user/data_user.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({super.key});

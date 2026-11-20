@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_models/shared_models.dart';

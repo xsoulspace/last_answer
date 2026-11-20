@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:xsoulspace_locale/xsoulspace_locale.dart';
 
 typedef LanguageName = String;

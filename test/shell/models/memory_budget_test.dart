@@ -18,7 +18,7 @@
 ///   composite fallback + honest note; the facts-null degraded line.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';

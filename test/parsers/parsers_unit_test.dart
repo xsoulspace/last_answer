@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:core/src/data_sources/mutations/parsers/hive_parser.dart'
+import 'package:lastanswer/data_projects/migrations/parsers/hive_parser.dart'
     as hive_parser;
-import 'package:core/src/data_sources/mutations/parsers/isar_parser.dart'
+import 'package:lastanswer/data_projects/migrations/parsers/isar_parser.dart'
     as isar_parser;
 import 'package:flutter_test/flutter_test.dart';
 

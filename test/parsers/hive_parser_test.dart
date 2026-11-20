@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:core/src/data_sources/mutations/parsers/byte_utils.dart';
-import 'package:core/src/data_sources/mutations/parsers/hive_parser.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/byte_utils.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/hive_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Uint8List _buildHiveFrame({required final Uint8List payload}) {

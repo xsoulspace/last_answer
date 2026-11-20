@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../project_models.dart';
+import 'package:lastanswer/data_projects/data_projects.dart';
 
 class Greeting {
   Greeting() : _random = Random();

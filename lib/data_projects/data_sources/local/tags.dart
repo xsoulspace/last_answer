@@ -2,7 +2,7 @@ import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 import '../../project_models.dart';
 import '../interfaces/interfaces.dart';
-import 'shared_preferences_keys.dart';
+import 'package:lastanswer/foundation/foundation.dart';
 
 final class TagsLocalDataSourceImpl implements TagsLocalDataSource {
   TagsLocalDataSourceImpl({required this.localDb});

@@ -216,6 +216,8 @@ dependencies:
   desktop_drop: ^0.7.0
   xsoulspace_state_utils:
   xsoulspace_ui_foundation:
+  material_ui: any
+  cupertino_ui: any
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

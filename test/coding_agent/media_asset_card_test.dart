@@ -7,8 +7,8 @@
 /// silence), and the alt text is the accessibility label.
 library;
 
-import 'package:core/core.dart';
-import 'package:flutter/material.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_chat/media_asset_card.dart';
 

@@ -5,8 +5,8 @@
 /// service's [RealmChatService.openDm] job.
 library;
 
-import 'package:core/core.dart';
-import 'package:flutter/material.dart' show Icons;
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart' show Icons;
 import 'package:flutter/widgets.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:headless_core/headless_core.dart';

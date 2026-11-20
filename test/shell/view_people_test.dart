@@ -3,7 +3,7 @@
 // humans stay quiet, a listening bot renders nothing — and the focus
 // flow (a row tap opens the actor's profile; back returns to the
 // list) works through the plain PeopleFocus notifier.
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:headless_core/headless_core.dart';

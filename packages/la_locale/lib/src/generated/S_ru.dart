@@ -2510,7 +2510,7 @@ class SRu extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'политика загрузок держит $floor для системы — доступно для локальных загрузок $available';
+    return 'порог давления загрузок $floor — доступно для локальных загрузок $available';
   }
 
   @override
@@ -2543,10 +2543,11 @@ class SRu extends S {
   String modelsLocalLoadAnywayBody(
     String label,
     String required,
+    String reserve,
     String available,
     String missing,
   ) {
-    return 'Для $label требуется $required доступной памяти, но сейчас доступно только $available — не хватает $missing. Загрузка всё равно может вытеснить память в swap.';
+    return 'Для $label требуется $required доступной памяти, и после загрузки должен сохраниться порог давления $reserve — сейчас доступно только $available, не хватает $missing. Загрузка всё равно может вытеснить память в swap.';
   }
 
   @override

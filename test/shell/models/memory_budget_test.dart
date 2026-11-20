@@ -46,15 +46,15 @@ void main() {
         totalMegabytes: 16384,
         weightsBytes: gib,
       );
-      // weights 1024 MB + 25% slack = 1280 + 1024 reserve = 2304 MB
-      // required; available 16384 ≥ 2304. THE GATE'S OWN NUMBER —
-      // MlxLoadGate.defaults.requiredMegabytes, not a UI re-derivation.
+      // The MODEL's rent: weights 1024 MB + 25% slack = 1280 — the
+      // gate's own number, NOT carrying the machine's 1 GB pressure
+      // point (owner law: the reserve is never the model's requirement).
       expect(fit.unknown, isFalse);
       expect(
         fit.requiredMegabytes,
         MlxLoadGate.defaults.requiredMegabytes(gib),
       );
-      expect(fit.requiredMegabytes, 2304);
+      expect(fit.requiredMegabytes, 1280);
       expect(fit.fitsNow, isTrue);
       expect(fit.neverFits, isFalse);
       expect(fit.availableMegabytes, 16384);
@@ -62,10 +62,10 @@ void main() {
       expect(fit.missingMegabytes, 0);
     });
 
-    test('the exact boundary fits (available == the size-aware '
-        'requirement)', () {
+    test('the exact boundary fits (available == requirement + the '
+        'machine pressure point)', () {
       final fit = evaluateLocalModelFit(
-        availableMegabytes: 2304, // 1024×1.25 + 1024 reserve == 2304
+        availableMegabytes: 2304, // 1280 rent + 1024 pressure point
         totalMegabytes: 16384,
         weightsBytes: gib,
       );
@@ -94,10 +94,10 @@ void main() {
       final fit = evaluateLocalModelFit(
         availableMegabytes: 2048, // far below the old 4096 floor
         totalMegabytes: 16384,
-        weightsBytes: 400 * mib, // the 0.6B: 500 + 1024 = 1524 ≤ 2048
+        weightsBytes: 400 * mib, // the 0.6B: 500 rent, 1548 headroom left
       );
       expect(fit.fitsNow, isTrue);
-      expect(fit.requiredMegabytes, 1524);
+      expect(fit.requiredMegabytes, 500);
     });
 
     test('the requirement over the sensed total never fits, whatever '
@@ -143,8 +143,8 @@ void main() {
         totalMegabytes: 16384,
         weightsBytes: 400 * mib + 1, // 400.0000x MB → 401 MB
       );
-      // 401 × 1.25 = 501.25 → 502, + 1024 reserve = 1526.
-      expect(fit.requiredMegabytes, 1526);
+      // 401 × 1.25 = 501.25 → 502 — the model's rent alone.
+      expect(fit.requiredMegabytes, 502);
     });
   });
 
@@ -204,12 +204,11 @@ void main() {
       expect(find.text('in use 13 GB'), findsOneWidget);
       expect(find.text('reclaimable cache 1.7 GB'), findsOneWidget);
       expect(find.text('free 741 MB'), findsOneWidget);
-      // The policy line names the fixed reserve AND today's answer
-      // (2515 available − 1024 reserve = 1491 → '1.5 GB').
+      // The policy line names the machine's pressure point AND
+      // today's answer (2515 available − 1024 = 1491 → '1.5 GB').
       expect(
         find.text(
-          'load policy keeps 1.0 GB for the system — '
-          'available for local loads 1.5 GB',
+          'load pressure point 1.0 GB — available for local loads 1.5 GB',
         ),
         findsOneWidget,
       );
@@ -291,8 +290,7 @@ void main() {
       // The healthy policy line: 12288 − 1024 = 11264 → '11 GB'.
       expect(
         find.text(
-          'load policy keeps 1.0 GB for the system — '
-          'available for local loads 11 GB',
+          'load pressure point 1.0 GB — available for local loads 11 GB',
         ),
         findsOneWidget,
       );
@@ -317,8 +315,7 @@ void main() {
       );
       expect(
         find.text(
-          'load policy keeps 1.0 GB for the system — '
-          'available for local loads 5.0 GB',
+          'load pressure point 1.0 GB — available for local loads 5.0 GB',
         ),
         findsOneWidget,
       );
@@ -348,12 +345,11 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('the machine is swapping'), findsOneWidget);
-      // The policy line keeps the reserve visible even when the
-      // machine is short (3967 − 1024 = 2943 → '2.9 GB').
+      // The policy line keeps the pressure point visible even when
+      // the machine is short (3967 − 1024 = 2943 → '2.9 GB').
       expect(
         find.text(
-          'load policy keeps 1.0 GB for the system — '
-          'available for local loads 2.9 GB',
+          'load pressure point 1.0 GB — available for local loads 2.9 GB',
         ),
         findsOneWidget,
       );

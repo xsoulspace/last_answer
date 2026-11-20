@@ -2506,7 +2506,7 @@ class SIt extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'la policy di caricamento tiene $floor per il sistema — disponibili per caricamenti locali $available';
+    return 'soglia di pressione dei caricamenti $floor — disponibili per caricamenti locali $available';
   }
 
   @override
@@ -2539,10 +2539,11 @@ class SIt extends S {
   String modelsLocalLoadAnywayBody(
     String label,
     String required,
+    String reserve,
     String available,
     String missing,
   ) {
-    return '$label richiede $required di memoria recuperabile ma ora ce ne sono solo $available — mancano $missing. Caricare comunque può spingere la macchina nello swap.';
+    return '$label richiede $required di memoria recuperabile e il caricamento deve mantenere libera la soglia di pressione di $reserve — ora ce ne sono solo $available, mancano $missing. Caricare comunque può spingere la macchina nello swap.';
   }
 
   @override

@@ -1754,7 +1754,7 @@
   "@modelsBudgetFree": {
     "description": "Local model budget v3.3 2026-11-18: the segmented RAM bar's free-pages legend label (free + speculative)."
   },
-  "modelsBudgetPolicy": "load policy keeps {floor} for the system — available for local loads {available}",
+  "modelsBudgetPolicy": "load pressure point {floor} — available for local loads {available}",
   "@modelsBudgetPolicy": {
     "placeholders": {
       "floor": {
@@ -1811,14 +1811,17 @@
   "@modelsLocalLoadAnywayTitle": {
     "description": "Local models 2026-11-20: the load-anyway consent dialog's title (the gate's default-not-monopoly law)."
   },
-  "modelsLocalLoadAnywayBody": "{label} needs {required} of reclaimable memory but only {available} is available right now — short by {missing}. Loading anyway may push the machine into swap.",
+  "modelsLocalLoadAnywayBody": "{label} needs {required} of reclaimable memory, and loading must keep the {reserve} pressure point free — only {available} is reclaimable right now, short by {missing}. Loading anyway may push the machine into swap.",
   "@modelsLocalLoadAnywayBody": {
-    "description": "Local models 2026-11-20: the load-anyway consent dialog's body — the size-aware requirement vs the reclaimable memory, the gap, the swap risk.",
+    "description": "Local models 2026-11-20: the load-anyway consent dialog's body — the MODEL's requirement (weights + slack), the machine's pressure point, the reclaimable memory, the gap, the swap risk.",
     "placeholders": {
       "label": {
         "type": "String"
       },
       "required": {
+        "type": "String"
+      },
+      "reserve": {
         "type": "String"
       },
       "available": {

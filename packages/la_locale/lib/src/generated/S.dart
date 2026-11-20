@@ -4572,7 +4572,7 @@ abstract class S {
   /// Local model budget 2026-11-20: the policy line under the bar — the size-aware law's fixed RESERVE (the weights spend the rest under the slack) and today's actionable answer (caution-colored when nothing fits).
   ///
   /// In en, this message translates to:
-  /// **'load policy keeps {floor} for the system — available for local loads {available}'**
+  /// **'load pressure point {floor} — available for local loads {available}'**
   String modelsBudgetPolicy(String floor, String available);
 
   /// Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts.
@@ -4611,13 +4611,14 @@ abstract class S {
   /// **'Load anyway?'**
   String get modelsLocalLoadAnywayTitle;
 
-  /// Local models 2026-11-20: the load-anyway consent dialog's body — the size-aware requirement vs the reclaimable memory, the gap, the swap risk.
+  /// Local models 2026-11-20: the load-anyway consent dialog's body — the MODEL's requirement (weights + slack), the machine's pressure point, the reclaimable memory, the gap, the swap risk.
   ///
   /// In en, this message translates to:
-  /// **'{label} needs {required} of reclaimable memory but only {available} is available right now — short by {missing}. Loading anyway may push the machine into swap.'**
+  /// **'{label} needs {required} of reclaimable memory, and loading must keep the {reserve} pressure point free — only {available} is reclaimable right now, short by {missing}. Loading anyway may push the machine into swap.'**
   String modelsLocalLoadAnywayBody(
     String label,
     String required,
+    String reserve,
     String available,
     String missing,
   );

@@ -2489,7 +2489,7 @@ class SEn extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'load policy keeps $floor for the system — available for local loads $available';
+    return 'load pressure point $floor — available for local loads $available';
   }
 
   @override
@@ -2522,10 +2522,11 @@ class SEn extends S {
   String modelsLocalLoadAnywayBody(
     String label,
     String required,
+    String reserve,
     String available,
     String missing,
   ) {
-    return '$label needs $required of reclaimable memory but only $available is available right now — short by $missing. Loading anyway may push the machine into swap.';
+    return '$label needs $required of reclaimable memory, and loading must keep the $reserve pressure point free — only $available is reclaimable right now, short by $missing. Loading anyway may push the machine into swap.';
   }
 
   @override

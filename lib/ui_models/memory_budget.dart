@@ -1,11 +1,19 @@
-/// The local-model memory budget (2026-11-18; 2026-11-20 one-math law)
-/// — whether a catalog entry fits the machine BEFORE any load is
-/// attempted, as pure math over the sensed facts.
+/// The local-model memory budget (2026-11-18; 2026-11-20 one-math law,
+/// owner-corrected the same day) — whether a catalog entry fits the
+/// machine BEFORE any load is attempted, as pure math over the sensed
+/// facts.
 ///
-/// THE arithmetic lives in the runtime's gate (`MlxLoadGate`):
-/// `required = weightsMb.ceil() × (1 + slack) + reserve` — weights
-/// rounded up, the KV/runtime slack over them, and the fixed system
-/// reserve. This file renders that SAME function as a named verdict so
+/// THE arithmetic lives in the runtime's gate (`MlxLoadGate`), in two
+/// separate quantities the owner named apart:
+///
+/// * the MODEL's requirement — `weightsMb.ceil() × (1 + slack)` — what
+///   this checkpoint itself adds to RAM (KV cache included);
+/// * the MACHINE's pressure point — the fixed 1 GB reserve — ONE shared
+///   post-load headroom floor for all models, never per-model rent,
+///   never baked into what a model "requires".
+///
+/// The gate allows a load iff `available − modelRequirement ≥ pressure
+/// point`. This file renders the SAME comparison as a named verdict so
 /// the catalog rows say "fits now" / "needs X more" / "exceeds machine
 /// memory" without anyone pressing Load to find out — and so the fit
 /// can never claim a refusal the gate would not make (the 2026-11-20
@@ -27,12 +35,12 @@ import 'dart:math' as math;
 
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 
-/// The gate's fixed system reserve, in MB — the part of the load
-/// requirement that does NOT scale with the checkpoint (single-sourced
-/// from [MlxLoadGate.defaults]; the budget bar's policy line renders
-/// it). The old flat-floor constant is retired: there is no single
-/// floor anymore, the requirement is per-checkpoint.
-final int kLocalModelLoadReserveMegabytes =
+/// The machine's pressure point, in MB — the shared post-load headroom
+/// every size-aware load must leave free (single-sourced from
+/// [MlxLoadGate.defaults]; the budget bar's policy line renders it).
+/// The old flat-floor constant is retired: the requirement is
+/// per-checkpoint, the pressure point is the machine's.
+final int kLocalModelLoadPressurePointMegabytes =
     MlxLoadGate.defaults.reserveMegabytes;
 
 /// One entry's fit verdict, with the numbers that drove it (the UI
@@ -65,28 +73,31 @@ final class LocalModelFit {
       );
 
   /// The computed verdict over known facts — the gate's own
-  /// [MlxLoadGate.requiredMegabytes], verbatim:
+  /// [MlxLoadGate.requiredMegabytes] (the MODEL's weights+slack
+  /// requirement) against the machine's pressure point, verbatim:
   ///
-  /// - `fitsNow`: available ≥ weights×(1+slack) + reserve — the same
+  /// - `fitsNow`: available − requirement ≥ pressure point — the same
   ///   fact `MlxLoadGate.evaluate(weightsBytes:)` answers.
-  /// - `neverFits`: the requirement exceeds the sensed total — no
-  ///   amount of closing tabs makes the machine hold it.
-  /// - [missingMegabytes]: how much more AVAILABLE memory the fit
+  /// - `neverFits`: requirement + pressure point over the sensed total
+  ///   — no amount of closing tabs makes the machine hold it.
+  /// - [missingMegabytes]: how much more AVAILABLE memory the load
   ///   still needs (0 when it fits; null only with unknown facts).
   factory LocalModelFit.evaluate({
     required final int? availableMegabytes,
     required final int? totalMegabytes,
     required final int weightsBytes,
   }) {
-    final required = MlxLoadGate.defaults.requiredMegabytes(weightsBytes);
+    final gate = MlxLoadGate.defaults;
+    final required = gate.requiredMegabytes(weightsBytes);
+    final pressurePoint = gate.reserveMegabytes;
     final available = availableMegabytes;
     if (available == null) return const LocalModelFit.unknown();
     final total = totalMegabytes;
-    final never = total != null && required > total;
-    final missing = math.max(0, required - available);
+    final never = total != null && required + pressurePoint > total;
+    final missing = math.max(0, required + pressurePoint - available);
     return LocalModelFit._(
       unknown: false,
-      fitsNow: available >= required,
+      fitsNow: available - required >= pressurePoint,
       neverFits: never,
       requiredMegabytes: required,
       availableMegabytes: available,
@@ -99,17 +110,17 @@ final class LocalModelFit {
   /// The other fields keep their null/false degenerate values.
   final bool unknown;
 
-  /// Available memory covers the size-aware requirement right now —
-  /// the load gate would not refuse this checkpoint on today's memory.
+  /// The machine keeps its pressure point free with this checkpoint
+  /// resident — the load gate would not refuse it on today's memory.
   final bool fitsNow;
 
-  /// The machine cannot hold the requirement even at its total —
-  /// closing apps changes nothing.
+  /// The machine cannot hold the requirement plus its pressure point
+  /// even at its total — closing apps changes nothing.
   final bool neverFits;
 
-  /// The full size-aware requirement (weights + slack + reserve), in
-  /// MB — the gate's own number, not a UI-side approximation. Null only
-  /// with unknown facts.
+  /// The MODEL's requirement (weights + KV/runtime slack), in MB — the
+  /// gate's own number, WITHOUT the machine's pressure point (that is
+  /// never this model's rent). Null only with unknown facts.
   final int? requiredMegabytes;
 
   /// The sensed AVAILABLE memory the verdict used (MB), verbatim from
@@ -121,9 +132,9 @@ final class LocalModelFit {
   /// an unseen total never convicts a machine).
   final int? totalMegabytes;
 
-  /// How much more AVAILABLE memory the fit needs, in MB (0 when it
-  /// fits now). The "needs X more" chip renders this through
-  /// `formatModelBytes`.
+  /// How much more AVAILABLE memory the load needs — the gap between
+  /// today's reclaimable memory and (requirement + pressure point).
+  /// The "needs X more" chip renders this through `formatModelBytes`.
   final int? missingMegabytes;
 }
 

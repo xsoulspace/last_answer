@@ -9,10 +9,11 @@
 /// (tap-through selects that model's row, a generating model pulses),
 /// then the RECLAIMABLE CACHE (file-backed — "Cached Files") and FREE
 /// pages. No invented segment: the load policy is not observed memory —
-/// it renders as the policy line under the bar ("load policy keeps X
-/// for the system — available for local loads Y"), never as a colored
-/// chunk (2026-11-20: the flat 4 GB floor became the size-aware law —
-/// weights×(1+slack) + reserve — so the line names the fixed RESERVE).
+/// it renders as the policy line under the bar ("load pressure point X
+/// — available for local loads Y"), never as a colored chunk
+/// (2026-11-20: the flat 4 GB floor became the size-aware law — the
+/// MODEL's requirement is weights×(1+slack), the machine's 1 GB
+/// pressure point is the shared floor the line names).
 ///
 /// Motion is encode-only: a segment's width animates its transition (a
 /// load sweeps in, an unload drains out) and the pulse says "decoding
@@ -109,13 +110,14 @@ final class MemoryBudgetBar extends StatelessWidget {
         style: LaTokens.mono(10, la.inkQuiet),
       );
     }
-    final reserve = kLocalModelLoadReserveMegabytes;
+    final reserve = kLocalModelLoadPressurePointMegabytes;
     const mib = 1024 * 1024;
     final cached = current.cachedMegabytes ?? 0;
     final free = current.freeMegabytes;
-    // The weights budget: available minus the fixed reserve — a model's
-    // size-aware requirement spends this on weights×(1+slack) (the
-    // 2026-11-20 one-math law; there is no flat floor anymore).
+    // The weights budget: available minus the machine's pressure
+    // point — a model's own requirement spends this on
+    // weights×(1+slack) (the 2026-11-20 one-math law; the pressure
+    // point is the machine's shared floor, never per-model rent).
     final availableForWeights =
         math.max(0, current.availableMegabytes - reserve);
     // The observed working set; a legacy sensor (no anonymous row)

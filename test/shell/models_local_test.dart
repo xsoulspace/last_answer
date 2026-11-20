@@ -621,10 +621,10 @@ void main() {
         'standing chip', (final tester) async {
       await mount(tester);
 
-      // The healthy machine's bar: the policy line names the gate's
-      // fixed RESERVE and today's actionable answer — and NO fit
+      // The healthy machine's bar: the policy line names the machine's
+      // pressure point and today's actionable answer — and NO fit
       // warnings at all (every row fits; nothing to say). 12288 −
-      // 1024 reserve = 11264 → '11 GB'.
+      // 1024 = 11264 → '11 GB'.
       await tester.scrollUntilVisible(
         find.byKey(const ValueKey('models.local.budget.bar')),
         240,
@@ -633,8 +633,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.text(
-          'load policy keeps 1.0 GB for the system — '
-          'available for local loads 11 GB',
+          'load pressure point 1.0 GB — available for local loads 11 GB',
         ),
         findsOneWidget,
       );
@@ -645,10 +644,11 @@ void main() {
       );
 
       // The tight machine (2 GB available), with the 1.7B DOWNLOADED:
-      // its size-aware requirement is 1024×1.25 + 1024 reserve = 2304 —
-      // short by 256 MB. The verb STAYS ENABLED (the 2026-11-20
-      // load-anyway law) and the quiet reason line names the gap; the
-      // aggregate verdict is said once above the rows.
+      // its rent is 1024×1.25 = 1280, and the machine's 1 GB pressure
+      // point must survive the load — 1280 + 1024 = 2304 vs 2048
+      // available: short by 256 MB. The verb STAYS ENABLED (the
+      // 2026-11-20 load-anyway law) and the quiet reason line names the
+      // gap; the aggregate verdict is said once above the rows.
       memorySensor = () => const MemoryFacts(
         availableMegabytes: 2048,
         freeMegabytes: 256,

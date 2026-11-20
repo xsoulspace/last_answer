@@ -2007,9 +2007,10 @@ final class _CatalogLensState extends State<CatalogLens> {
 
   /// The load-anyway consent dialog (2026-11-20, the gate's "default,
   /// never a monopoly" law given a UI face): a Load the fit refuses
-  /// opens THIS before any weights move — it names the model, the
-  /// size-aware requirement vs the reclaimable memory, the gap, and the
-  /// machine's own congestion. Confirm loads with the gate overridden
+  /// opens THIS before any weights move — it names the model, its own
+  /// requirement (weights + slack), the machine's pressure point the
+  /// load must leave free, the reclaimable memory, the gap, and the
+  /// machine's congestion. Confirm loads with the gate overridden
   /// ([LocalModelsState.loadEntry]'s consented path, the install
   /// consent law's twin); Cancel loads nothing.
   Future<void> _askLoadAnyway(
@@ -2034,6 +2035,9 @@ final class _CatalogLensState extends State<CatalogLens> {
               l10n.modelsLocalLoadAnywayBody(
                 entry.label,
                 formatModelBytes((fit.requiredMegabytes ?? 0) * 1024 * 1024),
+                formatModelBytes(
+                  kLocalModelLoadPressurePointMegabytes * 1024 * 1024,
+                ),
                 formatModelBytes((fit.availableMegabytes ?? 0) * 1024 * 1024),
                 formatModelBytes((fit.missingMegabytes ?? 0) * 1024 * 1024),
               ),

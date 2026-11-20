@@ -75,6 +75,16 @@ final class LaWorld {
   int get batchRevision => _batchRevision;
   int _batchRevision = 0;
 
+  /// Cached aggregate unread map, rebuilt lazily and invalidated in
+  /// [commitBatch] — the only mutation boundary. Every unread selector
+  /// may call [unreadByThread]; rebuilding an N-room map per call is
+  /// N×N churn (ADR 0036 GC law), so selectors read the cache instead.
+  /// One nuance: the badge is a member's fact keyed on `humanActorId()`,
+  /// which resolves asynchronously — an identity change lands with the
+  /// next journal batch rather than instantly (same eventual consistency
+  /// the rows themselves already have).
+  Map<String, int>? _unreadByThreadCache;
+
   // ---- the feed's write surface (projection-internal) ----
 
   /// Upserts one room row (a `threads` put).
@@ -202,6 +212,7 @@ final class LaWorld {
   /// never per row.
   void commitBatch() {
     _batchRevision++;
+    _unreadByThreadCache = null;
     controller.notifyWorldChanged();
   }
 
@@ -299,11 +310,21 @@ final class LaWorld {
     ];
   }
 
-  /// threadId → unread count (the rail badge's whole need).
-  Map<String, int> unreadByThread() => <String, int>{
-    for (final room in _rooms.values)
-      if (_unreadOf(room) > 0) room.threadId: _unreadOf(room),
-  };
+  /// threadId → unread count (the rail badge's whole need). Cached per
+  /// batch (see [_unreadByThreadCache]) — per-row selectors used to
+  /// rebuild this N-room map per call.
+  Map<String, int> unreadByThread() =>
+      _unreadByThreadCache ??= <String, int>{
+        for (final room in _rooms.values)
+          if (_unreadOf(room) > 0) room.threadId: _unreadOf(room),
+      };
+
+  /// ONE thread's unread — O(1) from the row index (the per-row
+  /// selector law: a row badge may not walk all rooms; ADR 0036).
+  int unreadFor(final String threadId) {
+    final room = _rooms[threadId];
+    return room == null ? 0 : _unreadOf(room);
+  }
 
   /// ONE room's human receipt fact (the 1g "N new" divider's need):
   /// the member-gated unread plus the raw last-read beat — the divider

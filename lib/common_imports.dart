@@ -28,7 +28,7 @@ export 'package:lastanswer/ui_root/ui_root.dart';
 export 'package:extra_alignments/extra_alignments.dart';
 export 'package:flextras/flextras.dart';
 export 'package:flutter/cupertino.dart' show CupertinoPageRoute;
-export 'package:flutter/material.dart' show Colors, Icons, ThemeMode;
+export 'package:material_ui/material_ui.dart' show Colors, Icons, ThemeMode;
 export 'package:flutter/services.dart';
 export 'package:flutter/widgets.dart';
 export 'package:flutter_hooks/flutter_hooks.dart' hide Dispose;

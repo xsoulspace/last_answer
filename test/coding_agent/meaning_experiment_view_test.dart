@@ -1,10 +1,13 @@
 @Skip('ADR 0023: the meaning lane is retired — materialization stopped by product decision; do not repair. See docs/decisions/0023-chat-first-product-and-retire-materialization.md')
 library;
 
+import 'package:flutter/widgets.dart';
 import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'
+    hide GlobalMaterialLocalizations, GlobalCupertinoLocalizations;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/data_agents/meaning/meaning_experiment_controller.dart';

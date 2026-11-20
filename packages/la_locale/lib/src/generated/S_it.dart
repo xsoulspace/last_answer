@@ -2506,7 +2506,7 @@ class SIt extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'la policy di caricamento tiene liberi $floor — disponibili per caricamenti locali $available';
+    return 'la policy di caricamento tiene $floor per il sistema — disponibili per caricamenti locali $available';
   }
 
   @override
@@ -2524,8 +2524,29 @@ class SIt extends S {
 
   @override
   String modelsLocalFitReason(String size) {
-    return 'mancano $size — scarica un modello o libera memoria';
+    return 'mancano $size — espelli un modello o libera memoria';
   }
+
+  @override
+  String modelsLocalFitPressure(String swap, String compressor) {
+    return 'la macchina è sotto pressione — $swap trasferiti in swap, $compressor trattenuti dal compressore';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayTitle => 'Caricare comunque?';
+
+  @override
+  String modelsLocalLoadAnywayBody(
+    String label,
+    String required,
+    String available,
+    String missing,
+  ) {
+    return '$label richiede $required di memoria recuperabile ma ora ce ne sono solo $available — mancano $missing. Caricare comunque può spingere la macchina nello swap.';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayConfirm => 'Carica comunque';
 
   @override
   String get modelsLocalGenerating => 'generazione…';

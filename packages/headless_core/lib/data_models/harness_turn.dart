@@ -65,9 +65,17 @@ final class HarnessTurn {
   final StringBuffer text = StringBuffer();
   final _provisionalText = <String, StringBuffer>{};
   final _settledText = <String>{};
-  String get displayedText => '$text${_provisionalText.values.join()}';
+  /// Cached [displayedText], invalidated by any write. During a
+  /// streaming turn every delta writes and the surface rebuild reads —
+  /// re-joining the provisional buffers per read was O(n²) string churn
+  /// across a turn (ADR 0036 GC law): writes set the dirty flag, reads
+  /// reuse the cached join.
+  String? _displayedTextCache;
+  String get displayedText =>
+      _displayedTextCache ??= '$text${_provisionalText.values.join()}';
 
   void observeText(CodingTextUpdate update) {
+    _displayedTextCache = null;
     if (_settledText.contains(update.requestId)) return;
     if (update.phase == CodingTextPhase.delta) {
       _provisionalText

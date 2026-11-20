@@ -8,6 +8,7 @@
 // registry spec (the world_inspector_surface_test shape) over a real
 // loopback facade; the resolver legs run hermetic on a scripted probe.
 
+import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
 import 'package:material_ui/material_ui.dart';

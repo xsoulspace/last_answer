@@ -90,3 +90,5 @@ tool/*.dill
 .cursor/skills/
 .github/skills/
 .agents/skills/impeccable/
+
+.zcode/plans/

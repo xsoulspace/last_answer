@@ -1754,7 +1754,7 @@
   "@modelsBudgetFree": {
     "description": "Local model budget v3.3 2026-11-18: the segmented RAM bar's free-pages legend label (free + speculative)."
   },
-  "modelsBudgetPolicy": "load policy keeps {floor} free — available for local loads {available}",
+  "modelsBudgetPolicy": "load policy keeps {floor} for the system — available for local loads {available}",
   "@modelsBudgetPolicy": {
     "placeholders": {
       "floor": {
@@ -1764,7 +1764,7 @@
         "type": "String"
       }
     },
-    "description": "Local model budget v3.3 2026-11-18: the policy line under the bar — the load gate's headroom floor and today's actionable answer (caution-colored when nothing fits)."
+    "description": "Local model budget 2026-11-20: the policy line under the bar — the size-aware law's fixed RESERVE (the weights spend the rest under the slack) and today's actionable answer (caution-colored when nothing fits)."
   },
   "modelsBudgetUnknown": "memory facts unavailable — the load gate runs sensor-absent",
   "@modelsBudgetUnknown": {
@@ -1788,12 +1788,50 @@
   },
   "modelsLocalFitReason": "needs {size} more — unload a model or free memory",
   "@modelsLocalFitReason": {
-    "description": "Local model budget v3 2026-11-18: the quiet reason line under a row whose Load verb the fit disables (the gate's own arithmetic).",
+    "description": "Local model budget v3 2026-11-18: the quiet reason line under a row whose Load the fit refuses (the gate's own arithmetic; 2026-11-20 the verb stays enabled — the load-anyway dialog carries the override).",
     "placeholders": {
       "size": {
         "type": "String"
       }
     }
+  },
+  "modelsLocalFitPressure": "the machine is under pressure — {swap} swapped to disk, {compressor} held by the compressor",
+  "@modelsLocalFitPressure": {
+    "description": "Local models 2026-11-20: the congestion clause riding the fit reason line and the load-anyway dialog — the sensed swap and compressor facts (quiet below 256 MB each).",
+    "placeholders": {
+      "swap": {
+        "type": "String"
+      },
+      "compressor": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayTitle": "Load anyway?",
+  "@modelsLocalLoadAnywayTitle": {
+    "description": "Local models 2026-11-20: the load-anyway consent dialog's title (the gate's default-not-monopoly law)."
+  },
+  "modelsLocalLoadAnywayBody": "{label} needs {required} of reclaimable memory but only {available} is available right now — short by {missing}. Loading anyway may push the machine into swap.",
+  "@modelsLocalLoadAnywayBody": {
+    "description": "Local models 2026-11-20: the load-anyway consent dialog's body — the size-aware requirement vs the reclaimable memory, the gap, the swap risk.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      },
+      "missing": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayConfirm": "Load anyway",
+  "@modelsLocalLoadAnywayConfirm": {
+    "description": "Local models 2026-11-20: the load-anyway consent dialog's confirm verb (overrides the load gate — the consent fact)."
   },
   "modelsLocalGenerating": "generating…",
   "@modelsLocalGenerating": {

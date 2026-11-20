@@ -6,6 +6,7 @@
 // NEVER removes the group; the first entry seeds #general once and the
 // composer takes the caret. The injected service is REAL over a
 // hermetic world (the repo's lane — a final class is never faked).
+import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
 import 'package:flutter/gestures.dart' show kSecondaryMouseButton;

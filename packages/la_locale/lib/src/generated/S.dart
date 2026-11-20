@@ -4569,10 +4569,10 @@ abstract class S {
   /// **'free'**
   String get modelsBudgetFree;
 
-  /// Local model budget v3.3 2026-11-18: the policy line under the bar — the load gate's headroom floor and today's actionable answer (caution-colored when nothing fits).
+  /// Local model budget 2026-11-20: the policy line under the bar — the size-aware law's fixed RESERVE (the weights spend the rest under the slack) and today's actionable answer (caution-colored when nothing fits).
   ///
   /// In en, this message translates to:
-  /// **'load policy keeps {floor} free — available for local loads {available}'**
+  /// **'load policy keeps {floor} for the system — available for local loads {available}'**
   String modelsBudgetPolicy(String floor, String available);
 
   /// Local model budget v3 2026-11-18: the honest degraded line when the memory sensor yields no facts.
@@ -4593,11 +4593,40 @@ abstract class S {
   /// **'no downloaded model fits the memory available right now — free {size} more to run {label}'**
   String modelsBudgetNothingFits(String size, String label);
 
-  /// Local model budget v3 2026-11-18: the quiet reason line under a row whose Load verb the fit disables (the gate's own arithmetic).
+  /// Local model budget v3 2026-11-18: the quiet reason line under a row whose Load the fit refuses (the gate's own arithmetic; 2026-11-20 the verb stays enabled — the load-anyway dialog carries the override).
   ///
   /// In en, this message translates to:
   /// **'needs {size} more — unload a model or free memory'**
   String modelsLocalFitReason(String size);
+
+  /// Local models 2026-11-20: the congestion clause riding the fit reason line and the load-anyway dialog — the sensed swap and compressor facts (quiet below 256 MB each).
+  ///
+  /// In en, this message translates to:
+  /// **'the machine is under pressure — {swap} swapped to disk, {compressor} held by the compressor'**
+  String modelsLocalFitPressure(String swap, String compressor);
+
+  /// Local models 2026-11-20: the load-anyway consent dialog's title (the gate's default-not-monopoly law).
+  ///
+  /// In en, this message translates to:
+  /// **'Load anyway?'**
+  String get modelsLocalLoadAnywayTitle;
+
+  /// Local models 2026-11-20: the load-anyway consent dialog's body — the size-aware requirement vs the reclaimable memory, the gap, the swap risk.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} needs {required} of reclaimable memory but only {available} is available right now — short by {missing}. Loading anyway may push the machine into swap.'**
+  String modelsLocalLoadAnywayBody(
+    String label,
+    String required,
+    String available,
+    String missing,
+  );
+
+  /// Local models 2026-11-20: the load-anyway consent dialog's confirm verb (overrides the load gate — the consent fact).
+  ///
+  /// In en, this message translates to:
+  /// **'Load anyway'**
+  String get modelsLocalLoadAnywayConfirm;
 
   /// Local models v3 2026-11-18: the row status while a generation runs (the ledger's in-flight answer).
   ///

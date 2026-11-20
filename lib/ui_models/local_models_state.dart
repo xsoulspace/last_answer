@@ -10,8 +10,10 @@
 /// = the weights sit in RAM — two independent stages with separate
 /// verbs). The consent law lives here as a boundary: [install] is
 /// called ONLY from the UI's consent dialog path with `userConsent:
-/// true` — the runtime/inference paths never download. Errors land in
-/// [error] (named codes rendered verbatim by the lens — never
+/// true`, and [loadEntry]'s `overrideGate` ONLY from the load-anyway
+/// dialog after it names the swap risk — the runtime/inference paths
+/// never download and never skip the load gate on their own. Errors
+/// land in [error] (named codes rendered verbatim by the lens — never
 /// swallowed, never paraphrased into a fake success).
 ///
 /// The installer rides the [LocalModelInstaller] seam so tests fake it
@@ -48,11 +50,13 @@ abstract interface class LocalModelInstaller {
 /// precondition the UI checks first — the runtime lane only ever sees
 /// entries the installer has on disk. Backed by the dfp package's
 /// `MlxModelRuntime` in production ([PackageLocalModelRuntime]); faked
-/// in tests.
+/// in tests. [load]'s `force` is the CONSENTED override (2026-11-20):
+/// the UI's load-anyway dialog names the swap risk first, then the gate
+/// is skipped — the gate is a default, never a monopoly.
 abstract interface class LocalModelRuntime {
   bool isLoaded(final MlxModelCatalogEntry entry);
 
-  Future<void> load(final MlxModelCatalogEntry entry);
+  Future<void> load(final MlxModelCatalogEntry entry, {final bool force});
 
   Future<void> unload(final MlxModelCatalogEntry entry);
 }
@@ -489,14 +493,21 @@ final class LocalModelsState extends ChangeNotifier {
     _notify();
   }
 
-  /// The LOAD verb (2026-11-18 two-stage law): put the downloaded
-  /// weights in RAM through the runtime lane. One operation at a time
-  /// per row (the busy ref renders the row spinner); a refusal (the
-  /// load gate's floor, a stale fit) lands in [error] verbatim, never
-  /// swallowed. After it completes the entry's install state is
-  /// re-probed and the row notified — nothing else is re-probed on
-  /// disk (a load writes nothing).
-  Future<void> loadEntry(final MlxModelCatalogEntry entry) async {
+  /// The LOAD verb (2026-11-18 two-stage law; 2026-11-20 honesty +
+  /// override law): put the downloaded weights in RAM through the
+  /// runtime lane. One operation at a time per row (the busy ref
+  /// renders the row spinner); a refusal (the size-aware load gate,
+  /// single-sourced with the fit verdict) lands in [error] verbatim,
+  /// never swallowed. [overrideGate] is the CONSENTED path — called
+  /// ONLY from the load-anyway dialog after it names the swap risk (the
+  /// install consent law's twin). After the verb, the residency is
+  /// READ back off the runtime ([isLoaded]) — the state never marks a
+  /// transition it was not told happened (the 2026-11-20 finding: a
+  /// silent runtime no-op used to flip the row to "loaded").
+  Future<void> loadEntry(
+    final MlxModelCatalogEntry entry, {
+    final bool overrideGate = false,
+  }) async {
     final runtime = _runtime;
     if (runtime == null) return;
     final ref = localModelRefName(entry);
@@ -505,10 +516,11 @@ final class LocalModelsState extends ChangeNotifier {
     _busyRefs.add(ref);
     _notify();
     try {
-      await runtime.load(entry);
-      _loaded[ref] = true;
+      await runtime.load(entry, force: overrideGate);
+      _loaded[ref] = runtime.isLoaded(entry);
     } on Object catch (e) {
       _error = _namedCode(e);
+      _readLoaded(entry);
     } finally {
       _busyRefs.remove(ref);
       _states[ref] = _installer.stateOf(entry);
@@ -518,8 +530,9 @@ final class LocalModelsState extends ChangeNotifier {
 
   /// The UNLOAD verb: free the resident weights. Symmetric with
   /// [loadEntry] — same busy law, same honest error line, and the
-  /// install-state re-probe is the only disk touch (an unload writes
-  /// nothing, deletes nothing).
+  /// residency is read back off the runtime after the verb (never a
+  /// guessed transition). The install-state re-probe is the only disk
+  /// touch (an unload writes nothing, deletes nothing).
   Future<void> unloadEntry(final MlxModelCatalogEntry entry) async {
     final runtime = _runtime;
     if (runtime == null) return;
@@ -530,9 +543,10 @@ final class LocalModelsState extends ChangeNotifier {
     _notify();
     try {
       await runtime.unload(entry);
-      _loaded[ref] = false;
+      _loaded[ref] = runtime.isLoaded(entry);
     } on Object catch (e) {
       _error = _namedCode(e);
+      _readLoaded(entry);
     } finally {
       _busyRefs.remove(ref);
       _states[ref] = _installer.stateOf(entry);

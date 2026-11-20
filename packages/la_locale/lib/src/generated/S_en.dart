@@ -2489,7 +2489,7 @@ class SEn extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'load policy keeps $floor free — available for local loads $available';
+    return 'load policy keeps $floor for the system — available for local loads $available';
   }
 
   @override
@@ -2509,6 +2509,27 @@ class SEn extends S {
   String modelsLocalFitReason(String size) {
     return 'needs $size more — unload a model or free memory';
   }
+
+  @override
+  String modelsLocalFitPressure(String swap, String compressor) {
+    return 'the machine is under pressure — $swap swapped to disk, $compressor held by the compressor';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayTitle => 'Load anyway?';
+
+  @override
+  String modelsLocalLoadAnywayBody(
+    String label,
+    String required,
+    String available,
+    String missing,
+  ) {
+    return '$label needs $required of reclaimable memory but only $available is available right now — short by $missing. Loading anyway may push the machine into swap.';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayConfirm => 'Load anyway';
 
   @override
   String get modelsLocalGenerating => 'generating…';

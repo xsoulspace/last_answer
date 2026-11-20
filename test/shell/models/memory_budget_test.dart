@@ -12,9 +12,10 @@
 ///   v3 unlabeled grey rest was exactly the owner's "doesn't mean
 ///   anything" complaint), one labeled segment PER loaded model carved
 ///   out of it with tap-through to its row, the reclaimable cache
-///   (file-backed = "Cached Files"), the free pages — and the 4 GB
-///   floor as the POLICY LINE under the bar (a load-gate target is
-///   not a region of RAM, so it draws no chunk); the legacy sensor's
+///   (file-backed = "Cached Files"), the free pages — and the load
+///   policy as the POLICY LINE under the bar (2026-11-20: the
+///   size-aware law's fixed RESERVE — a load-gate target is not a
+///   region of RAM, so it draws no chunk); the legacy sensor's
 ///   composite fallback + honest note; the facts-null degraded line.
 library;
 
@@ -38,27 +39,33 @@ const gib = 1024 * mib;
 
 void main() {
   group('evaluateLocalModelFit', () {
-    test('a 1 GB model fits a healthy 16 GB machine with the floor '
-        'kept, and names the numbers it used', () {
+    test('a 1 GB model fits a healthy 16 GB machine, and names the '
+        'numbers it used (the size-aware one-math law)', () {
       final fit = evaluateLocalModelFit(
         availableMegabytes: 16384,
         totalMegabytes: 16384,
         weightsBytes: gib,
       );
-      // weights 1024 MB + 25% slack = 1280 MB required; available
-      // 16384 − floor 4096 = 12288 ≥ 1280.
+      // weights 1024 MB + 25% slack = 1280 + 1024 reserve = 2304 MB
+      // required; available 16384 ≥ 2304. THE GATE'S OWN NUMBER —
+      // MlxLoadGate.defaults.requiredMegabytes, not a UI re-derivation.
       expect(fit.unknown, isFalse);
+      expect(
+        fit.requiredMegabytes,
+        MlxLoadGate.defaults.requiredMegabytes(gib),
+      );
+      expect(fit.requiredMegabytes, 2304);
       expect(fit.fitsNow, isTrue);
       expect(fit.neverFits, isFalse);
-      expect(fit.requiredMegabytes, 1280);
       expect(fit.availableMegabytes, 16384);
       expect(fit.totalMegabytes, 16384);
       expect(fit.missingMegabytes, 0);
     });
 
-    test('the exact boundary fits (required == available − floor)', () {
+    test('the exact boundary fits (available == the size-aware '
+        'requirement)', () {
       final fit = evaluateLocalModelFit(
-        availableMegabytes: 5376, // 5376 − 4096 == 1280 == required
+        availableMegabytes: 2304, // 1024×1.25 + 1024 reserve == 2304
         totalMegabytes: 16384,
         weightsBytes: gib,
       );
@@ -66,15 +73,14 @@ void main() {
       expect(fit.missingMegabytes, 0);
     });
 
-    test('a machine below the budget is unfit and names how much more '
-        'available memory it needs', () {
+    test('a machine below the requirement is unfit and names how much '
+        'more available memory it needs', () {
       final fit = evaluateLocalModelFit(
-        availableMegabytes: 5120,
+        availableMegabytes: 2048,
         totalMegabytes: 16384,
         weightsBytes: gib,
       );
-      // 5120 − 4096 = 1024 < 1280 required → short by 1280 + 4096 −
-      // 5120 = 256 MB.
+      // 2304 required − 2048 available = 256 MB short.
       expect(fit.fitsNow, isFalse);
       expect(fit.neverFits, isFalse);
       expect(fit.missingMegabytes, 256);
@@ -83,12 +89,23 @@ void main() {
       expect(formatModelBytes(1229 * mib), '1.2 GB');
     });
 
-    test('weights + floor over the sensed total never fits, whatever '
+    test('a SMALL checkpoint fits under pressure the old flat floor '
+        'refused — the size-aware point of the 2026-11-20 law', () {
+      final fit = evaluateLocalModelFit(
+        availableMegabytes: 2048, // far below the old 4096 floor
+        totalMegabytes: 16384,
+        weightsBytes: 400 * mib, // the 0.6B: 500 + 1024 = 1524 ≤ 2048
+      );
+      expect(fit.fitsNow, isTrue);
+      expect(fit.requiredMegabytes, 1524);
+    });
+
+    test('the requirement over the sensed total never fits, whatever '
         'is free today', () {
       final fit = evaluateLocalModelFit(
         availableMegabytes: 4096,
-        totalMegabytes: 8192,
-        weightsBytes: (4.5 * gib).round(), // 4608 MB + 4096 > 8192
+        totalMegabytes: 6144,
+        weightsBytes: (4.5 * gib).round(), // 4608 MB → 6784 required > 6144
       );
       expect(fit.neverFits, isTrue);
       expect(fit.fitsNow, isFalse);
@@ -126,8 +143,8 @@ void main() {
         totalMegabytes: 16384,
         weightsBytes: 400 * mib + 1, // 400.0000x MB → 401 MB
       );
-      // 401 × 1.25 = 501.25 → 502.
-      expect(fit.requiredMegabytes, 502);
+      // 401 × 1.25 = 501.25 → 502, + 1024 reserve = 1526.
+      expect(fit.requiredMegabytes, 1526);
     });
   });
 
@@ -135,7 +152,8 @@ void main() {
     // The owner's real machine, captured 2026-11-18 and pinned in the
     // dfp parse test: 16 GB physical, working set 13388 MB, file
     // cache 1774 MB ("Cached Files" in Activity Monitor), free+spec
-    // 741 MB. Nothing fits (2515 available − 4096 floor < 0).
+    // 741 MB. Nothing fits (2515 available < the 0.6B's 1524 MB
+    // requirement — the smallest requirement in the catalog).
     const calibrated = MemoryFacts(
       availableMegabytes: 2515,
       freeMegabytes: 741,
@@ -186,11 +204,12 @@ void main() {
       expect(find.text('in use 13 GB'), findsOneWidget);
       expect(find.text('reclaimable cache 1.7 GB'), findsOneWidget);
       expect(find.text('free 741 MB'), findsOneWidget);
-      // The policy line says the gate's floor AND today's answer
-      // (2515 available − 4096 floor → 0), caution-colored.
+      // The policy line names the fixed reserve AND today's answer
+      // (2515 available − 1024 reserve = 1491 → '1.5 GB').
       expect(
         find.text(
-          'load policy keeps 4.0 GB free — available for local loads 0 MB',
+          'load policy keeps 1.0 GB for the system — '
+          'available for local loads 1.5 GB',
         ),
         findsOneWidget,
       );
@@ -269,10 +288,11 @@ void main() {
         find.byKey(const ValueKey('models.local.budget.totalUnknown')),
         findsNothing,
       );
-      // The healthy policy line: 12288 − 4096 = 8192 → '8.0 GB'.
+      // The healthy policy line: 12288 − 1024 = 11264 → '11 GB'.
       expect(
         find.text(
-          'load policy keeps 4.0 GB free — available for local loads 8.0 GB',
+          'load policy keeps 1.0 GB for the system — '
+          'available for local loads 11 GB',
         ),
         findsOneWidget,
       );
@@ -297,7 +317,8 @@ void main() {
       );
       expect(
         find.text(
-          'load policy keeps 4.0 GB free — available for local loads 2.0 GB',
+          'load policy keeps 1.0 GB for the system — '
+          'available for local loads 5.0 GB',
         ),
         findsOneWidget,
       );
@@ -327,11 +348,12 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('the machine is swapping'), findsOneWidget);
-      // The policy line keeps the gate's floor visible even when the
-      // machine is short (3967 − 4096 → 0 available for loads).
+      // The policy line keeps the reserve visible even when the
+      // machine is short (3967 − 1024 = 2943 → '2.9 GB').
       expect(
         find.text(
-          'load policy keeps 4.0 GB free — available for local loads 0 MB',
+          'load policy keeps 1.0 GB for the system — '
+          'available for local loads 2.9 GB',
         ),
         findsOneWidget,
       );

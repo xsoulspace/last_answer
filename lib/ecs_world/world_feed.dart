@@ -14,7 +14,7 @@ library;
 
 import 'dart:async';
 
-import 'package:lastanswer/data_journal/world_state_service.dart'
+import 'package:lastanswer/data_journal/journal_contracts.dart'
     show ActorTelemetry;
 import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ecs_world/world_components.dart';
@@ -65,13 +65,15 @@ final class LaWorldFeed {
     if (_watchSub != null) return;
     await _coldFold();
     if (_stopped) return;
-    _watchSub = store.watch(pollInterval: pollInterval).listen(
-      (_) => unawaited(drain()),
-      onError: (Object e) {
-        // The watch is a hint; a failed poll never loses data — the
-        // next event (or a manual drain) re-reads the exact tail.
-      },
-    );
+    _watchSub = store
+        .watch(pollInterval: pollInterval)
+        .listen(
+          (_) => unawaited(drain()),
+          onError: (Object e) {
+            // The watch is a hint; a failed poll never loses data — the
+            // next event (or a manual drain) re-reads the exact tail.
+          },
+        );
     // Drain whatever landed between the cold fold and the listen.
     unawaited(drain());
   }
@@ -143,11 +145,7 @@ final class LaWorldFeed {
               if (mutation.isRemove) {
                 laWorld.removeRow(mutation.collection, mutation.key);
               } else if (mutation.value != null) {
-                _applyPut(
-                  mutation.collection,
-                  mutation.key,
-                  mutation.value!,
-                );
+                _applyPut(mutation.collection, mutation.key, mutation.value!);
               }
               applied++;
             }
@@ -221,10 +219,9 @@ final class LaWorldFeed {
       threadId: threadId,
       topic: '${row['topic'] ?? ''}',
       closed: row['closed'] == true,
-      participants:
-          (row['participants'] as List? ?? const <Object?>[])
-              .cast<String>()
-              .toList(),
+      participants: (row['participants'] as List? ?? const <Object?>[])
+          .cast<String>()
+          .toList(),
       lastBeat: (row['lastBeat'] as num?)?.toInt() ?? 0,
       createdAt: '${row['createdAt'] ?? ''}',
       lastBeatAt: row['lastBeatAt'] as String?,
@@ -257,10 +254,9 @@ final class LaWorldFeed {
       sentence: '${payload['prompt'] ?? ''}',
       modelId:
           (row['model'] as String?) ?? (payload['declaredModelId'] as String?),
-      addressees:
-          (payload['addressees'] as List? ?? const <Object?>[])
-              .cast<String>()
-              .toList(),
+      addressees: (payload['addressees'] as List? ?? const <Object?>[])
+          .cast<String>()
+          .toList(),
       terminal: terminalMap.isNotEmpty,
       summary:
           (resultMap['summary'] as String?) ??
@@ -302,8 +298,9 @@ final class LaWorldFeed {
       brainRef: '${row['brainRef'] ?? ''}',
       brainCast: '${row['brainCast'] ?? ''}',
       role: '${row['role'] ?? ''}',
-      serves:
-          (row['serves'] as List? ?? const <Object?>[]).cast<String>().toList(),
+      serves: (row['serves'] as List? ?? const <Object?>[])
+          .cast<String>()
+          .toList(),
     );
   }
 }

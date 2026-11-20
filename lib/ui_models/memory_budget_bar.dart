@@ -8,9 +8,11 @@
 /// LOADED MODEL carved out as its own labeled accent segment
 /// (tap-through selects that model's row, a generating model pulses),
 /// then the RECLAIMABLE CACHE (file-backed — "Cached Files") and FREE
-/// pages. No invented segment: the 4 GB load floor is POLICY, not
-/// observed memory — it renders as the policy line under the bar
-/// ("available for local loads X"), never as a colored chunk.
+/// pages. No invented segment: the load policy is not observed memory —
+/// it renders as the policy line under the bar ("load policy keeps X
+/// for the system — available for local loads Y"), never as a colored
+/// chunk (2026-11-20: the flat 4 GB floor became the size-aware law —
+/// weights×(1+slack) + reserve — so the line names the fixed RESERVE).
 ///
 /// Motion is encode-only: a segment's width animates its transition (a
 /// load sweeps in, an unload drains out) and the pulse says "decoding
@@ -107,11 +109,15 @@ final class MemoryBudgetBar extends StatelessWidget {
         style: LaTokens.mono(10, la.inkQuiet),
       );
     }
-    final floor = kLocalModelLoadFloorMegabytes;
+    final reserve = kLocalModelLoadReserveMegabytes;
     const mib = 1024 * 1024;
     final cached = current.cachedMegabytes ?? 0;
     final free = current.freeMegabytes;
-    final availableForLoads = math.max(0, current.availableMegabytes - floor);
+    // The weights budget: available minus the fixed reserve — a model's
+    // size-aware requirement spends this on weights×(1+slack) (the
+    // 2026-11-20 one-math law; there is no flat floor anymore).
+    final availableForWeights =
+        math.max(0, current.availableMegabytes - reserve);
     // The observed working set; a legacy sensor (no anonymous row)
     // falls back to the composite (total − available) and the bar says
     // so. Null on a total-less sensor too — the fallback bar scales to
@@ -312,19 +318,22 @@ final class MemoryBudgetBar extends StatelessWidget {
           ),
         ),
         // The POLICY line (v3.3: the floor left the bar — a load-gate
-        // target is not a region of RAM): the gate's headroom target +
-        // today's actionable answer, caution-colored when nothing fits.
+        // target is not a region of RAM; 2026-11-20: the flat floor
+        // became the size-aware law, so the line names the fixed
+        // RESERVE — the weights spend the rest under the slack): the
+        // gate's headroom target + today's actionable answer,
+        // caution-colored when nothing fits.
         Padding(
           padding: const EdgeInsets.only(top: 2),
           child: Text(
             key: const ValueKey('models.local.budget.policy'),
             l10n.modelsBudgetPolicy(
-              formatModelBytes(floor * mib),
-              formatModelBytes(availableForLoads * mib),
+              formatModelBytes(reserve * mib),
+              formatModelBytes(availableForWeights * mib),
             ),
             style: LaTokens.mono(
               10,
-              availableForLoads > 0 ? la.inkMuted : la.caution,
+              availableForWeights > 0 ? la.inkMuted : la.caution,
             ),
           ),
         ),

@@ -22,14 +22,24 @@ access, easy to understand and scale").
 ## 1. Layer stack (imports point DOWN only)
 
 ```
-packages/headless_core →  packages/core, la_locale, la_ui_kit  →  realm backend          →  ui_* domains  →  ui_root
-      (pure domain)        (Flutter services, l10n, kit)      (journal, world,          (shell, settings,  (bootstrap,
-                                                              chat, ecs_plugins,        automations,       router,
-                                                              data_agents)              documents, …)      common_imports)
+bin/ + headless_core  →  foundation, la_locale, la_ui_kit  →  data_* backend    →  realm backend      →  ui_* domains  →  ui_root
+(pure Dart CLI,         (Flutter-free utils, l10n, kit)     (projects, user,     (journal, world,      (shell, settings,  (bootstrap,
+ pure domain, ADR 0002)                                     monetization,        chat, ecs_plugins,    automations,       router,
+                                                            notifications,       data_agents)          documents, …)      common_imports)
+                                                            emoji, agents)
 ```
 
-- **`packages/headless_core` is the data_models layer** — pure Dart, no Flutter
-  (ADR 0002).
+- **`packages/headless_core` is the pure-Dart domain** (ADR 0002, consolidated
+  per ADR 0034) — no Flutter, organized by concern with the same grammar as
+  the app: `data_models/`, `data_replication/`, `data_storage/`,
+  `data_agents/`, `services/`, `workbench/`, each with a folder barrel.
+  Consumed by BOTH the app (root package) and `bin/doc_cli.dart` (the
+  Flutter-free CLI — `just bin-gates` enforces that `bin/` never imports
+  `package:lastanswer` or Flutter).
+- **The app's `data_*` folders are the backend layer** (core dissolved here
+  per ADR 0035): `data_projects/`, `data_user/`, `data_monetization/`,
+  `data_notifications/`, `data_emoji/`, plus the existing `data_agents/`.
+  Each has a barrel; providers and sources live beside their domain.
 - **The realm backend is four ROOT folders** (no wrapper, owner law):
   - `data_journal/` — services over the append-only journal + the mesh durability
     lane (`mesh/`). The ONE authority's app-side API.
@@ -42,8 +52,11 @@ packages/headless_core →  packages/core, la_locale, la_ui_kit  →  realm back
   - `data_agents/` — the agent APIs (the data_remote_api analog): harness,
     acp, subscriptions, supervised, meaning, product, config.
 - **`packages/la_ui_kit` is the component kit** — the ONE source of interactive
-  chrome (DESIGN v6, CI-enforced by `just ui-gates`).
+  chrome (DESIGN v6, CI-enforced by `just ui-gates`; material-free — the
+  Material/Cupertino layer is the `material_ui`/`cupertino_ui` split packages).
 - **`packages/la_locale`** — the localization facility (arbs + generated S).
+- **`lib/foundation/`** — Flutter-free app utilities (extensions, file_service,
+  generated flutter_gen output, path_utils).
 - **`ui_shell/` is chrome, never a domain.** Features reach it through the
   surface registry (`lib/ui_shell/surfaces.dart`).
 
@@ -59,10 +72,11 @@ Verified invariants (re-check after any move):
   (`lib/coding_agent.dart` is a re-export barrel kept only so pre-split
   callers compile; new code never imports it.)
 
-Known inversion, fix scheduled: `world/world_feed.dart` and
-`world_components.dart` import `journal/world_state_service.dart` — the
-projection should consume an interface, not the service (realm publishes
-state; the fold folds the interface).
+Former inversion, fixed 2026-11-20: `ecs_world/world_feed.dart` and
+`world_components.dart` used to import `data_journal/world_state_service.dart`;
+they now consume the extracted data contract
+(`data_journal/journal_contracts.dart` — `ActorTelemetry`) instead — realm
+publishes state; the fold folds the contract, never the service.
 
 ## 2. Folder map (as-built 2026-11-19)
 
@@ -78,7 +92,15 @@ lib/
 ├── ecs_plugins/                # boards/ · conversation/ · scene/ · world_sync/
 ├── data_agents/                # harness/ · acp/ · subscriptions/ · supervised/ ·
 │                               #   meaning/ · product/ · config/ · project_operations/
-├── ui_root/                    # app assembly (last_answer_app, loading, theme bridge)
+├── data_projects/              # projects, saves, tags, idea questions (core's projects half)
+├── data_user/                  # user + settings models, auth, locales (core's user half)
+├── data_monetization/          # purchases, ads, entitlement sources (core's monetization)
+├── data_notifications/         # notification model/source/repo/notifier
+├── data_emoji/                 # emoji source/notifier/last-used
+├── foundation/                 # Flutter-free app utils: extensions/, file_service/,
+│                               #   generated/ (flutter_gen), path_utils.dart
+├── ui_root/                    # app assembly (last_answer_app, loading, theme/ design tokens,
+│                               #   global state providers/initializers — the composition root)
 ├── ui_shell/                   # chrome: rail, rooms column, strips, palette, registry
 ├── ui_models/                  # Models surface + agent_config/ document
 ├── ui_settings/                # section-registry settings experience
@@ -92,15 +114,17 @@ lib/
 ├── ui_onboarding/              # first-run + intro
 ├── ui_workspaces/              # workspace registry domain (ADR 0026)
 ├── mcp/                        # agent-facing MCP tools, debug builds (ui_debug analog)
-└── crash/ + entitlement/       # small unprefixed facilities (no lib/core: would
-                                #   shadow package:core)
+└── crash/ + entitlement/       # small unprefixed facilities
 ```
 
 Workspace packages (same law): `packages/headless_core` (pure domain),
-`packages/core` (Flutter services/theming), `packages/la_locale`
-(localization), `packages/la_ui_kit` (component kit). `packages/` also hosts
-non-app deployables (`server/`, `tg_last_answer_bot/`, `landing/`) —
-placement decision pending owner call.
+`packages/la_locale` (localization), `packages/la_ui_kit` (component kit),
+`packages/shared_models` + `packages/core_server_client` (server contracts).
+Independently deployable products live in **`deployables/`** (ADR 0033):
+`deployables/server/`, `deployables/tg_last_answer_bot/`,
+`deployables/landing/` — workspace members via the `- deployables/*` glob,
+`packages/` is app-support packages only. The top-level **`bin/`** holds the
+Flutter-free headless CLI (`doc_cli.dart`, ADR 0034).
 
 ## 3. The laws
 
@@ -160,9 +184,12 @@ gate — promotion earned by repetition, per the generational ladder.
 | A chat-domain widget | `ui_chat/` |
 | World/component/system for the ecsly World | `ecs_world/` (anatomy-named file) |
 | A consumed ecsly plugin's integration | `ecs_plugins/<plugin>/` |
-| An agent transport / API client | `data_agents/<concern>/` |
+| An agent transport / API client | `data_agents/<concern>/` (pure logic → `packages/headless_core/lib/data_agents/`) |
 | A reusable interactive component | `packages/la_ui_kit` |
-| A serializable domain value type | `packages/headless_core` |
+| A serializable domain value type | `packages/headless_core/lib/data_models/` |
+| App-domain data (sources, repos, providers) | its `data_<domain>/` folder + barrel |
+| A Flutter-free app utility | `lib/foundation/` |
+| A Flutter-free CLI entry | `bin/` (never imports `package:lastanswer` or Flutter — `just bin-gates`) |
 | An agent-facing tool | `lib/mcp/` (+ fmtk registration) |
 | App start-up/bootstrap | `ui_root/` + root files |
 | Localization strings | `packages/la_locale/lib/src/l10n/` + `just gen-l10n` |
@@ -200,6 +227,19 @@ References: the owner's Feb-2025 article (stage-2 grammar), the owner's
 root-folder law ("journal, world, chat, ecs_plugins at root"),
 `car_vs_walk_game/docs/ARCHITECTURE.md` (template), the generational-
 architecture ladder (moves and falsifiers).
+
+2026-11-20 — the five-wave layout update (ADRs 0033–0036): `deployables/`
+(server, tg_last_answer_bot, landing moved out of `packages/`); la_ui renamed
+`la_ui_kit`; headless_core restructured by the app's grammar
+(data_models/data_replication/data_storage/data_agents/services/workbench
++ folder barrels + HEADLESS_CORE_KNOWLEDGE.md) and consolidated (pure pieces
+of the app moved in; `bin/doc_cli.dart` added with the `just bin-gates`
+Flutter-free law); `packages/core` DISSOLVED into the app's `data_projects/
+data_user/data_monetization/data_notifications/data_emoji`, `foundation/`,
+`ui_root/` (composition root + theme/) and `ui_settings/widgets/`; the
+scheduled journal-interface inversion applied
+(`journal_contracts.dart`); the material_ui/cupertino_ui split migrated via
+the official `dart fix --code=migrate_design_widgets`.
 
 Falsifiers: if the split domain folders go un-entered because agents only use
 barrels, the split over-shotted — compress back. If this file drifts

@@ -1261,7 +1261,7 @@
   "@modelsBudgetFree": {
     "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's free-pages legend label."
   },
-  "modelsBudgetPolicy": "политика загрузок держит {floor} свободными — доступно для локальных загрузок {available}",
+  "modelsBudgetPolicy": "политика загрузок держит {floor} для системы — доступно для локальных загрузок {available}",
   "@modelsBudgetPolicy": {
     "placeholders": {
       "floor": {
@@ -1301,6 +1301,44 @@
         "type": "String"
       }
     }
+  },
+  "modelsLocalFitPressure": "система под давлением — {swap} вытеснено в swap, {compressor} держит компрессор",
+  "@modelsLocalFitPressure": {
+    "description": "Local models 2026-11-20 (ru).",
+    "placeholders": {
+      "swap": {
+        "type": "String"
+      },
+      "compressor": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayTitle": "Всё равно загрузить?",
+  "@modelsLocalLoadAnywayTitle": {
+    "description": "Local models 2026-11-20 (ru)."
+  },
+  "modelsLocalLoadAnywayBody": "Для {label} требуется {required} доступной памяти, но сейчас доступно только {available} — не хватает {missing}. Загрузка всё равно может вытеснить память в swap.",
+  "@modelsLocalLoadAnywayBody": {
+    "description": "Local models 2026-11-20 (ru).",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      },
+      "missing": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayConfirm": "Всё равно загрузить",
+  "@modelsLocalLoadAnywayConfirm": {
+    "description": "Local models 2026-11-20 (ru)."
   },
   "modelsLocalGenerating": "генерация…",
   "@modelsLocalGenerating": {

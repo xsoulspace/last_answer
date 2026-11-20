@@ -1015,6 +1015,12 @@ final class _CatalogLensState extends State<CatalogLens> {
                                 unawaited(_askInstall(context, active)),
                           )
                         else ...[
+                          // The load-anyway law (2026-11-20): the fit
+                          // no longer DISABLES the verb — a refused
+                          // load opens the consent dialog that names
+                          // the swap risk; confirm overrides the gate
+                          // (a default, never a monopoly). A load the
+                          // fit allows goes straight to the runtime.
                           if (local.hasRuntime && !diskOnly)
                             ModelsButton(
                               keyName: loaded
@@ -1023,10 +1029,11 @@ final class _CatalogLensState extends State<CatalogLens> {
                               label: loaded
                                   ? l10n.modelsLocalUnload
                                   : l10n.modelsLocalLoad,
-                              disabled: loadBlocked,
                               onTap: () => unawaited(
                                 loaded
                                     ? local.unloadEntry(active)
+                                    : loadBlocked
+                                    ? _askLoadAnyway(context, active)
                                     : local.loadEntry(active),
                               ),
                             ),
@@ -1178,14 +1185,13 @@ final class _CatalogLensState extends State<CatalogLens> {
             ),
           ),
         ),
-        // The fit reason rides its verb (fit AT the verb, the v3 law).
+        // The fit reason rides its verb (fit AT the verb, the v3 law)
+        // with the machine's congestion disclosed on the same line.
         if (loadBlocked)
           Padding(
             padding: const EdgeInsets.only(left: 24, top: 2),
             child: Text(
-              l10n.modelsLocalFitReason(
-                formatModelBytes((fit.missingMegabytes ?? 0) * 1024 * 1024),
-              ),
+              _fitReasonText(context, local, fit),
               key: ValueKey('models.local.$ref.fitReason'),
               style: LaTokens.mono(10, la.inkQuiet),
             ),
@@ -1647,6 +1653,9 @@ final class _CatalogLensState extends State<CatalogLens> {
                       // families (the disk-only law: the laya
                       // checkpoint serves through the sidecar, so its
                       // row stops at the disk stage).
+                      // The load-anyway law (2026-11-20): a refused
+                      // fit never disables the verb — the consent
+                      // dialog carries the refusal and the override.
                       if (local.hasRuntime && !diskOnly)
                         ModelsButton(
                           keyName: loaded
@@ -1655,10 +1664,11 @@ final class _CatalogLensState extends State<CatalogLens> {
                           label: loaded
                               ? l10n.modelsLocalUnload
                               : l10n.modelsLocalLoad,
-                          disabled: loadBlocked,
                           onTap: () => unawaited(
                             loaded
                                 ? local.unloadEntry(entry)
+                                : loadBlocked
+                                ? _askLoadAnyway(context, entry)
                                 : local.loadEntry(entry),
                           ),
                         ),
@@ -1727,7 +1737,9 @@ final class _CatalogLensState extends State<CatalogLens> {
               rowLine,
               // The fit reason lives HERE, at the moment of intent, and
               // only for the row that misses (never a standing wall);
-              // its appearance fades in with the disabled verb.
+              // its appearance fades in with the verb. The machine's own
+              // congestion (swap, compressor) rides the same line —
+              // "needs X more" on a swapping machine explains itself.
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 child: loadBlocked
@@ -1735,11 +1747,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                         key: ValueKey('models.local.$ref.fitReason'),
                         padding: const EdgeInsets.fromLTRB(17, 2, 24, 0),
                         child: Text(
-                          l10n.modelsLocalFitReason(
-                            formatModelBytes(
-                              (fit.missingMegabytes ?? 0) * 1024 * 1024,
-                            ),
-                          ),
+                          _fitReasonText(context, local, fit),
                           maxLines: 2,
                           style: LaTokens.mono(10, la.caution),
                         ),
@@ -1962,6 +1970,104 @@ final class _CatalogLensState extends State<CatalogLens> {
       ),
     );
     if (ok == true) await local.install(entry);
+  }
+
+  /// The blocked row's reason line: the fit's own gap, plus the
+  /// machine's congestion (swap on disk, compressor residency) when it
+  /// is under pressure — the facts [MemoryFacts] already sensed, so a
+  /// "needs X more" on a swapping machine explains itself.
+  String _fitReasonText(
+    final BuildContext context,
+    final LocalModelsState local,
+    final LocalModelFit fit,
+  ) {
+    final reason = context.l10n.modelsLocalFitReason(
+      formatModelBytes((fit.missingMegabytes ?? 0) * 1024 * 1024),
+    );
+    final pressure = _fitPressureNote(context, local);
+    return pressure.isEmpty ? reason : '$reason · $pressure';
+  }
+
+  /// The congestion clause, or '' on a calm machine (the budget bar's
+  /// threshold: below 256 MB of swap/compressor the machine is not
+  /// under pressure worth naming).
+  String _fitPressureNote(
+    final BuildContext context,
+    final LocalModelsState local,
+  ) {
+    final facts = local.memoryFacts;
+    final swap = facts?.swapUsedMegabytes ?? 0;
+    final compressor = facts?.compressorMegabytes ?? 0;
+    if (swap < 256 && compressor < 256) return '';
+    return context.l10n.modelsLocalFitPressure(
+      formatModelBytes(swap * 1024 * 1024),
+      formatModelBytes(compressor * 1024 * 1024),
+    );
+  }
+
+  /// The load-anyway consent dialog (2026-11-20, the gate's "default,
+  /// never a monopoly" law given a UI face): a Load the fit refuses
+  /// opens THIS before any weights move — it names the model, the
+  /// size-aware requirement vs the reclaimable memory, the gap, and the
+  /// machine's own congestion. Confirm loads with the gate overridden
+  /// ([LocalModelsState.loadEntry]'s consented path, the install
+  /// consent law's twin); Cancel loads nothing.
+  Future<void> _askLoadAnyway(
+    final BuildContext context,
+    final MlxModelCatalogEntry entry,
+  ) async {
+    final local = widget.localModels;
+    final fit = local.fitOf(entry);
+    final l10n = context.l10n;
+    final ref = localModelRefName(entry);
+    final pressure = _fitPressureNote(context, local);
+    final ok = await showLaDialog<bool>(
+      context: context,
+      builder: (final dialogContext) => LaDialog(
+        titleText: l10n.modelsLocalLoadAnywayTitle,
+        content: Column(
+          key: ValueKey('models.local.$ref.loadAnyway.dialog'),
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.modelsLocalLoadAnywayBody(
+                entry.label,
+                formatModelBytes((fit.requiredMegabytes ?? 0) * 1024 * 1024),
+                formatModelBytes((fit.availableMegabytes ?? 0) * 1024 * 1024),
+                formatModelBytes((fit.missingMegabytes ?? 0) * 1024 * 1024),
+              ),
+              style: dialogContext.laUi.body.copyWith(fontSize: 13),
+            ),
+            if (pressure.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  pressure,
+                  style: LaTokens.mono(10, dialogContext.la.caution),
+                ),
+              ),
+          ],
+        ),
+        actions: [
+          LaButton(
+            key: ValueKey('models.local.$ref.loadAnyway.cancel'),
+            variant: LaButtonVariant.ghost,
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            label: l10n.modelsCancel,
+          ),
+          LaButton(
+            key: ValueKey('models.local.$ref.loadAnyway.confirm'),
+            variant: LaButtonVariant.primary,
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            label: l10n.modelsLocalLoadAnywayConfirm,
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await local.loadEntry(entry, overrideGate: true);
+    }
   }
 
   /// The delete confirm (the marker-file law: only a manager-installed

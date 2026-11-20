@@ -14,9 +14,12 @@
 ///   ≈tok/s / Downloaded / Not downloaded), metadata
 ///   (`params · quant · size`), ONE primary verb + the `⋯` overflow —
 ///   the two-stage chips are gone, the state is the word;
-/// * fit AT THE VERB (v3): the machine verdict is said once above the
-///   rows; a Load the arithmetic refuses renders disabled with the
-///   quiet reason line — never a standing orange chip per row;
+/// * fit AT THE VERB (v3; 2026-11-20 load-anyway law): the machine
+///   verdict is said once above the rows; a Load the arithmetic
+///   refuses keeps its quiet reason line but STAYS ENABLED — tapping
+///   it opens the load-anyway consent dialog (requirement vs
+///   available, the gap), Cancel loads nothing, Confirm overrides the
+///   gate — never a dead button;
 /// * the consent law: Download opens the dialog that names the model
 ///   and the size; Confirm installs with `userConsent: true`, streams
 ///   the progress INTO the row (phase word + percent, then
@@ -97,12 +100,16 @@ final class _FakeInstaller implements LocalModelInstaller {
 
 /// One fake runtime lane (the [LocalModelRuntime] seam): an in-memory
 /// loaded map, call counters, an optional load gate (to hold a load
-/// mid-flight and assert the row spinner), and an optional load error
-/// (the refusal path). No RAM, no engine.
+/// mid-flight and assert the row spinner), an optional load error (the
+/// refusal path), and an optional SILENT no-op (the 2026-11-20 honesty
+/// law: the state must read the residency back, never mark it). No
+/// RAM, no engine.
 final class _FakeRuntime implements LocalModelRuntime {
   final Map<String, bool> loaded = <String, bool>{};
   int loadCalls = 0;
   int unloadCalls = 0;
+  bool lastForce = false;
+  bool silentNoOp = false;
   Completer<void>? loadGate;
   Exception? loadError;
 
@@ -111,11 +118,17 @@ final class _FakeRuntime implements LocalModelRuntime {
       loaded[entry.repoId] ?? false;
 
   @override
-  Future<void> load(final MlxModelCatalogEntry entry) async {
+  Future<void> load(
+    final MlxModelCatalogEntry entry, {
+    final bool force = false,
+  }) async {
     loadCalls++;
+    lastForce = force;
     if (loadGate case final gate?) await gate.future;
     if (loadError case final error?) throw error;
-    loaded[entry.repoId] = true;
+    // The silent no-op models the production runtime's old shape: the
+    // verb "succeeds" without the weights ever landing in RAM.
+    if (!silentNoOp) loaded[entry.repoId] = true;
   }
 
   @override
@@ -609,8 +622,9 @@ void main() {
       await mount(tester);
 
       // The healthy machine's bar: the policy line names the gate's
-      // floor and today's actionable answer — and NO fit warnings at
-      // all (every row fits; nothing to say).
+      // fixed RESERVE and today's actionable answer — and NO fit
+      // warnings at all (every row fits; nothing to say). 12288 −
+      // 1024 reserve = 11264 → '11 GB'.
       await tester.scrollUntilVisible(
         find.byKey(const ValueKey('models.local.budget.bar')),
         240,
@@ -619,7 +633,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.text(
-          'load policy keeps 4.0 GB free — available for local loads 8.0 GB',
+          'load policy keeps 1.0 GB for the system — '
+          'available for local loads 11 GB',
         ),
         findsOneWidget,
       );
@@ -629,12 +644,13 @@ void main() {
         findsNothing,
       );
 
-      // The tight machine (5 GB available), with the 1.7B DOWNLOADED:
-      // its Load disables and the quiet reason line names the gap
-      // (256 MB short of the required+floor budget) — the aggregate
-      // verdict is said once above the rows.
+      // The tight machine (2 GB available), with the 1.7B DOWNLOADED:
+      // its size-aware requirement is 1024×1.25 + 1024 reserve = 2304 —
+      // short by 256 MB. The verb STAYS ENABLED (the 2026-11-20
+      // load-anyway law) and the quiet reason line names the gap; the
+      // aggregate verdict is said once above the rows.
       memorySensor = () => const MemoryFacts(
-        availableMegabytes: 5120,
+        availableMegabytes: 2048,
         freeMegabytes: 256,
         totalMegabytes: 16384,
       );
@@ -694,23 +710,52 @@ void main() {
         find.textContaining('free 256 MB more to run Qwen3 1.7B'),
         findsOneWidget,
       );
-      // The verb is visible but disabled on BOTH surfaces (the 1.7B
-      // is the brain's ACTIVE checkpoint now — the only installed one
-      // — so the ladder row carries it too); the reason names the gap.
+      // The verb is ENABLED on BOTH surfaces (the 1.7B is the brain's
+      // ACTIVE checkpoint now — the only installed one — so the ladder
+      // row carries it too); the reason names the gap.
       expect(load17, findsNWidgets(2));
       final button = tester.widget<ModelsButton>(
         find.ancestor(of: load17.first, matching: find.byType(ModelsButton)),
       );
-      expect(button.disabled, isTrue);
+      expect(button.disabled, isFalse);
       expect(
         find.byKey(const ValueKey('models.local.Qwen3-1.7B-4bit.fitReason')),
         findsNWidgets(2),
       );
       expect(find.textContaining('needs 256 MB more'), findsNWidgets(2));
-      // A disabled verb does not drive the runtime.
+
+      // A blocked verb opens the CONSENT dialog — the load-anyway law:
+      // the refusal + the override is the dialog's content, never a
+      // dead button. Cancel loads nothing.
       await tester.tap(load17.first, warnIfMissed: false);
-      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(
+          const ValueKey('models.local.Qwen3-1.7B-4bit.loadAnyway.dialog'),
+        ),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Qwen3 1.7B'), findsWidgets);
+      await tester.tap(
+        find.byKey(
+          const ValueKey('models.local.Qwen3-1.7B-4bit.loadAnyway.cancel'),
+        ),
+      );
+      await tester.pumpAndSettle();
       expect(fakeRuntime.loadCalls, 0);
+
+      // Confirm IS the consent fact: the load proceeds with the gate
+      // overridden and the row flips to loaded.
+      await tester.tap(load17.first, warnIfMissed: false);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(
+          const ValueKey('models.local.Qwen3-1.7B-4bit.loadAnyway.confirm'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(fakeRuntime.loadCalls, 1);
+      expect(fakeRuntime.lastForce, isTrue);
 
       // The sensor-absent machine: no bar, no reasons — the honest
       // degraded line instead (never a guessed verdict).
@@ -1026,6 +1071,70 @@ void main() {
       await first;
       expect(state.isBusy(entry), isFalse);
       expect(state.isLoaded(entry), isTrue);
+    });
+
+    test('loadEntry READS the residency back: a silent runtime no-op '
+        'never flips the row to loaded (the 2026-11-20 honesty law)', () async {
+      final installer = _FakeInstaller();
+      installer.installedIds.add(repo06);
+      final runtime = _FakeRuntime()..silentNoOp = true;
+      final state = LocalModelsState(
+        installer: installer,
+        runtime: runtime,
+        readMemoryFacts: () async => null,
+      );
+      addTearDown(state.dispose);
+      await state.refresh();
+
+      final entry = state.catalog.first;
+      await state.loadEntry(entry);
+      // The verb "succeeded" (no error) but the runtime answers
+      // not-loaded — the state says NOT loaded, never a guessed fact.
+      expect(state.error, isNull);
+      expect(state.isLoaded(entry), isFalse);
+    });
+
+    test('the consented override rides the seam: overrideGate passes '
+        'force=true to the runtime, the default does not', () async {
+      final installer = _FakeInstaller();
+      installer.installedIds.add(repo06);
+      final runtime = _FakeRuntime();
+      final state = LocalModelsState(
+        installer: installer,
+        runtime: runtime,
+        readMemoryFacts: () async => null,
+      );
+      addTearDown(state.dispose);
+      await state.refresh();
+
+      final entry = state.catalog.first;
+      await state.loadEntry(entry);
+      expect(runtime.lastForce, isFalse);
+      await state.unloadEntry(entry);
+      expect(state.isLoaded(entry), isFalse);
+      await state.loadEntry(entry, overrideGate: true);
+      expect(runtime.lastForce, isTrue);
+      expect(runtime.loadCalls, 2);
+    });
+
+    test('a runtime load refusal lands as the named code and the '
+        'residency is re-read (never a stale guess)', () async {
+      final installer = _FakeInstaller();
+      installer.installedIds.add(repo06);
+      final runtime = _FakeRuntime()
+        ..loadError = Exception('weight load refused: 1024MB available');
+      final state = LocalModelsState(
+        installer: installer,
+        runtime: runtime,
+        readMemoryFacts: () async => null,
+      );
+      addTearDown(state.dispose);
+      await state.refresh();
+
+      final entry = state.catalog.first;
+      await state.loadEntry(entry);
+      expect(state.error, contains('weight load refused'));
+      expect(state.isLoaded(entry), isFalse);
     });
   });
 }

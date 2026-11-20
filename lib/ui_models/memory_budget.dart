@@ -1,14 +1,22 @@
-/// The local-model memory budget (2026-11-18) — whether a catalog entry
-/// fits the machine BEFORE any load is attempted, as pure math over the
-/// sensed facts.
+/// The local-model memory budget (2026-11-18; 2026-11-20 one-math law)
+/// — whether a catalog entry fits the machine BEFORE any load is
+/// attempted, as pure math over the sensed facts.
 ///
-/// The disk/RAM boundary is the honesty law here: installing writes the
-/// hub cache and is always allowed, but the runtime's load gate
-/// (`MlxLoadGate.defaults`) refuses a weight load that would push the
-/// machine below the 4 GB AVAILABLE incident floor. This file renders
-/// that gate's arithmetic as a named, unit-tested verdict so the catalog
-/// rows can say "fits now" / "needs X more" / "exceeds machine memory"
-/// without anyone pressing Install to find out.
+/// THE arithmetic lives in the runtime's gate (`MlxLoadGate`):
+/// `required = weightsMb.ceil() × (1 + slack) + reserve` — weights
+/// rounded up, the KV/runtime slack over them, and the fixed system
+/// reserve. This file renders that SAME function as a named verdict so
+/// the catalog rows say "fits now" / "needs X more" / "exceeds machine
+/// memory" without anyone pressing Load to find out — and so the fit
+/// can never claim a refusal the gate would not make (the 2026-11-20
+/// finding: the old UI verdict added its own stricter floor+slack
+/// arithmetic and disabled loads the gate would have allowed).
+///
+/// Size-aware by the same law: the requirement scales with the
+/// checkpoint (a small model must not pay a big model's rent); the old
+/// flat 4 GB gate survives only as the weights-UNKNOWN fallback inside
+/// the package (the chat clients' lazy loads keep the calibrated
+/// incident floor).
 ///
 /// Pure: no I/O, no clocks — the facts come in as nullable ints exactly
 /// as [MemoryFacts.current] yields them, and a null fact degrades to the
@@ -19,21 +27,13 @@ import 'dart:math' as math;
 
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 
-/// The load gate's incident floor, in MB: the AVAILABLE memory the
-/// runtime refuses to dip below (single-sourced from
-/// [MlxLoadGate.defaults] — the UI never re-states the number). A
-/// `final`, not a `const`: Dart reads no const property off a const
-/// instance, and re-stating 4096 here would be exactly the drift the
-/// single-sourcing exists to prevent.
-final int kLocalModelLoadFloorMegabytes =
-    MlxLoadGate.defaults.minFreeMegabytes;
-
-/// The KV-cache / runtime slack fraction the fit adds on top of the
-/// weights: the load gate's own incident note names the KV cache and the
-/// host app as the reason the floor exists, so the verdict reserves 25%
-/// of the weights for it rather than pretending weights are the whole
-/// residency.
-const double kLocalModelSlackFraction = 0.25;
+/// The gate's fixed system reserve, in MB — the part of the load
+/// requirement that does NOT scale with the checkpoint (single-sourced
+/// from [MlxLoadGate.defaults]; the budget bar's policy line renders
+/// it). The old flat-floor constant is retired: there is no single
+/// floor anymore, the requirement is per-checkpoint.
+final int kLocalModelLoadReserveMegabytes =
+    MlxLoadGate.defaults.reserveMegabytes;
 
 /// One entry's fit verdict, with the numbers that drove it (the UI
 /// renders them verbatim — a verdict without its arithmetic is a
@@ -64,34 +64,31 @@ final class LocalModelFit {
         missingMegabytes: null,
       );
 
-  /// The computed verdict over known facts.
+  /// The computed verdict over known facts — the gate's own
+  /// [MlxLoadGate.requiredMegabytes], verbatim:
   ///
-  /// - `fitsNow`: weights + 25% KV/runtime slack ≤ available − floor.
-  /// - `neverFits`: weights + floor > total, when the total is known —
-  ///   no amount of closing tabs makes the machine hold it.
-  /// - [missingMegabytes]: how much more AVAILABLE memory the fit still
-  ///   needs (0 when it fits; null only with unknown facts).
+  /// - `fitsNow`: available ≥ weights×(1+slack) + reserve — the same
+  ///   fact `MlxLoadGate.evaluate(weightsBytes:)` answers.
+  /// - `neverFits`: the requirement exceeds the sensed total — no
+  ///   amount of closing tabs makes the machine hold it.
+  /// - [missingMegabytes]: how much more AVAILABLE memory the fit
+  ///   still needs (0 when it fits; null only with unknown facts).
   factory LocalModelFit.evaluate({
     required final int? availableMegabytes,
     required final int? totalMegabytes,
     required final int weightsBytes,
   }) {
-    // Weights in MB, rounded UP (a partial megabyte still occupies a
-    // whole one once resident).
-    final weightsMb = (weightsBytes / (1024 * 1024)).ceil();
-    final requiredMb = (weightsMb * (1 + kLocalModelSlackFraction)).ceil();
+    final required = MlxLoadGate.defaults.requiredMegabytes(weightsBytes);
     final available = availableMegabytes;
     if (available == null) return const LocalModelFit.unknown();
-    final floor = kLocalModelLoadFloorMegabytes;
-    final fits = available - floor >= requiredMb;
     final total = totalMegabytes;
-    final never = total != null && weightsMb + floor > total;
-    final missing = math.max(0, requiredMb + floor - available);
+    final never = total != null && required > total;
+    final missing = math.max(0, required - available);
     return LocalModelFit._(
       unknown: false,
-      fitsNow: fits,
+      fitsNow: available >= required,
       neverFits: never,
-      requiredMegabytes: requiredMb,
+      requiredMegabytes: required,
       availableMegabytes: available,
       totalMegabytes: total,
       missingMegabytes: missing,
@@ -102,16 +99,17 @@ final class LocalModelFit {
   /// The other fields keep their null/false degenerate values.
   final bool unknown;
 
-  /// Weights + slack fit under the available-minus-floor budget right
-  /// now — the load gate would not refuse on today's memory.
+  /// Available memory covers the size-aware requirement right now —
+  /// the load gate would not refuse this checkpoint on today's memory.
   final bool fitsNow;
 
-  /// The machine cannot hold the weights + floor even at its total —
+  /// The machine cannot hold the requirement even at its total —
   /// closing apps changes nothing.
   final bool neverFits;
 
-  /// The MB the load actually needs: weights rounded up, plus the 25%
-  /// KV/runtime slack. Null only with unknown facts.
+  /// The full size-aware requirement (weights + slack + reserve), in
+  /// MB — the gate's own number, not a UI-side approximation. Null only
+  /// with unknown facts.
   final int? requiredMegabytes;
 
   /// The sensed AVAILABLE memory the verdict used (MB), verbatim from
@@ -134,7 +132,9 @@ final class LocalModelFit {
 /// bytes — [InstalledState] carries NO on-disk size, so this is the
 /// APPROXIMATE residency, not a sensed one (the doc comment on
 /// [MlxModelCatalogEntry.approxDownloadBytes] fronts the same
-/// approximation at consent time).
+/// approximation at consent time) — and the LOAD verb passes the same
+/// bytes to the gate, so the verdict and the enforcement agree by
+/// construction.
 LocalModelFit evaluateLocalModelFit({
   required final int? availableMegabytes,
   required final int? totalMegabytes,

@@ -50,12 +50,38 @@ final class PackageLocalModelRuntime implements LocalModelRuntime {
   }
 
   @override
-  Future<void> load(final MlxModelCatalogEntry entry) async {
-    if (_isDiskOnly(entry)) return;
+  Future<void> load(
+    final MlxModelCatalogEntry entry, {
+    final bool force = false,
+  }) async {
+    // The named no-op law (2026-11-20): a load that cannot happen
+    // throws a NAMED refusal instead of silently returning — the old
+    // silent returns let the row claim "loaded" with nothing resident.
+    if (_isDiskOnly(entry)) {
+      throw Exception('disk_only_no_memory_stage');
+    }
     final dir = _dirOf(entry);
-    if (dir == null) return;
+    if (dir == null) {
+      throw Exception('snapshot_absent');
+    }
+    // The size-aware gate (2026-11-20 one-math law): the catalog
+    // entry's approximate weights ride along, so the gate's requirement
+    // scales with the checkpoint — the SAME arithmetic the fit verdict
+    // rendered. `force` is the consented load-anyway override.
     final runtime = MlxModelRuntime.instance;
-    await (_isLfm(entry) ? runtime.loadLfm(dir) : runtime.loadQwen(dir));
+    if (_isLfm(entry)) {
+      await runtime.loadLfm(
+        dir,
+        weightsBytes: entry.approxDownloadBytes,
+        force: force,
+      );
+    } else {
+      await runtime.loadQwen(
+        dir,
+        weightsBytes: entry.approxDownloadBytes,
+        force: force,
+      );
+    }
   }
 
   @override

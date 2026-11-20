@@ -901,7 +901,7 @@ final class _RowUnreadBadge extends StatelessWidget {
     return EcsWorldSelector<int>(
       world: laWorld.world,
       controller: laWorld.controller,
-      select: (final world) => laWorld.unreadByThread()[threadId] ?? 0,
+      select: (final world) => laWorld.unreadFor(threadId),
       builder: (final context, final unread) {
         if (unread <= 0) return const SizedBox.shrink();
         final label = unread > 99 ? '99+' : '$unread';

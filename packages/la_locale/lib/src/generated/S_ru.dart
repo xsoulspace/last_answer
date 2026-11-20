@@ -2510,7 +2510,7 @@ class SRu extends S {
 
   @override
   String modelsBudgetPolicy(String floor, String available) {
-    return 'политика загрузок держит $floor свободными — доступно для локальных загрузок $available';
+    return 'политика загрузок держит $floor для системы — доступно для локальных загрузок $available';
   }
 
   @override
@@ -2530,6 +2530,27 @@ class SRu extends S {
   String modelsLocalFitReason(String size) {
     return 'не хватает $size — выгрузите модель или освободите память';
   }
+
+  @override
+  String modelsLocalFitPressure(String swap, String compressor) {
+    return 'система под давлением — $swap вытеснено в swap, $compressor держит компрессор';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayTitle => 'Всё равно загрузить?';
+
+  @override
+  String modelsLocalLoadAnywayBody(
+    String label,
+    String required,
+    String available,
+    String missing,
+  ) {
+    return 'Для $label требуется $required доступной памяти, но сейчас доступно только $available — не хватает $missing. Загрузка всё равно может вытеснить память в swap.';
+  }
+
+  @override
+  String get modelsLocalLoadAnywayConfirm => 'Всё равно загрузить';
 
   @override
   String get modelsLocalGenerating => 'генерация…';

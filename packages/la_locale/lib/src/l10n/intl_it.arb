@@ -1258,7 +1258,7 @@
   "@modelsBudgetFree": {
     "description": "Local model budget v3.3 2026-11-19: the segmented RAM bar's free-pages legend label."
   },
-  "modelsBudgetPolicy": "la policy di caricamento tiene liberi {floor} — disponibili per caricamenti locali {available}",
+  "modelsBudgetPolicy": "la policy di caricamento tiene {floor} per il sistema — disponibili per caricamenti locali {available}",
   "@modelsBudgetPolicy": {
     "placeholders": {
       "floor": {
@@ -1290,7 +1290,7 @@
       "type": "String"
     }
   },
-  "modelsLocalFitReason": "mancano {size} — scarica un modello o libera memoria",
+  "modelsLocalFitReason": "mancano {size} — espelli un modello o libera memoria",
   "@modelsLocalFitReason": {
     "description": "Local models v3 2026-11-18 (it).",
     "placeholders": {
@@ -1298,6 +1298,44 @@
         "type": "String"
       }
     }
+  },
+  "modelsLocalFitPressure": "la macchina è sotto pressione — {swap} trasferiti in swap, {compressor} trattenuti dal compressore",
+  "@modelsLocalFitPressure": {
+    "description": "Local models 2026-11-20 (it).",
+    "placeholders": {
+      "swap": {
+        "type": "String"
+      },
+      "compressor": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayTitle": "Caricare comunque?",
+  "@modelsLocalLoadAnywayTitle": {
+    "description": "Local models 2026-11-20 (it)."
+  },
+  "modelsLocalLoadAnywayBody": "{label} richiede {required} di memoria recuperabile ma ora ce ne sono solo {available} — mancano {missing}. Caricare comunque può spingere la macchina nello swap.",
+  "@modelsLocalLoadAnywayBody": {
+    "description": "Local models 2026-11-20 (it).",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      },
+      "available": {
+        "type": "String"
+      },
+      "missing": {
+        "type": "String"
+      }
+    }
+  },
+  "modelsLocalLoadAnywayConfirm": "Carica comunque",
+  "@modelsLocalLoadAnywayConfirm": {
+    "description": "Local models 2026-11-20 (it)."
   },
   "modelsLocalGenerating": "generazione…",
   "@modelsLocalGenerating": {

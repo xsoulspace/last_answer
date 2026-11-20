@@ -198,7 +198,7 @@ final class PaneStrip extends StatelessWidget {
     if (laWorld == null) return 0;
     final threadId = _threadIdOf(surfaceId, service);
     if (threadId == null) return 0;
-    return laWorld.unreadByThread()[threadId] ?? 0;
+    return laWorld.unreadFor(threadId);
   }
 
   @override
@@ -849,7 +849,7 @@ final class _StripTabState extends State<_StripTab> {
     return EcsWorldSelector<int>(
       world: laWorld.world,
       controller: laWorld.controller,
-      select: (final world) => laWorld.unreadByThread()[threadId] ?? 0,
+      select: (final world) => laWorld.unreadFor(threadId),
       builder: (final context, final unread) => unread > 0
           ? _badgeShape(context, unread)
           : const SizedBox.shrink(),

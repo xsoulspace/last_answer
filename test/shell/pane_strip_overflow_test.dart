@@ -22,6 +22,7 @@
 // The pump is direct (PaneStrip alone over a bare MaterialApp): the
 // cap is a width law, so the width is the fixture; the unread fact
 // rides the injected `unreadFor` lane (hermetic — no world needed).
+import 'package:flutter/widgets.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';

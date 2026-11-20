@@ -35,6 +35,21 @@ final class HarnessSessionController extends ChangeNotifier {
        roster = roster ?? ActorRoster(replicaId: 'device'),
        host = HarnessHost(config: config);
 
+  /// Streaming deltas arrive faster than frames (ADR 0036 GC law): each
+  /// delta used to notifyListeners immediately, rebuilding the whole
+  /// surface per token. The coalescer folds any number of deltas in one
+  /// event-loop turn into a single notify; non-streaming state changes
+  /// keep the immediate notify.
+  bool _notifyScheduled = false;
+  void _scheduleNotify() {
+    if (_notifyScheduled || _disposed) return;
+    _notifyScheduled = true;
+    scheduleMicrotask(() {
+      _notifyScheduled = false;
+      if (!_disposed) notifyListeners();
+    });
+  }
+
   HarnessHostConfig _config;
   HarnessHostConfig get config => _config;
 
@@ -425,12 +440,12 @@ final class HarnessSessionController extends ChangeNotifier {
         onText: (final delta) {
           target.transcript.write(delta);
           turn.text.write(delta);
-          notifyListeners();
+          _scheduleNotify();
         },
         onToolCall: (final title) {
           target.transcript.write('\n[tool] $title\n');
           turn.toolCalls.add(TurnToolCall(title, DateTime.now()));
-          notifyListeners();
+          _scheduleNotify();
         },
         onHostUpdate: (final update) {
           if (update is CodingTextUpdate) {
@@ -438,6 +453,10 @@ final class HarnessSessionController extends ChangeNotifier {
             if (update.phase != CodingTextPhase.delta &&
                 update.text.isNotEmpty) {
               target.transcript.write('${update.text} ');
+            }
+            if (update.phase == CodingTextPhase.delta) {
+              _scheduleNotify();
+              return;
             }
           } else {
             turn.hostUpdates.add(update);

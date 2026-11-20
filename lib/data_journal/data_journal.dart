@@ -4,5 +4,6 @@
 /// (`ActorRoster`, ADR 0007). See JOURNAL_KNOWLEDGE.md.
 library;
 
+export 'journal_contracts.dart';
 export 'realm_chat_service.dart';
 export 'world_state_service.dart';

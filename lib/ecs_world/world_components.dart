@@ -13,7 +13,7 @@
 library;
 
 import 'package:ecsly/ecsly.dart';
-import 'package:lastanswer/data_journal/world_state_service.dart'
+import 'package:lastanswer/data_journal/journal_contracts.dart'
     show ActorTelemetry;
 
 /// One `threads` row: a room (DM, channel, or plain thread).
@@ -114,39 +114,36 @@ final class ActorRow extends Component {
 
 // ---- selector snapshots (records: structural equality) ----
 
-typedef RoomSnapshot =
-    ({
-      String threadId,
-      String topic,
-      bool closed,
-      int lastBeat,
-      int unread,
-      int participants,
-      bool realmSealed,
-      String activity,
-    });
+typedef RoomSnapshot = ({
+  String threadId,
+  String topic,
+  bool closed,
+  int lastBeat,
+  int unread,
+  int participants,
+  bool realmSealed,
+  String activity,
+});
 
-typedef TaskSnapshot =
-    ({
-      String taskId,
-      String state,
-      String sentence,
-      String modelId,
-      String addressees,
-      bool terminal,
-      String summary,
-      String at,
-    });
+typedef TaskSnapshot = ({
+  String taskId,
+  String state,
+  String sentence,
+  String modelId,
+  String addressees,
+  bool terminal,
+  String summary,
+  String at,
+});
 
-typedef ActorSnapshot =
-    ({
-      String actorId,
-      String displayName,
-      String actorKind,
-      String brainRef,
-      String brainCast,
-      String role,
-    });
+typedef ActorSnapshot = ({
+  String actorId,
+  String displayName,
+  String actorKind,
+  String brainRef,
+  String brainCast,
+  String role,
+});
 
 /// Elementwise snapshot-list equality for [EcsWorldSelector.equals]:
 /// records compare structurally, the list compares elementwise.

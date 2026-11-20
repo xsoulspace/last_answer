@@ -12,7 +12,7 @@ work-thread spawn, beat linkify, chat media, plus the mesh durability lane
 
 **How to extend:** a new journal verb goes through `realm_chat_service.dart`;
 a new durable store lane gets a `mesh/` file + one line here. UI domains read
-through this folder's exports, never through another UI domain. KNOWN
-INVERSION (fix scheduled): `ecs_world/world_feed.dart` + `world_components.dart`
-import `world_state_service.dart` — the projection should consume an interface,
-not the service.
+through this folder's exports, never through another UI domain. `journal_contracts.dart`
+carries the row shapes other layers fold (`ActorTelemetry`) — `ecs_world/`
+consumes the contract, never this service (the former inversion, applied
+2026-11-20).

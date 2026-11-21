@@ -44,6 +44,11 @@ final class ProductLocalPair {
       maxSharedCalls: 48,
     );
   }
+
+  /// Per-doc registry of the configured opt-in routing pair. Was
+  /// ProductAutonomy.localPairs; the autonomy loop retired with ADR 0023's
+  /// materialization lane (2026-11-21) and the pair feature stayed.
+  static final pairs = <String, ProductLocalPair>{};
   static final cloudBudget = ProductCloudBudget(
     File(
       '${Platform.environment['HOME']}/Library/Application Support/dev.xsoulspace.lastAnswer/product_cloud_comparison_budget.json',

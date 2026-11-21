@@ -4,16 +4,13 @@ import 'dart:ui' as ui;
 import 'package:flutter/semantics.dart';
 import 'package:headless_core/headless_core.dart' as hc;
 import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/data_agents/product/product_autonomy.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/ecs_plugins/scene/workbench_scene.dart';
-import 'package:lastanswer/ui_browser/browser_entry.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';
 import 'package:lastanswer/ui_workbench/behaviour_connection.dart';
 import 'package:lastanswer/ui_workbench/workbench_harness_tools.dart';
 import 'package:lastanswer/ui_workbench/workbench_investigation.dart';
 import 'package:lastanswer/ui_workbench/workbench_strings.dart';
-import 'package:lastanswer/ui_workspaces/workspace.dart';
 import 'package:lastanswer/ui_workspaces/workspace_files_tab.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 import 'package:universal_automation_interface/universal_automation_interface.dart';
@@ -807,18 +804,12 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
     return WorldChatSurface(service: service);
   }
 
-  /// 2b — the trinity's preview/run leg: the REAL file tree (the
-  /// workspace registry's own tab — no placeholder strings) plus the
-  /// product preview lane (ProductWebPreview's tokenized loopback
-  /// through [ProductAutonomy]). No registry / no folder = honest
-  /// named absence; the terminal stays an honest placeholder (the
-  /// plan's own word).
+  /// 2b — the trinity's runtime leg: the REAL file tree (the workspace
+  /// registry's own tab — no placeholder strings). The product preview
+  /// lane retired with the autonomy loop (ADR 0023 materialization
+  /// teardown, 2026-11-21).
   Widget _runtimePane() {
     final notifier = context.read<WorkspaceNotifier?>();
-    final folders = <String>[
-      for (final workspace in notifier?.workspaces ?? const <Workspace>[])
-        ...workspace.folderPaths,
-    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -833,7 +824,6 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
                 )
               : WorkspaceFilesTab(notifier: notifier),
         ),
-        _PreviewRow(folders: folders),
       ],
     );
   }
@@ -1403,92 +1393,4 @@ class _WorkbenchScreenState extends State<WorkbenchScreen> {
       ),
     ),
   );
-}
-
-/// 2b — the preview/run row: the product preview lane's honest state
-/// (stopped → one Start; live → the tokenized loopback URL opens in
-/// the workspace browser). One workspace folder is the preview's
-/// subject today (the FIRST registered folder); a multi-folder
-/// preview picker is named runway, not a silent guess.
-class _PreviewRow extends StatefulWidget {
-  const _PreviewRow({required this.folders});
-
-  final List<String> folders;
-
-  @override
-  State<_PreviewRow> createState() => _PreviewRowState();
-}
-
-class _PreviewRowState extends State<_PreviewRow> {
-  bool _starting = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final path = widget.folders.isEmpty ? null : widget.folders.first;
-    if (path == null) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Text(
-          'no workspace folder — preview needs one',
-          key: ValueKey('workbench.preview.absent'),
-        ),
-      );
-    }
-    final autonomy = ProductAutonomy.forWorkspace(path);
-    final preview = autonomy?.preview;
-    if (preview == null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          children: [
-            const Expanded(child: Text('preview stopped')),
-            LaButton(
-              key: const ValueKey('workbench.preview.start'),
-              variant: LaButtonVariant.ghost,
-              onPressed: _starting
-                  ? null
-                  : () => unawaited(() async {
-                      setState(() => _starting = true);
-                      try {
-                        await ProductAutonomy.start(Directory(path));
-                      } finally {
-                        if (mounted) setState(() => _starting = false);
-                      }
-                    }()),
-              child: Text(_starting ? 'starting…' : 'Start preview'),
-            ),
-          ],
-        ),
-      );
-    }
-    return ListenableBuilder(
-      listenable: preview,
-      builder: (context, _) {
-        final url = preview.url;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  url == null ? 'preview building…' : 'preview live',
-                  key: const ValueKey('workbench.preview.state'),
-                ),
-              ),
-              LaButton(
-                key: const ValueKey('workbench.preview.open'),
-                variant: LaButtonVariant.ghost,
-                onPressed: url == null
-                    ? null
-                    : () => unawaited(
-                        openWorkspaceBrowser(context, initialUrl: url),
-                      ),
-                child: const Text('Open preview'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }

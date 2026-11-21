@@ -52,43 +52,9 @@ Set<AgentCallEntry> productAgentMcpEntries() {
         },
         'required': ['docId', 'text'],
       },
-      handler: (args) => addressed(args, (doc) async {
-        if (doc is! AgentDocAutonomyHandle) {
-          return {'ok': false, 'error': 'autonomy_owner_required'};
-        }
-        return (doc as AgentDocAutonomyHandle).converseProduct(
+      handler: (args) => addressed(args, (doc) async => doc.converseProduct(
           args['text']! as String,
-        );
-      }),
-    ),
-    AgentCallEntry.tool(
-      namespace: 'lastanswer',
-      name: 'agent_product_autonomy',
-      description:
-          'Start the addressed document task-board product with two-hour '
-          'native authority to update its main.dart, inspect its live product, '
-          'or revoke authority. Uses the same controls as the human interface. '
-          'No training or semantic materialization.',
-      inputSchema: const {
-        'type': 'object',
-        'additionalProperties': false,
-        'properties': {
-          'docId': {'type': 'string'},
-          'action': {
-            'type': 'string',
-            'enum': ['start', 'status', 'revoke'],
-          },
-        },
-        'required': ['docId', 'action'],
-      },
-      handler: (args) => addressed(args, (doc) async {
-        if (doc is! AgentDocAutonomyHandle) {
-          return {'ok': false, 'error': 'autonomy_owner_required'};
-        }
-        return (doc as AgentDocAutonomyHandle).autonomyAction(
-          args['action']! as String,
-        );
-      }),
+        )),
     ),
     AgentCallEntry.tool(
       namespace: 'lastanswer',
@@ -117,12 +83,7 @@ Set<AgentCallEntry> productAgentMcpEntries() {
         },
         'required': ['docId', 'action'],
       },
-      handler: (args) => addressed(args, (doc) async {
-        if (doc is! AgentDocAutonomyHandle) {
-          return {'ok': false, 'error': 'autonomy_owner_required'};
-        }
-        return (doc as AgentDocAutonomyHandle).localPairAction(args);
-      }),
+      handler: (args) => addressed(args, (doc) async => doc.localPairAction(args)),
     ),
     AgentCallEntry.tool(
       namespace: 'lastanswer',

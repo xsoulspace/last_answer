@@ -6,7 +6,6 @@ import 'package:crypto/crypto.dart';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpRemoteError;
 import 'package:lastanswer/data_agents/harness/completion_triggered_cutoff.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
-import 'package:lastanswer/data_agents/product/product_autonomy.dart';
 import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway.dart';
@@ -68,7 +67,6 @@ final class HeadlessProductCli {
         'open',
         'task',
         'conversation',
-        'autonomy',
         'candidate',
         'permission',
         'status',
@@ -253,12 +251,9 @@ final class HeadlessProductCli {
         try {
           final workspaceToolsWatch = Stopwatch()..start();
           _openProgress(id, 'workspace_tools', 'start', 0);
-          final autonomy = command['autonomousProduct'] == true
-              ? await ProductAutonomy.start(Directory(canonical))
-              : null;
-          final owner =
-              autonomy?.tooling ??
-              ProductWorkspaceTooling.forProfile(verificationProfile as String);
+          final owner = ProductWorkspaceTooling.forProfile(
+            verificationProfile as String,
+          );
           _toolingOwner = owner;
           final tooling = await owner.prepare(
             canonical,
@@ -277,7 +272,7 @@ final class HeadlessProductCli {
               backend: useGrok ? grokBackend : chatGptBackend,
               actorContextOrder: order,
               model: model,
-              checkCommand: checkCommand ?? await autonomy!.goalCheckCommand(),
+              checkCommand: checkCommand,
               meaningProfile: true,
               inferenceBinding: binding,
               causalTrace: CausalTraceSink(
@@ -289,9 +284,6 @@ final class HeadlessProductCli {
                     command['captureContextDiagnostics'] == true,
               ),
               extraToolsWithContext: tooling.tools,
-              actorToolNames: autonomy == null
-                  ? null
-                  : {const ToolName('conventional_change')},
             ),
           );
           _permissionSubscription = host.permissionRequests.listen((pending) {
@@ -323,7 +315,7 @@ final class HeadlessProductCli {
           _tooling = tooling;
           _workspace = canonical;
           _model = model;
-          _verificationProfile = verificationProfile as String;
+          _verificationProfile = verificationProfile;
           _actorContextOrder = orderName as String;
         } on Object {
           await host?.stop();
@@ -454,15 +446,6 @@ final class HeadlessProductCli {
         _emit({'id': id, 'ok': true});
       case 'status':
         _emit({'id': id, 'ok': true, ..._status()});
-      case 'autonomy':
-        final autonomy = _workspace == null
-            ? null
-            : ProductAutonomy.forWorkspace(_workspace!);
-        if (autonomy == null) {
-          throw const FormatException('autonomous_product_not_open');
-        }
-        if (command['action'] == 'revoke') autonomy.revoke();
-        _emit({'id': id, 'ok': true, ...autonomy.toJson()});
       case 'cancel':
         _cancel();
         _emit({'id': id, 'ok': true});
@@ -527,8 +510,6 @@ final class HeadlessProductCli {
     'verificationProfile': _verificationProfile,
     'actorContextOrder': _actorContextOrder,
     'reasoningEffort': 'low',
-    if (_workspace != null)
-      'autonomy': ProductAutonomy.forWorkspace(_workspace!)?.toJson(),
     'busy': _active != null,
     'projectionInferenceCalls': _projectionCalls,
     'projectionInferenceCap': 5,
@@ -652,12 +633,6 @@ final class HeadlessProductCli {
       await _permissionSubscription?.cancel();
       _toolingOwner?.forgetOwner(this);
       _toolingOwner = null;
-      if (_workspace != null) {
-        final autonomy = ProductAutonomy.forWorkspace(_workspace!);
-        autonomy?.revoke();
-        await autonomy?.preview.close();
-        autonomy?.tooling.forgetOwner(this);
-      }
       await _gateway.dispose();
     }
   }

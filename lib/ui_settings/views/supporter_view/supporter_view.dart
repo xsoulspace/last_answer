@@ -1,6 +1,6 @@
-export 'supporter_view_noop.dart'
-    if (dart.library.io) 'supporter_view_io.dart'
-    if (dart.library.html) 'supporter_view_web.dart';
-
-// export 'supporter_view_io.dart';
-//  export  'supporter_view_web.dart';
+/// The "Become Pro" support surface — the subscription-backed view
+/// (settings → Account). The legacy supporter-days views dissolved with
+/// the legacy purchase stack (ADR 0037); this view serves every
+/// platform.
+library;
+export 'supporter_view_io.dart';

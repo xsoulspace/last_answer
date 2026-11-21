@@ -12,7 +12,6 @@ import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:lastanswer/data_agents/harness/turn_queue.dart';
 import 'package:lastanswer/data_agents/product/native_evidence_details.dart';
-import 'package:lastanswer/data_agents/product/product_autonomy.dart';
 import 'package:lastanswer/data_agents/product/product_coding_change_view.dart';
 import 'package:lastanswer/data_agents/product/product_local_pair.dart';
 import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
@@ -23,20 +22,16 @@ import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_board_bridge.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
-import 'package:lastanswer/ui_browser/browser_entry.dart';
 import 'package:lastanswer/ui_chat/media_asset_card.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show
         InferenceClientBinding,
         jevDecisionBinding,
         lfmTextBinding,
         qwenTextBinding;
-import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart'
-    show ToolName;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart'
     show LayaRuntimeState, LayaServeRuntime;
@@ -98,6 +93,12 @@ final class AgentDocSurface extends StatefulWidget {
   /// The live surface for intent-driven actions (delegate/answer) —
   /// set while the doc is open, cleared on dispose.
   static _AgentDocSurfaceState? debugSurface;
+
+  /// Per-doc retained subscription choice (clientId + model) so a remount
+  /// keeps the adopted binding identity. Was ProductAutonomy.subscriptions;
+  /// the autonomy loop retired with ADR 0023's materialization lane.
+  static final retainedSubscriptions =
+      <String, ({String clientId, String model})>{};
 
   /// Task O — the peer-side SHADOW doc (`mesh_open_doc`): the honest
   /// viewer/answerer projection a paired peer opens over a SHARED doc id
@@ -167,28 +168,24 @@ abstract interface class AgentDocProductHandle implements AgentDocHandle {
     String action,
     Map<String, Object?> arguments,
   );
-}
 
-abstract interface class AgentDocAutonomyHandle {
-  Future<Map<String, Object?>> autonomyAction(String action);
+  /// The sibling conversation actor and the opt-in local generation
+  /// pair (kept features; the autonomy loop they rode on retired with
+  /// ADR 0023's materialization lane, 2026-11-21).
   Future<Map<String, Object?>> converseProduct(String text);
   Future<Map<String, Object?>> localPairAction(Map<String, Object?> arguments);
 }
 
 class _AgentDocSurfaceState extends State<AgentDocSurface>
-    implements AgentDocProductHandle, AgentDocAutonomyHandle, DocTurnRunner {
+    implements AgentDocProductHandle, DocTurnRunner {
   late ProjectModelDoc _doc = widget.doc;
   late final HarnessSessionController _controller =
-      widget.controller ??
-      ProductAutonomy.controllers[_doc.id.value] ??
-      HarnessSessionController(config: _configFor(_doc));
+      widget.controller ?? HarnessSessionController(config: _configFor(_doc));
   late final bool _ownsController = widget.controller == null;
   late final ProviderConfigurationStore _providerConfiguration =
       widget.providerConfiguration ?? ProviderConfigurationStore();
   final _workspaceField = TextEditingController();
   ProductWorkspaceToolBinding? _workspaceToolBinding;
-  ProductAutonomy? get _autonomy =>
-      ProductAutonomy.forWorkspace(_workspaceField.text.trim());
 
   @override
   Future<Map<String, Object?>> converseProduct(String text) =>
@@ -201,7 +198,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (arguments['action'] == 'status') {
       return {
         'ok': true,
-        'routing': ProductAutonomy.localPairs[_doc.id.value]?.toJson(),
+        'routing': ProductLocalPair.pairs[_doc.id.value]?.toJson(),
         'turns': [
           for (final turn in _controller.current?.turns ?? <HarnessTurn>[])
             {
@@ -224,7 +221,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     }
     if (arguments['action'] != 'configure' ||
         !Platform.isMacOS ||
-        _autonomy == null ||
         arguments['allowEscalation'] != true) {
       return {
         'ok': false,
@@ -249,7 +245,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         'error': 'resource_reconfiguration_requires_settled_turn',
       };
     }
-    final priorResource = ProductAutonomy.localPairs[_doc.id.value];
+    final priorResource = ProductLocalPair.pairs[_doc.id.value];
     try {
       await priorResource?.qwen.settleActive().timeout(
         const Duration(seconds: 5),
@@ -264,7 +260,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       grantConsent: arguments['grantConsent'] == true,
     );
     if (configured['ready'] != true) return configured;
-    ProductAutonomy.localPairs[_doc.id.value] = ProductLocalPair(
+    ProductLocalPair.pairs[_doc.id.value] = ProductLocalPair(
       snapshotDir: snapshot,
       resource: resource,
       routeWithLaya: arguments['routeWithLaya'] != false,
@@ -272,146 +268,11 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     final ready = await _syncConfigBeforeTurn();
     return {
       'ok': ready,
-      'routing': ProductAutonomy.localPairs[_doc.id.value]!.toJson(),
+      'routing': ProductLocalPair.pairs[_doc.id.value]!.toJson(),
     };
-  }
-
-  @override
-  Future<Map<String, Object?>> autonomyAction(String action) async {
-    if (action == 'status') {
-      return {'ok': true, 'autonomy': _autonomy?.toJson()};
-    }
-    if (action == 'revoke') {
-      _autonomy?.revoke();
-      if (mounted) setState(() {});
-      return {'ok': true, 'autonomy': _autonomy?.toJson()};
-    }
-    if (action != 'start') {
-      return {'ok': false, 'error': 'unknown_autonomy_action'};
-    }
-    if (_controller.isRunning || _operationBusy) {
-      return {'ok': false, 'error': 'coding_operation_busy'};
-    }
-    _setOperationBusy(true);
-    try {
-      var workspace = _autonomy?.authority.canonicalWorkspace ?? '';
-      if (workspace.isEmpty) {
-        final support = await getApplicationSupportDirectory();
-        workspace = '${support.path}/product_board/${_doc.id.value}';
-      }
-      final autonomy = await ProductAutonomy.start(Directory(workspace));
-      final checkCommand = await autonomy.goalCheckCommand();
-      if (!mounted) return {'ok': false, 'error': 'document_unmounted'};
-      final agent = _doc.agent ?? const AgentDocModel();
-      _workspaceField.text = workspace;
-      _persist(
-        agent.copyWith(
-          checkCommand: checkCommand,
-          workspaces: [
-            ...agent.workspaces.where((p) => p != workspace),
-            workspace,
-          ],
-        ),
-      );
-      ProductAutonomy.controllers[_doc.id.value] = _controller;
-      await _syncConfigBeforeTurn();
-      if (mounted) setState(() {});
-      return {'ok': true, ...autonomy.toJson()};
-    } finally {
-      _setOperationBusy(false);
-    }
   }
 
   final _taskField = TextEditingController();
-  Widget _autonomyBar() {
-    final locale = Localizations.localeOf(context).languageCode;
-    String label(String en, String it, String ru) => switch (locale) {
-      'it' => it,
-      'ru' => ru,
-      _ => en,
-    };
-    final autonomy = _autonomy;
-    // DESIGN §10 — harness machinery is collapsed until asked. A stopped
-    // board is not mandatory reading for writing a note, and it must not
-    // steal the first screen (the bar overflowed a 300px split).
-    if (autonomy == null) {
-      if (!_ladderOpen) return const SizedBox.shrink();
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: LaButton(
-          key: const Key('coding_agent.autonomy.start'),
-          variant: LaButtonVariant.ghost,
-          onPressed: _controller.isRunning || _operationBusy
-              ? null
-              : () async {
-                  try {
-                    await autonomyAction('start');
-                  } on Object catch (error) {
-                    if (mounted) setState(() => _routingError = '$error');
-                  }
-                },
-          label: label(
-            'Start autonomous board sample',
-            'Avvia bacheca autonoma',
-            'Создать автономную доску задач',
-          ),
-        ),
-      );
-    }
-    return ListenableBuilder(
-      listenable: Listenable.merge([autonomy.preview, ProductAutonomy.changes]),
-      builder: (context, _) {
-        final current = _autonomy ?? autonomy;
-        final paused =
-            current.authority.revoked ||
-            !DateTime.now().isBefore(current.authority.expiresAt);
-        final modeText = paused
-            ? label('paused', 'in pausa', 'приостановлено')
-            : label('autonomous', 'autonomo', 'автономно');
-        return Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(label('PRODUCT', 'PRODOTTO', 'ПРОДУКТ')),
-            LaButton(
-              key: const Key('coding_agent.autonomy.open'),
-              variant: LaButtonVariant.ghost,
-              onPressed: autonomy.preview.url == null
-                  ? null
-                  : () => openWorkspaceBrowser(
-                      context,
-                      initialUrl: autonomy.preview.url,
-                    ),
-              label: label('Open live board', 'Apri bacheca', 'Открыть доску'),
-            ),
-            Text('${autonomy.preview.activations} · $modeText'),
-            LaButton(
-              key: const Key('coding_agent.autonomy.revoke'),
-              variant: LaButtonVariant.ghost,
-              onPressed: paused
-                  ? (_controller.isRunning || _operationBusy
-                        ? null
-                        : () => autonomyAction('start'))
-                  : () => autonomyAction('revoke'),
-              label: label(
-                paused ? 'Resume changes' : 'Pause changes',
-                paused ? 'Riprendi modifiche' : 'Sospendi modifiche',
-                paused ? 'Продолжить изменения' : 'Приостановить изменения',
-              ),
-            ),
-            if (autonomy.preview.lastCheck?['ok'] == false)
-              Text(
-                label(
-                  'Build failed · working version retained',
-                  'Build non riuscita · versione precedente conservata',
-                  'Ошибка сборки · рабочая версия сохранена',
-                ),
-              ),
-          ],
-        );
-      },
-    );
-  }
-
   final _keyField = TextEditingController();
   final _checkField = TextEditingController();
   final _composerFocus = FocusNode();
@@ -513,7 +374,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   @override
   void initState() {
     super.initState();
-    final retainedSubscription = ProductAutonomy.subscriptions[_doc.id.value];
+    final retainedSubscription = AgentDocSurface.retainedSubscriptions[_doc.id.value];
     _subscriptionClientId = retainedSubscription?.clientId;
     _subscriptionModel = retainedSubscription?.model;
     AgentDocSurface.debugSurface = this;
@@ -534,9 +395,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     _checkField.addListener(_onCheckChanged);
     // PLAN 9 — return-after-interruption reconstructs the queue (DESIGN
     // §10): the durable copy lives in the doc payload's reserved blocks.
-    if (!identical(ProductAutonomy.controllers[_doc.id.value], _controller)) {
-      _restoreQueueFromDoc();
-    }
+    _restoreQueueFromDoc();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(() async {
@@ -1205,8 +1064,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     unawaited(AgentDocSurface.meshWiring?.leaveDoc(_meshDocId));
     _checkField.removeListener(_onCheckChanged);
     _controller.removeListener(_onControllerChanged);
-    if (_ownsController &&
-        !identical(ProductAutonomy.controllers[_doc.id.value], _controller)) {
+    if (_ownsController) {
       _controller.dispose();
       (widget.workspaceTooling ?? ProductWorkspaceTooling.instance).forgetOwner(
         _controller,
@@ -1436,8 +1294,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         subscriptionChoice = (clientId: profile.subject, model: selectedModel);
         apiKey = null;
       }
-      final autonomy = ProductAutonomy.forWorkspace(workspaceBinding);
-      final localPair = ProductAutonomy.localPairs[_doc.id.value];
+      final localPair = ProductLocalPair.pairs[_doc.id.value];
       if (!mounted) {
         if (!identical(inferenceBinding, _controller.config.inferenceBinding)) {
           await inferenceBinding?.dispose();
@@ -1462,9 +1319,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           workspaceBinding.isNotEmpty) {
         try {
           final prepared =
-              await (autonomy?.tooling ??
-                      widget.workspaceTooling ??
-                      ProductWorkspaceTooling.instance)
+              await (widget.workspaceTooling ?? ProductWorkspaceTooling.instance)
                   .prepare(
                     workspaceBinding,
                     ownerKey: _controller,
@@ -1546,10 +1401,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
           clearInferenceBinding:
               backend != chatGptBackend && backend != grokBackend,
           extraToolsWithContext: experimentTools,
-          actorToolNames: autonomy == null
-              ? null
-              : {const ToolName('conventional_change')},
-          clearActorToolNames: autonomy == null,
           clearExtraToolsWithContext: experimentTools == null,
           apiKey: apiKey,
           clearApiKey: apiKey == null,
@@ -1613,9 +1464,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         // Identity describes the adopted binding, never a failed candidate.
         _subscriptionClientId = subscriptionChoice.clientId;
         _subscriptionModel = subscriptionChoice.model;
-        if (_autonomy != null) {
-          ProductAutonomy.subscriptions[_doc.id.value] = subscriptionChoice;
-        }
+        AgentDocSurface.retainedSubscriptions[_doc.id.value] = subscriptionChoice;
       }
       return _controller.error == null;
     } finally {
@@ -1718,10 +1567,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       final task = _taskField.text.trim();
       if (task.isEmpty) return;
       _taskField.clear();
-      if (_autonomy != null && !immediate) {
-        await converseProduct(task);
-        return;
-      }
       _controller.enqueueSteer(task, immediate: immediate);
       setState(() {});
       return;
@@ -2004,7 +1849,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                         },
                       ),
                     ),
-                  _autonomyBar(),
                   if (_ladderOpen && _hasBoundWorkspace)
                     Align(
                       alignment: Alignment.centerLeft,
@@ -2733,9 +2577,10 @@ class _Conversation extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 14),
             child: _TurnView(
               turn: turn,
-              // The L2 beats are the agent's visible activity; only a
-              // ProductAutonomy workspace folds its work details.
-              foldTools: ProductAutonomy.forWorkspace(docWorkspace) != null,
+              // The L2 beats are the agent's visible activity; the
+              // autonomy-fold trigger retired with the materialization
+              // lane, so work details stay open on the ladder.
+              foldTools: false,
               foldHarness: foldHarness,
               onOpenLadder: onOpenLadder,
               backend: backend,
@@ -3139,9 +2984,8 @@ class _TurnBody extends StatelessWidget {
     }
 
     if (foldTools && toolDetails.isNotEmpty) {
-      // A ProductAutonomy workspace folds its work details. The fold is a
-      // hairline text row, not an ExpansionTile: a card in a doc surface is
-      // material chrome (DESIGN §2).
+      // The fold is a hairline text row, not an ExpansionTile: a card in a
+      // doc surface is material chrome (DESIGN §2).
       children.add(
         _LadderFold(
           label: '${toolDetails.length} steps',

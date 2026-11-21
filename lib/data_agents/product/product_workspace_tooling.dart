@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/data_agents/product/product_candidate_verification.dart';
 // Shared project execution is owned by Oka (ADR 0050) — import it directly;
 // the in-repo tombstone re-exports were deleted (docs/ARCHITECTURE.md §5).
 import 'package:oka_core/project_operations.dart';
@@ -33,8 +32,6 @@ final class ProductWorkspaceTooling {
   factory ProductWorkspaceTooling.forProfile(String profile) =>
       switch (profile) {
         'existing' => ProductWorkspaceTooling(
-          verifyCandidate:
-              ProductDartCandidateVerifier.instance.verifyCandidate,
           verificationDescription:
               'Contained dependency-free Dart compiler check; '
               'functional and task acceptance remain separate',
@@ -170,16 +167,14 @@ final class ProductWorkspaceTooling {
       List.unmodifiable(paths),
       LiveApplyJournalStore(storePath: '${support.path}/coding_recovery/$key'),
       verifyCandidate ??
-          (useProductCompiler
-              ? ProductDartCandidateVerifier.instance.forWorkspace(canonical)
-              : (_) async => const ConventionalCheck(
-                  ok: false,
-                  evidence: {
-                    'error': 'coding_contained_verifier_unavailable',
-                    'candidateExecuted': false,
-                    'liveSourceMutated': false,
-                  },
-                )),
+          (_) async => const ConventionalCheck(
+              ok: false,
+              evidence: {
+                'error': 'coding_contained_verifier_unavailable',
+                'candidateExecuted': false,
+                'liveSourceMutated': false,
+              },
+            ),
       verificationDescription,
       verificationScratchPaths,
       canReviewSaved,

@@ -180,17 +180,17 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('workbench.dock.absent')), findsOneWidget);
 
-    // The runtime projection: file tree + preview lane, both honest.
+    // The runtime projection: the real file tree, honestly absent without
+    // a registry. The product preview lane retired with the autonomy loop
+    // (ADR 0023 materialization teardown, 2026-11-21) — its keys never
+    // come back.
     await tester.tap(find.text('runtime'));
     await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('workbench.files.absent')),
       findsOneWidget,
     );
-    expect(
-      find.byKey(const ValueKey('workbench.preview.absent')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('workbench.preview.absent')), findsNothing);
 
     // Closing the dock leaves the artifact and its projection pane.
     await tester.tap(find.byKey(const ValueKey('workbench.dock.chat')));

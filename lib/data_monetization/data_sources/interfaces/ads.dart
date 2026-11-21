@@ -1,4 +1,4 @@
-import 'package:shared_models/shared_models.dart';
+import 'package:lastanswer/data_monetization/data_monetization.dart';
 
 abstract interface class AdsLocalDataSource {
   Future<void> saveState(final AdsStateModel ads);

@@ -6,5 +6,6 @@ library;
 export 'data_sources/interfaces/emoji.dart';
 export 'data_sources/local/emoji.dart';
 export 'data_sources/local/last_used_emoji.dart';
+export 'emoji_models.dart';
 export 'emoji_repository.dart';
 export 'emoji_state_notifier.dart';

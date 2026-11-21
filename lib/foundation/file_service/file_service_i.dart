@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:archive/archive.dart' show Archive, ArchiveFile, ZipDecoder, ZipEncoder;
-import 'package:shared_models/shared_models.dart';
+import 'package:lastanswer/foundation/foundation.dart';
 import 'package:universal_io/io.dart';
 
 abstract interface class FileServiceI {

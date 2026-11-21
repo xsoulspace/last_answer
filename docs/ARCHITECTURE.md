@@ -114,12 +114,14 @@ lib/
 ├── ui_onboarding/              # first-run + intro
 ├── ui_workspaces/              # workspace registry domain (ADR 0026)
 ├── mcp/                        # agent-facing MCP tools, debug builds (ui_debug analog)
-└── crash/ + entitlement/       # small unprefixed facilities
+└── crash/                      # small unprefixed facility (entitlement re-homed: pro_entitlement → data_monetization, tier_gate → ui_paywall, ADR 0037)
 ```
 
 Workspace packages (same law): `packages/headless_core` (pure domain),
 `packages/la_locale` (localization), `packages/la_ui_kit` (component kit),
-`packages/shared_models` + `packages/core_server_client` (server contracts).
+`packages/server_contracts` (the four RPC-boundary models — ADR 0038;
+`shared_models` dissolved into the domain folders) +
+`packages/core_server_client` (generated client).
 Independently deployable products live in **`deployables/`** (ADR 0033):
 `deployables/server/`, `deployables/tg_last_answer_bot/`,
 `deployables/landing/` — workspace members via the `- deployables/*` glob,
@@ -210,7 +212,8 @@ gate — promotion earned by repetition, per the generational ladder.
 - `packages/core/lib/src/generated/intl/*` + the `flutter_intl:` config
   (localization moved to `packages/la_locale`; intl_utils retired).
 - Pending cleanup (needs lane coordination): `ui_root/feedback.dart` (Wiredash
-  body commented), `packages/shared_models` off the barrel.
+  body commented). Done since: `packages/shared_models` dissolved
+  (ADR 0038).
 
 ## 6. History
 

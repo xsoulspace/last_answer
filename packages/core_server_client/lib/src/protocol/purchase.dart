@@ -7,8 +7,10 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 abstract class PurchaseAction implements _i1.SerializableModel {
@@ -34,8 +36,9 @@ abstract class PurchaseAction implements _i1.SerializableModel {
       userId: jsonSerialization['userId'] as int,
       type: jsonSerialization['type'] as String,
       rewardDaysQuantity: jsonSerialization['rewardDaysQuantity'] as int,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -52,6 +55,9 @@ abstract class PurchaseAction implements _i1.SerializableModel {
 
   DateTime createdAt;
 
+  /// Returns a shallow copy of this [PurchaseAction]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   PurchaseAction copyWith({
     int? id,
     int? userId,
@@ -62,6 +68,7 @@ abstract class PurchaseAction implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'PurchaseAction',
       if (id != null) 'id': id,
       'userId': userId,
       'type': type,
@@ -86,13 +93,16 @@ class _PurchaseActionImpl extends PurchaseAction {
     required int rewardDaysQuantity,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          userId: userId,
-          type: type,
-          rewardDaysQuantity: rewardDaysQuantity,
-          createdAt: createdAt,
-        );
+         id: id,
+         userId: userId,
+         type: type,
+         rewardDaysQuantity: rewardDaysQuantity,
+         createdAt: createdAt,
+       );
 
+  /// Returns a shallow copy of this [PurchaseAction]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   PurchaseAction copyWith({
     Object? id = _Undefined,

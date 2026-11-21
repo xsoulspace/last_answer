@@ -1,7 +1,6 @@
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
-import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_root/app_info.dart';
@@ -119,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = context.l10n;
     final projectsNotifier = context.watch<ProjectsNotifier>();
     final isAccountViewVisible =
-        context.read<PurchasesNotifier>().isProEntryVisible ||
+        MonetizationProducts.subscriptionsForBuild.isNotEmpty ||
         context.watch<ProEntitlement?>()?.devOverride == true;
     final isRemote = context.watch<AppFeaturesNotifier>().value
         .isRemoteServicesEnabled;

@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:from_json_to_json/from_json_to_json.dart';
-// import 'package:shared_models/shared_models.dart';
 import 'package:is_dart_empty_or_not/is_dart_empty_or_not.dart';
 import 'package:lastanswer/data_projects/migrations/parsers/parsers.dart' as parsers;
 import 'package:lastanswer/data_projects/project_models.dart';

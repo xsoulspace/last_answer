@@ -10,10 +10,6 @@ class RemoteUserInitializer {
   final GlobalStatesInitializerDto dto;
   // SessionManager get _sessionManager =>
   //     RemoteClient.ofContextAsServerpodImpl(dto.context).sessionManager;
-  Future<void> onUserLoad() async {
-    await dto.purchasesNotifier.onRemoteUserLoad();
-  }
-
   Future<void> _onSessionChanged() async {
     // if (_sessionManager.isSignedIn) {
     //   await dto.userNotifier.loadRemoteUser(isAfterLogin: true);

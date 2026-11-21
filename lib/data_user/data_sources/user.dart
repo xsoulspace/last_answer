@@ -1,4 +1,5 @@
 import 'package:lastanswer/common_imports.dart';
+import 'package:server_contracts/server_contracts.dart';
 
 abstract interface class UserLocalDataSource {
   Future<UserModel> getUser();

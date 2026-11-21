@@ -43,13 +43,11 @@ dependencies:
   file_saver: ^0.4.0
   flutter_animate: ^4.5.2
   fpdart: ^1.2.0
-  is_dart_empty_or_not: ^0.4.0
+  is_dart_empty_or_not: ^0.6.0
   logger: ^2.7.0
   permission_handler: ^12.0.3
   universal_storage_local_db:
   xsoulspace_locale:
-  xsoulspace_meaning_core:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_meaning_core
   # Renamed from xsoulspace_tooling_runtime (retired in-repo, dfp #8) —
   # same library, now published; the harness packages pin ^0.2.0 too.
   universal_tooling_runtime: ^0.2.0
@@ -98,7 +96,6 @@ dependencies:
   recase: ^4.1.0
   rxdart: ^0.28.0
   share_plus: ^13.2.1
-  shared_models:
   shared_preferences: ^2.5.5
   mcp_toolkit: ^5.0.4
   universal_storage_github_api:
@@ -167,6 +164,8 @@ dependencies:
   # daemon adapter (lib/coding_agent/supervised_world.dart) converges
   # DesiredState through it; web builds never see it (dart.library.io gate).
   oka_supervisor: ^0.9.1
+  server_contracts:
+    path: packages/server_contracts
   oka_core:
     path: ../../oka/packages/oka_core
   resource_composition: ^0.8.1
@@ -296,10 +295,15 @@ dependency_overrides:
   # checkout wins over every hosted constraint (oka_core, foundation).
   oka_store:
     path: ../../oka/packages/oka_store
+  # The harness-local meaning_core copy (the dart_flutter_packages one was
+  # retired; agentic_host still requires the identity — the harness
+  # checkout owns it until its migration lands).
+  xsoulspace_meaning_core:
+    path: ../../ecsai_harness/pkgs/xsoulspace_meaning_core
   # Sibling-checkout skew (intentcall_schema ^0.5.0 vs
-  # xsoulspace_agentic_harness ^0.4.0): one version workspace-wide until the
-  # two path repos re-converge.
-  is_dart_empty_or_not: ^0.5.0
+  # xsoulspace_agentic_harness ^0.4.0): one version workspace-wide —
+  # converged to 0.6 (oka ADR 0055 deliveries need whenEmptyOrNull).
+  is_dart_empty_or_not: ^0.6.0
   # Same skew class: intentcall_schema demands from_json_to_json ^0.6.0.
   from_json_to_json: ^0.6.0
   # Shared DOM/event API used by Oka's manifest merger and Flutter's SVG
@@ -453,8 +457,6 @@ dependency_overrides:
   # Parallel migration (2026-10-11): xsoulspace_agentic_harness gained a
   # meaning-core dependency that is not published yet; same path-source
   # override pattern.
-  xsoulspace_meaning_core:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_meaning_core
   # Same cascade: xsoulspace_agentic_host depends on the (unpublished)
   # live-apply journal; path source until it publishes.
   universal_storage_live_apply:

@@ -13,8 +13,8 @@ dependencies:
   googleapis_auth: ^2.3.3
   serverpod: ^3.4.11
   serverpod_auth_server: ^3.4.11
-  shared_models:
-    path: ../../packages/shared_models
+  server_contracts:
+    path: ../../packages/server_contracts
 
 dev_dependencies:
   lints: ^6.1.0

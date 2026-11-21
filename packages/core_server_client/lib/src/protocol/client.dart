@@ -7,11 +7,13 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:shared_models/src/models/models.dart' as _i3;
+import 'package:server_contracts/src/models.dart' as _i3;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i4;
 import 'protocol.dart' as _i5;
 
@@ -23,16 +25,16 @@ class EndpointAuth extends _i1.EndpointRef {
   String get name => 'auth';
 
   _i2.Future<void> signInVkID(String name) => caller.callServerEndpoint<void>(
-        'auth',
-        'signInVkID',
-        {'name': name},
-      );
+    'auth',
+    'signInVkID',
+    {'name': name},
+  );
 
   _i2.Future<void> completeSignIn() => caller.callServerEndpoint<void>(
-        'auth',
-        'completeSignIn',
-        {},
-      );
+    'auth',
+    'completeSignIn',
+    {},
+  );
 }
 
 /// API to get information about purchases
@@ -44,10 +46,10 @@ class EndpointPurchases extends _i1.EndpointRef {
   String get name => 'purchases';
 
   _i2.Future<void> create() => caller.callServerEndpoint<void>(
-        'purchases',
-        'create',
-        {},
-      );
+    'purchases',
+    'create',
+    {},
+  );
 }
 
 /// {@category Endpoint}
@@ -72,10 +74,10 @@ class EndpointUser extends _i1.EndpointRef {
       );
 
   _i2.Future<void> deleteUser() => caller.callServerEndpoint<void>(
-        'user',
-        'deleteUser',
-        {},
-      );
+    'user',
+    'deleteUser',
+    {},
+  );
 }
 
 class Modules {
@@ -90,28 +92,31 @@ class Client extends _i1.ServerpodClientShared {
   Client(
     String host, {
     dynamic securityContext,
-    _i1.AuthenticationKeyManager? authenticationKeyManager,
+    @Deprecated(
+      'Use authKeyProvider instead. This will be removed in future releases.',
+    )
+    super.authenticationKeyManager,
     Duration? streamingConnectionTimeout,
     Duration? connectionTimeout,
     Function(
       _i1.MethodCallContext,
       Object,
       StackTrace,
-    )? onFailedCall,
+    )?
+    onFailedCall,
     Function(_i1.MethodCallContext)? onSucceededCall,
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
-          host,
-          _i5.Protocol(),
-          securityContext: securityContext,
-          authenticationKeyManager: authenticationKeyManager,
-          streamingConnectionTimeout: streamingConnectionTimeout,
-          connectionTimeout: connectionTimeout,
-          onFailedCall: onFailedCall,
-          onSucceededCall: onSucceededCall,
-          disconnectStreamsOnLostInternetConnection:
-              disconnectStreamsOnLostInternetConnection,
-        ) {
+         host,
+         _i5.Protocol(),
+         securityContext: securityContext,
+         streamingConnectionTimeout: streamingConnectionTimeout,
+         connectionTimeout: connectionTimeout,
+         onFailedCall: onFailedCall,
+         onSucceededCall: onSucceededCall,
+         disconnectStreamsOnLostInternetConnection:
+             disconnectStreamsOnLostInternetConnection,
+       ) {
     auth = EndpointAuth(this);
     purchases = EndpointPurchases(this);
     user = EndpointUser(this);
@@ -128,12 +133,13 @@ class Client extends _i1.ServerpodClientShared {
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
-        'auth': auth,
-        'purchases': purchases,
-        'user': user,
-      };
+    'auth': auth,
+    'purchases': purchases,
+    'user': user,
+  };
 
   @override
-  Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>
-      {'auth': modules.auth};
+  Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {
+    'auth': modules.auth,
+  };
 }

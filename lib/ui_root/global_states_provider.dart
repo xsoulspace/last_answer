@@ -4,7 +4,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
-import 'package:lastanswer/entitlement/pro_entitlement.dart';
+import 'package:lastanswer/store/bindings/noop.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
@@ -14,8 +14,7 @@ import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_found
 
 class GlobalStatesProvider extends StatelessWidget {
   const GlobalStatesProvider({
-    required this.storeBinding,
-    required this.builder,
+    required this.builder, this.storeBinding = noopStoreBinding,
     super.key,
   });
 
@@ -121,14 +120,13 @@ class GlobalStatesProvider extends StatelessWidget {
       Provider<DocInferencePort?>(create: _createDocInferencePort),
 
       /// notifiers & blocs
-      ChangeNotifierProvider(create: EmojiStateNotifier.new),
+      ChangeNotifierProvider(create: (_) => EmojiStateNotifier()),
       ChangeNotifierProvider(create: LastEmojiStateNotifier.new),
-      ChangeNotifierProvider(create: SpecialEmojiStateNotifier.new),
+      ChangeNotifierProvider(create: (_) => SpecialEmojiStateNotifier()),
       ChangeNotifierProvider(create: NotificationsNotifier.new),
       ChangeNotifierProvider(create: TagsNotifier.new),
       ChangeNotifierProvider(create: AdsNotifier.new),
       ChangeNotifierProvider(create: ProjectsNotifier.new),
-      ChangeNotifierProvider(create: PurchasesNotifier.new),
       ChangeNotifierProvider(create: UserNotifier.new),
       ChangeNotifierProvider(create: AppNotifier.new),
       ChangeNotifierProvider(create: OpenedProjectNotifier.new),

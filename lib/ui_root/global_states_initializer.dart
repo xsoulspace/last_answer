@@ -17,7 +17,6 @@ class GlobalStatesInitializerDto {
       appNotifier = context.read(),
       localDb = context.read(),
       // remoteClient = context.read(),
-      purchasesNotifier = context.read(),
       // purchasesAdsService = context.read(),
       projectsRepository = context.read(),
       tagsNotifier = context.read(),
@@ -37,7 +36,6 @@ class GlobalStatesInitializerDto {
   final ProjectsNotifier projectsNotifier;
   final TagsNotifier tagsNotifier;
   final UserNotifier userNotifier;
-  final PurchasesNotifier purchasesNotifier;
   final AppNotifier appNotifier;
   final ProjectsRepository projectsRepository;
 }

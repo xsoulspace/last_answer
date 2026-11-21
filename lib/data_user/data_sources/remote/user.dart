@@ -1,5 +1,5 @@
 // import 'package:core_server_client/core_server_client.dart';
-// import 'package:shared_models/shared_models.dart';
+// import 'package:server_contracts/server_contracts.dart';
 
 // import '../interfaces/interfaces.dart';
 // import 'serverpod_client.dart';

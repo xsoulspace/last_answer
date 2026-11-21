@@ -60,8 +60,9 @@ Consequences carried in the same decision:
   data_* backend (incl. data_journal/ecs_world/ui_chat/ecs_plugins/data_agents)
   → ui_* → ui_root`; imports point down only. The one-time core→app cycle is
   structurally impossible.
-- `packages/` is purely app-support again; `shared_models` stays (the server
-  depends on it).
+- `packages/` is purely app-support again; `shared_models` stayed at the
+  time (the server depended on it) and dissolved in ADR 0038
+  (`packages/server_contracts` now carries the RPC boundary).
 - flutter_gen asset paths changed from `packages/core/assets/...` to app-root
   paths; `Assets.*` consumers are source-compatible, the generated file is
   regenerated.

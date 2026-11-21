@@ -11,6 +11,7 @@ export 'doc_body_storage.dart';
 export 'idea_questions.dart';
 export 'migrations/migrate_from_hive_isar.dart';
 export 'opened_project_notifier.dart';
+export 'paged_requests.dart';
 export 'project_models.dart';
 export 'projects_notifier.dart';
 export 'projects_paged_controller.dart';

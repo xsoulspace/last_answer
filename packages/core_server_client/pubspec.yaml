@@ -9,5 +9,5 @@ resolution: workspace
 dependencies:
   serverpod_auth_client: ^3.4.11
   serverpod_client: ^3.4.11
-  shared_models:
-    path: ../shared_models
+  server_contracts:
+    path: ../server_contracts

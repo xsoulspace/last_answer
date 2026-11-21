@@ -1,4 +1,4 @@
-import 'package:shared_models/shared_models.dart';
+import 'package:lastanswer/data_emoji/data_emoji.dart';
 
 abstract interface class LastUsedEmojiLocalDataSource {
   Future<void> putAll(final Map<String, EmojiModel> map);

@@ -1,7 +1,6 @@
 import 'package:server/src/extensions/extensions.dart';
 import 'package:server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
-import 'package:shared_models/shared_models.dart';
 
 /// API to get information about purchases
 class PurchasesEndpoint extends Endpoint {
@@ -17,7 +16,9 @@ class PurchasesEndpoint extends Endpoint {
 /// Standalone implementation to use same logic
 /// in other endpoints
 class PurchasesEndpointImpl {
-  /// Use to create user purchase info
+  /// Use to create user purchase info. The seed is the empty purchase
+  /// state (ADR 0037 dissolved the legacy supporter-days model): no
+  /// one-time purchase, no subscription, zero supporter days.
   Future<UserPurchaseInfo> createPurchaseInfo(final Session session) async {
     final userId = await session.userId;
     final info = await UserPurchaseInfo.db.findFirstRow(
@@ -25,53 +26,14 @@ class PurchasesEndpointImpl {
       where: (final p0) => p0.userId.equals(userId),
     );
     if (info != null) return info;
-    const initial = PurchasesModel.empty;
     final newPurchases = UserPurchaseInfo(
-      isOneTimePurchased: initial.isOneTimePurchased,
-      daysOfSupporterLeft: initial.daysOfSupporterLeft,
-      subscriptionEndDate: initial.subscriptionEndDate,
+      isOneTimePurchased: false,
+      daysOfSupporterLeft: 0,
       userId: userId,
     );
 
     await UserPurchaseInfo.db.insertRow(session, newPurchases);
 
     return newPurchases;
-  }
-
-  Future<void> recordPurchase(
-    final Session session,
-  ) async {
-    throw UnimplementedError();
-    // final userId = await session.userId;
-    // UserPurchaseInfo? info = await UserPurchaseInfo.db.findFirstRow(
-    //   session,
-    //   where: (final p0) => p0.userId.equals(userId),
-    // );
-    // info ??= await createPurchaseInfo(session);
-    // await UserPurchaseInfo.db.insertRow(session, updatedInfo);
-  }
-
-  Future<PurchaseActionModel?> verifyNativeMobilePurchase({
-    required final Session session,
-    required final IAPId productId,
-    required final String verificationData,
-    required final PurchasePaymentProvider provider,
-  }) {
-    throw UnimplementedError();
-  }
-
-  Future<PurchasesModel> getPurchases({
-    required final Session session,
-  }) {
-    throw UnimplementedError();
-  }
-
-  Future<PurchasesModel> mergeLocalPurchases({
-    required final Session session,
-    required final PurchasesModel purchases,
-  }) {
-    // final serverPurchases =
-    // final updatedPurchases = purchase.mergeWith(other);
-    throw UnimplementedError();
   }
 }

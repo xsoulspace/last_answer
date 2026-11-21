@@ -41,5 +41,4 @@ export 'package:material_ui/material_ui.dart' show Colors, Icons, ThemeMode;
 export 'package:provider/provider.dart';
 export 'package:recase/recase.dart';
 export 'package:rxdart/rxdart.dart';
-export 'package:shared_models/shared_models.dart';
 export 'package:universal_io/io.dart';

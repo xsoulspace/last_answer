@@ -1,10 +1,10 @@
 import 'package:server/src/endpoints/purchases_endpoint.dart';
 import 'package:server/src/extensions/extensions.dart';
 import 'package:server/src/generated/protocol.dart';
+import 'package:server_contracts/server_contracts.dart';
 import 'package:serverpod/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
-import 'package:shared_models/shared_models.dart';
 
 typedef ServerUserId = int;
 // This is an example endpoint of your server. It's best practice to use the

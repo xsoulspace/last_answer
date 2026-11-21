@@ -7,13 +7,15 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/auth_endpoint.dart' as _i2;
 import '../endpoints/purchases_endpoint.dart' as _i3;
 import '../endpoints/user_endpoint.dart' as _i4;
-import 'package:shared_models/src/models/models.dart' as _i5;
+import 'package:server_contracts/src/models.dart' as _i5;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i6;
 
 class Endpoints extends _i1.EndpointDispatch {
@@ -50,25 +52,27 @@ class Endpoints extends _i1.EndpointDispatch {
               name: 'name',
               type: _i1.getType<String>(),
               nullable: false,
-            )
+            ),
           },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['auth'] as _i2.AuthEndpoint).signInVkID(
-            session,
-            params['name'],
-          ),
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['auth'] as _i2.AuthEndpoint).signInVkID(
+                session,
+                params['name'],
+              ),
         ),
         'completeSignIn': _i1.MethodConnector(
           name: 'completeSignIn',
           params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['auth'] as _i2.AuthEndpoint).completeSignIn(session),
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['auth'] as _i2.AuthEndpoint).completeSignIn(
+                session,
+              ),
         ),
       },
     );
@@ -79,12 +83,13 @@ class Endpoints extends _i1.EndpointDispatch {
         'create': _i1.MethodConnector(
           name: 'create',
           params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['purchases'] as _i3.PurchasesEndpoint).create(session),
-        )
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['purchases'] as _i3.PurchasesEndpoint)
+                  .create(session),
+        ),
       },
     );
     connectors['user'] = _i1.EndpointConnector(
@@ -94,11 +99,12 @@ class Endpoints extends _i1.EndpointDispatch {
         'getUser': _i1.MethodConnector(
           name: 'getUser',
           params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i4.UserEndpoint).getUser(session),
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['user'] as _i4.UserEndpoint).getUser(session),
         ),
         'receiveAdVideoReward': _i1.MethodConnector(
           name: 'receiveAdVideoReward',
@@ -107,25 +113,27 @@ class Endpoints extends _i1.EndpointDispatch {
               name: 'videoLength',
               type: _i1.getType<_i5.AdVideoLengthType>(),
               nullable: false,
-            )
+            ),
           },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i4.UserEndpoint).receiveAdVideoReward(
-            session,
-            params['videoLength'],
-          ),
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['user'] as _i4.UserEndpoint).receiveAdVideoReward(
+                    session,
+                    params['videoLength'],
+                  ),
         ),
         'deleteUser': _i1.MethodConnector(
           name: 'deleteUser',
           params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['user'] as _i4.UserEndpoint).deleteUser(session),
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['user'] as _i4.UserEndpoint).deleteUser(session),
         ),
       },
     );

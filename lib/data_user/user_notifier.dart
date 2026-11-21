@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/data_monetization/data_monetization.dart';
 import 'package:lastanswer/data_user/locale_logic.dart';
 import 'package:lastanswer/data_user/locales.dart';
 import 'package:lastanswer/data_user/user_models.dart';
@@ -10,7 +9,7 @@ import 'package:lastanswer/foundation/foundation.dart';
 import 'package:lastanswer/ui_root/ui_root.dart';
 import 'package:material_ui/material_ui.dart' show BuildContext, Locale, ThemeMode;
 import 'package:provider/provider.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:server_contracts/server_contracts.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 
@@ -19,11 +18,9 @@ enum RemoteUserNotifierStatus { unauthenticated, authenticated }
 class UserNotifierDto {
   UserNotifierDto(final BuildContext context)
     : userRepository = context.read(),
-      purchasesNotifier = context.read(),
       remoteUserNotifier = context.read(),
       appFeaturesNotifier = context.read();
   final UserRepository userRepository;
-  final PurchasesNotifier purchasesNotifier;
   final RemoteUserNotifier remoteUserNotifier;
   final AppFeaturesNotifier appFeaturesNotifier;
 }

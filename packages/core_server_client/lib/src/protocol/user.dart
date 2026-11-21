@@ -7,8 +7,10 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 abstract class User implements _i1.SerializableModel {
@@ -50,6 +52,9 @@ abstract class User implements _i1.SerializableModel {
 
   DateTime? updatedAt;
 
+  /// Returns a shallow copy of this [User]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   User copyWith({
     int? id,
     int? userId,
@@ -59,6 +64,7 @@ abstract class User implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'User',
       if (id != null) 'id': id,
       'userId': userId,
       if (createdAt != null) 'createdAt': createdAt?.toJson(),
@@ -81,12 +87,15 @@ class _UserImpl extends User {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super._(
-          id: id,
-          userId: userId,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         userId: userId,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
+  /// Returns a shallow copy of this [User]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   User copyWith({
     Object? id = _Undefined,

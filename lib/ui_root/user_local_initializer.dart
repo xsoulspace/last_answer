@@ -24,7 +24,6 @@ class LocalUserInitializer {
     await Future.delayed(const Duration(seconds: 1));
     await dto.projectsNotifier.onLocalUserLoad();
     await dto.tagsNotifier.onLocalUserLoad();
-    await dto.purchasesNotifier.onLocalUserLoad();
   }
 
   void onUserReset() {

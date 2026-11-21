@@ -1,6 +1,5 @@
-import 'package:lastanswer/data_emoji/data_sources/interfaces/interfaces.dart';
+import 'package:lastanswer/data_emoji/data_emoji.dart';
 import 'package:lastanswer/foundation/foundation.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 final class LastUsedEmojiLocalDataSourceImpl

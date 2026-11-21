@@ -1,0 +1,24 @@
+name: server_contracts
+description: >-
+  The server/client contract models shared between the Last Answer app and
+  the Serverpod server (ADR 0038 — replaces packages/shared_models, which
+  dissolved into the app's domain folders). Pure Dart; the only models that
+  cross the RPC boundary.
+version: 0.1.0
+publish_to: "none"
+
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+
+dev_dependencies:
+  build_runner: ^2.9.0
+  freezed: ^3.1.0
+  json_serializable: ^6.11.0
+  lints: ^6.1.0
+  test: ^1.25.0

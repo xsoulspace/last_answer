@@ -7,8 +7,10 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 abstract class UserPurchaseInfo implements _i1.SerializableModel {
@@ -32,11 +34,14 @@ abstract class UserPurchaseInfo implements _i1.SerializableModel {
     return UserPurchaseInfo(
       id: jsonSerialization['id'] as int?,
       daysOfSupporterLeft: jsonSerialization['daysOfSupporterLeft'] as int,
-      isOneTimePurchased: jsonSerialization['isOneTimePurchased'] as bool,
+      isOneTimePurchased: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['isOneTimePurchased'],
+      ),
       subscriptionEndDate: jsonSerialization['subscriptionEndDate'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(
-              jsonSerialization['subscriptionEndDate']),
+              jsonSerialization['subscriptionEndDate'],
+            ),
       userId: jsonSerialization['userId'] as int,
     );
   }
@@ -54,6 +59,9 @@ abstract class UserPurchaseInfo implements _i1.SerializableModel {
 
   int userId;
 
+  /// Returns a shallow copy of this [UserPurchaseInfo]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   UserPurchaseInfo copyWith({
     int? id,
     int? daysOfSupporterLeft,
@@ -64,6 +72,7 @@ abstract class UserPurchaseInfo implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'UserPurchaseInfo',
       if (id != null) 'id': id,
       'daysOfSupporterLeft': daysOfSupporterLeft,
       'isOneTimePurchased': isOneTimePurchased,
@@ -89,13 +98,16 @@ class _UserPurchaseInfoImpl extends UserPurchaseInfo {
     DateTime? subscriptionEndDate,
     required int userId,
   }) : super._(
-          id: id,
-          daysOfSupporterLeft: daysOfSupporterLeft,
-          isOneTimePurchased: isOneTimePurchased,
-          subscriptionEndDate: subscriptionEndDate,
-          userId: userId,
-        );
+         id: id,
+         daysOfSupporterLeft: daysOfSupporterLeft,
+         isOneTimePurchased: isOneTimePurchased,
+         subscriptionEndDate: subscriptionEndDate,
+         userId: userId,
+       );
 
+  /// Returns a shallow copy of this [UserPurchaseInfo]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   UserPurchaseInfo copyWith({
     Object? id = _Undefined,

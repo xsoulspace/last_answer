@@ -1,7 +1,7 @@
 
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/store/store_posture.dart';
 import 'package:lastanswer/ui_paywall/paywall_flow.dart';
-import 'package:oka_store/oka_store.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
 
@@ -109,10 +109,13 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
         .watch<AvailableSubscriptionsResource>()
         .subscriptions;
 
-    // ADR 0037 — the kernel's binding names the store openly; the
-    // RuStore login wall applies only in a RuStore kernel.
-    final storeKey = context.watch<MonetizationStoreBinding>().key;
-    if (storeKey == storeKeyRuStore &&
+    // ADR 0037 — the UI reads the named posture capability; it never
+    // compares store keys (the key→posture mapping lives in
+    // lib/store/store_posture.dart).
+    final requiresStoreLogin = context
+        .watch<MonetizationStoreBinding>()
+        .requiresStoreLogin;
+    if (requiresStoreLogin &&
         monetizationStatus == MonetizationStoreStatus.userNotAuthorized) {
       return _MessageCard(
         icon: Icons.account_circle_outlined,

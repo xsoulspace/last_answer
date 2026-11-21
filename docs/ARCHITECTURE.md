@@ -82,7 +82,7 @@ publishes state; the fold folds the contract, never the service.
 
 ```
 lib/
-├── main.dart / main_prod.dart / headless_main.dart   # entries (debug, prod, headless CLI)
+├── main.dart / entrypoints/main_store_*.dart         # entries (dev, per-store deliveries)
 ├── bootstrap.dart / router.dart / app_scaffold.dart /
 │   common_imports.dart / coding_agent.dart           # root files (the latter: legacy re-export barrel)
 ├── data_journal/               # realm journal backend + mesh/ durability lane

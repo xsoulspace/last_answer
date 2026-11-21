@@ -128,16 +128,27 @@ const linuxPipeline = LinuxPipeline();
 
 /// Service overlays (oka ADR 0055): WHAT compiles in per service SDK.
 /// The delivery variant composes them; channels declare the legality.
+/// GMS availability for the Play channel. The Play target REQUIRES this
+/// overlay on deliveries — the declaration is the contract (the
+/// artifact may rely on GMS); the actual Google dependencies arrive
+/// from the plugin set, not from here, so the overlay carries no
+/// dependency edits (restating plugin-managed coordinates would fight
+/// their versions).
 const gms = Overlay(
   name: 'gms',
-  description: 'Google Mobile Services (Play Billing path)',
+  description: 'Google Mobile Services availability (Play Billing path)',
 );
 const hmsFree = Overlay(
   name: 'hms-free',
-  description: 'GMS-free set (AppGallery boundary — GMS coordinates '
-      'excluded from native dependency resolution)',
+  description: 'GMS-free set (AppGallery boundary — Google SDK groups '
+      'excluded from native dependency resolution: GMS services, Play '
+      'core, Firebase)',
   excludeNativeDependencies: {
-    'android': ['com.google.android.gms:*'],
+    'android': [
+      'com.google.android.gms:*',
+      'com.google.android.play:*',
+      'com.google.firebase:*',
+    ],
   },
 );
 
@@ -173,7 +184,7 @@ const _appDeliveries = [
     pipeline: androidPipeline,
     variant: Variant(
       key: storeKeyAppGallery,
-      entrypoint: 'lib/main_prod.dart',
+      entrypoint: 'lib/entrypoints/main_store_appgallery.dart',
       overlays: [hmsFree],
     ),
     channel: huaweiPublishTarget,
@@ -192,7 +203,7 @@ const _appDeliveries = [
     pipeline: linuxPipeline,
     variant: Variant(
       key: storeKeySnapStore,
-      entrypoint: 'lib/main_prod.dart',
+      entrypoint: 'lib/entrypoints/main_store_snap.dart',
     ),
   ),
 ];
@@ -354,8 +365,8 @@ const HuaweiPublishTarget huaweiPublishTarget = HuaweiPublishTarget(
       AgcReleaseNote(language: 'ru', file: 'promo/store/whatsnew-ru.txt'),
     ],
   ),
-  variant: HuaweiBuildVariant(
-    android: _androidBuild,
-    overrides: _androidOverrides,
-  ),
+  // Channel-only (ADR-0055): the GMS-free posture is the DELIVERY's job
+  // (the hmsFree overlay above); this channel prohibits the gms overlay
+  // and verifies the produced artifact against the same overlay set —
+  // the build config is never restated here.
 );

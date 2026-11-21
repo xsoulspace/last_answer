@@ -102,3 +102,8 @@ ui-gates:
 # it may not import package:lastanswer or any Flutter library.
 bin-gates:
     fvm dart tool/check_bin_gates.dart
+
+# ADR 0037 kernel-isolation law: purchase backends may be imported only
+# by lib/store/bindings/ — one backend per kernel, per-store entrypoints.
+store-gates:
+    fvm dart tool/gates/store_binding_gate.dart

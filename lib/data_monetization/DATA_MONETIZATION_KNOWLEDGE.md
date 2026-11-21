@@ -13,17 +13,20 @@ ADR 0055's open `StoreKey` + a nullable `purchaseProviderFactory`);
 `lib/entrypoints/main_store_<x>.dart` imports exactly ONE binding, and
 `bootstrap(storeBinding: …)` threads it to `GlobalStatesProvider` — so
 only that backend's code compiles into the kernel. Backend packages are
-imported **only** inside `lib/store/bindings/`; everything else reads
-`context.watch<MonetizationStoreBinding>().key` (open `StoreKey`, from
-`oka_store`).
+imported **only** inside `lib/store/bindings/` (enforced by
+`just store-gates`); everything else reads named posture capabilities —
+`requiresStoreLogin` / `isRuMarket` from `lib/store/store_posture.dart`
+— or the open `StoreKey` (from `oka_store`). Each delivery bakes its
+store key as the `OKA_STORE` dart define; `bootstrap` refuses to boot a
+binding that names a different store.
 
 | delivery (`oka run …`) | store key | binding | entrypoint | channel |
 |---|---|---|---|---|
 | `app-google-play` | `google-play` | `GooglePlayBinding` | `main_store_google_play.dart` | `PlayPublishTarget` (dry-run) |
 | `app-rustore` | `rustore` | `RuStoreBinding` | `main_store_rustore.dart` | `RuStorePublishTarget` (dry-run) |
-| `app-appgallery` | `appgallery` | (entrypoint = `main_prod.dart`) + `hmsFree` overlay | `lib/main_prod.dart` | `HuaweiPublishTarget` (dry-run) |
+| `app-appgallery` | `appgallery` | `AppGalleryBinding` (identity, no HMS IAP yet) + `hmsFree` overlay | `main_store_appgallery.dart` | `HuaweiPublishTarget` (dry-run) |
 | `app-apple-store` | `apple-store` | `AppleBinding` (iOS + macOS StoreKit) | `main_store_apple.dart` | — (roadmap) |
-| `app-snap` | `snapstore` | (entrypoint = `main_prod.dart`, Noop purchases) | `lib/main_prod.dart` | — (roadmap) |
+| `app-snap` | `snapstore` | `SnapBinding` (identity, no snap billing) | `main_store_snap.dart` | — (roadmap) |
 | dev / website / windows | `noop` | `noopStoreBinding` | `lib/main.dart` | — |
 
 Deliveries live in `tool/oka_pipeline.dart` (oka ADR 0055: pipeline by

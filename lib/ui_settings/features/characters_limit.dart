@@ -1,7 +1,7 @@
 import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/store/store_posture.dart';
 import 'package:lastanswer/ui_settings/features/characters_limit_state.dart';
-import 'package:oka_store/oka_store.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 class CharactersLimitSetting extends HookWidget {
@@ -46,12 +46,14 @@ class CharactersLimitSetting extends HookWidget {
     }
 
     // final isRestricted = settings.isSocialNetworksRestricted &&
-    // ADR 0037 — the kernel's binding names the store openly.
-    final isRuStore = context.watch<MonetizationStoreBinding>().key ==
-        storeKeyRuStore;
+    // ADR 0037 — the UI reads the named posture capability; the
+    // key→posture mapping lives in lib/store/store_posture.dart.
+    final isRuMarket = context
+        .watch<MonetizationStoreBinding>()
+        .isRuMarket;
     final isRestricted =
         settings.isSocialNetworksRestricted &&
-        (uiLocaleNotifier.value == Locales.ru || isRuStore);
+        (uiLocaleNotifier.value == Locales.ru || isRuMarket);
     final isNotRestricted = !isRestricted;
 
     return Wrap(

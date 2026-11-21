@@ -72,7 +72,7 @@ The folder map + naming grammar live in [docs/ARCHITECTURE.md](../../../docs/ARC
 
 ## Architecture map
 
-- `lib/main_prod.dart` vs `lib/main.dart` — prod entry vs debug entry (the latter wires `MCPToolkitBinding`, debug-only).
+- `lib/main.dart` (dev, explicit `noopStoreBinding`) vs `lib/entrypoints/main_store_<x>.dart` (per-store deliveries, ADR 0037; each imports exactly one binding).
 - App wiring: `lib/ui_root/last_answer_app.dart` → `GlobalStatesProvider` (packages/core, all repos/notifiers) → `GlobalStatesInitializer.onLoad()` (DB init, user load).
 - Settings is a ONE-SCROLL section registry: `lib/ui_settings/settings_screen.dart` renders `SettingsSection`s declared in `lib/ui_settings/settings_sections.dart` (You / Appearance / Notes / Data & sync / Agents …) with a scroll-spy TOC + jump filter — no endless tabs; add a section there, not a new tab. App services that are domains, not settings, live in their own surface folder (`lib/ui_automations/` since 2026-11-19: supervisor agent client/provider/execution/service + panel/view + the rail.automations surface; deleted files: `general_settings_view.dart`, `agent_settings_view.dart`, `mesh_tasks_settings_page.dart`, `features/supervisor_*`).
 - Storage backends: `lib/ui_settings/features/storage_backends_state.dart` (`StorageBackendsNotifier`, singleton with static `payloadBuilder` / `restoreApplier` hooks) and `storage_backends_button.dart` (UI). Backends in fixed UX order: **localDb → filesystem → gitOffline → github**.

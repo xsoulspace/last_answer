@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/icons.dart';
-import 'package:la_ui_kit/src/menu.dart';
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/theme.dart';
-import 'package:la_ui_kit/src/tooltip.dart';
+import 'icons.dart';
+import 'menu.dart';
+import 'pressable.dart';
+import 'theme.dart';
+import 'tooltip.dart';
 
 /// One [LaSelect] option.
 @immutable

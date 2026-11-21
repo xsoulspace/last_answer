@@ -14,11 +14,11 @@
 library;
 
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_chat/avatar_picker.dart';
-import 'package:lastanswer/ui_chat/brain_health_dot.dart';
-import 'package:lastanswer/data_journal/palette_lanes.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/brain_provider_picker.dart';
 
 /// The editor's agent-contract widget keys (DESIGN §6) — shared by both
 /// surfaces, so intents target the same fields wherever they render.
@@ -45,6 +45,7 @@ final class ActorProfileEditor extends StatefulWidget {
     this.tiersForBrain,
     this.initialBrainSet = const <String>[],
     this.initialSelfBind = true,
+    this.castProviders = const {},
     super.key,
   });
 
@@ -52,7 +53,13 @@ final class ActorProfileEditor extends StatefulWidget {
   final ActorProfile profile;
 
   /// The brain picker's options (the runtime's [availableBrainOptions]).
+  /// The picker groups them into provider, then model, and adds the
+  /// live ACP models beside them.
   final List<({String ref, String label})> brainOptions;
+
+  /// Palette rung id → provider id, so cast models nest under the
+  /// provider the document declared.
+  final Map<String, String> castProviders;
 
   /// Applied on Save: the trimmed name/role, the persona VERBATIM (the
   /// actor speaks through it), the rebuilt brainRef (the per-actor
@@ -265,25 +272,10 @@ class _ActorProfileEditorState extends State<ActorProfileEditor> {
           placeholder: l10n.actorsPersonaLabel,
         ),
         const SizedBox(height: 8),
-        LaSelect<String>(
-          key: const ValueKey(actorEditorBrainKey),
-          value: _brainBase,
-          // The panel is narrow (240px): the selected label must shrink,
-          // never overflow the field.
-          expand: true,
-          placeholder: l10n.actorsBrainLabel,
-          items: [
-            for (final option in options)
-              LaSelectItem(
-                value: option.ref,
-                label: option.label,
-                // 1b — the brain's health verdict rides its name here
-                // too (the resource law travels with the picker). Kit
-                // gap: LaSelectItem has no trailing slot, so the dot
-                // rides the leading icon slot.
-                icon: BrainHealthDot(brainRef: option.ref),
-              ),
-          ],
+        BrainProviderPicker(
+          options: options,
+          brainRef: _brainBase,
+          castProviders: widget.castProviders,
           onChanged: (final value) => setState(() => _brainBase = value),
         ),
         // ADR 0143 — the brain set: Automatic (the world policy whole)

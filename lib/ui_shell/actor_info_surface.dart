@@ -34,20 +34,20 @@
 /// `actor.info.retired` + `actor.info.revive` (with `.bounce`).
 library;
 
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_chat/actor_presence.dart';
 import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
 import 'package:lastanswer/ui_chat/actor_status.dart';
 import 'package:lastanswer/ui_chat/channel_members_ui.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
-import 'package:lastanswer/data_journal/palette_lanes.dart';
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/data_agents/config/subscription_provider.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_shell/view_people.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
@@ -373,6 +373,9 @@ final class ActorInfoSurface extends StatelessWidget {
             defaultOpenRouterModel: _defaultOpenRouterModel(context),
             subscriptionModels: subscriptionModelsOf(context),
           ),
+          castProviders: castProviderIndex(
+            context.read<WorldStateService?>()?.generativeDecls ?? const [],
+          ),
           tiersForBrain: (final ref) => reasoningTiersForBrainRef(
             ref,
             transportOfRung: (final id) =>
@@ -462,7 +465,11 @@ final class ActorInfoSurface extends StatelessWidget {
                         ),
                         tooltip: context.l10n.worldChatMemberRemoveTooltip,
                         size: LaButtonSize.sm,
-                        icon: Icon(Icons.close, size: 13, color: context.shellMuted),
+                        icon: Icon(
+                          Icons.close,
+                          size: 13,
+                          color: context.shellMuted,
+                        ),
                         onPressed: () =>
                             unawaited(_leaveChannel(context, channel)),
                       ),

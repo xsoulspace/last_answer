@@ -1,5 +1,5 @@
-import 'package:lastanswer/ui_automations/ui_automations.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_automations/ui_automations.dart';
 
 /// The Automations surface (ADR 0032): the device's declared automations
 /// — Services, Schedules, Agents — each with its schedule strip, the

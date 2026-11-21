@@ -30,27 +30,16 @@
 library;
 
 import 'package:ecsly_flutter/ecsly_flutter.dart';
-
 import 'package:headless_core/headless_core.dart';
-
-import 'package:lastanswer/ui_chat/actor_avatar.dart';
-
-import 'package:lastanswer/ui_chat/actor_presence.dart';
-
-import 'package:lastanswer/ui_chat/actor_status.dart';
-
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
-
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-
-import 'package:lastanswer/data_journal/world_state_service.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ecs_world/world.dart';
-
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:lastanswer/ui_chat/actor_status.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-
 import 'package:lastanswer/ui_shell/surfaces.dart';
 
 /// The curated channel glyph vocabulary (the change-icon dialog's

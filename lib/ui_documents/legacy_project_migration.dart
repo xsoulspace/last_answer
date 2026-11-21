@@ -88,9 +88,7 @@ class LegacyProjectMigration {
       id: docId,
       createdAt: legacy.createdAt,
       updatedAt: DateTime.now(),
-      formatId: '',
       title: _titleFor(legacy),
-      type: ProjectTypes.doc,
       tagsIds: legacy.map(
         idea: (value) => value.tagsIds,
         note: (value) => value.tagsIds,

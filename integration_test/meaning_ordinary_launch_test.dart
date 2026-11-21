@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:lastanswer/main.dart' as app;
 import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
-import 'package:lastanswer/main.dart' as app;
+import 'package:material_ui/material_ui.dart';
 import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 
 // Independent fixture identities frozen before ordinary-entry wiring.

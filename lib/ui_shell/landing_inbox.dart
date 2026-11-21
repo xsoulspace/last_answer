@@ -12,13 +12,13 @@ library;
 
 import 'dart:convert';
 
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ecs_world/creature_mark.dart';
 import 'package:lastanswer/ecs_world/creatures.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_shell/status_edge.dart' show HealthDot;
-import 'package:lastanswer/ecs_world/creature_mark.dart';
 
 /// The inbox's readable column (the Tufte measure — the shell never
 /// stretches text edge-to-edge).

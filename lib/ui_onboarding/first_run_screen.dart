@@ -26,17 +26,17 @@ library;
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/data_agents/config/subscription_provider.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/brain_provider_picker.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart' show kViewLayoutPrefsKey;
 import 'package:lastanswer/ui_shell/shell_layout.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The first-run screen: name + optional persona + a brain pick from the
@@ -197,20 +197,19 @@ class _FirstRunScreenState extends State<FirstRunScreen> {
                   ),
                 )
               else
-                Semantics(
-                  label: 'firstrun.brain',
-                  child: LaSelect<String>(
-                    key: const ValueKey('firstrun.brain'),
-                    value: effectiveBrain,
-                    expand: true,
-                    items: [
-                      for (final option in options)
-                        LaSelectItem(value: option.ref, label: option.label),
-                    ],
-                    onChanged: _busy
-                        ? null
-                        : (final value) => setState(() => _brainRef = value),
+                BrainProviderPicker(
+                  options: options,
+                  brainRef: effectiveBrain,
+                  castProviders: castProviderIndex(
+                    widget.brainOptions == null
+                        ? (_worldState?.generativeDecls ?? const [])
+                        : const <CastBrainDecl>[],
                   ),
+                  providerKeyName: 'firstrun.provider',
+                  modelKeyName: 'firstrun.brain',
+                  enabled: !_busy,
+                  onChanged: (final value) =>
+                      setState(() => _brainRef = value),
                 ),
               const Gap(28),
               Semantics(

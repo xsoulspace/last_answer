@@ -31,15 +31,18 @@ library;
 import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
-import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
+import 'package:lastanswer/data_agents/acp/acp_provider.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
+import 'package:lastanswer/ui_chat/brain_provider_picker.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
+import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';
 import 'package:lastanswer/ui_models/local_runtime_ledger.dart';
 import 'package:lastanswer/ui_models/memory_budget.dart';
@@ -47,6 +50,7 @@ import 'package:lastanswer/ui_models/memory_budget_bar.dart';
 import 'package:lastanswer/ui_models/models_widgets.dart';
 import 'package:lastanswer/ui_models/palette_candidate.dart';
 import 'package:lastanswer/ui_models/policy_components.dart';
+import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 import 'package:lastanswer/ui_shell/status_edge.dart' show HealthDot;
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
@@ -504,12 +508,19 @@ final class _CatalogLensState extends State<CatalogLens> {
           rung,
     ];
     if (providers.isEmpty && builtins.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(12),
-        child: Text(
-          context.l10n.modelsNoProviders,
-          key: const ValueKey('models.providers.empty'),
-        ),
+      return ListView(
+        key: const ValueKey('models.providers'),
+        padding: EdgeInsets.zero,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              context.l10n.modelsNoProviders,
+              key: const ValueKey('models.providers.empty'),
+            ),
+          ),
+          _acpSection(context),
+        ],
       );
     }
     return ListView(
@@ -555,10 +566,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                         }
                       },
                     ),
-                    if (_closestUnfitEntry(local) case (
-                      final entry,
-                      final fit,
-                    ))
+                    if (_closestUnfitEntry(local) case (final entry, final fit))
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
                         child: ModelsNote(
@@ -623,6 +631,7 @@ final class _CatalogLensState extends State<CatalogLens> {
             _emptyNote(context, context.l10n.modelsClassSubscriptionAbsent),
           ],
         ),
+        _acpSection(context),
         if (unclassified.isNotEmpty)
           _classSection(
             context,
@@ -656,6 +665,56 @@ final class _CatalogLensState extends State<CatalogLens> {
     ),
   );
 
+  /// Provider `acp`. Models are detected agents and saved server commands.
+  /// The section stays when nothing can run, and it does not invent rows.
+  Widget _acpSection(final BuildContext context) {
+    final listeners = <Listenable>[
+      AcpBridgeRegistry.detectedAgents,
+      ?_agentConfigOrNull(context),
+    ];
+    return _classSection(
+      context,
+      'models.provider.acp',
+      context.l10n.modelsClassAcp,
+      children: [
+        ListenableBuilder(
+          listenable: Listenable.merge(listeners),
+          builder: (final context, final _) {
+            final models = acpModelCatalog(
+              detected: AcpBridgeRegistry.detectedAgents.value,
+              servers: acpServersIn(context),
+            );
+            if (models.isEmpty) {
+              return _emptyNote(context, context.l10n.modelsClassAcpEmpty);
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final model in models)
+                  Padding(
+                    key: ValueKey('models.provider.acp.model.${model.id}'),
+                    padding: const EdgeInsets.fromLTRB(0, 2, 12, 2),
+                    child: Text(
+                      '${model.label} · ${model.id}',
+                      style: LaTokens.mono(11, context.la.ink),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  AgentConfigStore? _agentConfigOrNull(final BuildContext context) {
+    try {
+      return context.read<AgentConfigStore>();
+    } on Object {
+      return null;
+    }
+  }
+
   Widget _emptyNote(final BuildContext context, final String text) => Padding(
     padding: const EdgeInsets.fromLTRB(0, 2, 0, 6),
     child: Text(text, style: LaTokens.mono(10, context.la.inkQuiet)),
@@ -663,22 +722,18 @@ final class _CatalogLensState extends State<CatalogLens> {
 
   /// The checkpoint rows in lifecycle order (loaded → downloaded →
   /// not installed; the repo id breaks ties — List.sort is unstable).
-  List<MlxModelCatalogEntry> _sortedLocalEntries(
-    final LocalModelsState local,
-  ) {
+  List<MlxModelCatalogEntry> _sortedLocalEntries(final LocalModelsState local) {
     int rank(final MlxModelCatalogEntry entry) {
       if (local.stateOf(entry).installed && local.isLoaded(entry)) return 0;
       if (local.stateOf(entry).installed) return 1;
       return 2;
     }
 
-    return local.catalog.toList()
-      ..sort(
-        (final a, final b) =>
-            (rank(a) - rank(b)) != 0
-            ? rank(a) - rank(b)
-            : a.repoId.compareTo(b.repoId),
-      );
+    return local.catalog.toList()..sort(
+      (final a, final b) => (rank(a) - rank(b)) != 0
+          ? rank(a) - rank(b)
+          : a.repoId.compareTo(b.repoId),
+    );
   }
 
   // ---- the Models ladder (2026-11-19, the merge law) ----
@@ -706,9 +761,7 @@ final class _CatalogLensState extends State<CatalogLens> {
         if (entry['role'] != 'generative') entry,
     ];
     final telemetry = groupTelemetryByCast(widget.world, widget.service);
-    final labels = <String>[
-      for (final entry in generative) _brainTitle(entry),
-    ];
+    final labels = <String>[for (final entry in generative) _brainTitle(entry)];
     return <Widget>[
       Padding(
         key: const ValueKey('models.class.localModels'),
@@ -724,7 +777,10 @@ final class _CatalogLensState extends State<CatalogLens> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(l10n.modelsPolicySection, style: shellSectionLabel(context)),
+                    child: Text(
+                      l10n.modelsPolicySection,
+                      style: shellSectionLabel(context),
+                    ),
                   ),
                   ModelsButton(
                     keyName: 'models.ladder.add',
@@ -759,8 +815,8 @@ final class _CatalogLensState extends State<CatalogLens> {
                         generative,
                         telemetry,
                       ),
-                    if (telemetry['unbound']
-                        case final unbound? when unbound.isNotEmpty)
+                    if (telemetry['unbound'] case final unbound?
+                        when unbound.isNotEmpty)
                       _unboundRow(context, unbound),
                   ],
                 );
@@ -776,24 +832,24 @@ final class _CatalogLensState extends State<CatalogLens> {
                 ),
               ),
             if (widget.world.selectedRungId case final session?)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Row(
-                children: [
-                  ModelsChip(
-                    label: '${l10n.modelsSessionPrefix} $session',
-                    color: context.la.accent,
-                    mono: true,
-                  ),
-                  const SizedBox(width: 8),
-                  ModelsButton(
-                    keyName: 'models.session.clear',
-                    label: l10n.modelsSessionClear,
-                    onTap: () => widget.world.selectRung(null),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  children: [
+                    ModelsChip(
+                      label: '${l10n.modelsSessionPrefix} $session',
+                      color: context.la.accent,
+                      mono: true,
+                    ),
+                    const SizedBox(width: 8),
+                    ModelsButton(
+                      keyName: 'models.session.clear',
+                      label: l10n.modelsSessionClear,
+                      onTap: () => widget.world.selectRung(null),
+                    ),
+                  ],
+                ),
               ),
-            ),
             if (decision.isNotEmpty) ...[
               const SizedBox(height: 14),
               SystemLanes(
@@ -878,7 +934,8 @@ final class _CatalogLensState extends State<CatalogLens> {
     // The empty-slot law: a local brain with NOTHING installed still
     // offers its first family checkpoint's download — the "add a model
     // from the catalog" door lives on the brain's row.
-    final slotEntry = active ??
+    final slotEntry =
+        active ??
         (isBuiltin
             ? (familyEntriesForCast(local, id).isEmpty
                   ? null
@@ -909,9 +966,7 @@ final class _CatalogLensState extends State<CatalogLens> {
           hint: id,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: selected
-                  ? la.accent.withValues(alpha: 0.05)
-                  : null,
+              color: selected ? la.accent.withValues(alpha: 0.05) : null,
               borderRadius: selected ? BorderRadius.circular(6) : null,
             ),
             child: ShellRow(
@@ -996,8 +1051,7 @@ final class _CatalogLensState extends State<CatalogLens> {
                           onTap: () =>
                               unawaited(_askInstall(context, slotEntry)),
                         ),
-                      ]
-                      else if (active != null && !busy) ...[
+                      ] else if (active != null && !busy) ...[
                         if (statusText != null && !tight)
                           Text(
                             statusText,
@@ -1091,14 +1145,8 @@ final class _CatalogLensState extends State<CatalogLens> {
                                   isBuiltin
                                       ? classOfBuiltin(builtinLaneFamily(id))
                                       : classOfProvider(
-                                          '${providerOf(
-                                            _model,
-                                            entry,
-                                          )?['transport'] ?? ''}',
-                                          '${providerOf(
-                                            _model,
-                                            entry,
-                                          )?['base_url'] ?? ''}',
+                                          '${providerOf(_model, entry)?['transport'] ?? ''}',
+                                          '${providerOf(_model, entry)?['base_url'] ?? ''}',
                                         ),
                                 ),
                                 color: la.inkQuiet,
@@ -1299,12 +1347,11 @@ final class _CatalogLensState extends State<CatalogLens> {
       context: context,
       builder: (final dialogContext) => _AddCastDialog(
         providers: providers,
-        onConfirm:
-            (final provider, final model) => _model.addCast(
-              id: _castIdFromModel(model),
-              provider: provider,
-              model: model,
-            ),
+        onConfirm: (final provider, final model) => _model.addCast(
+          id: _castIdFromModel(model),
+          provider: provider,
+          model: model,
+        ),
       ),
     );
   }
@@ -1341,7 +1388,9 @@ final class _CatalogLensState extends State<CatalogLens> {
         label: 'models.subscription.chatgpt',
         hint: 'openai_chatgpt_plan',
         child: LaPressable(
-          onTap: controller == null ? null : () => _toggle('subscription:chatgpt'),
+          onTap: controller == null
+              ? null
+              : () => _toggle('subscription:chatgpt'),
           radius: context.laUi.smallRadius,
           child: Container(
             padding: const EdgeInsets.fromLTRB(0, 3, 12, 3),
@@ -1583,9 +1632,9 @@ final class _CatalogLensState extends State<CatalogLens> {
     // the owner's de-duplication law): "Qwen3.5 0.8B" needs no second
     // "0.8B" — the line is `quant · size`, plus the param tag only
     // when the title does not carry it (Laya → "ModernBERT-L").
-    final paramsInLabel = entry.label
-        .toLowerCase()
-        .contains(entry.paramLabel.toLowerCase());
+    final paramsInLabel = entry.label.toLowerCase().contains(
+      entry.paramLabel.toLowerCase(),
+    );
     final metaText = installing && progress != null
         ? _progressLine(context, progress)
         : [
@@ -2821,10 +2870,7 @@ String _detailSpeedLabel(final double tokensPerSecond) => tokensPerSecond >= 10
 /// Confirm drives the candidate's addCast; the dirty bar proposes and
 /// applies it (the restart banner rides the apply).
 final class _AddCastDialog extends StatefulWidget {
-  const _AddCastDialog({
-    required this.providers,
-    required this.onConfirm,
-  });
+  const _AddCastDialog({required this.providers, required this.onConfirm});
 
   final List<String> providers;
   final bool Function(String provider, String model) onConfirm;

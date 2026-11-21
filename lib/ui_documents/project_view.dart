@@ -1,12 +1,12 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/ui_chat/ui_chat.dart';
-import 'package:lastanswer/ui_inspector/ui_inspector.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/ui_chat.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/ui_documents/changelog_view.dart';
 import 'package:lastanswer/ui_documents/code_view.dart';
 import 'package:lastanswer/ui_documents/doc_view.dart';
 import 'package:lastanswer/ui_documents/legacy_project_migration.dart';
+import 'package:lastanswer/ui_inspector/ui_inspector.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 /// The single doc→surface map (ADR 0010): every document variant renders

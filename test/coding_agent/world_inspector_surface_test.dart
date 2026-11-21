@@ -4,11 +4,11 @@
 // tab. The pane here runs over the shared session registry
 // (`HarnessSessionRegistry.instance` — empty in the test binding), the
 // same default the tab uses in production.
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/ui_shell/surfaces.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Builds the registry's inspector spec inside a Material + l10n tree
 /// (the shell's own shape: titles resolve against `context.l10n` at

@@ -1,7 +1,7 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/ui_workbench/workbench_harness_tools.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';

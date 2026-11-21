@@ -91,6 +91,17 @@ final class AcpAgentCatalog {
           'Run `pi auth <provider>` in a terminal to check or set '
           'provider credentials; they stay in the pi config store.',
     ),
+    AcpAgentCatalogEntry(
+      id: 'grok',
+      displayName: 'Grok',
+      // The stock `grok` binary speaks ACP itself. `agent stdio` is the
+      // JSON-RPC process; the interactive TUI does not.
+      commandCandidates: ['grok'],
+      arguments: ['agent', 'stdio'],
+      authHint:
+          'Sign in by running `grok` once, or set XAI_API_KEY. '
+          'Last Answer does not read the Grok CLI auth file.',
+    ),
   ];
 
   final List<AcpAgentCatalogEntry> entries;

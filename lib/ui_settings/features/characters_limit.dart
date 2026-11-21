@@ -1,6 +1,8 @@
 import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/features/characters_limit_state.dart';
+import 'package:oka_store/oka_store.dart';
+import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 class CharactersLimitSetting extends HookWidget {
   const CharactersLimitSetting({required this.controller, super.key});
@@ -44,9 +46,12 @@ class CharactersLimitSetting extends HookWidget {
     }
 
     // final isRestricted = settings.isSocialNetworksRestricted &&
+    // ADR 0037 — the kernel's binding names the store openly.
+    final isRuStore = context.watch<MonetizationStoreBinding>().key ==
+        storeKeyRuStore;
     final isRestricted =
         settings.isSocialNetworksRestricted &&
-        (uiLocaleNotifier.value == Locales.ru || Envs.store.isRustore);
+        (uiLocaleNotifier.value == Locales.ru || isRuStore);
     final isNotRestricted = !isRestricted;
 
     return Wrap(

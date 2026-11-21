@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/icons.dart';
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'icons.dart';
+import 'motion.dart';
+import 'pressable.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The kit switch: 36×20 track, 16 px thumb, 150 ms settle (v6). Replaces
 /// Material Switch.

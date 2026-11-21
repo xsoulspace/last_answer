@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/theme.dart';
+import 'theme.dart';
 
 /// Chevron glyph drawn as a polyline (no icon-font dependency in the kit).
 class LaChevron extends StatelessWidget {

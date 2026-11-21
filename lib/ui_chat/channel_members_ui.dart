@@ -26,10 +26,10 @@
 library;
 
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 
 /// The searchable member picker: the creation dialog's checkbox list

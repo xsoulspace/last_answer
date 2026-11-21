@@ -1,5 +1,5 @@
-import 'package:material_ui/material_ui.dart' show showLicensePage;
 import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart' show showLicensePage;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 

@@ -1,21 +1,26 @@
-import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'
-    hide GlobalMaterialLocalizations, GlobalCupertinoLocalizations;
 import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'
+    hide GlobalCupertinoLocalizations, GlobalMaterialLocalizations;
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
-import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ui_root/feedback.dart';
 import 'package:lastanswer/router.dart';
+import 'package:lastanswer/ui_root/feedback.dart';
 import 'package:lastanswer/ui_settings/features/features.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 class LastAnswerApp extends StatelessWidget {
-  const LastAnswerApp({super.key});
+  const LastAnswerApp({required this.storeBinding, super.key});
+
+  /// The store identity this kernel was compiled for (ADR 0037) —
+  /// decided by the entrypoint, threaded to the composition root.
+  final MonetizationStoreBinding storeBinding;
+
   @override
   Widget build(final BuildContext context) => FeedbackProvider(
     child: ChangeNotifierProvider<ChatGptSubscriptionController>(
@@ -25,7 +30,8 @@ class LastAnswerApp extends StatelessWidget {
         create: (_) =>
             GrokSubscriptionController(credentials: GrokCredentials()),
         child: GlobalStatesProvider(
-        builder: (final context) => const Portal(child: _AppScaffold()),
+          storeBinding: storeBinding,
+          builder: (final context) => const Portal(child: _AppScaffold()),
         ),
       ),
     ),

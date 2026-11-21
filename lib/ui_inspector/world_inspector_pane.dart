@@ -1,9 +1,4 @@
-import 'dart:async';
-
 import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart' show Icons;
-import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 // The guarded external-worlds attach: VM reads real manifests (dart:io);
 // web answers honest absence (stub). Never a compile error on web.
 import 'package:lastanswer/data_journal/world_state_service.dart';
@@ -13,7 +8,6 @@ import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:lastanswer/ui_inspector/world_binding_sheet.dart';
 import 'package:lastanswer/ui_inspector/world_seats.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_agentic_harness_inspector/session_protocol.dart';
 // Deep imports are the package's DOCUMENTED web-safe pattern: the barrel
 // also carries dart:io transports (mcp_source/app_server) that must never

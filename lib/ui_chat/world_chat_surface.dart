@@ -1,25 +1,25 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/media_asset_card.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
-import 'package:lastanswer/ui_chat/actor_avatar.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
-import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
 import 'package:lastanswer/data_journal/beat_linkify.dart';
-import 'package:lastanswer/ui_chat/channel_members_ui.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/data_journal/realm_bot_host.dart';
 import 'package:lastanswer/data_journal/realm_chat_media.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/work_thread_spawn.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/data_agents/config/subscription_provider.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ecs_world/world.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
+import 'package:lastanswer/ui_chat/channel_members_ui.dart';
+import 'package:lastanswer/ui_chat/media_asset_card.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_shell/landing_inbox.dart';
 import 'package:lastanswer/ui_shell/project_scope_picker.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';
@@ -3200,6 +3200,9 @@ class _ActorCardState extends State<_ActorCard> {
                 defaultOpenRouterModel: _defaultOpenRouterModel(context),
                 paletteRungs: worldState?.generativeDecls ?? const [],
                 subscriptionModels: subscriptionModelsOf(context),
+              ),
+              castProviders: castProviderIndex(
+                worldState?.generativeDecls ?? const [],
               ),
               tiersForBrain: (final ref) => reasoningTiersForBrainRef(
                 ref,

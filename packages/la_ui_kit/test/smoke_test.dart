@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Kit smoke tests: the primitives build, activate and honor the token law
 /// without any Material ancestor (the component-carrier law's floor).

@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
-
-import 'package:lastanswer/foundation/foundation.dart';
 
 /// Prefixes:
 /// s - subscription
@@ -63,18 +60,3 @@ extension MonetizationProductsDisclosure on MonetizationProducts {
     MonetizationProducts.sDay1Test => 'per day',
   };
 }
-
-/// Store target used by monetization UI.
-InstallationTargetStore get monetizationStoreTarget => switch (Envs.store) {
-  StoreType.rustore => InstallationTargetStore.rustore,
-  StoreType.googlePlay => InstallationTargetStore.mobileGooglePlay,
-  StoreType.appleStore => InstallationTargetStore.mobileAppleAppStore,
-  StoreType.huawaiStore => InstallationTargetStore.huawei,
-  _ => InstallationTargetStore.rustore,
-};
-
-/// RuStore console application id.
-const rustoreApplicationId = '2045332927';
-
-/// Deeplink scheme used by RuStore billing callbacks.
-const appDeeplinkScheme = 'dev.xsoulspace.lastanswer';

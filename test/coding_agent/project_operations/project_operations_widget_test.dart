@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/data_agents/project_operations/project_operations_session.dart';
 import 'package:lastanswer/data_agents/project_operations/project_operations_widget.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:oka_core/oka_core.dart' show ProcessLeaseRegistry;
 
 import 'project_operations_test_support.dart';

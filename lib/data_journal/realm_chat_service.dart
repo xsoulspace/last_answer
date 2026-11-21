@@ -15,16 +15,17 @@ import 'dart:async' show StreamSubscription, Timer, unawaited;
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/data_agents/acp/acp_turn_worker.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/data_journal/actor_bindings_fold.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/data_journal/actor_creation.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/data_journal/realm_bot_host.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/data_journal/work_thread_spawn.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
@@ -135,6 +136,11 @@ final class RealmChatService extends ChangeNotifier {
   /// RECONSTRUCTED 2026-11-18 after a parallel lane's rewrite lost the
   /// original member (app_shell's wiring is the contract).
   ResolveSubscription? resolveSubscription;
+
+  /// The ACP worker factory the shell wires. Null means an `acp:` actor
+  /// has no voice. Read at sync time, so a factory set after the host
+  /// is constructed still applies.
+  AcpTurnWorker? Function(ActorProfile actor)? createAcpWorker;
 
   /// The incremental actor-bindings fold (ADR 0120/0143 read path):
   /// the `realm_actors` table is read ONCE at bind (adopted from the
@@ -284,9 +290,7 @@ final class RealmChatService extends ChangeNotifier {
   /// resolves to null: the no-thread inbox face.
   String? threadIdForSurface(final String surfaceId) {
     if (surfaceId.startsWith('channel:')) {
-      return channelByAnyId(
-        surfaceId.substring('channel:'.length),
-      )?.threadId;
+      return channelByAnyId(surfaceId.substring('channel:'.length))?.threadId;
     }
     if (surfaceId.startsWith('dm:')) {
       return dmThreadOf(surfaceId.substring('dm:'.length));
@@ -456,8 +460,7 @@ final class RealmChatService extends ChangeNotifier {
       // The bindings fold adopts the SAME scan as its cold fold: one
       // table read at bind, incremental journal-tail reads after (the
       // TailFold law — the refresh path never re-scans per event).
-      _bindingsFold = ActorBindingsFold(world.store)
-        ..adoptScan(records.values);
+      _bindingsFold = ActorBindingsFold(world.store)..adoptScan(records.values);
       for (final record in records.values) {
         final actorId = record['actorId'];
         if (actorId is! String || actorId.isEmpty) continue;
@@ -497,9 +500,9 @@ final class RealmChatService extends ChangeNotifier {
             readInferenceCredential(envName),
         // Late-bound through the field: the shell wires it after this
         // construction (the subscription actors' mounting pass).
-        resolveSubscription:
-            (final providerId, final model) =>
-                resolveSubscription?.call(providerId, model),
+        resolveSubscription: (final providerId, final model) =>
+            resolveSubscription?.call(providerId, model),
+        createAcpWorker: (final actor) => createAcpWorker?.call(actor),
         daemonOwnsActor: daemonOwnsActor,
         debugStartDispatcher: _debugStartBotDispatcher,
         onChanged: notifyListeners,
@@ -1528,7 +1531,8 @@ final class RealmChatService extends ChangeNotifier {
       if (kWorkThreadRegistryReadsOn) {
         links = await registry.list();
       } else {
-        final rows = await _world?.projection.threadRows() ??
+        final rows =
+            await _world?.projection.threadRows() ??
             const <String, Map<String, Object?>>{};
         links = <WorkThreadLink>[];
         for (final row in rows.values) {
@@ -1549,7 +1553,8 @@ final class RealmChatService extends ChangeNotifier {
               parentThreadId: parent,
               projectRoot: scope,
               fallbackName: scope.isEmpty
-                  ? (row['topic'] is String && (row['topic']! as String).isNotEmpty
+                  ? (row['topic'] is String &&
+                            (row['topic']! as String).isNotEmpty
                         ? row['topic']! as String
                         : threadId)
                   : _defaultWorkThreadName(scope),
@@ -1790,8 +1795,7 @@ final class RealmChatService extends ChangeNotifier {
     final topic = row['topic'];
     final rowThreadId = row['threadId'];
     return WorkThreadLink(
-      workThreadId:
-          rowThreadId is String && rowThreadId.isNotEmpty
+      workThreadId: rowThreadId is String && rowThreadId.isNotEmpty
           ? rowThreadId
           : workThreadId,
       parentThreadId: row['parentThreadId'] is String
@@ -1980,10 +1984,7 @@ final class RealmChatService extends ChangeNotifier {
       );
       path = '${result['path'] ?? ''}';
     } on DurableRealmRefusal catch (refused) {
-      return ProjectGrantResult(
-        granted: false,
-        message: refused.code,
-      );
+      return ProjectGrantResult(granted: false, message: refused.code);
     } on Object catch (error) {
       return ProjectGrantResult(granted: false, message: '$error');
     }
@@ -2090,11 +2091,7 @@ final class RealmChatService extends ChangeNotifier {
       await world.conversation().setChannelAccess(
         actor: human,
         threadId: channel.threadId,
-        access: {
-          'read': ?read,
-          'say': ?say,
-          'manage': ?manage,
-        },
+        access: {'read': ?read, 'say': ?say, 'manage': ?manage},
         owners: owners,
       );
       await refreshThreads();
@@ -2200,8 +2197,9 @@ final class RealmChatService extends ChangeNotifier {
       for (final id in memberIds)
         if (id.trim().isNotEmpty) id.trim(),
     }.toList()..sort();
-    final current = (await world.store.read('threads', channel.threadId))
-            ?['participants'] as List? ??
+    final current =
+        (await world.store.read('threads', channel.threadId))?['participants']
+            as List? ??
         const <Object?>[];
     final currentIds = current.cast<String>().toSet();
     final nextIds = next.toSet();

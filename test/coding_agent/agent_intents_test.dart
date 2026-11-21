@@ -8,13 +8,11 @@
 // `agent_doc_bind` writes the doc payload directly (ADR 0003 doc data).
 // The guidance is a host-injected decision recorded as FIRST-CLASS grid
 // state (GUIDE row + composer pre-fill), never a transcript-only line.
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/coding_agent.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 

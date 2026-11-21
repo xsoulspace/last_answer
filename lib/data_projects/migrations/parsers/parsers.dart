@@ -4,12 +4,11 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:universal_io/io.dart';
-
+import 'package:lastanswer/data_projects/migrations/parsers/byte_utils.dart' as byte_utils;
+import 'package:lastanswer/data_projects/migrations/parsers/hive_parser.dart' as hive_parser;
+import 'package:lastanswer/data_projects/migrations/parsers/isar_parser.dart' as isar_parser;
 import 'package:lastanswer/foundation/path_utils.dart' as path_utils;
-import 'byte_utils.dart' as byte_utils;
-import 'hive_parser.dart' as hive_parser;
-import 'isar_parser.dart' as isar_parser;
+import 'package:universal_io/io.dart';
 
 /// Simple library facade for existing parsers. This package provides a
 /// `parseAndPopulate` entry point used by `migrate()` to discover archive

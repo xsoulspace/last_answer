@@ -6,10 +6,9 @@
 // samples it, and a dead facade stays honest (null, never a throw).
 
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 
 void main() {

@@ -7,7 +7,32 @@ import 'package:universal_storage_live_apply/universal_storage_live_apply.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:xsoulspace_agentic_host/conventional_change.dart';
 
-import 'meaning_native_test_composition.dart';
+/// Component evidence uses an explicitly admitted real SDK. Ordinary product
+/// acceptance omits this composition and requires its packaged runtime.
+String get _componentDart {
+  final configured = Platform.environment['HARNESS_TEST_DART'];
+  final file = File(configured ?? '/Users/antonio/fvm/default/bin/dart');
+  if (!file.isAbsolute || !file.existsSync()) {
+    throw StateError('Component test requires an existing absolute Dart SDK');
+  }
+  return file.resolveSymbolicLinksSync();
+}
+
+Future<ProcessResult> runComponentDart(
+  String executable,
+  List<String> arguments,
+  String workingDirectory,
+) {
+  if (executable != 'dart') {
+    throw StateError('Unexpected native component executable: $executable');
+  }
+  return Process.run(
+    _componentDart,
+    arguments,
+    workingDirectory: workingDirectory,
+    environment: const {'PATH': '/usr/bin:/bin:/usr/sbin:/sbin'},
+  );
+}
 
 void main() {
   test(
@@ -59,7 +84,7 @@ void main() {
                   }
                 },
                 verifyCandidate: (candidate) async {
-                  final result = await runMeaningComponentDart('dart', [
+                  final result = await runComponentDart('dart', [
                     '${candidate.path}/main.dart',
                   ], candidate.path);
                   return ConventionalCheck(
@@ -151,7 +176,7 @@ void main() {
       expect(applied['acceptance'], false);
       expect(consent, [proposal, nextProposal]);
       expect(file('obsolete.txt').existsSync(), false);
-      final result = await runMeaningComponentDart('dart', [
+      final result = await runComponentDart('dart', [
         file('main.dart').path,
       ], workspace.path);
       expect(result.stdout, '9,3,1\n');

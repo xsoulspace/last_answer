@@ -1,6 +1,6 @@
-import 'doc_replica_store.dart';
 import '../data_models/document_node.dart';
 import '../data_storage/document_repository.dart';
+import 'doc_replica_store.dart';
 import 'replica_document_repository.dart';
 
 

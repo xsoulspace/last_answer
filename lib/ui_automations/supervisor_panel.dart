@@ -1,7 +1,7 @@
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_automations/supervisor_agent_client.dart';
 import 'package:lastanswer/ui_automations/supervisor_service.dart';
 import 'package:lastanswer/ui_automations/supervisor_view.dart';
-import 'package:lastanswer/common_imports.dart';
 
 /// The device's declared automations, grouped the way a person thinks
 /// about them — Services (always on), Schedules (jobs), Agents (agent

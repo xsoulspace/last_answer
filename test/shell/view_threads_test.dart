@@ -1,11 +1,11 @@
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/view_threads.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Phase 3b — the Threads view: the threads the rail cannot name, as a
 /// read-only projection of the realm list; a click hands the thread to

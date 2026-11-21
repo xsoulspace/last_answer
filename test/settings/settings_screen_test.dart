@@ -1,7 +1,7 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/ui_settings.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
@@ -132,7 +132,7 @@ void main() {
       'models compact law), and a tap scrolls to the section', (
     final tester,
   ) async {
-    await _pumpScreen(tester, size: const Size(1200, 800));
+    await _pumpScreen(tester);
     expect(find.byKey(const ValueKey('settings.toc')), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('settings.toc.about')));

@@ -11,17 +11,17 @@
 //      equal-reader law, never a widget scrape);
 //   3. every refusal is honest (no surface, unknown route, unknown
 //      action) with the next move named in the message.
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
-import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
-import 'package:lastanswer/ui_chat/realm_chat_mcp_tools.dart';
-import 'package:lastanswer/ui_inspector/scripted_session_handle.dart';
-import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
-import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/mcp/app_mcp_tools.dart';
 import 'package:lastanswer/mcp/doc_mcp_tools.dart';
 import 'package:lastanswer/mcp/storage_mcp_tools.dart';
+import 'package:lastanswer/ui_browser/browser_mcp_tools.dart';
+import 'package:lastanswer/ui_chat/realm_chat_mcp_tools.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:lastanswer/ui_inspector/scripted_session_handle.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/app.dart'
     show WorkbenchMemory;

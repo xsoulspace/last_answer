@@ -1,6 +1,5 @@
-import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-
 import 'package:lastanswer/common_imports.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 final class UserLocalDataSourceImpl implements UserLocalDataSource {
   UserLocalDataSourceImpl({required this.localDbDataSource});

@@ -12,13 +12,11 @@
 //   re-registered) never clobbers the live handle — the identical guard;
 // - the registry snapshot is HONEST (DESIGN §6): the host truth rides
 //   the verb output without fabricating spend/context.
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/coding_agent.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

@@ -1,5 +1,5 @@
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 
 /// The user-friendly wrapper over the agent-servers half of the one
 /// agent config document (Zed-parity): register ACP agent servers

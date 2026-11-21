@@ -1,6 +1,6 @@
 // import 'package:google_sign_in/google_sign_in.dart';
 
-import '../auth_provider.dart';
+import 'package:lastanswer/data_user/auth/auth_provider.dart';
 
 class GoogleAuthProvider implements AuthProvider {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'pressable.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The one-pixel hairline (DESIGN.md §Spacing): between meaningful regions
 /// only. Replaces Divider/VerticalDivider.

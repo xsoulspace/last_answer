@@ -19,11 +19,11 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:material_ui/material_ui.dart' show Icons;
 import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:material_ui/material_ui.dart' show Icons;
 
 /// The curated avatar glyph vocabulary (the channel-icon law, wave
 /// N2): a named glyph renders as its Icon; any other non-empty value

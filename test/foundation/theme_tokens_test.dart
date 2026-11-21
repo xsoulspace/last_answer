@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 /// Phase 0 gate (docs/design/shell-redesign-rail-views-tabs-2026-11-05.md):
 /// the shipped themes ARE the DESIGN.md token table — not stock Material.

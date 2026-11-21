@@ -8,16 +8,14 @@
 // registry spec (the world_inspector_surface_test shape) over a real
 // loopback facade; the resolver legs run hermetic on a scripted probe.
 
-import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart';
-
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/world_binding_store.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/surfaces.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _binding = WorldBindingModel(

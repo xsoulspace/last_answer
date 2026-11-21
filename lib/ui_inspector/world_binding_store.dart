@@ -30,7 +30,6 @@ import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io) 'package:lastanswer/ui_inspector/external_worlds_io.dart'
     as external_worlds;
 import 'package:lastanswer/ui_inspector/world_binding.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// What [WorldBindingStore.load] found for one scope key.

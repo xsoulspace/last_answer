@@ -115,23 +115,6 @@ final class HarnessHost {
   Future<SessionPromptResult> converse(String sessionId, String text) =>
       _backend!.converseSession(sessionId, text);
 
-  Map<String, Object?>? meaningReviewProposal(String sessionId) =>
-      _backend?.registry.sessions[sessionId]?.state.reviewProposal;
-
-  /// The bounded experiment uses the existing installed-action SDK and pump.
-  /// Display JSON supplies no authority; the host retains the issued proposal.
-  Future<Map<String, Object?>> meaningAction(
-    final String sessionId,
-    final String action,
-    final Map<String, Object?> arguments,
-  ) async {
-    try {
-      return await _invokeMeaningAction(sessionId, action, arguments);
-    } finally {
-      _retireSettledPermissions(sessionId);
-    }
-  }
-
   /// Conventional candidates use the same actor admission, installed-action
   /// pump and exact native consent as semantic changes. This adapter never
   /// receives a filesystem writer or reconstructs authority from display JSON.

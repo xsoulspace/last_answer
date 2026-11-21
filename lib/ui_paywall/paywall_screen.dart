@@ -1,7 +1,7 @@
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_paywall/paywall_flow.dart';
-import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
+import 'package:oka_store/oka_store.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
 
@@ -109,7 +109,10 @@ class _SubscriptionPlansState extends State<_SubscriptionPlans> {
         .watch<AvailableSubscriptionsResource>()
         .subscriptions;
 
-    if (monetizationStoreTarget == InstallationTargetStore.rustore &&
+    // ADR 0037 — the kernel's binding names the store openly; the
+    // RuStore login wall applies only in a RuStore kernel.
+    final storeKey = context.watch<MonetizationStoreBinding>().key;
+    if (storeKey == storeKeyRuStore &&
         monetizationStatus == MonetizationStoreStatus.userNotAuthorized) {
       return _MessageCard(
         icon: Icons.account_circle_outlined,

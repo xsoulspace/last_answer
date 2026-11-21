@@ -1,4 +1,4 @@
-import '../project_models.dart';
+import 'package:lastanswer/data_projects/project_models.dart';
 
 abstract interface class TagsLocalDataSource {
   Future<Map<ProjectTagModelId, ProjectTagModel>> getAll();

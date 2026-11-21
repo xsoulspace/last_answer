@@ -147,7 +147,17 @@ dependencies:
   # The shared permission contract: ChatPermissionPolicy's stance
   # decisions are core policies; the doc router and ACP round-trip stay
   # product-side.
-  xsoulspace_monetization_rustore: ^1.0.1-dev.2
+  # ADR 0037 — the monetization family + the open store key ride the
+  # sibling checkouts (the binding API is unpublished; see oka ADR 0055).
+  xsoulspace_monetization_foundation:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_foundation
+  xsoulspace_monetization_google_apple:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_google_apple
+  xsoulspace_monetization_rustore:
+    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_rustore
+  xsoulspace_monetization_interface: ^0.9.0
+  oka_store:
+    path: ../../oka/packages/oka_store
   xsoulspace_permission_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
   # The on-device supervisor read surface (oka ADR-0041 §6): declared
@@ -202,10 +212,7 @@ dependencies:
   qr: ^4.0.0
 
   intl: any
-  xsoulspace_monetization_foundation: any
   xsoulspace_foundation: any
-  xsoulspace_installation_store: any
-  xsoulspace_monetization_interface: any
   file_selector: any
   # harness_host.dart imports the OpenRouter binding directly (backend
   # registration) — declared as the path dep it already resolves through.
@@ -272,11 +279,23 @@ dev_dependencies:
     path: ../../oka/packages/oka_harness
   oka_play:
     path: ../../oka/packages/oka_play
+  # ADR 0055 — the delivery matrix: the open store key, desktop
+  # pipelines, and the RuStore channel.
+  oka_rustore:
+    path: ../../oka/packages/oka_rustore
+  oka_store:
+    path: ../../oka/packages/oka_store
+  oka_desktop:
+    path: ../../oka/packages/oka_desktop
 
   web: any
   test: any
   xsoulspace_ui_foundation: any
 dependency_overrides:
+  # One store-key source for the whole graph (oka ADR 0055): the path
+  # checkout wins over every hosted constraint (oka_core, foundation).
+  oka_store:
+    path: ../../oka/packages/oka_store
   # Sibling-checkout skew (intentcall_schema ^0.5.0 vs
   # xsoulspace_agentic_harness ^0.4.0): one version workspace-wide until the
   # two path repos re-converge.
@@ -421,15 +440,6 @@ dependency_overrides:
     path: ../dart_flutter_packages/pkgs/xsoulspace_locale
   xsoulspace_state_utils:
     path: ../dart_flutter_packages/pkgs/xsoulspace_state_utils
-  # TODO(arenukvern): remove after xsoulspace_monetization_* packages publish
-  xsoulspace_installation_store:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_installation_store
-  xsoulspace_monetization_interface:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_interface
-  xsoulspace_monetization_foundation:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_foundation
-  xsoulspace_monetization_rustore:
-    path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_rustore
   universal_storage_interface:
     path: ../../universal_storage/pkgs/universal_storage_interface
   universal_storage_local_db:

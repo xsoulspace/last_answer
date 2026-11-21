@@ -9,10 +9,10 @@
 ///   out by a layer that was never installed).
 library;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
 import 'package:lastanswer/entitlement/tier_gate.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

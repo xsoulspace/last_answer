@@ -1,8 +1,5 @@
-import 'package:shared_models/shared_models.dart';
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-
-import '../project_models.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
 abstract interface class ProjectsLocalDataSource {
   Future<void> putAll({required final List<ProjectModel> projects});

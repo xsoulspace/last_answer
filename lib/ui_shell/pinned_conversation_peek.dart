@@ -11,11 +11,8 @@
 library;
 
 import 'package:headless_core/headless_core.dart';
-
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 
 /// A miniwindow's read-only live peek at one conversation.

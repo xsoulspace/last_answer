@@ -9,13 +9,12 @@
 // The spy stands in for OpenedProjectNotifier's provider slot — the REAL
 // notifier's persistence cascade (ProjectsNotifier → LocalDb) is out of
 // scope here; what this pins is THE WIRING in lib/home/project_view.dart.
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/ui_documents/project_view.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 AgentCallEntry _entry(final String name) =>

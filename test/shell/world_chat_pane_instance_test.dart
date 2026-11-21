@@ -19,14 +19,14 @@
 /// (d) the channel meta row follows each pane's OWN channel.
 library;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The fixture holder: two channel rooms, each with ONE human beat, and

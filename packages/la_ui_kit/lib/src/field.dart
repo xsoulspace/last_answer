@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/scroll.dart';
-import 'package:la_ui_kit/src/selectable.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'pressable.dart';
+import 'scroll.dart';
+import 'selectable.dart';
+import 'theme.dart';
 
 /// The kit text input: [EditableText] (the engine — IME, selection, a11y)
 /// wrapped in the Linear field law from the de-material plan §2: borderless

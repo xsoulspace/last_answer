@@ -1,20 +1,7 @@
-import 'dart:async';
-import 'dart:convert' show JsonDecoder, Utf8Decoder;
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:material_ui/material_ui.dart' show ThemeMode, Colors, Icons, Brightness, MaterialLocalizations, GlobalMaterialLocalizations, DefaultMaterialLocalizations;
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
-import 'package:is_dart_empty_or_not/is_dart_empty_or_not.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/data_projects/data_projects.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_models/shared_models.dart';
-import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-import 'package:xsoulspace_state_utils/xsoulspace_state_utils.dart';
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
+part 'notification.dart';
 part 'notification_models.freezed.dart';
 part 'notification_models.g.dart';
-part 'notification.dart';

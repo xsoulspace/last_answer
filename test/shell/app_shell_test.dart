@@ -22,21 +22,21 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/ui_boards/board_view.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_boards/board_view.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/ui_settings/ui_settings.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart';
 import 'package:lastanswer/ui_shell/pane_strip.dart';
 import 'package:lastanswer/ui_shell/surfaces.dart';
 import 'package:lastanswer/ui_shell/window_drag.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
 
@@ -179,7 +179,6 @@ void main() {
   tearDown(() {
     // The shell installs the home face's seams on mount; release them so
     // other suites start clean.
-    AgentDocSurface.createMeaningExperimentHook = null;
     AgentDocSurface.createAgentProjectHook = null;
     AgentDocSurface.meshWiring = null;
     StorageBackendsNotifier.onSyncCycle = null;

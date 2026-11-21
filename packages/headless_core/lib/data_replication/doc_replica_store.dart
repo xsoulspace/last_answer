@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 
-import 'doc_replica.dart';
 import '../data_models/document_node.dart';
+import 'doc_replica.dart';
 
 /// One committed edit observed on [DocReplicaStore.changes]: the named
 /// document's head advanced (its version vector grew).

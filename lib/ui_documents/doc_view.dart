@@ -1,6 +1,6 @@
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:uuid/uuid.dart';
 
 /// Recursive document editor (ADR 0001).

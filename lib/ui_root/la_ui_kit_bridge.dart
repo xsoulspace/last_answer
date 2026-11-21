@@ -1,6 +1,4 @@
 import 'package:lastanswer/common_imports.dart';
-import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 
 /// The ONE bridge between the app's zinc palette (`LaPalette`, DESIGN.md v2
 /// tokens) and the kit's token carrier (`LaUiTheme`, packages/la_ui). The

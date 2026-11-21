@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_inspector/scripted_session_handle.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
+import 'package:material_ui/material_ui.dart';
 // ignore: implementation_imports
 import 'package:xsoulspace_agentic_harness_inspector/src/answer_rail.dart';
 // ignore: implementation_imports

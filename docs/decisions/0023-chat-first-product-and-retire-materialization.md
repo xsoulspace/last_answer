@@ -157,3 +157,38 @@ context budget even for bounded tasks — i.e., if the small-window support
 that motivated ecsai cannot actually carry the primary agent experience.
 Then the own-agents-first ordering must be revisited against remote-model
 configuration as the primary path.
+
+## Amendment 2026-11-21 — scope clarification: materialization retired, meaning READING kept
+
+Owner clarification (2026-11-21, during the fixture-leak teardown): item 6
+retires the **materialization pipeline** (proposal→consent→materialize→verify
+as a product path), **not the meaning-reading mechanics**. Reading as
+meaning (zoom cuts, clause-grain spans, bounded read-programs — ADR 0004's
+core mechanic) was deliberately kept because it is good mechanics for the
+model; its home is the harness side (`xsoulspace_agentic_host` span tools +
+`xsoulspace_meaning_core`), and Last Answer consumes it as a tool only when
+a proven consumer lands. Until then the mechanics stay packaged-but-unwired
+on purpose; "not wired yet" is their status, not a deletion mandate.
+
+The fixture lane that rode on top of the reading mechanics is gone:
+
+- The frozen greeting fixture (`assets/meaning_greeting/`) was deleted with
+  the 2026-11-19 folder-grammar checkpoint; the macOS meaning-runtime build
+  phase (`bundle_meaning_runtime.sh`, the full-Dart-SDK bundler and its
+  `tool/bundle_meaning_runtime.dart`) was removed 2026-11-21 — the app no
+  longer ships a runtime Dart compiler for the experiment.
+- The experiment/materialization legs in `lib/data_agents/meaning/`
+  (entry button, preparation, controller, view, greeting binding), their
+  doc-surface wiring, the `agent_meaning_change` and
+  `agent_meaning_experiment_create` MCP tools, and their skipped suites
+  were removed 2026-11-21. The generic native-evidence disclosure moved to
+  `lib/data_agents/product/native_evidence_details.dart` (permission and
+  receipt rows still use it); the conventional-change surface (host
+  `conventionalAction`, `ProductCodingChangeView`, its live test) is kept
+  and now owns its own test composition. The retired-lane evidence
+  snapshot `docs/evidence/conventional-local-coding-2026-10-13/` was
+  removed with its subject (preserved in git history).
+
+When the general reader proves useful, it returns as a properly named
+tool (e.g. `agent_read_meaning`) over arbitrary bound workspaces and
+documents — never under the fixture experiment's name.

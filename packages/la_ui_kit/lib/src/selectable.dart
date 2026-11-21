@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/chrome.dart';
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'chrome.dart';
+import 'pressable.dart';
+import 'theme.dart';
 
 /// The kit's selection toolbar: a quiet floating row built from the engine's
 /// own [ContextMenuButtonItem]s (cut/copy/paste/select-all), positioned at

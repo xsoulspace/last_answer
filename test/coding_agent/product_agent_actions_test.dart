@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:lastanswer/data_agents/product/product_agent_mcp_tools.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 class _Document implements AgentDocProductHandle {

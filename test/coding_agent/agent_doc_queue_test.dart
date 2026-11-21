@@ -7,17 +7,13 @@
 // partial-spend verdict → immediate turn), cooled-turn edit with the
 // EDITED annotation + history expand. The scripted mover keeps the
 // harness LLM-free.
-import 'package:headless_core/headless_core.dart';
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter_test/flutter_test.dart';
+import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/coding_agent.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart' show LogicalKeyboardKey;
-import 'package:flutter_portal/flutter_portal.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:lastanswer/coding_agent.dart';
 
 import 'pump_until.dart';
 import 'scripted_write_mover.dart';

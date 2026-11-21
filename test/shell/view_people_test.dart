@@ -3,22 +3,15 @@
 // humans stay quiet, a listening bot renders nothing — and the focus
 // flow (a row tap opens the actor's profile; back returns to the
 // list) works through the plain PeopleFocus notifier.
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:headless_core/headless_core.dart';
-
-import 'package:lastanswer/data_journal/realm_bot_host.dart';
-
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-
-import 'package:lastanswer/data_journal/realm_world.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-
 import 'package:lastanswer/ui_shell/view_people.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   // Wave 3A — the people view's quiet narration line under each bot row

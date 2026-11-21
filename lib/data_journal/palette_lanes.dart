@@ -137,6 +137,10 @@ enum LaneClass {
   /// An on-device built-in service (AFM, laya, the MLX casts).
   onDevice,
 
+  /// A local ACP agent. The provider id is `acp`; a model is one
+  /// launchable agent (`grok`, `codex`, a saved server key).
+  acp,
+
   /// A builtin name the mirror does not know: no class claim.
   unclassified,
 }
@@ -147,6 +151,7 @@ String laneClassChipLabel(final LaneClass laneClass) => switch (laneClass) {
   LaneClass.localServer => 'loopback',
   LaneClass.subscription => 'subscription',
   LaneClass.onDevice => 'on-device',
+  LaneClass.acp => 'acp',
   LaneClass.unclassified => 'builtin',
 };
 

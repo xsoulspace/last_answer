@@ -1,10 +1,9 @@
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config_settings_pane.dart';
-import 'package:lastanswer/data_agents/config/provider_configuration.dart';
-import 'package:provider/provider.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Web parity: the pane renders identically over the prefs-backed store —

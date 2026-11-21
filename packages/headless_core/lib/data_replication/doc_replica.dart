@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 
 import '../data_models/document_node.dart';
-import 'fractional_order.dart';
 import '../data_models/perm_request.dart';
+import 'fractional_order.dart';
 
 /// Doc↔op layer over the convergence kernel — the ADR 0005 §2 op-mapping
 /// table, v1 (last_answer side of infra ADR 0029's contract):

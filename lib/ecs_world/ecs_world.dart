@@ -3,8 +3,8 @@
 /// `package:ecsly` imports. See ECS_WORLD_KNOWLEDGE.md.
 library;
 
+export 'creature_mark.dart';
+export 'creatures.dart';
 export 'world.dart';
 export 'world_components.dart';
 export 'world_feed.dart';
-export 'creatures.dart';
-export 'creature_mark.dart';

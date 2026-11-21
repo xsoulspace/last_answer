@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'pressable.dart';
+import 'theme.dart';
 
 /// The kit list row — ShellRow generalized to the full anatomy
 /// (leading / title / meta / trailing), 34 px compact desktop metric, 44 px

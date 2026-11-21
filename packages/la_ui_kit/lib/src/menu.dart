@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 
-import 'package:la_ui_kit/src/chrome.dart';
-import 'package:la_ui_kit/src/icons.dart';
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/theme.dart';
-import 'package:la_ui_kit/src/tooltip.dart';
+import 'chrome.dart';
+import 'icons.dart';
+import 'motion.dart';
+import 'pressable.dart';
+import 'theme.dart';
+import 'tooltip.dart';
 
 /// One menu entry — items, separators, headers or custom content.
 sealed class LaMenuEntry {

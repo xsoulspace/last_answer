@@ -16,10 +16,6 @@
 library;
 
 import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart' show Icons;
-import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:universal_io/io.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show AssetMediaProvenance;
 

@@ -290,6 +290,15 @@ void main() {
     expect(pi.installCommand, isNotNull);
   });
 
+  test('grok ships in the built-in catalog as agent stdio', () {
+    const catalog = AcpAgentCatalog();
+    final grok = catalog.entries.firstWhere((entry) => entry.id == 'grok');
+    expect(grok.displayName, 'Grok');
+    expect(grok.commandCandidates, ['grok']);
+    expect(grok.arguments, ['agent', 'stdio']);
+    expect(grok.authHint, isNotNull);
+  });
+
   test(
     'permission requests surface as awaitable pendings and gate the turn',
     () async {

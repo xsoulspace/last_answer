@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The kit slider: 4 px track (rule → accent), 14 px thumb (surface with an
 /// accent ring). Replaces Material Slider.

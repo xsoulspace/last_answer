@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/data_journal/realm_bot_host.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// 1f — the endless-participation laws (ADR 0122/0136) in the in-app

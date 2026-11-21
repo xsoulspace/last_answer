@@ -4,12 +4,12 @@
 // independent FNV-1a reimplementation so a swap to a process-randomized
 // hash (String.hashCode) fails here — on every device.
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Independent FNV-1a reimplementation — pins the hash algorithm behind
 /// `actorColor`/`actorIdenticon`, so avatars stay identical across

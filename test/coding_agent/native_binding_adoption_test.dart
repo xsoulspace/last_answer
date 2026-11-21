@@ -1,19 +1,17 @@
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
+import 'package:lastanswer/data_agents/harness/harness_host.dart';
+import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_contract.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_gateway_io.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
-import 'package:lastanswer/data_agents/harness/harness_host.dart';
-import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
-import 'package:lastanswer/data_agents/config/provider_configuration.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart';
@@ -140,8 +138,10 @@ void main() {
     });
     Future<void> openSessionWithoutInference() async {
       var finished = false;
+      // The conventional 'status' action settles the same session
+      // preparation the retired meaning status verb used to gate.
       final status = AgentDocSurface.debugSurface!
-          .meaningAction('status')
+          .codingAction('status', const {})
           .whenComplete(() => finished = true);
       await pumpUntil(tester, () => finished);
       expect(finished, true, reason: 'status preparation did not settle');

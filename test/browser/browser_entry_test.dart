@@ -1,6 +1,6 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_browser/browser_entry.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   testWidgets('the dialog entry opens the browser window', (tester) async {

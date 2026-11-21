@@ -1,12 +1,7 @@
-import 'package:collection/collection.dart';
-import 'package:shared_models/shared_models.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-
-import '../../project_models.dart';
-import 'package:lastanswer/common_imports.dart';
-import '../interfaces/interfaces.dart';
 
 class SearchableContainer<T> {
   const SearchableContainer({required this.jsonContent, required this.value});

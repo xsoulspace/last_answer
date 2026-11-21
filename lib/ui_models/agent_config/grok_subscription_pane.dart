@@ -1,5 +1,5 @@
-import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
 import 'package:xsoulspace_inference_xai/xsoulspace_inference_xai.dart';
 
 /// Account pane for Last Answer's own Grok client registration.

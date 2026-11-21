@@ -3,12 +3,11 @@
 /// and which ACP agents detection last found.
 ///
 /// Laws:
-/// - Device-local facts, honestly scoped: a bridged ACP agent is bound
-///   to the process that spawned it. The registry is the app-run's
-///   truth about those bindings; an app restart starts empty (v1:
-///   bridges are re-created by the human, the durable ACTOR identity
-///   survives in the world record — re-binding the transport across
-///   restarts is named runway, not a silent gap).
+/// - Device-local facts, honestly scoped: an ACP process is bound to
+///   the app run that spawned it. The registry is that run's truth.
+///   An app restart starts empty. The actor and its `acp:` brain
+///   survive in the world record; the host arms a new process for that
+///   same actor. The CLI session is engine scratch, not the identity.
 /// - The permissions list is the [WorldStateService.permissions] merge
 ///   source: bridge rows arrive in the SAME [InboxPermission] shape the
 ///   0c reject-first cards already render, with `actorId` attribution,
@@ -23,10 +22,9 @@ library;
 // ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:flutter/foundation.dart';
-
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:headless_core/headless_core.dart';
 
 /// The desktop gate's pure answer (pinned by tests): the bridge needs a
 /// native desktop platform (an ACP agent is a spawned local process) AND
@@ -40,9 +38,10 @@ AcpBridgeAvailability acpBridgeAvailability(
   final List<String> agentIds,
   final String platform,
 ) => switch (platform) {
-  'macos' || 'linux' || 'windows' => agentIds.isEmpty
-      ? AcpBridgeAvailability.noAgentsDetected
-      : AcpBridgeAvailability.available,
+  'macos' || 'linux' || 'windows' =>
+    agentIds.isEmpty
+        ? AcpBridgeAvailability.noAgentsDetected
+        : AcpBridgeAvailability.available,
   _ => AcpBridgeAvailability.unsupportedPlatform,
 };
 
@@ -69,10 +68,7 @@ final class AcpBridgeRegistry {
 
   /// Adds one permission row (the bridge calls this when the agent asks).
   static void addPermission(final InboxPermission permission) {
-    permissions.value = <InboxPermission>[
-      ...permissions.value,
-      permission,
-    ];
+    permissions.value = <InboxPermission>[...permissions.value, permission];
   }
 
   /// Removes the row with [sessionId] (on answer or bridge stop).
@@ -120,8 +116,8 @@ final class AcpBridgeRegistry {
 
   /// The detected agents' ids (the pure availability helper's input).
   static List<String> detectedAgentIds() => [
-    for (final installation in detectedAgents.value ??
-        const <AcpAgentInstallation>[])
+    for (final installation
+        in detectedAgents.value ?? const <AcpAgentInstallation>[])
       installation.entry.id,
   ];
 

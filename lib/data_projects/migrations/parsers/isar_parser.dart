@@ -3,7 +3,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'byte_utils.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/byte_utils.dart';
 
 /// Minimal Isar parser helpers for test-driven development.
 /// This first pass extracts basic metadata: page size and a simple sanity check

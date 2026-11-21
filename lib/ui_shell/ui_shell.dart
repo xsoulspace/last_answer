@@ -4,13 +4,14 @@
 /// instance id in the ONE registry.
 library;
 
+export 'package:lastanswer/ui_models/models_view.dart';
+export 'package:lastanswer/ui_models/palette_candidate.dart';
+
 export 'action_bar.dart';
 export 'app_shell.dart';
 export 'center_tabs.dart';
 export 'create_flows.dart';
 export 'landing_inbox.dart';
-export 'package:lastanswer/ui_models/models_view.dart';
-export 'package:lastanswer/ui_models/palette_candidate.dart';
 export 'new_tab_menu.dart';
 export 'pane_strip.dart';
 export 'rooms_column.dart';

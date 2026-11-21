@@ -5,16 +5,11 @@
 // prompt surfaces → the user answers ALLOW → the verdict surfaces in the
 // UI — and the doc payload persists the workspace binding (syncable doc
 // data). Everything through the REAL surface widgets — no protocol bypass.
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
 import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
-import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart' show LogicalKeyboardKey;
-import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/coding_agent.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'pump_until.dart';
 import 'scripted_write_mover.dart';

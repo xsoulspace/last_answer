@@ -1,12 +1,6 @@
-import 'dart:async';
-
-import 'package:collection/collection.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lastanswer/common_imports.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:universal_automation_lens/universal_automation_lens.dart';
-
 import 'package:lastanswer/ui_automations/automation_mcp_client.dart';
+import 'package:universal_automation_lens/universal_automation_lens.dart';
 
 /// The Lens surface (ADR 0010 phase 3): the live view of ANY surface
 /// agents act on — a background browser, an admin panel, a driven app —

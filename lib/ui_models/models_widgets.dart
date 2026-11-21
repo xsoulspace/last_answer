@@ -6,8 +6,8 @@
 /// names carried the dialog's anatomy (`_DialogButton` → [ModelsButton]).
 library;
 
-import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/ui_models/palette_candidate.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
 

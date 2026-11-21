@@ -13,13 +13,11 @@
 // Skips honestly (no failure) when the AFM engine is unavailable on this
 // machine — the gate is runtime-gated, not CI-gated.
 
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:lastanswer/coding_agent.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:xsoulspace_inference_apple_foundation/xsoulspace_inference_apple_foundation.dart';
 
 const _afmUnavailableMarker = 'AFM_UNAVAILABLE';

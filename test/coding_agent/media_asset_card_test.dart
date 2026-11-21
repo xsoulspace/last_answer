@@ -7,10 +7,10 @@
 /// silence), and the alt text is the accessibility label.
 library;
 
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_chat/media_asset_card.dart';
+import 'package:material_ui/material_ui.dart';
 
 const header = 'asset-media v1 mime=image/png bytes=312 width=1024 '
     'height=768 alt=none rev=0123456789abcdef by=scout '

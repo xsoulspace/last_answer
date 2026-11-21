@@ -4,7 +4,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
 
-import 'file_service_i.dart';
+import 'package:lastanswer/foundation/file_service/file_service_i.dart';
 
 class FileService implements FileServiceI {
   @override

@@ -9,10 +9,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
-import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 
@@ -126,13 +126,12 @@ Future<_Room> _openRoom(final String label) async {
     debugStartBotDispatcher: false,
   );
   await service.ensureReady();
-  final bridgeActor =
-      (await service.createActor(
-        displayName: 'Codex (bridged)',
-        kind: ActorKind.agent,
-        brainRef: 'acp:codex',
-        role: 'acp bridge',
-      ))!;
+  final bridgeActor = (await service.createActor(
+    displayName: 'Codex (bridged)',
+    kind: ActorKind.agent,
+    brainRef: 'acp:codex',
+    role: 'acp bridge',
+  ))!;
   await service.openDm(bridgeActor.actorId);
   final threadId = service.dmThreadOf(bridgeActor.actorId);
   if (threadId == null) fail('no DM thread for the bridged actor');
@@ -226,10 +225,9 @@ void main() {
     expect(beats, hasLength(greaterThanOrEqualTo(2)));
     final reply = beats.last;
     expect(reply['author'], room.bridgeActor.actorId);
-    expect(
-      (reply['addressedTo']! as List).cast<String>(),
-      <String>[room.humanId],
-    );
+    expect((reply['addressedTo']! as List).cast<String>(), <String>[
+      room.humanId,
+    ]);
     expect(reply['text'], 'Hello, world\n· tool: shell completed');
 
     // The bridge's OWN reply beat never re-prompts (no loop): after the
@@ -350,6 +348,54 @@ void main() {
     await room.service.say('are you still there?');
     await Future<void>.delayed(const Duration(milliseconds: 600));
     expect(transport.prompts, isEmpty);
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  test('host-driven handleBeat says one beat and does not scan', () async {
+    final room = await _openRoom('host');
+    addTearDown(room.dispose);
+    final transport = _ScriptedTransport();
+    addTearDown(transport.dispose);
+    transport.scriptReply(const <AcpPromptUpdate>[
+      AcpPromptUpdate(textDelta: 'GATE-OK'),
+    ]);
+    final bridge = AcpActorBridge(
+      actorId: room.bridgeActor.actorId,
+      agentId: 'grok',
+      workingDirectory: room.temp.path,
+      transport: transport,
+      world: room.world,
+      hostDriven: true,
+    );
+    addTearDown(bridge.stop);
+    bridge.arm();
+    expect(bridge.isRunning, isTrue);
+    expect(AcpBridgeRegistry.bridges.value, contains(bridge));
+
+    await room.service.say('old history');
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    expect(transport.prompts, isEmpty);
+    expect(transport.started, isFalse);
+
+    await bridge.handleBeat(<String, Object?>{
+      'threadId': room.threadId,
+      'author': room.humanId,
+      'text': 'ping',
+      'addressedTo': <String>[room.bridgeActor.actorId],
+    });
+    final beats = await _beatsUntil(
+      room,
+      (final rows) =>
+          rows.any((final beat) => '${beat['text'] ?? ''}'.contains('GATE-OK')),
+    );
+    expect(transport.prompts, <String>['ping']);
+    expect(transport.workingDirectory, room.temp.path);
+    final reply = beats.lastWhere(
+      (final beat) => '${beat['author']}' == room.bridgeActor.actorId,
+    );
+    expect(reply['text'], 'GATE-OK');
+    expect((reply['addressedTo']! as List).cast<String>(), <String>[
+      room.humanId,
+    ]);
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   // (e) The desktop gate's pure helper.

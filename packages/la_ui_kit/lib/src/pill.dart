@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The v2 pill-exception token as a first-class component: a compact status
 /// token whose SHAPE conveys a real state (kind labels, counts, flags).

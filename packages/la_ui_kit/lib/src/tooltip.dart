@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 
-import 'package:la_ui_kit/src/chrome.dart';
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'chrome.dart';
+import 'motion.dart';
+import 'theme.dart';
 
 /// The kit tooltip: quiet overlay surface, micro type, 600 ms wait, portal-
 /// anchored above the child. Replaces Material Tooltip.

@@ -52,12 +52,29 @@ start-server-dart:
 start-server:
     just start-server-docker && just start-server-dart
 
+# roadmap: landing/web deliveries through oka (CommandPipeline + gh-pages
+# channel) once the jaspr landing composes; today the PWA build stays raw.
 build-web-pwa:
     flutter build web --csp --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=xsoulspaceWebsite -t lib/main_prod.dart --pwa-strategy=offline-first && rm -rf release/web && mv build/web release
+
+# Store deliveries (oka ADR 0055) — one named Target per platform ×
+# store; the variant's entrypoint selects the store binding that compiles
+# into the kernel (ADR 0037), so no --dart-define=STORE= anywhere.
+# `oka build --platform <p>` still builds a bare artifact. Publish
+# channels default to dryRun — dry-run first, always.
 build-google-play:
-    flutter build appbundle --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=googlePlay -t lib/main_prod.dart
+    oka run app-google-play --release
 build-rustore:
-    flutter build apk --dart-define-from-file=configs/envs/prod.json --dart-define=STORE=rustore -t lib/main_prod.dart
+    oka run app-rustore --release
+build-appgallery:
+    oka run app-appgallery --release
+build-apple-store:
+    oka run app-apple-store --release
+# Linux snap payload: the linux pipeline bundle; snapcraft packs it (the
+# snap publish channel is a roadmap row — the store key + entrypoint are
+# already the app-snap delivery's variant).
+build-snap:
+    oka run app-snap --release
 # pass
 # as argument: make v="3.19." run
 # or be defined as environment: wid="" wis="" v="3.19." make run build-snap

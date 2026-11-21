@@ -5,11 +5,9 @@
 // bounds pass straight through.
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart';
-
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:lastanswer/ui_shell/miniwindows/mini_window.dart';
+import 'package:material_ui/material_ui.dart';
 
 MiniWindowSpec _spec(
   final String id, {

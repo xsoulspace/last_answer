@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/ui_browser/browser_bridge.dart';
 import 'package:lastanswer/ui_browser/browser_engine.dart';
 import 'package:lastanswer/ui_browser/workspace_browser.dart';
+import 'package:material_ui/material_ui.dart';
 
 final class _FakeEngine implements BrowserEngine {
   final List<Uri> loaded = <Uri>[];

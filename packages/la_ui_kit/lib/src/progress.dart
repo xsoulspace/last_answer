@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'motion.dart';
+import 'theme.dart';
 
 /// The honest loading arc — a spinner is durable-status-adjacent, so DESIGN's
 /// "never substitute a spinner for durable status" still binds WHERE it is

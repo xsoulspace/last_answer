@@ -1,7 +1,3 @@
-import 'package:material_ui/material_ui.dart' show ThemeMode, Colors, Icons, Brightness, MaterialLocalizations, GlobalMaterialLocalizations, DefaultMaterialLocalizations;
-import 'package:lastanswer/foundation/foundation.dart';
-import 'package:provider/provider.dart';
-
 import 'package:lastanswer/common_imports.dart';
 
 final class TagsNotifier

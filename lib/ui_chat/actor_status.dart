@@ -10,9 +10,9 @@
 /// hosts) — honest absence, never a guess.
 library;
 
-import 'package:lastanswer/ui_chat/actor_presence.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
+import 'package:lastanswer/ui_chat/actor_presence.dart';
 
 /// Folds [actorId]'s status from the live service (retirement,
 /// narration, bot statuses) and the world's durable tasks.

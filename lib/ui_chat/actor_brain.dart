@@ -33,6 +33,9 @@
 ///   The device account is resolved at generate time and is never
 ///   written back as a global selected model. A provider this device
 ///   cannot run (signed out, plan off, unknown id) resolves to null.
+/// - `acp:<model-id>` — provider `acp`. The model is one launchable
+///   agent (`grok`, `codex`, a saved server key). The actor host runs
+///   the session. The ref does not mint an actor.
 ///
 /// Local casts are deliberately first-class: small context windows are
 /// the designed-for condition. Their engine lives on ONE persistent
@@ -47,8 +50,8 @@ import 'dart:io' show Directory, File, Platform;
 import 'dart:isolate';
 
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
-import 'package:http/http.dart' as http;
 import 'package:headless_core/headless_core.dart' hide ChatMessage;
+import 'package:http/http.dart' as http;
 import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/ui_models/local_runtime_ledger.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
@@ -229,6 +232,7 @@ final class CastBrainDecl {
     required this.id,
     required this.model,
     required this.transport,
+    this.providerId,
     this.baseUrl,
     this.credentialEnv,
     this.maxOutputTokens,
@@ -238,6 +242,10 @@ final class CastBrainDecl {
 
   final String id;
   final String model;
+
+  /// The palette provider this rung belongs to, when the document
+  /// names one. The actor picker groups models under that provider.
+  final String? providerId;
 
   /// The palette transport wire name (`openrouter`, `openai_compatible`,
   /// `system_one`) or `builtin` for the composition root's local lanes.
@@ -404,6 +412,110 @@ ActorBrain? resolveBrain(
   return null;
 }
 
+/// Provider id for local ACP agents. A model under it is an agent id.
+const acpProviderId = 'acp';
+
+/// `acp:<modelId>`.
+String acpBrainRef(final String modelId) => 'acp:${modelId.trim()}';
+
+/// The model id of an `acp:` brain, or null when the ref is another scheme.
+String? parseAcpBrainRef(final String brainRef) {
+  final base = brainRefBase(brainRef.trim());
+  if (!base.startsWith('acp:')) return null;
+  final model = base.substring('acp:'.length).trim();
+  return model.isEmpty ? null : model;
+}
+
+/// One provider in the actor picker, with the models it can run.
+final class BrainProvider {
+  const BrainProvider({
+    required this.id,
+    required this.label,
+    required this.models,
+  });
+
+  final String id;
+  final String label;
+  final List<({String ref, String label})> models;
+}
+
+/// Groups flat brain refs into provider → model. Palette casts use
+/// [castProviderOf] (rung id → provider id). A cast with no provider
+/// lands under `palette`.
+List<BrainProvider> groupBrainOptions(
+  final List<({String ref, String label})> options, {
+  final Map<String, String> castProviderOf = const {},
+}) {
+  final buckets = <String, List<({String ref, String label})>>{};
+  final order = <String>[];
+  final labels = <String, String>{};
+
+  void add(final String id, final ({String ref, String label}) model) {
+    final list = buckets.putIfAbsent(id, () {
+      order.add(id);
+      return <({String ref, String label})>[];
+    });
+    if (list.any((final row) => row.ref == model.ref)) return;
+    list.add(model);
+  }
+
+  for (final option in options) {
+    final ref = option.ref;
+    final subscription = parseSubscriptionBrainRef(ref);
+    if (subscription != null) {
+      final split = option.label.split(' · ');
+      if (split.length > 1) labels[subscription.providerId] = split.last;
+      add(subscription.providerId, option);
+      continue;
+    }
+    if (parseAcpBrainRef(ref) != null) {
+      add(acpProviderId, option);
+      continue;
+    }
+    if (ref.startsWith('local:')) {
+      add('local', option);
+      continue;
+    }
+    if (ref.startsWith('openrouter:')) {
+      add('openrouter', option);
+      continue;
+    }
+    if (ref.startsWith('cast:')) {
+      final rungId = ref.substring('cast:'.length);
+      final provider = castProviderOf[rungId]?.trim() ?? '';
+      add(provider.isEmpty ? 'palette' : provider, option);
+      continue;
+    }
+    add('other', option);
+  }
+
+  String labelFor(final String id) {
+    final given = labels[id];
+    if (given != null && given.isNotEmpty) return given;
+    return switch (id) {
+      'local' => 'On-device',
+      'openrouter' => 'OpenRouter',
+      acpProviderId => 'ACP',
+      'palette' => 'Palette',
+      'other' => 'Other',
+      _ => brainModelLabel(id: id),
+    };
+  }
+
+  return <BrainProvider>[
+    for (final id in order)
+      BrainProvider(id: id, label: labelFor(id), models: buckets[id]!),
+  ];
+}
+
+/// The rung id → provider id map the picker uses to nest palette models.
+Map<String, String> castProviderIndex(final List<CastBrainDecl> rungs) =>
+    <String, String>{
+      for (final rung in rungs)
+        if (rung.providerId != null && rung.providerId!.trim().isNotEmpty)
+          rung.id: rung.providerId!.trim(),
+    };
+
 /// The brain options the runtime can offer a creator right now.
 ///
 /// Lists every cached Qwen3 variant the hub cache can discover (labeled
@@ -417,6 +529,7 @@ List<({String ref, String label})> availableBrainOptions({
   List<CastBrainDecl> paletteRungs = const [],
   List<({String providerId, String model, String label})> subscriptionModels =
       const [],
+  List<({String id, String label})> acpModels = const [],
   bool Function()? lfm2Discoverable,
 }) {
   final variants = discoverQwen3Variants != null
@@ -488,6 +601,12 @@ List<({String ref, String label})> availableBrainOptions({
           label: entry.label.isEmpty
               ? brainModelLabel(id: entry.providerId, model: entry.model)
               : entry.label,
+        ),
+    for (final model in acpModels)
+      if (model.id.trim().isNotEmpty)
+        (
+          ref: acpBrainRef(model.id),
+          label: model.label.trim().isEmpty ? model.id.trim() : model.label,
         ),
   ];
 }

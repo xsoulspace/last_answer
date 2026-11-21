@@ -1,18 +1,9 @@
-import 'dart:async';
-import 'dart:convert' show JsonDecoder, Utf8Decoder;
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart' show ThemeMode, Colors, Icons, Brightness, MaterialLocalizations, GlobalMaterialLocalizations, DefaultMaterialLocalizations;
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:provider/provider.dart';
+import 'package:lastanswer/data_projects/project_models.dart';
+import 'package:lastanswer/data_projects/projects_repository.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-import 'package:xsoulspace_state_utils/xsoulspace_state_utils.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-import 'project_models.dart';
-import 'projects_repository.dart';
 
 part 'projects_paged_requests_builder.freezed.dart';
 

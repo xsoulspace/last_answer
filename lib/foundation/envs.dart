@@ -20,30 +20,9 @@ class Envs {
   static const wiredashProjectSecret = String.fromEnvironment(
     'WIREDASH_PROJECT_SECRET',
   );
-  static final store = StoreType.fromEnv();
   static const telegramBotToken = String.fromEnvironment('TELEGRAM_BOT_TOKEN');
   static const acpAgentCommand = String.fromEnvironment('ACP_AGENT_COMMAND');
   static const acpAgentArguments = String.fromEnvironment(
     'ACP_AGENT_ARGUMENTS',
-  );
-}
-
-enum StoreType {
-  googlePlay,
-  rustore,
-  huawaiStore,
-  appleStore,
-  xsoulspaceWebsite,
-  snapstore,
-  windowsStore;
-
-  bool get isRustore => this == StoreType.rustore;
-  bool get isHuaweiStore => this == StoreType.huawaiStore;
-  bool get isAppleStore => this == StoreType.appleStore;
-  bool get isWindowsStore => this == StoreType.windowsStore;
-  bool get isSnapStore => this == StoreType.snapstore;
-
-  static StoreType fromEnv() => values.byName(
-    const String.fromEnvironment('STORE', defaultValue: 'snapstore'),
   );
 }

@@ -4,10 +4,10 @@
 /// builder is also available for surfaces that need a full page.
 library;
 
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_browser/browser_strings.dart';
 import 'package:lastanswer/ui_browser/browser_view.dart';
 import 'package:lastanswer/ui_browser/workspace_browser.dart';
-import 'package:lastanswer/common_imports.dart';
 
 /// Opens the browser window as a dialog over the current surface.
 ///

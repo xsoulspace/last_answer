@@ -1,7 +1,7 @@
-import 'chat_document_service.dart';
 import '../data_models/document_node.dart';
 import '../data_storage/document_repository.dart';
 import '../data_storage/in_memory_document_repository.dart';
+import 'chat_document_service.dart';
 
 /// Deterministic scripted response for one prompt.
 final class ScriptedAgentResponse {

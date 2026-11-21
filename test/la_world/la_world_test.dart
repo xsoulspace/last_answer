@@ -1,11 +1,11 @@
 import 'package:ecsly_flutter/ecsly_flutter.dart';
 import 'package:flutter/foundation.dart' show mapEquals;
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ecs_world/world_components.dart';
 import 'package:lastanswer/ecs_world/world_feed.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// 1a — LaWorld: the journal folds into the in-process ecsly World

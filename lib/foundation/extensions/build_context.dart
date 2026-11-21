@@ -1,7 +1,5 @@
-import 'package:material_ui/material_ui.dart' show Brightness, ColorScheme, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, MaterialLocalizations, TextTheme, Theme, ThemeData, ThemeMode;
-import 'package:go_router/go_router.dart';
-
 import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart' show ColorScheme, TextTheme, Theme, ThemeData;
 
 extension BuildContextExtension on BuildContext {
   S get l10n => S.of(this);

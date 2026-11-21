@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 
 void main() {
   // ADR 0024 — the `channels` collection: named threads registered in

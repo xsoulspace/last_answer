@@ -7,8 +7,8 @@ library;
 
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 
 void main() {
   test('a note defaults to zero assets (old JSON restores unchanged)',

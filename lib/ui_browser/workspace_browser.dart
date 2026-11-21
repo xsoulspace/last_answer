@@ -10,13 +10,13 @@
 /// stable widget keys (`browser.*`) as the agent-facing contract.
 library;
 
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_browser/browser_address.dart';
 import 'package:lastanswer/ui_browser/browser_bridge.dart';
 import 'package:lastanswer/ui_browser/browser_strings.dart';
 import 'package:lastanswer/ui_browser/browser_view.dart';
 import 'package:lastanswer/ui_browser/browser_windows.dart';
 import 'package:lastanswer/ui_browser/native_browser_view.dart';
-import 'package:lastanswer/common_imports.dart';
 
 /// A general embedded browser window.
 class WorkspaceBrowser extends StatefulWidget {

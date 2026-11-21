@@ -1,7 +1,3 @@
-import 'package:cupertino_ui/cupertino_ui.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_models/shared_models.dart';
-
 import 'package:lastanswer/common_imports.dart';
 
 class AdsRepository {

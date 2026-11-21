@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/button.dart';
-import 'package:la_ui_kit/src/chrome.dart';
-import 'package:la_ui_kit/src/icons.dart';
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'button.dart';
+import 'chrome.dart';
+import 'icons.dart';
+import 'motion.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The kit dialog frame: title / description / content / footer grammar
 /// (shadcn), quiet scrim, scale-and-fade entry (v6 event motion), squircle

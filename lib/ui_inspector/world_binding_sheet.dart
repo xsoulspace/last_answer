@@ -1,9 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart' show Icons;
-import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/ui_inspector/external_worlds_stub.dart'
     if (dart.library.io)
         'package:lastanswer/ui_inspector/external_worlds_io.dart'

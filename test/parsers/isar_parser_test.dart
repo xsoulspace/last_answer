@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:lastanswer/data_projects/migrations/parsers/isar_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/isar_parser.dart';
 
 void main() {
   test('isar parser reads meta from archive/isar_3.isar', () {

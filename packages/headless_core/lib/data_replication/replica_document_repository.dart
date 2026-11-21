@@ -1,9 +1,9 @@
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 
-import 'doc_replica.dart';
-import 'doc_replica_store.dart';
 import '../data_models/document_node.dart';
 import '../data_storage/document_repository.dart';
+import 'doc_replica.dart';
+import 'doc_replica_store.dart';
 
 /// A [DocumentRepository] whose storage is a [DocReplicaStore] — docs are
 /// event-sourced over the convergence kernel (ADR 0005 §1), so two

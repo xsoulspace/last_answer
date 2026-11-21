@@ -1,8 +1,8 @@
 import 'dart:io' show Directory, File;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/data_journal/palette_lanes.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart'
     show CachedQwen3Snapshot;
 
@@ -243,6 +243,30 @@ void main() {
         discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
       );
       expect(hermetic.map((final o) => o.ref), isNot(contains('local:lfm')));
+    });
+
+    test('acp models group under provider acp and stay out when omitted', () {
+      final plain = availableBrainOptions(
+        defaultOpenRouterModel: '',
+        discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
+      );
+      expect(
+        plain.map((final option) => option.ref),
+        isNot(contains('acp:grok')),
+      );
+      final withAcp = availableBrainOptions(
+        defaultOpenRouterModel: 'meta/llama',
+        discoverQwen3Variants: () => const <CachedQwen3Snapshot>[],
+        acpModels: const [(id: 'grok', label: 'Grok')],
+      );
+      expect(withAcp.map((final option) => option.ref), contains('acp:grok'));
+      final acp = groupBrainOptions(
+        withAcp,
+      ).firstWhere((final provider) => provider.id == acpProviderId);
+      expect(acp.label, 'ACP');
+      expect(acp.models.single.ref, 'acp:grok');
+      expect(parseAcpBrainRef('acp:grok'), 'grok');
+      expect(parseAcpBrainRef('cast:alpha'), isNull);
     });
 
     test('shape holds: ref + label pairs, openrouter entry present', () {

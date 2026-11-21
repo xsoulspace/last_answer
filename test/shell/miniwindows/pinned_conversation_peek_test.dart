@@ -8,13 +8,13 @@
 // (the actor_identity_editing_test / app_shell_test pattern).
 
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/pinned_conversation_peek.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// One hermetic peek fixture: a disposable world, a service over it,
 /// and the DM thread the peek watches.

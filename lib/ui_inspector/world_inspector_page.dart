@@ -1,6 +1,6 @@
 
-import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 
 /// The world inspector as a standalone full-screen page (ADR 0023:
 /// observability lives in Settings/a menu, not embedded under every

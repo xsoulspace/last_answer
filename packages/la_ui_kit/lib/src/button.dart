@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/pressable.dart';
-import 'package:la_ui_kit/src/theme.dart';
-import 'package:la_ui_kit/src/tooltip.dart';
+import 'pressable.dart';
+import 'theme.dart';
+import 'tooltip.dart';
 
 /// The shadcn button grammar, on the 34 px row grid (sm = 28 px).
 enum LaButtonVariant {

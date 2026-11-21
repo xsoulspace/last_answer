@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:universal_io/io.dart';
-
 import 'package:lastanswer/common_imports.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FileService implements FileServiceI {
   final _instance = PlatformInfo.isNativeDesktop

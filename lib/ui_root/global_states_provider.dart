@@ -1,28 +1,28 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:headless_core/headless_core.dart' as headless_core;
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
+import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
-import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
-import 'package:provider/provider.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:universal_storage_local_db/universal_storage_local_db.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-import 'package:xsoulspace_installation_store/xsoulspace_installation_store.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
-import 'package:xsoulspace_monetization_rustore/xsoulspace_monetization_rustore.dart';
-
-import 'package:lastanswer/common_imports.dart';
 
 class GlobalStatesProvider extends StatelessWidget {
-  const GlobalStatesProvider({required this.builder, super.key});
+  const GlobalStatesProvider({
+    required this.storeBinding,
+    required this.builder,
+    super.key,
+  });
+
+  /// The store identity this kernel was compiled for (ADR 0037) — the
+  /// entrypoint's binding decides the purchase provider below; no
+  /// backend package is imported here.
+  final MonetizationStoreBinding storeBinding;
   final WidgetBuilder builder;
 
   static DocInferencePort? _createDocInferencePort(final BuildContext context) {
@@ -77,7 +77,7 @@ class GlobalStatesProvider extends StatelessWidget {
           // The mesh owner fills the injected DocReplicaStoreRef (app
           // shell, debug/profile builds), mirroring
           // AgentDocSurface.meshWiring.
-          context.read<headless_core.DocReplicaStoreRef>(),
+          context.read<headless_core.DocReplicaStoreRef>().call,
         ),
       ),
       Provider(
@@ -166,18 +166,14 @@ class GlobalStatesProvider extends StatelessWidget {
         create: (final context) =>
             PurchasesLocalApi(localDb: context.read<LocalDbI>()),
       ),
+      Provider<MonetizationStoreBinding>.value(value: storeBinding),
       Provider<MonetizationFoundation>(
         create: (final context) {
-          final purchaseProvider = switch (monetizationStoreTarget) {
-            InstallationTargetStore.rustore => RustorePurchaseProvider(
-              consoleApplicationId: rustoreApplicationId,
-              deeplinkScheme: appDeeplinkScheme,
-              // ignore: avoid_redundant_argument_values
-              enableLogging: kDebugMode,
-              productTypeChecker: MonetizationProducts.productTypeChecker,
-            ),
-            _ => NoopPurchaseProvider(),
-          };
+          // ADR 0037 — the binding constructs the provider its kernel
+          // compiled; null (store-neutral builds) falls back to noop.
+          final purchaseProvider =
+              storeBinding.purchaseProviderFactory() ??
+              NoopPurchaseProvider();
           return MonetizationFoundation(
             resources: (
               status: context.read<MonetizationStoreStatusResource>(),

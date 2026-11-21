@@ -24,8 +24,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/data_agents/acp/acp_turn_worker.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// Two bots politely addressing each other stop after this many
@@ -168,6 +169,7 @@ final class RealmBotHost {
     this.resolveCast,
     this.resolveCredential,
     this.resolveSubscription,
+    this.createAcpWorker,
     this.daemonOwnsActor,
     this.debugBrainOverride,
     this.onChanged,
@@ -222,7 +224,12 @@ final class RealmBotHost {
   /// `subscription:` ref — the actor names nothing this host can run.
   final ResolveSubscription? resolveSubscription;
 
+  /// Builds the ACP session for an `acp:` actor. Null, or a null return,
+  /// means that actor has no voice yet (the model is not runnable here).
+  final AcpTurnWorker? Function(ActorProfile actor)? createAcpWorker;
+
   final _loops = <String, _BotLoop>{};
+  final _acp = <String, AcpTurnWorker>{};
 
   /// actorId → one-line status ('listening', 'failed: …').
   Map<String, String> get statuses => {
@@ -262,8 +269,30 @@ final class RealmBotHost {
   /// dispatcher runs while at least one worker exists.
   void syncBots(Iterable<ActorProfile> actors) {
     final wanted = <String>{};
+    final acpWanted = <String>{};
+    var changed = false;
     for (final actor in actors) {
       if (actor.kind == ActorKind.human) continue;
+      final acpModel = parseAcpBrainRef(actor.brainRef);
+      if (acpModel != null) {
+        // An `acp:` brain stays in this process. A stale cast row does
+        // not hand the actor to the daemon.
+        acpWanted.add(actor.actorId);
+        final existing = _acp[actor.actorId];
+        if (existing != null && existing.agentId != acpModel) {
+          unawaited(existing.stop());
+          _acp.remove(actor.actorId);
+          changed = true;
+        }
+        if (!_acp.containsKey(actor.actorId)) {
+          final worker = createAcpWorker?.call(actor);
+          if (worker != null) {
+            _acp[actor.actorId] = worker;
+            changed = true;
+          }
+        }
+        continue;
+      }
       if (daemonOwnsActor?.call(actor) == true) continue; // deferred
       final brain =
           debugBrainOverride?.call(actor) ??
@@ -282,8 +311,10 @@ final class RealmBotHost {
           botProfileMateriallyChanged(live: existing.profile, stored: actor)) {
         _loops.remove(actor.actorId)?.stop();
         existing = null;
+        changed = true;
       }
       if (existing == null || existing.isStopped) {
+        changed = true;
         final loop = _BotLoop(
           world: world,
           profile: actor,
@@ -295,18 +326,35 @@ final class RealmBotHost {
       }
     }
     for (final id in _loops.keys.toSet()) {
-      if (!wanted.contains(id)) _loops.remove(id)?.stop();
+      if (!wanted.contains(id)) {
+        _loops.remove(id)?.stop();
+        changed = true;
+      }
+    }
+    for (final id in _acp.keys.toSet()) {
+      if (!acpWanted.contains(id)) {
+        final worker = _acp.remove(id);
+        if (worker != null) {
+          unawaited(worker.stop());
+          changed = true;
+        }
+      }
     }
     if (debugStartDispatcher && (_wake == null || _wake!.isStopped)) {
       _wake = _WakeLoop(host: this)..start();
     }
-    onChanged?.call();
+    // A no-op sync stays quiet. The shell binds the ACP factory on
+    // every dependency change, and a notify there steals the landing
+    // surface.
+    if (changed) onChanged?.call();
   }
 
   _WakeLoop? _wake;
 
   void stopBot(String actorId) {
     _loops.remove(actorId)?.stop();
+    final worker = _acp.remove(actorId);
+    if (worker != null) unawaited(worker.stop());
   }
 
   void stopAll() {
@@ -314,6 +362,10 @@ final class RealmBotHost {
       loop.stop();
     }
     _loops.clear();
+    for (final worker in _acp.values) {
+      unawaited(worker.stop());
+    }
+    _acp.clear();
     _wake?.stop();
     _wake = null;
   }
@@ -471,6 +523,16 @@ final class _WakeLoop {
               // Serialize generation: one worker at a time keeps the
               // MLX engine honest and replies ordered.
               await loop.handleBeat(beat);
+              if (_stopped) return;
+            }
+            for (final worker in host._acp.values) {
+              if (!worker.isRunning || worker.actorId == author) continue;
+              if (!addressed.contains(worker.actorId)) continue;
+              if (threadRow != null &&
+                  !_threadAdmits(threadRow, worker.actorId)) {
+                continue;
+              }
+              await worker.handleBeat(beat);
               if (_stopped) return;
             }
           }

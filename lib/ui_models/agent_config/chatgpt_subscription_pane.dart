@@ -1,5 +1,5 @@
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Account pane over the application's single protected credential owner.

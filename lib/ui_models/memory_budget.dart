@@ -87,7 +87,7 @@ final class LocalModelFit {
     required final int? totalMegabytes,
     required final int weightsBytes,
   }) {
-    final gate = MlxLoadGate.defaults;
+    const gate = MlxLoadGate.defaults;
     final required = gate.requiredMegabytes(weightsBytes);
     final pressurePoint = gate.reserveMegabytes;
     final available = availableMegabytes;

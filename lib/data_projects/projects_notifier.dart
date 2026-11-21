@@ -1,23 +1,19 @@
 import 'dart:async';
 import 'dart:convert' show JsonDecoder, Utf8Decoder;
-import 'package:collection/collection.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart' show Brightness, BuildContext, Colors, DefaultMaterialLocalizations, GlobalMaterialLocalizations, Icons, MaterialLocalizations, ThemeMode;
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_models/shared_models.dart';
-import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-import 'package:xsoulspace_state_utils/xsoulspace_state_utils.dart';
-import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-import 'package:lastanswer/ui_root/ui_root.dart';
+import 'package:lastanswer/data_projects/idea_questions.dart';
+import 'package:lastanswer/data_projects/project_models.dart';
+import 'package:lastanswer/data_projects/projects_paged_controller.dart';
+import 'package:lastanswer/data_projects/projects_paged_requests_builder.dart';
+import 'package:lastanswer/data_projects/projects_repository.dart';
 import 'package:lastanswer/foundation/foundation.dart';
-import 'projects_repository.dart';
-import 'projects_paged_controller.dart';
-import 'projects_paged_requests_builder.dart';
-import 'idea_questions.dart';
-import 'project_models.dart';
+import 'package:lastanswer/ui_root/ui_root.dart';
+import 'package:material_ui/material_ui.dart' show BuildContext;
+import 'package:provider/provider.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 part 'projects_notifier.freezed.dart';
 

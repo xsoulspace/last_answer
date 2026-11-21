@@ -3,15 +3,15 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/semantics.dart';
 import 'package:headless_core/headless_core.dart' as hc;
-import 'package:lastanswer/ui_browser/browser_entry.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/product/product_autonomy.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/ecs_plugins/scene/workbench_scene.dart';
+import 'package:lastanswer/ui_browser/browser_entry.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_workbench/behaviour_connection.dart';
 import 'package:lastanswer/ui_workbench/workbench_harness_tools.dart';
 import 'package:lastanswer/ui_workbench/workbench_investigation.dart';
-import 'package:lastanswer/ecs_plugins/scene/workbench_scene.dart';
 import 'package:lastanswer/ui_workbench/workbench_strings.dart';
 import 'package:lastanswer/ui_workspaces/workspace.dart';
 import 'package:lastanswer/ui_workspaces/workspace_files_tab.dart';

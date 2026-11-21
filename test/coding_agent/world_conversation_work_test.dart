@@ -1,9 +1,9 @@
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:lastanswer/ui_inspector/world_conversation_view.dart';
 import 'package:lastanswer/ui_inspector/world_seat_lease.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// LA AS A SEAT, v1: the human sees the world AND what the agents are doing.
 ///

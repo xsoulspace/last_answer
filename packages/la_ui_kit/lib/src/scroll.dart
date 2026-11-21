@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/theme.dart';
+import 'theme.dart';
 
 /// The kit scroll behavior: precise desktop dragging (all pointer kinds),
 /// no glow/overscroll indicator, the thin 6 px scrollbar. Wrap a scrolling

@@ -1,13 +1,9 @@
-import 'package:material_ui/material_ui.dart' show ThemeMode, Colors, Icons, Brightness, MaterialLocalizations, GlobalMaterialLocalizations, DefaultMaterialLocalizations;
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart'
     as storage_backends;
-import 'package:provider/provider.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 import 'package:xsoulspace_ui_foundation/xsoulspace_ui_foundation.dart';
-
-import 'package:lastanswer/common_imports.dart';
 
 class ProjectsRepository {
   ProjectsRepository(final BuildContext context)

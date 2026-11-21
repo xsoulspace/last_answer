@@ -5,11 +5,11 @@
 // FAILED; no facts at all read ABSENT — honest absence, never an
 // invented state. The mark renders the verdict as one dot and NOTHING
 // for retired/absent.
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/ui_chat/actor_presence.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   group('deriveActorPresence — the precedence law', () {

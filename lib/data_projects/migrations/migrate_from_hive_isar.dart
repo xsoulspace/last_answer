@@ -6,12 +6,11 @@ import 'package:flutter/widgets.dart';
 import 'package:from_json_to_json/from_json_to_json.dart';
 // import 'package:shared_models/shared_models.dart';
 import 'package:is_dart_empty_or_not/is_dart_empty_or_not.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/parsers.dart' as parsers;
+import 'package:lastanswer/data_projects/project_models.dart';
+import 'package:lastanswer/data_projects/projects_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-
-import '../project_models.dart';
-import '../projects_repository.dart';
-import 'parsers/parsers.dart' as parsers;
 
 /// Core migration entry used by runtime initialization.
 ///

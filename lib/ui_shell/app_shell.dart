@@ -40,80 +40,49 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kDebugMode, listEquals;
-
 import 'package:headless_core/headless_core.dart' as hc;
-
-import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
-
 import 'package:headless_core/headless_core.dart';
-
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
-
-import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
-
-import 'package:lastanswer/data_agents/meaning/meaning_experiment_entry.dart';
-
-
-import 'package:lastanswer/data_agents/config/provider_configuration.dart';
-
-import 'package:lastanswer/ui_chat/actor_avatar.dart';
-
-import 'package:lastanswer/ui_chat/channel_members_ui.dart';
-
-import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
-
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-
-import 'package:lastanswer/data_journal/world_state_service.dart';
-
-import 'package:lastanswer/data_agents/config/subscription_provider.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
+import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
+import 'package:lastanswer/data_agents/acp/acp_provider.dart';
+import 'package:lastanswer/data_agents/acp/acp_turn_worker.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
+import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ecs_world/world.dart';
-
 import 'package:lastanswer/ecs_world/world_feed.dart';
-
+import 'package:lastanswer/ui_automations/lens_surface.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/brain_provider_picker.dart';
+import 'package:lastanswer/ui_chat/channel_members_ui.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config_persistence.dart';
 import 'package:lastanswer/ui_settings/ui_settings.dart';
-
 import 'package:lastanswer/ui_shell/action_bar.dart';
-
 import 'package:lastanswer/ui_shell/center_tabs.dart';
-
 import 'package:lastanswer/ui_shell/command_palette.dart';
-
 import 'package:lastanswer/ui_shell/create_flows.dart';
-
 import 'package:lastanswer/ui_shell/miniwindows/mini_window.dart';
-
 import 'package:lastanswer/ui_shell/miniwindows/mini_window_persistence.dart';
-
 import 'package:lastanswer/ui_shell/new_tab_menu.dart';
-
 import 'package:lastanswer/ui_shell/pane_strip.dart';
-
 import 'package:lastanswer/ui_shell/pinned_conversation_peek.dart';
-
 import 'package:lastanswer/ui_shell/rooms_column.dart';
-
 import 'package:lastanswer/ui_shell/shell_layout.dart';
-
 import 'package:lastanswer/ui_shell/shell_scope.dart';
-
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-
 import 'package:lastanswer/ui_shell/status_edge.dart';
-
 import 'package:lastanswer/ui_shell/surfaces.dart';
-
 import 'package:lastanswer/ui_shell/view_documents.dart';
-
 import 'package:lastanswer/ui_shell/view_people.dart';
-
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The SharedPreferences key holding the pane-group layout JSON v4
@@ -187,6 +156,8 @@ class _AppShellState extends State<AppShell> {
   late final bool _ownsService;
   ChatGptSubscriptionController? _chatgptActors;
   GrokSubscriptionController? _grokActors;
+  AgentConfigStore? _acpConfigStore;
+  var _acpCatalogHooked = false;
 
   /// The world's read model behind the status edge, the landing inbox
   /// and the Models surface (phase 1d). Injected in tests (or resolved
@@ -294,9 +265,8 @@ class _AppShellState extends State<AppShell> {
         if (mounted) return _service.ensureSeededChannel();
       }),
     );
-    // 2e — the ACP agent detection runs ONCE per app run on desktop (the
-    // picker's bridge row renders the availability FACT; discovery never
-    // executes an agent, and the flow re-checks before it binds).
+    // ACP model list: discovery never executes an agent. The host
+    // embodies an `acp:` actor once a model is runnable.
     if (PlatformInfo.isNativeDesktop) {
       unawaited(AcpBridgeRegistry.detectAgents());
     }
@@ -369,6 +339,7 @@ class _AppShellState extends State<AppShell> {
     super.didChangeDependencies();
     _installAgentDocSeams();
     _bindSubscriptionActors();
+    _bindAcpActors();
   }
 
   /// Subscription plans are providers an actor can name (ADR 0031).
@@ -405,6 +376,79 @@ class _AppShellState extends State<AppShell> {
     _service.noteSubscriptionProvidersChanged();
   }
 
+  /// Provider `acp` is an actor brain. The factory reads the live
+  /// catalog (detected installs, then saved servers) at sync time.
+  void _bindAcpActors() {
+    _service.createAcpWorker = _acpWorkerFor;
+    AgentConfigStore? store;
+    try {
+      store = context.read<AgentConfigStore>();
+    } on Object {
+      store = null;
+    }
+    if (!identical(store, _acpConfigStore)) {
+      _acpConfigStore?.removeListener(_onAcpCatalogChanged);
+      _acpConfigStore = store;
+      store?.addListener(_onAcpCatalogChanged);
+    }
+    if (_acpCatalogHooked) return;
+    _acpCatalogHooked = true;
+    AcpBridgeRegistry.detectedAgents.addListener(_onAcpCatalogChanged);
+    _service.syncBots();
+  }
+
+  void _onAcpCatalogChanged() {
+    if (!mounted) return;
+    _service.syncBots();
+  }
+
+  /// One ACP process for this actor, in a scratch directory. A missing
+  /// model waits; the next catalog sync tries again. Never the device's
+  /// first workspace folder.
+  AcpTurnWorker? _acpWorkerFor(final ActorProfile actor) {
+    if (!mounted) return null;
+    final modelId = parseAcpBrainRef(actor.brainRef);
+    if (modelId == null) return null;
+    final world = _service.world;
+    if (world == null) return null;
+    AcpModelChoice? choice;
+    for (final model in acpModelCatalog(
+      detected: AcpBridgeRegistry.detectedAgents.value,
+      servers: acpServersIn(context),
+    )) {
+      if (model.id == modelId) {
+        choice = model;
+        break;
+      }
+    }
+    if (choice == null) return null;
+    final store = _acpConfigStore;
+    final environment = choice.environment.isEmpty
+        ? null
+        : <String, String>{
+            for (final entry in choice.environment.entries)
+              entry.key: store == null
+                  ? entry.value
+                  : store.expandEnv(entry.value).value,
+          };
+    final bridge = AcpActorBridge(
+      actorId: actor.actorId,
+      agentId: modelId,
+      workingDirectory: acpActorWorkspace(actor.actorId),
+      transport: AcpRuntimeBridgeTransport(
+        config: AcpRuntimeConfig(
+          command: choice.command,
+          arguments: choice.arguments,
+          environment: environment,
+        ),
+      ),
+      world: world,
+      hostDriven: true,
+    );
+    bridge.arm();
+    return bridge;
+  }
+
   @override
   void dispose() {
     // The bridge dies WITH the shell — never a stale static seam
@@ -414,6 +458,10 @@ class _AppShellState extends State<AppShell> {
     _shellFocus.dispose();
     _chatgptActors?.removeListener(_onSubscriptionActors);
     _grokActors?.removeListener(_onSubscriptionActors);
+    _acpConfigStore?.removeListener(_onAcpCatalogChanged);
+    if (_acpCatalogHooked) {
+      AcpBridgeRegistry.detectedAgents.removeListener(_onAcpCatalogChanged);
+    }
     _service.removeListener(_onServiceChanged);
     _laWorldFeed?.stop();
     _laWorld?.dispose();
@@ -502,9 +550,9 @@ class _AppShellState extends State<AppShell> {
   }
 
   /// The agent-doc + mesh seams the home screen used to install on every
-  /// build; installed once per shell now. The meaning-experiment hook
-  /// runs in every build mode; the agent-driven seams stay under the
-  /// debug/profile guard that registers the MCP entries (same as before).
+  /// build; installed once per shell now. The agent-driven seams stay
+  /// under the debug/profile guard that registers the MCP entries (same
+  /// as before).
   void _installAgentDocSeams() {
     if (_seamsInstalled) return;
     _seamsInstalled = true;
@@ -516,8 +564,6 @@ class _AppShellState extends State<AppShell> {
     if (workspaces != null) {
       unawaited(workspaces.ensureLoaded());
     }
-    AgentDocSurface.createMeaningExperimentHook = () =>
-        openMeaningExperiment(context);
     assert(() {
       // R9.a — the `agent_doc_create` intent routes create+open through
       // the app's own path (OpenedProjectNotifier.createAgentProject,
@@ -537,9 +583,8 @@ class _AppShellState extends State<AppShell> {
       // Multiplayer chat: chat docs route to the SAME mesh-attached
       // replica store (convergence over the LAN mesh), and the open chat
       // surface re-reads the fold after every cycle.
-      context
-          .read<hc.DocReplicaStoreRef>()
-          .getter = () => StorageBackendsNotifier.instance.docReplicaStore;
+      context.read<hc.DocReplicaStoreRef>().getter = () =>
+          StorageBackendsNotifier.instance.docReplicaStore;
       StorageBackendsNotifier.onSyncCycle = () {
         AgentDocSurface.debugSurface?.refreshAfterMeshSync();
       };
@@ -913,6 +958,16 @@ class _AppShellState extends State<AppShell> {
   /// The persistence lane re-resolves persisted ids through this on
   /// boot — a ghost id restores as nothing.
   MiniWindowSpec? _miniWindowSpec(final String surfaceId) {
+    // ADR 0010 phase 3: the lens rides the miniwindow layer too — the
+    // ChatGPT-pattern floating pane over whatever the user is doing.
+    if (surfaceId == kLensSurfaceId) {
+      return MiniWindowSpec(
+        id: kLensSurfaceId,
+        title: 'Lens',
+        builder: (final context) => const LensSurface(),
+        initialSize: const Size(560, 420),
+      );
+    }
     final dmActor = surfaceId.startsWith('dm:')
         ? surfaceId.substring('dm:'.length)
         : null;
@@ -1651,39 +1706,6 @@ class _AppShellState extends State<AppShell> {
             icon: Icons.create_new_folder_outlined,
             onTap: () => tap(() => unawaited(openNewWorkspaceFlow(context))),
           ),
-          // 2e — the ACP external-actor bridge (desktop only). The row
-          // NAMES its own absence when unavailable (never a crash,
-          // never a faked agent); a still-undetected desktop keeps the
-          // row open and the flow re-checks detection honestly.
-          () {
-            final detected = AcpBridgeRegistry.detectedAgents.value;
-            final availability =
-                detected == null && PlatformInfo.isNativeDesktop
-                ? AcpBridgeAvailability.available
-                : acpBridgeAvailability(
-                    AcpBridgeRegistry.detectedAgentIds(),
-                    Platform.operatingSystem,
-                  );
-            return NewTabRow(
-              key: 'newtab.create.acp',
-              label: switch (availability) {
-                AcpBridgeAvailability.available => 'acp · bridge an agent',
-                AcpBridgeAvailability.noAgentsDetected =>
-                  'acp · bridge — no agent detected',
-                AcpBridgeAvailability.unsupportedPlatform =>
-                  'acp · bridge — desktop only',
-              },
-              icon: Icons.hub_outlined,
-              enabled: availability == AcpBridgeAvailability.available,
-              onTap: availability == AcpBridgeAvailability.available
-                  ? () => tap(
-                      () => unawaited(
-                        openAcpBridgeFlow(context, service: _service),
-                      ),
-                    )
-                  : null,
-            );
-          }(),
           // 2a — the code format's creation flow: the registry's own
           // update lane, then the doc's tab (the documents view's twin).
           NewTabRow(

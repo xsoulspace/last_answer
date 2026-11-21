@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
-import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-
 import 'package:lastanswer/common_imports.dart';
+import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
 
 class NotificationDataSourceImpl implements NotificationsDataSource {
   NotificationDataSourceImpl({

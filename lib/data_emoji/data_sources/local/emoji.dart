@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:cupertino_ui/cupertino_ui.dart';
-import 'package:shared_models/shared_models.dart';
-
+import 'package:lastanswer/data_emoji/data_sources/interfaces/interfaces.dart';
 import 'package:lastanswer/foundation/generated/generated.dart';
-import '../interfaces/interfaces.dart';
+import 'package:shared_models/shared_models.dart';
 
 final class EmojiLocalDataSourceImpl implements EmojiLocalDataSource {
   EmojiLocalDataSourceImpl({

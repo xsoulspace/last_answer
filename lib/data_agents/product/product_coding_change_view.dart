@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:lastanswer/common_imports.dart';
-import 'package:flutter/widgets.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
-import 'package:lastanswer/data_agents/meaning/meaning_experiment_view.dart';
+import 'package:lastanswer/data_agents/product/native_evidence_details.dart';
 import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 
 /// A visual projection of native candidate evidence. Live Apply completes the
@@ -193,7 +191,7 @@ final class ProductCodingChangeView extends StatelessWidget {
                             ),
                         ],
                       ),
-                    MeaningEvidenceDetails(
+                    NativeEvidenceDetails(
                       key: const Key('coding_agent.change.receipt'),
                       title: text.details,
                       body: const JsonEncoder.withIndent(

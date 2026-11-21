@@ -14,19 +14,22 @@
 // - resource filtering en/ru, permissions INTERNET/ACCESS_NETWORK_STATE/CAMERA
 // - <queries> + <uses-feature> preserved from the original manifest
 //
-// Store publishing (ADR-0014/0015): the publish targets `playPublishTarget`
-// and `huaweiPublishTarget` are declared at the bottom of this file —
-// including the one-time human setup (accounts, credential files, env vars)
-// that each store requires. This file is the single source of truth for
-// publishing: dry-run first (`oka run <target>`), real upload only after
-// flipping `dryRun: false` here.
+// Store publishing (ADR-0014/0015) and deliveries (oka ADR 0055): the
+// publish channels (`playPublishTarget`, `ruStorePublishTarget`,
+// `huaweiPublishTarget`) and the store deliveries (`app-*` targets) are
+// declared below — including the one-time human setup (accounts, credential
+// files, env vars) that each store requires. This file is the single
+// source of truth for distribution: dry-run first (`oka run <delivery>`,
+// `oka run publish-play`), real upload only after flipping `dryRun: false`.
 import 'package:oka_android/oka_android.dart';
+import 'package:oka_desktop/oka_desktop.dart';
 import 'package:oka_huawei/oka_huawei.dart';
 import 'package:oka_play/oka_play.dart';
+import 'package:oka_rustore/oka_rustore.dart';
+import 'package:oka_store/oka_store.dart';
 
-/// The Android build identity, shared by the Play pipeline and the Huawei
-/// GMS-free variant (single source of truth — the Huawei composition must
-/// describe the same app).
+/// The Android build identity, shared by every Android delivery (single
+/// source of truth — each store composition must describe the same app).
 const AndroidBuild _androidBuild = AndroidBuild(
   name: 'Last Answer',
   packageName: 'dev.xsoulspace.lastanswer',
@@ -38,9 +41,9 @@ const AndroidBuild _androidBuild = AndroidBuild(
   javaVersion: 17,
 );
 
-/// Packaging fast-settings shared by the Play pipeline and the Huawei
-/// variant. Plugins may contribute Google dependencies, so the Huawei
-/// composition must qualify its GMS-free boundary separately.
+/// Packaging fast-settings shared by every Android delivery. Plugins may
+/// contribute Google dependencies, so the GMS-free compositions qualify
+/// their boundary through the delivery overlay, not a pipeline fork.
 const PipelineOverrides _androidOverrides = PipelineOverrides(
   // file_picker's Android MIME detection calls Tika. Its StAX API is not
   // supplied by Android; provide it rather than suppress missing classes.
@@ -111,36 +114,116 @@ const PipelineOverrides _androidOverrides = PipelineOverrides(
   ),
 );
 
+/// Pipelines — artifact factories, shared by reference. One Android
+/// pipeline serves every Android delivery (APK vs AAB is the delivery's
+/// `buildAab`); one pipeline per desktop platform; bare
+/// `oka build --platform <p>` composes them unchanged.
+const androidPipeline = AndroidPipeline(
+  config: _androidBuild,
+  flutterConfig: FlutterBuild(entrypoint: 'lib/main.dart'),
+  overrides: _androidOverrides,
+);
+const macosPipeline = MacosPipeline();
+const linuxPipeline = LinuxPipeline();
+
+/// Service overlays (oka ADR 0055): WHAT compiles in per service SDK.
+/// The delivery variant composes them; channels declare the legality.
+const gms = Overlay(
+  name: 'gms',
+  description: 'Google Mobile Services (Play Billing path)',
+);
+const hmsFree = Overlay(
+  name: 'hms-free',
+  description: 'GMS-free set (AppGallery boundary — GMS coordinates '
+      'excluded from native dependency resolution)',
+  excludeNativeDependencies: {
+    'android': ['com.google.android.gms:*'],
+  },
+);
+
+/// Store deliveries (oka ADR 0055): ONE named Target per
+/// platform × store — pipeline by const reference, variant (store key +
+/// per-store entrypoint + overlays), optional publish channel. The
+/// variant's entrypoint selects the binding whose backend compiles into
+/// that kernel (ADR 0037); no `--dart-define=STORE=` anywhere.
+const _appDeliveries = [
+  Delivery(
+    name: 'app-google-play',
+    pipeline: androidPipeline,
+    variant: Variant(
+      key: storeKeyGooglePlay,
+      entrypoint: 'lib/entrypoints/main_store_google_play.dart',
+      overlays: [gms],
+    ),
+    channel: playPublishTarget,
+    buildAab: true,
+  ),
+  Delivery(
+    name: 'app-rustore',
+    pipeline: androidPipeline,
+    variant: Variant(
+      key: storeKeyRuStore,
+      entrypoint: 'lib/entrypoints/main_store_rustore.dart',
+    ),
+    channel: ruStorePublishTarget,
+    buildAab: true,
+  ),
+  Delivery(
+    name: 'app-appgallery',
+    pipeline: androidPipeline,
+    variant: Variant(
+      key: storeKeyAppGallery,
+      entrypoint: 'lib/main_prod.dart',
+      overlays: [hmsFree],
+    ),
+    channel: huaweiPublishTarget,
+    buildAab: true,
+  ),
+  Delivery(
+    name: 'app-apple-store',
+    pipeline: macosPipeline,
+    variant: Variant(
+      key: storeKeyAppleStore,
+      entrypoint: 'lib/entrypoints/main_store_apple.dart',
+    ),
+  ),
+  Delivery(
+    name: 'app-snap',
+    pipeline: linuxPipeline,
+    variant: Variant(
+      key: storeKeySnapStore,
+      entrypoint: 'lib/main_prod.dart',
+    ),
+  ),
+];
+
 Future<void> main(final List<String> args) => okaRun(
   args,
   oka: const Oka(
-    pipelines: [
-      AndroidPipeline(
-        config: _androidBuild,
-        flutterConfig: FlutterBuild(entrypoint: 'lib/main_prod.dart'),
-        overrides: _androidOverrides,
-        // No explicit steps: AndroidPipeline composes the default no-Gradle
-        // pipeline and selects APK vs AAB from --aab (an explicit list would
-        // pin the artifact type).
-      ),
-    ],
-    // ADR-0015 verb/target split: publish targets are project-declared and
-    // dispatched with `oka run <target>`. Both targets below default to
-    // dry-run — the plan prints exactly what a real upload would do and
-    // requires no credentials (the ADR-0014 conformance law).
+    pipelines: [androidPipeline, macosPipeline, linuxPipeline],
+    // ADR-0015 verb/target split: deliveries and publish channels are
+    // project-declared and dispatched with `oka run <name>`. Publish
+    // channels stay independently runnable (the Steam/Xcode decoupling:
+    // build first, promote later) and default to dry-run — the plan
+    // prints exactly what a real upload would do and requires no
+    // credentials (the ADR-0014 conformance law).
     targets: [
+      ..._appDeliveries,
       EmulatorTarget(avdName: 'last-answer-api36', apiLevel: 36),
       playPublishTarget,
+      ruStorePublishTarget,
       huaweiPublishTarget,
     ],
   ),
 );
 
-/// Google Play publish target (ADR-0014 P1; ADR-0015 verb/target split).
+/// Google Play publish channel (ADR-0014 P1; ADR-0015 verb/target split).
 ///
 /// Uploads the release AAB to the **internal** testing track of
 /// `dev.xsoulspace.lastanswer` via the Play Publisher API (androidpublisher
 /// /v3 Edits flow: create edit → upload AAB → assign track → commit).
+/// Standalone: `oka run publish-play` (stages the AAB from the last
+/// build); composed: the `app-google-play` delivery builds it first.
 ///
 /// ## What oka does automatically
 ///
@@ -181,10 +264,11 @@ Future<void> main(final List<String> args) => okaRun(
 ///    e.g. `export OKA_PLAY_SERVICE_ACCOUNT_JSON=$HOME/.oka/credentials/play/service-account.json`
 ///    or place the file at the well-known path directly.
 /// 6. Dry-run (safe, credential-free): `oka run publish-play`.
-/// 7. Build the release bundle: `oka build aab --release`.
+/// 7. Build the release bundle: `oka run app-google-play --release` (or
+///    `oka build --platform android --release --aab`).
 /// 8. Real upload: flip `dryRun: false` here (an explicit, reviewable
-///    typed decision — publishing targets plan unless told to execute)
-///    and run `oka run publish-play --release --aab`.
+///    typed decision — publishing channels plan unless told to execute)
+///    and run `oka run app-google-play --release`.
 ///
 /// Why a path and not a dart-define: compilation-time defines are baked
 /// into the shipped binary and echoed in logs — wrong tier for credential
@@ -193,23 +277,35 @@ const PlayPublishTarget playPublishTarget = PlayPublishTarget(
   packageName: 'dev.xsoulspace.lastanswer',
 );
 
-/// Huawei AppGallery publish target (ADR-0014 P2; ADR-0015 verb/target
+/// RuStore publish channel (ADR-0023; ADR-0015 verb/target split).
+///
+/// Dry-run readiness planning for the RuStore upload — a real run needs a
+/// project-provided credential/upload adapter (the store API client is
+/// not shipped by oka), so real mode is refused at plan time until that
+/// adapter lands. Standalone: `oka run publish-rustore`; composed into
+/// the `app-rustore` delivery.
+const RuStorePublishTarget ruStorePublishTarget = RuStorePublishTarget(
+  packageName: 'dev.xsoulspace.lastanswer',
+);
+
+/// Huawei AppGallery publish channel (ADR-0014 P2; ADR-0015 verb/target
 /// split).
 ///
 /// Uploads the release AAB to AppGallery Connect (AGC) on the **beta**
-/// (open testing) track for app `appId` below, composing the GMS-free
-/// Android build variant (`variant:`) per the ADR-0013 two-axis law.
+/// (open testing) track for app `appId` below. The `app-appgallery`
+/// delivery composes the GMS-free overlay (`hmsFree`) and the channel
+/// prohibits the `gms` overlay — the ADR-0013 GMS-free boundary as
+/// composition-time law (oka ADR 0055).
 ///
 /// ## What oka does automatically
 ///
 /// - **GMS-free composition, proven early** — this app's oka build declares
-///   no GMS Maven coordinates (no `extraDeps`), so the
-///   [HuaweiBuildVariant] exclusion has nothing to drop
-///   (`excludedGmsDeps` is empty) and the same GMS-free AAB serves both
-///   stores. The variant keeps that property mechanical: if a GMS
-///   coordinate is ever added, the exclusion filters it out of the Huawei
-///   artifact, and any step that *requires* a GMS-provided artifact fails
-///   the artifact validator at composition time — before any tool runs.
+///   no GMS Maven coordinates (no `extraDeps`), so the `hmsFree` overlay's
+///   exclusion has nothing to drop and the same GMS-free AAB serves both
+///   stores. The overlay keeps that property mechanical: if a GMS
+///   coordinate is ever added, the exclusion filters it out of the
+///   AppGallery artifact, and a channel declaring `prohibitedOverlays:
+///   {'gms'}` fails the composition before any tool runs.
 /// - **Credential resolution by path** (ADR-0014 three-tier model): the
 ///   AGC "API client" JSON is *referenced*, never embedded:
 ///   1. a path in typed config (`credentialPath:`),
@@ -245,9 +341,9 @@ const PlayPublishTarget playPublishTarget = PlayPublishTarget(
 /// 4. Create the release-note files referenced in `release: releaseNotes:`
 ///    below (plain text, one per language).
 /// 5. Dry-run (safe, credential-free): `oka run publish-huawei`.
-/// 6. Build the release bundle: `oka build aab --release`.
+/// 6. Build the release bundle: `oka run app-appgallery --release`.
 /// 7. Real upload: flip `dryRun: false` here and run
-///    `oka run publish-huawei --release --aab`.
+///    `oka run app-appgallery --release`.
 const HuaweiPublishTarget huaweiPublishTarget = HuaweiPublishTarget(
   release: HuaweiReleaseConfig(
     // Release notes are file paths (ADR-0014 tier rule — content is read

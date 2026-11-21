@@ -5,8 +5,8 @@
 /// write (the editor composes it into the save verb).
 library;
 
-import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
 
 /// The avatar dialog: glyph grid + custom field + clear/confirm.
 Future<String?> pickActorAvatar(

@@ -3,12 +3,12 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/button.dart';
-import 'package:la_ui_kit/src/chrome.dart';
-import 'package:la_ui_kit/src/icons.dart';
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'button.dart';
+import 'chrome.dart';
+import 'icons.dart';
+import 'motion.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// Toast severity — the only color the toast may carry (honest state).
 enum LaToastVariant { info, success, danger }

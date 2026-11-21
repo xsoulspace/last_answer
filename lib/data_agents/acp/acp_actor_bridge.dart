@@ -1,10 +1,10 @@
-/// Item 2e — the ACP external-actor bridge v1: ONE bridged agent as an
-/// ORDINARY ACTOR in ONE room.
+/// The ACP session for one actor whose brain is `acp:<agentId>`.
 ///
-/// The bridge is the actor's app-hosted loop (the seat word is honest:
-/// LA hosts this loop; the brainRef `acp:<agentId>` resolves to no
-/// in-app brain and binds no daemon cast, so neither the bot host nor
-/// the daemon claims the actor — the bridge is its ONLY voice).
+/// The actor host is the voice. It keeps one worker per actor and hands
+/// it addressed beats. `arm` plus [handleBeat] is that path: it does not
+/// scan the journal, so the dispatcher and this loop never both answer.
+/// [start] remains the one-thread scan the bridge tests bind directly.
+/// Neither path mints an actor. The daemon does not own an `acp:` brain.
 ///
 /// Laws:
 /// - Cursor law: the beat cursor seeds at the newest beat at bind time
@@ -39,37 +39,52 @@ import 'dart:async';
 
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
 import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
+import 'package:lastanswer/data_agents/acp/acp_turn_worker.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
 
 /// The bridge's lifecycle word (observability rows read it; the runtime
 /// underneath keeps its own status — this is the BRIDGE's seat).
 enum AcpBridgeStatus { idle, starting, ready, error, stopped }
 
-/// One actor ⇄ one thread ⇄ one ACP transport binding.
-final class AcpActorBridge {
+/// One actor ⇄ one ACP transport. A host-driven worker answers in
+/// whichever room the beat names. A scan-path bridge stays on [threadId].
+final class AcpActorBridge implements AcpTurnWorker {
   AcpActorBridge({
     required this.actorId,
     required this.agentId,
-    required this.threadId,
     required this.transport,
     required this.workingDirectory,
+    this.threadId,
+    this.world,
+    this.hostDriven = false,
   });
 
-  /// The bridged actor's durable world identity (the roster row created
-  /// by the flow; beats are said under it).
+  /// The actor's durable world identity. Beats are said under it.
+  @override
   final String actorId;
 
   /// The catalog agent id (`codex`, `claude-code-acp`, `pi`, `local:…`)
   /// — the brainRef's second half.
+  @override
   final String agentId;
 
-  /// The ONE room this bridge is bound to (the DM the flow opened).
-  final String threadId;
+  /// The room a scan-path bridge is bound to. Null for a host-driven
+  /// worker: the beat names the room.
+  final String? threadId;
+
+  /// The world a host-driven worker says into. The scan path uses the
+  /// service it was started with instead.
+  final RealmWorld? world;
+
+  /// True when the actor host delivers beats. That worker must not scan.
+  final bool hostDriven;
 
   final AcpBridgeTransport transport;
 
-  /// The ACP session's cwd (the workspace folder the flow resolved).
+  /// The ACP session's cwd. A beat that names no workspace uses the
+  /// actor's scratch directory, never the device's first project folder.
   final String workingDirectory;
 
   /// The actor's brain binding vocabulary: `acp:<agentId>` — neither a
@@ -86,6 +101,7 @@ final class AcpActorBridge {
   bool _rescan = false;
   int _permissionSeq = 0;
   RealmChatService? _service;
+  String? _turnThread;
   StreamSubscription<AcpBridgePermissionRequest>? _permissionSub;
   final List<String> _openPermissionIds = <String>[];
 
@@ -96,6 +112,7 @@ final class AcpActorBridge {
   String? get lastError => _lastError;
 
   /// Whether the loop is live (start → stop).
+  @override
   bool get isRunning => _running;
 
   /// The beat cursor (the newest beat this bridge has judged).
@@ -105,23 +122,57 @@ final class AcpActorBridge {
   /// observable half: until the seed ran, nothing is judged).
   bool get cursorSeeded => _cursorSeeded;
 
-  /// Binds the loop to [service]: listens for journal activity, seeds
-  /// the cursor at the thread's newest beat, and starts answering
-  /// addressed beats. Idempotent while running.
+  /// Binds the scan path to [service]: listens for journal activity,
+  /// seeds the cursor at the thread's newest beat, and starts answering
+  /// addressed beats in [threadId]. A host-driven worker does not scan.
   void start(final RealmChatService service) {
-    if (_running) return;
+    if (hostDriven || threadId == null || _running) return;
     _running = true;
     _service = service;
     service.addListener(_onServiceChanged);
-    _permissionSub = transport.permissionRequests.listen(
+    _listenForPermissions();
+    unawaited(_bootstrap());
+  }
+
+  /// Arms a host-driven worker: permission cards and the registry, no
+  /// journal scan. The host delivers beats through [handleBeat].
+  void arm() {
+    if (_running) return;
+    _running = true;
+    _listenForPermissions();
+    AcpBridgeRegistry.register(this);
+  }
+
+  /// One addressed beat from the actor host. The beat names the room.
+  @override
+  Future<void> handleBeat(final Map<String, Object?> beat) async {
+    if (!_running) return;
+    final thread = '${beat['threadId'] ?? ''}'.trim();
+    final author = '${beat['author'] ?? ''}'.trim();
+    final text = '${beat['text'] ?? ''}'.trim();
+    if (thread.isEmpty || author.isEmpty || author == actorId || text.isEmpty) {
+      return;
+    }
+    final addressed = beat['addressedTo'];
+    if (addressed is List &&
+        addressed.isNotEmpty &&
+        !addressed.map((final id) => '$id').contains(actorId)) {
+      return;
+    }
+    _turnThread = thread;
+    await _runTurn(text, author);
+  }
+
+  void _listenForPermissions() {
+    _permissionSub ??= transport.permissionRequests.listen(
       _onPermissionRequest,
       onError: _onPermissionStreamError,
     );
-    unawaited(_bootstrap());
   }
 
   /// Tears the loop down: ignores later beats, rejects + removes open
   /// permission rows, stops the transport, leaves the registry.
+  @override
   Future<void> stop() async {
     if (!_running && _service == null && _status == AcpBridgeStatus.stopped) {
       return;
@@ -195,8 +246,9 @@ final class AcpActorBridge {
 
   Future<void> _scanOnce() async {
     final service = _service;
-    if (service == null || !_running) return;
-    final beats = await service.beatsFor(threadId);
+    final bound = threadId;
+    if (service == null || bound == null || !_running) return;
+    final beats = await service.beatsFor(bound);
     if (!_running) return;
     if (!_cursorSeeded) {
       // Cursor law: seed at the newest beat at bind time. The seed pass
@@ -273,11 +325,12 @@ final class AcpActorBridge {
   }
 
   Future<void> _say(final String text, final String author) async {
-    final world = _service?.world;
-    if (world == null) return; // no world: nothing said, nothing faked
-    await world
+    final speaking = world ?? _service?.world;
+    final thread = _turnThread ?? threadId;
+    if (speaking == null || thread == null || thread.isEmpty) return;
+    await speaking
         .sessionFor(actorId)
-        .say(threadId, text, addressedTo: <String>[author]);
+        .say(thread, text, addressedTo: <String>[author]);
   }
 
   void _onPermissionRequest(final AcpBridgePermissionRequest request) {

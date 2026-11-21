@@ -1,14 +1,13 @@
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/actor_avatar.dart';
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/entitlement/pro_entitlement.dart';
-import 'package:lastanswer/ui_settings/widgets/widgets.dart';
+import 'package:lastanswer/ui_chat/actor_avatar.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_root/app_info.dart';
 import 'package:lastanswer/ui_root/feedback.dart';
-import 'package:lastanswer/ui_settings/ui_settings.dart';
 import 'package:lastanswer/ui_settings/settings_sections.dart';
+import 'package:lastanswer/ui_settings/ui_settings.dart';
 import 'package:lastanswer/ui_settings/views/supporter_view/supporter_view.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
@@ -214,7 +213,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SettingsEntry.block(
             keyName: 'agentServers',
             title: l10n.agentSettingsTitle,
-            keywords: const ['acp', 'server', 'agent', 'codex', 'pi', 'gemini'],
+            keywords: const [
+              'acp',
+              'server',
+              'agent',
+              'codex',
+              'pi',
+              'gemini',
+              'grok',
+            ],
             child: const _AgentServersBlock(),
           ),
         ],

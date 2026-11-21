@@ -1,10 +1,11 @@
-import 'doc_inference_port.dart';
 // The app's doc-chat `ChatMessage` (package:core, String roles) is the
 // type these ports speak; the inference-core ChatMessage (ADR 0059, typed
 // roles) is hidden here — the two names must not collide on this import.
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart'
     hide ChatMessage;
 import 'package:xsoulspace_inference_openrouter/xsoulspace_inference_openrouter.dart';
+
+import 'doc_inference_port.dart';
 
 /// Hosted chat-completions lane for [DocInferencePort]: renders the
 /// conversation through [OpenRouterInferenceClient] with the system message

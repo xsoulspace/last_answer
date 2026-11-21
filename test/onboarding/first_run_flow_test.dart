@@ -14,17 +14,15 @@
 // test/shell/app_shell_test.dart.
 import 'dart:convert' show jsonEncode;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_onboarding/first_run_screen.dart';
 import 'package:lastanswer/ui_shell/app_shell.dart' show kViewLayoutPrefsKey;
-
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart'
     show LocalDbI;

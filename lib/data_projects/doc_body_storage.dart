@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'project_models.dart';
+import 'package:lastanswer/data_projects/project_models.dart';
 
 /// Path for a doc body in universal_storage: `docs/{id}.json`.
 /// One file per document node; discussion children are separate nodes

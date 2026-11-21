@@ -13,13 +13,11 @@
 //
 // Requires macOS 26+ with Apple Intelligence enabled; skips honestly
 // otherwise (and when the flag is absent).
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:lastanswer/coding_agent.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:xsoulspace_inference_apple_foundation/xsoulspace_inference_apple_foundation.dart';
 
 const _fixturePath = 'tool/agent_fixture/main.dart';

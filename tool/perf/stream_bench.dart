@@ -31,7 +31,7 @@ Future<void> main() async {
         requestId: 'r1',
         sequence: i,
         occurredAt: DateTime.now(),
-        context: CodingEventContext(taskId: 'bench'),
+        context: const CodingEventContext(taskId: 'bench'),
         phase: CodingTextPhase.delta,
         text: 'token$i ',
       ),

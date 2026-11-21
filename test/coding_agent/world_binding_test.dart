@@ -1,12 +1,12 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:lastanswer/ui_inspector/world_binding_sheet.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_pane.dart';
 import 'package:lastanswer/ui_inspector/world_seat_io.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/trace.dart';

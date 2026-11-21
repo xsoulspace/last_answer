@@ -8,7 +8,7 @@
 //
 // Usage:
 //   fvm dart tool/gates/chat_cli_gate.dart
-//       [--agent pi|gemini|codex|auto]  [--install] [--cwd <dir>]
+//       [--agent pi|gemini|codex|grok|auto]  [--install] [--cwd <dir>]
 //       [--prompt <text>]
 // Exit codes: 0 pass · 1 failure · 2 auth required (user-gated).
 // The equivalent UI path: Chat → transport picker → send (see
@@ -17,8 +17,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_platform_config.dart';
 
 /// `session/new`, answering an advertised ACP auth method first when
 /// [authMethod] names one (e.g. `gemini-api-key`, resolved from the

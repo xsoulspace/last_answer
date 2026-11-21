@@ -20,19 +20,17 @@
 // (`StorageBackendsNotifier`) plays the DISPATCHING peer; the owner
 // device is a local service + board wired into the doc surface through
 // the `AgentDocMeshWiring` closures (the same seams home_screen installs).
-import 'dart:io';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
-import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/data_journal/mesh/mesh_storage_service.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';

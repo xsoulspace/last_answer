@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:la_ui_kit/la_ui_kit.dart';
+import 'package:lastanswer/data_agents/project_operations/project_operations_session.dart';
 import 'package:lastanswer/ui_browser/browser_entry.dart';
 import 'package:oka_core/project_operations.dart' show ProjectOperationKind;
-import 'package:lastanswer/data_agents/project_operations/project_operations_session.dart';
 
 /// The declared project operations of a workspace, as an ordinary surface.
 ///

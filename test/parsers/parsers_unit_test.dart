@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/data_projects/migrations/parsers/hive_parser.dart'
     as hive_parser;
 import 'package:lastanswer/data_projects/migrations/parsers/isar_parser.dart'
     as isar_parser;
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('parseProjectsFromPaths returns summaries for archive files', () {

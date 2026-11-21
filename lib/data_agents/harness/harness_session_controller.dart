@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:headless_core/headless_core.dart';
 
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
-import 'package:lastanswer/data_agents/meaning/meaning_experiment_controller.dart';
 import 'package:lastanswer/data_agents/harness/turn_queue.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show
-        CodingHostUpdate,
         CodingObservationKind,
         CodingObservationUpdate,
         CodingTaskOutcomeUpdate,
@@ -98,25 +95,6 @@ final class HarnessSessionController extends ChangeNotifier {
   /// The embedded daemon. Recreated by [switchBackend] (the per-workspace
   /// snapshot stores make the world survive the restart — R7c).
   HarnessHost host;
-  final _meaningSessions =
-      <HarnessHost, Map<String, MeaningExperimentController>>{};
-  late final _unboundMeaning = MeaningExperimentController(
-    invoke: (_, _) async => {
-      'ok': false,
-      'error': 'meaning_workspace_required',
-    },
-  )..addListener(notifyListeners);
-
-  MeaningExperimentController get meaning {
-    final session = current;
-    if (session == null) return _unboundMeaning;
-    final owner = host;
-    return (_meaningSessions[owner] ??=
-        {})[session.id] ??= MeaningExperimentController(
-      invoke: (action, arguments) =>
-          owner.meaningAction(session.id, action, arguments),
-    )..addListener(notifyListeners);
-  }
 
   /// PLAN 5c — the doc channel for remote permission routing (ADR 0005
   /// §5). Null until the app wiring attaches one
@@ -169,30 +147,7 @@ final class HarnessSessionController extends ChangeNotifier {
   Completer<PendingPermission>? _permissionArrived;
   StreamSubscription<PendingPermission>? _permissionSub;
 
-  bool get isRunning => (current?.running ?? false) || meaning.busy;
-  Map<String, Object?>? get meaningReviewProposal {
-    final session = current;
-    final pending = pendingPermission;
-    if (session == null ||
-        pending == null ||
-        pending.request.sessionId != session.id) {
-      return null;
-    }
-    final update = host.meaningReviewProposal(session.id);
-    if (update == null) return null;
-    try {
-      final exact = jsonDecode(pending.request.details ?? '') as Map;
-      final payload = update['payload'] as Map?;
-      if (exact['proposalId'] == null ||
-          payload?['proposalId'] != exact['proposalId'] ||
-          payload?['effectDigest'] != exact['effectDigest']) {
-        return null;
-      }
-      return update;
-    } on Object {
-      return null;
-    }
-  }
+  bool get isRunning => current?.running ?? false;
 
   /// Idempotently starts the daemon and subscribes to its permission
   /// round-trips.
@@ -904,14 +859,6 @@ final class HarnessSessionController extends ChangeNotifier {
   void dispose() {
     _disposed = true;
     pendingPermission = null;
-    for (final projection in [
-      _unboundMeaning,
-      for (final sessions in _meaningSessions.values) ...sessions.values,
-    ]) {
-      projection
-        ..removeListener(notifyListeners)
-        ..dispose();
-    }
     unawaited(_permissionSub?.cancel());
     unawaited(() async {
       try {

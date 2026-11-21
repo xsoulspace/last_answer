@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:lastanswer/common_imports.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 // The app's doc-chat ChatMessage (package:core) is the type these ports
 // speak; hide the inference-core ChatMessage (ADR 0059) — same rule as
 // lib/doc/acp_doc_inference_port.dart.

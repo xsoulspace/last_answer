@@ -42,7 +42,7 @@ final class AutomationMcpClient {
       endpoint.toString(),
       options: Options(
         headers: {
-          if (_sessionId != null) 'Mcp-Session-Id': _sessionId!,
+          'Mcp-Session-Id': ?_sessionId,
         },
         responseType: ResponseType.json,
       ),
@@ -50,7 +50,7 @@ final class AutomationMcpClient {
         'jsonrpc': '2.0',
         'id': id,
         'method': method,
-        if (params != null) 'params': params,
+        'params': ?params,
       },
     );
     final session = response.headers.value('mcp-session-id');
@@ -114,7 +114,7 @@ final class AutomationMcpClient {
             endpoint.toString(),
             options: Options(
               headers: {
-                if (_sessionId != null) 'Mcp-Session-Id': _sessionId!,
+                'Mcp-Session-Id': ?_sessionId,
               },
             ),
             data: const {
@@ -140,7 +140,7 @@ final class AutomationMcpClient {
   ]) async {
     await ensureInitialized();
     return _toolCall('automation_observe', {
-      if (arguments != null) ...arguments,
+      ...?arguments,
       'agentId': agentId,
     });
   }
@@ -149,7 +149,7 @@ final class AutomationMcpClient {
   Future<Map<String, Object?>> presence([String? forAgent]) async {
     await ensureInitialized();
     return _toolCall('automation_presence', {
-      if (forAgent != null) 'agentId': forAgent,
+      'agentId': ?forAgent,
     });
   }
 

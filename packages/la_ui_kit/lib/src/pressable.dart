@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:la_ui_kit/src/motion.dart';
-import 'package:la_ui_kit/src/squircle.dart';
-import 'package:la_ui_kit/src/theme.dart';
+import 'motion.dart';
+import 'squircle.dart';
+import 'theme.dart';
 
 /// The interactive state snapshot [LaPressable.childBuilder] receives — the
 /// ONE place hover/focus/press/selected truth exists (the kit's answer to

@@ -8,16 +8,16 @@
 // retired kind-button test): it totals every room the member has not
 // read; the receipt clears it; no LaWorld = honest absence.
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ecs_world/world_components.dart';
 import 'package:lastanswer/ui_shell/action_bar.dart';
 import 'package:lastanswer/ui_shell/shell_layout.dart';
+import 'package:material_ui/material_ui.dart';
 
 Future<void> _pumpBar(
   final WidgetTester tester, {

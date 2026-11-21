@@ -13,7 +13,6 @@
 library;
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_inspector/paired_worlds.dart';

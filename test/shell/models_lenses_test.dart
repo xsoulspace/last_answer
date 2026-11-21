@@ -20,17 +20,17 @@ library;
 
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_chat/palette_health.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/ui_chat/palette_health.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';
 import 'package:lastanswer/ui_models/models_view.dart';
 import 'package:lastanswer/ui_models/palette_candidate.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_mlx_native/xsoulspace_inference_mlx_native.dart';
 

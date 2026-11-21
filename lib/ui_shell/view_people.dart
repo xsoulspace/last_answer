@@ -32,25 +32,26 @@
 /// `actor.status.<id>` (2026-11-18).
 library;
 
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/config/subscription_provider.dart';
+import 'package:lastanswer/data_journal/palette_lanes.dart';
+import 'package:lastanswer/data_journal/realm_bot_host.dart';
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/data_journal/world_state_service.dart';
+import 'package:lastanswer/ecs_world/creature_mark.dart';
+import 'package:lastanswer/ecs_world/creatures.dart';
+import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ui_chat/actor_avatar.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_chat/actor_presence.dart';
 import 'package:lastanswer/ui_chat/actor_profile_editor.dart';
 import 'package:lastanswer/ui_chat/actor_status.dart';
 import 'package:lastanswer/ui_chat/brain_health_dot.dart';
-import 'package:lastanswer/data_journal/palette_lanes.dart';
-import 'package:lastanswer/data_journal/realm_bot_host.dart';
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/data_agents/config/subscription_provider.dart';
-import 'package:lastanswer/common_imports.dart';
-import 'package:lastanswer/ecs_world/creatures.dart';
-import 'package:lastanswer/ecs_world/world.dart';
+import 'package:lastanswer/ui_chat/brain_provider_picker.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_shell/project_scope_picker.dart';
 import 'package:lastanswer/ui_shell/shell_theme.dart';
-import 'package:lastanswer/ecs_world/creature_mark.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show ActorScopeGrant;
 
@@ -200,14 +201,15 @@ class _ActorsManagerBody extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final l10n = context.l10n;
-    final rosterIds = [
-      for (final actor in service.roster?.all ?? const <ActorProfile>[])
-        actor.actorId,
-    ]..sort((final a, final b) {
-      final an = _nameOf(a).toLowerCase();
-      final bn = _nameOf(b).toLowerCase();
-      return an.compareTo(bn) != 0 ? an.compareTo(bn) : a.compareTo(b);
-    });
+    final rosterIds =
+        [
+          for (final actor in service.roster?.all ?? const <ActorProfile>[])
+            actor.actorId,
+        ]..sort((final a, final b) {
+          final an = _nameOf(a).toLowerCase();
+          final bn = _nameOf(b).toLowerCase();
+          return an.compareTo(bn) != 0 ? an.compareTo(bn) : a.compareTo(b);
+        });
     final liveIds = [
       for (final id in rosterIds)
         if (_matches(query, id, _nameOf(id))) id,
@@ -217,10 +219,7 @@ class _ActorsManagerBody extends StatelessWidget {
     // head decides whether they render at all.
     final retiredIds =
         service.retiredRows.keys
-            .where(
-              (final id) =>
-                  _matches(query, id, _retiredNameOf(id)),
-            )
+            .where((final id) => _matches(query, id, _retiredNameOf(id)))
             .toList()
           ..sort((final a, final b) {
             final an = _retiredNameOf(a).toLowerCase();
@@ -255,9 +254,7 @@ class _ActorsManagerBody extends StatelessWidget {
             ),
             child: liveIds.isEmpty
                 ? Text(
-                    searchEmpty
-                        ? l10n.actorsSearchEmpty
-                        : l10n.actorsNoneYet,
+                    searchEmpty ? l10n.actorsSearchEmpty : l10n.actorsNoneYet,
                     key: const ValueKey('shell.people.search.empty'),
                     style: context.laUi.compact.copyWith(
                       color: context.shellMuted,
@@ -323,15 +320,22 @@ class _ActorsManagerBody extends StatelessWidget {
   /// own surface opens (actor equality: minted = editable at once).
   Future<void> _newActor(final BuildContext context) async {
     final l10n = context.l10n;
+    final decls =
+        context.read<WorldStateService?>()?.generativeDecls ?? const [];
     final options = availableBrainOptions(
       defaultOpenRouterModel: _defaultOpenRouterModel(context),
-      paletteRungs:
-          context.read<WorldStateService?>()?.generativeDecls ?? const [],
+      paletteRungs: decls,
       subscriptionModels: subscriptionModelsOf(context),
     );
+    final seeded = <({String ref, String label})>[
+      ...options,
+      for (final model in liveAcpModels(context))
+        (ref: acpBrainRef(model.id), label: model.label),
+    ];
+    final castProviders = castProviderIndex(decls);
     final name = TextEditingController();
     final role = TextEditingController();
-    var brain = options.isEmpty ? '' : options.first.ref;
+    var brain = seeded.isEmpty ? '' : seeded.first.ref;
     final created = await showLaDialog<bool>(
       context: context,
       builder: (final dialogContext) => StatefulBuilder(
@@ -355,16 +359,14 @@ class _ActorsManagerBody extends StatelessWidget {
                   placeholder: l10n.actorsRoleHint,
                 ),
                 const SizedBox(height: 8),
-                LaSelect<String>(
-                  key: const ValueKey('shell.people.newActor.brain'),
-                  value: brain,
-                  expand: true,
-                  items: [
-                    for (final option in options)
-                      LaSelectItem(value: option.ref, label: option.label),
-                  ],
+                BrainProviderPicker(
+                  options: options,
+                  brainRef: brain.isEmpty ? null : brain,
+                  castProviders: castProviders,
+                  providerKeyName: 'shell.people.newActor.provider',
+                  modelKeyName: 'shell.people.newActor.brain',
                   onChanged: (final value) =>
-                      setDialogState(() => brain = value ?? brain),
+                      setDialogState(() => brain = value),
                 ),
               ],
             ),
@@ -749,6 +751,9 @@ class _ActorPanelState extends State<_ActorPanel> {
               defaultOpenRouterModel: _defaultOpenRouterModel(context),
               subscriptionModels: subscriptionModelsOf(context),
             ),
+            castProviders: castProviderIndex(
+              context.read<WorldStateService?>()?.generativeDecls ?? const [],
+            ),
             tiersForBrain: (final ref) => reasoningTiersForBrainRef(
               ref,
               transportOfRung: (final id) =>
@@ -791,12 +796,16 @@ class _ActorPanelState extends State<_ActorPanel> {
         ),
       );
     }
-    final options = availableBrainOptions(
-      defaultOpenRouterModel: _defaultOpenRouterModel(context),
-      paletteRungs:
-          context.read<WorldStateService?>()?.generativeDecls ?? const [],
-      subscriptionModels: subscriptionModelsOf(context),
-    );
+    final options = <({String ref, String label})>[
+      ...availableBrainOptions(
+        defaultOpenRouterModel: _defaultOpenRouterModel(context),
+        paletteRungs:
+            context.read<WorldStateService?>()?.generativeDecls ?? const [],
+        subscriptionModels: subscriptionModelsOf(context),
+      ),
+      for (final model in liveAcpModels(context))
+        (ref: acpBrainRef(model.id), label: model.label),
+    ];
     final brainBase = brainRefBase(profile?.brainRef ?? '');
     final knownLabels = options
         .where((final option) => option.ref == brainBase)
@@ -974,10 +983,7 @@ class _Section extends StatelessWidget {
         Row(
           children: [
             Text(label, style: shellSectionLabel(context)),
-            if (trailing != null) ...[
-              const Spacer(),
-              trailing!,
-            ],
+            if (trailing != null) ...[const Spacer(), trailing!],
           ],
         ),
         const SizedBox(height: 6),
@@ -1158,7 +1164,8 @@ class _ProjectAccessSectionState extends State<ProjectAccessSection> {
                 ),
               ),
           for (final grant in _scopes)
-            if (grant.caps != null || grant.via != null ||
+            if (grant.caps != null ||
+                grant.via != null ||
                 !_grants.contains(grant.path))
               Padding(
                 key: ValueKey('shell.people.access.scope.${grant.path}'),

@@ -1,14 +1,14 @@
 import 'package:flutter/gestures.dart' show kSecondaryMouseButton;
-
-import 'package:material_ui/material_ui.dart';import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/ui_chat/world_chat_surface.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ecs_world/world_components.dart';
+import 'package:lastanswer/ui_chat/world_chat_surface.dart';
 import 'package:lastanswer/ui_shell/surfaces.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// 1g/1d — the room UX laws, pinned:
 /// - the replyTo quote and the addressedTo chips render from DURABLE

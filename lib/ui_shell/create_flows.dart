@@ -6,26 +6,11 @@
 library;
 
 import 'package:file_selector/file_selector.dart' show getDirectoryPath;
-
-import 'package:lastanswer/data_agents/acp/acp_actor_bridge.dart';
-
-import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
-
-import 'package:lastanswer/data_agents/acp/acp_bridge_transport.dart';
-
 import 'package:headless_core/headless_core.dart';
-
-import 'package:lastanswer/ui_chat/actor_picker.dart';
-
-import 'package:lastanswer/ui_chat/channel_members_ui.dart';
-
-import 'package:lastanswer/data_journal/realm_chat_service.dart';
-
 import 'package:lastanswer/common_imports.dart';
-
-
-import 'package:lastanswer/ui_workspaces/workspace.dart';
-
+import 'package:lastanswer/data_journal/realm_chat_service.dart';
+import 'package:lastanswer/ui_chat/actor_picker.dart';
+import 'package:lastanswer/ui_chat/channel_members_ui.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
 
 /// The searchable actor picker → openDm (reuse-or-create the DM).
@@ -285,118 +270,4 @@ Future<String?> _pickDirectory() async {
   } on Object {
     return null;
   }
-}
-
-/// Item 2e — the ACP external-actor bridge flow (desktop only): detect
-/// the installed ACP agents (discovery WITHOUT execution), list the
-/// DETECTED ones (never fake an agent), and on pick mint the bridged
-/// actor + open its DM + bind the bridge loop.
-///
-/// Honest absence by law: a non-desktop platform opens nothing (the
-/// picker row already names the gate), and a detection that found no
-/// agent renders the named empty state — never a crash, never a fake.
-Future<void> openAcpBridgeFlow(
-  final BuildContext context, {
-  required final RealmChatService service,
-  final AcpInstallationService? installationService,
-}) async {
-  if (!PlatformInfo.isNativeDesktop) return; // the gate names itself upstream
-  // The ACP session's cwd: the first workspace folder this device knows,
-  // else the process cwd (a fact, named in the row subtitle below).
-  var workingDirectory = Directory.current.path;
-  final workspaces =
-      context.read<WorkspaceNotifier?>()?.workspaces ?? const <Workspace>[];
-  for (final workspace in workspaces) {
-    if (workspace.folderPaths.isNotEmpty) {
-      workingDirectory = workspace.folderPaths.first;
-      break;
-    }
-  }
-  final installations = await AcpBridgeRegistry.detectAgents(
-    installationService: installationService,
-  );
-  if (!context.mounted) return;
-  await showLaDialog<void>(
-    context: context,
-    builder: (final dialogContext) => LaDialog(
-      // Unlocalized mono house vocabulary (v1 — l10n keys listed in the
-      // change report; the dialog never fakes a translation).
-      titleText: 'acp · bridge an agent',
-      content: SizedBox(
-        width: 360,
-        height: 420,
-        child: installations.isEmpty
-            ? const Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text('no ACP agent detected on PATH'),
-                ),
-              )
-            : ListView(
-                children: [
-                  for (final installation in installations)
-                    LaRow(
-                      key: ValueKey('acp.pick.${installation.entry.id}'),
-                      margin: EdgeInsets.zero,
-                      titleText: installation.entry.displayName,
-                      metaText: installation.path,
-                      onTap: () {
-                        Navigator.of(dialogContext).pop();
-                        unawaited(
-                          startAcpBridge(
-                            service: service,
-                            installation: installation,
-                            workingDirectory: workingDirectory,
-                          ),
-                        );
-                      },
-                    ),
-                ],
-              ),
-      ),
-      actions: [
-        LaButton(
-          variant: LaButtonVariant.ghost,
-          onPressed: () => Navigator.of(dialogContext).pop(),
-          label: dialogContext.l10n.worldChatCancel,
-        ),
-      ],
-    ),
-  );
-}
-
-/// Mints the bridged actor (kind agent, brainRef `acp:<id>` — neither a
-/// daemon cast nor an in-app brain, so the bridge is the actor's ONLY
-/// voice), opens the DM, binds + starts the bridge and registers it.
-/// Null = a named absence (the service never came ready, or no room
-/// could be opened) — never a crash, never a half-bound bridge.
-Future<AcpActorBridge?> startAcpBridge({
-  required final RealmChatService service,
-  required final AcpAgentInstallation installation,
-  required final String workingDirectory,
-}) async {
-  await service.ensureReady();
-  final profile = await service.createActor(
-    displayName: '${installation.entry.displayName} (bridged)',
-    kind: ActorKind.agent,
-    brainRef: 'acp:${installation.entry.id}',
-    role: 'acp bridge',
-  );
-  if (profile == null) return null; // service not ready: nothing minted
-  await service.openDm(profile.actorId);
-  final threadId = service.dmThreadOf(profile.actorId);
-  if (threadId == null) return null; // no room, no bridge
-  final bridge = AcpActorBridge(
-    actorId: profile.actorId,
-    agentId: installation.entry.id,
-    threadId: threadId,
-    workingDirectory: workingDirectory,
-    transport: AcpRuntimeBridgeTransport(
-      config: AcpRuntimeConfig.fromInstallation(installation),
-    ),
-  );
-  AcpBridgeRegistry.register(bridge);
-  bridge.start(service);
-  return bridge;
 }

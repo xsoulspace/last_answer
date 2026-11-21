@@ -24,10 +24,10 @@
 /// world converge on one plane (design doc, stage C).
 library;
 
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/world_state_service.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_models/local_models_state.dart';
 import 'package:lastanswer/ui_models/models_widgets.dart';
 import 'package:lastanswer/ui_models/palette_candidate.dart';

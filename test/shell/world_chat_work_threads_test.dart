@@ -16,17 +16,17 @@
 /// (d) an unscoped send stays the plain `say` (regression).
 library;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_journal/realm_chat_service.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';
-import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ui_shell/shell_layout.dart';
 import 'package:lastanswer/ui_shell/shell_scope.dart';
 import 'package:lastanswer/ui_shell/surfaces.dart';
 import 'package:lastanswer/ui_workspaces/workspace_notifier.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// One hermetic room (realm_work_thread_test's `_Room` fixture,
 /// mirrored): a temp-dir world, the real service over it, a

@@ -18,18 +18,16 @@
 // two-device file-shipping shape (fake providers, one anti-entropy cycle
 // simulated by copying files — the D seam in
 // `test/permission_doc_routing_test.dart`).
-import 'dart:async';
-
-import 'package:lastanswer/common_imports.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
-import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
+import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
 import 'package:lastanswer/data_journal/mesh/mesh_storage_service.dart';
+import 'package:lastanswer/ui_documents/agent_doc_surface.dart';
+import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';

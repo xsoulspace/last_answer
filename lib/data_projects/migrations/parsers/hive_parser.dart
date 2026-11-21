@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'byte_utils.dart';
+import 'package:lastanswer/data_projects/migrations/parsers/byte_utils.dart';
 
 /// Parse a `.hive` file from raw bytes produced by tests or read from disk.
 /// Returns a map of key -> value (strings for this minimal implementation).

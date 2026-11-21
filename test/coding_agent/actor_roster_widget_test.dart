@@ -6,14 +6,11 @@
 // actors through the roster, and the agent projection (debugState)
 // reading the same roster.
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_core/headless_core.dart';
-import 'dart:async';
-import 'dart:io';
-
+import 'package:lastanswer/coding_agent.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/coding_agent.dart';
 
 import 'pump_until.dart';
 import 'scripted_write_mover.dart';

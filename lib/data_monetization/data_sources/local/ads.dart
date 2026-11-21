@@ -1,8 +1,7 @@
+import 'package:lastanswer/data_monetization/data_sources/interfaces/interfaces.dart';
+import 'package:lastanswer/foundation/foundation.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:xsoulspace_foundation/xsoulspace_foundation.dart';
-
-import '../interfaces/interfaces.dart';
-import 'package:lastanswer/foundation/foundation.dart';
 
 class AdsLocalDataSourceImpl implements AdsLocalDataSource {
   AdsLocalDataSourceImpl({required this.localDb});

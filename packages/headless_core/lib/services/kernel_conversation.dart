@@ -48,11 +48,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import '../headless_core.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
 import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+
+import '../headless_core.dart';
 
 /// The durable thread/beat store over one kernel replica per thread.
 final class KernelConversation {

@@ -1,40 +1,34 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:lastanswer/common_imports.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:material_ui/material_ui.dart' show Icons;
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:headless_core/headless_core.dart';
-import 'package:la_ui_kit/la_ui_kit.dart';
-import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
-import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
-import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
-import 'package:lastanswer/ui_browser/browser_entry.dart';
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/common_imports.dart';
+import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
+import 'package:lastanswer/data_agents/acp/acp_provider.dart';
 import 'package:lastanswer/data_agents/config/desired_coding_model.dart';
 import 'package:lastanswer/data_agents/config/device_decision_routes.dart';
-import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
-import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
+import 'package:lastanswer/data_agents/config/provider_configuration.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/harness/harness_session_controller.dart';
-import 'package:lastanswer/data_agents/meaning/meaning_experiment_preparation.dart';
-import 'package:lastanswer/data_agents/meaning/meaning_experiment_view.dart';
-import 'package:lastanswer/ui_chat/media_asset_card.dart';
-import 'package:lastanswer/ecs_plugins/boards/mesh_board_bridge.dart';
-import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
+import 'package:lastanswer/data_agents/harness/turn_queue.dart';
+import 'package:lastanswer/data_agents/product/native_evidence_details.dart';
 import 'package:lastanswer/data_agents/product/product_autonomy.dart';
 import 'package:lastanswer/data_agents/product/product_coding_change_view.dart';
 import 'package:lastanswer/data_agents/product/product_local_pair.dart';
 import 'package:lastanswer/data_agents/product/product_workspace_tooling.dart';
 import 'package:lastanswer/data_agents/project_operations/project_operations_entry.dart';
-import 'package:lastanswer/data_agents/config/provider_configuration.dart';
-import 'package:lastanswer/data_agents/harness/turn_queue.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_subscription_controller.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_harness_binding.dart';
+import 'package:lastanswer/data_agents/subscriptions/grok_subscription_controller.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_board_bridge.dart';
+import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
+import 'package:lastanswer/ui_browser/browser_entry.dart';
+import 'package:lastanswer/ui_chat/media_asset_card.dart';
+import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
+import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
+import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
     show
         InferenceClientBinding,
@@ -127,8 +121,6 @@ final class AgentDocSurface extends StatefulWidget {
   /// verb — a form fill cannot do it (Phase-1.5 measurement).
   static ProjectModelDoc Function()? createAgentProjectHook;
 
-  static Future<Map<String, Object?>> Function()? createMeaningExperimentHook;
-
   /// Task H — app wiring for the multiplayer seams, installed by the app
   /// shell in debug/profile builds (same guard as [createAgentProjectHook]).
   /// The live mesh replica is owned by `StorageBackendsNotifier`; this
@@ -161,7 +153,6 @@ abstract interface class AgentDocHandle implements SessionHandle {
   /// The live agent-doc projection — the same typed state the human
   /// screen renders (one state, many projections, DESIGN §5).
   AgentDocDebugState get debugState;
-  Future<Map<String, Object?>> meaningAction(String action);
 }
 
 /// Product actions on an addressed document, using the same owners as its UI.
@@ -185,10 +176,7 @@ abstract interface class AgentDocAutonomyHandle {
 }
 
 class _AgentDocSurfaceState extends State<AgentDocSurface>
-    implements
-        AgentDocProductHandle,
-        AgentDocAutonomyHandle,
-        DocTurnRunner {
+    implements AgentDocProductHandle, AgentDocAutonomyHandle, DocTurnRunner {
   late ProjectModelDoc _doc = widget.doc;
   late final HarnessSessionController _controller =
       widget.controller ??
@@ -301,10 +289,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (action != 'start') {
       return {'ok': false, 'error': 'unknown_autonomy_action'};
     }
-    if (_controller.isRunning || _meaningAdmissionBusy) {
+    if (_controller.isRunning || _operationBusy) {
       return {'ok': false, 'error': 'coding_operation_busy'};
     }
-    _setMeaningAdmissionBusy(true);
+    _setOperationBusy(true);
     try {
       var workspace = _autonomy?.authority.canonicalWorkspace ?? '';
       if (workspace.isEmpty) {
@@ -330,7 +318,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       if (mounted) setState(() {});
       return {'ok': true, ...autonomy.toJson()};
     } finally {
-      _setMeaningAdmissionBusy(false);
+      _setOperationBusy(false);
     }
   }
 
@@ -353,7 +341,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         child: LaButton(
           key: const Key('coding_agent.autonomy.start'),
           variant: LaButtonVariant.ghost,
-          onPressed: _controller.isRunning || _meaningAdmissionBusy
+          onPressed: _controller.isRunning || _operationBusy
               ? null
               : () async {
                   try {
@@ -400,7 +388,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
               key: const Key('coding_agent.autonomy.revoke'),
               variant: LaButtonVariant.ghost,
               onPressed: paused
-                  ? (_controller.isRunning || _meaningAdmissionBusy
+                  ? (_controller.isRunning || _operationBusy
                         ? null
                         : () => autonomyAction('start'))
                   : () => autonomyAction('revoke'),
@@ -440,7 +428,9 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   // mandatory reading for writing a note. Not a mode toggle.
   bool _ladderOpen = false;
   String? _routingError;
-  bool _meaningAdmissionBusy = false;
+  // Session-prep/delegate/product-action re-entrancy gate (was the meaning
+  // experiment's admission busy; the experiment retired with ADR 0023).
+  bool _operationBusy = false;
   bool _hostedConsentGranted = false;
   String? _subscriptionClientId;
   String? _subscriptionModel;
@@ -575,32 +565,49 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   /// prompts with named data instead of hanging (R7c).
   ({String? command, List<String> args, Map<String, String>? env})
   _resolveExternalAcp(final AgentDocModel agent) {
-    final servers = _agentConfigStore.config.agentServers;
-    var server = agent.externalAcpServer.isEmpty
-        ? null
-        : servers[agent.externalAcpServer];
-    server ??= servers.length == 1 ? servers.values.first : null;
-    if (server == null || server.command.isEmpty) {
+    final models = acpModelCatalog(
+      detected: AcpBridgeRegistry.detectedAgents.value,
+      servers: <AcpServerFact>[
+        for (final entry in _agentConfigStore.config.agentServers.entries)
+          if (entry.value.command.trim().isNotEmpty)
+            (
+              id: entry.key,
+              label: entry.value.displayName ?? entry.key,
+              command: entry.value.command,
+              arguments: entry.value.args,
+              environment: entry.value.env,
+            ),
+      ],
+    );
+    AcpModelChoice? choice;
+    if (agent.externalAcpServer.isNotEmpty) {
+      for (final model in models) {
+        if (model.id == agent.externalAcpServer) {
+          choice = model;
+          break;
+        }
+      }
+    }
+    if (choice == null && models.length == 1) choice = models.first;
+    if (choice == null || choice.command.isEmpty) {
       return (command: null, args: const <String>[], env: null);
     }
     final environment = _agentConfigStore.environment;
     final env = <String, String>{
-      for (final entry in server.env.entries)
+      for (final entry in choice.environment.entries)
         entry.key: _agentConfigStore
             .expandEnv(entry.value, environment: environment)
             .value,
     };
-    return (command: server.command, args: server.args, env: env);
+    return (
+      command: choice.command,
+      args: choice.arguments,
+      env: env.isEmpty ? null : env,
+    );
   }
 
   HarnessHostConfig _configFor(final ProjectModelDoc doc) {
-    final base =
-        widget.config ??
-        HarnessHostConfig(
-          extraToolsWithContext: MeaningExperimentPreparation.instance.toolsFor(
-            doc.agent?.workspaces.firstOrNull ?? '',
-          ),
-        );
+    final base = widget.config ?? const HarnessHostConfig();
     final agent = doc.agent ?? const AgentDocModel();
     final external = agent.backend == 'external_acp'
         ? _resolveExternalAcp(agent)
@@ -655,7 +662,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     // A host-injected decision targets THIS doc — the device-local focus
     // follows the last interaction (ADR 0009 §Open questions 1).
     _markFocused();
-    if (_meaningAdmissionBusy) {
+    if (_operationBusy) {
       return (ok: false, message: 'a task is being prepared.');
     }
     final current = _controller.current;
@@ -709,22 +716,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   AgentDocDebugState get debugState => _projectState();
 
   @override
-  Future<Map<String, Object?>> meaningAction(String action) async {
-    if (_meaningAdmissionBusy || _controller.isRunning) {
-      return {'ok': false, 'error': 'meaning_operation_busy'};
-    }
-    _setMeaningAdmissionBusy(true);
-    try {
-      if (await _prepareSession() == null) {
-        return {'ok': false, 'error': 'meaning_configuration_unavailable'};
-      }
-      return await _controller.meaning.action(action);
-    } finally {
-      _setMeaningAdmissionBusy(false);
-    }
-  }
-
-  @override
   Future<Map<String, Object?>> codingAction(
     String action,
     Map<String, Object?> arguments,
@@ -737,7 +728,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     required bool grantConsent,
     String? check,
   }) async {
-    if (_meaningAdmissionBusy || _controller.isRunning) {
+    if (_operationBusy || _controller.isRunning) {
       return {'ok': false, 'error': 'coding_operation_busy'};
     }
     if (!workspace.startsWith('/') ||
@@ -745,7 +736,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         model.isEmpty) {
       return {'ok': false, 'error': 'native_configuration_invalid'};
     }
-    _setMeaningAdmissionBusy(true);
+    _setOperationBusy(true);
     try {
       final subscription = _subscription;
       if (subscription == null) {
@@ -802,7 +793,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         if (!ready) 'error': _controller.error ?? _routingError,
       };
     } finally {
-      _setMeaningAdmissionBusy(false);
+      _setOperationBusy(false);
     }
   }
 
@@ -810,10 +801,10 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     String action,
     Map<String, Object?> arguments,
   ) async {
-    if (_meaningAdmissionBusy || _controller.isRunning) {
+    if (_operationBusy || _controller.isRunning) {
       return {'ok': false, 'error': 'coding_operation_busy'};
     }
-    _setMeaningAdmissionBusy(true);
+    _setOperationBusy(true);
     try {
       final prepared = await _prepareSession();
       if (prepared == null) {
@@ -840,12 +831,12 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
         arguments,
       );
     } finally {
-      _setMeaningAdmissionBusy(false);
+      _setOperationBusy(false);
     }
   }
 
-  void _setMeaningAdmissionBusy(bool value) {
-    _meaningAdmissionBusy = value;
+  void _setOperationBusy(bool value) {
+    _operationBusy = value;
     if (mounted) {
       setState(() {});
       AgentDocSurface.debugState = _projectState();
@@ -1086,16 +1077,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       // PLAN 6.C — the task console rows for this doc (empty when no
       // board is attached): the same records the `mesh_tasks` verb reads.
       tasks: _tasksProjection(),
-      meaning: {
-        ...controller.meaning.toJson(),
-        'busy': _meaningAdmissionBusy || controller.meaning.busy,
-        'admissionBusy': _meaningAdmissionBusy,
-        'reviewProposal': controller.meaningReviewProposal,
-        'conventional': _workspaceToolBinding?.toJson(),
-        'preparation': MeaningExperimentPreparation.instance.receiptFor(
-          _workspaceField.text.trim(),
-        ),
-      },
+      meaning: {'conventional': _workspaceToolBinding?.toJson()},
     );
   }
 
@@ -1129,7 +1111,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
     if (!trimmed.startsWith('/')) {
       return (ok: false, message: 'workspace must be an absolute path.');
     }
-    if (_controller.isRunning || _meaningAdmissionBusy) {
+    if (_controller.isRunning || _operationBusy) {
       return (
         ok: false,
         message: 'a task is running or preparing — binding is refused.',
@@ -1456,11 +1438,6 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       }
       final autonomy = ProductAutonomy.forWorkspace(workspaceBinding);
       final localPair = ProductAutonomy.localPairs[_doc.id.value];
-      if (autonomy == null) {
-        await MeaningExperimentPreparation.instance.restoreFor(
-          workspaceBinding,
-        );
-      }
       if (!mounted) {
         if (!identical(inferenceBinding, _controller.config.inferenceBinding)) {
           await inferenceBinding?.dispose();
@@ -1479,11 +1456,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       final injectedTools =
           widget.config?.extraToolsWithContext ??
           widget.controller?.config.extraToolsWithContext;
-      var experimentTools =
-          injectedTools ??
-          (autonomy == null
-              ? MeaningExperimentPreparation.instance.toolsFor(workspaceBinding)
-              : null);
+      var experimentTools = injectedTools;
       if (injectedSeam == null &&
           injectedTools == null &&
           workspaceBinding.isNotEmpty) {
@@ -1710,8 +1683,8 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   }
 
   Future<void> _delegateText(String task) async {
-    if (_meaningAdmissionBusy || _controller.isRunning) return;
-    _setMeaningAdmissionBusy(true);
+    if (_operationBusy || _controller.isRunning) return;
+    _setOperationBusy(true);
     try {
       final session = await _prepareSession();
       if (session == null) return;
@@ -1723,7 +1696,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
       }
       await _controller.delegate(task, session: session);
     } finally {
-      _setMeaningAdmissionBusy(false);
+      _setOperationBusy(false);
     }
   }
 
@@ -1894,7 +1867,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
   });
 
   Future<void> _switchBackend(final String backend) async {
-    if (_meaningAdmissionBusy || _controller.isRunning) return;
+    if (_operationBusy || _controller.isRunning) return;
     // Doc payload first (the doc is the source of truth for the binding —
     // ADR 0003): syncConfigBeforeTurn derives the daemon config from it.
     // Persisting after the async switch left a window where a concurrent
@@ -2011,7 +1984,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                         keyField: _keyField,
                         backend:
                             _doc.agent?.backend ?? controller.config.backend,
-                        busy: controller.isRunning || _meaningAdmissionBusy,
+                        busy: controller.isRunning || _operationBusy,
                         pickError: _pickError,
                         onPick: _pickWorkspace,
                         onBackend: (final b) => unawaited(_switchBackend(b)),
@@ -2064,8 +2037,7 @@ class _AgentDocSurfaceState extends State<AgentDocSurface>
                             controller: controller,
                             workspaceToolBinding: _workspaceToolBinding,
                             onProductCodingAction: _productCodingAction,
-                            onMeaningAction: meaningAction,
-                            meaningAdmissionBusy: _meaningAdmissionBusy,
+                            operationBusy: _operationBusy,
                             docWorkspace: _workspaceField.text.trim(),
                             foldHarness: !_ladderOpen,
                             onOpenLadder: () =>
@@ -2264,9 +2236,7 @@ class _StatusRule extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: _mono(
                       theme,
-                      color: bound
-                          ? theme.ink
-                          : theme.inkMuted,
+                      color: bound ? theme.ink : theme.inkMuted,
                     ),
                   ),
                 ),
@@ -2450,9 +2420,7 @@ class _SetupPane extends StatelessWidget {
                     layaStatusText ?? 'laya-serve expected - not probed yet',
                     style: _mono(
                       theme,
-                      color: layaReady
-                          ? theme.ink
-                          : theme.inkQuiet,
+                      color: layaReady ? theme.ink : theme.inkQuiet,
                     ),
                   ),
                 ),
@@ -2571,29 +2539,49 @@ class _SetupPane extends StatelessWidget {
                   child: Text('SERVER', style: _label(theme)),
                 ),
                 Expanded(
-                  child: LaSelect<String>(
-                    key: const Key('coding_agent.external_server'),
-                    expand: true,
-                    value: externalServer.isEmpty
-                        ? null
-                        : (agentServers.containsKey(externalServer)
-                              ? externalServer
-                              : null),
-                    placeholder: agentServers.isEmpty
-                        ? 'register one in agent settings'
-                        : 'pick a configured server',
-                    items: [
-                      for (final entry in agentServers.entries)
-                        LaSelectItem(
-                          value: entry.key,
-                          label: '${entry.key} (${entry.value.command})',
-                        ),
-                    ],
-                    onChanged: busy
-                        ? null
-                        : (final id) {
-                            if (id != null) onExternalServer(id);
-                          },
+                  child: ListenableBuilder(
+                    listenable: AcpBridgeRegistry.detectedAgents,
+                    builder: (final context, final _) {
+                      final models = acpModelCatalog(
+                        detected: AcpBridgeRegistry.detectedAgents.value,
+                        servers: <AcpServerFact>[
+                          for (final entry in agentServers.entries)
+                            if (entry.value.command.trim().isNotEmpty)
+                              (
+                                id: entry.key,
+                                label: entry.value.displayName ?? entry.key,
+                                command: entry.value.command,
+                                arguments: entry.value.args,
+                                environment: entry.value.env,
+                              ),
+                        ],
+                      );
+                      final known = models.any(
+                        (final model) => model.id == externalServer,
+                      );
+                      return LaSelect<String>(
+                        key: const Key('coding_agent.external_server'),
+                        expand: true,
+                        value: externalServer.isEmpty || !known
+                            ? null
+                            : externalServer,
+                        placeholder: models.isEmpty
+                            ? context.l10n.modelsClassAcpEmpty
+                            : 'pick a configured server',
+                        items: [
+                          for (final model in models)
+                            LaSelectItem(
+                              value: model.id,
+                              label: '${model.label} · ${model.command}',
+                            ),
+                        ],
+                        onChanged: busy
+                            ? null
+                            : (final id) {
+                                if (id != null) onExternalServer(id);
+                              },
+                      );
+                    },
                   ),
                 ),
               ],
@@ -2616,8 +2604,7 @@ class _SetupPane extends StatelessWidget {
 class _Conversation extends StatelessWidget {
   const _Conversation({
     required this.controller,
-    required this.onMeaningAction,
-    required this.meaningAdmissionBusy,
+    required this.operationBusy,
     required this.docWorkspace,
     required this.foldHarness,
     required this.onOpenLadder,
@@ -2645,8 +2632,7 @@ class _Conversation extends StatelessWidget {
   final ProductWorkspaceToolBinding? workspaceToolBinding;
   final Future<Map<String, Object?>> Function(String, Map<String, Object?>)?
   onProductCodingAction;
-  final Future<Map<String, Object?>> Function(String action) onMeaningAction;
-  final bool meaningAdmissionBusy;
+  final bool operationBusy;
   final String docWorkspace;
 
   /// DESIGN §10 — L0/L1 default. Folds L2 beats and the verdict rule so a
@@ -2695,16 +2681,7 @@ class _Conversation extends StatelessWidget {
           binding: binding,
           controller: controller,
           onAction: onProductCodingAction,
-          busy: meaningAdmissionBusy,
-        ),
-      if (controller.config.extraToolsWithContext != null &&
-          (workspaceToolBinding == null ||
-              MeaningExperimentPreparation.instance.receiptFor(docWorkspace) !=
-                  null))
-        MeaningExperimentView(
-          controller: controller.meaning,
-          onAction: onMeaningAction,
-          admissionBusy: meaningAdmissionBusy,
+          busy: operationBusy,
         ),
       // PLAN 5c — remote permission rows (DESIGN §9): announced by the
       // owning device, visible AND answerable from this peer's flow —
@@ -2833,9 +2810,7 @@ class _QueuedRow extends StatelessWidget {
                 child: Text(
                   '$annotation $position · $ageLabel',
                   key: Key('coding_agent.queue.steer.${step.id}'),
-                  style: _label(
-                    theme,
-                  ).copyWith(color: theme.inkMuted),
+                  style: _label(theme).copyWith(color: theme.inkMuted),
                 ),
               ),
               Expanded(
@@ -2890,10 +2865,7 @@ class _QueuedRow extends StatelessWidget {
                     onTap: onCancel,
                     child: Text(
                       '[cancel]',
-                      style: _mono(
-                        theme,
-                        color: theme.inkMuted,
-                      ),
+                      style: _mono(theme, color: theme.inkMuted),
                     ),
                   ),
                 ],
@@ -2986,9 +2958,7 @@ class _TurnView extends StatelessWidget {
                     autofocus: true,
                     minLines: 1,
                     maxLines: 6,
-                    style: theme.body.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.body.copyWith(fontWeight: FontWeight.w600),
                     onSubmitted: (_) => commitAndKeepVisible(),
                   ),
                 )
@@ -3006,10 +2976,7 @@ class _TurnView extends StatelessWidget {
             child: LaPressable(
               key: Key('coding_agent.turn.edit.$turnKey'),
               onTap: onBeginEdit,
-              child: Text(
-                '[edit]',
-                style: _mono(theme, color: theme.inkMuted),
-              ),
+              child: Text('[edit]', style: _mono(theme, color: theme.inkMuted)),
             ),
           ),
         if (turn.edited)
@@ -3129,7 +3096,8 @@ class _TurnBody extends StatelessWidget {
         continue;
       }
       var beat = mediaBeat;
-      final takesBody = beat.provenance.alt &&
+      final takesBody =
+          beat.provenance.alt &&
           beat.altText == null &&
           i + 1 < displayedLines.length;
       if (takesBody) {
@@ -3140,9 +3108,7 @@ class _TurnBody extends StatelessWidget {
         }
       }
       flushProse();
-      children.add(
-        MediaAssetCard.fromBeat(beat, rootOverride: docWorkspace),
-      );
+      children.add(MediaAssetCard.fromBeat(beat, rootOverride: docWorkspace));
     }
     flushProse();
 
@@ -3529,11 +3495,6 @@ class _PendingPermission extends StatelessWidget {
   Widget build(final BuildContext context) {
     final pending = controller.pendingPermission!;
     final theme = context.laUi;
-    final review = controller.meaningReviewProposal;
-    final proposalId =
-        review?['proposalId'] ??
-        (review?['payload'] as Map?)?['proposalId'] ??
-        (review?['proposal'] as Map?)?['proposalId'];
     return Semantics(
       identifier: 'coding_agent.permission',
       container: true,
@@ -3565,18 +3526,10 @@ class _PendingPermission extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (pending.request.details case final exact?)
-                    MeaningEvidenceDetails(
+                    NativeEvidenceDetails(
                       key: const Key('coding_agent.permission.exact_summary'),
                       title: pending.request.toolCallId,
                       body: exact,
-                    ),
-                  if (controller.meaningReviewProposal case final proposal?)
-                    MeaningEvidenceDetails(
-                      key: const Key('coding_agent.permission.proposal'),
-                      title: '${proposalId ?? ''}',
-                      body: const JsonEncoder.withIndent(
-                        '  ',
-                      ).convert(proposal),
                     ),
                 ],
               ),
@@ -3934,9 +3887,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                   padding: const EdgeInsets.only(bottom: 2),
                   child: Text(
                     '    ${actors.map((final a) => a.gutterLabel).join('  ')}',
-                    style: _label(
-                      theme,
-                    ).copyWith(color: theme.ink),
+                    style: _label(theme).copyWith(color: theme.ink),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -3951,10 +3902,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                 ),
                 child: Text(
                   '  + new session',
-                  style: _mono(
-                    theme,
-                    color: theme.inkMuted,
-                  ),
+                  style: _mono(theme, color: theme.inkMuted),
                 ),
               ),
             ),
@@ -4057,10 +4005,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                     onTap: _closeForm,
                     child: Text(
                       '[cancel]',
-                      style: _mono(
-                        theme,
-                        color: theme.inkMuted,
-                      ),
+                      style: _mono(theme, color: theme.inkMuted),
                     ),
                   ),
                 ],
@@ -4074,10 +4019,7 @@ class _ProfilePaneState extends State<_ProfilePane> {
                 onTap: () => setState(() => _adding = true),
                 child: Text(
                   '+ add actor',
-                  style: _mono(
-                    theme,
-                    color: theme.inkMuted,
-                  ),
+                  style: _mono(theme, color: theme.inkMuted),
                 ),
               ),
             ),
@@ -4113,10 +4055,9 @@ class _ActorRow extends StatelessWidget {
                 child: Text(
                   profile.gutterLabel,
                   key: Key('coding_agent.actors.${profile.actorId}'),
-                  style: _label(theme).copyWith(
-                    color: theme.ink,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: _label(
+                    theme,
+                  ).copyWith(color: theme.ink, fontWeight: FontWeight.w600),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -4126,10 +4067,7 @@ class _ActorRow extends StatelessWidget {
                 onTap: onRemove,
                 child: Text(
                   '[remove]',
-                  style: _mono(
-                    theme,
-                    color: theme.inkMuted,
-                  ),
+                  style: _mono(theme, color: theme.inkMuted),
                 ),
               ),
             ],
@@ -4447,10 +4385,7 @@ final class _Banner extends StatelessWidget {
       width: double.infinity,
       color: color,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Text(
-        text,
-        style: _mono(theme, color: theme.onDanger),
-      ),
+      child: Text(text, style: _mono(theme, color: theme.onDanger)),
     );
   }
 }

@@ -26,25 +26,23 @@
 /// save.
 library;
 
-export 'package:lastanswer/data_journal/journal_contracts.dart'
-    show ActorTelemetry;
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lastanswer/data_journal/journal_contracts.dart';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:lastanswer/data_agents/acp/acp_bridge_registry.dart';
-import 'package:lastanswer/ui_chat/actor_brain.dart';
-import 'package:lastanswer/ui_chat/palette_health.dart';
+import 'package:lastanswer/data_agents/supervised/supervised_world.dart';
+import 'package:lastanswer/data_journal/journal_contracts.dart';
 import 'package:lastanswer/data_journal/palette_lanes.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
-import 'package:lastanswer/data_agents/supervised/supervised_world.dart';
+import 'package:lastanswer/ui_chat/actor_brain.dart';
+import 'package:lastanswer/ui_chat/palette_health.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+
+export 'package:lastanswer/data_journal/journal_contracts.dart'
+    show ActorTelemetry;
 
 /// One palette rung, merged: the config declaration × the daemon's
 /// health verdict × the escalation ladder × the delegation choice.
@@ -438,6 +436,7 @@ final class WorldStateService extends ChangeNotifier {
     return CastBrainDecl(
       id: entryId,
       model: entry.model ?? '',
+      providerId: entry.provider,
       transport: provider?.transport.wireName ?? 'openrouter',
       baseUrl: provider?.baseUrl,
       credentialEnv: provider?.credentialEnv,

@@ -1,11 +1,8 @@
-import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
-import 'package:share_plus/share_plus.dart';
-
 import 'package:lastanswer/common_imports.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 @immutable
 class ProjectSharer {

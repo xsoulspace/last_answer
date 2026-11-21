@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_secure_storage.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_secure_storage.dart';
 import 'package:xsoulspace_inference_openai/chatgpt_auth.dart';
 
 /// Safe account projection. No tokens or authorization URLs enter document

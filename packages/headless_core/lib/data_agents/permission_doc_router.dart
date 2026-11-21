@@ -19,9 +19,9 @@
 /// turn like a local one, indistinguishable except by origin.
 library;
 
-import '../data_replication/doc_replica_store.dart';
 import '../data_models/document_node.dart';
 import '../data_models/perm_request.dart';
+import '../data_replication/doc_replica_store.dart';
 
 /// One device's doc channel for permission round-trips on ONE document.
 /// Stateless over the fold: every read goes to the replica's current

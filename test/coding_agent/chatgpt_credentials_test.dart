@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/config/provider_configuration.dart';
+import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:xsoulspace_inference_openai/chatgpt_auth.dart';
 
 final class SecureMemory implements SecureValueStore {

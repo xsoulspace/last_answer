@@ -1748,6 +1748,9 @@ class SEn extends S {
   String get viewModelsTitle => 'Models';
 
   @override
+  String get viewLensTitle => 'Lens';
+
+  @override
   String get modelsNoPalette => 'No models declared for this world';
 
   @override
@@ -2382,6 +2385,12 @@ class SEn extends S {
   @override
   String get modelsClassSubscriptionAbsent =>
       'the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.';
+
+  @override
+  String get modelsClassAcp => 'ACP';
+
+  @override
+  String get modelsClassAcpEmpty => 'No ACP agent detected on this device.';
 
   @override
   String get modelsClassUnclassified => 'Unclassified lanes';

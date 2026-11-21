@@ -1761,6 +1761,9 @@ class SIt extends S {
   String get viewModelsTitle => 'Modelli';
 
   @override
+  String get viewLensTitle => 'Lente';
+
+  @override
   String get modelsNoPalette => 'Nessun modello dichiarato per questo mondo';
 
   @override
@@ -2399,6 +2402,13 @@ class SIt extends S {
   @override
   String get modelsClassSubscriptionAbsent =>
       'la corsia diretta qwen non esiste oggi. Grok è una corsia subscription e resta chiusa finché xAI non rilascia un client id a Last Answer.';
+
+  @override
+  String get modelsClassAcp => 'ACP';
+
+  @override
+  String get modelsClassAcpEmpty =>
+      'Nessun agente ACP rilevato su questo dispositivo.';
 
   @override
   String get modelsClassUnclassified => 'Corsie non classificate';

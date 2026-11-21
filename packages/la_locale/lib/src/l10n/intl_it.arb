@@ -565,6 +565,7 @@
   "inboxWorldArming": "Avvio del mondo…",
   "inboxWorldArmFailed": "Avvio fallito",
   "viewModelsTitle": "Modelli",
+  "viewLensTitle": "Lente",
   "modelsNoPalette": "Nessun modello dichiarato per questo mondo",
   "modelsLocalCatalog": "Modelli locali",
   "modelsLadderAdd": "Aggiungi modello",
@@ -1116,6 +1117,14 @@
   "modelsClassSubscriptionAbsent": "la corsia diretta qwen non esiste oggi. Grok è una corsia subscription e resta chiusa finché xAI non rilascia un client id a Last Answer.",
   "@modelsClassSubscriptionAbsent": {
     "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassAcp": "ACP",
+  "@modelsClassAcp": {
+    "description": "Provider section for local ACP agents. A model is one launchable agent."
+  },
+  "modelsClassAcpEmpty": "Nessun agente ACP rilevato su questo dispositivo.",
+  "@modelsClassAcpEmpty": {
+    "description": "Empty state for the ACP provider when nothing is on PATH and no server is saved."
   },
   "modelsClassUnclassified": "Corsie non classificate",
   "@modelsClassUnclassified": {

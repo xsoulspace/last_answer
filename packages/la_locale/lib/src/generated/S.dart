@@ -3243,6 +3243,12 @@ abstract class S {
   /// **'Models'**
   String get viewModelsTitle;
 
+  /// The Lens surface title (ADR 0010: the live view of the surfaces agents act on).
+  ///
+  /// In en, this message translates to:
+  /// **'Lens'**
+  String get viewLensTitle;
+
   /// Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs).
   ///
   /// In en, this message translates to:
@@ -4376,6 +4382,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.'**
   String get modelsClassSubscriptionAbsent;
+
+  /// Provider section for local ACP agents. A model is one launchable agent.
+  ///
+  /// In en, this message translates to:
+  /// **'ACP'**
+  String get modelsClassAcp;
+
+  /// Empty state for the ACP provider when nothing is on PATH and no server is saved.
+  ///
+  /// In en, this message translates to:
+  /// **'No ACP agent detected on this device.'**
+  String get modelsClassAcpEmpty;
 
   /// Wave N4 2026-11-16 (four lane classes + dynamic settings editor).
   ///

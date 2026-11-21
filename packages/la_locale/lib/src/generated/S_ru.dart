@@ -1764,6 +1764,9 @@ class SRu extends S {
   String get viewModelsTitle => 'Модели';
 
   @override
+  String get viewLensTitle => 'Линза';
+
+  @override
   String get modelsNoPalette => 'Для этого мира не объявлено ни одной модели';
 
   @override
@@ -2403,6 +2406,12 @@ class SRu extends S {
   @override
   String get modelsClassSubscriptionAbsent =>
       'прямой дорожки qwen сегодня нет. Grok — subscription-дорожка, и она закрыта, пока xAI не выдаст Last Answer client id.';
+
+  @override
+  String get modelsClassAcp => 'ACP';
+
+  @override
+  String get modelsClassAcpEmpty => 'На этом устройстве не найден агент ACP.';
 
   @override
   String get modelsClassUnclassified => 'Неклассифицированные дорожки';

@@ -832,6 +832,10 @@
   "@viewModelsTitle": {
     "description": "The Models surface title."
   },
+  "viewLensTitle": "Lens",
+  "@viewLensTitle": {
+    "description": "The Lens surface title (ADR 0010: the live view of the surfaces agents act on)."
+  },
   "modelsNoPalette": "No models declared for this world",
   "@modelsNoPalette": {
     "description": "Models: no config file declares model_palette (value follows the brain-policy vocabulary law, 2026-11-16: no palette words on user surfaces; the key absorbs)."
@@ -1612,6 +1616,14 @@
   "modelsClassSubscriptionAbsent": "the qwen direct lane does not exist today. Grok is a subscription lane and stays closed until xAI issues Last Answer a client id.",
   "@modelsClassSubscriptionAbsent": {
     "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassAcp": "ACP",
+  "@modelsClassAcp": {
+    "description": "Provider section for local ACP agents. A model is one launchable agent."
+  },
+  "modelsClassAcpEmpty": "No ACP agent detected on this device.",
+  "@modelsClassAcpEmpty": {
+    "description": "Empty state for the ACP provider when nothing is on PATH and no server is saved."
   },
   "modelsClassUnclassified": "Unclassified lanes",
   "@modelsClassUnclassified": {

@@ -38,6 +38,8 @@ dependencies:
       ref: ecsly_flutter_scene-v0.2.1
       path: plugins/ecsly_flutter_scene
   universal_automation_interface: ^0.2.0
+  # The lens (ADR 0010): live view of the surfaces agents act on.
+  universal_automation_lens: ^0.1.0
   file_saver: ^0.4.0
   flutter_animate: ^4.5.2
   fpdart: ^1.2.0
@@ -311,6 +313,8 @@ dependency_overrides:
     path: ../../ai_computer_use_universal_automation/pkgs/universal_browser_cdp
   universal_automation_interface:
     path: ../../ai_computer_use_universal_automation/pkgs/universal_automation_interface
+  universal_automation_lens:
+    path: ../../ai_computer_use_universal_automation/flutter_pkgs/universal_automation_lens
   # The local acp_toolkit checkout moved to the intentcall 0.7.0 release
   # train (additive schema/core changes) while the harness repo still pins
   # ^0.6.0 against its git-sourced acp_toolkit. Pin the train + the local

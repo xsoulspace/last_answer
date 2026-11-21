@@ -568,6 +568,7 @@
   "inboxWorldArming": "Запуск мира…",
   "inboxWorldArmFailed": "Сбой запуска",
   "viewModelsTitle": "Модели",
+  "viewLensTitle": "Линза",
   "modelsNoPalette": "Для этого мира не объявлено ни одной модели",
   "modelsLocalCatalog": "Локальные модели",
   "modelsLadderAdd": "Добавить модель",
@@ -1119,6 +1120,14 @@
   "modelsClassSubscriptionAbsent": "прямой дорожки qwen сегодня нет. Grok — subscription-дорожка, и она закрыта, пока xAI не выдаст Last Answer client id.",
   "@modelsClassSubscriptionAbsent": {
     "description": "Wave N4 2026-11-16 (four lane classes + dynamic settings editor)."
+  },
+  "modelsClassAcp": "ACP",
+  "@modelsClassAcp": {
+    "description": "Provider section for local ACP agents. A model is one launchable agent."
+  },
+  "modelsClassAcpEmpty": "На этом устройстве не найден агент ACP.",
+  "@modelsClassAcpEmpty": {
+    "description": "Empty state for the ACP provider when nothing is on PATH and no server is saved."
   },
   "modelsClassUnclassified": "Неклассифицированные дорожки",
   "@modelsClassUnclassified": {

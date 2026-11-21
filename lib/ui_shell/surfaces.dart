@@ -132,6 +132,13 @@ const String kSettingsSurfaceId = 'settings';
 /// `rail.automations`, the `+` picker and the palette.
 const String kAutomationsSurfaceId = 'automations';
 
+/// The Lens surface's id (ADR 0010 phase 3): the live view of ANY
+/// surface agents act on — capture lives in-process (the lens plugin's
+/// ScreenCaptureKit streams), the presence overlay polls the resident
+/// serve's `automation_presence`. Hosted as a view tab AND as a
+/// miniwindow (`app_shell`).
+const String kLensSurfaceId = 'lens';
+
 /// The RETIRED picker-tab's surface id (WAVE 4T's browser model: the
 /// `+` opened the picker AS A TAB). DESIGN.md v2 made the picker an
 /// anchored MENU — this constant survives only as migration vocabulary:
@@ -556,6 +563,12 @@ SurfaceRegistry buildShellSurfaces(
     title: context.l10n.supervisorSectionTitle,
     builder: (final tabContext) => const AutomationsSurface(),
     icon: Icons.bolt_outlined,
+  ),
+  kLensSurfaceId: SurfaceSpec(
+    id: kLensSurfaceId,
+    title: context.l10n.viewLensTitle,
+    builder: (final tabContext) => const LensSurface(),
+    icon: Icons.visibility_outlined,
   ),
   // The new-tab picker is an anchored MENU (new_tab_menu.dart), not a
   // surface: the registry has no `newtab` entry any more.

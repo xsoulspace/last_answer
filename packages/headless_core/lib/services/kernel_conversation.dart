@@ -52,6 +52,7 @@ import 'package:universal_storage_convergence/universal_storage_convergence.dart
 import 'package:universal_storage_filesystem/universal_storage_filesystem.dart';
 import 'package:universal_storage_interface/universal_storage_interface.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 import '../headless_core.dart';
 

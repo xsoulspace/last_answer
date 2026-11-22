@@ -28,6 +28,7 @@ import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_settings/features/storage_backends_state.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// The durable-conversation projection + bot runtime for one app run.
 final class RealmChatService extends ChangeNotifier {

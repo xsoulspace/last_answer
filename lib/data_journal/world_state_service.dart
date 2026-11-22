@@ -40,6 +40,7 @@ import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:lastanswer/ui_chat/palette_health.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 export 'package:lastanswer/data_journal/journal_contracts.dart'
     show ActorTelemetry;

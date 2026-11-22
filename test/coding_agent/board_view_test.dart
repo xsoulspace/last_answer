@@ -1,4 +1,4 @@
-import 'package:ecsly_boards/ecsly_boards.dart' show BoardTaskStatus;
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart' show BoardTaskStatus;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_controller.dart';

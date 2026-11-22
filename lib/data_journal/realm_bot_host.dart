@@ -28,6 +28,7 @@ import 'package:lastanswer/data_agents/acp/acp_turn_worker.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/ui_chat/actor_brain.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// Two bots politely addressing each other stop after this many
 /// consecutive bot beats in one thread.

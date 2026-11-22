@@ -5,6 +5,7 @@ import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/data_journal/actor_creation.dart';
 import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 Future<Directory> _hermeticHome() async {
   final temp = await Directory.systemTemp.createTemp('la_realm_chat_');

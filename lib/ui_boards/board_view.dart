@@ -9,7 +9,7 @@
 /// imports the ontology and the controller, never the shell.
 library;
 
-import 'package:ecsly_boards/ecsly_boards.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:lastanswer/common_imports.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_controller.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';

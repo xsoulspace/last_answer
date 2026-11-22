@@ -1,4 +1,5 @@
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// The durable `realm_actors` collection (the row shape is the ADR 0120
 /// contract; LA is a reader here).

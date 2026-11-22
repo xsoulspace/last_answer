@@ -47,6 +47,7 @@ import 'package:lastanswer/data_journal/realm_world_root_io.dart'
     if (dart.library.js_interop) 'realm_world_root_stub.dart'
     as world_root;
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// The durable world: the realm's one control store, LA's project
 /// scope, and the human's authority.

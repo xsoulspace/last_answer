@@ -17,6 +17,7 @@ import 'package:lastanswer/data_journal/realm_world.dart';
 import 'package:lastanswer/ui_workspaces/workspace.dart';
 import 'package:lastanswer/ui_workspaces/workspace_registry.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// The rail's live workspace list over the realm's one control store.
 final class WorkspaceNotifier extends ChangeNotifier {

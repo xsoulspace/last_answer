@@ -17,7 +17,7 @@ import 'dart:async';
 
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart' show AcpStopReason;
 import 'package:ecsly/ecsly.dart';
-import 'package:ecsly_boards/ecsly_boards.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 

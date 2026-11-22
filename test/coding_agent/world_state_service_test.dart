@@ -9,6 +9,7 @@ import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/ui_chat/palette_health.dart';
 import 'package:oka_supervisor/oka_supervisor.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// Phase 1d — the world's read model: ONE dynamic assembly of the
 /// daemon truth, the DISCOVERED palette (never a hardcoded cast), the

@@ -13,7 +13,7 @@
 /// (session-scoped; it persists once it rides a mesh cycle).
 library;
 
-import 'package:ecsly_boards/ecsly_boards.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';
 

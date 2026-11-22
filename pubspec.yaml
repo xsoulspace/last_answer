@@ -192,16 +192,9 @@ dependencies:
   # universal_storage_convergence path dependency above.
   ecsly_world_sync:
     path: ../../ecsly/plugins/ecsly_world_sync
-  # The boards program: the canonical card ontology + host seam the app
-  # composes (the harness extraction; ADR-law in
-  # docs/design/ecsly-boards-extraction.md).
-  ecsly_boards:
-    path: ../../ecsai_harness/pkgs/ecsly_boards
-  # Same cascade (harness ADR 0144): xsoulspace_agentic_host depends on
-  # the conversation spaces layer (channels / work-thread registries,
-  # moved verbatim from this repo); path source until it publishes.
-  ecsly_conversation:
-    path: ../../ecsai_harness/pkgs/ecsly_conversation
+  # Boards + conversation spaces ride the harness package per harness
+  # ADR 0149 (ecsly_boards/ecsly_conversation absorbed into
+  # xsoulspace_agentic_harness; surfaces exported from its barrel).
   headless_core:
     path: packages/headless_core
   universal_io: ^2.3.1
@@ -475,25 +468,9 @@ dependency_overrides:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_host
   xsoulspace_agentic_workspace:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_workspace
-  # The harness repo's ecsly plugin split (context/conversation/tasks/wire)
-  # and the dev-train ecsly scene/app/codegen/replay stack: committed
-  # locally, not on the trains afm pins — same one-checkout law.
-  ecsly_context:
-    path: ../../ecsai_harness/pkgs/ecsly_context
-  ecsly_conversation:
-    path: ../../ecsai_harness/pkgs/ecsly_conversation
-  ecsly_tasks:
-    path: ../../ecsai_harness/pkgs/ecsly_tasks
-  # ADR 0138 D2 — the four shared journal primitives (AppendLog /
-  # SingleWriterFence / LogCursor / TailFold) landed 2026-11-07 as the
-  # harness's own workspace package; ecsly_tasks rides them, so the
-  # path graph needs the same one-checkout override.
-  append_log:
-    path: ../../ecsai_harness/pkgs/append_log
-  ecsly_boards:
-    path: ../../ecsai_harness/pkgs/ecsly_boards
-  ecsai_wire:
-    path: ../../ecsai_harness/pkgs/ecsai_wire
+  # ADR 0149 — the harness repo absorbed its ecsly plugin split
+  # (context/conversation/tasks/wire/append_log) into
+  # xsoulspace_agentic_harness; no per-plugin overrides needed.
   ecsly_app:
     path: ../../ecsly/core_packages/ecsly_app
   ecsly_codegen:

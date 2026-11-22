@@ -35,6 +35,7 @@ import 'dart:io';
 
 import 'package:flutter_mcp_harness/flutter_mcp_harness.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 final _projectDir = Directory.current.path;
 final _tmp = Platform.environment['TMPDIR'] ?? '/tmp';

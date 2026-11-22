@@ -19,6 +19,7 @@ import 'package:lastanswer/data_journal/journal_contracts.dart'
 import 'package:lastanswer/ecs_world/world.dart';
 import 'package:lastanswer/ecs_world/world_components.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// The journal collections LaWorld folds. Anything else in the journal
 /// is ignored, exactly as the harness projection's closed switch does.

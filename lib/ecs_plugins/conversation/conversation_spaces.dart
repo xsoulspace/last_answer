@@ -7,7 +7,7 @@
 /// spaces vocabulary without pulling the whole ontology barrel in.
 library;
 
-export 'package:ecsly_conversation/ecsly_conversation.dart'
+export 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart'
     show
         ChannelInfo,
         ChannelNameCheck,

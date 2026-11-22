@@ -7,6 +7,7 @@ import 'package:lastanswer/ecs_world/world_components.dart';
 import 'package:lastanswer/ecs_world/world_feed.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
+import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 
 /// 1a — LaWorld: the journal folds into the in-process ecsly World
 /// (cold scans + cursor deltas), the UI reads record snapshots through

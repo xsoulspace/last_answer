@@ -1,9 +1,9 @@
 import 'dart:io';
-
-import 'package:oka_store/oka_store.dart';
+import 'package:lastanswer/store/store_keys.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_google_apple/xsoulspace_monetization_google_apple.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
+
 
 /// The Apple App Store monetization binding — iOS and macOS (ADR 0037:
 /// one identity, one kernel).
@@ -19,7 +19,7 @@ final class AppleBinding implements MonetizationStoreBinding {
   const AppleBinding();
 
   @override
-  StoreKey get key => storeKeyAppleStore;
+  String get key => storeKeyAppleStore;
 
   @override
   PurchaseProvider? Function() get purchaseProviderFactory =>

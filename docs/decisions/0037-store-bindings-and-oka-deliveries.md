@@ -23,9 +23,9 @@ commented out, its live surface reducible to `subscriptionsForBuild
 **Store identity (oka ADR 0055 adopted):**
 
 1. **One binding per kernel.** `lib/store/bindings/{rustore,google_play,
-   apple,noop}.dart` are hand-typed `MonetizationStoreBinding`s (the
-   `xsoulspace_monetization_foundation` extension of `oka_store`'s open
-   `StoreBinding`: open `StoreKey` + nullable `purchaseProviderFactory`).
+   apple,appgallery,snap,noop}.dart` are hand-typed
+   `MonetizationStoreBinding`s (the `xsoulspace_monetization_foundation`
+   contract: an open store NAME + nullable `purchaseProviderFactory`).
    `lib/entrypoints/main_store_<x>.dart` imports exactly ONE binding;
    `bootstrap(storeBinding: …)` threads it to `GlobalStatesProvider`.
    Only the imported backend compiles into the AOT kernel — the
@@ -34,14 +34,21 @@ commented out, its live surface reducible to `subscriptionsForBuild
 2. **Backend imports only in `lib/store/bindings/`.** Everyone else
    reads NAMED posture capabilities
    (`context.watch<MonetizationStoreBinding>().requiresStoreLogin /
-   .isRuMarket` — `lib/store/store_posture.dart`) or the open
-   `StoreKey` (no enum: a new store is a new key value, no PR). The
-   key→posture mapping lives in exactly one file; UI files never
-   compare store keys.
-3. **Store ⊥ monetization direction.** monetization depends on oka
-   (`oka_store`); oka never depends on monetization. The
+   .isRuMarket` — `lib/store/store_posture.dart`) or the open store
+   NAME (no enum, no registry: a new store is a new string value, no
+   PR — project-composed in `lib/store/store_keys.dart`). The
+   name→posture mapping lives in exactly one file; UI files never
+   compare store names.
+3. **Store ⊥ monetization, and neither depends on the other's type
+   (2026-11-22, oka ADR-0056).** The store name is a plain string: oka
+   composes the BUILD-side identity (`StoreKey` in `oka_core`); the
+   runtime names stores with project-owned string constants joined to
+   the build by the `OKA_STORE` define. xsoulspace packages carry no oka
+   dependency at all (reversed from the earlier "monetization → oka"
+   direction — a store-adjacent package depends on oka only when it
+   genuinely depends on that store's services). The
    `InstallationTargetStore` closed enum is retired in favor of the same
-   open key.
+   open name.
 4. **Deliveries are the build surface.** `tool/oka_pipeline.dart`
    declares `Delivery`s (pipeline by const reference + variant: store
    key, per-store entrypoint, service overlays — `gms`, `hms-free` —
@@ -55,8 +62,8 @@ commented out, its live surface reducible to `subscriptionsForBuild
 
 **Identity end to end (2026-11-22 amendment — review wave):**
 
-5. **The variant key reaches the binary.** oka bakes the delivery
-   variant's store key as the `OKA_STORE` dart define (oka ADR-0055),
+5. **The variant name reaches the binary.** oka bakes the delivery
+   variant's store name as the `OKA_STORE` dart define (oka ADR-0055),
    and `bootstrap` verifies the booted binding against it — a real
    runtime check, not an assert (asserts vanish in release). The
    compile-time composition and the runtime binding can no longer
@@ -71,7 +78,10 @@ commented out, its live surface reducible to `subscriptionsForBuild
    deleted; `app-appgallery` / `app-snap` gained real entrypoints
    (`main_store_appgallery.dart` / `main_store_snap.dart` with
    key-correct `AppGalleryBinding` / `SnapBinding` — identity without a
-   purchase backend, HMS IAP is a roadmap row).
+   purchase backend, HMS IAP is a roadmap row). The store/platform line
+   (oka ADR-0056): the AppGallery channel is `oka_app_gallery`; a Huawei
+   device is a platform (`oka_huawei`) and carries RuStore equally —
+   `app-rustore` proves it.
 7. **The isolation law is mechanical.** `tool/gates/
    store_binding_gate.dart` (justfile `store-gates`) fails any backend
    import outside `lib/store/bindings/`.

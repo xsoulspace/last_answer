@@ -15,7 +15,7 @@ import 'package:lastanswer/ui_documents/agent_mcp_tools.dart';
 import 'package:lastanswer/ui_inspector/world_inspector_tools.dart';
 import 'package:lastanswer/ui_root/last_answer_app.dart';
 import 'package:mcp_toolkit/mcp_toolkit.dart';
-import 'package:oka_store/oka_store.dart';
+import 'package:oka_core/oka_core.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 /// Boots the app for ONE store identity (ADR 0037). The entrypoint
@@ -36,15 +36,16 @@ Future<void> bootstrap({
   WidgetsFlutterBinding.ensureInitialized();
   // Deliberate String.fromEnvironment: the OKA_STORE define is the
   // build-time identity contract baked by the oka delivery (ADR 0037).
+  // The binding names the store as a plain string (oka ADR-0056: the
+  // name, not a shared type, is the ecosystem contract).
   // ignore: do_not_use_environment
   const compiledStoreKey = String.fromEnvironment(okaStoreDefine);
-  if (compiledStoreKey.isNotEmpty &&
-      storeBinding.key.name != compiledStoreKey) {
+  if (compiledStoreKey.isNotEmpty && storeBinding.key != compiledStoreKey) {
     throw StateError(
       'store binding mismatch: this kernel was built for '
       '"$compiledStoreKey" (the $okaStoreDefine define baked by the oka '
       'delivery) but this entrypoint booted the '
-      '"${storeBinding.key.name}" binding. Import the matching binding '
+      '"${storeBinding.key}" binding. Import the matching binding '
       'from lib/store/bindings/ in the entrypoint.',
     );
   }

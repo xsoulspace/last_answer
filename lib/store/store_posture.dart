@@ -1,4 +1,4 @@
-import 'package:oka_store/oka_store.dart';
+import 'package:lastanswer/store/store_keys.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 
 /// Last Answer's product posture over the kernel's store binding

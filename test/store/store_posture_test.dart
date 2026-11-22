@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/store/bindings/noop.dart';
 import 'package:lastanswer/store/store_posture.dart';
-import 'package:oka_store/oka_store.dart';
+import 'package:lastanswer/store/store_keys.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
 
@@ -11,7 +11,7 @@ final class _RuStoreShapedBinding implements MonetizationStoreBinding {
   const _RuStoreShapedBinding();
 
   @override
-  StoreKey get key => storeKeyRuStore;
+  String get key => storeKeyRuStore;
 
   @override
   PurchaseProvider? Function() get purchaseProviderFactory => () => null;

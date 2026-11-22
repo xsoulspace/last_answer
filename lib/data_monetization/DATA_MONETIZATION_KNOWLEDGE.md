@@ -16,9 +16,10 @@ only that backend's code compiles into the kernel. Backend packages are
 imported **only** inside `lib/store/bindings/` (enforced by
 `just store-gates`); everything else reads named posture capabilities —
 `requiresStoreLogin` / `isRuMarket` from `lib/store/store_posture.dart`
-— or the open `StoreKey` (from `oka_store`). Each delivery bakes its
-store key as the `OKA_STORE` dart define; `bootstrap` refuses to boot a
-binding that names a different store.
+— or the open store NAME (project-composed in `lib/store/store_keys.dart`;
+oka ADR-0056: the app never depends on channel packages to name a store).
+Each delivery bakes its store name as the `OKA_STORE` dart define;
+`bootstrap` refuses to boot a binding that names a different store.
 
 | delivery (`oka run …`) | store key | binding | entrypoint | channel |
 |---|---|---|---|---|

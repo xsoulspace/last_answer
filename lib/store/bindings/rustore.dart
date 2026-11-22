@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:lastanswer/data_monetization/monetization.dart';
-import 'package:oka_store/oka_store.dart';
+import 'package:lastanswer/store/store_keys.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
 import 'package:xsoulspace_monetization_rustore/xsoulspace_monetization_rustore.dart';
@@ -23,7 +23,7 @@ final class RuStoreBinding implements MonetizationStoreBinding {
   const RuStoreBinding();
 
   @override
-  StoreKey get key => storeKeyRuStore;
+  String get key => storeKeyRuStore;
 
   @override
   PurchaseProvider? Function() get purchaseProviderFactory =>

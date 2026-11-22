@@ -153,8 +153,8 @@ dependencies:
   xsoulspace_monetization_rustore:
     path: ../dart_flutter_packages/pkgs/xsoulspace_monetization_rustore
   xsoulspace_monetization_interface: ^0.9.0
-  oka_store:
-    path: ../../oka/packages/oka_store
+  # ADR 0037/0056: the runtime names stores by string (lib/store/store_keys.dart);
+  # oka_core supplies the OKA_STORE define the boot check verifies against.
   xsoulspace_permission_core:
     path: ../dart_flutter_packages/pkgs/xsoulspace_permission_core
   # The on-device supervisor read surface (oka ADR-0041 §6): declared
@@ -259,22 +259,24 @@ dev_dependencies:
   # okaRun; oka_android the Android pipeline/steps. No `oka` CLI dep needed.
   oka_android:
     path: ../../oka/packages/oka_android
-  # Store publish targets (ADR-0014): declared in tool/oka_pipeline.dart,
-  # run via `oka run publish-play` / `oka run publish-huawei`.
+  # Store publish channels (ADR-0014, ADR-0056): declared in
+  # tool/oka_pipeline.dart, run via `oka run publish-play` /
+  # `oka run publish-app-gallery`. A store package is identity + channel;
+  # the Huawei DEVICE platform composition stays in oka_huawei.
+  oka_app_gallery:
+    path: ../../oka/packages/oka_app_gallery
+  oka_google_play:
+    path: ../../oka/packages/oka_google_play
   oka_huawei:
     path: ../../oka/packages/oka_huawei
   # ADR 0072 device gate: the Android app target (oka dev owning session
   # → runner-session.json → LaunchedApp) for tool/gates.
   oka_harness:
     path: ../../oka/packages/oka_harness
-  oka_play:
-    path: ../../oka/packages/oka_play
-  # ADR 0055 — the delivery matrix: the open store key, desktop
-  # pipelines, and the RuStore channel.
+  # ADR 0055 — the delivery matrix: the RuStore channel, and the desktop
+  # pipelines.
   oka_rustore:
     path: ../../oka/packages/oka_rustore
-  oka_store:
-    path: ../../oka/packages/oka_store
   oka_desktop:
     path: ../../oka/packages/oka_desktop
 
@@ -282,10 +284,8 @@ dev_dependencies:
   test: any
   xsoulspace_ui_foundation: any
 dependency_overrides:
-  # One store-key source for the whole graph (oka ADR 0055): the path
-  # checkout wins over every hosted constraint (oka_core, foundation).
-  oka_store:
-    path: ../../oka/packages/oka_store
+  # Local path checkouts win over every hosted constraint in the graph
+  # (the consolidated oka overrides live in the bootstrap block below).
   # The harness-local meaning_core copy (the dart_flutter_packages one was
   # retired; agentic_host still requires the identity — the harness
   # checkout owns it until its migration lands).
@@ -369,12 +369,14 @@ dependency_overrides:
   # overrides once oka_core/oka_android are published.
   oka_android:
     path: ../../oka/packages/oka_android
+  oka_app_gallery:
+    path: ../../oka/packages/oka_app_gallery
   oka_core:
     path: ../../oka/packages/oka_core
+  oka_google_play:
+    path: ../../oka/packages/oka_google_play
   oka_huawei:
     path: ../../oka/packages/oka_huawei
-  oka_play:
-    path: ../../oka/packages/oka_play
   ecsly:
     path: ../../ecsly/core_packages/ecsly
   # The world inspector's 3D band (ecsly_flutter_scene → flutter_scene):

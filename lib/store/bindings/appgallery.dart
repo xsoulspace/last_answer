@@ -1,4 +1,4 @@
-import 'package:oka_store/oka_store.dart';
+import 'package:lastanswer/store/store_keys.dart';
 import 'package:xsoulspace_monetization_foundation/xsoulspace_monetization_foundation.dart';
 import 'package:xsoulspace_monetization_interface/xsoulspace_monetization_interface.dart';
 
@@ -11,7 +11,7 @@ final class AppGalleryBinding implements MonetizationStoreBinding {
   const AppGalleryBinding();
 
   @override
-  StoreKey get key => storeKeyAppGallery;
+  String get key => storeKeyAppGallery;
 
   @override
   PurchaseProvider? Function() get purchaseProviderFactory => () => null;

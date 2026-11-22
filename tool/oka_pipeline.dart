@@ -16,17 +16,22 @@
 //
 // Store publishing (ADR-0014/0015) and deliveries (oka ADR 0055): the
 // publish channels (`playPublishTarget`, `ruStorePublishTarget`,
-// `huaweiPublishTarget`) and the store deliveries (`app-*` targets) are
+// `appGalleryPublishTarget`) and the store deliveries (`app-*` targets) are
 // declared below — including the one-time human setup (accounts, credential
 // files, env vars) that each store requires. This file is the single
 // source of truth for distribution: dry-run first (`oka run <delivery>`,
 // `oka run publish-play`), real upload only after flipping `dryRun: false`.
 import 'package:oka_android/oka_android.dart';
+import 'package:oka_app_gallery/oka_app_gallery.dart';
 import 'package:oka_desktop/oka_desktop.dart';
-import 'package:oka_huawei/oka_huawei.dart';
-import 'package:oka_play/oka_play.dart';
+import 'package:oka_google_play/oka_google_play.dart';
 import 'package:oka_rustore/oka_rustore.dart';
-import 'package:oka_store/oka_store.dart';
+
+// Store keys without an oka channel package are composed here (ADR-0056):
+// the key TYPE lives in oka_core (re-exported by oka_android); per-store
+// constants live in their store packages; any other store is a plain value.
+const storeKeyAppleStore = StoreKey('apple-store');
+const storeKeySnapStore = StoreKey('snapstore');
 
 /// The Android build identity, shared by every Android delivery (single
 /// source of truth — each store composition must describe the same app).
@@ -187,7 +192,7 @@ const _appDeliveries = [
       entrypoint: 'lib/entrypoints/main_store_appgallery.dart',
       overlays: [hmsFree],
     ),
-    channel: huaweiPublishTarget,
+    channel: appGalleryPublishTarget,
     buildAab: true,
   ),
   Delivery(
@@ -223,7 +228,7 @@ Future<void> main(final List<String> args) => okaRun(
       EmulatorTarget(avdName: 'last-answer-api36', apiLevel: 36),
       playPublishTarget,
       ruStorePublishTarget,
-      huaweiPublishTarget,
+      appGalleryPublishTarget,
     ],
   ),
 );
@@ -299,7 +304,7 @@ const RuStorePublishTarget ruStorePublishTarget = RuStorePublishTarget(
   packageName: 'dev.xsoulspace.lastanswer',
 );
 
-/// Huawei AppGallery publish channel (ADR-0014 P2; ADR-0015 verb/target
+/// AppGallery publish channel (ADR-0014 P2; ADR-0015 verb/target
 /// split).
 ///
 /// Uploads the release AAB to AppGallery Connect (AGC) on the **beta**
@@ -320,10 +325,10 @@ const RuStorePublishTarget ruStorePublishTarget = RuStorePublishTarget(
 /// - **Credential resolution by path** (ADR-0014 three-tier model): the
 ///   AGC "API client" JSON is *referenced*, never embedded:
 ///   1. a path in typed config (`credentialPath:`),
-///   2. the `OKA_HUAWEI_AGCONNECT_CREDENTIALS` environment variable
+///   2. the `OKA_APPGALLERY_AGCONNECT_CREDENTIALS` environment variable
 ///      (a **path** to the JSON, never its contents),
 ///   3. the well-known location
-///      `~/.oka/credentials/huawei/agconnect-credentials`.
+///      `~/.oka/credentials/appgallery/agconnect-credentials`.
 /// - **Dry-run by default** — prints the publish plan (endpoint, track,
 ///   artifact, appId/phase/release-notes metadata) with zero HTTP and no
 ///   credential file present.
@@ -348,15 +353,15 @@ const RuStorePublishTarget ruStorePublishTarget = RuStorePublishTarget(
 /// 3. Store that JSON **outside this repo** (or gitignored — oka warns on
 ///    un-ignored credentials inside the project) and make it discoverable
 ///    via any one policy source, e.g.
-///    `export OKA_HUAWEI_AGCONNECT_CREDENTIALS=$HOME/.oka/credentials/huawei/agconnect-credentials`.
+///    `export OKA_APPGALLERY_AGCONNECT_CREDENTIALS=$HOME/.oka/credentials/appgallery/agconnect-credentials`.
 /// 4. Create the release-note files referenced in `release: releaseNotes:`
 ///    below (plain text, one per language).
-/// 5. Dry-run (safe, credential-free): `oka run publish-huawei`.
+/// 5. Dry-run (safe, credential-free): `oka run publish-app-gallery`.
 /// 6. Build the release bundle: `oka run app-appgallery --release`.
 /// 7. Real upload: flip `dryRun: false` here and run
 ///    `oka run app-appgallery --release`.
-const HuaweiPublishTarget huaweiPublishTarget = HuaweiPublishTarget(
-  release: HuaweiReleaseConfig(
+const AppGalleryPublishTarget appGalleryPublishTarget = AppGalleryPublishTarget(
+  release: AppGalleryReleaseConfig(
     // Release notes are file paths (ADR-0014 tier rule — content is read
     // from disk at publish time, never inlined into typed config). Create
     // these before a real run (step 4 of the walkthrough above).

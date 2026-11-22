@@ -7,7 +7,7 @@ import 'package:http/testing.dart';
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_credentials.dart';
 import 'package:lastanswer/data_agents/subscriptions/chatgpt_harness_binding.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_openai/xsoulspace_inference_openai.dart';
 
 import 'chatgpt_credentials_test.dart' show SecureMemory, record;

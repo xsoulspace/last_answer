@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lastanswer/data_agents/config/device_decision_routes.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 /// ADR 0051 Phase 4 — the phone joins the mesh as a human participant:

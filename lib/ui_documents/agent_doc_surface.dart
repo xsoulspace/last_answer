@@ -26,7 +26,7 @@ import 'package:lastanswer/ui_chat/media_asset_card.dart';
 import 'package:lastanswer/ui_models/agent_config/agent_config.dart';
 import 'package:lastanswer/ui_models/agent_config/chatgpt_subscription_pane.dart';
 import 'package:lastanswer/ui_models/agent_config/grok_subscription_pane.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show
         InferenceClientBinding,
         jevDecisionBinding,

@@ -19,9 +19,9 @@ import 'package:lastanswer/ui_inspector/paired_worlds.dart';
 import 'package:lastanswer/ui_inspector/world_binding.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/http_source.dart';
 import 'package:xsoulspace_agentic_harness_inspector/src/source.dart';
-import 'package:xsoulspace_agentic_host/src/world_manifest.dart'
+import 'package:xsoulspace_agentic_host/src/world/world_manifest.dart'
     show WorldManifest;
-import 'package:xsoulspace_agentic_host/src/world_manifest_io.dart'
+import 'package:xsoulspace_agentic_host/src/world/world_manifest_io.dart'
     show WorldManifestIO;
 
 /// Resolves the attachable world for [worldId] (null = first):

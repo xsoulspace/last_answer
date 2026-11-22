@@ -1,6 +1,6 @@
 import 'package:lastanswer/data_agents/harness/harness_host.dart';
 import 'package:test/test.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 
 /// ADR 0059 — the local text casts (`lfm` / `qwen`) as Last Answer
 /// backend options: same binding law as `laya` (no key, no consent gate,

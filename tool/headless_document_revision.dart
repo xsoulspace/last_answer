@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:headless_core/headless_core.dart';
 import 'package:lastanswer/ui_workbench/workbench_harness_tools.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_agentic_harness/xsoulspace_agentic_harness.dart';
 import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 

@@ -10,9 +10,9 @@ library;
 import 'package:lastanswer/ui_inspector/world_seat_lease.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:xsoulspace_agentic_host/src/harness_mcp_client.dart';
-import 'package:xsoulspace_agentic_host/src/harness_seat_ws.dart';
-import 'package:xsoulspace_agentic_host/src/participant_identity.dart';
+import 'package:xsoulspace_agentic_host/src/mcp/harness_mcp_client.dart';
+import 'package:xsoulspace_agentic_host/src/seat/harness_seat_ws.dart';
+import 'package:xsoulspace_agentic_host/src/realm/participant_identity.dart';
 
 /// The seat channel for a paired world (ADR 0072 §5).
 abstract final class WorldSeatChannel {

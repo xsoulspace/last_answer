@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:dart_acp_toolkit/dart_acp_toolkit.dart';
 // ADR 0036: composition root is xsoulspace_agentic_afm; the FFI client
 // stays in xsoulspace_inference_apple_foundation.
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart'
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart'
     show
         InferenceClientBinding,
         JevClientBinding,

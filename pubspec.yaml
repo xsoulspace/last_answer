@@ -171,7 +171,7 @@ dependencies:
   resource_composition: ^0.8.1
   flutter_inappwebview: ^6.1.5
   # The engine and host live in ecsai_harness.
-  # xsoulspace_agentic_afm is the AFM composition root (appleFoundationBinding).
+  # The AFM composition root rides the host barrel (harness ADR 0149 P3).
   xsoulspace_agentic_harness:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness
   # The world inspector pane (agent doc view): the harness's 3D inspector
@@ -181,8 +181,6 @@ dependencies:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness_inspector
   xsoulspace_agentic_host:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_host
-  xsoulspace_agentic_afm:
-    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_afm
   xsoulspace_inference_apple_foundation:
     path: ../dart_flutter_packages/pkgs/xsoulspace_inference_apple_foundation
   dart_acp_toolkit:
@@ -466,8 +464,6 @@ dependency_overrides:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_harness
   xsoulspace_agentic_host:
     path: ../../ecsai_harness/pkgs/xsoulspace_agentic_host
-  xsoulspace_agentic_workspace:
-    path: ../../ecsai_harness/pkgs/xsoulspace_agentic_workspace
   # ADR 0149 — the harness repo absorbed its ecsly plugin split
   # (context/conversation/tasks/wire/append_log) into
   # xsoulspace_agentic_harness; no per-plugin overrides needed.

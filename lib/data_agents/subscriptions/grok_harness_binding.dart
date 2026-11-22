@@ -1,5 +1,5 @@
 import 'package:lastanswer/data_agents/subscriptions/grok_gateway.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 
 const grokBackend = 'xai_grok_plan';

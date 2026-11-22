@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:universal_io/io.dart';
-import 'package:xsoulspace_agentic_afm/xsoulspace_agentic_afm.dart';
+import 'package:xsoulspace_agentic_host/xsoulspace_agentic_host.dart';
 import 'package:xsoulspace_inference_core/xsoulspace_inference_core.dart';
 import 'package:xsoulspace_inference_laya/xsoulspace_inference_laya.dart';
 

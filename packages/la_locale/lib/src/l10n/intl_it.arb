@@ -530,6 +530,16 @@
   "boardsAddStepHint": "aggiungi un passo…",
   "boardsMoveTooltip": "sposta in {column}",
   "boardsSettleTooltip": "segna come fatto",
+  "boardsCoordinationTitle": "coordinazione",
+  "boardsWorkspaceAll": "tutti gli spazi di lavoro",
+  "boardsAttentionToggle": "attenzione",
+  "boardsCancelRequested": "annullamento richiesto",
+  "boardsDelegateTooltip": "delega come attività del realm",
+  "@boardsDelegateTooltip": {
+    "description": "Ammette questa carta come lavoro del realm attraverso il seat harness dell'app."
+  },
+  "boardsNoTasks": "nessuna attività del realm — delega da una conversazione o da una sessione agente",
+  "boardsNoWorld": "il journal del realm non è aperto — nessuna coordinazione da mostrare",
   "boardsDecomposeTooltip": "aggiungi un passo",
   "unknownSurfaceTitle": "Superficie sconosciuta",
   "railViews": "Viste",
@@ -1064,14 +1074,6 @@
   },
   "inboxTaskNoEvents": "nessun evento di controllo",
   "@inboxTaskNoEvents": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxDurableQueue": "coda durevole",
-  "@inboxDurableQueue": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxBoardsQueueNote": "la coda durevole dei task non è su questa board (il feed harness non è cablato) - la gestisce l inbox",
-  "@inboxBoardsQueueNote": {
     "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
   },
   "actorsRetiredNote": "ritirato - la riga durevole conserva la sua storia:",

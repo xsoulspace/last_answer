@@ -1649,6 +1649,29 @@ class SIt extends S {
   String get boardsDecomposeTooltip => 'aggiungi un passo';
 
   @override
+  String get boardsCoordinationTitle => 'coordinazione';
+
+  @override
+  String get boardsWorkspaceAll => 'tutti gli spazi di lavoro';
+
+  @override
+  String get boardsAttentionToggle => 'attenzione';
+
+  @override
+  String get boardsCancelRequested => 'annullamento richiesto';
+
+  @override
+  String get boardsDelegateTooltip => 'delega come attività del realm';
+
+  @override
+  String get boardsNoTasks =>
+      'nessuna attività del realm — delega da una conversazione o da una sessione agente';
+
+  @override
+  String get boardsNoWorld =>
+      'il journal del realm non è aperto — nessuna coordinazione da mostrare';
+
+  @override
   String get unknownSurfaceTitle => 'Superficie sconosciuta';
 
   @override
@@ -2359,13 +2382,6 @@ class SIt extends S {
 
   @override
   String get inboxTaskNoEvents => 'nessun evento di controllo';
-
-  @override
-  String get inboxDurableQueue => 'coda durevole';
-
-  @override
-  String get inboxBoardsQueueNote =>
-      'la coda durevole dei task non è su questa board (il feed harness non è cablato) - la gestisce l inbox';
 
   @override
   String get actorsRetiredNote =>

@@ -1636,6 +1636,29 @@ class SEn extends S {
   String get boardsDecomposeTooltip => 'add a step';
 
   @override
+  String get boardsCoordinationTitle => 'coordination';
+
+  @override
+  String get boardsWorkspaceAll => 'all workspaces';
+
+  @override
+  String get boardsAttentionToggle => 'attention';
+
+  @override
+  String get boardsCancelRequested => 'cancel requested';
+
+  @override
+  String get boardsDelegateTooltip => 'delegate as realm task';
+
+  @override
+  String get boardsNoTasks =>
+      'no realm tasks yet — delegate from a conversation or an agent session';
+
+  @override
+  String get boardsNoWorld =>
+      'the realm journal is not open — no coordination to show';
+
+  @override
   String get unknownSurfaceTitle => 'Unknown surface';
 
   @override
@@ -2342,13 +2365,6 @@ class SEn extends S {
 
   @override
   String get inboxTaskNoEvents => 'no control events yet';
-
-  @override
-  String get inboxDurableQueue => 'durable queue';
-
-  @override
-  String get inboxBoardsQueueNote =>
-      'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it';
 
   @override
   String get actorsRetiredNote =>

@@ -108,6 +108,9 @@ final class WorldTaskRow {
     this.summary,
     this.at,
     this.addressees = const [],
+    this.projectId,
+    this.actorId,
+    this.cancelRequested = false,
   });
 
   final String taskId;
@@ -131,6 +134,19 @@ final class WorldTaskRow {
   final String? at;
 
   final List<String> addressees;
+
+  /// The project scope the task is sealed to (ADR 0107) — the board's
+  /// workspace filter key. Null = the row predates scope rows (honest
+  /// absence renders as "unscoped").
+  final String? projectId;
+
+  /// The actor that admitted the task — the board's origin attribution
+  /// (human vs agent delegation at a glance).
+  final String? actorId;
+
+  /// A durable cancel riding a still-running task — an attention fact
+  /// (the work may have physical effects; the request waits on it).
+  final bool cancelRequested;
 
   bool get running => !terminal;
 }
@@ -868,6 +884,11 @@ final class WorldStateService extends ChangeNotifier {
                 const []))
           '$addressee',
       ],
+      projectId: row['projectId'] as String?,
+      actorId: row['actorId'] as String?,
+      cancelRequested:
+          row['cancelRequested'] == true ||
+          terminalMap['cancelRequested'] == true,
     );
   }
 

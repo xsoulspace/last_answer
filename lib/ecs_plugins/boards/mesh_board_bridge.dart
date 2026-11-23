@@ -175,7 +175,15 @@ final class MeshBoardBridge {
           board.markRunning(claimed.key);
         },
         onSettled: (final settled, final outcome) {
-          final verdict = <String, Object?>{...?outcome.verdict};
+          final verdict = <String, Object?>{
+            ...?outcome.verdict,
+            // ADR 0039 stage 4 (owner decision: ACP turns stay
+            // invisible but linkable) — the doc whose bridge served
+            // the turn is the session locator; the boards mesh
+            // section renders it as the explore link. Honest: a
+            // bridge-less settlement carries no docId.
+            'docId': docId(),
+          };
           if (outcome.succeeded) {
             board.completeTask(settled.key, verdict: verdict);
           } else {

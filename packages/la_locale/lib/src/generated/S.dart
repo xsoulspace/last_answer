@@ -3039,6 +3039,48 @@ abstract class S {
   /// **'add a step'**
   String get boardsDecomposeTooltip;
 
+  /// The realm coordination board header (durable queue lanes).
+  ///
+  /// In en, this message translates to:
+  /// **'coordination'**
+  String get boardsCoordinationTitle;
+
+  /// The workspace filter's see-all choice (one substrate, different filters).
+  ///
+  /// In en, this message translates to:
+  /// **'all workspaces'**
+  String get boardsWorkspaceAll;
+
+  /// The requires-attention preset toggle on the coordination board.
+  ///
+  /// In en, this message translates to:
+  /// **'attention'**
+  String get boardsAttentionToggle;
+
+  /// Mark on a row whose durable cancel rides live work.
+  ///
+  /// In en, this message translates to:
+  /// **'cancel requested'**
+  String get boardsCancelRequested;
+
+  /// Admit this card as realm work through the app's own harness seat.
+  ///
+  /// In en, this message translates to:
+  /// **'delegate as realm task'**
+  String get boardsDelegateTooltip;
+
+  /// The coordination board empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'no realm tasks yet — delegate from a conversation or an agent session'**
+  String get boardsNoTasks;
+
+  /// The coordination board's note when the world service is absent.
+  ///
+  /// In en, this message translates to:
+  /// **'the realm journal is not open — no coordination to show'**
+  String get boardsNoWorld;
+
   /// No description provided for @unknownSurfaceTitle.
   ///
   /// In en, this message translates to:
@@ -4304,18 +4346,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'no control events yet'**
   String get inboxTaskNoEvents;
-
-  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
-  ///
-  /// In en, this message translates to:
-  /// **'durable queue'**
-  String get inboxDurableQueue;
-
-  /// Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason).
-  ///
-  /// In en, this message translates to:
-  /// **'the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it'**
-  String get inboxBoardsQueueNote;
 
   /// Wave N5b 2026-11-16 (retired actors name their retirement).
   ///

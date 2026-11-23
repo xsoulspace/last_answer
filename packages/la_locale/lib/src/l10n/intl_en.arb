@@ -689,6 +689,34 @@
   "@boardsDecomposeTooltip": {
     "description": "The decompose toggle tooltip."
   },
+  "boardsCoordinationTitle": "coordination",
+  "@boardsCoordinationTitle": {
+    "description": "The realm coordination board header (durable queue lanes)."
+  },
+  "boardsWorkspaceAll": "all workspaces",
+  "@boardsWorkspaceAll": {
+    "description": "The workspace filter's see-all choice (one substrate, different filters)."
+  },
+  "boardsAttentionToggle": "attention",
+  "@boardsAttentionToggle": {
+    "description": "The requires-attention preset toggle on the coordination board."
+  },
+  "boardsCancelRequested": "cancel requested",
+  "boardsDelegateTooltip": "delegate as realm task",
+  "@boardsDelegateTooltip": {
+    "description": "Admit this card as realm work through the app's own harness seat."
+  },
+  "@boardsCancelRequested": {
+    "description": "Mark on a row whose durable cancel rides live work."
+  },
+  "boardsNoTasks": "no realm tasks yet — delegate from a conversation or an agent session",
+  "@boardsNoTasks": {
+    "description": "The coordination board empty state."
+  },
+  "boardsNoWorld": "the realm journal is not open — no coordination to show",
+  "@boardsNoWorld": {
+    "description": "The coordination board's note when the world service is absent."
+  },
   "unknownSurfaceTitle": "Unknown surface",
   "railViews": "Views",
   "railViewSwitchTooltip": "Switch view",
@@ -1563,14 +1591,6 @@
   },
   "inboxTaskNoEvents": "no control events yet",
   "@inboxTaskNoEvents": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxDurableQueue": "durable queue",
-  "@inboxDurableQueue": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxBoardsQueueNote": "the durable task queue is not on this board (the harness feed is unwired) - the inbox owns it",
-  "@inboxBoardsQueueNote": {
     "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
   },
   "actorsRetiredNote": "retired - the durable row keeps its history:",

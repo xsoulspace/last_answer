@@ -533,6 +533,16 @@
   "boardsAddStepHint": "добавить шаг…",
   "boardsMoveTooltip": "переместить в «{column}»",
   "boardsSettleTooltip": "отметить готовым",
+  "boardsCoordinationTitle": "координация",
+  "boardsWorkspaceAll": "все рабочие пространства",
+  "boardsAttentionToggle": "внимание",
+  "boardsCancelRequested": "отмена запрошена",
+  "boardsDelegateTooltip": "делегировать как задачу realm",
+  "@boardsDelegateTooltip": {
+    "description": "Признать эту карточку работой realm через собственный seat harness приложения."
+  },
+  "boardsNoTasks": "задач realm пока нет — делегируйте из беседы или сессии агента",
+  "boardsNoWorld": "журнал realm не открыт — координация недоступна",
   "boardsDecomposeTooltip": "добавить шаг",
   "unknownSurfaceTitle": "Неизвестная поверхность",
   "railViews": "Представления",
@@ -1067,14 +1077,6 @@
   },
   "inboxTaskNoEvents": "control-событий пока нет",
   "@inboxTaskNoEvents": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxDurableQueue": "durable-очередь",
-  "@inboxDurableQueue": {
-    "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
-  },
-  "inboxBoardsQueueNote": "durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox",
-  "@inboxBoardsQueueNote": {
     "description": "Wave N5 2026-11-16 (task honesty: detail, cancel, queued reason)."
   },
   "actorsRetiredNote": "отозван - durable-строка сохраняет историю:",

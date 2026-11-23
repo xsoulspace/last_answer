@@ -1652,6 +1652,28 @@ class SRu extends S {
   String get boardsDecomposeTooltip => 'добавить шаг';
 
   @override
+  String get boardsCoordinationTitle => 'координация';
+
+  @override
+  String get boardsWorkspaceAll => 'все рабочие пространства';
+
+  @override
+  String get boardsAttentionToggle => 'внимание';
+
+  @override
+  String get boardsCancelRequested => 'отмена запрошена';
+
+  @override
+  String get boardsDelegateTooltip => 'делегировать как задачу realm';
+
+  @override
+  String get boardsNoTasks =>
+      'задач realm пока нет — делегируйте из беседы или сессии агента';
+
+  @override
+  String get boardsNoWorld => 'журнал realm не открыт — координация недоступна';
+
+  @override
   String get unknownSurfaceTitle => 'Неизвестная поверхность';
 
   @override
@@ -2364,13 +2386,6 @@ class SRu extends S {
 
   @override
   String get inboxTaskNoEvents => 'control-событий пока нет';
-
-  @override
-  String get inboxDurableQueue => 'durable-очередь';
-
-  @override
-  String get inboxBoardsQueueNote =>
-      'durable-очередь задач не на этой доске (фид harness не подключён) - её показывает inbox';
 
   @override
   String get actorsRetiredNote => 'отозван - durable-строка сохраняет историю:';

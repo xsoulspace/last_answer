@@ -40,6 +40,9 @@ import 'package:lastanswer/data_journal/world_state_service.dart';
 import 'package:lastanswer/ecs_plugins/conversation/conversation_spaces.dart';
 import 'package:lastanswer/ui_automations/ui_automations.dart';
 import 'package:lastanswer/ui_boards/board_view.dart';
+import 'package:lastanswer/ui_boards/delegation.dart';
+import 'package:lastanswer/ui_boards/mesh_task_doc_link.dart';
+import 'package:lastanswer/ui_boards/realm_task_board.dart';
 import 'package:lastanswer/ui_browser/browser_strings.dart';
 import 'package:lastanswer/ui_browser/workspace_browser.dart';
 import 'package:lastanswer/ui_chat/world_chat_surface.dart';
@@ -275,8 +278,7 @@ SurfaceSpec? documentSurfaceSpec(final String surfaceId) {
 /// actor's identity, grants and memberships as a readable/writable
 /// surface. Actor info is INFORMATION, not a conversation — it routes
 /// like a view id, never into the conversation group.
-bool isActorSurfaceId(final String surfaceId) =>
-    surfaceId.startsWith('actor:');
+bool isActorSurfaceId(final String surfaceId) => surfaceId.startsWith('actor:');
 
 /// The surface id of one actor's info tab (the `actor:` family's mint).
 String actorSurfaceId(final String actorId) => 'actor:$actorId';
@@ -468,43 +470,11 @@ SurfaceRegistry buildShellSurfaces(
     builder: (final tabContext) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Wave N5 — the honest cross-link: the durable task queue is
-        // NOT this board (the ADR 0140 feed is landed-but-unwired in
-        // the harness); the inbox owns it, and says so with a count.
-        Builder(
-          builder: (final context) {
-            final count =
-                context.read<WorldStateService?>()?.runningTasks.length ?? 0;
-            if (count == 0) return const SizedBox.shrink();
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      tabContext.l10n.inboxBoardsQueueNote,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: LaTokens.mono(10, context.la.inkQuiet),
-                    ),
-                  ),
-                  LaButton(
-                    key: const ValueKey('boards.durableQueue'),
-                    variant: LaButtonVariant.ghost,
-                    onPressed: () {
-                      final scope = ViewScope.of(context);
-                      if (scope == null) return;
-                      scope.onChanged(
-                        scope.layout.showView(kConversationsSurfaceId),
-                      );
-                    },
-                    label: '${tabContext.l10n.inboxDurableQueue}: $count',
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+        // ADR 0039 stage 1 — the realm coordination board: the durable
+        // task queue rendered in canonical lanes over the journal
+        // projection (the honest "feed is unwired" banner is gone —
+        // the queue IS on this board now, filters included).
+        RealmTaskBoard(world: tabContext.read<WorldStateService?>()),
         Expanded(
           child: BoardView(
             // The mesh-synced controller when the mesh seams are
@@ -512,6 +482,10 @@ SurfaceRegistry buildShellSurfaces(
             controller: tabContext
                 .read<StorageBackendsNotifier?>()
                 ?.planningController,
+            world: tabContext.read<WorldStateService?>(),
+            // ADR 0039 stage 4 — dispatch is an op: the card proposes,
+            // the app's own seat admits. Refusals render in words.
+            delegate: (final title) => _delegateBoardCard(tabContext, title),
           ),
         ),
         // Phase 3c — the mesh task rows settle HERE, beside the cards
@@ -678,12 +652,61 @@ final class _MeshTasksSection extends StatelessWidget {
                       '${verdict['status'] ?? ''}',
                       style: LaTokens.mono(10, la.inkMuted),
                     ),
+                  // ADR 0039 stage 4 — the ACP session link: the doc
+                  // whose bridge served the turn, one tap away.
+                  MeshTaskDocLink(
+                    verdict: record.verdict,
+                    onOpen: (final docId) {
+                      final scope = ViewScope.of(context);
+                      if (scope == null) return;
+                      scope.onChanged(scope.layout.showView('doc:$docId'));
+                    },
+                  ),
                 ],
               ),
             ),
         ],
       ),
     );
+  }
+}
+
+/// The boards tab's delegation seam (ADR 0039 stage 4): one planning
+/// card, admitted as realm work through the app's OWN harness seat
+/// (`SupervisorService.resolveAgentClient` — no new world, no new
+/// identity). The answer is honest on both sides: the admitted task
+/// id, or the exact refusal in words — a bounce is data, never a
+/// silent null, and the board never claims a delegation the world did
+/// not admit.
+Future<BoardDelegationResult> _delegateBoardCard(
+  final BuildContext context,
+  final String title,
+) async {
+  final project = context.read<OpenedProjectNotifier?>()?.value.value;
+  final worldId = SupervisorService.authorizedWorldId(project);
+  if (worldId == null || worldId.isEmpty) {
+    return const BoardDelegationResult.refused(
+      'no world is bound to the open project — delegating needs a world '
+      'that serves a seat',
+    );
+  }
+  try {
+    final resolution = await SupervisorService.resolveAgentClient(
+      worldId: worldId,
+    );
+    final client = resolution.client;
+    if (client == null) {
+      return BoardDelegationResult.refused(
+        resolution.refusal ?? 'the world serves no seat channel',
+      );
+    }
+    final receipt = await client.admit(
+      task: title,
+      requestId: 'board-card-${DateTime.now().microsecondsSinceEpoch}',
+    );
+    return BoardDelegationResult.admitted(receipt.taskId);
+  } on Object catch (error) {
+    return BoardDelegationResult.refused('$error');
   }
 }
 

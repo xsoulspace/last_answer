@@ -162,6 +162,31 @@ contract change updates the frozen gates.
   versioned absorption window. What remains for this stage is the demo-product
   "task board" strings.)
 
+## 4a. Landing status (2026-11-23 — ADR 0039)
+
+The wiring program landed in two parallel lanes; this doc's stages map as:
+
+- **Stage 1 (package)**: landed as planned — ontology + queue⇄board mapping +
+  host seam + ADR 0140 feed in `xsoulspace_agentic_harness`.
+- **Stage 2/3 (adopt + collapse), STORAGE slice**: landed 2026-11-23 by the
+  parallel merge lane — `lib/ecs_plugins/boards/lww_replica_core.dart` now
+  carries the shared HLC/absorb/sync machinery; `MeshTaskBoard` and
+  `PlanningBoardReplica` are thin domain layers over it. Wire shapes stayed
+  byte-identical (goldens + migration windows green). Follow-ups recorded in
+  the lane report: unify the two mesh participants over the core; move
+  `rekeyDocId` to the core; de-duplicate `meshTaskRecordJson`.
+- **Stage 2/3 (adopt + collapse), UI slice**: landed 2026-11-23 as ADR 0039 —
+  the Boards tab renders the realm durable queue in canonical lanes
+  (`RealmTaskBoard`) direct from the journal projection, with workspace/
+  attention filters and issuance (delegate-from-card) over the app's own
+  seat. The World+feed path (`TaskRowFeedResource` over
+  `JournalTaskRowSource`) remains the post-merge route once cards share one
+  ecsly World.
+- **Stage 3 remainder (open)**: consumer-side collapse — one board view over
+  ONE substrate (the merge lane kept both replicas' public APIs so the UI
+  slice could land disjointly); singletons in `StorageBackendsNotifier` die
+  then. Stage 4 (grow) unchanged.
+
 ## 5. Open decisions
 
 1. **Name**: `ecsly_boards` (recommended) vs `ecsly_plans` vs `ecsly_planning`.

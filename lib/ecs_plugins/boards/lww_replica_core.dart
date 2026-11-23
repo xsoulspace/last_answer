@@ -380,4 +380,40 @@ abstract base class LwwReplicaCore {
     if (_receivedWatermark != null)
       'received_clock': _receivedWatermark!.toJson(),
   };
+
+  /// Rewrites a board file between replica doc ids in place (ADR 0028).
+  ///
+  /// The replica doc id rides flat `doc_id` fields at every level of the
+  /// persisted shape — each log op ([OpRecord.toJson], where the op id is
+  /// derived as `docId#hlc#wall#counter#actor`), the adopted snapshot, the
+  /// convergence doc — plus the envelope's `board_id`. The kernel drops
+  /// ops whose `doc_id` differs from the replica's own, so a file must be
+  /// rewritten BEFORE it folds; entity keys are untouched (they embed the
+  /// record's own document id, which is independent of the board id).
+  /// Only exact-match values on the two known keys are rewritten, and the
+  /// rewrite is idempotent under the version vector — re-absorbing the
+  /// same file folds nothing new.
+  static Map<Object?, Object?> rekeyDocId(
+    final Map<Object?, Object?> json, {
+    required final String from,
+    required final String to,
+  }) {
+    if (from == to) return json;
+    void walk(final Object? node) {
+      if (node is Map) {
+        node.forEach((final key, final value) {
+          if ((key == 'board_id' || key == 'doc_id') && value == from) {
+            node[key] = to;
+          } else {
+            walk(value);
+          }
+        });
+      } else if (node is List) {
+        node.forEach(walk);
+      }
+    }
+
+    walk(json);
+    return json;
+  }
 }

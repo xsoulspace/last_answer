@@ -4,10 +4,13 @@ PODS:
     - OrderedSet (~> 6.0.3)
   - FlutterMacOS (1.0.0)
   - OrderedSet (6.0.3)
+  - universal_automation_lens (0.1.0):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - flutter_inappwebview_macos (from `Flutter/ephemeral/.symlinks/plugins/flutter_inappwebview_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - universal_automation_lens (from `Flutter/ephemeral/.symlinks/plugins/universal_automation_lens/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -18,12 +21,15 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/flutter_inappwebview_macos/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  universal_automation_lens:
+    :path: Flutter/ephemeral/.symlinks/plugins/universal_automation_lens/darwin
 
 SPEC CHECKSUMS:
   flutter_inappwebview_macos: c2d68649f9f8f1831bfcd98d73fd6256366d9d1d
   FlutterMacOS: c232990155153907050900a2e175c7773903ba4e
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
+  universal_automation_lens: 3dfad732d14dae6392cb28481e65f11268135e05
 
-PODFILE CHECKSUM: 1e95c36afbfd1cb6423ceca4de7a8e1b256fb6ac
+PODFILE CHECKSUM: 89c84cf5c2351c1e554c6dea18d31a879fc3a19e
 
 COCOAPODS: 1.17.0

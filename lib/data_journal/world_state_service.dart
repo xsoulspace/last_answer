@@ -801,11 +801,16 @@ final class WorldStateService extends ChangeNotifier {
 
   // ---- journal ----
 
+  StreamSubscription<void>? _journalWatch;
+  bool _journalRefreshing = false;
+  bool _journalRerun = false;
+
   Future<void> _refreshJournal() async {
     final store = _store ??= (debugWorldHome == null
         ? (await RealmWorld.open())?.store
         : null);
     if (store == null) return;
+    _attachJournalWatch(store);
     try {
       final tasks = await store.scan('durable_tasks');
       _tasks = _projectTasks(tasks);
@@ -818,6 +823,44 @@ final class WorldStateService extends ChangeNotifier {
     } on Object {
       // Same quiet degradation.
     }
+  }
+
+  /// The journal's watch subscription (ADR 0039 follow-up): an append
+  /// refreshes the task/telemetry projection within a beat instead of
+  /// waiting for the ambient poll — the LaWorldFeed discipline (the
+  /// watch event is a HINT; the re-scan is the truth). The ambient poll
+  /// stays as the fallback lane for everything else.
+  void _attachJournalWatch(final RealmControlStore store) {
+    if (_journalWatch != null) return;
+    Timer? debounce;
+    _journalWatch = store
+        .watch(pollInterval: const Duration(milliseconds: 500))
+        .listen((_) {
+      debounce?.cancel();
+      debounce = Timer(const Duration(milliseconds: 250), () {
+        unawaited(_refreshJournalNow());
+      });
+    });
+  }
+
+  /// One watch-driven journal pass: coalesced (a burst of appends is
+  /// one re-scan), never overlapping, and a rerun queued mid-flight is
+  /// drained before settling — one notification per settled state.
+  Future<void> _refreshJournalNow() async {
+    if (_journalRefreshing) {
+      _journalRerun = true;
+      return;
+    }
+    _journalRefreshing = true;
+    try {
+      do {
+        _journalRerun = false;
+        await _refreshJournal();
+      } while (_journalRerun);
+    } finally {
+      _journalRefreshing = false;
+    }
+    notifyListeners();
   }
 
   static List<WorldTaskRow> _projectTasks(
@@ -1143,6 +1186,8 @@ final class WorldStateService extends ChangeNotifier {
   @override
   void dispose() {
     stopPolling();
+    unawaited(_journalWatch?.cancel());
+    _journalWatch = null;
     super.dispose();
   }
 }

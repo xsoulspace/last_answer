@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:headless_core/headless_core.dart';
+import 'package:lastanswer/ecs_plugins/boards/lww_replica_core.dart';
 import 'package:lastanswer/ecs_plugins/boards/mesh_task_board.dart';
 import 'package:lastanswer/ecs_plugins/boards/planning_board_replica.dart';
 import 'package:universal_storage_convergence/universal_storage_convergence.dart';
@@ -10,7 +11,7 @@ import 'package:universal_storage_mesh/universal_storage_mesh.dart';
 /// Last Answer's [MeshSyncParticipant]s (ADR 0047 §3): the app owns the
 /// content shapes; the extracted [MeshWorldSession] owns the cycle order.
 ///
-/// All three fold the same way — durable kernel ops whose VV dedupe makes
+/// All fold the same way — durable kernel ops whose VV dedupe makes
 /// re-folding idempotent and delivery-order independent, so whole-file LWW
 /// on the storage seam cannot desync replicas.
 
@@ -52,71 +53,67 @@ final class RosterParticipant implements MeshSyncParticipant {
   Future<void> compact(final StorageService storage) async {}
 }
 
-/// The mesh task board (WorldSync-backed): its whole state rides
-/// `task_boards/<boardId>.json`, folded SNAPSHOT FIRST — the kernel
-/// adopts only snapshots its version vector does not already cover, so
-/// folding the file's op log first would advance the vector past the
-/// snapshot base and silently refuse the snapshot content (the only
-/// carrier of a COMPACTED peer file's state).
-/// ADR 0028 — the versioned absorption window. While this flag stands,
-/// every task-board flush ALSO mirrors the merged state to the legacy
-/// path with all doc ids rewritten back, so a pre-rename peer folding
-/// `task_boards/agent_world.json` sees exactly the board it would have
-/// seen before the rename. Retirement is an operator decision: flip in a
-/// release once no pre-rename device syncs anymore. The reverse
-/// direction — absorbing the legacy path — stays forever (it is
-/// idempotent under the version vector and costs one null read once no
-/// peer writes the file).
-const bool kTaskBoardLegacyMirror = true;
+/// The ONE WorldSync-backed whole-file participant over the extracted
+/// replica core (the merge lane's follow-up, landed 2026-11-23): both
+/// board participants fold IDENTICALLY —
+///
+/// - whole state rides one file, flushed with the replica's own
+///   byte-frozen `toJson`;
+/// - absorbed SNAPSHOT FIRST (the kernel adopts only snapshots its
+///   version vector does not already cover, so folding the file's op log
+///   first would advance the vector past the snapshot base and silently
+///   refuse the snapshot content — the only carrier of a COMPACTED peer
+///   file's state);
+/// - our own flush is skipped by `replica_id`;
+/// - the merged state flushes back when anything changed (the exchange
+///   shadowed our file with the peer's).
+///
+/// Domain subclasses name the path and may hook the ADR 0028-style
+/// absorption window (a legacy path absorbed forever, mirrored while
+/// the window stands).
+abstract base class LwwBoardSyncParticipant implements MeshSyncParticipant {
+  LwwBoardSyncParticipant({required this.core, required this.path});
 
-final class TaskBoardParticipant implements MeshSyncParticipant {
-  TaskBoardParticipant(this.board) : path = 'task_boards/${board.boardId}.json';
-
-  final MeshTaskBoard board;
+  /// The replica whose sync seams this participant folds through. The
+  /// polymorphic `toJson` keeps each replica's byte-frozen key order —
+  /// this base never reshapes it.
+  final LwwReplicaCore core;
 
   /// The single file this board ships and folds.
   final String path;
 
-  /// The pre-rename board path (ADR 0028): read forever, mirrored while
-  /// [kTaskBoardLegacyMirror] stands.
-  static const String legacyPath =
-      'task_boards/'
-      '${MeshTaskBoard.legacyBoardId}.json';
+  /// The flush commit message label (the storage seam's journal line).
+  String get flushLabel => 'save board ${core.boardId}';
+
+  /// Extra files absorbed AFTER [path] — the task board's legacy path
+  /// folds forever (idempotent under the version vector).
+  List<String> get extraAbsorbPaths => const [];
+
+  /// Hook: rekey a decoded absorb file in place before it folds
+  /// (ADR 0028 — a pre-rename peer file carries the legacy doc id at
+  /// every level). Default: none.
+  void rekeyAbsorbed(final Map<Object?, Object?> json) {}
+
+  /// Hook: the legacy mirror written after the primary flush (ADR 0028,
+  /// while the absorption window stands). Default: no-op.
+  Future<void> mirrorLegacy(final StorageService storage) async {}
 
   @override
   Future<void> flush(final StorageService storage) async {
     await storage.saveFile(
       path,
-      jsonEncode(board.toJson()),
-      message: 'save task board ${board.boardId}',
+      jsonEncode(core.toJson()),
+      message: flushLabel,
     );
-    final windowOpen =
-        kTaskBoardLegacyMirror && board.boardId != MeshTaskBoard.legacyBoardId;
-    if (!windowOpen) {
-      return;
-    }
-    // ADR 0028 — the legacy mirror: the same merged state with every
-    // doc_id/board_id rewritten to the pre-rename id, so a v1 peer's
-    // kernel accepts the ops it would have refused as foreign.
-    final mirror = MeshTaskBoard.rekeyDocId(
-      jsonDecode(jsonEncode(board.toJson())) as Map<Object?, Object?>,
-      from: board.boardId,
-      to: MeshTaskBoard.legacyBoardId,
-    );
-    await storage.saveFile(
-      legacyPath,
-      jsonEncode(mirror),
-      message: 'mirror task board ${MeshTaskBoard.legacyBoardId}',
-    );
+    await mirrorLegacy(storage);
   }
 
   @override
   Future<void> absorb(final StorageService storage) async {
     await _absorbFile(storage, path);
-    // ADR 0028 — the legacy path folds forever. A pre-rename peer file
-    // carries the legacy doc id at every level; [rekeyDocId] makes it
-    // foldable before it reaches the kernel.
-    await _absorbFile(storage, legacyPath);
+    for (final extra in extraAbsorbPaths) {
+      await _absorbFile(storage, extra);
+    }
   }
 
   Future<void> _absorbFile(
@@ -127,21 +124,17 @@ final class TaskBoardParticipant implements MeshSyncParticipant {
     if (raw == null) return;
     final json = _boardJsonOf(raw);
     if (json == null) return;
-    if (json['replica_id'] == board.replicaId) return; // our own flush
-    MeshTaskBoard.rekeyDocId(
-      json,
-      from: MeshTaskBoard.legacyBoardId,
-      to: board.boardId,
-    );
+    if (json['replica_id'] == core.replicaId) return; // our own flush
+    rekeyAbsorbed(json);
     var changed = false;
     final snapshotJson = json['snapshot'];
     if (snapshotJson is Map &&
-        board.adoptSnapshot(
+        core.adoptSnapshot(
           Snapshot.fromJson(Map<String, dynamic>.from(snapshotJson)),
         )) {
       changed = true;
     }
-    if (board.applyRemote(_boardOpsOf(json)) > 0) changed = true;
+    if (core.applyRemote(_boardOpsOf(json)) > 0) changed = true;
     // The exchange shadowed our file with the peer's; write the merged
     // state back so the next pass ships it.
     if (changed) await flush(storage);
@@ -151,7 +144,7 @@ final class TaskBoardParticipant implements MeshSyncParticipant {
   Future<void> compact(final StorageService storage) async {
     // The board owns one whole file, so the flush happens here when the
     // log actually shrank.
-    if (board.compact() > 0) await flush(storage);
+    if (core.compact() > 0) await flush(storage);
   }
 
   /// Decoded board JSON of a persisted board file; null when malformed.
@@ -195,64 +188,77 @@ List<OpRecord> _opsFromList(final List<dynamic> log) => [
     if (entry is Map) OpRecord.fromJson(Map<String, dynamic>.from(entry)),
 ];
 
-/// The planning board (WorldSync-backed): its whole state rides
-/// `planning_boards/<boardId>.json`, folded SNAPSHOT FIRST — the same
-/// discipline as the task board (the kernel adopts only snapshots its
-/// version vector does not already cover).
-final class PlanningBoardParticipant implements MeshSyncParticipant {
-  PlanningBoardParticipant(this.replica)
-    : path = 'planning_boards/${replica.boardId}.json';
+/// The mesh task board over [LwwBoardSyncParticipant]. ADR 0028 — the
+/// versioned absorption window: while [kTaskBoardLegacyMirror] stands,
+/// every task-board flush ALSO mirrors the merged state to the legacy
+/// path with all doc ids rewritten back, so a pre-rename peer folding
+/// `task_boards/agent_world.json` sees exactly the board it would have
+/// seen before the rename. Retirement is an operator decision: flip in
+/// a release once no pre-rename device syncs anymore.
+const bool kTaskBoardLegacyMirror = true;
 
-  final PlanningBoardReplica replica;
+final class TaskBoardParticipant extends LwwBoardSyncParticipant {
+  TaskBoardParticipant(this.board)
+    : super(core: board, path: 'task_boards/${board.boardId}.json');
 
-  /// The single file this board ships and folds.
-  final String path;
+  final MeshTaskBoard board;
 
   @override
-  Future<void> flush(final StorageService storage) async {
+  String get flushLabel => 'save task board ${board.boardId}';
+
+  /// The pre-rename board path (ADR 0028): read forever, mirrored while
+  /// [kTaskBoardLegacyMirror] stands.
+  static const String legacyPath =
+      'task_boards/'
+      '${MeshTaskBoard.legacyBoardId}.json';
+
+  @override
+  List<String> get extraAbsorbPaths => <String>[legacyPath];
+
+  @override
+  Future<void> mirrorLegacy(final StorageService storage) async {
+    final windowOpen =
+        kTaskBoardLegacyMirror && board.boardId != MeshTaskBoard.legacyBoardId;
+    if (!windowOpen) {
+      return;
+    }
+    // ADR 0028 — the legacy mirror: the same merged state with every
+    // doc_id/board_id rewritten to the pre-rename id, so a v1 peer's
+    // kernel accepts the ops it would have refused as foreign.
+    final mirror = LwwReplicaCore.rekeyDocId(
+      jsonDecode(jsonEncode(board.toJson())) as Map<Object?, Object?>,
+      from: board.boardId,
+      to: MeshTaskBoard.legacyBoardId,
+    );
     await storage.saveFile(
-      path,
-      jsonEncode(replica.toJson()),
-      message: 'save planning board ${replica.boardId}',
+      legacyPath,
+      jsonEncode(mirror),
+      message: 'mirror task board ${MeshTaskBoard.legacyBoardId}',
     );
   }
 
   @override
-  Future<void> absorb(final StorageService storage) async {
-    final raw = await storage.readFile(path);
-    if (raw == null) return;
-    final Object? decoded;
-    try {
-      decoded = jsonDecode(raw);
-    } on FormatException {
-      return;
-    }
-    if (decoded is! Map) return;
-    if (decoded['replica_id'] == replica.replicaId) return; // our own flush
-    var changed = false;
-    final snapshotJson = decoded['snapshot'];
-    if (snapshotJson is Map &&
-        replica.adoptSnapshot(
-          Snapshot.fromJson(Map<String, dynamic>.from(snapshotJson)),
-        )) {
-      changed = true;
-    }
-    final log = decoded['world'];
-    if (log is Map) {
-      final opsJson = log['log'];
-      if (opsJson is List) {
-        final ops = [
-          for (final op in opsJson)
-            if (op is Map) OpRecord.fromJson(Map<String, dynamic>.from(op)),
-        ];
-        if (replica.applyRemote(ops) > 0) changed = true;
-      }
-    }
-    if (changed) await flush(storage);
+  void rekeyAbsorbed(final Map<Object?, Object?> json) {
+    // ADR 0028 — the legacy path folds forever. A pre-rename peer file
+    // carries the legacy doc id at every level; the rekey makes it
+    // foldable before it reaches the kernel.
+    LwwReplicaCore.rekeyDocId(
+      json,
+      from: MeshTaskBoard.legacyBoardId,
+      to: board.boardId,
+    );
   }
+}
+
+/// The planning board over [LwwBoardSyncParticipant]: its whole state
+/// rides `planning_boards/<boardId>.json` — the same snapshot-first
+/// discipline, no absorption window.
+final class PlanningBoardParticipant extends LwwBoardSyncParticipant {
+  PlanningBoardParticipant(this.replica)
+    : super(core: replica, path: 'planning_boards/${replica.boardId}.json');
+
+  final PlanningBoardReplica replica;
 
   @override
-  Future<void> compact(final StorageService storage) async {
-    if (replica.compact() > 0) await flush(storage);
-  }
+  String get flushLabel => 'save planning board ${replica.boardId}';
 }

@@ -183,29 +183,14 @@ final class MeshTaskBoard extends LwwReplicaCore {
   /// exact-match values on the two known keys are rewritten, and the
   /// rewrite is idempotent under the version vector — re-absorbing the
   /// same file folds nothing new.
+  /// The shared file-rekey (moved onto the core with the extraction;
+  /// this static stays for source compatibility with the ADR 0028
+  /// absorption-window callers).
   static Map<Object?, Object?> rekeyDocId(
     final Map<Object?, Object?> json, {
     required final String from,
     required final String to,
-  }) {
-    if (from == to) return json;
-    void walk(final Object? node) {
-      if (node is Map) {
-        node.forEach((final key, final value) {
-          if ((key == 'board_id' || key == 'doc_id') && value == from) {
-            node[key] = to;
-          } else {
-            walk(value);
-          }
-        });
-      } else if (node is List) {
-        node.forEach(walk);
-      }
-    }
-
-    walk(json);
-    return json;
-  }
+  }) => LwwReplicaCore.rekeyDocId(json, from: from, to: to);
 
   static const String _entityPrefix = 'task/';
   static const String _component = 'task';

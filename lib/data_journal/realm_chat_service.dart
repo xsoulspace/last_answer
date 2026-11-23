@@ -426,9 +426,26 @@ final class RealmChatService extends ChangeNotifier {
   /// Opens the world, mints/loads the human identity, registers it, and
   /// starts the bots + the wake loop. Idempotent; a failed start may be
   /// retried by calling again.
+  ///
+  /// BOUNDED (the live-drive finding, 2026-11-23): a start whose realm
+  /// write leg never settles (a journal write lost against concurrent
+  /// live writers — seats + daemon on the same control store) used to
+  /// hold `_starting` forever, poisoning EVERY verb for the whole app
+  /// run. Now one start gets a bounded window; on timeout the gate
+  /// names `realm_start_timeout`, releases, and a later verb retries
+  /// fresh. A late success after a timeout only improves state — every
+  /// start leg is idempotent.
   Future<void> ensureReady() async {
     if (_ready || _disposed || !isSupported) return;
-    await (_starting ??= _start());
+    await (_starting ??= _start().timeout(
+      const Duration(seconds: 12),
+      onTimeout: () {
+        if (!_ready) {
+          _error = 'realm_start_timeout';
+          _starting = null;
+        }
+      },
+    ));
     if (!_ready) _starting = null;
   }
 
